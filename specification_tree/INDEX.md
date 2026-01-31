@@ -81,9 +81,13 @@ spec_tree_path: custom
 ## Adding New Specifications
 
 If you identify a reasonable specification NOT in the tree:
-1. Run it anyway with `spec_id = "custom/{description}"`
-2. Document in your output that this should be added to the tree
-3. Consider editing the appropriate markdown file directly to add it
+1. Run it anyway
+2. Use `spec_id = "custom/{description}"`
+3. Note in your summary that this should be added to the tree
+4. **Add the spec directly to the appropriate method or robustness markdown file**
+   in `specification_tree/` (include the spec_id, description, and any constraints)
+5. If unsure where it belongs, add a short note in the Summary Report explaining why
+   and propose a location
 
 ## Output Format
 
