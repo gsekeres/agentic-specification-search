@@ -41,6 +41,34 @@ Examples:
 - `iv/first_stage/weak_iv_test` - IV weak instrument test
 - `robust/leave_one_out/drop_age` - Robustness check dropping age covariate
 
+## Explicit Method Tree Referencing (Required)
+
+Every specification result must include:
+
+1. `spec_id` (hierarchical ID)
+2. `spec_tree_path` pointing to the defining markdown file and section header
+
+Example:
+
+```
+spec_id: did/fe/twoway
+spec_tree_path: methods/difference_in_differences.md#fixed-effects
+```
+
+Robustness example:
+
+```
+spec_id: robust/cluster/unit
+spec_tree_path: robustness/clustering_variations.md#single-level-clustering
+```
+
+If a spec is custom and not in the tree, use:
+
+```
+spec_id: custom/{description}
+spec_tree_path: custom
+```
+
 ## Workflow
 
 1. **Classify** the paper's primary method

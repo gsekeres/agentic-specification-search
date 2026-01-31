@@ -41,6 +41,13 @@ Read the paper's do files/scripts and classify into one or more of:
 
 If a major category does not exist here, please add it.
 
+**Required output**: record the chosen method and the explicit method tree path you will follow.
+
+```
+method_code: difference_in_differences
+method_tree_path: specification_tree/methods/difference_in_differences.md
+```
+
 ## Step 3: Read Specification Tree
 
 Open `specification_tree/methods/{paper_method}.md` and note ALL required specifications.
@@ -51,6 +58,24 @@ Also review the robustness checks in `specification_tree/robustness/`:
 - `sample_restrictions.md`
 - `clustering_variations.md`
 - `functional_form.md`
+
+Create a **method map** before you run any models. This ensures every specification explicitly
+references a node in the tree.
+
+```json
+{
+  "method_code": "difference_in_differences",
+  "method_tree_path": "specification_tree/methods/difference_in_differences.md",
+  "specs_to_run": [
+    {"spec_id": "baseline", "spec_tree_path": "methods/difference_in_differences.md#baseline"},
+    {"spec_id": "did/fe/twoway", "spec_tree_path": "methods/difference_in_differences.md#fixed-effects"}
+  ],
+  "robustness_specs": [
+    {"spec_id": "robust/loo/drop_age", "spec_tree_path": "robustness/leave_one_out.md"},
+    {"spec_id": "robust/cluster/unit", "spec_tree_path": "robustness/clustering_variations.md"}
+  ]
+}
+```
 
 ## Step 4: Load and Prepare Data
 
@@ -96,6 +121,7 @@ For each spec in the method file:
 - Run the specification
 - Record ALL coefficients (not just treatment)
 - Save `coefficient_vector_json`
+- Include `spec_tree_path` that points to the method tree header or table section
 
 ## Step 7: Run Robustness Checks
 
@@ -125,8 +151,13 @@ for control in all_controls:
 for cluster_var in ['unit', 'time', 'region']:
     model = pf.feols("y ~ treat + controls | fe",
                      data=df, vcov={'CRV1': cluster_var})
-    results.append({'spec_id': f'robust/cluster/{cluster_var}', ...})
+results.append({'spec_id': f'robust/cluster/{cluster_var}', ...})
 ```
+
+Every robustness run must include:
+1. `spec_id`
+2. `spec_tree_path`
+3. explicit reference to the robustness file section (if applicable)
 
 ## Step 8: Save Estimation Script
 
@@ -193,7 +224,10 @@ If you identify a reasonable specification NOT in the tree:
 1. Run it anyway
 2. Use `spec_id = "custom/{description}"`
 3. Note in your summary that this should be added to the tree
-4. Consider directly editing the appropriate markdown file in `specification_tree/`
+4. **Add the spec directly to the appropriate method or robustness markdown file**
+   in `specification_tree/` (include the spec_id, description, and any constraints)
+5. If unsure where it belongs, add a short note in the Summary Report explaining why
+   and propose a location
 
 ---
 
