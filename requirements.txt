@@ -1,0 +1,16 @@
+# Core
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Econometrics
+statsmodels>=0.14.0
+linearmodels>=5.0
+
+# Optional (Stata-like syntax)
+# pyfixest>=0.18.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# For specification curve analysis
+scipy>=1.10.0

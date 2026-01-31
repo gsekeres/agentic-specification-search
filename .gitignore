@@ -1,0 +1,41 @@
+# Data files (large, downloaded content)
+data/downloads/
+data/extracted/
+data/metadata/*.jsonl
+data/metadata/*.json
+
+# Keep directory structure
+!data/.gitkeep
+!data/metadata/.gitkeep
+!data/downloads/.gitkeep
+!data/extracted/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test output (optional to keep)
+test_output/
+!test_output/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db

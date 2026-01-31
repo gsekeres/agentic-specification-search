@@ -1,0 +1,5 @@
+# Data directory for AEA replication packages
+# Subdirectories:
+# - metadata/: Package metadata from DataCite API
+# - downloads/: Downloaded zip files and manifest
+# - extracted/: Unzipped packages for analysis
