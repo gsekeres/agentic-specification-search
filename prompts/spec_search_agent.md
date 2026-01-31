@@ -26,7 +26,7 @@ Run a systematic specification search on paper **{PAPER_ID}** following the spec
 
 ## Step 2: Classify Paper Method
 
-Read the paper's do files/scripts and classify into ONE of:
+Read the paper's do files/scripts and classify into one or more of:
 
 | Method | Use When |
 |--------|----------|
@@ -38,6 +38,8 @@ Read the paper's do files/scripts and classify into ONE of:
 | `cross_sectional_ols` | Single time period, no panel |
 | `discrete_choice` | Binary/categorical outcome |
 | `dynamic_panel` | Lagged dependent variable on RHS |
+
+If a major category does not exist here, please add it.
 
 ## Step 3: Read Specification Tree
 
