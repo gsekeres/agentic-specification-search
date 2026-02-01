@@ -260,6 +260,21 @@ def main():
     # Combine
     unified_df = pd.concat(dfs, ignore_index=True)
 
+    # Filter: Remove rows without valid p-values (required for analysis)
+    n_before = len(unified_df)
+    papers_before = unified_df['paper_id'].nunique()
+    unified_df = unified_df[unified_df['p_value'].notna()]
+    n_removed_rows = n_before - len(unified_df)
+
+    # Filter: Remove papers that have no valid specifications after p-value filter
+    papers_after = unified_df['paper_id'].nunique()
+    papers_removed = papers_before - papers_after
+
+    if n_removed_rows > 0 or papers_removed > 0:
+        print(f"\nFiltering invalid specifications:")
+        print(f"  Removed {n_removed_rows} rows without valid p-values")
+        print(f"  Removed {papers_removed} papers with no valid specifications")
+
     # Sort by paper_id, then spec_id
     unified_df = unified_df.sort_values(['paper_id', 'spec_id'])
 

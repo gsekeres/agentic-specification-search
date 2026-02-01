@@ -295,6 +295,36 @@ Also create `SPECIFICATION_SEARCH.md` in the package directory:
 
 ---
 
+## Step 10: Mark Paper as Complete
+
+After successfully generating `specification_results.csv` and `SPECIFICATION_SEARCH.md`, update the tracking file:
+
+```python
+import json
+
+status_file = 'data/tracking/spec_search_status.json'
+with open(status_file, 'r') as f:
+    status = json.load(f)
+
+# Update status to completed
+for pkg in status['packages_with_data']:
+    if pkg['id'] == '{PAPER_ID}':
+        pkg['status'] = 'completed'
+        break
+else:
+    # Add new entry if not found
+    status['packages_with_data'].append({
+        'id': '{PAPER_ID}',
+        'title': '{SHORT_TITLE}',
+        'status': 'completed'
+    })
+
+with open(status_file, 'w') as f:
+    json.dump(status, f, indent=2)
+```
+
+---
+
 ## Usage
 
 Launch with:

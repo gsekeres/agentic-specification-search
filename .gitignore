@@ -4,6 +4,9 @@ data/extracted/
 data/metadata/*.jsonl
 data/metadata/*.json
 
+# Large cache files (exceeds GitHub 100MB limit)
+data/cache/datacite_responses.db
+
 # Keep directory structure
 !data/.gitkeep
 !data/metadata/.gitkeep

@@ -1,19 +1,631 @@
 {
   "packages_with_data": [
-    {"id": "113597-V2", "title": "Microfinance Mongolia", "status": "pending"},
-    {"id": "116136-V2", "title": "Divorce Laws", "status": "pending"},
-    {"id": "183985-V1", "title": "Emoticons Feedback", "status": "pending"},
-    {"id": "184341-V2", "title": "Telementoring", "status": "pending"},
-    {"id": "193625-V1", "title": "Great Recession", "status": "pending"},
-    {"id": "207766-V1", "title": "Organized Voters", "status": "pending"},
-    {"id": "214201-V1", "title": "Mission Motivation Pakistan", "status": "pending"},
-    {"id": "217741-V1", "title": "AI Women Employment", "status": "pending"},
-    {"id": "223321-V1", "title": "Immigrant Age Arrival", "status": "pending"},
-    {"id": "230401-V1", "title": "Minority Loans", "status": "pending"}
+    {
+      "id": "111185-V1",
+      "title": "Optimal Climate Policy When Damages Are Unknown",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Meta-analysis estimating climate damage parameters. 69 specifications run. Moderate support - baseline significant but fragile to outliers and trimming."
+    },
+    {
+      "id": "112870-V2",
+      "title": "Optimal Life Cycle Unemployment Insurance",
+      "journal": "AER",
+      "status": "completed",
+      "method": "duration_survival",
+      "notes": "Cox proportional hazards models estimating unemployment duration elasticity to UI benefits. 25 specifications run. STRONG support - older workers (41-60) have 1.42x larger elasticity than young workers (20-40). 100% negative coefficients, 92% significant at 5%. Added new duration_survival method to specification tree."
+    },
+    {
+      "id": "113597-V2",
+      "title": "113597-V2",
+      "journal": "AEJ: Applied",
+      "status": "completed"
+    },
+    {
+      "id": "116136-V2",
+      "title": "116136-V2",
+      "journal": "AER",
+      "status": "completed"
+    },
+    {
+      "id": "116540-V2",
+      "title": "Individual Development Accounts and Homeownership among Low-Income Renters",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "RCT evaluating IDA matched savings program on homeownership. 83 specifications run. WEAK support - baseline effect 1.04 pp (p=0.79), only 1/83 specs significant at 5%. Effect positive in 94% of specs but never significant except in high-income subsample."
+    },
+    {
+      "id": "147561-V3",
+      "title": "Local Elites as State Capacity: How City Chiefs Use Local Information to Increase Tax Compliance in the D.R. Congo",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "RCT comparing local vs central tax collectors on property tax compliance in Kananga, DRC. 35 specifications run. STRONG support - baseline effect 4.17 pp (82% relative to control mean), highly robust with 86% significant at 5%. Effect positive in 94% of specs. Results stable across clustering choices (neighborhood vs stratum) and leave-one-out robustness checks."
+    },
+    {
+      "id": "151261-V2",
+      "title": "The Effects of Working while in School: Evidence from Employment Lotteries",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "instrumental_variables",
+      "notes": "2SLS with lottery assignment as instrument. 65 specifications run on survey data. Strong support - employment +47pp, enrollment +11pp, study time -2.3hrs. Results robust to all specification variations."
+    },
+    {
+      "id": "158081-V7",
+      "title": "158081-V7",
+      "journal": "AEJ: Macro",
+      "status": "completed"
+    },
+    {
+      "id": "174781-V2",
+      "title": "Work and Mental Health among Rohingya Refugees",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "RCT comparing work vs cash transfers on mental health. 43 specifications run. Strong support - work treatment effect of 0.24 SD on psychosocial index, highly stable across specifications. 90.7% significant at 5%."
+    },
+    {
+      "id": "183985-V1",
+      "title": "183985-V1",
+      "journal": "AER: P&P",
+      "status": "completed"
+    },
+    {
+      "id": "184341-V2",
+      "title": "184341-V2",
+      "journal": "AER: P&P",
+      "status": "completed"
+    },
+    {
+      "id": "186164-V2",
+      "title": "Reducing Inequality Through Dynamic Complementarity: Evidence from Head Start and Public School Spending",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "event_study",
+      "notes": "Johnson & Jackson - Head Start and K-12 spending complementarity study. Main PSID individual-level data unavailable (sensitive geocode restrictions). 34 specifications run on auxiliary school finance reform first-stage data (Appendix C/F). WEAK support for first-stage - 94% positive, only 15% significant at 5%. Significance depends entirely on clustering choice (state-clustered p=0.21, district-clustered p<0.001). Time period heterogeneity: negative effect pre-1984, positive post-1984. Main hypothesis of dynamic complementarity cannot be tested without PSID sensitive data."
+    },
+    {
+      "id": "193625-V1",
+      "title": "193625-V1",
+      "journal": "AEJ: Policy",
+      "status": "completed"
+    },
+    {
+      "id": "193942-V1",
+      "title": "Effective Health Aid: Evidence from Gavi's Vaccine Program",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "difference_in_differences",
+      "notes": "Staggered DiD evaluating Gavi vaccine program on coverage rates. 22 specifications run. WEAK support in simplified replication - baseline coef=1.34 pp (n.s.). Original paper reports ~6 pp (significant). Discrepancy due to treatment timing imprecision in this replication."
+    },
+    {
+      "id": "193945-V1",
+      "title": "Location, Location, Location",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Urban wage premium analysis using ACS data at commuting zone level. 29 specifications run. Strong support for main hypothesis."
+    },
+    {
+      "id": "194141-V1",
+      "title": "Estimating Hysteresis Effects",
+      "journal": "AEJ: Macro",
+      "status": "completed",
+      "method": "structural_var",
+      "notes": "Bayesian SVAR with sign/zero restrictions. 128 specifications extracted from pre-computed model output (MATLAB required for re-estimation). Moderate support for hysteresis - permanent demand shocks have lasting employment effects in post-1983 period (median 0.75, p=0.028). Results sensitive to sample period and model specification. Added new SVAR method to specification tree."
+    },
+    {
+      "id": "194841-V1",
+      "title": "Rational Inattention and the Business Cycle Effects of Productivity and News Shocks",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Coibion-Gorodnichenko regression testing information rigidity in SPF data. 23 specifications run. Moderate support - all 23 specs positive, 74% significant at 5%. Baseline beta=0.76 (p=0.012). Sensitive to outlier handling."
+    },
+    {
+      "id": "194886-V3",
+      "title": "Resisting Social Pressure in the Household Using Mobile Money: Experimental Evidence on Microenterprise Investment in Uganda",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "RCT evaluating mobile money on women's business outcomes in Uganda. 228 specifications run. MODERATE support - Mobile Disburse treatment (treatment3) shows robust positive effects on business profits (+$17.61, p<0.001) and capital (+$69.21, p=0.004), while Mobile Account (treatment2) shows no effects. Savings outcome not robust (8/27 sign flips). Results stable across winsorization levels, functional forms, control sets, and SE variations."
+    },
+    {
+      "id": "195142-V1",
+      "title": "Spillover, Efficiency and Equity Effects of Regional Firm Subsidies",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "event_study",
+      "notes": "Siegloch et al. - Regional firm subsidies (GRW) in Germany. Main BHP plant-level data requires restricted IAB access. 41 specifications run on available county-level aggregate data. WEAK support using proxies - baseline coef=0.020 (p=0.26) on log GRW subsidy volume. Only 2/41 specs significant at 5%. Results stable across FE, controls, clustering. Alternative outcomes (log unemployment, log population) show significant effects. Full replication requires IAB data access."
+    },
+    {
+      "id": "195301-V1",
+      "title": "Enemies of the People: The Long-Term Effects of Soviet Forced Labor Camps",
+      "journal": "AEJ: Macro",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Toews & Vezina - GULAG camps and modern wages. 43 specifications run on firm-level data. MODERATE support - baseline effect 0.51 (p=0.02) on log wages per 10pp increase in enemy share. 93% positive coefficients, 74% significant at 5%. Critical: Effect requires region FE (reverses sign without). Robust to controls, clustering, sample restrictions. Weighting matters (unweighted coef=0.17)."
+    },
+    {
+      "id": "195428-V1",
+      "title": "Fueling Alternatives: Gas Station Choice and the Implications for Electric Charging",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "discrete_choice",
+      "notes": "Nested logit model of gas station choice with imperfect price information. Confidential IVBSS and OPIS data not available. 12 specifications extracted from bootstrap outputs. STRONG support - price and time sensitivity coefficients all highly significant (100% at 1%). Alpha (price) ranges -0.24 to -0.51; gamma (time) ranges -0.17 to -0.26. Lambda (nesting) stable at 0.56-0.57."
+    },
+    {
+      "id": "198483-V1",
+      "title": "National Solidarity Programme Impact on Security and Development (Afghanistan)",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "panel_fixed_effects",
+      "notes": "Paired randomized experiment evaluating community-driven development in Afghanistan. 98 specifications run on survey outcomes. MODERATE support - subjective economic perceptions and attitudes toward government significantly improved (0.07-0.11 SD), but objective economic measures and security experiences null. Effects concentrated in non-East (non-border) regions; negative attitude effects in East region suggest possible insurgent backlash dynamics near Pakistan border."
+    },
+    {
+      "id": "198865-V1",
+      "title": "Estimating Models of Supply and Demand: Instruments and Covariance Restrictions",
+      "journal": "AEJ: Micro",
+      "status": "completed",
+      "method": "instrumental_variables",
+      "notes": "Methodology paper on demand estimation using covariance restrictions. Airlines application replicated with 28 specifications. OLS price coefficient -0.09 (robust), 2SLS +0.14-0.35 (sensitive to instruments). Sign reversal demonstrates paper's point about exclusion restriction failures. 100% significant at 5%."
+    },
+    {
+      "id": "202864-V1",
+      "title": "Eliciting ambiguity with mixing bets",
+      "journal": "AEJ: Micro",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Behavioral economics lab experiment with 88 subjects testing novel mixing bet elicitation method for ambiguity preferences. 33 specifications run. MODERATE support: Main hypothesis (domain differences) STRONGLY supported - ambiguous vs risk +25pp (p=0.0002), stock vs risk +17pp (p=0.007), social vs risk +14pp (p=0.031). Individual-level predictors (mixing intensity, risk aversion, gender, experience) NOT significant in any specification."
+    },
+    {
+      "id": "203901-V1",
+      "title": "The Anatomy of a Crackdown: Enforcement Strategies to Combat Illicit Opioid Distribution",
+      "journal": "AEJ: Policy",
+      "status": "completed",
+      "method": "event_study",
+      "notes": "Staggered DiD/event study of DEA crackdowns on high-prescribing doctors. 28 specifications run. STRONG support - baseline effect -35.77 MME per capita (p<0.001). 88.5% negative coefficients, 84.6% significant at 5%. Clear no pre-trends (t=-3 and t=-2 insignificant), growing post-treatment effects (t=0: -18, t=3: -48). Robust to controls, clustering, functional form. Sign flips without time FE (as expected)."
+    },
+    {
+      "id": "205541-V1",
+      "title": "Beliefs and Cooperation in Repeated Prisoner's Dilemma Games",
+      "journal": "AER",
+      "status": "completed",
+      "method": "discrete_choice",
+      "notes": "Lab experiment studying beliefs and cooperation in repeated PD games. 36 specifications run. STRONG support for main hypothesis (belief->cooperation): 100% positive, 100% significant at 5%. Probit coefficient ~3.0. Effect of belief elicitation on behavior is null (as expected). Round-by-round analysis shows belief-cooperation relationship holds across all 8 rounds."
+    },
+    {
+      "id": "205581-V1",
+      "title": "Universalism: Global Evidence",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Cappelen, Enke, Tungodden (2024) - Global Universalism Survey in Gallup World Poll 2020. 58 specifications run on political attitude outcomes. STRONG support - universalism predicts pro-egalitarian and pro-globalist attitudes. 93% positive coefficients, 88% significant at 5%. Domestic universalism strongly predicts support for reducing inequality (coef=0.21, p<0.001), robust to controls, clustering, sample restrictions. Foreign universalism predicts global-focused attitudes. Effects stronger in WEIRD countries and among males."
+    },
+    {
+      "id": "206781-V1",
+      "title": "Targeting Impact versus Deprivation",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Cluster-RCT evaluating cash transfer effects from GiveDirectly Kenya study (Haushofer et al.). 60 specifications run on treatment effect estimation. STRONG support - 100% positive coefficients, 100% significant at 5%. Baseline consumption effect: 299 PPP (SE=52). Results robust to control sets (bivariate to full PMT), clustering (village/sublocation), sample restrictions (subgroups, winsorizing), and functional form (level/log/IHS). Note: Paper's main contribution (causal forest ML heterogeneity analysis) not replicated - this tests underlying ATE."
+    },
+    {
+      "id": "207766-V1",
+      "title": "207766-V1",
+      "journal": "AER",
+      "status": "completed"
+    },
+    {
+      "id": "207983-V1",
+      "title": "Contamination Bias in Linear Regressions",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Methodology paper reanalyzing Benhassine et al. (2015) Morocco cash transfer RCT. 159 specifications run on 4 treatment arms (LCT/CCT to fathers/mothers). STRONG support - 99.4% positive, 97.5% significant at 5%. Median effect 7.2 pp on school enrollment. Results robust to clustering, controls, sample restrictions, weighting. Treatment effects: LCT 7.4-7.8 pp, CCT 5.3-5.5 pp."
+    },
+    {
+      "id": "208341-V1",
+      "title": "Land Rental Subsidies and Agricultural Productivity",
+      "journal": "AER",
+      "status": "completed",
+      "method": "instrumental_variables",
+      "notes": "RCT evaluating land rental subsidies vs cash transfers on agricultural productivity in Kenya. 32 specifications run. STRONG support - rental subsidy increases value added by $20 (p=0.016), cash transfer has no effect ($0.34, n.s.). First-stage F>2000. Effect requires strata FE, grows over time (rounds 2-4), and is driven by Stratum C. 93.8% positive coefficients, 65.6% significant at 5%."
+    },
+    {
+      "id": "214201-V1",
+      "title": "214201-V1",
+      "journal": "AER",
+      "status": "completed"
+    },
+    {
+      "id": "214341-V1",
+      "title": "Who Benefits from Online Gig Economy Platforms",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Stanton & Thomas - structural estimation with confidential platform data (not available) + survey analysis (public). 25 specifications run on public survey data only. STRONG support for main finding: workers earn 24% markup above WTA (p<0.001). Experience-surplus relationship not significant (small sample N=84). Main structural estimates require confidential data."
+    },
+    {
+      "id": "215802-V1",
+      "title": "Long-Run Impacts of Childhood Access to the Safety Net",
+      "journal": "AER",
+      "status": "completed",
+      "method": "difference_in_differences",
+      "notes": "Hoynes, Schanzenbach, Almond (2016) - DiD using FSP rollout. 42 specifications run on PSID health outcomes. STRONG support at surface level (93% positive, 79% significant). Key caveat: effect disappears when race is controlled, suggesting selection/confounding rather than causal effect."
+    },
+    {
+      "id": "216541-V1",
+      "title": "The Management of Aid and Conflict in Africa",
+      "journal": "AEJ: Policy",
+      "status": "data_missing",
+      "note": "Analysis datasets not included; raw data requires Stata/GIS processing",
+      "method": "panel_fixed_effects + instrumental_variables",
+      "notes": "Analysis datasets not included in replication package (Data/Analysis/ is empty). Raw data requires Stata spatial operations (shp2dta, geoinpoly) for grid cell assignment. 27 specifications documented from Stata code but cannot execute. IV uses 845 team leader FE as instruments for project quality with LIML estimation."
+    },
+    {
+      "id": "217741-V1",
+      "title": "217741-V1",
+      "journal": "AER: P&P",
+      "status": "completed"
+    },
+    {
+      "id": "223121-V1",
+      "title": "Robust Measures for Welfare Analysis",
+      "journal": "AER",
+      "status": "not_applicable",
+      "method": "methodology_welfare_bounds",
+      "notes": "Kang & Vasserman - Methodology paper developing robust bounds on welfare estimates under functional form uncertainty. NOT a hypothesis-testing paper. The one regression (tariff elasticity = -5.89) is a replication of Amiti, Redding, Weinstein (2019 JEP), not original contribution. Paper computes welfare bounds for different robustness parameters rho, which is a theoretical sensitivity exercise, not a specification search. Core contribution is formulas for bounding consumer surplus/DWL, not regression coefficients."
+    },
+    {
+      "id": "223321-V1",
+      "title": "223321-V1",
+      "journal": "AER: P&P",
+      "status": "completed"
+    },
+    {
+      "id": "223621-V1",
+      "title": "Micro vs Macro Labor Supply Elasticities: The Role of Dynamic Returns to Effort",
+      "journal": "AER",
+      "status": "no_data",
+      "method": "instrumental_variables",
+      "notes": "2SLS estimating earnings elasticity using Danish tax reforms. Confidential administrative data from Statistics Denmark (project #707853). 32 specifications documented but cannot execute. Data requires access to Statistics Denmark secure servers."
+    },
+    {
+      "id": "230401-V1",
+      "title": "230401-V1",
+      "journal": "AER",
+      "status": "completed"
+    },
+    {
+      "id": "235621-V1",
+      "title": "The Price of Experience",
+      "journal": "AER",
+      "status": "completed",
+      "method": "panel_fixed_effects",
+      "notes": "Mincer wage regressions on PSID 1968-2007 estimating returns to experience. 31 specifications run. STRONG support - experience coefficient positive and highly significant in 100% of specs (p<0.01). Baseline: 4.65% wage increase per year of experience. Results robust to FE structure, sample restrictions, functional form. Decade analysis shows returns increased from 4.0% (1970s) to 5.3% (1990s). Original structural estimation requires code not included in package."
+    },
+    {
+      "id": "113888-V1",
+      "title": "Keep It Simple: Financial Literacy and Rules of Thumb",
+      "status": "completed",
+      "journal": "AER",
+      "method": "cross_sectional_ols",
+      "notes": "Drexler, Fischer, Schoar - RCT comparing rule-of-thumb vs accounting financial literacy training for microentrepreneurs in Dominican Republic. 102 specifications run. MODERATE support - rule-of-thumb training (treat_rot) shows significant positive effects on business practices (coef=0.14, p<0.001), while accounting training (treat_acc) is not significant (coef=0.08, p=0.17). Results robust to clustering, control sets, and sample restrictions. Heterogeneous effects: low-skill entrepreneurs benefit more from both trainings."
+    },
+    {
+      "id": "231591-V1",
+      "title": "The Rise of NGO Activism",
+      "status": "data_missing",
+      "journal": "AEJ: P&P",
+      "method": "panel_fixed_effects",
+      "notes": "Daubanes & Rochet - NGO activism and lobbying bidirectional relationship. Key NGO negative reports variable from Covalence Ethical Quote (CEQ) is proprietary and not included. Only lobbying data (10 sectors x 13 years) available from OpenSecrets. Cannot run specifications without purchasing CEQ database."
+    },
+    {
+      "id": "114849-V1",
+      "title": "Does Prison Make People Criminals? Evidence from Italian Collective Pardons",
+      "journal": "AEJ-Applied",
+      "status": "completed",
+      "method": "instrumental_variables",
+      "notes": "Buonanno & Raphael - IV using Italian collective pardons as instrument for prison population. 31 specifications run (18 valid due to collinearity in some FE configurations). STRONG support - baseline IV coef=-0.174 (p<0.001), first-stage F=169. A 10% decrease in prison population leads to 1.7% increase in crime. 100% of valid specs significant at 5%, 94% significant at 1%. Results robust to excluding any single region, different clustering choices, functional form (levels/logs), and control sets. OLS (-0.09) attenuated as expected."
+    },
+    {
+      "id": "116442-V1",
+      "title": "Competition and the Use of Foggy Pricing",
+      "status": "completed",
+      "journal": "AEJ-Microeconomics",
+      "method": "difference_in_differences",
+      "notes": "Miravete - DiD/panel FE study of competition effects on 'foggy' (confusing) tariff pricing in cellular markets. 53 specifications run. WEAK support - baseline TWFE shows positive but insignificant effects (FOGGYi coef=0.11, p=0.55). Effect becomes significant only without market FE (time FE only: coef=0.51, p=0.01; pooled OLS: coef=0.49, p<0.001). Market-level heterogeneity absorbs the treatment effect. Poisson model significant (coef=0.41, p=0.02). 92.5% positive coefficients, only 17% significant at 5%. Data parsed from GAUSS binary .fmt format."
+    },
+    {
+      "id": "114707-V1",
+      "title": "Do Hospital Mergers Reduce Costs? Evidence on Prices and Hospital Market Consolidation",
+      "status": "completed",
+      "journal": "AEA",
+      "method": "difference_in_differences",
+      "notes": "DiD study of hospital mergers (1996-2014). 43 specifications run. STRONG support - baseline effect +7.0% on non-medical prices (p<0.001). 97% positive, 94% significant at 5%. Event study shows clean pre-trends. Effect specific to non-medical prices (medical prices show null). Robust to controls, clustering, sample restrictions."
+    },
+    {
+      "id": "116433-V1",
+      "title": "Referrals: Peer Screening and Enforcement in a Consumer Credit Field Experiment",
+      "status": "completed",
+      "journal": "AER",
+      "method": "cross_sectional_ols",
+      "notes": "Bryan, Karlan, Zinman - 2x2 factorial RCT evaluating peer enforcement and selection incentives in consumer credit referrals. 204 specifications run. STRONG support for enforcement effect - 100% negative coefficients, 71.8% significant at 5%. Enforcement reduces interest rates (-18.8pp), charge-offs (-10.2pp), and improves portion repaid (-12.9pp). Selection treatment has no significant effects. Results robust to controls, clustering, functional form, sample restrictions. Small sample (N=243 loans) limits power for some outcomes."
+    },
+    {
+      "id": "113003-V1",
+      "title": "Hospital-Resident Matching with Couples (Scarf Algorithm)",
+      "journal": "AER",
+      "status": "not_applicable",
+      "method": "theoretical_algorithm",
+      "notes": "Theoretical/computational paper on matching algorithms - not an empirical paper. Replication package contains MATLAB code implementing Scarfs algorithm for hospital-resident matching with couples. Uses only simulated random instances, no real data or regression analyses. Specification search framework not applicable."
+    },
+    {
+      "id": "114398-V1",
+      "title": "Church-Based Childcare",
+      "journal": "AER-PP",
+      "status": "completed",
+      "method": "structural_calibration",
+      "notes": "Rennhoff & Owens - Structural GMM estimation of church entry game into childcare markets. Original MATLAB simulation unavailable; ran reduced-form discrete choice (logit/probit) approximations. 65 specifications on N=424 churches in TN. WEAK support in reduced-form - baseline competition effect n.s. (coef=-0.029, p=0.65). Only 3/65 specs significant at 5%. Results cannot identify strategic interaction effects central to structural model. Key limitation: Full replication requires MATLAB for equilibrium simulation and GMM optimization."
+    },
+    {
+      "id": "113577-V1",
+      "title": "Teacher Peer Effects on Student Achievement",
+      "status": "no_data",
+      "journal": "AEJ: Applied",
+      "method": "panel_fixed_effects",
+      "notes": "Teacher peer effects on student test scores in North Carolina. Main analysis data (Final_file_JAN09.dta) from NCERDC requires restricted data access agreement (DUA, IRB, research proposal). Only auxiliary CCD school-level data included in package. 20+ specifications documented but cannot execute. Method uses FELSDVREG for high-dimensional teacher-school + school-year FE with clustering at teacher-school level."
+    },
+    {
+      "id": "114344-V1",
+      "title": "Incomplete Disclosure: Evidence of Signaling and Countersignaling",
+      "journal": "AER",
+      "status": "completed",
+      "method": "discrete_choice",
+      "notes": "Bederson et al. - Restaurant grade disclosure study in Maricopa County, Arizona. 35 specifications run. STRONG support for overall disclosure patterns - 94.3% positive coefficients, 91.4% significant at 5%. A+ coef=0.295 (p<0.001) vs omitted CD-. Key finding: A- coefficient HIGHER than A+ (0.341 vs 0.295, p<0.001), consistent with countersignaling hypothesis. Within A-grade subsample, A+ has NEGATIVE coefficient (-0.043), confirming very best restaurants don't need to disclose. Results robust to logit/probit, controls, clustering, sample restrictions."
+    },
+    {
+      "id": "117563-V1",
+      "title": "Wait-and-see or Step In? Dynamics of Interventions",
+      "journal": "AER",
+      "status": "not_applicable",
+      "method": "theoretical_computational",
+      "notes": "Foarta & Sugaya - Pure theory/computational paper on dynamic principal-agent model with adverse selection, moral hazard, and intervention/replacement decisions. MATLAB code solves Bellman equations via value function iteration (120+ hours runtime). Contains NO empirical data - only .mat files with simulated model solutions (value functions, policy functions). No regression analysis, no hypothesis testing with real data. Specification search framework not applicable."
+    },
+    {
+      "id": "114372-V1",
+      "title": "Social Networks and Economic Behavior: Dictator Game Experiments",
+      "journal": "AER",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Experimental study of social networks and dictator game giving. 61 specifications run across 3 analyses: (1) dictator game amounts, (2) simulated earnings, (3) friendship formation. WEAK support - 0% of specifications significant at 5%. Height has no effect on giving (coef=-0.002, p=0.64) or earnings (coef=-0.0004, p=0.82). Shyness has no effect on friendship formation (coef=-0.001, p=0.16). Results remarkably stable across all robustness checks but consistently null."
+    },
+    {
+      "id": "114354-V1",
+      "title": "Mechanism Design for School/Project Allocation",
+      "status": "not_applicable",
+      "journal": "AER",
+      "method": "computational_simulation",
+      "notes": "Computational mechanism design paper using Monte Carlo simulations to compare allocation mechanisms (ADA, SD, ACDA, Random). No regression analysis - compares mechanism performance metrics (envy ratio, welfare CDFs). Java code only. NOT suitable for specification search."
+    },
+    {
+      "id": "112431-V1",
+      "title": "Electoral Accountability and Corruption: Evidence from the Audits of Local Government",
+      "status": "completed",
+      "journal": "AER",
+      "method": "cross_sectional_ols",
+      "notes": "Ferraz & Finan - Brazilian municipal audits RCT. 60 specifications run. STRONG support - first-term mayors have 2.7pp less corruption than lame-duck second-term mayors (43% reduction from mean). 100% negative coefficients, 81% significant at 5%. Effect robust to controls, clustering (state/lottery), functional form (log/asinh). Heterogeneous effects: stronger in rural, poor municipalities without judiciary. RD-style analysis controlling for margin of victory confirms results."
+    },
+    {
+      "id": "114854-V1",
+      "title": "Paging Inspector Sands: The Costs of Public Information",
+      "status": "completed",
+      "journal": "AER",
+      "method": "cross_sectional_ols",
+      "notes": "Kapoor & Magesan - Effect of pedestrian countdown signals on traffic flow/safety in Toronto. Main collision data NOT AVAILABLE (Tables 2-7, 10). 35 specifications run on auxiliary traffic flow data (Tables 8-9). MODERATE support - pedestrian flow effect significant at baseline (+1030, p<0.001) but disappears with street FE (+137, p=0.59). Automobile flow results mixed and specification-sensitive. Time period heterogeneity: strong effect in early period, null in late period. Log/asinh transformations both significant. Results suggest potential confounding by unobserved street-level characteristics."
+    },
+    {
+      "id": "116347-V1",
+      "title": "Workplace Friendships and Productivity",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "instrumental_variables",
+      "notes": "Peer effects in fish processing plant using random position assignment. 36 specifications run. STRONG support - working alongside friends DECREASES productivity by 4-6% (log points). 100% negative coefficients for along_fr (main treatment), 100% significant at 5%. First-stage F>1900. Medium/low proximity (across_fr, low_fr) show null effects, suggesting distraction mechanism requires physical closeness. Results robust to FE structure, clustering, sample restrictions, IV vs OLS."
+    },
+    {
+      "id": "113745-V1",
+      "title": "Disclosure by Politicians",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "cross_sectional_ols",
+      "notes": "Djankov, La Porta, Lopez-de-Silanes, Shleifer (2010). Cross-country analysis of politician financial disclosure laws and government quality. 40 specifications run. MODERATE support - baseline coef=0.22 (p=0.18). Public disclosure positively associated with government effectiveness but mostly insignificant after controlling for GDP, democracy, and press freedom. 80% positive coefficients, 35% significant at 5%. Bivariate effect strong (coef=2.06, p<0.001) but absorbed by controls. Effects heterogeneous: significant in high-democracy countries only."
+    },
+    {
+      "id": "113710-V1",
+      "title": "Does Electoral Competition Curb Party Favoritism?",
+      "status": "completed",
+      "journal": "AEJ: Applied",
+      "method": "regression_discontinuity",
+      "notes": "Curto-Grau, Sole-Olle, Sorribas-Navarro (2018). Fuzzy RD using municipal election margins as running variable. 31 specifications run. STRONG support - 100% positive, 96.8% significant at 5%. Aligned municipalities receive 64-88 EUR more per capita in capital transfers (baseline 2SLS: 87.8 EUR). First-stage F>100 for all bandwidths. Results robust to polynomial order, bandwidths (0.048 to full), clustering (municipality/region), controls, functional form (log/asinh). DiD with unit FE confirms (56.1 EUR). HLATE interaction (competition x alignment) not significant."
+    },
+    {
+      "id": "113673-V1",
+      "title": "Vocational Training for Disadvantaged Youth in Colombia: A Long Term Follow Up",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "panel_fixed_effects",
+      "notes": "Attanasio et al. RCT evaluating Jovenes en Accion vocational training program. DATA NOT INCLUDED - results extracted from Stata log files. 12 specifications documented. STRONG support - 100% positive, 100% significant at 1%. Treatment increases formal income by ~12%, formal employment by 3.4-4.9 pp (~11%), large firm employment by 2.0-4.4 pp. Effects consistent across Evaluation Sample (N=307K) and Entire Cohort (N=373K), and for both men and women. Data requires access to Colombian PILA employment records and SISBEN baseline data."
+    },
+    {
+      "id": "113517-V1",
+      "title": "The Relative Power of Employment-to-Employment Reallocation and Unemployment Exits in Predicting Wage Growth",
+      "journal": "AER: Insights",
+      "status": "completed",
+      "method": "panel_fixed_effects",
+      "notes": "Two-stage market-level analysis of labor market transitions and wage growth. 27 specifications run. STRONG support - EE transition rates positively predict wage growth. 96.3% positive coefficients, 96.3% significant at 5%. Robust to FE structure, clustering, sample restrictions, and outcome measures."
+    },
+    {
+      "id": "114333-V1",
+      "title": "Team versus Individual Play in Finitely Repeated Prisoner Dilemma Games",
+      "status": "completed",
+      "journal": "AEJ: Microeconomics",
+      "method": "discrete_choice",
+      "notes": "Kuhn & Kagel (2016) lab experiment comparing teams vs individuals in repeated PD games. 50 specifications run. WEAK support - baseline effect 0.5 pp (p=0.95), 96% of specs insignificant at 5%. Sign instability across subsamples (26% negative). Heterogeneity by experience: teams cooperate less in supergame 1 (-20.5 pp, p=0.003) but more in supergame 10 (+19.7 pp, p=0.031), suggesting different learning trajectories. Overall null effect is informative - aggregate cooperation rates similar despite potentially different strategic processes."
+    },
+    {
+      "id": "113829-V1",
+      "title": "Political Connections and Sugar Mills in India",
+      "journal": "AEJ: Applied",
+      "status": "completed",
+      "method": "panel_fixed_effects",
+      "notes": "Sukhtankar (2012). Panel FE with mill + year FE, two-way clustering. 37 specifications run. WEAK support - baseline effect -20.41 (p=0.066), opposite sign to paper's hypothesis that connected mills pay HIGHER prices. 100% negative coefficients for main outcome, only 25% significant at 5%. Effect stronger without FE (pooled OLS: -58.21, p=0.004). Placebo test (pre-deregulation) correctly null. Alternative treatments (pcconnected, acconnected) also null. Note: Interpretation requires careful review of treatment variable definition."
+    },
+    {
+      "id": "146241-V1",
+      "title": "Ten isn't large! Group size and coordination in a large-scale experiment",
+      "status": "completed",
+      "journal": "AER",
+      "method": "discrete_choice",
+      "notes": "Arifovic, Hommes, Kopanyi-Peuker, Salle - Lab experiment on bank run coordination with varying group sizes (10 vs 80-90). 35 specifications run. MODERATE support - 94.3% positive coefficients (large groups have more withdrawals), but only 20% significant at 5%. Baseline (period 8) coef=0.21 (p=0.25, n.s.). Pooled analysis highly significant (coef=2.06, p<0.001). Effect accumulates over time and is heterogeneous - strongest for initial waiters, reverses for initial withdrawers. Period 12 shows negative effect (possible late-game learning). Results sensitive to period selection and treatment parameter controls (rho, r)."
+    },
+    {
+      "id": "114315-V1",
+      "title": "The Geography of Trade in Online Transactions: Evidence from eBay and MercadoLibre",
+      "status": "completed",
+      "journal": "AEJ-Microeconomics",
+      "method": "panel_fixed_effects",
+      "notes": "Hortacsu, Martinez-Jerez & Douglas (2008). Gravity model of online trade. CRITICAL DATA LIMITATION: Main transaction data (eBay all_US_items.dta, MercadoLibre datareg_pais/datareg_prov) confidential and unavailable. Only 4 specifications extracted from MercadoLibre log file (table_countries_aej.log). STRONG support in available data - samepais effect 6.07-10.81 (p<0.001), sameprov effect 1.01 (p<0.001), logdist elasticity -0.38 (p<0.001). 26 additional eBay specifications documented but cannot be executed without data access."
+    },
+    {
+      "id": "112749-V1",
+      "title": "When the Levee Breaks: Black Migration and Economic Development in the American South",
+      "journal": "AER",
+      "status": "completed",
+      "method": "event_study",
+      "notes": "Hornbeck & Naidu (2014) - 1927 Mississippi flood and Black migration. 48 specifications run on county-level panel data (1920-1970). STRONG support - 91.7% positive coefficients among valid log specs, 87.5% significant at 5%. Baseline flood intensity effect on ln(Black fraction) = 0.118 (p<0.001). Results robust to FE structure, control sets, clustering, and sample restrictions. Note: Positive coefficient indicates higher flood intensity associated with higher Black fraction change - interpretation requires careful review relative to paper's hypothesis. Flooded_share successfully computed from raw flood boundary data (area/new_area in flooded_1900.txt). 92 of 316 counties classified as flooded."
+    }
   ],
   "packages_without_data": [
-    {"id": "112767-V2", "title": "Health Human Capital", "reason": "no_data_files"},
-    {"id": "114454-V2", "title": "PSID Heterogeneity", "reason": "no_data_files"},
-    {"id": "228154-V1", "title": "Gender Salience", "reason": "no_data_files"}
+    {
+      "id": "112766-V2",
+      "title": "112766-V2",
+      "reason": "no_data_files"
+    },
+    {
+      "id": "112767-V2",
+      "title": "112767-V2",
+      "reason": "no_data_files"
+    },
+    {
+      "id": "112914-V2",
+      "title": "Long-Run Impacts of Childhood Access to the Safety Net",
+      "journal": "AER",
+      "reason": "data_unavailable",
+      "method": "difference_in_differences",
+      "notes": "PSID sensitive county-of-birth data required for treatment assignment but stripped from public data. Treatment variable (shareFSPageIU_5) and all county identifiers are 100% missing. Replication requires separate PSID sensitive data application."
+    },
+    {
+      "id": "113183-V2",
+      "title": "113183-V2",
+      "reason": "no_data_files"
+    },
+    {
+      "id": "113270-V2",
+      "title": "113270-V2",
+      "reason": "no_data_files"
+    },
+    {
+      "id": "166801-V1",
+      "title": "166801-V1",
+      "reason": "no_data_files"
+    },
+    {
+      "id": "183530-V1",
+      "title": "Tripping through Hoops: The Effect of Violating Compulsory Government Procedures",
+      "journal": "AEJ: Policy",
+      "reason": "data_unavailable",
+      "method": "instrumental_variables",
+      "notes": "Main analysis data is confidential and not provided in replication package. Only code and public IRS zipcode data available."
+    },
+    {
+      "id": "193366-V1",
+      "title": "Uncharted Waters: Effects of Maritime Emission Regulation",
+      "journal": "AEJ: Applied",
+      "reason": "blocked_restricted_data",
+      "method": "difference_in_differences",
+      "notes": "Requires restricted NCHS mortality/natality data and external PRISM weather data. Analysis data (data_counties.dta) not included."
+    },
+    {
+      "id": "198489-V1",
+      "title": "198489-V1",
+      "reason": "no_data_files"
+    },
+    {
+      "id": "211741-V1",
+      "title": "Do Ordeals Work for Selection Markets? Evidence from Health Insurance Auto-Enrollment",
+      "journal": "AER",
+      "reason": "data_unavailable",
+      "method": "difference_in_differences",
+      "notes": "Confidential administrative health insurance data from Massachusetts Health Connector and APCD required but not posted. Public supplementary data (ACS, SDI, hospital distances) insufficient for main DiD analysis. Requires separate DUA with Massachusetts Health Connector."
+    },
+    {
+      "id": "209343-V1",
+      "title": "Five Facts about MPCs: Evidence from a Randomized Experiment",
+      "journal": "AER",
+      "reason": "data_unavailable",
+      "method": "event_study",
+      "notes": "Confidential bank transaction data from Credit Mutuel Alliance Federale. Data requires Data Use Agreement and months of negotiation. Full R/Python code provided but no data files. Cannot run specification search."
+    },
+    {
+      "id": "196012-V1",
+      "title": "Regulating Conglomerates: Evidence from an Energy Conservation Program in China",
+      "journal": "AER",
+      "reason": "data_unavailable",
+      "method": "difference_in_differences",
+      "notes": "Proprietary Chinese firm-level data from NBS, CMEP, ATS, and SAIC not included in replication package. All analysis data files (Table1.dta, Table2_*.dta, Table3_*.dta, etc.) are missing. Data access requires application to Fudan University Data Center (econdata@fudan.edu.cn). Complete Stata do files and MATLAB structural code are provided but cannot be executed without underlying data."
+    },
+    {
+      "id": "199621-V1",
+      "title": "The Decline of Too Big To Fail",
+      "journal": "AER",
+      "reason": "data_unavailable",
+      "method": "structural_calibration",
+      "notes": "Structural model calibration paper (Berndt, Duffie, Zhu). Required data not in package: sample_daily.dta must be constructed from proprietary WRDS sources (Markit CDS, CRSP, Compustat, OptionMetrics) and Moody's DRD. Full replication requires ~100+ compute hours. Auxiliary panel FE analysis (Table A.3) also cannot run without main sample. Added new structural_calibration method to specification tree."
+    },
+    {
+      "id": "113685-V1",
+      "title": "The Big Sort: College Reputation and Labor Market Outcomes",
+      "journal": "AEJ: Applied",
+      "reason": "data_unavailable",
+      "method": "panel_fixed_effects",
+      "notes": "MacLeod, Riehl, Saavedra, Urquiola (2016). Proprietary Colombian administrative data (ICFES entrance/exit exams, SPADIES enrollment records, Social Security wage records) required but not included in replication package. Data access requires separate applications to: (1) ICFES testing agency, (2) Ministry of Education via VUMEN portal, (3) Ministry of Social Protection. Only Stata do file provided. Extensive wage equation specifications with program x year FE, experience interactions, and exit exam treatment effects."
+    },
+    {
+      "id": "112604-V1",
+      "title": "Optimal Expectations and Limited Medical Testing: Evidence from Huntington Disease",
+      "journal": "AER",
+      "reason": "data_unavailable",
+      "method": "panel_fixed_effects",
+      "notes": "Oster, Shoulson, Dorsey (2013). PHAROS study data (Prospective Huntington At-Risk Observational Study) contains protected health information about ~1,000 individuals at risk for Huntington's Disease. Data includes genetic testing status, medical symptoms (motor scores), and life behaviors. Replication package contains only Stata do files (Analysis_File_March_2012.do, Setup_PHAROS_Data_March_2012.do) and documentation. Required files (rawpharos.dta, ml_test_results.dta, calculated_risk.dta) are restricted medical data not included. Main analysis: testing decisions regressed on symptom indicators (uhdrq17) with demographic controls; behavior outcomes (pregnancy, divorce, retirement) regressed on HD risk groups with age FE absorbed."
+    },
+    {
+      "id": "116505-V1",
+      "title": "The Effect of Pension Incentives on Early Retirement",
+      "journal": "AEJ-Economic Policy",
+      "reason": "data_unavailable",
+      "method": "bunching_estimation",
+      "notes": "Manoli & Weber - Bunching estimation at severance pay tenure thresholds. Actual Austrian administrative records are confidential and require access from Austrian Ministry of Social Affairs. Only code provided. Added new bunching_estimation method to specification tree."
+    },
+    {
+      "id": "195866-V3",
+      "title": "The Effects of Paid Family Leave on Labor Supply and Fertility",
+      "journal": "AEJ: Policy",
+      "reason": "data_unavailable",
+      "method": "regression_discontinuity",
+      "notes": "Fuzzy RD using May 21, 2004 PFL implementation as cutoff. Confidential IRS data not available. Only code provided."
+    }
   ]
 }

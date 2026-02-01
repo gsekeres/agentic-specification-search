@@ -16,6 +16,11 @@ Each paper is classified by primary empirical method. Select the appropriate met
 | Cross-sectional | [methods/cross_sectional_ols.md](methods/cross_sectional_ols.md) | Single time period |
 | Discrete Choice | [methods/discrete_choice.md](methods/discrete_choice.md) | Logit/probit/multinomial |
 | Dynamic Panel | [methods/dynamic_panel.md](methods/dynamic_panel.md) | Arellano-Bond, PMG |
+| Structural VAR | [methods/structural_var.md](methods/structural_var.md) | SVAR, sign/zero restrictions |
+| Structural Calibration | [methods/structural_calibration.md](methods/structural_calibration.md) | Model calibration, GMM moments |
+| Bunching Estimation | [methods/bunching_estimation.md](methods/bunching_estimation.md) | Kink/notch bunching elasticities |
+| Local Projection | [methods/local_projection.md](methods/local_projection.md) | Impulse responses, dynamic effects |
+| Duration/Survival | [methods/duration_survival.md](methods/duration_survival.md) | Hazard models, Cox regression |
 
 ## Robustness Checks (Apply to All Methods)
 
