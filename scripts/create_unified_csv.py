@@ -11,6 +11,7 @@ Usage:
 
 import os
 import json
+import sqlite3
 import pandas as pd
 from pathlib import Path
 from datetime import datetime
@@ -20,8 +21,21 @@ BASE_DIR = Path(__file__).parent.parent
 EXTRACTED_DIR = BASE_DIR / "data" / "downloads" / "extracted"
 OUTPUT_FILE = BASE_DIR / "unified_results.csv"
 TRACKING_FILE = BASE_DIR / "data" / "tracking" / "completed_analyses.jsonl"
+DATACITE_DB = BASE_DIR / "data" / "cache" / "datacite_responses.db"
 
-# Required columns for unified output
+# Journal code mapping from article DOI prefix
+JOURNAL_MAP = {
+    'aer': 'AER',
+    'app': 'AEJ: Applied',
+    'pol': 'AEJ: Policy',
+    'mic': 'AEJ: Micro',
+    'mac': 'AEJ: Macro',
+    'pandp': 'AER: P&P',
+    'jel': 'JEL',
+    'jep': 'JEP',
+}
+
+# Required columns for unified output (removed unused: t_stat, model_type, estimation_script)
 REQUIRED_COLUMNS = [
     'paper_id',
     'journal',
@@ -32,7 +46,6 @@ REQUIRED_COLUMNS = [
     'treatment_var',
     'coefficient',
     'std_error',
-    't_stat',
     'p_value',
     'ci_lower',
     'ci_upper',
@@ -43,9 +56,78 @@ REQUIRED_COLUMNS = [
     'fixed_effects',
     'controls_desc',
     'cluster_var',
-    'model_type',
-    'estimation_script'
 ]
+
+
+def load_package_metadata():
+    """Load package metadata (title, journal) from datacite database."""
+    metadata = {}
+    base_records = {}  # Store base DOI records (without version suffix) for fallback
+
+    if not DATACITE_DB.exists():
+        print(f"Warning: Datacite database not found: {DATACITE_DB}")
+        return metadata
+
+    conn = sqlite3.connect(DATACITE_DB)
+    cursor = conn.cursor()
+    cursor.execute("SELECT package_doi, package_json FROM packages")
+
+    for row in cursor.fetchall():
+        package_doi, package_json = row
+        try:
+            pkg = json.loads(package_json)
+            # Extract base_id and version to create paper_id (e.g., "113597-V2")
+            base_id = pkg.get('base_id', '').replace('E', '')
+            version = pkg.get('version', 'V1')
+            paper_id = f"{base_id}-{version}"
+
+            # Get title
+            title = pkg.get('title', '')
+            # Clean up title prefixes
+            for prefix in ['Data and Code for: ', 'Data and Code for ',
+                          'Replication data for: ', 'Replication data for ',
+                          'Code for: ', 'Code for ', '"', '"']:
+                if title.startswith(prefix):
+                    title = title[len(prefix):]
+            # Also strip trailing quotes
+            title = title.rstrip('"').rstrip('"')
+
+            # Derive journal from article DOI
+            journal = ''
+            related = pkg.get('related_identifiers', [])
+            for rel in related:
+                rel_doi = rel.get('relatedIdentifier', '')
+                if rel_doi.startswith('10.1257/'):
+                    # Extract journal code from DOI (e.g., 10.1257/app.20130489 -> app)
+                    parts = rel_doi.replace('10.1257/', '').split('.')
+                    if parts:
+                        journal_code = parts[0]
+                        journal = JOURNAL_MAP.get(journal_code, journal_code.upper())
+                        break
+
+            # Check if this is a base DOI record (no version in DOI)
+            is_base_record = not any(f'V{i}' in package_doi for i in range(1, 10))
+            if is_base_record and journal:
+                # Store for fallback lookup
+                base_records[base_id] = {'title': title, 'journal': journal}
+
+            metadata[paper_id] = {'title': title, 'journal': journal}
+
+        except (json.JSONDecodeError, KeyError):
+            continue
+
+    conn.close()
+
+    # Fill in missing journals from base records
+    for paper_id, meta in metadata.items():
+        if not meta['journal']:
+            base_id = paper_id.split('-')[0]
+            if base_id in base_records:
+                meta['journal'] = base_records[base_id]['journal']
+                if not meta['title']:
+                    meta['title'] = base_records[base_id]['title']
+
+    return metadata
 
 
 def find_specification_results():
@@ -60,35 +142,39 @@ def find_specification_results():
         if not package_dir.is_dir():
             continue
 
-        # Look for specification_results.csv in package root
-        results_file = package_dir / "specification_results.csv"
-        if results_file.exists():
+        # Recursively search for specification_results.csv (handles nested structures)
+        for results_file in package_dir.rglob("specification_results.csv"):
             results_files.append(results_file)
-            continue
-
-        # Also check subdirectories (some packages have nested structure)
-        for subdir in package_dir.iterdir():
-            if subdir.is_dir():
-                results_file = subdir / "specification_results.csv"
-                if results_file.exists():
-                    results_files.append(results_file)
+            break  # Only take the first one per package
 
     return results_files
 
 
-def load_and_validate_csv(filepath):
+def load_and_validate_csv(filepath, metadata):
     """Load a specification_results.csv and validate its columns."""
     try:
         df = pd.read_csv(filepath)
 
-        # Extract paper_id from path if not in data
-        paper_id = filepath.parent.name
-        if '-V' not in paper_id:
-            # Nested structure - get parent
-            paper_id = filepath.parent.parent.name
+        # Extract paper_id from path - find the directory matching pattern XXXXXX-VX
+        paper_id = None
+        for parent in filepath.parents:
+            if parent.name and '-V' in parent.name and parent.name.split('-')[0].isdigit():
+                paper_id = parent.name
+                break
+            # Stop at extracted directory
+            if parent.name == 'extracted':
+                break
+
+        if paper_id is None:
+            paper_id = filepath.parent.name  # Fallback
 
         if 'paper_id' not in df.columns:
             df['paper_id'] = paper_id
+
+        # Look up metadata for this paper
+        pkg_meta = metadata.get(paper_id, {})
+        df['journal'] = pkg_meta.get('journal', '')
+        df['paper_title'] = pkg_meta.get('title', '')
 
         # Add missing columns with None
         for col in REQUIRED_COLUMNS:
@@ -141,6 +227,11 @@ def main():
     print("Creating Unified Specification Results CSV")
     print("=" * 60)
 
+    # Load package metadata from datacite database
+    print("\nLoading package metadata from datacite database...")
+    metadata = load_package_metadata()
+    print(f"  Loaded metadata for {len(metadata)} packages")
+
     # Find all results files
     results_files = find_specification_results()
     print(f"\nFound {len(results_files)} specification_results.csv files")
@@ -154,11 +245,13 @@ def main():
     papers_processed = []
 
     for filepath in results_files:
-        df = load_and_validate_csv(filepath)
+        df = load_and_validate_csv(filepath, metadata)
         if df is not None and len(df) > 0:
             dfs.append(df)
-            papers_processed.append(df['paper_id'].iloc[0])
-            print(f"  Loaded {len(df)} specs from {filepath.parent.name}")
+            paper_id = df['paper_id'].iloc[0]
+            papers_processed.append(paper_id)
+            journal = df['journal'].iloc[0] or 'unknown'
+            print(f"  Loaded {len(df)} specs from {paper_id} ({journal})")
 
     if not dfs:
         print("No valid data loaded.")
