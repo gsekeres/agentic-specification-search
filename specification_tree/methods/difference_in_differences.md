@@ -75,6 +75,42 @@
 | `did/treatment/intensity` | Treatment intensity (continuous) |
 | `did/treatment/staggered` | Staggered adoption timing |
 
+### Weighting and Matching
+
+| spec_id | Description |
+|---------|-------------|
+| `did/weight/population` | Population-weighted regression |
+| `did/weight/inverse_propensity` | IPW-DiD estimator |
+| `did/weight/entropy` | Entropy balancing weights |
+| `did/matched/psm` | Propensity score matching + DiD |
+| `did/matched/cem` | Coarsened exact matching + DiD |
+| `did/matched/mahalanobis` | Mahalanobis matching + DiD |
+
+### Decomposition and Diagnostics
+
+| spec_id | Description |
+|---------|-------------|
+| `did/decomp/bacon` | Bacon decomposition of TWFE |
+| `did/decomp/goodman_bacon` | Goodman-Bacon decomposition |
+| `did/diagnostic/parallel_trends` | Parallel trends test |
+| `did/diagnostic/pretrend_joint` | Joint test of pre-trends |
+
+### Synthetic Control Comparisons
+
+| spec_id | Description |
+|---------|-------------|
+| `did/synthetic/control` | Synthetic control comparison |
+| `did/synthetic/did` | Synthetic DiD (Arkhangelsky et al.) |
+| `did/augsynth` | Augmented synthetic control |
+
+### Alternative Inference
+
+| spec_id | Description |
+|---------|-------------|
+| `did/inference/permutation` | Permutation test |
+| `did/inference/randomization` | Randomization inference |
+| `did/inference/wild_bootstrap` | Wild cluster bootstrap |
+
 ---
 
 ## Python Implementation Notes

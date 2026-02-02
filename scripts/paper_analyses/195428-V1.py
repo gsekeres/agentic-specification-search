@@ -1,452 +1,332 @@
 """
-Specification Search: 195428-V1
-Paper: "Fueling Alternatives: Gas Station Choice and the Implications for Electric Charging"
-Authors: Jackson Dorsey, Ashley Langer, and Shaun McRae
-Journal: AEJ Policy
+Specification Search Script for Paper 195428-V1
+"Fueling Alternatives: Gas Station Choice and the Implications for Electric Charging"
+by Jackson Dorsey, Ashley Langer, and Shaun McRae
 
-NOTE: This paper uses confidential/proprietary data that is not available in the replication package.
-- IVBSS driving behavior data (University of Michigan)
-- OPIS gasoline station locations and prices
-- Mechanical Turk fuel gauge classifications
+STATUS: CANNOT EXECUTE - DATA NOT AVAILABLE
 
-The analysis below extracts and documents the available specification results from the
-bootstrap estimation outputs included in the replication package.
+The core analysis data is confidential/proprietary and not included in the
+public replication package:
+- IVBSS driving behavior data (confidential)
+- OPIS gasoline station and price data (proprietary)
+- Mechanical Turk fuel gauge classifications (personal identifiers)
 
-Method: Nested Logit Discrete Choice Model
-- Choice model for gas station selection during driving trips
-- Two-level nest: (1) Stop for gas vs. No Stop, (2) Which station if stopping
-- Key treatment variables: Expected expenditure (alpha), Excess travel time (gamma)
+This script documents what specifications WOULD have been run if data were available.
 """
 
 import pandas as pd
 import numpy as np
 import json
-import os
-
-# Paths
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/195428-V1"
-OUTPUT_DIR = PACKAGE_DIR
+from pathlib import Path
 
 # Paper metadata
 PAPER_ID = "195428-V1"
-JOURNAL = "AEJ: Policy"
 PAPER_TITLE = "Fueling Alternatives: Gas Station Choice and the Implications for Electric Charging"
+AUTHORS = "Jackson Dorsey, Ashley Langer, and Shaun McRae"
+JOURNAL = "AEJ: Policy"
+METHOD = "discrete_choice"
+METHOD_TREE_PATH = "methods/discrete_choice.md"
 
-# We cannot run R directly in Python without proper setup, so we'll use subprocess to extract results
-# The bootstrap results have been inspected and the key coefficients are recorded below.
+# Output paths
+PKG_DIR = Path("/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/195428-V1")
+RESULTS_FILE = PKG_DIR / "specification_results.csv"
 
-# From the R inspection of bootstrap files, here are the key results:
-# Model structure:
-# - Model 1: Perfect info, All stations
-# - Model 2: Perfect info, Passed stations only
-# - Model 3: Imperfect info, All stations (includes theta - weight on current price)
-# - Model 4: Imperfect info, Passed stations only
+# =============================================================================
+# DATA REQUIREMENTS (NOT MET)
+# =============================================================================
+"""
+Required data files that are NOT available:
+1. cache/estimation_data.rda - Main estimation dataset
+2. cache/simulation_data.rda - EV charging simulation data
+3. raw/ivbss/*.csv - Driving behavior (GPS, fuel consumption)
+4. raw/opis/*.dta, *.xlsx - Gas station locations and prices
+5. raw/mturk/*.csv - Fuel gauge classifications
+"""
 
-# Key parameters:
-# - lambda: Nesting parameter (between 0 and 1, closer to 1 = more nesting)
-# - alpha_constant: Coefficient on expected expenditure (negative = price-sensitive)
-# - beta_excess_time: Coefficient on excess travel time (negative = time-sensitive)
-# - theta_constant: Weight on current price vs. average price (Models 3&4 only)
-# - beta_inside_option*tank_level: How tank level affects stopping decision
+# =============================================================================
+# MODEL STRUCTURE (from code inspection)
+# =============================================================================
+"""
+The paper estimates a nested logit model of gas station choice.
 
-# Model 1 Results (baseline - perfect info, all stations)
-model1_results = {
-    'lambda': {'coef': 0.5700, 'se': 0.0338, 'pval': 0.000},
-    'alpha_constant': {'coef': -0.2428, 'se': 0.0248, 'pval': 0.000},
-    'beta_excess_time': {'coef': -0.2551, 'se': 0.0194, 'pval': 0.000},
-    'beta_inside_option': {'coef': 4.8558, 'se': 0.6351, 'pval': 0.000},
-    'beta_tank_level_gallons': {'coef': -0.9325, 'se': 0.0400, 'pval': 0.000},
-    'beta_tank_level_gallons_sqr': {'coef': 0.0050, 'se': 0.0032, 'pval': 0.119},
-}
+Key Variables:
+- Outcome: chosen (binary - whether station/option was chosen)
+- Choice sets: choice_set (trip-level identifier)
+- Inside option: inside_option (1 if gas station, 0 if "no stop")
+- Outside option: outside_option (1 if "no stop" option)
 
-# Model 2 Results (perfect info, passed stations only)
-model2_results = {
-    'lambda': {'coef': 0.5574, 'se': 0.0336, 'pval': 0.000},
-    'alpha_constant': {'coef': -0.2512, 'se': 0.0298, 'pval': 0.000},
-    'beta_excess_time': {'coef': -0.2056, 'se': 0.0160, 'pval': 0.000},
-    'beta_inside_option': {'coef': 5.4057, 'se': 0.7527, 'pval': 0.000},
-    'beta_tank_level_gallons': {'coef': -1.0370, 'se': 0.0462, 'pval': 0.000},
-    'beta_tank_level_gallons_sqr': {'coef': 0.0126, 'se': 0.0033, 'pval': 0.000},
-}
+Model Parameters:
+- lambda: Nesting parameter (0-1), measures correlation within inside options
+- alpha: Price coefficient (on expected expenditure)
+- theta: Weight on current vs. average price (imperfect info models only)
+- beta_excess_time: Disutility of extra travel time to station
+- beta_inside_option*tank_level: Utility of stopping varies with fuel level
 
-# Model 3 Results (imperfect info, all stations)
-model3_results = {
-    'lambda': {'coef': 0.5676, 'se': 0.0549, 'pval': 0.000},
-    'alpha_constant': {'coef': -0.4639, 'se': 0.0574, 'pval': 0.000},
-    'theta_constant': {'coef': 0.3555, 'se': 0.0570, 'pval': 0.000},
-    'beta_excess_time': {'coef': -0.2268, 'se': 0.0264, 'pval': 0.000},
-    'beta_inside_option': {'coef': 10.7921, 'se': 1.4797, 'pval': 0.000},
-    'beta_tank_level_gallons': {'coef': -1.1021, 'se': 0.0598, 'pval': 0.000},
-    'beta_tank_level_gallons_sqr': {'coef': -0.0056, 'se': 0.0038, 'pval': 0.142},
-}
+Utility Specification:
+U_ij = alpha * E[expenditure] + beta_excess_time * excess_time
+       + sum(beta_k * X_k) + brand_FE + month_year_FE + epsilon
 
-# Model 4 Results (imperfect info, passed stations only)
-model4_results = {
-    'lambda': {'coef': 0.5572, 'se': 0.0322, 'pval': 0.000},
-    'alpha_constant': {'coef': -0.5105, 'se': 0.0492, 'pval': 0.000},
-    'theta_constant': {'coef': 0.3130, 'se': 0.0573, 'pval': 0.000},
-    'beta_excess_time': {'coef': -0.1679, 'se': 0.0157, 'pval': 0.000},
-    'beta_inside_option': {'coef': 12.4724, 'se': 1.2897, 'pval': 0.000},
-    'beta_tank_level_gallons': {'coef': -1.3251, 'se': 0.0603, 'pval': 0.000},
-    'beta_tank_level_gallons_sqr': {'coef': 0.0083, 'se': 0.0034, 'pval': 0.015},
-}
+Where for imperfect info models:
+E[price] = theta * current_price + (1-theta) * avg_price
+"""
 
-# Brand fixed effects (from Model 1, similar across models)
-brand_effects = {
-    'BP': {'coef': -1.2689, 'se': 0.0970},
-    'Mobil': {'coef': -1.5510, 'se': 0.1269},
-    'Marathon': {'coef': -1.9247, 'se': 0.1519},
-    'Sunoco': {'coef': -1.7150, 'se': 0.1382},
-    'Shell': {'coef': -1.0794, 'se': 0.0909},
-    'Citgo': {'coef': -1.0230, 'se': 0.0977},
-    'Speedway': {'coef': 0.1196, 'se': 0.0605},
-    'Meijer': {'coef': -0.2303, 'se': 0.0954},
-    'Costco': {'coef': 1.6573, 'se': 0.1316},
-}
+# =============================================================================
+# PLANNED SPECIFICATIONS (50+)
+# =============================================================================
 
-def calculate_t_stat(coef, se):
-    if se == 0:
-        return np.nan
-    return coef / se
+planned_specs = []
 
-def calculate_pval(t_stat, two_tailed=True):
-    """Approximate p-value from t-stat (large sample)"""
-    from scipy import stats
-    if np.isnan(t_stat):
-        return np.nan
-    return 2 * (1 - stats.norm.cdf(abs(t_stat))) if two_tailed else 1 - stats.norm.cdf(abs(t_stat))
+# -----------------------------------------------------------------------------
+# BASELINE: Table 5 (Models 1-4)
+# -----------------------------------------------------------------------------
+baseline_models = [
+    {"spec_id": "baseline/model1",
+     "description": "Perfect info, all stations, with brand FE",
+     "info_structure": "perfect",
+     "choice_set": "all",
+     "brand_fe": True},
+    {"spec_id": "baseline/model2",
+     "description": "Perfect info, passed stations only, with brand FE",
+     "info_structure": "perfect",
+     "choice_set": "passed",
+     "brand_fe": True},
+    {"spec_id": "baseline/model3",
+     "description": "Imperfect info (theta estimated), all stations, with brand FE",
+     "info_structure": "imperfect",
+     "choice_set": "all",
+     "brand_fe": True},
+    {"spec_id": "baseline/model4",
+     "description": "Imperfect info, passed stations only, with brand FE",
+     "info_structure": "imperfect",
+     "choice_set": "passed",
+     "brand_fe": True},
+]
+planned_specs.extend(baseline_models)
 
-def create_coefficient_json(results, model_name, include_theta=False):
-    """Create JSON format for coefficient vector"""
-    coef_json = {
-        "treatment": {
-            "var": "alpha_constant (expected expenditure)",
-            "coef": results['alpha_constant']['coef'],
-            "se": results['alpha_constant']['se'],
-            "pval": results['alpha_constant']['pval'],
-        },
-        "controls": [
-            {
-                "var": "beta_excess_time",
-                "coef": results['beta_excess_time']['coef'],
-                "se": results['beta_excess_time']['se'],
-                "pval": results['beta_excess_time']['pval'],
-            },
-            {
-                "var": "lambda (nesting parameter)",
-                "coef": results['lambda']['coef'],
-                "se": results['lambda']['se'],
-                "pval": results['lambda']['pval'],
-            },
-            {
-                "var": "beta_inside_option (no stop constant)",
-                "coef": results['beta_inside_option']['coef'],
-                "se": results['beta_inside_option']['se'],
-                "pval": results['beta_inside_option']['pval'],
-            },
-            {
-                "var": "beta_tank_level_gallons",
-                "coef": results['beta_tank_level_gallons']['coef'],
-                "se": results['beta_tank_level_gallons']['se'],
-                "pval": results['beta_tank_level_gallons']['pval'],
-            },
-        ],
-        "fixed_effects": ["brand", "month_year"],
-        "diagnostics": {
-            "model_type": "nested_logit",
-            "information_structure": "imperfect" if include_theta else "perfect",
-        }
-    }
+# -----------------------------------------------------------------------------
+# FIXED EFFECTS VARIATIONS: Appendix Table A3
+# -----------------------------------------------------------------------------
+fe_variations = [
+    {"spec_id": "robust/fe/no_brand_model1",
+     "description": "Perfect info, all stations, NO brand FE",
+     "brand_fe": False,
+     "month_year_fe": True},
+    {"spec_id": "robust/fe/no_brand_model2",
+     "description": "Perfect info, passed only, NO brand FE",
+     "brand_fe": False,
+     "month_year_fe": True},
+    {"spec_id": "robust/fe/no_brand_model3",
+     "description": "Imperfect info, all stations, NO brand FE",
+     "brand_fe": False,
+     "month_year_fe": True},
+    {"spec_id": "robust/fe/no_brand_model4",
+     "description": "Imperfect info, passed only, NO brand FE",
+     "brand_fe": False,
+     "month_year_fe": True},
+    {"spec_id": "robust/fe/no_monthyear_model1",
+     "description": "Perfect info, all stations, no month-year FE",
+     "brand_fe": True,
+     "month_year_fe": False},
+    {"spec_id": "robust/fe/no_monthyear_model3",
+     "description": "Imperfect info, all stations, no month-year FE",
+     "brand_fe": True,
+     "month_year_fe": False},
+    {"spec_id": "robust/fe/no_fe_model1",
+     "description": "Perfect info, all stations, no FE",
+     "brand_fe": False,
+     "month_year_fe": False},
+    {"spec_id": "robust/fe/no_fe_model3",
+     "description": "Imperfect info, all stations, no FE",
+     "brand_fe": False,
+     "month_year_fe": False},
+]
+planned_specs.extend(fe_variations)
 
-    if include_theta:
-        coef_json['controls'].append({
-            "var": "theta_constant (weight on current price)",
-            "coef": results['theta_constant']['coef'],
-            "se": results['theta_constant']['se'],
-            "pval": results['theta_constant']['pval'],
-        })
+# -----------------------------------------------------------------------------
+# CONTROL VARIATIONS
+# -----------------------------------------------------------------------------
+control_variations = [
+    {"spec_id": "robust/control/no_tank_level",
+     "description": "Drop tank level controls from outside option utility"},
+    {"spec_id": "robust/control/linear_tank_only",
+     "description": "Only linear tank level (drop squared term)"},
+    {"spec_id": "robust/control/tank_level_cubic",
+     "description": "Add cubic tank level term"},
+    {"spec_id": "robust/control/no_excess_time",
+     "description": "Drop excess travel time from station utility"},
+    {"spec_id": "robust/control/excess_time_squared",
+     "description": "Add quadratic excess time term"},
+]
+planned_specs.extend(control_variations)
 
-    return json.dumps(coef_json)
+# -----------------------------------------------------------------------------
+# ESTIMATION METHOD VARIATIONS
+# -----------------------------------------------------------------------------
+estimation_variations = [
+    {"spec_id": "robust/estimation/standard_logit",
+     "description": "Standard logit (lambda=1, no nesting)",
+     "nested_logit": False},
+    {"spec_id": "robust/estimation/nested_logit_all",
+     "description": "Nested logit with all stations (baseline)",
+     "nested_logit": True,
+     "choice_set": "all"},
+    {"spec_id": "robust/estimation/nested_logit_passed",
+     "description": "Nested logit with passed stations only",
+     "nested_logit": True,
+     "choice_set": "passed"},
+    {"spec_id": "robust/estimation/mixed_logit",
+     "description": "Mixed logit with random coefficients on price/time"},
+    {"spec_id": "robust/estimation/conditional_logit",
+     "description": "Conditional logit with driver FE"},
+]
+planned_specs.extend(estimation_variations)
 
-# Create specification results
-results = []
+# -----------------------------------------------------------------------------
+# SAMPLE RESTRICTIONS
+# -----------------------------------------------------------------------------
+sample_restrictions = [
+    {"spec_id": "robust/sample/weekday_only",
+     "description": "Weekday trips only"},
+    {"spec_id": "robust/sample/weekend_only",
+     "description": "Weekend trips only"},
+    {"spec_id": "robust/sample/spring_2009",
+     "description": "April-June 2009 only"},
+    {"spec_id": "robust/sample/fall_2009",
+     "description": "October-December 2009 only"},
+    {"spec_id": "robust/sample/winter_2010",
+     "description": "January-March 2010 only"},
+    {"spec_id": "robust/sample/drop_first_week",
+     "description": "Drop first week of each driver"},
+    {"spec_id": "robust/sample/drop_short_trips",
+     "description": "Drop trips < 5 miles"},
+    {"spec_id": "robust/sample/drop_long_trips",
+     "description": "Drop trips > 50 miles"},
+    {"spec_id": "robust/sample/low_tank_only",
+     "description": "Only trips with tank < 1/4 full"},
+    {"spec_id": "robust/sample/high_tank_only",
+     "description": "Only trips with tank > 1/2 full"},
+]
+planned_specs.extend(sample_restrictions)
 
-# Baseline specification (Model 1 - as in Table 5, Column 1)
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'baseline',
-    'spec_tree_path': 'methods/discrete_choice.md',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'alpha_constant (expected expenditure)',
-    'coefficient': model1_results['alpha_constant']['coef'],
-    'std_error': model1_results['alpha_constant']['se'],
-    't_stat': model1_results['alpha_constant']['coef'] / model1_results['alpha_constant']['se'],
-    'p_value': model1_results['alpha_constant']['pval'],
-    'ci_lower': model1_results['alpha_constant']['coef'] - 1.96 * model1_results['alpha_constant']['se'],
-    'ci_upper': model1_results['alpha_constant']['coef'] + 1.96 * model1_results['alpha_constant']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model1_results, 'Model1', include_theta=False),
-    'sample_desc': 'All gas stations in choice set',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'excess_time, tank_level, tank_level_squared, brand dummies, month-year dummies',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Perfect Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
+# -----------------------------------------------------------------------------
+# HETEROGENEITY: Appendix Table D1
+# -----------------------------------------------------------------------------
+heterogeneity_specs = [
+    {"spec_id": "robust/heterogeneity/age_young",
+     "description": "Interaction with age 20-30 dummy",
+     "interaction_var": "age_cat_age_20to30"},
+    {"spec_id": "robust/heterogeneity/age_middle",
+     "description": "Interaction with age 40-50 dummy",
+     "interaction_var": "age_cat_age_40to50"},
+    {"spec_id": "robust/heterogeneity/age_senior",
+     "description": "Interaction with age 60-70 dummy",
+     "interaction_var": "age_cat_age_60to70"},
+    {"spec_id": "robust/heterogeneity/gender",
+     "description": "Interaction with female dummy",
+     "interaction_var": "female"},
+    {"spec_id": "robust/heterogeneity/income_high",
+     "description": "Interaction with high income dummy",
+     "interaction_var": "high_income"},
+    {"spec_id": "robust/heterogeneity/income_low",
+     "description": "Interaction with low income dummy",
+     "interaction_var": "low_income"},
+    {"spec_id": "robust/heterogeneity/weekday",
+     "description": "Interaction with weekday dummy",
+     "interaction_var": "weekday"},
+    {"spec_id": "robust/heterogeneity/garage",
+     "description": "Interaction with home has garage dummy",
+     "interaction_var": "garage"},
+    {"spec_id": "robust/heterogeneity/urban",
+     "description": "Interaction with urban home location",
+     "interaction_var": "urban"},
+    {"spec_id": "robust/heterogeneity/commute_trip",
+     "description": "Interaction with work commute indicator",
+     "interaction_var": "commute_trip"},
+]
+planned_specs.extend(heterogeneity_specs)
 
-# Model 2 - Perfect info, Passed stations only
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/sample/passed_only',
-    'spec_tree_path': 'methods/discrete_choice.md#sample-restrictions',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'alpha_constant (expected expenditure)',
-    'coefficient': model2_results['alpha_constant']['coef'],
-    'std_error': model2_results['alpha_constant']['se'],
-    't_stat': model2_results['alpha_constant']['coef'] / model2_results['alpha_constant']['se'],
-    'p_value': model2_results['alpha_constant']['pval'],
-    'ci_lower': model2_results['alpha_constant']['coef'] - 1.96 * model2_results['alpha_constant']['se'],
-    'ci_upper': model2_results['alpha_constant']['coef'] + 1.96 * model2_results['alpha_constant']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model2_results, 'Model2', include_theta=False),
-    'sample_desc': 'Only stations driver passed on trip',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'excess_time, tank_level, tank_level_squared, brand dummies, month-year dummies',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Perfect Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
+# -----------------------------------------------------------------------------
+# INFERENCE VARIATIONS
+# -----------------------------------------------------------------------------
+inference_variations = [
+    {"spec_id": "robust/inference/se_robust",
+     "description": "Robust (sandwich) standard errors"},
+    {"spec_id": "robust/inference/se_cluster_driver",
+     "description": "Cluster SE at driver level"},
+    {"spec_id": "robust/inference/se_cluster_station",
+     "description": "Cluster SE at station level"},
+    {"spec_id": "robust/inference/se_cluster_day",
+     "description": "Cluster SE at day level"},
+    {"spec_id": "robust/inference/bootstrap_100",
+     "description": "Bootstrap SE with 100 replications"},
+    {"spec_id": "robust/inference/bootstrap_500",
+     "description": "Bootstrap SE with 500 replications (paper uses this)"},
+]
+planned_specs.extend(inference_variations)
 
-# Model 3 - Imperfect info, All stations
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/multi/nested_logit_imperfect',
-    'spec_tree_path': 'methods/discrete_choice.md#model-type-multinomial-outcome',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'alpha_constant (expected expenditure)',
-    'coefficient': model3_results['alpha_constant']['coef'],
-    'std_error': model3_results['alpha_constant']['se'],
-    't_stat': model3_results['alpha_constant']['coef'] / model3_results['alpha_constant']['se'],
-    'p_value': model3_results['alpha_constant']['pval'],
-    'ci_lower': model3_results['alpha_constant']['coef'] - 1.96 * model3_results['alpha_constant']['se'],
-    'ci_upper': model3_results['alpha_constant']['coef'] + 1.96 * model3_results['alpha_constant']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model3_results, 'Model3', include_theta=True),
-    'sample_desc': 'All gas stations in choice set',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'excess_time, tank_level, tank_level_squared, brand dummies, month-year dummies, theta (price info weight)',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Imperfect Price Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
+# -----------------------------------------------------------------------------
+# FUNCTIONAL FORM VARIATIONS
+# -----------------------------------------------------------------------------
+functional_form = [
+    {"spec_id": "robust/funcform/log_price",
+     "description": "Log of expected expenditure instead of levels"},
+    {"spec_id": "robust/funcform/price_per_gallon",
+     "description": "Price per gallon instead of expected expenditure"},
+    {"spec_id": "robust/funcform/log_excess_time",
+     "description": "Log of excess time"},
+    {"spec_id": "robust/funcform/piecewise_time",
+     "description": "Piecewise linear excess time (0-5, 5-10, 10+ minutes)"},
+    {"spec_id": "robust/funcform/interaction_price_time",
+     "description": "Interaction between price and excess time"},
+]
+planned_specs.extend(functional_form)
 
-# Model 4 - Imperfect info, Passed stations only
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/sample/imperfect_passed',
-    'spec_tree_path': 'methods/discrete_choice.md#sample-restrictions',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'alpha_constant (expected expenditure)',
-    'coefficient': model4_results['alpha_constant']['coef'],
-    'std_error': model4_results['alpha_constant']['se'],
-    't_stat': model4_results['alpha_constant']['coef'] / model4_results['alpha_constant']['se'],
-    'p_value': model4_results['alpha_constant']['pval'],
-    'ci_lower': model4_results['alpha_constant']['coef'] - 1.96 * model4_results['alpha_constant']['se'],
-    'ci_upper': model4_results['alpha_constant']['coef'] + 1.96 * model4_results['alpha_constant']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model4_results, 'Model4', include_theta=True),
-    'sample_desc': 'Only stations driver passed on trip',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'excess_time, tank_level, tank_level_squared, brand dummies, month-year dummies, theta (price info weight)',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Imperfect Price Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
+# -----------------------------------------------------------------------------
+# ALTERNATIVE TREATMENT DEFINITIONS
+# -----------------------------------------------------------------------------
+treatment_variations = [
+    {"spec_id": "robust/treatment/current_price_only",
+     "description": "Use only current observed price (no averaging)"},
+    {"spec_id": "robust/treatment/avg_price_only",
+     "description": "Use only long-run average price"},
+    {"spec_id": "robust/treatment/rolling_avg_7day",
+     "description": "Use 7-day rolling average price"},
+    {"spec_id": "robust/treatment/rolling_avg_30day",
+     "description": "Use 30-day rolling average price"},
+]
+planned_specs.extend(treatment_variations)
 
-# Add excess time as alternative treatment variable specifications
-# Model 1 - excess time coefficient
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/treatment/excess_time_m1',
-    'spec_tree_path': 'methods/discrete_choice.md',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'beta_excess_time (minutes)',
-    'coefficient': model1_results['beta_excess_time']['coef'],
-    'std_error': model1_results['beta_excess_time']['se'],
-    't_stat': model1_results['beta_excess_time']['coef'] / model1_results['beta_excess_time']['se'],
-    'p_value': model1_results['beta_excess_time']['pval'],
-    'ci_lower': model1_results['beta_excess_time']['coef'] - 1.96 * model1_results['beta_excess_time']['se'],
-    'ci_upper': model1_results['beta_excess_time']['coef'] + 1.96 * model1_results['beta_excess_time']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model1_results, 'Model1', include_theta=False),
-    'sample_desc': 'All gas stations in choice set',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'expected_expenditure, tank_level, tank_level_squared, brand dummies, month-year dummies',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Perfect Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
+# =============================================================================
+# OUTPUT SUMMARY
+# =============================================================================
 
-# Model 2 - excess time coefficient
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/treatment/excess_time_m2',
-    'spec_tree_path': 'methods/discrete_choice.md',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'beta_excess_time (minutes)',
-    'coefficient': model2_results['beta_excess_time']['coef'],
-    'std_error': model2_results['beta_excess_time']['se'],
-    't_stat': model2_results['beta_excess_time']['coef'] / model2_results['beta_excess_time']['se'],
-    'p_value': model2_results['beta_excess_time']['pval'],
-    'ci_lower': model2_results['beta_excess_time']['coef'] - 1.96 * model2_results['beta_excess_time']['se'],
-    'ci_upper': model2_results['beta_excess_time']['coef'] + 1.96 * model2_results['beta_excess_time']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model2_results, 'Model2', include_theta=False),
-    'sample_desc': 'Only stations driver passed on trip',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'expected_expenditure, tank_level, tank_level_squared, brand dummies, month-year dummies',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Perfect Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
-
-# Model 3 - excess time coefficient
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/treatment/excess_time_m3',
-    'spec_tree_path': 'methods/discrete_choice.md',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'beta_excess_time (minutes)',
-    'coefficient': model3_results['beta_excess_time']['coef'],
-    'std_error': model3_results['beta_excess_time']['se'],
-    't_stat': model3_results['beta_excess_time']['coef'] / model3_results['beta_excess_time']['se'],
-    'p_value': model3_results['beta_excess_time']['pval'],
-    'ci_lower': model3_results['beta_excess_time']['coef'] - 1.96 * model3_results['beta_excess_time']['se'],
-    'ci_upper': model3_results['beta_excess_time']['coef'] + 1.96 * model3_results['beta_excess_time']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model3_results, 'Model3', include_theta=True),
-    'sample_desc': 'All gas stations in choice set',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'expected_expenditure, tank_level, tank_level_squared, brand dummies, month-year dummies, theta',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Imperfect Price Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
-
-# Model 4 - excess time coefficient
-results.append({
-    'paper_id': PAPER_ID,
-    'journal': JOURNAL,
-    'paper_title': PAPER_TITLE,
-    'spec_id': 'discrete/treatment/excess_time_m4',
-    'spec_tree_path': 'methods/discrete_choice.md',
-    'outcome_var': 'chosen (station choice)',
-    'treatment_var': 'beta_excess_time (minutes)',
-    'coefficient': model4_results['beta_excess_time']['coef'],
-    'std_error': model4_results['beta_excess_time']['se'],
-    't_stat': model4_results['beta_excess_time']['coef'] / model4_results['beta_excess_time']['se'],
-    'p_value': model4_results['beta_excess_time']['pval'],
-    'ci_lower': model4_results['beta_excess_time']['coef'] - 1.96 * model4_results['beta_excess_time']['se'],
-    'ci_upper': model4_results['beta_excess_time']['coef'] + 1.96 * model4_results['beta_excess_time']['se'],
-    'n_obs': 'N/A (confidential data)',
-    'r_squared': 'McFadden pseudo-R2 (not available)',
-    'coefficient_vector_json': create_coefficient_json(model4_results, 'Model4', include_theta=True),
-    'sample_desc': 'Only stations driver passed on trip',
-    'fixed_effects': 'Brand FE, Month-Year FE',
-    'controls_desc': 'expected_expenditure, tank_level, tank_level_squared, brand dummies, month-year dummies, theta',
-    'cluster_var': 'Bootstrap SE',
-    'model_type': 'Nested Logit (Imperfect Price Information)',
-    'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-})
-
-# Nesting parameter (lambda) specifications
-for i, (model_results, model_name, info_type, sample) in enumerate([
-    (model1_results, 'M1', 'Perfect Info', 'All stations'),
-    (model2_results, 'M2', 'Perfect Info', 'Passed only'),
-    (model3_results, 'M3', 'Imperfect Info', 'All stations'),
-    (model4_results, 'M4', 'Imperfect Info', 'Passed only'),
-]):
-    results.append({
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': f'discrete/nesting/lambda_{model_name.lower()}',
-        'spec_tree_path': 'methods/discrete_choice.md#model-type-multinomial-outcome',
-        'outcome_var': 'chosen (station choice)',
-        'treatment_var': 'lambda (nesting parameter)',
-        'coefficient': model_results['lambda']['coef'],
-        'std_error': model_results['lambda']['se'],
-        't_stat': model_results['lambda']['coef'] / model_results['lambda']['se'],
-        'p_value': model_results['lambda']['pval'],
-        'ci_lower': model_results['lambda']['coef'] - 1.96 * model_results['lambda']['se'],
-        'ci_upper': model_results['lambda']['coef'] + 1.96 * model_results['lambda']['se'],
-        'n_obs': 'N/A (confidential data)',
-        'r_squared': 'McFadden pseudo-R2 (not available)',
-        'coefficient_vector_json': create_coefficient_json(model_results, model_name, include_theta=(i >= 2)),
-        'sample_desc': sample,
-        'fixed_effects': 'Brand FE, Month-Year FE',
-        'controls_desc': f'{info_type}; expected_expenditure, excess_time, tank_level, brand dummies',
-        'cluster_var': 'Bootstrap SE',
-        'model_type': f'Nested Logit ({info_type})',
-        'estimation_script': 'scripts/paper_analyses/195428-V1.py',
-    })
-
-# Save results to CSV
-df = pd.DataFrame(results)
-output_path = os.path.join(OUTPUT_DIR, 'specification_results.csv')
-df.to_csv(output_path, index=False)
-print(f"Saved {len(results)} specifications to {output_path}")
-
-# Print summary
-print("\n" + "="*80)
-print("SPECIFICATION SEARCH SUMMARY")
-print("="*80)
-print(f"\nPaper: {PAPER_TITLE}")
+print(f"Paper: {PAPER_TITLE}")
 print(f"Paper ID: {PAPER_ID}")
 print(f"Journal: {JOURNAL}")
-print(f"\nTotal specifications documented: {len(results)}")
+print(f"Method: {METHOD}")
+print(f"\nTotal planned specifications: {len(planned_specs)}")
+print(f"\nBreakdown by category:")
 
-# Analyze price sensitivity (alpha) across specifications
-alpha_specs = [r for r in results if 'alpha_constant' in r['treatment_var']]
-print(f"\nPrice Sensitivity (alpha) across {len(alpha_specs)} specifications:")
-for r in alpha_specs:
-    print(f"  {r['spec_id']}: coef={r['coefficient']:.4f}, se={r['std_error']:.4f}, p={r['p_value']:.4f}")
+categories = {}
+for spec in planned_specs:
+    cat = spec['spec_id'].split('/')[0]
+    if cat not in categories:
+        categories[cat] = 0
+    categories[cat] += 1
 
-# Analyze time sensitivity (gamma) across specifications
-time_specs = [r for r in results if 'excess_time' in r['treatment_var']]
-print(f"\nTime Sensitivity (gamma) across {len(time_specs)} specifications:")
-for r in time_specs:
-    print(f"  {r['spec_id']}: coef={r['coefficient']:.4f}, se={r['std_error']:.4f}, p={r['p_value']:.4f}")
+for cat, count in categories.items():
+    print(f"  {cat}: {count}")
 
-# Significance counts
-all_coefs = [r['coefficient'] for r in results if isinstance(r['p_value'], float)]
-all_pvals = [r['p_value'] for r in results if isinstance(r['p_value'], float)]
-sig_05 = sum(1 for p in all_pvals if p < 0.05)
-sig_01 = sum(1 for p in all_pvals if p < 0.01)
-neg_coefs = sum(1 for c in all_coefs if c < 0)
+print("\n" + "="*60)
+print("STATUS: DATA NOT AVAILABLE - SPECIFICATIONS CANNOT BE RUN")
+print("="*60)
+print("""
+To replicate this paper, you would need to:
+1. Contact Jim Sayer at UMTRI (jimsayer@umich.edu) for IVBSS data access
+2. Purchase OPIS gasoline price data (energysales@opisnet.com)
+3. Potentially recreate MTurk fuel gauge classifications
 
-print(f"\nSignificance Summary:")
-print(f"  Significant at 5%: {sig_05}/{len(all_pvals)} ({100*sig_05/len(all_pvals):.1f}%)")
-print(f"  Significant at 1%: {sig_01}/{len(all_pvals)} ({100*sig_01/len(all_pvals):.1f}%)")
-print(f"  Negative coefficients: {neg_coefs}/{len(all_coefs)} ({100*neg_coefs/len(all_coefs):.1f}%)")
+The paper's structural model estimation requires all of these data sources
+to be combined into the estimation_data.rda file used by the nested logit
+likelihood function.
+""")

@@ -1,764 +1,336 @@
 """
-Specification Search for Paper 186164-V2:
-"Reducing Inequality Through Dynamic Complementarity: Evidence from Head Start and Public School Spending"
-Johnson & Jackson (AEJ: Economic Policy)
+Specification Search: 186164-V2
+Paper: "Reducing Inequality Through Dynamic Complementarity: Evidence from Head Start and Public School Spending"
+Authors: Rucker C. Johnson and C. Kirabo Jackson
+Journal: AEJ: Economic Policy
 
-This script runs a systematic specification search on the AVAILABLE school finance reform event study data.
-Note: The main individual-level PSID analysis data is NOT available due to sensitive geocode restrictions.
+Method: Difference-in-Differences / Event Study with Panel Fixed Effects
 
-Methods: Event Study / Panel Fixed Effects DiD
-Data: School district panel 1967-1999, N=334,185 district-years
+NOTE: The main individual-level PSID analysis data is restricted/sensitive and not available.
+This specification search uses the publicly available district-level panel data for the
+School Finance Reform (SFR) event study analysis (Appendix C/F).
 """
 
 import pandas as pd
 import numpy as np
 import json
 import warnings
+import statsmodels.api as sm
 warnings.filterwarnings('ignore')
 
-# Try to import pyfixest, fall back to statsmodels if not available
-try:
-    import pyfixest as pf
-    HAS_PYFIXEST = True
-except ImportError:
-    HAS_PYFIXEST = False
-
-import statsmodels.api as sm
-from scipy import stats
-
-# Configuration
 PAPER_ID = "186164-V2"
+JOURNAL = "AEJ: Economic Policy"
 PAPER_TITLE = "Reducing Inequality Through Dynamic Complementarity: Evidence from Head Start and Public School Spending"
-JOURNAL = "AEJ-Policy"
-BASE_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/186164-V2/Results"
+DATA_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/186164-V2/Results"
+OUTPUT_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/186164-V2"
 
-def load_data():
-    """Load the school finance reform event study data."""
-    df = pd.read_stata(f"{BASE_PATH}/SFE_regression_data_1999_income.dta")
+print("Loading data...")
+df = pd.read_stata(f"{DATA_PATH}/SFE_regression_data_1999_income.dta")
+print(f"Loaded {len(df)} observations")
 
-    # Create key variables following the Stata code
-    # Division dummies
-    df['division_newengland'] = df['FIPSTATE'].isin([9,23,25,33,44,50]).astype(int)
-    df['division_midatlantic'] = df['FIPSTATE'].isin([34,36,42]).astype(int)
-    df['division_encentral'] = df['FIPSTATE'].isin([18,17,26,39,55]).astype(int)
-    df['division_wncentral'] = df['FIPSTATE'].isin([19,20,27,29,31,38,46]).astype(int)
-    df['division_satlantic'] = df['FIPSTATE'].isin([10,11,12,13,24,37,45,51,54]).astype(int)
-    df['division_escentral'] = df['FIPSTATE'].isin([1,21,28,47]).astype(int)
-    df['division_wscentral'] = df['FIPSTATE'].isin([5,22,40,48]).astype(int)
-    df['division_mountain'] = df['FIPSTATE'].isin([4,8,16,35,30,49,32,56]).astype(int)
-    df['division_pacific'] = df['FIPSTATE'].isin([2,6,15,41,53]).astype(int)
+df['trend'] = df['year'] - 1965
+df['lnpop60'] = np.log(df['pop60'].clip(lower=1))
 
-    # Division category
-    conditions = [
-        df['division_newengland'] == 1,
-        df['division_midatlantic'] == 1,
-        df['division_encentral'] == 1,
-        df['division_wncentral'] == 1,
-        df['division_satlantic'] == 1,
-        df['division_escentral'] == 1,
-        df['division_wscentral'] == 1,
-        df['division_mountain'] == 1,
-        df['division_pacific'] == 1
-    ]
-    df['divisioncat'] = np.select(conditions, [1,2,3,4,5,6,7,8,9], default=np.nan)
+def assign_division(fips):
+    if fips in [9, 23, 25, 33, 44, 50]: return 1
+    elif fips in [34, 36, 42]: return 2
+    elif fips in [18, 17, 26, 39, 55]: return 3
+    elif fips in [19, 20, 27, 29, 31, 38, 46]: return 4
+    elif fips in [10, 11, 12, 13, 24, 37, 45, 51, 54]: return 5
+    elif fips in [1, 21, 28, 47]: return 6
+    elif fips in [5, 22, 40, 48]: return 7
+    elif fips in [4, 8, 16, 35, 30, 49, 32, 56]: return 8
+    elif fips in [2, 6, 15, 41, 53]: return 9
+    return np.nan
 
-    # Trend variable
-    df['trend'] = df['year'] - 1965
+df['divisioncat'] = df['FIPSTATE'].apply(assign_division)
+df['regioncat'] = np.where(df['divisioncat'].isin([1, 2]), 1,
+                  np.where(df['divisioncat'].isin([3, 4]), 2,
+                  np.where(df['divisioncat'].isin([5, 6, 7]), 3,
+                  np.where(df['divisioncat'].isin([8, 9]), 4, np.nan))))
 
-    # Log population
-    df['lnpop60'] = np.log(df['pop60'].replace(0, np.nan))
+for control in ['povrate60', 'pct_black_1960', 'pct_urban_1960', 'lnpop60', 'CensusGovt1962_v36']:
+    df[f'{control}xyr'] = df[control] * df['trend']
+    df[f'miss_{control}'] = df[control].isna().astype(int)
+    df[f'{control}xyr'] = df[f'{control}xyr'].fillna(0)
 
-    # Interaction with trend
-    for var in ['povrate60', 'pct_black_1960', 'pct_urban_1960', 'lnpop60', 'CensusGovt1962_v36']:
-        df[f'{var}xyr'] = df[var] * df['trend']
-        df[f'miss_{var}'] = df[var].isna().astype(int)
-        df[f'{var}xyr'] = df[f'{var}xyr'].fillna(0)
+baseline_controls = ['povrate60xyr', 'pct_black_1960xyr', 'pct_urban_1960xyr', 'lnpop60xyr', 'CensusGovt1962_v36xyr',
+                    'miss_povrate60', 'miss_pct_black_1960', 'miss_pct_urban_1960', 'miss_lnpop60', 'miss_CensusGovt1962_v36']
 
-    # Create ln_ppe (log per-pupil expenditure) as outcome
-    df['ln_ppe'] = df['outcome1']
+for div in range(1, 10):
+    if div != 5:
+        df[f'div{div}xyr'] = (df['divisioncat'] == div).astype(int) * df['trend']
+        baseline_controls.append(f'div{div}xyr')
 
-    # Create post-reform indicators
-    for reform in ['foundation', 'eq_spend', 'limit', 'taxlimit']:
-        time_var = f'{reform}_time'
-        if time_var in df.columns:
-            # Post indicator: reform has happened (time >= 0)
-            df[f'{reform}_post'] = ((df[time_var] >= 0) & (df[time_var].notna()) &
-                                    (df[time_var] != -99)).astype(int)
+for col in baseline_controls:
+    if col in df.columns:
+        df[col] = df[col].fillna(0)
 
-    return df
+df['post_sfr'] = (df['foundation_time'] > 0).astype(int)
+df['post_sfr_intensity'] = df['foundation_time'].clip(lower=0)
+df['post_case'] = (df['case_time'] > 0).astype(int)
+df['post_eq_spend'] = (df['eq_spend_time'] > 0).astype(int)
+df['post_taxlimit'] = (df['taxlimit_time'] > 0).astype(int)
+df['post_spend_limit'] = (df['case_limit_time'] > 0).astype(int)
 
-def run_twfe_regression(df, outcome, treatment, controls=None, fe_unit='id', fe_time='year',
-                        cluster_var='FIPSTATE', weight_var='size', subset=None):
-    """Run two-way fixed effects regression."""
+df['id'] = df['id'].astype(int)
+df['year'] = df['year'].astype(int)
+results = []
 
-    if subset is not None:
-        df = df[subset].copy()
-    else:
-        df = df.copy()
-
-    # Check treatment variable exists
-    if treatment not in df.columns:
-        print(f"Treatment variable {treatment} not found")
-        return None
-
-    # Drop missing
-    vars_needed = [outcome, treatment]
-    if fe_unit:
-        vars_needed.append(fe_unit)
-    if fe_time:
-        vars_needed.append(fe_time)
-    if controls:
-        vars_needed.extend(controls)
-    if cluster_var and cluster_var in df.columns:
-        vars_needed.append(cluster_var)
-
-    df_reg = df.dropna(subset=[v for v in vars_needed if v in df.columns]).copy()
-
-    if len(df_reg) < 100:
-        print(f"Too few observations: {len(df_reg)}")
-        return None
-
-    # Use pyfixest
-    if HAS_PYFIXEST:
-        try:
-            # Build formula
-            if controls:
-                ctrl_str = ' + '.join(controls)
-                if fe_unit and fe_time:
-                    formula = f"{outcome} ~ {treatment} + {ctrl_str} | {fe_unit} + {fe_time}"
-                elif fe_unit:
-                    formula = f"{outcome} ~ {treatment} + {ctrl_str} | {fe_unit}"
-                elif fe_time:
-                    formula = f"{outcome} ~ {treatment} + {ctrl_str} | {fe_time}"
-                else:
-                    formula = f"{outcome} ~ {treatment} + {ctrl_str}"
-            else:
-                if fe_unit and fe_time:
-                    formula = f"{outcome} ~ {treatment} | {fe_unit} + {fe_time}"
-                elif fe_unit:
-                    formula = f"{outcome} ~ {treatment} | {fe_unit}"
-                elif fe_time:
-                    formula = f"{outcome} ~ {treatment} | {fe_time}"
-                else:
-                    formula = f"{outcome} ~ {treatment}"
-
-            # Run regression
-            if cluster_var and cluster_var in df_reg.columns:
-                model = pf.feols(formula, data=df_reg, vcov={'CRV1': cluster_var})
-            else:
-                model = pf.feols(formula, data=df_reg, vcov='hetero')
-
-            coef = model.coef()[treatment]
-            se = model.se()[treatment]
-            pval = model.pvalue()[treatment]
-            tstat = model.tstat()[treatment]
-            ci = model.confint()
-            ci_lower = ci.loc[treatment, '2.5%']
-            ci_upper = ci.loc[treatment, '97.5%']
-            n_obs = model._N
-            r_squared = model._r2
-
-            # Get all coefficients
-            coef_dict = {
-                "treatment": {"var": treatment, "coef": float(coef), "se": float(se), "pval": float(pval)},
-                "controls": [],
-                "fixed_effects_absorbed": [fe_unit, fe_time] if fe_unit and fe_time else [fe_unit or fe_time],
-                "diagnostics": {}
-            }
-
-            if controls:
-                for ctrl in controls:
-                    if ctrl in model.coef().index:
-                        coef_dict["controls"].append({
-                            "var": ctrl,
-                            "coef": float(model.coef()[ctrl]),
-                            "se": float(model.se()[ctrl]),
-                            "pval": float(model.pvalue()[ctrl])
-                        })
-
-            return {
-                'coefficient': float(coef),
-                'std_error': float(se),
-                't_stat': float(tstat),
-                'p_value': float(pval),
-                'ci_lower': float(ci_lower),
-                'ci_upper': float(ci_upper),
-                'n_obs': int(n_obs),
-                'r_squared': float(r_squared) if r_squared else None,
-                'coefficient_vector_json': json.dumps(coef_dict)
-            }
-        except Exception as e:
-            print(f"pyfixest error: {e}")
+def run_spec(df_sub, outcome, treatment, controls, fe_col, cluster_col, spec_id, spec_tree_path, weight_col=None, model_desc="Panel FE"):
+    try:
+        vars_needed = list(set([outcome, treatment] + [c for c in controls if c in df_sub.columns] +
+                              ([fe_col] if fe_col and fe_col in df_sub.columns else []) +
+                              ([cluster_col] if cluster_col in df_sub.columns else []) +
+                              ([weight_col] if weight_col and weight_col in df_sub.columns else [])))
+        df_clean = df_sub[vars_needed].dropna().reset_index(drop=True)
+        if len(df_clean) < 100:
             return None
-
-    return None
-
-def run_event_study(df, outcome, reform_type, controls=None, fe_unit='id', fe_time='year',
-                    cluster_var='FIPSTATE', weight_var='size', window=(-10, 20), ref_period=-1):
-    """Run event study regression with leads and lags."""
-
-    time_var = f'{reform_type}_time'
-    if time_var not in df.columns:
-        return None
-
-    df_reg = df.copy()
-
-    # Create event time dummies
-    event_dummies = []
-    for t in range(window[0], window[1] + 1):
-        if t != ref_period:
-            dummy_name = f'event_t{t}' if t < 0 else f'event_t_plus_{t}'
-            df_reg[dummy_name] = (df_reg[time_var] == t).astype(int)
-            event_dummies.append(dummy_name)
-
-    # Drop observations outside window or never treated
-    df_reg = df_reg[(df_reg[time_var] >= window[0]) & (df_reg[time_var] <= window[1])].copy()
-
-    if len(df_reg) < 1000:
-        return None
-
-    # Run regression
-    all_controls = event_dummies + (controls if controls else [])
-
-    # Use pyfixest if available
-    if HAS_PYFIXEST:
-        try:
-            ctrl_str = ' + '.join(all_controls)
-            formula = f"{outcome} ~ {ctrl_str} | {fe_unit} + {fe_time}"
-
-            if cluster_var and cluster_var in df_reg.columns:
-                model = pf.feols(formula, data=df_reg, vcov={'CRV1': cluster_var})
-            else:
-                model = pf.feols(formula, data=df_reg, vcov='hetero')
-
-            # Extract event study coefficients
-            event_coefs = []
-            for t in range(window[0], window[1] + 1):
-                if t == ref_period:
-                    event_coefs.append({
-                        "rel_time": t,
-                        "coef": None,
-                        "se": None,
-                        "pval": None,
-                        "note": "reference period"
-                    })
-                else:
-                    dummy_name = f'event_t{t}' if t < 0 else f'event_t_plus_{t}'
-                    if dummy_name in model.coef().index:
-                        event_coefs.append({
-                            "rel_time": t,
-                            "coef": float(model.coef()[dummy_name]),
-                            "se": float(model.se()[dummy_name]),
-                            "pval": float(model.pvalue()[dummy_name])
-                        })
-
-            # Calculate average post-treatment effect
-            post_coefs = [ec['coef'] for ec in event_coefs if ec['rel_time'] is not None and ec['rel_time'] >= 0 and ec['coef'] is not None]
-            avg_post = np.mean(post_coefs) if post_coefs else None
-
-            # Pre-trend test: joint F-test of pre-period coefficients
-            pre_coefs = [ec for ec in event_coefs if ec['rel_time'] is not None and ec['rel_time'] < 0 and ec['coef'] is not None]
-            pretrend_pval = None
-
-            coef_dict = {
-                "event_time_coefficients": event_coefs,
-                "fixed_effects_absorbed": [fe_unit, fe_time],
-                "diagnostics": {
-                    "reference_period": ref_period,
-                    "avg_post_treatment_effect": avg_post,
-                    "pretrend_pval": pretrend_pval
-                }
-            }
-
-            return {
-                'coefficient': float(avg_post) if avg_post else None,
-                'std_error': None,  # Would need to compute this properly
-                't_stat': None,
-                'p_value': None,
-                'ci_lower': None,
-                'ci_upper': None,
-                'n_obs': int(model._N),
-                'r_squared': float(model._r2) if model._r2 else None,
-                'coefficient_vector_json': json.dumps(coef_dict)
-            }
-        except Exception as e:
-            print(f"Event study error: {e}")
+        if fe_col and fe_col in df_clean.columns:
+            for v in [outcome, treatment] + [c for c in controls if c in df_clean.columns]:
+                if v in df_clean.columns:
+                    df_clean[v] = df_clean.groupby(fe_col)[v].transform(lambda x: x - x.mean())
+        y = df_clean[outcome]
+        X = df_clean[[treatment] + [c for c in controls if c in df_clean.columns]]
+        X = sm.add_constant(X, has_constant='add')
+        if weight_col and weight_col in df_clean.columns:
+            model = sm.WLS(y, X, weights=np.maximum(df_clean[weight_col].values, 0.001))
+        else:
+            model = sm.OLS(y, X)
+        if cluster_col in df_clean.columns:
+            fit = model.fit(cov_type='cluster', cov_kwds={'groups': df_clean[cluster_col].values})
+        else:
+            fit = model.fit(cov_type='HC1')
+        if treatment not in fit.params.index:
             return None
-
-    return None
-
-def create_result_row(spec_id, spec_tree_path, outcome_var, treatment_var, reg_result,
-                      sample_desc, fixed_effects, controls_desc, cluster_var, model_type):
-    """Create a row for the results dataframe."""
-    if reg_result is None:
+        coef = fit.params[treatment]
+        se = fit.bse[treatment]
+        pval = fit.pvalues[treatment]
+        coef_dict = {v: {'coef': float(fit.params[v]), 'se': float(fit.bse[v]), 'pval': float(fit.pvalues[v])} for v in fit.params.index if v != 'const'}
+        return {
+            'paper_id': PAPER_ID, 'journal': JOURNAL, 'paper_title': PAPER_TITLE,
+            'spec_id': spec_id, 'spec_tree_path': spec_tree_path,
+            'outcome_var': outcome, 'treatment_var': treatment,
+            'coefficient': coef, 'std_error': se, 't_stat': coef/se if se > 0 else np.nan,
+            'p_value': pval, 'ci_lower': coef - 1.96*se, 'ci_upper': coef + 1.96*se,
+            'n_obs': int(fit.nobs), 'r_squared': fit.rsquared,
+            'coefficient_vector_json': json.dumps(coef_dict),
+            'sample_desc': f'District panel, N={int(fit.nobs)}',
+            'fixed_effects': fe_col if fe_col else 'None',
+            'controls_desc': f'{len(controls)} controls', 'cluster_var': cluster_col,
+            'n_clusters': df_clean[cluster_col].nunique() if cluster_col in df_clean.columns else np.nan,
+            'model_type': model_desc, 'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        }
+    except Exception as e:
+        print(f"  Error in {spec_id}: {str(e)[:80]}")
         return None
 
-    return {
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': spec_id,
-        'spec_tree_path': spec_tree_path,
-        'outcome_var': outcome_var,
-        'treatment_var': treatment_var,
-        'coefficient': reg_result.get('coefficient'),
-        'std_error': reg_result.get('std_error'),
-        't_stat': reg_result.get('t_stat'),
-        'p_value': reg_result.get('p_value'),
-        'ci_lower': reg_result.get('ci_lower'),
-        'ci_upper': reg_result.get('ci_upper'),
-        'n_obs': reg_result.get('n_obs'),
-        'r_squared': reg_result.get('r_squared'),
-        'coefficient_vector_json': reg_result.get('coefficient_vector_json'),
-        'sample_desc': sample_desc,
-        'fixed_effects': fixed_effects,
-        'controls_desc': controls_desc,
-        'cluster_var': cluster_var,
-        'model_type': model_type,
-        'estimation_script': f'{PAPER_ID}.py'
-    }
+print("\n" + "="*60)
+print("RUNNING SPECIFICATION SEARCH")
+print("="*60)
 
-def main():
-    print("Loading data...")
-    df = load_data()
-    print(f"Loaded {len(df)} observations, {df['id'].nunique()} districts")
+print("\n1. BASELINE")
+result = run_spec(df, 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', 'baseline', 'methods/difference_in_differences.md#baseline', 'size')
+if result:
+    results.append(result)
+    print(f"  coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
 
-    results = []
-
-    # Define baseline controls
-    baseline_controls = ['povrate60xyr', 'pct_black_1960xyr', 'pct_urban_1960xyr',
-                        'lnpop60xyr', 'CensusGovt1962_v36xyr']
-
-    # Clean controls (remove missing)
-    for ctrl in baseline_controls:
-        if ctrl in df.columns:
-            df[ctrl] = df[ctrl].fillna(0)
-
-    # Reform types to analyze
-    reform_types = ['foundation', 'eq_spend', 'taxlimit']
-
-    print("\n=== Running Baseline Specifications ===")
-
-    # Baseline: Foundation reform effect (main reform type in Appendix C)
-    for reform in reform_types:
-        treatment_var = f'{reform}_post'
-
-        if treatment_var not in df.columns:
-            print(f"Skipping {reform} - no treatment variable")
-            continue
-
-        print(f"\nRunning baseline for {reform} reform...")
-        result = run_twfe_regression(
-            df,
-            outcome='ln_ppe',
-            treatment=treatment_var,
-            controls=baseline_controls,
-            fe_unit='id',
-            fe_time='year',
-            cluster_var='FIPSTATE',
-            weight_var='size'
-        )
-
-        if result:
-            row = create_result_row(
-                spec_id=f'baseline_{reform}',
-                spec_tree_path='methods/event_study.md',
-                outcome_var='ln_ppe',
-                treatment_var=treatment_var,
-                reg_result=result,
-                sample_desc='Full sample, all districts 1967-1999',
-                fixed_effects='District + Year FE',
-                controls_desc='County characteristics x trend',
-                cluster_var='FIPSTATE',
-                model_type='TWFE'
-            )
-            if row:
-                results.append(row)
-                print(f"  Coef: {result['coefficient']:.4f} (SE: {result['std_error']:.4f}), p={result['p_value']:.4f}")
-
-    print("\n=== Running Fixed Effects Variations ===")
-
-    # FE variations for foundation reform
-    treatment_var = 'foundation_post'
-
-    # No fixed effects
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit=None, fe_time=None,
-        cluster_var='FIPSTATE'
-    )
+print("\n2. TREATMENT VARIATIONS")
+for treat_var, name in [('post_sfr_intensity', 'intensity'), ('post_case', 'court_order'), ('post_eq_spend', 'eq_spend'), ('post_taxlimit', 'tax_limit'), ('post_spend_limit', 'spend_limit')]:
+    result = run_spec(df, 'outcome1', treat_var, baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/treatment/{name}', 'methods/difference_in_differences.md#treatment-definition', 'size')
     if result:
-        row = create_result_row(
-            spec_id='es/fe/none',
-            spec_tree_path='methods/event_study.md#fixed-effects',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='None',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='OLS'
-        )
-        if row:
-            results.append(row)
-            print(f"  No FE: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # Unit FE only
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time=None,
-        cluster_var='FIPSTATE'
-    )
+print("\n3. FE VARIATIONS")
+for fe, spec_id, desc in [('FIPSTATE', 'did/fe/state', 'State FE'), ('year', 'did/fe/time', 'Year FE'), ('regioncat', 'did/fe/region', 'Region FE'), ('divisioncat', 'did/fe/division', 'Division FE'), (None, 'did/fe/none', 'No FE')]:
+    result = run_spec(df, 'outcome1', 'post_sfr', baseline_controls, fe, 'FIPSTATE', spec_id, 'methods/difference_in_differences.md#fixed-effects', 'size', desc)
     if result:
-        row = create_result_row(
-            spec_id='es/fe/unit_only',
-            spec_tree_path='methods/event_study.md#fixed-effects',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='District FE only',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='FE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Unit FE only: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {desc}: coef={result['coefficient']:.4f}")
 
-    # Time FE only
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit=None, fe_time='year',
-        cluster_var='FIPSTATE'
-    )
+print("\n4. CONTROL VARIATIONS")
+result = run_spec(df, 'outcome1', 'post_sfr', [], 'FIPSTATE', 'FIPSTATE', 'did/controls/none', 'methods/difference_in_differences.md#control-sets', 'size')
+if result:
+    results.append(result)
+    print(f"  No controls: coef={result['coefficient']:.4f}")
+
+result = run_spec(df, 'outcome1', 'post_sfr', ['povrate60xyr', 'miss_povrate60'], 'FIPSTATE', 'FIPSTATE', 'did/controls/minimal', 'methods/difference_in_differences.md#control-sets', 'size')
+if result:
+    results.append(result)
+    print(f"  Minimal: coef={result['coefficient']:.4f}")
+
+for name, ctrls in {'drop_poverty': [c for c in baseline_controls if 'pov' not in c.lower()], 'drop_race': [c for c in baseline_controls if 'black' not in c.lower()], 'drop_urban': [c for c in baseline_controls if 'urban' not in c.lower()], 'drop_pop': [c for c in baseline_controls if 'pop' not in c.lower()], 'drop_govt': [c for c in baseline_controls if 'Govt' not in c], 'drop_division': [c for c in baseline_controls if 'div' not in c.lower()]}.items():
+    result = run_spec(df, 'outcome1', 'post_sfr', ctrls, 'FIPSTATE', 'FIPSTATE', f'robust/control/{name}', 'robustness/leave_one_out.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='es/fe/time_only',
-            spec_tree_path='methods/event_study.md#fixed-effects',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='Year FE only',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='FE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Time FE only: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    print("\n=== Running Control Set Variations ===")
-
-    # Control variations
-    # No controls
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=None, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE'
-    )
+for name, ctrls in [('add_poverty', ['povrate60xyr', 'miss_povrate60']), ('add_race', ['povrate60xyr', 'miss_povrate60', 'pct_black_1960xyr', 'miss_pct_black_1960']), ('add_urban', ['povrate60xyr', 'miss_povrate60', 'pct_black_1960xyr', 'miss_pct_black_1960', 'pct_urban_1960xyr', 'miss_pct_urban_1960']), ('add_pop', ['povrate60xyr', 'miss_povrate60', 'pct_black_1960xyr', 'miss_pct_black_1960', 'pct_urban_1960xyr', 'miss_pct_urban_1960', 'lnpop60xyr', 'miss_lnpop60'])]:
+    result = run_spec(df, 'outcome1', 'post_sfr', ctrls, 'FIPSTATE', 'FIPSTATE', f'robust/control/{name}', 'robustness/control_progression.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='es/controls/none',
-            spec_tree_path='methods/event_study.md#control-sets',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='District + Year FE',
-            controls_desc='None',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  No controls: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # Minimal controls
-    minimal_controls = ['povrate60xyr', 'pct_black_1960xyr']
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=minimal_controls, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE'
-    )
+print("\n5. CLUSTERING")
+for clust, name in [('id', 'district'), ('FIPSTATE', 'state'), ('divisioncat', 'division'), ('regioncat', 'region')]:
+    result = run_spec(df, 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', clust, f'robust/cluster/{name}', 'robustness/clustering_variations.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='es/controls/minimal',
-            spec_tree_path='methods/event_study.md#control-sets',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='District + Year FE',
-            controls_desc='Poverty rate x trend, Pct black x trend',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Minimal controls: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: se={result['std_error']:.4f}")
 
-    print("\n=== Running Clustering Variations ===")
-
-    # Clustering variations
-    # No clustering (robust SE)
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var=None
-    )
+print("\n6. SAMPLE RESTRICTIONS")
+for name, cond in [('early', df['year'] < 1985), ('late', df['year'] >= 1985)]:
+    result = run_spec(df[cond], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/sample/{name}_period', 'robustness/sample_restrictions.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='robust/cluster/none',
-            spec_tree_path='robustness/clustering_variations.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='None (robust)',
-            model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  No clustering: {result['coefficient']:.4f} (SE: {result['std_error']:.4f})")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # Cluster by district
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var='id'
-    )
+for reg, name in [(1, 'northeast'), (2, 'midwest'), (3, 'south'), (4, 'west')]:
+    result = run_spec(df[df['regioncat'] == reg], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/sample/{name}', 'robustness/sample_restrictions.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='robust/cluster/unit',
-            spec_tree_path='robustness/clustering_variations.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Full sample',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='id (district)',
-            model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Cluster by district: {result['coefficient']:.4f} (SE: {result['std_error']:.4f})")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # Cluster by county
-    if 'FIPSCNTY' in df.columns:
-        result = run_twfe_regression(
-            df, outcome='ln_ppe', treatment=treatment_var,
-            controls=baseline_controls, fe_unit='id', fe_time='year',
-            cluster_var='FIPSCNTY'
-        )
-        if result:
-            row = create_result_row(
-                spec_id='robust/cluster/county',
-                spec_tree_path='robustness/clustering_variations.md',
-                outcome_var='ln_ppe', treatment_var=treatment_var,
-                reg_result=result,
-                sample_desc='Full sample',
-                fixed_effects='District + Year FE',
-                controls_desc='County characteristics x trend',
-                cluster_var='FIPSCNTY (county)',
-                model_type='TWFE'
-            )
-            if row:
-                results.append(row)
-                print(f"  Cluster by county: {result['coefficient']:.4f} (SE: {result['std_error']:.4f})")
-
-    print("\n=== Running Sample Restriction Variations ===")
-
-    # Sample restrictions
-    # Early period (1967-1983)
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE',
-        subset=df['year'] <= 1983
-    )
+for q, name in [(1, 'income_low'), (3, 'income_mid'), (4, 'income_mid_high'), (6, 'income_high')]:
+    result = run_spec(df[df['q_income'] == q], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/sample/{name}', 'robustness/sample_restrictions.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='robust/sample/early_period',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Early period 1967-1983',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Early period: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # Late period (1984-1999)
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE',
-        subset=df['year'] >= 1984
-    )
+df_wins = df.copy()
+for col in ['outcome1', 'outcome2']:
+    lo, hi = df_wins[col].quantile([0.01, 0.99])
+    df_wins[col] = df_wins[col].clip(lower=lo, upper=hi)
+result = run_spec(df_wins, 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', 'robust/sample/winsorize', 'robustness/sample_restrictions.md', 'size')
+if result:
+    results.append(result)
+    print(f"  winsorize: coef={result['coefficient']:.4f}")
+
+df_trim = df[(df['outcome1'] > df['outcome1'].quantile(0.01)) & (df['outcome1'] < df['outcome1'].quantile(0.99))]
+result = run_spec(df_trim, 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', 'robust/sample/trim', 'robustness/sample_restrictions.md', 'size')
+if result:
+    results.append(result)
+    print(f"  trim: coef={result['coefficient']:.4f}")
+
+print("\n7. OUTCOMES")
+df['outcome_ihs'] = np.arcsinh(df['outcome2'])
+df['outcome_std'] = (df['outcome1'] - df['outcome1'].mean()) / df['outcome1'].std()
+df['ln_ppe2012'] = np.log(df['ppe2012'].clip(lower=1))
+
+for out, name in [('outcome2', 'levels'), ('outcome_ihs', 'ihs'), ('outcome_std', 'std'), ('ln_ppe2012', 'ppe2012')]:
+    result = run_spec(df[df[out].notna()], out, 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/outcome/{name}', 'robustness/functional_form.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='robust/sample/late_period',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Late period 1984-1999',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Late period: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # Low income districts (q_income == 1)
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE',
-        subset=df['q_income'] == 1
-    )
+print("\n8. WEIGHTS")
+for wt, name in [(None, 'unweighted'), ('pop60', 'population'), ('size', 'enrollment')]:
+    subset = df if wt is None else df[df[wt].notna()] if wt else df
+    result = run_spec(subset, 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/weights/{name}', 'robustness/sample_restrictions.md', wt)
     if result:
-        row = create_result_row(
-            spec_id='robust/sample/low_income',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Low income districts (bottom quartile)',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Low income districts: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    # High income districts (q_income == 6)
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE',
-        subset=df['q_income'] == 6
-    )
+print("\n9. HETEROGENEITY")
+df['high_pov'] = (df['povrate60'] > df['povrate60'].median()).astype(int)
+df['high_black'] = (df['pct_black_1960'] > df['pct_black_1960'].median()).astype(int)
+df['urban_d'] = (df['pct_urban_1960'] > 50).astype(int)
+df['large'] = (df['size'] > df['size'].median()).astype(int)
+
+for name, het in [('poverty', 'high_pov'), ('black', 'high_black'), ('urban', 'urban_d'), ('size', 'large')]:
+    df[f'post_sfr_x_{name}'] = df['post_sfr'] * df[het]
+    result = run_spec(df, 'outcome1', f'post_sfr_x_{name}', baseline_controls + ['post_sfr'], 'FIPSTATE', 'FIPSTATE', f'robust/heterogeneity/{name}_interact', 'robustness/heterogeneity.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='robust/sample/high_income',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='High income districts (top quartile)',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  High income districts: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name} interact: coef={result['coefficient']:.4f}")
 
-    # Trim outliers (1% and 99%)
-    q01 = df['ln_ppe'].quantile(0.01)
-    q99 = df['ln_ppe'].quantile(0.99)
-    result = run_twfe_regression(
-        df, outcome='ln_ppe', treatment=treatment_var,
-        controls=baseline_controls, fe_unit='id', fe_time='year',
-        cluster_var='FIPSTATE',
-        subset=(df['ln_ppe'] >= q01) & (df['ln_ppe'] <= q99)
-    )
+for name, cond in [('high_poverty', df['povrate60'] > df['povrate60'].median()), ('low_poverty', df['povrate60'] <= df['povrate60'].median()), ('urban', df['pct_urban_1960'] > 50), ('rural', df['pct_urban_1960'] <= 50)]:
+    result = run_spec(df[cond], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/heterogeneity/{name}', 'robustness/heterogeneity.md', 'size')
     if result:
-        row = create_result_row(
-            spec_id='robust/sample/trim_1pct',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='ln_ppe', treatment_var=treatment_var,
-            reg_result=result,
-            sample_desc='Trimmed 1%/99% outliers',
-            fixed_effects='District + Year FE',
-            controls_desc='County characteristics x trend',
-            cluster_var='FIPSTATE', model_type='TWFE'
-        )
-        if row:
-            results.append(row)
-            print(f"  Trimmed outliers: {result['coefficient']:.4f}")
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-    print("\n=== Running Leave-One-Out Robustness ===")
+print("\n10. PLACEBO")
+df_pre = df[df['foundation_time'] < 0].copy()
+df_pre['fake_treat'] = (df_pre['foundation_time'] > -5).astype(int)
+result = run_spec(df_pre, 'outcome1', 'fake_treat', baseline_controls, 'FIPSTATE', 'FIPSTATE', 'robust/placebo/pre_treatment', 'robustness/placebo_tests.md', 'size')
+if result:
+    results.append(result)
+    print(f"  pre_treatment: coef={result['coefficient']:.4f}")
 
-    # Leave-one-out for controls
-    for ctrl in baseline_controls:
-        remaining = [c for c in baseline_controls if c != ctrl]
-        result = run_twfe_regression(
-            df, outcome='ln_ppe', treatment=treatment_var,
-            controls=remaining, fe_unit='id', fe_time='year',
-            cluster_var='FIPSTATE'
-        )
-        if result:
-            row = create_result_row(
-                spec_id=f'robust/loo/drop_{ctrl}',
-                spec_tree_path='robustness/leave_one_out.md',
-                outcome_var='ln_ppe', treatment_var=treatment_var,
-                reg_result=result,
-                sample_desc='Full sample',
-                fixed_effects='District + Year FE',
-                controls_desc=f'Dropped: {ctrl}',
-                cluster_var='FIPSTATE', model_type='TWFE'
-            )
-            if row:
-                results.append(row)
-                print(f"  Drop {ctrl}: {result['coefficient']:.4f}")
+np.random.seed(42)
+for i in range(3):
+    df_perm = df.copy()
+    df_perm['post_sfr_perm'] = np.random.permutation(df_perm['post_sfr'].values)
+    result = run_spec(df_perm, 'outcome1', 'post_sfr_perm', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/placebo/permutation_{i+1}', 'robustness/placebo_tests.md', 'size')
+    if result:
+        results.append(result)
+        print(f"  perm_{i+1}: coef={result['coefficient']:.4f}")
 
-    print("\n=== Running Event Study Specifications ===")
+df_s = df.sort_values(['id', 'year'])
+df['lead_post_sfr'] = df_s.groupby('id')['post_sfr'].shift(-3)
+result = run_spec(df[df['lead_post_sfr'].notna()], 'outcome1', 'lead_post_sfr', baseline_controls + ['post_sfr'], 'FIPSTATE', 'FIPSTATE', 'robust/placebo/lead', 'robustness/placebo_tests.md', 'size')
+if result:
+    results.append(result)
+    print(f"  lead: coef={result['coefficient']:.4f}")
 
-    # Event study with leads and lags
-    for reform in ['foundation', 'eq_spend']:
-        result = run_event_study(
-            df, outcome='ln_ppe', reform_type=reform,
-            controls=baseline_controls, fe_unit='id', fe_time='year',
-            cluster_var='FIPSTATE', window=(-10, 20), ref_period=-1
-        )
-        if result:
-            row = create_result_row(
-                spec_id=f'es/dynamic/{reform}',
-                spec_tree_path='methods/event_study.md#dynamic-effects',
-                outcome_var='ln_ppe', treatment_var=f'{reform}_time',
-                reg_result=result,
-                sample_desc='Full sample, event window -10 to +20',
-                fixed_effects='District + Year FE',
-                controls_desc='County characteristics x trend',
-                cluster_var='FIPSTATE', model_type='Event Study'
-            )
-            if row:
-                results.append(row)
-                coef_val = result['coefficient']
-                print(f"  Event study {reform}: avg post = {coef_val:.4f if coef_val else 'N/A'}")
+print("\n11. ADDITIONAL SAMPLES")
+for year in [1967, 1985, 1999]:
+    result = run_spec(df[df['year'] != year], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/sample/drop_{year}', 'robustness/sample_restrictions.md', 'size')
+    if result:
+        results.append(result)
+        print(f"  drop_{year}: coef={result['coefficient']:.4f}")
 
-    # Convert to DataFrame and save
-    print("\n=== Saving Results ===")
-    results_df = pd.DataFrame(results)
+reform_states = df[df['foundation'] == 1]['FIPSTATE'].unique()
+result = run_spec(df[df['FIPSTATE'].isin(reform_states)], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', 'did/sample/reform_states', 'methods/difference_in_differences.md#sample-restrictions', 'size')
+if result:
+    results.append(result)
+    print(f"  reform_states: coef={result['coefficient']:.4f}")
 
-    if len(results_df) > 0:
-        output_path = f"{BASE_PATH}/specification_results.csv"
-        results_df.to_csv(output_path, index=False)
-        print(f"Saved {len(results_df)} specifications to {output_path}")
+for q, name in [(1, 'low_spend72'), (6, 'high_spend72')]:
+    result = run_spec(df[df['q_spend72'] == q], 'outcome1', 'post_sfr', baseline_controls, 'FIPSTATE', 'FIPSTATE', f'robust/sample/{name}', 'robustness/sample_restrictions.md', 'size')
+    if result:
+        results.append(result)
+        print(f"  {name}: coef={result['coefficient']:.4f}")
 
-        # Summary statistics
-        print("\n=== Summary Statistics ===")
-        print(f"Total specifications: {len(results_df)}")
+print("\n12. FIRST DIFF")
+df_s = df.sort_values(['id', 'year'])
+df['d_outcome'] = df_s.groupby('id')['outcome1'].diff()
+df['d_post_sfr'] = df_s.groupby('id')['post_sfr'].diff()
+df_fd = df[(df['d_outcome'].notna()) & (df['d_post_sfr'].notna())]
+result = run_spec(df_fd, 'd_outcome', 'd_post_sfr', [], 'year', 'FIPSTATE', 'did/method/first_diff', 'methods/difference_in_differences.md#estimation-method', 'size')
+if result:
+    results.append(result)
+    print(f"  first_diff: coef={result['coefficient']:.4f}")
 
-        # Filter to rows with valid coefficients
-        valid = results_df['coefficient'].notna()
-        print(f"Specifications with valid coefficients: {valid.sum()}")
+df_first = df.groupby('id').first().reset_index()
+df_last = df.groupby('id').last().reset_index()
+df_ld = df_first[['id', 'FIPSTATE', 'size', 'post_sfr', 'outcome1']].copy()
+df_ld.columns = ['id', 'FIPSTATE', 'size', 'post_sfr_f', 'out_f']
+df_ld = df_ld.merge(df_last[['id', 'post_sfr', 'outcome1']], on='id')
+df_ld['d_out_long'] = df_ld['outcome1'] - df_ld['out_f']
+df_ld['d_post_long'] = df_ld['post_sfr'] - df_ld['post_sfr_f']
+result = run_spec(df_ld[df_ld['d_post_long'].notna()], 'd_out_long', 'd_post_long', [], None, 'FIPSTATE', 'did/method/long_diff', 'methods/difference_in_differences.md#estimation-method', 'size')
+if result:
+    results.append(result)
+    print(f"  long_diff: coef={result['coefficient']:.4f}")
 
-        if valid.sum() > 0:
-            pos = (results_df.loc[valid, 'coefficient'] > 0).sum()
-            print(f"Positive coefficients: {pos} ({100*pos/valid.sum():.1f}%)")
+print("\n" + "="*60)
+print("SAVING RESULTS")
+print("="*60)
 
-            sig_05 = (results_df.loc[valid, 'p_value'] < 0.05).sum()
-            print(f"Significant at 5%: {sig_05} ({100*sig_05/valid.sum():.1f}%)")
+results_df = pd.DataFrame(results)
+results_df.to_csv(f"{OUTPUT_PATH}/specification_results.csv", index=False)
+print(f"\nSaved {len(results_df)} specifications")
 
-            sig_01 = (results_df.loc[valid, 'p_value'] < 0.01).sum()
-            print(f"Significant at 1%: {sig_01} ({100*sig_01/valid.sum():.1f}%)")
+if len(results_df) > 0:
+    print(f"\nTotal: {len(results_df)}")
+    print(f"Positive: {(results_df['coefficient'] > 0).sum()} ({100*(results_df['coefficient'] > 0).mean():.1f}%)")
+    print(f"Sig 5%: {(results_df['p_value'] < 0.05).sum()} ({100*(results_df['p_value'] < 0.05).mean():.1f}%)")
+    print(f"Sig 1%: {(results_df['p_value'] < 0.01).sum()} ({100*(results_df['p_value'] < 0.01).mean():.1f}%)")
+    print(f"Mean: {results_df['coefficient'].mean():.4f}")
+    print(f"Median: {results_df['coefficient'].median():.4f}")
+    print(f"Range: [{results_df['coefficient'].min():.4f}, {results_df['coefficient'].max():.4f}]")
 
-            print(f"Median coefficient: {results_df.loc[valid, 'coefficient'].median():.4f}")
-            print(f"Mean coefficient: {results_df.loc[valid, 'coefficient'].mean():.4f}")
-            print(f"Range: [{results_df.loc[valid, 'coefficient'].min():.4f}, {results_df.loc[valid, 'coefficient'].max():.4f}]")
-    else:
-        print("No results to save!")
-
-    return results_df
-
-if __name__ == "__main__":
-    results_df = main()
+print("\nDone!")

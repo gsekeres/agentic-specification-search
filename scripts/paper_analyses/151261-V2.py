@@ -1,976 +1,678 @@
-#!/usr/bin/env python3
 """
-Specification Search: Paper 151261-V2
-"The Effects of Working while in School: Evidence from Employment Lotteries"
-Le Barbanchon, Ubfal, Araya (AEJ Applied)
+Specification Search: 151261-V2
+The Effects of Working while in School: Evidence from Employment Lotteries
+AEJ: Applied
+
+This paper studies the effects of a youth employment training (YET) program in Uruguay
+using lottery-based assignment. The instrument is "offered" (won lottery) and the
+endogenous treatment is "treatment" (actual program participation).
 
 Method: Instrumental Variables (2SLS)
-- Treatment: Actual program participation (treatment)
-- Instrument: Lottery offer (offered)
-- Design: RCT with imperfect compliance
-
-This script replicates the survey analysis tables (Tables 5, 7) and runs
-systematic specification variations.
+- Instrument: offered (lottery outcome)
+- Endogenous variable: treatment (program participation)
+- Key outcomes: employment, education, earnings, soft skills
 """
 
 import pandas as pd
 import numpy as np
-from scipy import stats
 import json
 import warnings
+from scipy import stats
+import statsmodels.api as sm
+from linearmodels.iv import IV2SLS
 warnings.filterwarnings('ignore')
 
-# Set up paths
+# Paths
 DATA_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/151261-V2/replication_AEJ/data/nonconfidential/'
 OUTPUT_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/151261-V2/'
 
 # Paper metadata
 PAPER_ID = '151261-V2'
-JOURNAL = 'AEJ-Applied'
 PAPER_TITLE = 'The Effects of Working while in School: Evidence from Employment Lotteries'
+JOURNAL = 'AEJ: Applied'
 
-# =============================================================================
-# Load Data
-# =============================================================================
-print("Loading data...")
+# Load data
 df = pd.read_stata(DATA_PATH + 'survey_analysis_AEJ.dta')
-print(f"Loaded {len(df)} observations")
 
-# =============================================================================
-# Define Variables
-# =============================================================================
+# Convert columns to numeric, handling any issues
+for col in df.columns:
+    if df[col].dtype == 'object':
+        try:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+        except:
+            pass
 
-# Treatment and instrument
-TREATMENT_VAR = 'treatment'
-INSTRUMENT_VAR = 'offered'
+# Define variables
+# Location dummies for strata fixed effects
+loc_cols = [c for c in df.columns if c.startswith('loc')]
 
-# Location dummies (lottery strata)
-loc_cols = [f'loc{i}' for i in range(1, 62)]
+# Strata controls (from paper)
+strata_controls = loc_cols + ['trans_quotaloc', 'disability_quotaloc', 'ethnic_afro_quotaloc',
+                              'vulnerableall_quotaloc', 'applications']
 
-# Quota controls (stratification variables)
-quota_controls = ['trans_quotaloc', 'disability_quotaloc', 'ethnic_afro_quotaloc',
-                  'vulnerableall_quotaloc', 'applications']
-
-# Unbalanced covariates (imbalanced at baseline)
+# Unbalanced covariates (from Table E1 checks)
 unbal_controls = ['school_morning', 'school_afternoon', 'educ_sec_acad', 'educ_terciary']
 
 # Full control set
-full_controls = loc_cols + quota_controls + unbal_controls
+full_controls = strata_controls + unbal_controls
 
-# Minimal controls (just strata)
-minimal_controls = loc_cols + quota_controls
+# Individual-level controls (for leave-one-out)
+individual_controls = ['female', 'age', 'number_kids', 'b_father_comphighschool',
+                       'b_mother_comphighschool', 'b_books_more10', 'hours_school',
+                       'social_participant', 'social_tus', 'b_edu_course2015', 'b_repprim_once']
 
-# Main outcomes (Table 5 - Education)
-education_outcomes = [
-    ('s_highsch_current', 'Currently in High School'),
-    ('s_highsch_missedclass', 'Missed Class (conditional on enrollment)'),
-    ('s_highsch_whours', 'Hours of School per Week'),
-    ('s_TU_dur_study_', 'Time Use: Study Hours'),
-    ('s_study_Grade', 'Grades (conditional on enrollment)')
-]
+# All controls for extended specifications
+all_controls = full_controls + individual_controls
 
-# Soft skills outcomes (Table 7)
-soft_skills_outcomes = [
-    ('s_soft_open', 'Openness'),
-    ('s_soft_conscientious', 'Conscientiousness'),
-    ('s_soft_extrav', 'Extraversion'),
-    ('s_soft_agreeable', 'Agreeableness'),
-    ('s_soft_neurotic', 'Neuroticism'),
-    ('s_soft_grit', 'Grit')
-]
+# Outcome variables
+labor_outcomes = ['s_emp', 's_tot_income', 's_wstudy', 's_nwnstudy', 's_pension_contrib']
+education_outcomes = ['s_enrolled_edu', 's_highsch_current', 's_enrolled_public']
+soft_skills = ['s_soft_open', 's_soft_conscien', 's_soft_extrav', 's_soft_agreeable',
+               's_soft_neurotic', 's_soft_grit', 's_soft_complydeadline', 's_soft_adapt',
+               's_soft_teamwork', 's_soft_punctuality', 's_soft_workindex']
+study_effort = ['s_highsch_missedclass', 's_highsch_whours', 's_TU_dur_study_', 's_study_Grade']
 
-# Work behavior outcomes (Table 7 Panel B)
-work_behavior_outcomes = [
-    ('s_soft_complydeadline', 'Comply with Deadlines'),
-    ('s_soft_adapt', 'Adaptability'),
-    ('s_soft_teamwork', 'Teamwork'),
-    ('s_soft_punctuality', 'Punctuality'),
-    ('s_soft_workindex', 'Work Index'),
-    ('s_inpunctuality_interview', 'Interview Punctuality')
-]
-
-# Labor market outcomes
-labor_outcomes = [
-    ('s_emp', 'Employed'),
-    ('s_enrolled_edu', 'Enrolled in Education'),
-    ('s_wstudy', 'Working and Studying'),
-    ('s_nwnstudy', 'Neither Working nor Studying'),
-    ('s_tot_income', 'Total Income')
-]
-
-# =============================================================================
-# IV Estimation Functions
-# =============================================================================
-
-def run_2sls(df, outcome, treatment, instrument, controls=None,
-             robust_se=True, cluster_var=None, outcome_filter=None):
-    """
-    Run 2SLS regression manually using numpy/scipy.
-
-    Parameters:
-    -----------
-    df : DataFrame
-    outcome : str - dependent variable
-    treatment : str - endogenous variable
-    instrument : str - instrumental variable
-    controls : list - control variables
-    robust_se : bool - use robust standard errors
-    cluster_var : str - variable for clustered SEs (optional)
-    outcome_filter : str - additional filter (e.g., subsample condition)
-
-    Returns:
-    --------
-    dict with results
-    """
-    # Make a copy
-    data = df.copy()
-
-    # Apply filter if specified
-    if outcome_filter is not None:
-        data = data.query(outcome_filter).copy()
-
-    # Get complete cases
-    all_vars = [outcome, treatment, instrument]
-    if controls:
-        all_vars += controls
-    if cluster_var:
-        all_vars.append(cluster_var)
-
-    # Remove duplicates from all_vars
-    all_vars = list(dict.fromkeys(all_vars))
-
-    data = data.dropna(subset=all_vars)
-
-    if len(data) < 50:
-        return None
-
-    y = data[outcome].values
-    endog = data[treatment].values
-    z = data[instrument].values
-
-    # Build control matrix
-    if controls:
-        # Filter out constant columns
-        valid_controls = []
-        for c in controls:
-            if c in data.columns and data[c].std() > 0:
-                valid_controls.append(c)
-        X_controls = data[valid_controls].values if valid_controls else np.ones((len(data), 1))
-        if len(valid_controls) == 0:
-            X_controls = np.ones((len(data), 1))
-        else:
-            X_controls = np.column_stack([np.ones(len(data)), X_controls])
-    else:
-        X_controls = np.ones((len(data), 1))
-
-    # First stage: treatment ~ instrument + controls
-    X_first = np.column_stack([z, X_controls[:, 1:] if X_controls.shape[1] > 1 else np.array([]).reshape(len(data), 0)])
-    X_first = np.column_stack([np.ones(len(data)), X_first])
-
-    try:
-        beta_first, _, _, _ = np.linalg.lstsq(X_first, endog, rcond=None)
-    except:
-        return None
-
-    endog_hat = X_first @ beta_first
-
-    # First stage F-statistic
-    resid_first = endog - endog_hat
-    ss_res_first = np.sum(resid_first**2)
-    ss_tot_first = np.sum((endog - endog.mean())**2)
-    r2_first = 1 - ss_res_first / ss_tot_first
-
-    # F-stat for instrument (simplified)
-    n = len(data)
-    k = X_first.shape[1]
-    f_stat = (r2_first / 1) / ((1 - r2_first) / (n - k))
-
-    # Second stage: outcome ~ treatment_hat + controls
-    X_second = np.column_stack([endog_hat, X_controls[:, 1:] if X_controls.shape[1] > 1 else np.array([]).reshape(len(data), 0)])
-    X_second = np.column_stack([np.ones(len(data)), X_second])
-
-    try:
-        beta_second, _, _, _ = np.linalg.lstsq(X_second, y, rcond=None)
-    except:
-        return None
-
-    # Get residuals using actual treatment (for SE calculation)
-    X_actual = np.column_stack([endog, X_controls[:, 1:] if X_controls.shape[1] > 1 else np.array([]).reshape(len(data), 0)])
-    X_actual = np.column_stack([np.ones(len(data)), X_actual])
-    y_hat = X_actual @ beta_second
-    residuals = y - y_hat
-
-    # Robust standard errors
-    try:
-        XtX_inv = np.linalg.inv(X_first.T @ X_first)
-    except:
-        return None
-
-    if cluster_var and cluster_var in data.columns:
-        # Clustered standard errors
-        clusters = data[cluster_var].values
-        unique_clusters = np.unique(clusters)
-        n_clusters = len(unique_clusters)
-
-        meat = np.zeros((X_first.shape[1], X_first.shape[1]))
-        for c in unique_clusters:
-            mask = clusters == c
-            X_c = X_first[mask]
-            r_c = residuals[mask]
-            score_c = (X_c.T * r_c).sum(axis=1, keepdims=True)
-            meat += score_c @ score_c.T
-
-        # Small sample correction
-        correction = (n_clusters / (n_clusters - 1)) * ((n - 1) / (n - k))
-        var_matrix = correction * XtX_inv @ meat @ XtX_inv
-    else:
-        # HC1 robust standard errors
-        if robust_se:
-            omega = residuals**2
-            meat = X_first.T @ (X_first * omega[:, np.newaxis])
-            correction = n / (n - k)
-            var_matrix = correction * XtX_inv @ meat @ XtX_inv
-        else:
-            sigma2 = ss_res_first / (n - k)
-            var_matrix = sigma2 * XtX_inv
-
-    se = np.sqrt(np.diag(var_matrix))
-
-    # Treatment effect is the coefficient on the instrumented treatment
-    coef_treatment = beta_second[1]
-    se_treatment = se[1] if len(se) > 1 else se[0]
-
-    # t-stat and p-value
-    t_stat = coef_treatment / se_treatment
-    p_value = 2 * (1 - stats.t.cdf(abs(t_stat), n - k))
-
-    # CI
-    ci_lower = coef_treatment - 1.96 * se_treatment
-    ci_upper = coef_treatment + 1.96 * se_treatment
-
-    # R-squared
-    ss_res = np.sum(residuals**2)
-    ss_tot = np.sum((y - y.mean())**2)
-    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else 0
-
-    # Control mean
-    control_mean = y[endog == 0].mean() if np.sum(endog == 0) > 0 else np.nan
-
-    # Complier control mean
-    treated_mean = y[endog == 1].mean() if np.sum(endog == 1) > 0 else np.nan
-    ccm = treated_mean - coef_treatment if not np.isnan(treated_mean) else np.nan
-
-    # First stage coefficient
-    first_stage_coef = beta_first[1]  # coefficient on instrument
-
-    return {
-        'coefficient': coef_treatment,
-        'std_error': se_treatment,
-        't_stat': t_stat,
-        'p_value': p_value,
-        'ci_lower': ci_lower,
-        'ci_upper': ci_upper,
-        'n_obs': n,
-        'r_squared': r2,
-        'first_stage_F': f_stat,
-        'first_stage_coef': first_stage_coef,
-        'control_mean': control_mean,
-        'complier_control_mean': ccm,
-        'n_clusters': len(unique_clusters) if cluster_var and cluster_var in data.columns else None
-    }
-
-
-def run_ols(df, outcome, treatment, controls=None, robust_se=True, cluster_var=None, outcome_filter=None):
-    """
-    Run OLS regression (reduced form or comparison).
-    """
-    data = df.copy()
-
-    if outcome_filter:
-        data = data.query(outcome_filter).copy()
-
-    all_vars = [outcome, treatment]
-    if controls:
-        all_vars += controls
-    if cluster_var:
-        all_vars.append(cluster_var)
-
-    all_vars = list(dict.fromkeys(all_vars))
-    data = data.dropna(subset=all_vars)
-
-    if len(data) < 50:
-        return None
-
-    y = data[outcome].values
-    x = data[treatment].values
-
-    if controls:
-        valid_controls = [c for c in controls if c in data.columns and data[c].std() > 0]
-        if valid_controls:
-            X = np.column_stack([np.ones(len(data)), x, data[valid_controls].values])
-        else:
-            X = np.column_stack([np.ones(len(data)), x])
-    else:
-        X = np.column_stack([np.ones(len(data)), x])
-
-    try:
-        beta, _, _, _ = np.linalg.lstsq(X, y, rcond=None)
-    except:
-        return None
-
-    y_hat = X @ beta
-    residuals = y - y_hat
-
-    n = len(data)
-    k = X.shape[1]
-
-    try:
-        XtX_inv = np.linalg.inv(X.T @ X)
-    except:
-        return None
-
-    if cluster_var and cluster_var in data.columns:
-        clusters = data[cluster_var].values
-        unique_clusters = np.unique(clusters)
-        n_clusters = len(unique_clusters)
-
-        meat = np.zeros((k, k))
-        for c in unique_clusters:
-            mask = clusters == c
-            X_c = X[mask]
-            r_c = residuals[mask]
-            score_c = (X_c.T * r_c).sum(axis=1, keepdims=True)
-            meat += score_c @ score_c.T
-
-        correction = (n_clusters / (n_clusters - 1)) * ((n - 1) / (n - k))
-        var_matrix = correction * XtX_inv @ meat @ XtX_inv
-    else:
-        if robust_se:
-            omega = residuals**2
-            meat = X.T @ (X * omega[:, np.newaxis])
-            correction = n / (n - k)
-            var_matrix = correction * XtX_inv @ meat @ XtX_inv
-        else:
-            sigma2 = np.sum(residuals**2) / (n - k)
-            var_matrix = sigma2 * XtX_inv
-
-    se = np.sqrt(np.diag(var_matrix))
-
-    coef = beta[1]
-    se_coef = se[1]
-    t_stat = coef / se_coef
-    p_value = 2 * (1 - stats.t.cdf(abs(t_stat), n - k))
-
-    ci_lower = coef - 1.96 * se_coef
-    ci_upper = coef + 1.96 * se_coef
-
-    ss_res = np.sum(residuals**2)
-    ss_tot = np.sum((y - y.mean())**2)
-    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else 0
-
-    control_mean = y[x == 0].mean() if np.sum(x == 0) > 0 else np.nan
-
-    return {
-        'coefficient': coef,
-        'std_error': se_coef,
-        't_stat': t_stat,
-        'p_value': p_value,
-        'ci_lower': ci_lower,
-        'ci_upper': ci_upper,
-        'n_obs': n,
-        'r_squared': r2,
-        'control_mean': control_mean,
-        'n_clusters': len(unique_clusters) if cluster_var and cluster_var in data.columns else None
-    }
-
-
-# =============================================================================
-# Run Specification Search
-# =============================================================================
+# Fix soft_conscien name
+if 's_soft_conscientious' in df.columns and 's_soft_conscien' not in df.columns:
+    df['s_soft_conscien'] = df['s_soft_conscientious']
 
 results = []
 
-def to_python_float(val):
-    """Convert numpy/pandas floats to Python floats for JSON serialization."""
-    if val is None:
+def safe_float(x):
+    """Convert to float, handling None/NaN"""
+    try:
+        if x is None or (isinstance(x, float) and np.isnan(x)):
+            return None
+        return float(x)
+    except:
         return None
-    if isinstance(val, (np.floating, np.integer)):
-        return float(val)
-    if isinstance(val, float) and np.isnan(val):
-        return None
-    return val
 
+def run_iv_regression(df_sample, outcome_var, endog_var, instrument, controls, spec_id, spec_tree_path):
+    """
+    Run 2SLS regression and return results dictionary
+    """
+    try:
+        # Prepare data
+        df_reg = df_sample.copy()
 
-def add_result(spec_id, spec_tree_path, outcome_var, outcome_label, treatment_var,
-               result_dict, controls_desc, fixed_effects, cluster_var, model_type,
-               sample_desc='Full survey sample'):
-    """Helper function to add a result to the results list."""
-    if result_dict is None:
-        return
+        # Drop missing values
+        all_vars = [outcome_var, endog_var, instrument] + controls
+        all_vars = [v for v in all_vars if v in df_reg.columns]
+        df_reg = df_reg.dropna(subset=all_vars)
 
-    # Build coefficient vector JSON
-    coef_vector = {
-        'treatment': {
-            'var': treatment_var,
-            'coef': to_python_float(result_dict['coefficient']),
-            'se': to_python_float(result_dict['std_error']),
-            'pval': to_python_float(result_dict['p_value'])
-        },
-        'fixed_effects': fixed_effects.split(' + ') if fixed_effects else [],
-        'diagnostics': {
-            'first_stage_F': to_python_float(result_dict.get('first_stage_F')),
-            'first_stage_coef': to_python_float(result_dict.get('first_stage_coef')),
-            'control_mean': to_python_float(result_dict.get('control_mean')),
-            'complier_control_mean': to_python_float(result_dict.get('complier_control_mean'))
+        if len(df_reg) < 50:
+            return None
+
+        # Check variation
+        if df_reg[outcome_var].std() < 1e-10:
+            return None
+        if df_reg[endog_var].std() < 1e-10:
+            return None
+        if df_reg[instrument].std() < 1e-10:
+            return None
+
+        # Build formulas
+        exog_vars = ['1'] + controls
+        exog_formula = ' + '.join([f'C({v})' if df_reg[v].nunique() <= 2 and v not in loc_cols else v for v in controls]) if controls else '1'
+
+        # Use linearmodels IV2SLS
+        formula = f'{outcome_var} ~ 1 + {" + ".join(controls)} + [{endog_var} ~ {instrument}]' if controls else f'{outcome_var} ~ 1 + [{endog_var} ~ {instrument}]'
+
+        # Alternative approach with statsmodels
+        y = df_reg[outcome_var].values
+
+        # Exogenous regressors (controls)
+        if controls:
+            X_exog = df_reg[controls].values
+            X_exog = sm.add_constant(X_exog, has_constant='add')
+        else:
+            X_exog = np.ones((len(df_reg), 1))
+
+        # Endogenous variable
+        X_endog = df_reg[endog_var].values.reshape(-1, 1)
+
+        # Instrument
+        Z = df_reg[instrument].values.reshape(-1, 1)
+
+        # First stage
+        fs_X = np.hstack([X_exog, Z])
+        fs_model = sm.OLS(X_endog.flatten(), fs_X).fit()
+        fs_coef = fs_model.params[-1]  # Instrument coefficient
+        fs_se = fs_model.bse[-1]
+        fs_fstat = (fs_coef / fs_se) ** 2
+
+        # Predicted values from first stage
+        X_endog_hat = fs_model.fittedvalues.reshape(-1, 1)
+
+        # Second stage
+        ss_X = np.hstack([X_exog, X_endog_hat])
+        ss_model = sm.OLS(y, ss_X).fit(cov_type='HC1')
+
+        # Treatment effect (last coefficient)
+        treat_coef = ss_model.params[-1]
+        treat_se = ss_model.bse[-1]
+        treat_tstat = treat_coef / treat_se
+        treat_pval = 2 * (1 - stats.t.cdf(abs(treat_tstat), ss_model.df_resid))
+
+        # Confidence intervals
+        ci_lower = treat_coef - 1.96 * treat_se
+        ci_upper = treat_coef + 1.96 * treat_se
+
+        # Build coefficient vector
+        coef_vector = {
+            'treatment': {
+                'var': endog_var,
+                'coef': safe_float(treat_coef),
+                'se': safe_float(treat_se),
+                'pval': safe_float(treat_pval)
+            },
+            'first_stage': {
+                'instrument': instrument,
+                'coef': safe_float(fs_coef),
+                'se': safe_float(fs_se),
+                'F_stat': safe_float(fs_fstat)
+            },
+            'controls': controls,
+            'diagnostics': {
+                'first_stage_F': safe_float(fs_fstat),
+                'n_obs': int(len(df_reg))
+            }
         }
-    }
 
-    results.append({
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': spec_id,
-        'spec_tree_path': spec_tree_path,
-        'outcome_var': outcome_var,
-        'outcome_label': outcome_label,
-        'treatment_var': treatment_var,
-        'coefficient': to_python_float(result_dict['coefficient']),
-        'std_error': to_python_float(result_dict['std_error']),
-        't_stat': to_python_float(result_dict['t_stat']),
-        'p_value': to_python_float(result_dict['p_value']),
-        'ci_lower': to_python_float(result_dict['ci_lower']),
-        'ci_upper': to_python_float(result_dict['ci_upper']),
-        'n_obs': int(result_dict['n_obs']),
-        'r_squared': to_python_float(result_dict.get('r_squared')),
-        'coefficient_vector_json': json.dumps(coef_vector),
-        'sample_desc': sample_desc,
-        'fixed_effects': fixed_effects,
-        'controls_desc': controls_desc,
-        'cluster_var': cluster_var,
-        'model_type': model_type,
-        'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-    })
+        # Control group mean
+        ccm = df_reg[df_reg[endog_var] == 0][outcome_var].mean() if (df_reg[endog_var] == 0).sum() > 0 else None
+
+        return {
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': spec_id,
+            'spec_tree_path': spec_tree_path,
+            'outcome_var': outcome_var,
+            'treatment_var': endog_var,
+            'coefficient': safe_float(treat_coef),
+            'std_error': safe_float(treat_se),
+            't_stat': safe_float(treat_tstat),
+            'p_value': safe_float(treat_pval),
+            'ci_lower': safe_float(ci_lower),
+            'ci_upper': safe_float(ci_upper),
+            'n_obs': int(len(df_reg)),
+            'r_squared': safe_float(ss_model.rsquared),
+            'coefficient_vector_json': json.dumps(coef_vector),
+            'sample_desc': 'Full sample' if len(df_reg) == len(df_sample.dropna(subset=all_vars[:3])) else 'Restricted sample',
+            'fixed_effects': 'Location strata',
+            'controls_desc': f'{len(controls)} controls' if controls else 'No controls',
+            'cluster_var': 'robust',
+            'model_type': 'IV-2SLS',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py',
+            'first_stage_F': safe_float(fs_fstat),
+            'control_mean': safe_float(ccm)
+        }
+    except Exception as e:
+        print(f"Error in {spec_id}: {str(e)}")
+        return None
+
+def run_ols_regression(df_sample, outcome_var, treatment_var, controls, spec_id, spec_tree_path):
+    """
+    Run OLS regression (reduced form or standard OLS)
+    """
+    try:
+        df_reg = df_sample.copy()
+
+        all_vars = [outcome_var, treatment_var] + controls
+        all_vars = [v for v in all_vars if v in df_reg.columns]
+        df_reg = df_reg.dropna(subset=all_vars)
+
+        if len(df_reg) < 50:
+            return None
+
+        y = df_reg[outcome_var].values
+
+        if controls:
+            X = sm.add_constant(df_reg[[treatment_var] + controls].values)
+        else:
+            X = sm.add_constant(df_reg[[treatment_var]].values)
+
+        model = sm.OLS(y, X).fit(cov_type='HC1')
+
+        treat_coef = model.params[1]
+        treat_se = model.bse[1]
+        treat_tstat = treat_coef / treat_se
+        treat_pval = model.pvalues[1]
+
+        ci_lower = treat_coef - 1.96 * treat_se
+        ci_upper = treat_coef + 1.96 * treat_se
+
+        coef_vector = {
+            'treatment': {
+                'var': treatment_var,
+                'coef': safe_float(treat_coef),
+                'se': safe_float(treat_se),
+                'pval': safe_float(treat_pval)
+            },
+            'controls': controls
+        }
+
+        return {
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': spec_id,
+            'spec_tree_path': spec_tree_path,
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': safe_float(treat_coef),
+            'std_error': safe_float(treat_se),
+            't_stat': safe_float(treat_tstat),
+            'p_value': safe_float(treat_pval),
+            'ci_lower': safe_float(ci_lower),
+            'ci_upper': safe_float(ci_upper),
+            'n_obs': int(len(df_reg)),
+            'r_squared': safe_float(model.rsquared),
+            'coefficient_vector_json': json.dumps(coef_vector),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'Location strata' if any(c in controls for c in loc_cols) else 'None',
+            'controls_desc': f'{len(controls)} controls',
+            'cluster_var': 'robust',
+            'model_type': 'OLS',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py',
+            'first_stage_F': None,
+            'control_mean': None
+        }
+    except Exception as e:
+        print(f"Error in {spec_id}: {str(e)}")
+        return None
 
 
-print("\n" + "="*70)
-print("RUNNING SPECIFICATION SEARCH")
-print("="*70)
+# ============================================================================
+# RUN SPECIFICATIONS
+# ============================================================================
 
-# =============================================================================
-# 1. BASELINE SPECIFICATIONS (Table 5 - Education Outcomes)
-# =============================================================================
-print("\n--- Baseline Specifications (Table 5) ---")
+print("Starting specification search for paper 151261-V2...")
+print("=" * 60)
 
-# Main outcome: Currently in High School
-for outcome, label in education_outcomes[:1]:  # s_highsch_current
-    print(f"  Running baseline for {outcome}...")
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=full_controls, robust_se=True)
-    add_result(
-        spec_id='baseline',
-        spec_tree_path='methods/instrumental_variables.md#baseline',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+# ============================================================================
+# 1. BASELINE SPECIFICATIONS (from paper Table 5, 7, E2)
+# ============================================================================
+print("\n1. Running baseline specifications...")
 
-# Conditional outcomes (need to filter on enrollment)
-for outcome, label in education_outcomes[1:]:
-    print(f"  Running baseline for {outcome}...")
-    filter_cond = 's_highsch_whours == s_highsch_whours' if outcome != 's_highsch_current' else None
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=full_controls, robust_se=True,
-                      outcome_filter=filter_cond if 's_highsch_whours' in df.columns else None)
-    add_result(
-        spec_id='baseline',
-        spec_tree_path='methods/instrumental_variables.md#baseline',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS',
-        sample_desc='Enrolled students' if 'missedclass' in outcome or 'whours' in outcome or 'Grade' in outcome else 'Full survey sample'
-    )
+# Main outcome: Employment (Table E2)
+result = run_iv_regression(df, 's_emp', 'treatment', 'offered', full_controls,
+                          'baseline', 'methods/instrumental_variables.md')
+if result:
+    results.append(result)
+    print(f"  Baseline employment: coef={result['coefficient']:.4f}, p={result['p_value']:.4f}")
 
-# =============================================================================
-# 2. BASELINE SPECIFICATIONS (Table 7 - Soft Skills)
-# =============================================================================
-print("\n--- Baseline Specifications (Table 7) ---")
+# Main outcome: Enrollment (Table E2)
+result = run_iv_regression(df, 's_enrolled_edu', 'treatment', 'offered', full_controls,
+                          'baseline_enrollment', 'methods/instrumental_variables.md')
+if result:
+    results.append(result)
 
-for outcome, label in soft_skills_outcomes + work_behavior_outcomes:
-    print(f"  Running baseline for {outcome}...")
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=full_controls, cluster_var='ci_an')
-    add_result(
-        spec_id='baseline',
-        spec_tree_path='methods/instrumental_variables.md#baseline',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='ci_an (applicant ID)',
-        model_type='2SLS'
-    )
+# Main outcome: Total income (Table E2)
+result = run_iv_regression(df, 's_tot_income', 'treatment', 'offered', full_controls,
+                          'baseline_income', 'methods/instrumental_variables.md')
+if result:
+    results.append(result)
 
-# =============================================================================
-# 3. LABOR MARKET OUTCOMES (Appendix Table E2)
-# =============================================================================
-print("\n--- Labor Market Outcomes ---")
+# Work and study (Table E2)
+result = run_iv_regression(df, 's_wstudy', 'treatment', 'offered', full_controls,
+                          'baseline_wstudy', 'methods/instrumental_variables.md')
+if result:
+    results.append(result)
 
-for outcome, label in labor_outcomes:
-    print(f"  Running baseline for {outcome}...")
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=full_controls, cluster_var='ci_an')
-    add_result(
-        spec_id='baseline',
-        spec_tree_path='methods/instrumental_variables.md#baseline',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='ci_an (applicant ID)',
-        model_type='2SLS'
-    )
+# Neither work nor study (Table E2)
+result = run_iv_regression(df, 's_nwnstudy', 'treatment', 'offered', full_controls,
+                          'baseline_nwnstudy', 'methods/instrumental_variables.md')
+if result:
+    results.append(result)
 
-# =============================================================================
-# 4. IV METHOD VARIATIONS
-# =============================================================================
-print("\n--- IV Method Variations ---")
+# ============================================================================
+# 2. FIRST STAGE (Table A2)
+# ============================================================================
+print("\n2. Running first stage specifications...")
 
-# Primary outcome for method variations: s_highsch_current
-main_outcome = 's_highsch_current'
-main_label = 'Currently in High School'
+result = run_ols_regression(df, 'treatment', 'offered', full_controls,
+                           'iv/first_stage/baseline', 'methods/instrumental_variables.md#first-stage')
+if result:
+    results.append(result)
 
-# 4a. OLS (ignoring endogeneity)
-print("  Running OLS (no IV)...")
-result = run_ols(df, main_outcome, TREATMENT_VAR, controls=full_controls, robust_se=True)
-add_result(
-    spec_id='iv/method/ols',
-    spec_tree_path='methods/instrumental_variables.md#estimation-method',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='OLS'
-)
+# ============================================================================
+# 3. REDUCED FORM (ITT)
+# ============================================================================
+print("\n3. Running reduced form (ITT) specifications...")
 
-# 4b. Reduced form (ITT effect)
-print("  Running reduced form (ITT)...")
-result = run_ols(df, main_outcome, INSTRUMENT_VAR, controls=full_controls, robust_se=True)
-add_result(
-    spec_id='iv/first_stage/reduced_form',
-    spec_tree_path='methods/instrumental_variables.md#first-stage',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=INSTRUMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='OLS (reduced form/ITT)'
-)
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income'),
+                      ('s_wstudy', 'wstudy'), ('s_nwnstudy', 'nwnstudy')]:
+    result = run_ols_regression(df, outcome, 'offered', full_controls,
+                               f'iv/first_stage/reduced_form_{name}', 'methods/instrumental_variables.md#first-stage')
+    if result:
+        results.append(result)
 
-# 4c. First stage
-print("  Running first stage...")
-result = run_ols(df, TREATMENT_VAR, INSTRUMENT_VAR, controls=full_controls, robust_se=True)
-add_result(
-    spec_id='iv/first_stage/baseline',
-    spec_tree_path='methods/instrumental_variables.md#first-stage',
-    outcome_var=TREATMENT_VAR,
-    outcome_label='Program Participation',
-    treatment_var=INSTRUMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='OLS (first stage)'
-)
+# ============================================================================
+# 4. ALTERNATIVE OUTCOMES
+# ============================================================================
+print("\n4. Running alternative outcome specifications...")
 
-# =============================================================================
-# 5. CONTROL SET VARIATIONS
-# =============================================================================
-print("\n--- Control Set Variations ---")
+# Soft skills outcomes (Table 7)
+for outcome in soft_skills:
+    if outcome in df.columns:
+        result = run_iv_regression(df, outcome, 'treatment', 'offered', full_controls,
+                                  f'robust/outcome/{outcome}', 'robustness/measurement.md')
+        if result:
+            results.append(result)
 
-# 5a. No controls
-print("  Running with no controls...")
-result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=None, robust_se=True)
-add_result(
-    spec_id='iv/controls/none',
-    spec_tree_path='methods/instrumental_variables.md#control-sets',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='None',
-    fixed_effects='None',
-    cluster_var='None (robust SE)',
-    model_type='2SLS'
-)
+# Study effort outcomes (Table 5) - conditional on enrolled
+df_enrolled = df[df['s_highsch_whours'].notna()].copy()
+for outcome in ['s_highsch_missedclass', 's_highsch_whours', 's_TU_dur_study_', 's_study_Grade']:
+    if outcome in df_enrolled.columns:
+        result = run_iv_regression(df_enrolled, outcome, 'treatment', 'offered', full_controls,
+                                  f'robust/outcome/{outcome}', 'robustness/measurement.md')
+        if result:
+            results.append(result)
 
-# 5b. Minimal controls (strata only)
-print("  Running with minimal controls (strata only)...")
-result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=minimal_controls, robust_se=True)
-add_result(
-    spec_id='iv/controls/minimal',
-    spec_tree_path='methods/instrumental_variables.md#control-sets',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls only',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='2SLS'
-)
+# ============================================================================
+# 5. CONTROL VARIATIONS
+# ============================================================================
+print("\n5. Running control variation specifications...")
 
-# 5c. With baseline GPA control (Table A9 specification)
-print("  Running with GPA control...")
-controls_with_gpa = full_controls + ['s_study_GPA']
-result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=controls_with_gpa, robust_se=True)
-add_result(
-    spec_id='iv/controls/with_gpa',
-    spec_tree_path='methods/instrumental_variables.md#control-sets',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced + GPA',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='2SLS'
-)
+# 5a. No controls (strata only)
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+    result = run_iv_regression(df, outcome, 'treatment', 'offered', strata_controls,
+                              f'iv/controls/strata_only_{name}', 'methods/instrumental_variables.md#control-sets')
+    if result:
+        results.append(result)
 
-# =============================================================================
-# 6. CLUSTERING VARIATIONS
-# =============================================================================
-print("\n--- Clustering Variations ---")
+# 5b. No controls at all
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+    result = run_iv_regression(df, outcome, 'treatment', 'offered', [],
+                              f'iv/controls/none_{name}', 'methods/instrumental_variables.md#control-sets')
+    if result:
+        results.append(result)
 
-# 6a. No clustering (robust SE only)
-result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=full_controls,
-                  robust_se=True, cluster_var=None)
-add_result(
-    spec_id='robust/cluster/none',
-    spec_tree_path='robustness/clustering_variations.md#single-level-clustering',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='2SLS'
-)
+# 5c. Extended controls (add individual characteristics)
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+    extended_ctrls = [c for c in all_controls if c in df.columns]
+    result = run_iv_regression(df, outcome, 'treatment', 'offered', extended_ctrls,
+                              f'iv/controls/full_{name}', 'methods/instrumental_variables.md#control-sets')
+    if result:
+        results.append(result)
 
-# 6b. Cluster by applicant (ci_an)
-print("  Running with clustering at applicant level...")
-result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=full_controls,
-                  cluster_var='ci_an')
-add_result(
-    spec_id='robust/cluster/applicant',
-    spec_tree_path='robustness/clustering_variations.md#single-level-clustering',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='ci_an (applicant ID)',
-    model_type='2SLS'
-)
+# 5d. Leave-one-out for individual controls (on main employment outcome)
+print("  Running leave-one-out specifications...")
+for ctrl in individual_controls:
+    if ctrl in df.columns:
+        loo_controls = [c for c in full_controls if c != ctrl]
+        result = run_iv_regression(df, 's_emp', 'treatment', 'offered', loo_controls,
+                                  f'robust/loo/drop_{ctrl}', 'robustness/leave_one_out.md')
+        if result:
+            results.append(result)
 
-# =============================================================================
-# 7. LEAVE-ONE-OUT ROBUSTNESS
-# =============================================================================
-print("\n--- Leave-One-Out Robustness ---")
+# ============================================================================
+# 6. SAMPLE RESTRICTIONS
+# ============================================================================
+print("\n6. Running sample restriction specifications...")
 
-# Drop each unbalanced control one at a time
-for drop_var in unbal_controls:
-    remaining = [c for c in full_controls if c != drop_var]
-    print(f"  Dropping {drop_var}...")
-    result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=remaining, robust_se=True)
-    add_result(
-        spec_id=f'robust/loo/drop_{drop_var}',
-        spec_tree_path='robustness/leave_one_out.md',
-        outcome_var=main_outcome,
-        outcome_label=main_label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc=f'Full controls minus {drop_var}',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+# 6a. By gender
+for gender, label in [(1, 'female'), (0, 'male')]:
+    df_sub = df[df['female'] == gender].copy()
+    for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+        result = run_iv_regression(df_sub, outcome, 'treatment', 'offered', full_controls,
+                                  f'robust/sample/{label}_{name}', 'robustness/sample_restrictions.md')
+        if result:
+            results.append(result)
 
-# Drop quota controls one at a time
-for drop_var in quota_controls:
-    remaining = [c for c in full_controls if c != drop_var]
-    print(f"  Dropping {drop_var}...")
-    result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=remaining, robust_se=True)
-    add_result(
-        spec_id=f'robust/loo/drop_{drop_var}',
-        spec_tree_path='robustness/leave_one_out.md',
-        outcome_var=main_outcome,
-        outcome_label=main_label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc=f'Full controls minus {drop_var}',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+# 6b. By age
+median_age = df['age'].median()
+for condition, label in [(df['age'] <= median_age, 'young'), (df['age'] > median_age, 'old')]:
+    df_sub = df[condition].copy()
+    for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll')]:
+        result = run_iv_regression(df_sub, outcome, 'treatment', 'offered', full_controls,
+                                  f'robust/sample/{label}_{name}', 'robustness/sample_restrictions.md')
+        if result:
+            results.append(result)
 
-# =============================================================================
-# 8. SINGLE COVARIATE ANALYSIS
-# =============================================================================
-print("\n--- Single Covariate Analysis ---")
+# 6c. By vulnerability status
+if 'vulnerableall_quotaloc' in df.columns:
+    for condition, label in [(df['vulnerableall_quotaloc'] > 0, 'vulnerable'), (df['vulnerableall_quotaloc'] == 0, 'not_vulnerable')]:
+        df_sub = df[condition].copy()
+        if len(df_sub) >= 100:
+            result = run_iv_regression(df_sub, 's_emp', 'treatment', 'offered', full_controls,
+                                      f'robust/sample/{label}_emp', 'robustness/sample_restrictions.md')
+            if result:
+                results.append(result)
 
-# Bivariate (no controls)
-result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=None, robust_se=True)
-add_result(
-    spec_id='robust/single/none',
-    spec_tree_path='robustness/single_covariate.md',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='None (bivariate)',
-    fixed_effects='None',
-    cluster_var='None (robust SE)',
-    model_type='2SLS'
-)
+# 6d. By parental education
+if 'b_mother_comphighschool' in df.columns:
+    for condition, label in [(df['b_mother_comphighschool'] == 1, 'high_ses'), (df['b_mother_comphighschool'] == 0, 'low_ses')]:
+        df_sub = df[condition].copy()
+        if len(df_sub) >= 100:
+            result = run_iv_regression(df_sub, 's_emp', 'treatment', 'offered', full_controls,
+                                      f'robust/sample/{label}_emp', 'robustness/sample_restrictions.md')
+            if result:
+                results.append(result)
 
-# Add single controls
-single_controls = unbal_controls + ['applications']
-for control in single_controls:
-    print(f"  Adding only {control}...")
-    result = run_2sls(df, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=[control], robust_se=True)
-    add_result(
-        spec_id=f'robust/single/{control}',
-        spec_tree_path='robustness/single_covariate.md',
-        outcome_var=main_outcome,
-        outcome_label=main_label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc=f'Only {control}',
-        fixed_effects='None',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+# 6e. By education type at baseline
+for condition, label in [(df['educ_sec_acad'] == 1, 'academic'), (df['educ_sec_tech'] == 1, 'technical')]:
+    df_sub = df[condition].copy()
+    if len(df_sub) >= 100:
+        for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll')]:
+            result = run_iv_regression(df_sub, outcome, 'treatment', 'offered', full_controls,
+                                      f'robust/sample/{label}_{name}', 'robustness/sample_restrictions.md')
+            if result:
+                results.append(result)
 
-# =============================================================================
-# 9. SAMPLE RESTRICTIONS
-# =============================================================================
-print("\n--- Sample Restrictions ---")
+# 6f. Winsorize income
+df_wins = df.copy()
+p01, p99 = df_wins['s_tot_income'].quantile([0.01, 0.99])
+df_wins['s_tot_income_w'] = df_wins['s_tot_income'].clip(lower=p01, upper=p99)
+result = run_iv_regression(df_wins, 's_tot_income_w', 'treatment', 'offered', full_controls,
+                          'robust/sample/winsorize_1pct_income', 'robustness/sample_restrictions.md')
+if result:
+    results.append(result)
 
-# By gender
-print("  Running for females only...")
-df_female = df[df['female'] == 1].copy()
-result = run_2sls(df_female, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                  controls=full_controls, robust_se=True)
-add_result(
-    spec_id='robust/sample/female',
-    spec_tree_path='robustness/sample_restrictions.md',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='2SLS',
-    sample_desc='Female only'
-)
+# 6g. Trim extreme values
+df_trim = df[(df['s_tot_income'] >= df['s_tot_income'].quantile(0.01)) &
+             (df['s_tot_income'] <= df['s_tot_income'].quantile(0.99))].copy()
+result = run_iv_regression(df_trim, 's_tot_income', 'treatment', 'offered', full_controls,
+                          'robust/sample/trim_1pct_income', 'robustness/sample_restrictions.md')
+if result:
+    results.append(result)
 
-print("  Running for males only...")
-df_male = df[df['female'] == 0].copy()
-result = run_2sls(df_male, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                  controls=full_controls, robust_se=True)
-add_result(
-    spec_id='robust/sample/male',
-    spec_tree_path='robustness/sample_restrictions.md',
-    outcome_var=main_outcome,
-    outcome_label=main_label,
-    treatment_var=TREATMENT_VAR,
-    result_dict=result,
-    controls_desc='Location FE + Quota controls + Unbalanced controls',
-    fixed_effects='Location strata',
-    cluster_var='None (robust SE)',
-    model_type='2SLS',
-    sample_desc='Male only'
-)
+# ============================================================================
+# 7. INFERENCE/CLUSTERING VARIATIONS
+# ============================================================================
+print("\n7. Running inference variation specifications...")
 
-# By ability (using the ability indicators in the data)
+# The paper uses robust SE - we'll compare different SE approaches
+# Note: For this survey data, clustering options are limited
+
+# 7a. Standard robust SE (baseline approach from paper)
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+    result = run_iv_regression(df, outcome, 'treatment', 'offered', full_controls,
+                              f'robust/cluster/robust_{name}', 'robustness/clustering_variations.md')
+    if result:
+        results.append(result)
+
+# ============================================================================
+# 8. ESTIMATION METHOD VARIATIONS
+# ============================================================================
+print("\n8. Running estimation method variations...")
+
+# 8a. OLS (ignoring endogeneity) for comparison
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+    result = run_ols_regression(df, outcome, 'treatment', full_controls,
+                               f'iv/method/ols_{name}', 'methods/instrumental_variables.md#estimation-method')
+    if result:
+        results.append(result)
+
+# 8b. OLS on lottery (ITT interpretation)
+for outcome, name in [('s_emp', 'emp'), ('s_enrolled_edu', 'enroll'), ('s_tot_income', 'income')]:
+    result = run_ols_regression(df, outcome, 'offered', full_controls,
+                               f'iv/method/itt_{name}', 'methods/instrumental_variables.md#estimation-method')
+    if result:
+        results.append(result)
+
+# ============================================================================
+# 9. FUNCTIONAL FORM VARIATIONS
+# ============================================================================
+print("\n9. Running functional form variations...")
+
+# 9a. Log income (for positive values)
+df_pos = df[df['s_tot_income'] > 0].copy()
+df_pos['log_income'] = np.log(df_pos['s_tot_income'])
+result = run_iv_regression(df_pos, 'log_income', 'treatment', 'offered', full_controls,
+                          'robust/funcform/log_income', 'robustness/functional_form.md')
+if result:
+    results.append(result)
+
+# 9b. IHS income
+df['ihs_income'] = np.arcsinh(df['s_tot_income'])
+result = run_iv_regression(df, 'ihs_income', 'treatment', 'offered', full_controls,
+                          'robust/funcform/ihs_income', 'robustness/functional_form.md')
+if result:
+    results.append(result)
+
+# ============================================================================
+# 10. HETEROGENEITY ANALYSIS
+# ============================================================================
+print("\n10. Running heterogeneity specifications...")
+
+# Create interaction terms and run subgroup analyses
+# We already ran gender and age subgroups above
+
+# 10a. By social program participation
+if 'social_tus' in df.columns:
+    for condition, label in [(df['social_tus'] == 1, 'tus_participant'), (df['social_tus'] == 0, 'non_tus')]:
+        df_sub = df[condition].copy()
+        if len(df_sub) >= 100:
+            result = run_iv_regression(df_sub, 's_emp', 'treatment', 'offered', full_controls,
+                                      f'robust/heterogeneity/{label}_emp', 'robustness/heterogeneity.md')
+            if result:
+                results.append(result)
+
+# 10b. By prior work experience (if available through positive earnings)
+if 's_emp' in df.columns:
+    # Young people likely have no prior work, but we can check applications
+    for condition, label in [(df['applications'] == 1, 'first_time'), (df['applications'] > 1, 'repeat_applicant')]:
+        df_sub = df[condition].copy()
+        if len(df_sub) >= 100:
+            result = run_iv_regression(df_sub, 's_emp', 'treatment', 'offered', full_controls,
+                                      f'robust/heterogeneity/{label}_emp', 'robustness/heterogeneity.md')
+            if result:
+                results.append(result)
+
+# 10c. By school timing (morning vs afternoon)
+for condition, label in [(df['school_morning'] == 1, 'morning_school'), (df['school_afternoon'] == 1, 'afternoon_school')]:
+    df_sub = df[condition].copy()
+    if len(df_sub) >= 100:
+        result = run_iv_regression(df_sub, 's_emp', 'treatment', 'offered', full_controls,
+                                  f'robust/heterogeneity/{label}_emp', 'robustness/heterogeneity.md')
+        if result:
+            results.append(result)
+
+# 10d. By ability (using low_ability/high_ability if available)
 if 'low_ability' in df.columns:
-    print("  Running for low ability only...")
-    df_low = df[df['low_ability'] == 1].copy()
-    result = run_2sls(df_low, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=full_controls, robust_se=True)
-    add_result(
-        spec_id='robust/sample/low_ability',
-        spec_tree_path='robustness/sample_restrictions.md',
-        outcome_var=main_outcome,
-        outcome_label=main_label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS',
-        sample_desc='Low ability students'
-    )
+    for condition, label in [(df['low_ability'] == 1, 'low_ability'), (df['high_ability'] == 1, 'high_ability')]:
+        df_sub = df[condition].copy()
+        if len(df_sub) >= 100:
+            result = run_iv_regression(df_sub, 's_emp', 'treatment', 'offered', full_controls,
+                                      f'robust/heterogeneity/{label}_emp', 'robustness/heterogeneity.md')
+            if result:
+                results.append(result)
 
-if 'high_ability' in df.columns:
-    print("  Running for high ability only...")
-    df_high = df[df['high_ability'] == 1].copy()
-    result = run_2sls(df_high, main_outcome, TREATMENT_VAR, INSTRUMENT_VAR,
-                      controls=full_controls, robust_se=True)
-    add_result(
-        spec_id='robust/sample/high_ability',
-        spec_tree_path='robustness/sample_restrictions.md',
-        outcome_var=main_outcome,
-        outcome_label=main_label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS',
-        sample_desc='High ability students'
-    )
+# ============================================================================
+# 11. PLACEBO TESTS
+# ============================================================================
+print("\n11. Running placebo specifications...")
 
-# =============================================================================
-# 10. ADDITIONAL OUTCOMES - FULL SPECIFICATION SEARCH
-# =============================================================================
-print("\n--- Additional Outcomes with Control Variations ---")
+# 11a. Balance check on pre-treatment characteristics
+# If lottery is truly random, offered should not predict baseline characteristics
+pre_treatment_vars = ['female', 'age', 'b_mother_comphighschool', 'b_father_comphighschool',
+                      'b_books_more10', 'educ_sec_acad', 'educ_sec_tech']
 
-# Run the full set of variations for key outcomes
-key_outcomes = [
-    ('s_emp', 'Employed'),
-    ('s_enrolled_edu', 'Enrolled in Education'),
-    ('s_soft_grit', 'Grit'),
-    ('s_TU_dur_study_', 'Study Time')
-]
+for var in pre_treatment_vars:
+    if var in df.columns:
+        result = run_ols_regression(df, var, 'offered', strata_controls,
+                                   f'robust/placebo/balance_{var}', 'robustness/placebo_tests.md')
+        if result:
+            results.append(result)
 
-for outcome, label in key_outcomes:
-    print(f"\n  Processing {outcome}...")
+# ============================================================================
+# 12. ADDITIONAL ROBUSTNESS - Job Quality Outcomes (Table E4)
+# ============================================================================
+print("\n12. Running additional outcome specifications...")
 
-    # No controls
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=None, robust_se=True)
-    add_result(
-        spec_id='iv/controls/none',
-        spec_tree_path='methods/instrumental_variables.md#control-sets',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='None',
-        fixed_effects='None',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+job_quality_outcomes = ['s_pension_contrib', 's_emp_public', 's_small_firm',
+                        's_ind_manuf', 's_ind_trade', 's_ind_finserv', 's_ind_pubserv']
 
-    # Minimal controls
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=minimal_controls, robust_se=True)
-    add_result(
-        spec_id='iv/controls/minimal',
-        spec_tree_path='methods/instrumental_variables.md#control-sets',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls only',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+for outcome in job_quality_outcomes:
+    if outcome in df.columns:
+        result = run_iv_regression(df, outcome, 'treatment', 'offered', full_controls,
+                                  f'robust/outcome/{outcome}', 'robustness/measurement.md')
+        if result:
+            results.append(result)
 
-    # Full controls
-    result = run_2sls(df, outcome, TREATMENT_VAR, INSTRUMENT_VAR, controls=full_controls, robust_se=True)
-    add_result(
-        spec_id='iv/controls/full',
-        spec_tree_path='methods/instrumental_variables.md#control-sets',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=TREATMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='2SLS'
-    )
+# ============================================================================
+# 13. INCREMENTAL CONTROL ADDITIONS
+# ============================================================================
+print("\n13. Running incremental control specifications...")
 
-    # ITT
-    result = run_ols(df, outcome, INSTRUMENT_VAR, controls=full_controls, robust_se=True)
-    add_result(
-        spec_id='iv/first_stage/reduced_form',
-        spec_tree_path='methods/instrumental_variables.md#first-stage',
-        outcome_var=outcome,
-        outcome_label=label,
-        treatment_var=INSTRUMENT_VAR,
-        result_dict=result,
-        controls_desc='Location FE + Quota controls + Unbalanced controls',
-        fixed_effects='Location strata',
-        cluster_var='None (robust SE)',
-        model_type='OLS (reduced form/ITT)'
-    )
+# Start with just strata, add individual controls one by one
+for i, ctrl in enumerate(individual_controls[:5]):  # First 5 for brevity
+    if ctrl in df.columns:
+        current_controls = strata_controls + individual_controls[:i+1]
+        current_controls = [c for c in current_controls if c in df.columns]
+        result = run_iv_regression(df, 's_emp', 'treatment', 'offered', current_controls,
+                                  f'robust/control/add_{ctrl}', 'robustness/control_progression.md')
+        if result:
+            results.append(result)
 
-# =============================================================================
+# ============================================================================
 # SAVE RESULTS
-# =============================================================================
-print("\n" + "="*70)
-print("SAVING RESULTS")
-print("="*70)
+# ============================================================================
 
-# Convert to DataFrame
+print("\n" + "=" * 60)
+print(f"Total specifications run: {len(results)}")
+
+# Convert to DataFrame and save
 results_df = pd.DataFrame(results)
-print(f"\nTotal specifications run: {len(results_df)}")
 
 # Save to CSV
-output_file = OUTPUT_PATH + 'specification_results.csv'
-results_df.to_csv(output_file, index=False)
-print(f"Results saved to: {output_file}")
+results_df.to_csv(OUTPUT_PATH + 'specification_results.csv', index=False)
+print(f"Results saved to {OUTPUT_PATH}specification_results.csv")
 
-# Print summary statistics
-print("\n--- SUMMARY STATISTICS ---")
+# ============================================================================
+# SUMMARY STATISTICS
+# ============================================================================
+
+# Filter to main employment outcome for summary
+main_results = results_df[results_df['outcome_var'] == 's_emp'].copy()
+
+print("\n" + "=" * 60)
+print("SUMMARY STATISTICS (Employment outcome)")
+print("=" * 60)
+
+if len(main_results) > 0:
+    print(f"Total specifications: {len(main_results)}")
+    print(f"Mean coefficient: {main_results['coefficient'].mean():.4f}")
+    print(f"Median coefficient: {main_results['coefficient'].median():.4f}")
+    print(f"Std dev: {main_results['coefficient'].std():.4f}")
+    print(f"Range: [{main_results['coefficient'].min():.4f}, {main_results['coefficient'].max():.4f}]")
+
+    sig_05 = (main_results['p_value'] < 0.05).sum()
+    sig_01 = (main_results['p_value'] < 0.01).sum()
+    positive = (main_results['coefficient'] > 0).sum()
+
+    print(f"\nPositive coefficients: {positive} ({100*positive/len(main_results):.1f}%)")
+    print(f"Significant at 5%: {sig_05} ({100*sig_05/len(main_results):.1f}%)")
+    print(f"Significant at 1%: {sig_01} ({100*sig_01/len(main_results):.1f}%)")
+
+print("\n" + "=" * 60)
+print("ALL OUTCOMES SUMMARY")
+print("=" * 60)
 print(f"Total specifications: {len(results_df)}")
-print(f"Unique outcomes: {results_df['outcome_var'].nunique()}")
-print(f"Unique spec types: {results_df['spec_id'].nunique()}")
+print(f"\nBy outcome variable:")
+print(results_df['outcome_var'].value_counts().head(10))
 
-sig_05 = (results_df['p_value'] < 0.05).sum()
-sig_01 = (results_df['p_value'] < 0.01).sum()
-print(f"\nSignificant at 5%: {sig_05} ({100*sig_05/len(results_df):.1f}%)")
-print(f"Significant at 1%: {sig_01} ({100*sig_01/len(results_df):.1f}%)")
-
-# Summary by outcome
-print("\n--- BY OUTCOME ---")
-for outcome in results_df['outcome_var'].unique():
-    subset = results_df[results_df['outcome_var'] == outcome]
-    baseline = subset[subset['spec_id'] == 'baseline']
-    if len(baseline) > 0:
-        b = baseline.iloc[0]
-        print(f"\n{outcome}:")
-        print(f"  Baseline: coef={b['coefficient']:.4f}, se={b['std_error']:.4f}, p={b['p_value']:.4f}")
-        print(f"  N specs: {len(subset)}")
-        print(f"  Coef range: [{subset['coefficient'].min():.4f}, {subset['coefficient'].max():.4f}]")
-
-print("\n" + "="*70)
-print("SPECIFICATION SEARCH COMPLETE")
-print("="*70)
+print("\n\nSpecification search complete!")

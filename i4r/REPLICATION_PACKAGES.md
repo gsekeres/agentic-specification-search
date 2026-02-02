@@ -1,0 +1,438 @@
+# Replication Packages for i4r Papers
+
+104 papers from the Institute for Replication database.
+
+## Quick Links by Repository
+
+- **openICPSR (AEA journals)**: https://www.openicpsr.org/openicpsr/search/aea/studies
+- **Harvard Dataverse (QJE, AJPS)**: https://dataverse.harvard.edu/
+- **Oxford Academic**: https://academic.oup.com/
+
+---
+
+## openICPSR (41 papers)
+
+### Assortative Matching at the Top of the Distribution: Evidence from the World's Most Exclusive Marriage Market (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Assortative%20Matching%20at%20the%20Top%20of%20the%20Distribution%3A%20Evidence%20from%20the%20World%27s%20Most%20Exclusive%20Marriage%20Market)
+
+### Can Information Reduce Ethnic Discrimination? Evidence from Airbnb (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Can%20Information%20Reduce%20Ethnic%20Discrimination%3F%20Evidence%20from%20Airbnb)
+
+### Do Thank-You Calls Increase Charitable Giving? Expert Forecasts and Field Experimental Evidence (2023)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Do%20Thank-You%20Calls%20Increase%20Charitable%20Giving%3F%20Expert%20Forecasts%20and%20Field%20Experimental%20Evidence)
+
+### Does Patient Demand Contribute to the Overuse of Prescription Drugs? (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Does%20Patient%20Demand%20Contribute%20to%20the%20Overuse%20of%20Prescription%20Drugs%3F)
+
+### Historical Lynchings and the Contemporary Voting Behavior of Blacks (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Historical%20Lynchings%20and%20the%20Contemporary%20Voting%20Behavior%20of%20Blacks)
+
+### Mental Health Costs of Lockdowns: Evidence from Age-Specific Curfews in Turkey (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Mental%20Health%20Costs%20of%20Lockdowns%3A%20Evidence%20from%20Age-Specific%20Curfews%20in%20Turkey)
+
+### Recessions, Mortality, and Migration Bias: Evidence from the Lancashire Cotton Famine (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Recessions%2C%20Mortality%2C%20and%20Migration%20Bias%3A%20Evidence%20from%20the%20Lancashire%20Cotton%20Famine)
+
+### The Side Effects of Immunity: Malaria and African Slavery in the United States (2022)
+- Journal: AEJ: Applied Economics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=The%20Side%20Effects%20of%20Immunity%3A%20Malaria%20and%20African%20Slavery%20in%20the%20United%20States)
+
+### Checking and Sharing Alt-Facts (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Checking%20and%20Sharing%20Alt-Facts)
+
+### Child Marriage Bans and Female Schooling and Labor Market Outcomes: Evidence from Natural Experiments in 17 Low- and Middle-Income Countries (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Child%20Marriage%20Bans%20and%20Female%20Schooling%20and%20Labor%20Market%20Outcomes%3A%20Evidence%20from%20Natural%20Experiments%20in%2017%20Low-%20and%20Middle-Income%20Countries)
+
+### How Do Beliefs about the Gender Wage Gap Affect the Demand for Public Policy? (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=How%20Do%20Beliefs%20about%20the%20Gender%20Wage%20Gap%20Affect%20the%20Demand%20for%20Public%20Policy%3F)
+
+### Mortality, Temperature, and Public Health Provision: Evidence from Mexico (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Mortality%2C%20Temperature%2C%20and%20Public%20Health%20Provision%3A%20Evidence%20from%20Mexico)
+
+### Multinationals' Sales and Profit Shifting in Tax Havens (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Multinationals%27%20Sales%20and%20Profit%20Shifting%20in%20Tax%20Havens)
+
+### School Spending and Student Outcomes: Evidence from Revenue Limit Elections in Wisconsin (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=School%20Spending%20and%20Student%20Outcomes%3A%20Evidence%20from%20Revenue%20Limit%20Elections%20in%20Wisconsin)
+
+### Student Performance, Peer Effects, and Friend Networks: Evidence from a Randomized Peer Intervention (2023)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Student%20Performance%2C%20Peer%20Effects%2C%20and%20Friend%20Networks%3A%20Evidence%20from%20a%20Randomized%20Peer%20Intervention)
+
+### The Labor Market Impacts of Universal and Permanent Cash Transfers: Evidence from the Alaska Permanent Fund (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=The%20Labor%20Market%20Impacts%20of%20Universal%20and%20Permanent%20Cash%20Transfers%3A%20Evidence%20from%20the%20Alaska%20Permanent%20Fund)
+
+### The Long-Run Effects of Sports Club Vouchers for Primary School Children (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=The%20Long-Run%20Effects%20of%20Sports%20Club%20Vouchers%20for%20Primary%20School%20Children)
+
+### The Long-Term Effects of Measles Vaccination on Earnings and Employment (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=The%20Long-Term%20Effects%20of%20Measles%20Vaccination%20on%20Earnings%20and%20Employment)
+
+### Yellow Vests, Pessimistic Beliefs, and Carbon Tax Aversion (2022)
+- Journal: AEJ: Economic Policy
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Yellow%20Vests%2C%20Pessimistic%20Beliefs%2C%20and%20Carbon%20Tax%20Aversion)
+
+### Bubbles, Crashes, and Economic Growth: Theory and Evidence (2023)
+- Journal: AEJ: Macroeconomics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Bubbles%2C%20Crashes%2C%20and%20Economic%20Growth%3A%20Theory%20and%20Evidence)
+
+### Declining Worker Turnover: The Role of Short-Duration Employment Spells (2022)
+- Journal: AEJ: Macroeconomics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Declining%20Worker%20Turnover%3A%20The%20Role%20of%20Short-Duration%20Employment%20Spells)
+
+### News Shocks under Financial Frictions (2022)
+- Journal: AEJ: Macroeconomics
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=News%20Shocks%20under%20Financial%20Frictions)
+
+### Can Technology Solve the Principal-Agent Problem? Evidence from China's War on Air Pollution (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Can%20Technology%20Solve%20the%20Principal-Agent%20Problem%3F%20Evidence%20from%20China%27s%20War%20on%20Air%20Pollution)
+
+### Digital Addiction (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Digital%20Addiction)
+
+### Enabling or Limiting Cognitive Flexibility? Evidence of Demand for Moral Commitment (2023)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Enabling%20or%20Limiting%20Cognitive%20Flexibility%3F%20Evidence%20of%20Demand%20for%20Moral%20Commitment)
+
+### Evaluating Deliberative Competence: A Simple Method with an Application to Financial Choice (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Evaluating%20Deliberative%20Competence%3A%20A%20Simple%20Method%20with%20an%20Application%20to%20Financial%20Choice)
+
+### Interaction, Stereotypes, and Performance: Evidence from South Africa (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Interaction%2C%20Stereotypes%2C%20and%20Performance%3A%20Evidence%20from%20South%20Africa)
+
+### Local Elites as State Capacity: How City Chiefs Use Local Information to Increase Tax Compliance in the Democratic Republic of the Congo (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Local%20Elites%20as%20State%20Capacity%3A%20How%20City%20Chiefs%20Use%20Local%20Information%20to%20Increase%20Tax%20Compliance%20in%20the%20Democratic%20Republic%20of%20the%20Congo)
+
+### Market Access and Quality Upgrading: Evidence from Four Field Experiments (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Market%20Access%20and%20Quality%20Upgrading%3A%20Evidence%20from%20Four%20Field%20Experiments)
+
+### Measuring the Welfare Effects of Pride and Shame (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Measuring%20the%20Welfare%20Effects%20of%20Pride%20and%20Shame)
+
+### Political Turnover, Bureaucratic Turnover, and the Quality of Public Services (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Political%20Turnover%2C%20Bureaucratic%20Turnover%2C%20and%20the%20Quality%20of%20Public%20Services)
+
+### Rebel on the Canal: Disrupted Trade Access and Social Conflict in China, 1650–1911 (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Rebel%20on%20the%20Canal%3A%20Disrupted%20Trade%20Access%20and%20Social%20Conflict%20in%20China%2C%201650%20131911)
+
+### Reshaping Adolescents' Gender Attitudes: Evidence from a School-Based Experiment in India (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Reshaping%20Adolescents%27%20Gender%20Attitudes%3A%20Evidence%20from%20a%20School-Based%20Experiment%20in%20India)
+
+### Targeting High Ability Entrepreneurs Using Community Information: Mechanism Design in the Field (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Targeting%20High%20Ability%20Entrepreneurs%20Using%20Community%20Information%3A%20Mechanism%20Design%20in%20the%20Field)
+
+### Technological Change and the Consequences of Job Loss (2023)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Technological%20Change%20and%20the%20Consequences%20of%20Job%20Loss)
+
+### The Common-Probability Auction Puzzle (2023)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=The%20Common-Probability%20Auction%20Puzzle)
+
+### The Relative Efficiency of Skilled Labor across Countries: Measurement and Interpretation (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=The%20Relative%20Efficiency%20of%20Skilled%20Labor%20across%20Countries%3A%20Measurement%20and%20Interpretation)
+
+### Vulnerability and Clientelism (2022)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Vulnerability%20and%20Clientelism)
+
+### When a Doctor Falls from the Sky: The Impact of Easing Doctor Supply Constraints on Mortality (2023)
+- Journal: AER: Insights
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=When%20a%20Doctor%20Falls%20from%20the%20Sky%3A%20The%20Impact%20of%20Easing%20Doctor%20Supply%20Constraints%20on%20Mortality)
+
+### Motivated Beliefs and Anticipation of Uncertainty Resolution (2022)
+- Journal: AER
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Motivated%20Beliefs%20and%20Anticipation%20of%20Uncertainty%20Resolution)
+
+### Wage Cyclicality and Labor Market Sorting (2022)
+- Journal: AER
+- [Search for replication package](https://www.openicpsr.org/openicpsr/search/aea/studies?q=Wage%20Cyclicality%20and%20Labor%20Market%20Sorting)
+
+## Harvard Dataverse (22 papers)
+
+### Ascriptive Characteristics and Perceptions of Impropriety in the Rule of Law: Race, Gender, and Public Assessments of Whether Judges Can Be Impartial (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Ascriptive%20Characteristics%20and%20Perceptions%20of%20Impropriety%20in%20the%20Rule%20of%20Law%3A%20Race%2C%20Gender%2C%20and%20Public%20Assessments%20of%20Whether%20Judges%20Can%20Be%20Impartial)
+
+### Decentralization Can Increase Cooperation Among Public Officials (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Decentralization%20Can%20Increase%20Cooperation%20Among%20Public%20Officials)
+
+### Entertaining Beliefs in Economic Mobility (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Entertaining%20Beliefs%20in%20Economic%20Mobility)
+
+### Hate Crimes and Gender Imbalances: Fears over Mate Competition and Violence against Refugees (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Hate%20Crimes%20and%20Gender%20Imbalances%3A%20Fears%20over%20Mate%20Competition%20and%20Violence%20against%20Refugees)
+
+### Ideological Asymmetries and the Determinants of Politically Motivated Reasoning (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Ideological%20Asymmetries%20and%20the%20Determinants%20of%20Politically%20Motivated%20Reasoning)
+
+### Indecent Disclosures: Anticorruption Reforms and Political Selection (2023)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Indecent%20Disclosures%3A%20Anticorruption%20Reforms%20and%20Political%20Selection)
+
+### Parties as Disciplinarians: Charisma and Commitment Problems in Programmatic Campaigning (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Parties%20as%20Disciplinarians%3A%20Charisma%20and%20Commitment%20Problems%20in%20Programmatic%20Campaigning)
+
+### Policy Deliberation and Voter Persuasion: Experimental Evidence from an Election in the Philippines (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Policy%20Deliberation%20and%20Voter%20Persuasion%3A%20Experimental%20Evidence%20from%20an%20Election%20in%20the%20Philippines)
+
+### Public Infrastructure and Economic Development: Evidence from Postal Systems (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Public%20Infrastructure%20and%20Economic%20Development%3A%20Evidence%20from%20Postal%20Systems)
+
+### Re-Assessing Elite-Public Gaps in Political Behavior (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Re-Assessing%20Elite-Public%20Gaps%20in%20Political%20Behavior)
+
+### Talking Shops: The Effects of Caucus Discussion on Policy Coalitions (2022)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Talking%20Shops%3A%20The%20Effects%20of%20Caucus%20Discussion%20on%20Policy%20Coalitions)
+
+### The Geography of Repression and Opposition to Autocracy (2023)
+- Journal: AJPS
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=The%20Geography%20of%20Repression%20and%20Opposition%20to%20Autocracy)
+
+### Campaign Contributions and Roll-Call Voting in the U.S. House of Representatives: The Case of the Sugar Industry (2023)
+- Journal: APSR or J Politics
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Campaign%20Contributions%20and%20Roll-Call%20Voting%20in%20the%20U.S.%20House%20of%20Representatives%3A%20The%20Case%20of%20the%20Sugar%20Industry)
+
+### Can't We All Just Get Along? How Women MPs Can Ameliorate Affective Polarization in Western Publics (2023)
+- Journal: APSR or J Politics
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Can%27t%20We%20All%20Just%20Get%20Along%3F%20How%20Women%20MPs%20Can%20Ameliorate%20Affective%20Polarization%20in%20Western%20Publics)
+
+### Does Competence Make Citizens Tolerate Undemocratic Behavior? (2022)
+- Journal: APSR or J Politics
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Does%20Competence%20Make%20Citizens%20Tolerate%20Undemocratic%20Behavior%3F)
+
+### Effective for Whom? Ethnic Identity and Nonviolent Resistance (2022)
+- Journal: APSR or J Politics
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Effective%20for%20Whom%3F%20Ethnic%20Identity%20and%20Nonviolent%20Resistance)
+
+### Flight to Safety: COVID-Induced Changes in the Intensity of Status Quo Preference and Voting Behavior (2022)
+- Journal: APSR or J Politics
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Flight%20to%20Safety%3A%20COVID-Induced%20Changes%20in%20the%20Intensity%20of%20Status%20Quo%20Preference%20and%20Voting%20Behavior)
+
+### The Curious Case of Theresa May and the Public That Did Not Rally: Gendered Reactions to Terrorist Attacks Can Cause Slumps Not Bumps (2022)
+- Journal: APSR or J Politics
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=The%20Curious%20Case%20of%20Theresa%20May%20and%20the%20Public%20That%20Did%20Not%20Rally%3A%20Gendered%20Reactions%20to%20Terrorist%20Attacks%20Can%20Cause%20Slumps%20Not%20Bumps)
+
+### Brahmin Left Versus Merchant Right: Changing Political Cleavages in 21 Western Democracies, 1948–2020 (2022)
+- Journal: QJE
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Brahmin%20Left%20Versus%20Merchant%20Right%3A%20Changing%20Political%20Cleavages%20in%2021%20Western%20Democracies%2C%201948%20132020)
+
+### Inflammatory Political Campaigns and Racial Bias in Policing (2023)
+- Journal: QJE
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=Inflammatory%20Political%20Campaigns%20and%20Racial%20Bias%20in%20Policing)
+
+### The Macroeconomics of Sticky Prices with Generalized Hazard Functions (2022)
+- Journal: QJE
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=The%20Macroeconomics%20of%20Sticky%20Prices%20with%20Generalized%20Hazard%20Functions)
+
+### War, Socialism, and the Rise of Fascism: an Empirical Exploration (2022)
+- Journal: QJE
+- [Search for replication package](https://dataverse.harvard.edu/dataverse/harvard?q=War%2C%20Socialism%2C%20and%20the%20Rise%20of%20Fascism%3A%20an%20Empirical%20Exploration)
+
+## Oxford Academic (22 papers)
+
+### Finance and Green Growth (2023)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Finance%20and%20Green%20Growth)
+
+### Gender Differences in Cooperative Environments? Evidence from the U.S. Congress (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Gender%20Differences%20in%20Cooperative%20Environments%3F%20Evidence%20from%20the%20U.S.%20Congress)
+
+### Hobo Economicus (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Hobo%20Economicus)
+
+### Jumping the Gun: How Dictators Got Ahead of Their Subjects (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Jumping%20the%20Gun%3A%20How%20Dictators%20Got%20Ahead%20of%20Their%20Subjects)
+
+### Major Reforms in Electricity Pricing: Evidence from a Quasi-Experiment (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Major%20Reforms%20in%20Electricity%20Pricing%3A%20Evidence%20from%20a%20Quasi-Experiment)
+
+### Market-Based Monetary Policy Uncertainty (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Market-Based%20Monetary%20Policy%20Uncertainty)
+
+### Non-Linearities, State-Dependent Prices and the Transmission Mechanism of Monetary Policy (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Non-Linearities%2C%20State-Dependent%20Prices%20and%20the%20Transmission%20Mechanism%20of%20Monetary%20Policy)
+
+### Patience, Risk-Taking, and Human Capital Investment Across Countries (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Patience%2C%20Risk-Taking%2C%20and%20Human%20Capital%20Investment%20Across%20Countries)
+
+### Peer Effects in Academic Research: Senders and Receivers (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Peer%20Effects%20in%20Academic%20Research%3A%20Senders%20and%20Receivers)
+
+### Pre-Colonial Warfare and Long-Run Development in India (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Pre-Colonial%20Warfare%20and%20Long-Run%20Development%20in%20India)
+
+### Run-off Elections in the Laboratory (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Run-off%20Elections%20in%20the%20Laboratory)
+
+### Social Class and (Un)Ethical Behaviour: Causal and Correlational Evidence (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Social%20Class%20and%20%28Un%29Ethical%20Behaviour%3A%20Causal%20and%20Correlational%20Evidence)
+
+### Spillover Effects of Intellectual Property Protection in the Interwar Aircraft Industry (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Spillover%20Effects%20of%20Intellectual%20Property%20Protection%20in%20the%20Interwar%20Aircraft%20Industry)
+
+### Teaching Norms: Direct Evidence of Parental Transmission (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Teaching%20Norms%3A%20Direct%20Evidence%20of%20Parental%20Transmission)
+
+### The Wheels of Change: Technology Adoption, Millwrights and the Persistence in Britain's Industrialisation (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=The%20Wheels%20of%20Change%3A%20Technology%20Adoption%2C%20Millwrights%20and%20the%20Persistence%20in%20Britain%27s%20Industrialisation)
+
+### Understanding Ethnolinguistic Differences: The Roles of Geography and Trade (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Understanding%20Ethnolinguistic%20Differences%3A%20The%20Roles%20of%20Geography%20and%20Trade)
+
+### Who Sells During a Crash? Evidence from Tax Return Data on Daily Sales of Stock (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Who%20Sells%20During%20a%20Crash%3F%20Evidence%20from%20Tax%20Return%20Data%20on%20Daily%20Sales%20of%20Stock)
+
+### Why Don't Firms Hire Young Workers During Recessions? (2022)
+- Journal: Economic Journal
+- [Search for replication package](https://academic.oup.com/search-results?q=Why%20Don%27t%20Firms%20Hire%20Young%20Workers%20During%20Recessions%3F)
+
+### Concentration Bias in Intertemporal Choice (2022)
+- Journal: Review of Economic Studies
+- [Search for replication package](https://academic.oup.com/search-results?q=Concentration%20Bias%20in%20Intertemporal%20Choice)
+
+### Immigration and Redistribution (2022)
+- Journal: Review of Economic Studies
+- [Search for replication package](https://academic.oup.com/search-results?q=Immigration%20and%20Redistribution)
+
+### Interventions and Cognitive Spillovers (2022)
+- Journal: Review of Economic Studies
+- [Search for replication package](https://academic.oup.com/search-results?q=Interventions%20and%20Cognitive%20Spillovers)
+
+### Who Chooses Commitment? Evidence and Welfare Implications (2022)
+- Journal: Review of Economic Studies
+- [Search for replication package](https://academic.oup.com/search-results?q=Who%20Chooses%20Commitment%3F%20Evidence%20and%20Welfare%20Implications)
+
+## Journal Website (8 papers)
+
+### Cooperative Property Rights and Development: Evidence from Land Reform in El Salvador (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=Cooperative%20Property%20Rights%20and%20Development%3A%20Evidence%20from%20Land%20Reform%20in%20El%20Salvador+replication+data)
+
+### Good Reverberations? Teacher Influence in Music Composition since 1450 (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=Good%20Reverberations%3F%20Teacher%20Influence%20in%20Music%20Composition%20since%201450+replication+data)
+
+### How Much Should We Trust the Dictator’s GDP Growth Estimates? (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=How%20Much%20Should%20We%20Trust%20the%20Dictator%2019s%20GDP%20Growth%20Estimates%3F+replication+data)
+
+### Sorting or Steering: The Effects of Housing Discrimination on Neighborhood Choice (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=Sorting%20or%20Steering%3A%20The%20Effects%20of%20Housing%20Discrimination%20on%20Neighborhood%20Choice+replication+data)
+
+### The Dynamics and Spillovers of Management Interventions: Evidence from the Training within Industry Program (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=The%20Dynamics%20and%20Spillovers%20of%20Management%20Interventions%3A%20Evidence%20from%20the%20Training%20within%20Industry%20Program+replication+data)
+
+### The Economic Effects of Long-Term Climate Change: Evidence from the Little Ice Age (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=The%20Economic%20Effects%20of%20Long-Term%20Climate%20Change%3A%20Evidence%20from%20the%20Little%20Ice%20Age+replication+data)
+
+### The Effects of Banking Competition on Growth and Financial Stability: Evidence from the National Banking Era (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=The%20Effects%20of%20Banking%20Competition%20on%20Growth%20and%20Financial%20Stability%3A%20Evidence%20from%20the%20National%20Banking%20Era+replication+data)
+
+### The Origin of the State: Land Productivity or Appropriability? (2022)
+- Journal: Journal of Political Economy
+- [Search for replication package](https://scholar.google.com/scholar?q=The%20Origin%20of%20the%20State%3A%20Land%20Productivity%20or%20Appropriability%3F+replication+data)
+
+## Varies (11 papers)
+
+### Antinormative Messaging, Group Cues, and the Nuclear Ban Treaty (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Antinormative%20Messaging%2C%20Group%20Cues%2C%20and%20the%20Nuclear%20Ban%20Treaty+replication+data)
+
+### Black Workers in White Places: Daytime Racial Diversity and White Public Opinion (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Black%20Workers%20in%20White%20Places%3A%20Daytime%20Racial%20Diversity%20and%20White%20Public%20Opinion+replication+data)
+
+### Changing Hearts and Minds? Why Media Messages Designed to Foster Empathy Often Fail (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Changing%20Hearts%20and%20Minds%3F%20Why%20Media%20Messages%20Designed%20to%20Foster%20Empathy%20Often%20Fail+replication+data)
+
+### Changing Tides: Public Attitudes on Climate Migration (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Changing%20Tides%3A%20Public%20Attitudes%20on%20Climate%20Migration+replication+data)
+
+### Does Public Opinion Affect the Preferences of Foreign Policy Leaders? Experimental Evidence from the UK Parliament (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Does%20Public%20Opinion%20Affect%20the%20Preferences%20of%20Foreign%20Policy%20Leaders%3F%20Experimental%20Evidence%20from%20the%20UK%20Parliament+replication+data)
+
+### Multiracial Identity and Political Preferences (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Multiracial%20Identity%20and%20Political%20Preferences+replication+data)
+
+### Not All Elections Are Created Equal: Election Quality and Civil Conflict (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Not%20All%20Elections%20Are%20Created%20Equal%3A%20Election%20Quality%20and%20Civil%20Conflict+replication+data)
+
+### Playing Politics with Environmental Protection: The Political Economy of Designating Protected Areas (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=Playing%20Politics%20with%20Environmental%20Protection%3A%20The%20Political%20Economy%20of%20Designating%20Protected%20Areas+replication+data)
+
+### State Action to Prevent Violence Against Women: The Effect of Women's Police Stations on Men's Attitudes toward Gender-based Violence (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=State%20Action%20to%20Prevent%20Violence%20Against%20Women%3A%20The%20Effect%20of%20Women%27s%20Police%20Stations%20on%20Men%27s%20Attitudes%20toward%20Gender-based%20Violence+replication+data)
+
+### The Morning After: Cabinet Instability and the Purging of Ministers after Failed Coup Attempts in Autocracies (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=The%20Morning%20After%3A%20Cabinet%20Instability%20and%20the%20Purging%20of%20Ministers%20after%20Failed%20Coup%20Attempts%20in%20Autocracies+replication+data)
+
+### What Makes Anticorruption Punishment Popular? Individual-Level Evidence from China (2022)
+- Journal: Political Science journal
+- [Search for replication package](https://scholar.google.com/scholar?q=What%20Makes%20Anticorruption%20Punishment%20Popular%3F%20Individual-Level%20Evidence%20from%20China+replication+data)
+

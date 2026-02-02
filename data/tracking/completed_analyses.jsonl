@@ -304,3 +304,11 @@
 {"paper_id": "231591-V1", "unified_at": "2026-02-01T16:39:09.601197"}
 {"paper_id": "194141-V1", "unified_at": "2026-02-01T16:39:09.601199"}
 {"paper_id": "211741-V1", "unified_at": "2026-02-01T16:39:09.601201"}
+{"paper_id": "116136-V2", "specification_search_completed": "2026-02-01T23:39:01.305146", "method": "difference_in_differences", "n_specifications": 30, "n_successful": 27, "baseline_coef": 17739.37, "baseline_pval": 0.0026, "journal": "AER"}
+{"paper_id": "112870-V2", "specification_search_completed": "2026-02-02T04:42:01.6N", "method": "duration_survival", "n_specifications": 42, "n_successful": 40, "baseline_coef": -0.5253, "baseline_pval": 0.0, "journal": "AER"}
+{"paper_id": "158081-V7", "specification_search_completed": "2026-02-01T23:48:00.000000", "method": "cross_sectional_ols", "n_specifications": 60, "n_successful": 60, "baseline_coef": -0.0053, "baseline_pval": 0.0, "journal": "AEJ: Macro"}
+{"paper_id": "151261-V2", "specification_search_completed": "2026-02-01T23:49:06.859749", "method": "instrumental_variables", "n_specifications": 47, "n_successful": 46, "baseline_coef": 0.1125, "baseline_pval": 0.0006, "journal": "AEJ: Applied"}
+{"paper_id": "174781-V2", "specification_search_completed": "2026-02-01T23:50:59.365792", "method": "cross_sectional_ols", "n_specifications": 59, "n_successful": 59, "baseline_coef": 0.2112, "baseline_pval": 0.0, "journal": "AER"}
+{"paper_id": "184341-V2", "specification_search_completed": "2026-02-02T08:00:00.000000", "method": "cross_sectional_ols", "n_specifications": 59, "n_successful": 59, "baseline_coef": -1.244, "baseline_pval": 0.0001, "journal": "AER: P&P"}
+{"paper_id": "194886-V3", "specification_search_completed": "2026-02-02T12:00:00.000000", "method": "cross_sectional_ols", "n_specifications": 81, "n_successful": 81, "baseline_coef": 17.61, "baseline_pval": 0.0, "journal": "AER"}
+{"paper_id": "195142-V1", "specification_search_completed": "2026-02-02T00:08:52.881334", "method": "difference_in_differences", "n_specifications": 33, "n_successful": 33, "baseline_coef": -0.0386, "baseline_pval": 0.2545, "journal": "AEJ: Policy", "note": "County-level analysis only - plant-level BHP data not publicly available"}

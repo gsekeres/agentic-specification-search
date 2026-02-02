@@ -14,6 +14,29 @@ Run a systematic specification search on paper **{PAPER_ID}** following the spec
 
 ---
 
+## MINIMUM SPECIFICATION TARGET: 50+ SPECIFICATIONS
+
+Based on the Institute for Replication (i4r) methodology, you MUST run **at least 50 specifications** per paper. The i4r average is 63 specs per paper, with many papers having 100+.
+
+### Required Robustness Categories (i4r checklist)
+
+| Category | Min Specs | Description |
+|----------|-----------|-------------|
+| **Control variations** | 10-15 | Drop each control, add incrementally, alternative sets |
+| **Sample restrictions** | 10-15 | By time, geography, demographics, outlier handling |
+| **Alternative outcomes** | 5-10 | Different DV codings, related outcomes |
+| **Alternative treatments** | 3-5 | Binary vs continuous, intensity, thresholds |
+| **Inference variations** | 5-8 | Different clustering, robust SEs, two-way |
+| **Estimation method** | 3-5 | Different FE structures, OLS vs alternatives |
+| **Functional form** | 3-5 | Log, IHS, levels, polynomials |
+| **Weights** | 2-3 | Weighted vs unweighted, different weights |
+| **Placebo tests** | 3-5 | Pre-treatment, fake timing, unaffected outcomes |
+| **Heterogeneity** | 5-10 | Interactions with gender, age, income, etc. |
+
+If you are finishing with fewer than 50 specifications, you have NOT been thorough enough. Go back and add more variations.
+
+---
+
 ## Step 1: Understand the Paper
 
 1. Read the README and any documentation
@@ -123,36 +146,216 @@ For each spec in the method file:
 - Save `coefficient_vector_json`
 - Include `spec_tree_path` that points to the method tree header or table section
 
-## Step 7: Run Robustness Checks
+## Step 7: Run Robustness Checks (COMPREHENSIVE - aim for 40+ robustness specs)
 
-Apply specifications from `specification_tree/robustness/`:
+Following the Institute for Replication (i4r) methodology, run ALL of the following robustness check categories. This is the core of the specification search.
 
-### Leave-One-Out
+### 7.1 Control Variable Variations (~10-15 specs)
+
+**Leave-One-Out** - Drop each control one at a time:
 ```python
 for control in all_controls:
     remaining = [c for c in all_controls if c != control]
     model = pf.feols(f"y ~ treat + {'+'.join(remaining)} | fe", data=df)
-    results.append({'spec_id': f'robust/loo/drop_{control}', ...})
+    results.append({'spec_id': f'robust/control/drop_{control}', ...})
 ```
 
-### Single Covariate
+**Add Controls Incrementally** - Build up from bivariate:
 ```python
-# Bivariate
+# Bivariate (no controls)
 model = pf.feols("y ~ treat | fe", data=df)
-results.append({'spec_id': 'robust/single/none', ...})
+results.append({'spec_id': 'robust/control/none', ...})
 
-for control in all_controls:
-    model = pf.feols(f"y ~ treat + {control} | fe", data=df)
-    results.append({'spec_id': f'robust/single/{control}', ...})
+# Add each control one at a time
+for i, control in enumerate(all_controls):
+    controls_so_far = all_controls[:i+1]
+    model = pf.feols(f"y ~ treat + {'+'.join(controls_so_far)} | fe", data=df)
+    results.append({'spec_id': f'robust/control/add_{control}', ...})
 ```
 
-### Clustering Variations
+**Alternative Control Sets** - If paper uses different control sets in different tables:
 ```python
-for cluster_var in ['unit', 'time', 'region']:
-    model = pf.feols("y ~ treat + controls | fe",
-                     data=df, vcov={'CRV1': cluster_var})
-results.append({'spec_id': f'robust/cluster/{cluster_var}', ...})
+for control_set_name, controls in [('minimal', minimal_controls), ('full', full_controls), ('extended', extended_controls)]:
+    model = pf.feols(f"y ~ treat + {'+'.join(controls)} | fe", data=df)
+    results.append({'spec_id': f'robust/control/set_{control_set_name}', ...})
 ```
+
+### 7.2 Sample Restrictions (~10-15 specs)
+
+**Time Period Restrictions**:
+```python
+# Drop first/last year
+for year in df['year'].unique():
+    model = pf.feols("y ~ treat + controls | fe", data=df[df['year'] != year])
+    results.append({'spec_id': f'robust/sample/drop_year_{year}', ...})
+
+# Pre-2000 vs post-2000 (or relevant cutoff)
+model = pf.feols("y ~ treat + controls | fe", data=df[df['year'] < 2000])
+results.append({'spec_id': 'robust/sample/pre_2000', ...})
+```
+
+**Geographic Restrictions** (if applicable):
+```python
+# Drop each region/state
+for region in df['region'].unique():
+    model = pf.feols("y ~ treat + controls | fe", data=df[df['region'] != region])
+    results.append({'spec_id': f'robust/sample/drop_{region}', ...})
+```
+
+**Demographic/Unit Restrictions**:
+```python
+# By gender, age groups, income levels, firm size, etc.
+for group_name, condition in [('male', df['male']==1), ('female', df['male']==0),
+                               ('young', df['age']<40), ('old', df['age']>=40)]:
+    model = pf.feols("y ~ treat + controls | fe", data=df[condition])
+    results.append({'spec_id': f'robust/sample/{group_name}', ...})
+```
+
+**Outlier Treatment**:
+```python
+# Winsorize at 1%, 5%, 10%
+for pct in [1, 5, 10]:
+    df_wins = df.copy()
+    df_wins['y'] = df_wins['y'].clip(lower=df_wins['y'].quantile(pct/100),
+                                      upper=df_wins['y'].quantile(1-pct/100))
+    model = pf.feols("y ~ treat + controls | fe", data=df_wins)
+    results.append({'spec_id': f'robust/sample/winsorize_{pct}pct', ...})
+
+# Trim extreme values
+model = pf.feols("y ~ treat + controls | fe",
+                 data=df[(df['y'] > df['y'].quantile(0.01)) & (df['y'] < df['y'].quantile(0.99))])
+results.append({'spec_id': 'robust/sample/trim_1pct', ...})
+```
+
+### 7.3 Alternative Outcomes (~5-10 specs)
+
+If the paper has multiple outcome variables or the outcome can be measured differently:
+```python
+for outcome in ['outcome1', 'outcome2', 'log_outcome', 'outcome_binary']:
+    model = pf.feols(f"{outcome} ~ treat + controls | fe", data=df)
+    results.append({'spec_id': f'robust/outcome/{outcome}', ...})
+```
+
+### 7.4 Alternative Treatment Definitions (~3-5 specs)
+
+If treatment can be coded differently:
+```python
+# Continuous vs binary treatment
+# Different treatment thresholds
+# Intensity vs any treatment
+for treat_var in ['treat_binary', 'treat_continuous', 'treat_intensity']:
+    model = pf.feols(f"y ~ {treat_var} + controls | fe", data=df)
+    results.append({'spec_id': f'robust/treatment/{treat_var}', ...})
+```
+
+### 7.5 Inference/Clustering Variations (~5-8 specs)
+
+```python
+# Different clustering levels
+for cluster in ['unit_id', 'time_id', 'region_id', 'state_id']:
+    if cluster in df.columns:
+        model = pf.feols("y ~ treat + controls | fe", data=df, vcov={'CRV1': cluster})
+        results.append({'spec_id': f'robust/cluster/{cluster}', ...})
+
+# Two-way clustering
+model = pf.feols("y ~ treat + controls | fe", data=df, vcov={'CRV1': ['unit_id', 'time_id']})
+results.append({'spec_id': 'robust/cluster/twoway', ...})
+
+# Robust (heteroskedasticity-consistent) SEs
+model = pf.feols("y ~ treat + controls | fe", data=df, vcov='hetero')
+results.append({'spec_id': 'robust/cluster/robust_hc1', ...})
+
+# Wild bootstrap (if small number of clusters)
+# Note: may need to implement separately
+```
+
+### 7.6 Estimation Method Variations (~3-5 specs)
+
+```python
+# OLS vs Poisson (for count outcomes)
+# OLS vs Logit/Probit (for binary outcomes)
+# OLS vs Tobit (for censored outcomes)
+# With and without fixed effects
+# Different FE structures
+
+# No fixed effects
+model = pf.feols("y ~ treat + controls", data=df, vcov={'CRV1': 'cluster_var'})
+results.append({'spec_id': 'robust/estimation/no_fe', ...})
+
+# Only unit FE
+model = pf.feols("y ~ treat + controls | unit_id", data=df, vcov={'CRV1': 'cluster_var'})
+results.append({'spec_id': 'robust/estimation/unit_fe_only', ...})
+
+# Only time FE
+model = pf.feols("y ~ treat + controls | time_id", data=df, vcov={'CRV1': 'cluster_var'})
+results.append({'spec_id': 'robust/estimation/time_fe_only', ...})
+```
+
+### 7.7 Functional Form (~3-5 specs)
+
+```python
+# Log outcome
+model = pf.feols("np.log(y+1) ~ treat + controls | fe", data=df)
+results.append({'spec_id': 'robust/funcform/log_outcome', ...})
+
+# Inverse hyperbolic sine
+model = pf.feols("np.arcsinh(y) ~ treat + controls | fe", data=df)
+results.append({'spec_id': 'robust/funcform/ihs_outcome', ...})
+
+# Levels vs logs for controls
+# Polynomial terms
+# Squared terms
+```
+
+### 7.8 Weights Variations (~2-3 specs)
+
+If the paper uses weights or weighting is sensible:
+```python
+# Unweighted (if paper uses weights)
+model = pf.feols("y ~ treat + controls | fe", data=df)  # no weights
+results.append({'spec_id': 'robust/weights/unweighted', ...})
+
+# Population weights
+model = pf.feols("y ~ treat + controls | fe", data=df, weights='pop_weight')
+results.append({'spec_id': 'robust/weights/population', ...})
+```
+
+### 7.9 Placebo Tests (~3-5 specs)
+
+```python
+# Placebo treatment (pre-treatment period for DiD)
+# Placebo outcome (outcome that shouldn't be affected)
+# Randomization inference / permutation test
+
+# Pre-treatment placebo (for DiD/event study)
+model = pf.feols("y ~ treat_placebo + controls | fe", data=df[df['period'] < 0])
+results.append({'spec_id': 'robust/placebo/pre_treatment', ...})
+
+# Fake treatment date
+df['fake_treat'] = (df['year'] >= fake_cutoff).astype(int)
+model = pf.feols("y ~ fake_treat + controls | fe", data=df)
+results.append({'spec_id': 'robust/placebo/fake_timing', ...})
+```
+
+### 7.10 Heterogeneity Analysis (~5-10 specs)
+
+```python
+# Interactions with key variables
+for het_var in ['male', 'high_income', 'urban', 'large_firm']:
+    if het_var in df.columns:
+        model = pf.feols(f"y ~ treat * {het_var} + controls | fe", data=df)
+        results.append({'spec_id': f'robust/heterogeneity/{het_var}', ...})
+```
+
+---
+
+**CHECKPOINT**: After running all robustness checks, count your specifications. If you have fewer than 50, go back and add more variations. Common areas to expand:
+- More sample restrictions (different years, regions, subgroups)
+- More control combinations
+- More outcome variations
+- More heterogeneity analyses
+
+---
 
 Every robustness run must include:
 1. `spec_id`
@@ -267,14 +470,22 @@ Also create `SPECIFICATION_SEARCH.md` in the package directory:
 
 [Explanation]
 
-## Specification Breakdown
+## Specification Breakdown by Category (i4r format)
 
-| Category | N | % Significant |
-|----------|---|---------------|
-| Baseline | 1 | X% |
-| Method variations | X | X% |
-| Robustness checks | X | X% |
-| Custom | X | X% |
+| Category | N | % Positive | % Sig 5% |
+|----------|---|------------|----------|
+| Baseline | 1 | - | - |
+| Control variations | X | X% | X% |
+| Sample restrictions | X | X% | X% |
+| Alternative outcomes | X | X% | X% |
+| Alternative treatments | X | X% | X% |
+| Inference variations | X | X% | X% |
+| Estimation method | X | X% | X% |
+| Functional form | X | X% | X% |
+| Weights | X | X% | X% |
+| Placebo tests | X | X% | X% |
+| Heterogeneity | X | X% | X% |
+| **TOTAL** | **≥50** | **X%** | **X%** |
 
 ## Key Findings
 
@@ -322,6 +533,20 @@ else:
 with open(status_file, 'w') as f:
     json.dump(status, f, indent=2)
 ```
+
+---
+
+## Step 11: Disk Cleanup
+
+**CRITICAL FINAL STEP**: After completing steps 9-10, run this cleanup to free disk space:
+
+```bash
+bash /Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/scripts/cleanup_after_spec_search.sh {PAPER_ID}
+```
+
+This script keeps only `specification_results.csv` and `SPECIFICATION_SEARCH.md` in the package directory, deleting all raw data files to save disk space.
+
+**Do NOT skip this step** - the raw data files are large and no longer needed after analysis.
 
 ---
 

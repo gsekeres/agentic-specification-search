@@ -30,9 +30,15 @@ These checks apply to every paper regardless of primary method:
 |-------|------|-------------|
 | Leave-One-Out | [robustness/leave_one_out.md](robustness/leave_one_out.md) | Drop each covariate |
 | Single Covariate | [robustness/single_covariate.md](robustness/single_covariate.md) | Treatment + 1 control |
-| Sample Restrictions | [robustness/sample_restrictions.md](robustness/sample_restrictions.md) | Subsamples, time windows |
-| Clustering Variations | [robustness/clustering_variations.md](robustness/clustering_variations.md) | Different SE levels |
-| Functional Form | [robustness/functional_form.md](robustness/functional_form.md) | Logs, polynomials |
+| Sample Restrictions | [robustness/sample_restrictions.md](robustness/sample_restrictions.md) | Subsamples, time windows, outliers |
+| Clustering Variations | [robustness/clustering_variations.md](robustness/clustering_variations.md) | Different SE levels, spatial |
+| Functional Form | [robustness/functional_form.md](robustness/functional_form.md) | Logs, polynomials, quantiles |
+| Inference Alternatives | [robustness/inference_alternatives.md](robustness/inference_alternatives.md) | Randomization, MHT corrections |
+| Placebo Tests | [robustness/placebo_tests.md](robustness/placebo_tests.md) | Fake treatments, pre-trends |
+| Measurement Variations | [robustness/measurement.md](robustness/measurement.md) | Alternative coding, weights |
+| Heterogeneity | [robustness/heterogeneity.md](robustness/heterogeneity.md) | Subgroup analyses, interactions |
+| Model Specification | [robustness/model_specification.md](robustness/model_specification.md) | FE vs RE, estimator choice |
+| Control Progression | [robustness/control_progression.md](robustness/control_progression.md) | Build-up from bivariate |
 
 ## Specification ID Format
 

@@ -1,190 +1,156 @@
+#!/usr/bin/env python3
 """
-Specification Search: Paper 215802-V1
-"Long-Run Impacts of Childhood Access to the Safety Net"
-Hoynes, Schanzenbach, Almond (AER 2016)
+Specification Search: 215802-V1
+Paper: "Long-Run Impacts of Childhood Access to the Safety Net"
+Authors: Hoynes, Schanzenbach & Almond
+Journal: AER
 
-This script performs a systematic specification search on the paper's analysis
-of the long-term effects of childhood Food Stamp Program (FSP) exposure on
-adult health outcomes using PSID data.
+Method: Panel Fixed Effects / Cross-Sectional OLS (hybrid approach)
 
-Method: Difference-in-Differences (staggered rollout across counties/cohorts)
-Method Tree Path: specification_tree/methods/difference_in_differences.md
+Note: The original paper uses county-level Food Stamp Program rollout timing
+interacted with birth cohorts to identify effects. The county identifiers
+are stripped from the public PSID data (require restricted data application).
+
+IMPORTANT DATA LIMITATIONS:
+1. County identifiers are missing (require restricted PSID data)
+2. Treatment assignment variables (shareFSPageIU_5, etc.) are 100% missing
+3. The health outcome (healthy1986) is TIME-INVARIANT - it doesn't change within
+   individuals, so individual FE regressions will fail to identify effects.
+
+This analysis uses available variables with appropriate specifications:
+- CROSS-SECTIONAL analysis for time-invariant outcomes (health status)
+- PANEL FE analysis for time-varying outcomes (income, work limitation, hospitalization)
+- Treatment: Current food stamp receipt (fsyn) and AFDC (afdcyn)
 """
 
 import pandas as pd
 import numpy as np
+import pyfixest as pf
 import json
 import warnings
 warnings.filterwarnings('ignore')
 
-import statsmodels.api as sm
-from scipy import stats
-
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
-
+# Configuration
 PAPER_ID = "215802-V1"
 JOURNAL = "AER"
 PAPER_TITLE = "Long-Run Impacts of Childhood Access to the Safety Net"
-DATA_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/215802-V1/psidAdultHealth.dta"
-OUTPUT_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/215802-V1/"
+BASE_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search"
+DATA_PATH = f"{BASE_PATH}/data/downloads/extracted/{PAPER_ID}"
 
-# Treatment variable
-TREATMENT_VAR = "group_fspart_1"  # Share of childhood with FSP access
-
-# Health outcome variables (coded as 1=condition, 5=no condition in raw data)
-HEALTH_OUTCOMES = {
-    'diabe': 'diabetes',
-    'blood': 'high_blood_pressure',
-    'heatt': 'heart_attack',
-    'hedis': 'heart_disease',
-    'strok': 'stroke',
-    'arthr': 'arthritis',
-    'asthm': 'asthma',
-    'cance': 'cancer',
-    'lungd': 'lung_disease'
-}
-
-# Controls
-BASIC_CONTROLS = ['age', 'age_sq']
-FULL_CONTROLS = ['age', 'age_sq', 'educ', 'famsize']
+# Load data
+print("Loading data...")
+df = pd.read_stata(f"{DATA_PATH}/psidAdultHealth.dta")
 
 # ============================================================================
-# DATA LOADING AND PREPARATION
+# DATA PREPARATION
 # ============================================================================
 
-def load_and_prepare_data():
-    """Load PSID data and prepare variables for analysis."""
-    df = pd.read_stata(DATA_PATH)
+print("Preparing data...")
 
-    # Create person identifier (as integer for proper grouping)
-    df['person_id'] = df['inum1968'] * 1000 + df['person1968']
+# Create individual ID for panel
+df['individual_id'] = df['inum1968'].astype(str) + '_' + df['person1968'].astype(str)
 
-    # Create binary health outcomes (1 = has condition, 0 = no condition)
-    for raw_var, clean_name in HEALTH_OUTCOMES.items():
-        df[clean_name] = np.where(df[raw_var] == 1, 1,
-                                  np.where(df[raw_var] == 5, 0, np.nan))
+# Create binary health outcome (good health = 1)
+# healthy1986: 0=excellent, 1=very good, 2=good, 3=fair, 4=poor
+df['good_health'] = (df['healthy1986'] <= 2).astype(float)
+df.loc[df['healthy1986'].isin([5, 9]), 'good_health'] = np.nan
 
-    # Create metabolic syndrome composite (obesity proxy via high BP, diabetes)
-    df['metabolic_syndrome'] = ((df['diabetes'] == 1) | (df['high_blood_pressure'] == 1)).astype(float)
-    df.loc[(df['diabetes'].isna()) & (df['high_blood_pressure'].isna()), 'metabolic_syndrome'] = np.nan
+# Create continuous health scale (inverted: higher = better)
+df['health_scale'] = 4 - df['healthy1986']
+df.loc[df['healthy1986'].isin([5, 9]), 'health_scale'] = np.nan
 
-    # Create cardiovascular composite
-    df['cardiovascular'] = ((df['heart_attack'] == 1) | (df['heart_disease'] == 1) | (df['stroke'] == 1)).astype(float)
-    df.loc[(df['heart_attack'].isna()) & (df['heart_disease'].isna()) & (df['stroke'].isna()), 'cardiovascular'] = np.nan
+# Excellent health (0-1 only)
+df['excellent_health'] = (df['healthy1986'] <= 1).astype(float)
+df.loc[df['healthy1986'].isin([5, 9]), 'excellent_health'] = np.nan
 
-    # Create age squared
-    df['age_sq'] = df['age'].astype(float) ** 2
+# Poor health (3-4)
+df['poor_health'] = (df['healthy1986'] >= 3).astype(float)
+df.loc[df['healthy1986'].isin([5, 9]), 'poor_health'] = np.nan
 
-    # Create numeric sex variable (Female=1, Male=0)
-    df['female'] = (df['sex'] == 'Female').astype(int)
+# Work limitation binary (1 = has limitation)
+df['work_limited'] = (df['worklimit'] == 1).astype(float)
+df.loc[df['worklimit'].isin([8, 9]), 'work_limited'] = np.nan
 
-    # Create race dummies
-    df['black'] = (df['race'] == 'Black').astype(int)
-    df['white'] = (df['race'] == 'White').astype(int)
+# Create employed binary
+df['employed'] = (df['empstat'] == 'Working now').astype(float)
+df.loc[df['empstat'].isna(), 'employed'] = np.nan
 
-    # Convert numeric columns to float to avoid dtype issues
-    for col in ['age', 'educ', 'famsize', 'yob', 'Datayear']:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors='coerce').astype(float)
+# Create demographic controls
+df['female'] = (df['sex'] == 'Female').astype(float)
+df['black'] = (df['race'] == 'Black').astype(float)
+df.loc[df['race'].isna(), 'black'] = np.nan
+df['white'] = (df['race'] == 'White').astype(float)
+df.loc[df['race'].isna(), 'white'] = np.nan
 
-    # Convert treatment to float
-    df[TREATMENT_VAR] = pd.to_numeric(df[TREATMENT_VAR], errors='coerce').astype(float)
+df['married'] = (df['marstat'] == 'Married').astype(float)
+df.loc[df['marstat'].isna(), 'married'] = np.nan
 
-    return df
+df['age_sq'] = df['age'] ** 2
+
+# Log income (handle zeros and negatives)
+df['log_income'] = np.log(df['totInc'].clip(lower=1))
+
+# Education years (cap at 17)
+df['educ_years'] = df['educ'].clip(upper=17)
+
+# Create treatment variables
+# Main treatment: current food stamp receipt
+df['fs_receipt'] = df['fsyn'].fillna(0)
+
+# Also create AFDC receipt
+df['afdc_receipt'] = df['afdcyn'].fillna(0)
+
+# Combined safety net
+df['any_welfare'] = ((df['fs_receipt'] == 1) | (df['afdc_receipt'] == 1)).astype(float)
+
+# Birth cohort indicators
+df['cohort_early'] = (df['yob'] <= 1965).astype(float)  # Born before FSP expansion
+df['cohort_late'] = (df['yob'] > 1970).astype(float)   # Born after FSP fully implemented
+
+# Hospital utilization
+df['any_hospital'] = (df['hospdays'] > 0).astype(float)
+df.loc[df['hospdays'].isna(), 'any_hospital'] = np.nan
+
+# Log hospital days
+df['log_hospdays'] = np.log(df['hospdays'].clip(lower=1))
+df.loc[df['hospdays'].isna(), 'log_hospdays'] = np.nan
 
 # ============================================================================
-# REGRESSION FUNCTIONS
+# CREATE ANALYSIS SAMPLES
 # ============================================================================
 
-def run_ols_with_fe(df, outcome_var, treatment_var, controls=None, fe_vars=None, cluster_var=None, use_robust=True):
-    """
-    Run OLS regression with optional fixed effects and clustering.
-    Returns dictionary with results.
-    """
-    # Prepare data - start fresh copy
-    analysis_df = df.copy()
+# Full panel sample
+analysis_df = df.dropna(subset=['good_health', 'individual_id', 'Datayear', 'age']).copy()
+print(f"Full panel sample: {len(analysis_df)} observations, {analysis_df['individual_id'].nunique()} individuals")
 
-    # Collect required columns
-    required_cols = [outcome_var, treatment_var]
-    if controls:
-        required_cols.extend(controls)
-    if fe_vars:
-        required_cols.extend(fe_vars)
-    if cluster_var:
-        required_cols.append(cluster_var)
+# Cross-sectional sample (first observation per person for time-invariant analysis)
+cs_df = df.sort_values('Datayear').groupby('individual_id').first().reset_index()
+cs_df = cs_df.dropna(subset=['good_health', 'age'])
+print(f"Cross-sectional sample: {len(cs_df)} individuals")
 
-    # Drop rows with missing values in required columns
-    for col in required_cols:
-        if col in analysis_df.columns:
-            analysis_df = analysis_df[analysis_df[col].notna()]
+# Panel sample with time-varying outcomes
+panel_df = df.dropna(subset=['log_income', 'individual_id', 'Datayear', 'age']).copy()
+print(f"Panel sample (income): {len(panel_df)} observations")
 
-    if len(analysis_df) < 100:
-        return {
-            "coefficient": np.nan,
-            "std_error": np.nan,
-            "t_stat": np.nan,
-            "p_value": np.nan,
-            "ci_lower": np.nan,
-            "ci_upper": np.nan,
-            "n_obs": len(analysis_df),
-            "r_squared": np.nan,
-            "coefficient_vector_json": json.dumps({"error": "Insufficient observations"})
-        }
+# ============================================================================
+# HELPER FUNCTIONS
+# ============================================================================
 
-    # Build X matrix
-    X_vars = [treatment_var]
-    if controls:
-        X_vars.extend(controls)
-
-    # Add fixed effects as dummies
-    fe_absorbed = []
-    if fe_vars:
-        for fe_var in fe_vars:
-            if fe_var in analysis_df.columns:
-                # Use pd.get_dummies for cleaner FE handling
-                unique_vals = analysis_df[fe_var].nunique()
-                if unique_vals < 500:  # Only add FE for reasonable number of groups
-                    fe_dummies = pd.get_dummies(analysis_df[fe_var], prefix=fe_var, drop_first=True, dtype=float)
-                    # Add to analysis_df
-                    for col in fe_dummies.columns:
-                        analysis_df[col] = fe_dummies[col].values
-                        X_vars.append(col)
-                    fe_absorbed.append(fe_var)
-
-    # Create X matrix as numpy array (ensures proper dtype)
-    X = analysis_df[X_vars].values.astype(float)
-    X = np.column_stack([np.ones(len(analysis_df)), X])  # Add constant
-    y = analysis_df[outcome_var].values.astype(float)
-
-    # Variable names including constant
-    var_names = ['const'] + X_vars
-
-    # Fit model
+def extract_results(model, treatment_var, spec_id, spec_tree_path, outcome_var,
+                   controls_desc, fixed_effects, cluster_var, model_type, sample_desc):
+    """Extract results from pyfixest model."""
     try:
-        model = sm.OLS(y, X).fit()
+        coef = model.coef()[treatment_var]
+        se = model.se()[treatment_var]
+        tstat = model.tstat()[treatment_var]
+        pval = model.pvalue()[treatment_var]
+        ci = model.confint()
+        ci_lower = ci.loc[treatment_var, '2.5%']
+        ci_upper = ci.loc[treatment_var, '97.5%']
+        n_obs = model._N
+        r2 = model._r2
 
-        # Apply robust/clustered standard errors
-        if cluster_var and cluster_var in analysis_df.columns:
-            try:
-                groups = analysis_df[cluster_var].values
-                model = sm.OLS(y, X).fit(cov_type='cluster', cov_kwds={'groups': groups})
-            except Exception:
-                # Fall back to robust SE if clustering fails
-                model = sm.OLS(y, X).fit(cov_type='HC1')
-        elif use_robust:
-            model = sm.OLS(y, X).fit(cov_type='HC1')
-
-        # Extract treatment coefficient (index 1 after constant)
-        treat_idx = 1  # Treatment is first variable after constant
-        coef = model.params[treat_idx]
-        se = model.bse[treat_idx]
-        tstat = model.tvalues[treat_idx]
-        pval = model.pvalues[treat_idx]
-        ci = model.conf_int()[treat_idx]
-
-        # Build coefficient vector JSON
+        # Build coefficient vector
         coef_vector = {
             "treatment": {
                 "var": treatment_var,
@@ -192,533 +158,1126 @@ def run_ols_with_fe(df, outcome_var, treatment_var, controls=None, fe_vars=None,
                 "se": float(se),
                 "pval": float(pval)
             },
-            "controls": []
+            "controls": [],
+            "fixed_effects_absorbed": fixed_effects.split(' + ') if fixed_effects else [],
+            "diagnostics": {}
         }
 
-        if controls:
-            for i, c in enumerate(controls):
-                idx = 2 + i  # After constant and treatment
-                if idx < len(model.params):
-                    coef_vector["controls"].append({
-                        "var": c,
-                        "coef": float(model.params[idx]),
-                        "se": float(model.bse[idx]),
-                        "pval": float(model.pvalues[idx])
-                    })
-
-        coef_vector["fixed_effects_absorbed"] = fe_absorbed
-        coef_vector["diagnostics"] = {
-            "first_stage_F": None,
-            "pretrend_pval": None
-        }
-        coef_vector["n_obs"] = int(model.nobs)
-        coef_vector["r_squared"] = float(model.rsquared)
+        # Add control coefficients
+        for var in model.coef().index:
+            if var != treatment_var and var != 'Intercept':
+                coef_vector["controls"].append({
+                    "var": var,
+                    "coef": float(model.coef()[var]),
+                    "se": float(model.se()[var]),
+                    "pval": float(model.pvalue()[var])
+                })
 
         return {
-            "coefficient": float(coef),
-            "std_error": float(se),
-            "t_stat": float(tstat),
-            "p_value": float(pval),
-            "ci_lower": float(ci[0]),
-            "ci_upper": float(ci[1]),
-            "n_obs": int(model.nobs),
-            "r_squared": float(model.rsquared),
-            "coefficient_vector_json": json.dumps(coef_vector)
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': spec_id,
+            'spec_tree_path': spec_tree_path,
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': float(coef),
+            'std_error': float(se),
+            't_stat': float(tstat),
+            'p_value': float(pval),
+            'ci_lower': float(ci_lower),
+            'ci_upper': float(ci_upper),
+            'n_obs': int(n_obs),
+            'r_squared': float(r2),
+            'coefficient_vector_json': json.dumps(coef_vector),
+            'sample_desc': sample_desc,
+            'fixed_effects': fixed_effects,
+            'controls_desc': controls_desc,
+            'cluster_var': cluster_var,
+            'model_type': model_type,
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
         }
-
     except Exception as e:
-        return {
-            "coefficient": np.nan,
-            "std_error": np.nan,
-            "t_stat": np.nan,
-            "p_value": np.nan,
-            "ci_lower": np.nan,
-            "ci_upper": np.nan,
-            "n_obs": 0,
-            "r_squared": np.nan,
-            "coefficient_vector_json": json.dumps({"error": str(e)})
-        }
+        print(f"Error extracting results for {spec_id}: {e}")
+        return None
+
+def run_spec(data, formula, treatment_var, spec_id, spec_tree_path, outcome_var,
+             controls_desc, fixed_effects, cluster_var, model_type, sample_desc, vcov=None):
+    """Run a single specification and extract results."""
+    try:
+        if vcov:
+            model = pf.feols(formula, data=data, vcov=vcov)
+        else:
+            model = pf.feols(formula, data=data)
+        return extract_results(model, treatment_var, spec_id, spec_tree_path,
+                              outcome_var, controls_desc, fixed_effects,
+                              cluster_var, model_type, sample_desc)
+    except Exception as e:
+        print(f"Error in {spec_id}: {e}")
+        return None
 
 # ============================================================================
 # SPECIFICATION SEARCH
 # ============================================================================
 
-def run_specification_search(df):
-    """Run all specifications according to the specification tree."""
-    results = []
+results = []
 
-    # Primary outcome (metabolic syndrome as in paper)
-    primary_outcome = 'metabolic_syndrome'
+# Define control sets
+basic_controls = ['age', 'age_sq', 'female']
+demo_controls = basic_controls + ['black', 'educ_years', 'married']
+full_controls = demo_controls + ['famsize', 'kids']
 
-    # All health outcomes for robustness
-    all_outcomes = ['metabolic_syndrome', 'cardiovascular', 'diabetes', 'high_blood_pressure',
-                    'heart_attack', 'heart_disease', 'stroke', 'arthritis', 'asthma', 'cancer', 'lung_disease']
+basic_controls_str = ' + '.join(basic_controls)
+demo_controls_str = ' + '.join(demo_controls)
+full_controls_str = ' + '.join(full_controls)
 
-    # ========================================================================
-    # BASELINE SPECIFICATION
-    # ========================================================================
-    print("Running baseline specification...")
+# Controls without female (for panel with individual FE)
+panel_controls = ['age', 'age_sq', 'married']
+panel_controls_str = ' + '.join(panel_controls)
 
-    baseline_result = run_ols_with_fe(
-        df,
-        outcome_var=primary_outcome,
-        treatment_var=TREATMENT_VAR,
-        controls=FULL_CONTROLS,
-        fe_vars=['yob', 'Datayear'],
-        cluster_var='person_id'
-    )
-
-    results.append({
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': 'baseline',
-        'spec_tree_path': 'methods/difference_in_differences.md#baseline',
-        'outcome_var': primary_outcome,
-        'treatment_var': TREATMENT_VAR,
-        'sample_desc': 'Full sample with health outcomes',
-        'fixed_effects': 'Birth year + Survey year',
-        'controls_desc': ', '.join(FULL_CONTROLS),
-        'cluster_var': 'person_id',
-        'model_type': 'OLS with FE',
-        'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-        **baseline_result
-    })
-
-    # ========================================================================
-    # FIXED EFFECTS VARIATIONS
-    # ========================================================================
-    print("Running fixed effects variations...")
-
-    fe_specs = [
-        ('did/fe/none', None, 'No fixed effects'),
-        ('did/fe/yob_only', ['yob'], 'Birth year only'),
-        ('did/fe/year_only', ['Datayear'], 'Survey year only'),
-        ('did/fe/twoway', ['yob', 'Datayear'], 'Birth year + Survey year'),
-    ]
-
-    for spec_id, fe_vars, fe_desc in fe_specs:
-        result = run_ols_with_fe(
-            df,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=fe_vars,
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': spec_id,
-            'spec_tree_path': 'methods/difference_in_differences.md#fixed-effects',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': 'Full sample with health outcomes',
-            'fixed_effects': fe_desc,
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # ========================================================================
-    # CONTROL SET VARIATIONS
-    # ========================================================================
-    print("Running control set variations...")
-
-    control_specs = [
-        ('did/controls/none', [], 'No controls'),
-        ('did/controls/minimal', ['age', 'age_sq'], 'Age only'),
-        ('did/controls/baseline', FULL_CONTROLS, 'Baseline controls'),
-        ('did/controls/plus_female', FULL_CONTROLS + ['female'], 'Baseline + female'),
-        ('did/controls/plus_race', FULL_CONTROLS + ['black'], 'Baseline + black'),
-        ('did/controls/full', FULL_CONTROLS + ['female', 'black'], 'All controls'),
-    ]
-
-    for spec_id, controls, controls_desc in control_specs:
-        result = run_ols_with_fe(
-            df,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=controls if controls else None,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': spec_id,
-            'spec_tree_path': 'methods/difference_in_differences.md#control-sets',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': 'Full sample with health outcomes',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': controls_desc,
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # ========================================================================
-    # LEAVE-ONE-OUT ROBUSTNESS
-    # ========================================================================
-    print("Running leave-one-out robustness checks...")
-
-    for dropped_var in FULL_CONTROLS:
-        remaining = [c for c in FULL_CONTROLS if c != dropped_var]
-
-        result = run_ols_with_fe(
-            df,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=remaining,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'robust/loo/drop_{dropped_var}',
-            'spec_tree_path': 'robustness/leave_one_out.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': 'Full sample with health outcomes',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': f'Dropped: {dropped_var}',
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # ========================================================================
-    # SINGLE COVARIATE ROBUSTNESS
-    # ========================================================================
-    print("Running single covariate robustness checks...")
-
-    # Bivariate (no controls)
-    result = run_ols_with_fe(
-        df,
-        outcome_var=primary_outcome,
-        treatment_var=TREATMENT_VAR,
-        controls=None,
-        fe_vars=['yob', 'Datayear'],
-        cluster_var='person_id'
-    )
-
-    results.append({
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': 'robust/single/none',
-        'spec_tree_path': 'robustness/single_covariate.md',
-        'outcome_var': primary_outcome,
-        'treatment_var': TREATMENT_VAR,
-        'sample_desc': 'Full sample with health outcomes',
-        'fixed_effects': 'Birth year + Survey year',
-        'controls_desc': 'None',
-        'cluster_var': 'person_id',
-        'model_type': 'OLS with FE',
-        'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-        **result
-    })
-
-    # Single covariate at a time
-    for control in FULL_CONTROLS:
-        result = run_ols_with_fe(
-            df,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=[control],
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'robust/single/{control}',
-            'spec_tree_path': 'robustness/single_covariate.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': 'Full sample with health outcomes',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': control,
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # ========================================================================
-    # CLUSTERING VARIATIONS
-    # ========================================================================
-    print("Running clustering variations...")
-
-    cluster_specs = [
-        ('robust/cluster/none', None, 'Robust (no clustering)'),
-        ('robust/cluster/person', 'person_id', 'Person'),
-        ('robust/cluster/yob', 'yob', 'Birth year'),
-        ('robust/cluster/year', 'Datayear', 'Survey year'),
-    ]
-
-    for spec_id, cluster_var, cluster_desc in cluster_specs:
-        result = run_ols_with_fe(
-            df,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var=cluster_var
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': spec_id,
-            'spec_tree_path': 'robustness/clustering_variations.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': 'Full sample with health outcomes',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': cluster_desc,
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # ========================================================================
-    # SAMPLE RESTRICTIONS
-    # ========================================================================
-    print("Running sample restriction specifications...")
-
-    # By gender
-    for gender, gender_label in [('Male', 'male'), ('Female', 'female')]:
-        df_sub = df[df['sex'] == gender].copy()
-
-        result = run_ols_with_fe(
-            df_sub,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'robust/sample/{gender_label}_only',
-            'spec_tree_path': 'robustness/sample_restrictions.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': f'{gender} only',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # By race
-    for race in ['White', 'Black']:
-        df_sub = df[df['race'] == race].copy()
-
-        result = run_ols_with_fe(
-            df_sub,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'robust/sample/{race.lower()}_only',
-            'spec_tree_path': 'robustness/sample_restrictions.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': f'{race} only',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # Early vs late birth cohorts
-    median_yob = df['yob'].median()
-
-    for period, condition, label in [
-        ('early_cohort', df['yob'] < median_yob, f'Birth year < {int(median_yob)}'),
-        ('late_cohort', df['yob'] >= median_yob, f'Birth year >= {int(median_yob)}')
-    ]:
-        df_sub = df[condition].copy()
-
-        result = run_ols_with_fe(
-            df_sub,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'robust/sample/{period}',
-            'spec_tree_path': 'robustness/sample_restrictions.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': label,
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # Trim outliers
-    for trim_pct in [0.01, 0.05]:
-        lower = df[TREATMENT_VAR].quantile(trim_pct)
-        upper = df[TREATMENT_VAR].quantile(1 - trim_pct)
-        df_sub = df[(df[TREATMENT_VAR] >= lower) & (df[TREATMENT_VAR] <= upper)].copy()
-
-        result = run_ols_with_fe(
-            df_sub,
-            outcome_var=primary_outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'robust/sample/trim_{int(trim_pct*100)}pct',
-            'spec_tree_path': 'robustness/sample_restrictions.md',
-            'outcome_var': primary_outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': f'Trim {int(trim_pct*100)}% tails of treatment',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    # ========================================================================
-    # ALTERNATIVE OUTCOMES
-    # ========================================================================
-    print("Running alternative outcome specifications...")
-
-    for outcome in all_outcomes:
-        if outcome == primary_outcome:
-            continue
-
-        result = run_ols_with_fe(
-            df,
-            outcome_var=outcome,
-            treatment_var=TREATMENT_VAR,
-            controls=FULL_CONTROLS,
-            fe_vars=['yob', 'Datayear'],
-            cluster_var='person_id'
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f'did/outcome/{outcome}',
-            'spec_tree_path': 'methods/difference_in_differences.md#outcomes',
-            'outcome_var': outcome,
-            'treatment_var': TREATMENT_VAR,
-            'sample_desc': 'Full sample with health outcomes',
-            'fixed_effects': 'Birth year + Survey year',
-            'controls_desc': ', '.join(FULL_CONTROLS),
-            'cluster_var': 'person_id',
-            'model_type': 'OLS with FE',
-            'estimation_script': 'scripts/paper_analyses/215802-V1.py',
-            **result
-        })
-
-    return results
+print("\n" + "="*70)
+print("RUNNING SPECIFICATION SEARCH")
+print("="*70)
 
 # ============================================================================
-# MAIN EXECUTION
+# PART 1: CROSS-SECTIONAL ANALYSIS (Time-invariant outcomes like health)
 # ============================================================================
+print("\n" + "-"*70)
+print("PART 1: CROSS-SECTIONAL SPECIFICATIONS (health outcomes)")
+print("-"*70)
 
-if __name__ == "__main__":
-    print("=" * 70)
-    print(f"Specification Search: {PAPER_ID}")
-    print(f"Paper: {PAPER_TITLE}")
-    print("=" * 70)
+# 1A. BASELINE CROSS-SECTIONAL SPECIFICATIONS (5 specs)
+print("\n--- 1A. Baseline Cross-Sectional ---")
 
-    # Load data
-    print("\nLoading and preparing data...")
-    df = load_and_prepare_data()
-    print(f"Data loaded: {len(df)} observations, {df['person_id'].nunique()} individuals")
+# Baseline: FS receipt on good health (cross-sectional)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'baseline', 'methods/cross_sectional_ols.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-    # Run specification search
-    print("\nRunning specification search...")
-    results = run_specification_search(df)
+# With year FE
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str} | Datayear",
+    'fs_receipt', 'baseline_year_fe', 'methods/cross_sectional_ols.md',
+    'good_health', 'Demographics', 'year', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-    # Convert to DataFrame and save
-    results_df = pd.DataFrame(results)
-    output_file = f"{OUTPUT_PATH}specification_results.csv"
-    results_df.to_csv(output_file, index=False)
-    print(f"\nResults saved to: {output_file}")
+# With cohort FE
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str} | yob",
+    'fs_receipt', 'baseline_cohort_fe', 'methods/cross_sectional_ols.md',
+    'good_health', 'Demographics', 'cohort', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-    # Print summary statistics
-    print("\n" + "=" * 70)
-    print("SUMMARY STATISTICS")
-    print("=" * 70)
+# Health scale outcome
+res = run_spec(
+    cs_df,
+    f"health_scale ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'baseline_health_scale', 'methods/cross_sectional_ols.md',
+    'health_scale', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-    valid_results = results_df[results_df['coefficient'].notna()]
+# Any welfare treatment
+res = run_spec(
+    cs_df,
+    f"good_health ~ any_welfare + {demo_controls_str}",
+    'any_welfare', 'baseline_any_welfare', 'methods/cross_sectional_ols.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-    print(f"\nTotal specifications run: {len(results_df)}")
-    print(f"Valid results: {len(valid_results)}")
+# 1B. CONTROL PROGRESSION - CROSS-SECTIONAL (10 specs)
+print("\n--- 1B. Control Progression (Cross-sectional) ---")
 
-    if len(valid_results) > 0:
-        print(f"\nCoefficient distribution:")
-        print(f"  Mean: {valid_results['coefficient'].mean():.4f}")
-        print(f"  Median: {valid_results['coefficient'].median():.4f}")
-        print(f"  Std Dev: {valid_results['coefficient'].std():.4f}")
-        print(f"  Min: {valid_results['coefficient'].min():.4f}")
-        print(f"  Max: {valid_results['coefficient'].max():.4f}")
+# Bivariate
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt",
+    'fs_receipt', 'robust/build/bivariate', 'robustness/control_progression.md',
+    'good_health', 'None', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-        n_positive = (valid_results['coefficient'] > 0).sum()
-        n_sig_05 = (valid_results['p_value'] < 0.05).sum()
-        n_sig_01 = (valid_results['p_value'] < 0.01).sum()
+# Add age
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + age + age_sq",
+    'fs_receipt', 'robust/build/add_age', 'robustness/control_progression.md',
+    'good_health', 'Age only', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-        print(f"\nSignificance:")
-        print(f"  Positive coefficients: {n_positive} ({100*n_positive/len(valid_results):.1f}%)")
-        print(f"  Significant at 5%: {n_sig_05} ({100*n_sig_05/len(valid_results):.1f}%)")
-        print(f"  Significant at 1%: {n_sig_01} ({100*n_sig_01/len(valid_results):.1f}%)")
+# Add gender
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {basic_controls_str}",
+    'fs_receipt', 'robust/build/add_gender', 'robustness/control_progression.md',
+    'good_health', 'Age + gender', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
 
-    print("\n" + "=" * 70)
-    print("Specification search complete.")
-    print("=" * 70)
+# Add race
+cs_race = cs_df.dropna(subset=['black'])
+res = run_spec(
+    cs_race,
+    f"good_health ~ fs_receipt + {basic_controls_str} + black",
+    'fs_receipt', 'robust/build/add_race', 'robustness/control_progression.md',
+    'good_health', 'Age + gender + race', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing race',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Add education
+cs_educ = cs_df.dropna(subset=['educ_years'])
+res = run_spec(
+    cs_educ,
+    f"good_health ~ fs_receipt + {basic_controls_str} + black + educ_years",
+    'fs_receipt', 'robust/build/add_education', 'robustness/control_progression.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing education',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Add marital
+cs_full = cs_df.dropna(subset=['married', 'educ_years', 'black'])
+res = run_spec(
+    cs_full,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/build/add_marital', 'robustness/control_progression.md',
+    'good_health', 'Full demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing demographics',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Add household
+cs_hh = cs_df.dropna(subset=['married', 'educ_years', 'black', 'famsize', 'kids'])
+res = run_spec(
+    cs_hh,
+    f"good_health ~ fs_receipt + {full_controls_str}",
+    'fs_receipt', 'robust/build/full', 'robustness/control_progression.md',
+    'good_health', 'Full controls', 'none', 'yob',
+    'Cross-sectional OLS', 'Complete cases',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Kitchen sink
+cs_ks = cs_df.dropna(subset=['married', 'educ_years', 'black', 'famsize', 'kids', 'log_income'])
+res = run_spec(
+    cs_ks,
+    f"good_health ~ fs_receipt + {full_controls_str} + log_income",
+    'fs_receipt', 'robust/build/kitchen_sink', 'robustness/control_progression.md',
+    'good_health', 'Kitchen sink', 'none', 'yob',
+    'Cross-sectional OLS', 'Kitchen sink sample',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Leave-one-out: drop age
+res = run_spec(
+    cs_full,
+    f"good_health ~ fs_receipt + female + black + educ_years + married",
+    'fs_receipt', 'robust/loo/drop_age', 'robustness/leave_one_out.md',
+    'good_health', 'No age', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing demographics',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Leave-one-out: drop education
+res = run_spec(
+    cs_full,
+    f"good_health ~ fs_receipt + age + age_sq + female + black + married",
+    'fs_receipt', 'robust/loo/drop_educ', 'robustness/leave_one_out.md',
+    'good_health', 'No education', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing demographics',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# 1C. CLUSTERING VARIATIONS - CROSS-SECTIONAL (6 specs)
+print("\n--- 1C. Clustering Variations (Cross-sectional) ---")
+
+# Robust SE (no clustering)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/cluster/robust_hetero', 'robustness/clustering_variations.md',
+    'good_health', 'Demographics', 'none', 'none (robust)',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov='hetero'
+)
+if res: results.append(res)
+
+# Cluster by household (inum1968)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/cluster/household', 'robustness/clustering_variations.md',
+    'good_health', 'Demographics', 'none', 'inum1968',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'inum1968'}
+)
+if res: results.append(res)
+
+# Cluster by Datayear
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/cluster/year', 'robustness/clustering_variations.md',
+    'good_health', 'Demographics', 'none', 'Datayear',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'Datayear'}
+)
+if res: results.append(res)
+
+# Cluster by race
+race_df = cs_df.dropna(subset=['race'])
+res = run_spec(
+    race_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/cluster/race', 'robustness/clustering_variations.md',
+    'good_health', 'Demographics', 'none', 'race',
+    'Cross-sectional OLS', 'Non-missing race',
+    vcov={'CRV1': 'race'}
+)
+if res: results.append(res)
+
+# Cluster by sex
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/cluster/sex', 'robustness/clustering_variations.md',
+    'good_health', 'Demographics', 'none', 'sex',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'sex'}
+)
+if res: results.append(res)
+
+# HC3 (small sample)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/se/hc3', 'robustness/clustering_variations.md',
+    'good_health', 'Demographics', 'none', 'none (HC3)',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov='HC3'
+)
+if res: results.append(res)
+
+# 1D. SAMPLE RESTRICTIONS - CROSS-SECTIONAL (10 specs)
+print("\n--- 1D. Sample Restrictions (Cross-sectional) ---")
+
+# Male only
+male_cs = cs_df[cs_df['female'] == 0]
+res = run_spec(
+    male_cs,
+    f"good_health ~ fs_receipt + age + age_sq + black + educ_years + married",
+    'fs_receipt', 'robust/sample/male_only', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics (no female)', 'none', 'yob',
+    'Cross-sectional OLS', 'Male subsample',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Female only
+female_cs = cs_df[cs_df['female'] == 1]
+res = run_spec(
+    female_cs,
+    f"good_health ~ fs_receipt + age + age_sq + black + educ_years + married",
+    'fs_receipt', 'robust/sample/female_only', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics (no female)', 'none', 'yob',
+    'Cross-sectional OLS', 'Female subsample',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Black only
+black_cs = cs_df[cs_df['black'] == 1]
+res = run_spec(
+    black_cs,
+    f"good_health ~ fs_receipt + age + age_sq + female + educ_years + married",
+    'fs_receipt', 'robust/sample/black_only', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics (no race)', 'none', 'yob',
+    'Cross-sectional OLS', 'Black subsample',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# White only
+white_cs = cs_df[cs_df['white'] == 1]
+res = run_spec(
+    white_cs,
+    f"good_health ~ fs_receipt + age + age_sq + female + educ_years + married",
+    'fs_receipt', 'robust/sample/white_only', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics (no race)', 'none', 'yob',
+    'Cross-sectional OLS', 'White subsample',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Early cohorts (born <= 1965)
+early_coh = cs_df[cs_df['yob'] <= 1965]
+res = run_spec(
+    early_coh,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/sample/early_cohort', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Born 1956-1965',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Late cohorts (born > 1970)
+late_coh = cs_df[cs_df['yob'] > 1970]
+res = run_spec(
+    late_coh,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/sample/late_cohort', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Born 1971-1981',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# High education
+high_ed_cs = cs_df[cs_df['educ_years'] > 12]
+res = run_spec(
+    high_ed_cs,
+    f"good_health ~ fs_receipt + age + age_sq + female + black + married",
+    'fs_receipt', 'robust/sample/high_education', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics (no educ)', 'none', 'yob',
+    'Cross-sectional OLS', 'College education',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Low education
+low_ed_cs = cs_df[cs_df['educ_years'] <= 12]
+res = run_spec(
+    low_ed_cs,
+    f"good_health ~ fs_receipt + age + age_sq + female + black + married",
+    'fs_receipt', 'robust/sample/low_education', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics (no educ)', 'none', 'yob',
+    'Cross-sectional OLS', 'HS or less',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Heads of household
+head_cs = cs_df[cs_df['head'] == 1]
+res = run_spec(
+    head_cs,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/sample/heads_only', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Household heads only',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Non-heads (spouses)
+spouse_cs = cs_df[cs_df['head'] == 2]
+res = run_spec(
+    spouse_cs,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/sample/non_heads', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Spouses only',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# 1E. ALTERNATIVE TREATMENTS - CROSS-SECTIONAL (4 specs)
+print("\n--- 1E. Alternative Treatments (Cross-sectional) ---")
+
+# AFDC receipt
+res = run_spec(
+    cs_df,
+    f"good_health ~ afdc_receipt + {demo_controls_str}",
+    'afdc_receipt', 'robust/treatment/afdc', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Any welfare
+res = run_spec(
+    cs_df,
+    f"good_health ~ any_welfare + {demo_controls_str}",
+    'any_welfare', 'robust/treatment/any_welfare', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Both FS and AFDC
+cs_df['both_programs'] = ((cs_df['fs_receipt'] == 1) & (cs_df['afdc_receipt'] == 1)).astype(float)
+res = run_spec(
+    cs_df,
+    f"good_health ~ both_programs + {demo_controls_str}",
+    'both_programs', 'robust/treatment/both_programs', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# FS only (not AFDC)
+cs_df['fs_only'] = ((cs_df['fs_receipt'] == 1) & (cs_df['afdc_receipt'] == 0)).astype(float)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_only + {demo_controls_str}",
+    'fs_only', 'robust/treatment/fs_only', 'robustness/sample_restrictions.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# 1F. ALTERNATIVE OUTCOMES - CROSS-SECTIONAL (5 specs)
+print("\n--- 1F. Alternative Outcomes (Cross-sectional) ---")
+
+# Excellent health
+res = run_spec(
+    cs_df,
+    f"excellent_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/outcome/excellent_health', 'robustness/sample_restrictions.md',
+    'excellent_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Poor health
+res = run_spec(
+    cs_df,
+    f"poor_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/outcome/poor_health', 'robustness/sample_restrictions.md',
+    'poor_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Work limitation (CS)
+work_cs = cs_df.dropna(subset=['work_limited'])
+res = run_spec(
+    work_cs,
+    f"work_limited ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/outcome/work_limited_cs', 'robustness/sample_restrictions.md',
+    'work_limited', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing work limitation',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Employed (CS)
+emp_cs = cs_df.dropna(subset=['employed'])
+res = run_spec(
+    emp_cs,
+    f"employed ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/outcome/employed_cs', 'robustness/sample_restrictions.md',
+    'employed', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing employment',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Log income (CS)
+inc_cs = cs_df.dropna(subset=['log_income'])
+res = run_spec(
+    inc_cs,
+    f"log_income ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/outcome/log_income_cs', 'robustness/sample_restrictions.md',
+    'log_income', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing income',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# 1G. HETEROGENEITY - CROSS-SECTIONAL (10 specs)
+print("\n--- 1G. Heterogeneity Analysis (Cross-sectional) ---")
+
+# Interaction with gender
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt * female + age + age_sq + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_gender', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with race
+race_het = cs_df.dropna(subset=['black'])
+res = run_spec(
+    race_het,
+    f"good_health ~ fs_receipt * black + age + age_sq + female + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_race', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing race',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with age (median split)
+cs_df['old'] = (cs_df['age'] >= cs_df['age'].median()).astype(float)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt * old + age_sq + female + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_age', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with education
+educ_het = cs_df.dropna(subset=['educ_years'])
+educ_het['high_educ'] = (educ_het['educ_years'] > 12).astype(float)
+res = run_spec(
+    educ_het,
+    f"good_health ~ fs_receipt * high_educ + age + age_sq + female + black + married",
+    'fs_receipt', 'robust/het/interaction_education', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing education',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with marital status
+married_het = cs_df.dropna(subset=['married'])
+res = run_spec(
+    married_het,
+    f"good_health ~ fs_receipt * married + age + age_sq + female + black + educ_years",
+    'fs_receipt', 'robust/het/interaction_married', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing marital',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with household head
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt * head + age + age_sq + female + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_head', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with female head
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt * femhead + age + age_sq + female + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_femhead', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with cohort (late)
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt * cohort_late + age + age_sq + female + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_cohort', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Interaction with family size
+famsize_het = cs_df.dropna(subset=['famsize'])
+famsize_het['large_family'] = (famsize_het['famsize'] >= 4).astype(float)
+res = run_spec(
+    famsize_het,
+    f"good_health ~ fs_receipt * large_family + age + age_sq + female + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_famsize', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing family size',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# By number of kids
+kids_het = cs_df.dropna(subset=['kids'])
+kids_het['has_kids'] = (kids_het['kids'] > 0).astype(float)
+res = run_spec(
+    kids_het,
+    f"good_health ~ fs_receipt * has_kids + age + age_sq + female + black + educ_years + married",
+    'fs_receipt', 'robust/het/interaction_kids', 'robustness/heterogeneity.md',
+    'good_health', 'Demographics + interaction', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing kids',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# 1H. FUNCTIONAL FORM - CROSS-SECTIONAL (5 specs)
+print("\n--- 1H. Functional Form (Cross-sectional) ---")
+
+# Age cubed
+cs_df['age_cubed'] = cs_df['age'] ** 3
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + age + age_sq + age_cubed + female + black + educ_years + married",
+    'fs_receipt', 'robust/funcform/age_cubic', 'robustness/functional_form.md',
+    'good_health', 'Demographics (age cubic)', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Log age
+cs_df['log_age'] = np.log(cs_df['age'])
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + log_age + female + black + educ_years + married",
+    'fs_receipt', 'robust/funcform/log_age', 'robustness/functional_form.md',
+    'good_health', 'Demographics (log age)', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Education dummies
+educ_dum = cs_df.dropna(subset=['educ_years'])
+educ_dum['hs_dropout'] = (educ_dum['educ_years'] < 12).astype(float)
+educ_dum['some_college'] = ((educ_dum['educ_years'] > 12) & (educ_dum['educ_years'] < 16)).astype(float)
+educ_dum['college_grad'] = (educ_dum['educ_years'] >= 16).astype(float)
+res = run_spec(
+    educ_dum,
+    f"good_health ~ fs_receipt + age + age_sq + female + black + hs_dropout + some_college + college_grad + married",
+    'fs_receipt', 'robust/funcform/educ_dummies', 'robustness/functional_form.md',
+    'good_health', 'Demographics (educ dummies)', 'none', 'yob',
+    'Cross-sectional OLS', 'Non-missing education',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Age x gender interaction
+res = run_spec(
+    cs_df,
+    f"good_health ~ fs_receipt + age * female + age_sq + black + educ_years + married",
+    'fs_receipt', 'robust/funcform/age_gender_interact', 'robustness/functional_form.md',
+    'good_health', 'Demographics (age x gender)', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Health scale as outcome (continuous)
+res = run_spec(
+    cs_df,
+    f"health_scale ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/funcform/ordinal', 'robustness/functional_form.md',
+    'health_scale', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# ============================================================================
+# PART 2: PANEL ANALYSIS (Time-varying outcomes)
+# ============================================================================
+print("\n" + "-"*70)
+print("PART 2: PANEL SPECIFICATIONS (time-varying outcomes)")
+print("-"*70)
+
+# 2A. INCOME OUTCOMES WITH PANEL FE (8 specs)
+print("\n--- 2A. Income Outcomes (Panel FE) ---")
+
+# Baseline: FS on log income with individual + year FE
+inc_panel = analysis_df.dropna(subset=['log_income'])
+res = run_spec(
+    inc_panel,
+    f"log_income ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/income/baseline', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Full panel (income)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Unit FE only
+res = run_spec(
+    inc_panel,
+    f"log_income ~ fs_receipt + {panel_controls_str} | individual_id",
+    'fs_receipt', 'panel/income/unit_fe', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'individual', 'individual_id',
+    'Panel FE (unit only)', 'Full panel (income)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Year FE only
+res = run_spec(
+    inc_panel,
+    f"log_income ~ fs_receipt + {panel_controls_str} | Datayear",
+    'fs_receipt', 'panel/income/time_fe', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'year', 'individual_id',
+    'Panel FE (time only)', 'Full panel (income)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# No FE
+res = run_spec(
+    inc_panel,
+    f"log_income ~ fs_receipt + {panel_controls_str} + female + black + educ_years",
+    'fs_receipt', 'panel/income/no_fe', 'methods/panel_fixed_effects.md',
+    'log_income', 'Full controls', 'none', 'individual_id',
+    'Pooled OLS', 'Full panel (income)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Male only
+male_inc = inc_panel[inc_panel['female'] == 0]
+res = run_spec(
+    male_inc,
+    f"log_income ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/income/male_only', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Male subsample',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Female only
+female_inc = inc_panel[inc_panel['female'] == 1]
+res = run_spec(
+    female_inc,
+    f"log_income ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/income/female_only', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Female subsample',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Black only
+black_inc = inc_panel[inc_panel['black'] == 1]
+res = run_spec(
+    black_inc,
+    f"log_income ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/income/black_only', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Black subsample',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# White only
+white_inc = inc_panel[inc_panel['white'] == 1]
+res = run_spec(
+    white_inc,
+    f"log_income ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/income/white_only', 'methods/panel_fixed_effects.md',
+    'log_income', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'White subsample',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# 2B. WORK LIMITATION WITH PANEL FE (5 specs)
+print("\n--- 2B. Work Limitation (Panel FE) ---")
+
+work_panel = analysis_df.dropna(subset=['work_limited'])
+
+# Baseline
+res = run_spec(
+    work_panel,
+    f"work_limited ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/worklimit/baseline', 'methods/panel_fixed_effects.md',
+    'work_limited', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Full panel (work limit)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Unit FE only
+res = run_spec(
+    work_panel,
+    f"work_limited ~ fs_receipt + {panel_controls_str} | individual_id",
+    'fs_receipt', 'panel/worklimit/unit_fe', 'methods/panel_fixed_effects.md',
+    'work_limited', 'Panel controls', 'individual', 'individual_id',
+    'Panel FE (unit only)', 'Full panel (work limit)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Year FE only
+res = run_spec(
+    work_panel,
+    f"work_limited ~ fs_receipt + {panel_controls_str} | Datayear",
+    'fs_receipt', 'panel/worklimit/time_fe', 'methods/panel_fixed_effects.md',
+    'work_limited', 'Panel controls', 'year', 'individual_id',
+    'Panel FE (time only)', 'Full panel (work limit)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# No FE
+res = run_spec(
+    work_panel,
+    f"work_limited ~ fs_receipt + {panel_controls_str} + female + black + educ_years",
+    'fs_receipt', 'panel/worklimit/no_fe', 'methods/panel_fixed_effects.md',
+    'work_limited', 'Full controls', 'none', 'individual_id',
+    'Pooled OLS', 'Full panel (work limit)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Early cohorts
+early_work = work_panel[work_panel['yob'] <= 1965]
+res = run_spec(
+    early_work,
+    f"work_limited ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/worklimit/early_cohort', 'methods/panel_fixed_effects.md',
+    'work_limited', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Born 1956-1965',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# 2C. EMPLOYMENT WITH PANEL FE (5 specs)
+print("\n--- 2C. Employment (Panel FE) ---")
+
+emp_panel = analysis_df.dropna(subset=['employed'])
+
+# Baseline
+res = run_spec(
+    emp_panel,
+    f"employed ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/employed/baseline', 'methods/panel_fixed_effects.md',
+    'employed', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Full panel (employed)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Unit FE only
+res = run_spec(
+    emp_panel,
+    f"employed ~ fs_receipt + {panel_controls_str} | individual_id",
+    'fs_receipt', 'panel/employed/unit_fe', 'methods/panel_fixed_effects.md',
+    'employed', 'Panel controls', 'individual', 'individual_id',
+    'Panel FE (unit only)', 'Full panel (employed)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Year FE only
+res = run_spec(
+    emp_panel,
+    f"employed ~ fs_receipt + {panel_controls_str} | Datayear",
+    'fs_receipt', 'panel/employed/time_fe', 'methods/panel_fixed_effects.md',
+    'employed', 'Panel controls', 'year', 'individual_id',
+    'Panel FE (time only)', 'Full panel (employed)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Male only
+male_emp = emp_panel[emp_panel['female'] == 0]
+res = run_spec(
+    male_emp,
+    f"employed ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/employed/male_only', 'methods/panel_fixed_effects.md',
+    'employed', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Male subsample',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Female only
+female_emp = emp_panel[emp_panel['female'] == 1]
+res = run_spec(
+    female_emp,
+    f"employed ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/employed/female_only', 'methods/panel_fixed_effects.md',
+    'employed', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Female subsample',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# 2D. HOSPITAL UTILIZATION (4 specs)
+print("\n--- 2D. Hospital Utilization (Panel FE) ---")
+
+hosp_panel = analysis_df.dropna(subset=['any_hospital'])
+
+# Any hospitalization
+res = run_spec(
+    hosp_panel,
+    f"any_hospital ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/hospital/any', 'methods/panel_fixed_effects.md',
+    'any_hospital', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Full panel (hospital)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Unit FE only
+res = run_spec(
+    hosp_panel,
+    f"any_hospital ~ fs_receipt + {panel_controls_str} | individual_id",
+    'fs_receipt', 'panel/hospital/unit_fe', 'methods/panel_fixed_effects.md',
+    'any_hospital', 'Panel controls', 'individual', 'individual_id',
+    'Panel FE (unit only)', 'Full panel (hospital)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Log hospital days
+log_hosp = analysis_df.dropna(subset=['log_hospdays'])
+res = run_spec(
+    log_hosp,
+    f"log_hospdays ~ fs_receipt + {panel_controls_str} | individual_id + Datayear",
+    'fs_receipt', 'panel/hospital/log_days', 'methods/panel_fixed_effects.md',
+    'log_hospdays', 'Panel controls', 'individual + year', 'individual_id',
+    'Panel FE (TWFE)', 'Full panel (hospital)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# Pooled OLS
+res = run_spec(
+    hosp_panel,
+    f"any_hospital ~ fs_receipt + {panel_controls_str} + female + black + educ_years",
+    'fs_receipt', 'panel/hospital/no_fe', 'methods/panel_fixed_effects.md',
+    'any_hospital', 'Full controls', 'none', 'individual_id',
+    'Pooled OLS', 'Full panel (hospital)',
+    vcov={'CRV1': 'individual_id'}
+)
+if res: results.append(res)
+
+# 2E. PLACEBO TESTS (3 specs)
+print("\n--- 2E. Placebo Tests ---")
+
+# Placebo: FS on year of birth (should be zero)
+res = run_spec(
+    cs_df,
+    f"yob ~ fs_receipt + age + age_sq + female + black + educ_years",
+    'fs_receipt', 'robust/placebo/yob_outcome', 'robustness/placebo_tests.md',
+    'yob', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Placebo: Random assignment
+np.random.seed(42)
+cs_df['random_treat'] = np.random.binomial(1, 0.12, len(cs_df))
+res = run_spec(
+    cs_df,
+    f"good_health ~ random_treat + {demo_controls_str}",
+    'random_treat', 'robust/placebo/random_treatment', 'robustness/placebo_tests.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'First observation per person',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# Pre-1990 only (before welfare reform)
+pre_90_df = df[df['Datayear'] < 1990].sort_values('Datayear').groupby('individual_id').first().reset_index()
+pre_90_df = pre_90_df.dropna(subset=['good_health', 'fs_receipt', 'age'])
+res = run_spec(
+    pre_90_df,
+    f"good_health ~ fs_receipt + {demo_controls_str}",
+    'fs_receipt', 'robust/placebo/pre_reform', 'robustness/placebo_tests.md',
+    'good_health', 'Demographics', 'none', 'yob',
+    'Cross-sectional OLS', 'Pre-1990 first observation',
+    vcov={'CRV1': 'yob'}
+)
+if res: results.append(res)
+
+# ============================================================================
+# SAVE RESULTS
+# ============================================================================
+print("\n" + "="*70)
+print("SAVING RESULTS")
+print("="*70)
+
+results_df = pd.DataFrame([r for r in results if r is not None])
+print(f"\nTotal specifications run: {len(results_df)}")
+
+# Save to CSV
+output_path = f"{DATA_PATH}/specification_results.csv"
+results_df.to_csv(output_path, index=False)
+print(f"Results saved to: {output_path}")
+
+# Summary statistics
+print("\n" + "="*70)
+print("SUMMARY STATISTICS")
+print("="*70)
+
+# Overall summary
+print(f"\nTotal specifications: {len(results_df)}")
+
+# By outcome variable
+print("\n--- Results by Outcome Variable ---")
+for outcome in results_df['outcome_var'].unique():
+    subset = results_df[results_df['outcome_var'] == outcome]
+    sig_5 = (subset['p_value'] < 0.05).sum()
+    mean_coef = subset['coefficient'].mean()
+    print(f"{outcome}: N={len(subset)}, Mean coef={mean_coef:.4f}, Sig 5%={sig_5} ({100*sig_5/len(subset):.1f}%)")
+
+# Filter to main treatment (fs_receipt) and good_health outcome
+main_results = results_df[(results_df['treatment_var'] == 'fs_receipt') &
+                          (results_df['outcome_var'] == 'good_health')]
+
+if len(main_results) > 0:
+    print(f"\n--- Main Analysis: FS Receipt on Good Health ---")
+    print(f"N specifications: {len(main_results)}")
+    print(f"Mean coefficient: {main_results['coefficient'].mean():.4f}")
+    print(f"Median coefficient: {main_results['coefficient'].median():.4f}")
+    print(f"Range: [{main_results['coefficient'].min():.4f}, {main_results['coefficient'].max():.4f}]")
+    print(f"Std dev: {main_results['coefficient'].std():.4f}")
+
+    n_negative = (main_results['coefficient'] < 0).sum()
+    n_sig_05 = (main_results['p_value'] < 0.05).sum()
+    n_sig_01 = (main_results['p_value'] < 0.01).sum()
+
+    print(f"\nNegative coefficients: {n_negative} ({100*n_negative/len(main_results):.1f}%)")
+    print(f"Significant at 5%: {n_sig_05} ({100*n_sig_05/len(main_results):.1f}%)")
+    print(f"Significant at 1%: {n_sig_01} ({100*n_sig_01/len(main_results):.1f}%)")
+
+print("\n" + "="*70)
+print("SPECIFICATION SEARCH COMPLETE")
+print("="*70)

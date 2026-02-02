@@ -77,6 +77,41 @@
 | `iv/diagnostic/endogeneity` | Endogeneity test (Hausman) |
 | `iv/diagnostic/exclusion` | Exclusion restriction plausibility |
 
+### Alternative IV Estimators
+
+| spec_id | Description |
+|---------|-------------|
+| `iv/jackknife` | Jackknife IV estimator (JIVE) |
+| `iv/split_sample` | Split-sample IV |
+| `iv/leave_one_out` | Leave-one-out IV |
+| `iv/many_instruments` | Many instruments robust (LIML/Fuller) |
+| `iv/fuller` | Fuller's modified LIML |
+
+### Bounds and Partial Identification
+
+| spec_id | Description |
+|---------|-------------|
+| `iv/bounds/imbens_manski` | Imbens-Manski bounds |
+| `iv/bounds/nevo_rosen` | Nevo-Rosen imperfect IV bounds |
+| `iv/bounds/conley` | Conley et al. plausibly exogenous |
+| `iv/bounds/armstrong_kolesar` | Armstrong-Kolesar sensitivity |
+
+### Heterogeneous Effects
+
+| spec_id | Description |
+|---------|-------------|
+| `iv/late` | Local average treatment effect |
+| `iv/marginal_te` | Marginal treatment effects |
+| `iv/complier_characteristics` | Complier characteristics |
+
+### Placebos and Falsification
+
+| spec_id | Description |
+|---------|-------------|
+| `iv/placebo/lagged_outcome` | IV on lagged outcome |
+| `iv/placebo/predetermined` | IV on predetermined variable |
+| `iv/balance/covariates` | Covariate balance on instrument |
+
 ---
 
 ## Python Implementation Notes

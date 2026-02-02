@@ -49,6 +49,32 @@ Test sensitivity of standard errors and inference to different clustering assump
 | `robust/se/bootstrap_cluster` | Wild cluster bootstrap |
 | `robust/se/bootstrap_pairs` | Pairs bootstrap |
 
+### Spatial Clustering
+
+| spec_id | Description |
+|---------|-------------|
+| `robust/cluster/conley_50km` | Conley spatial SE (50km bandwidth) |
+| `robust/cluster/conley_100km` | Conley spatial SE (100km bandwidth) |
+| `robust/cluster/conley_200km` | Conley spatial SE (200km bandwidth) |
+| `robust/cluster/conley_optimal` | Conley SE with optimal bandwidth |
+
+### Few Clusters Adjustments
+
+| spec_id | Description |
+|---------|-------------|
+| `robust/cluster/cameron_miller` | Cameron-Miller few clusters adjustment |
+| `robust/cluster/fama_macbeth` | Fama-MacBeth standard errors |
+| `robust/cluster/cgm` | Cameron-Gelbach-Miller adjustment |
+| `robust/cluster/wild_bootstrap` | Wild cluster bootstrap (few clusters) |
+
+### Multi-Dimensional Clustering
+
+| spec_id | Description |
+|---------|-------------|
+| `robust/cluster/treatment_x_time` | Cluster by treatment cohort x time |
+| `robust/cluster/three_way` | Three-way clustering |
+| `robust/cluster/nested` | Nested clustering (e.g., county within state) |
+
 ---
 
 ## Implementation Notes

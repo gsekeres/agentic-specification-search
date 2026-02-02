@@ -76,6 +76,51 @@
 | `rd/validity/placebo_cutoff` | Placebo cutoffs test |
 | `rd/validity/sensitivity` | Sensitivity to bandwidth |
 
+### Donut Hole Specifications
+
+| spec_id | Description |
+|---------|-------------|
+| `rd/donut/exclude_1pct` | Exclude 1% nearest to cutoff |
+| `rd/donut/exclude_5pct` | Exclude 5% nearest to cutoff |
+| `rd/donut/exclude_10pct` | Exclude 10% nearest to cutoff |
+| `rd/donut/exclude_heaping` | Exclude heaping points at cutoff |
+
+### Placebo Cutoff Tests
+
+| spec_id | Description |
+|---------|-------------|
+| `rd/placebo/cutoff_median_left` | Placebo at median of left side |
+| `rd/placebo/cutoff_median_right` | Placebo at median of right side |
+| `rd/placebo/cutoff_quartile` | Placebo at quartiles |
+| `rd/placebo/cutoff_above` | Placebo at cutoff + bandwidth |
+| `rd/placebo/cutoff_below` | Placebo at cutoff - bandwidth |
+
+### Inference Variations
+
+| spec_id | Description |
+|---------|-------------|
+| `rd/inference/conventional` | Conventional standard errors |
+| `rd/inference/robust` | Robust bias-corrected SE |
+| `rd/inference/cluster` | Clustered standard errors |
+| `rd/inference/randomization` | Randomization inference |
+
+### Alternative Estimators
+
+| spec_id | Description |
+|---------|-------------|
+| `rd/estimator/local_poly` | Local polynomial (default) |
+| `rd/estimator/honest` | Honest confidence intervals |
+| `rd/estimator/coverage_error` | Coverage-error optimal |
+| `rd/estimator/mse_optimal` | MSE-optimal |
+
+### Heterogeneity at Discontinuity
+
+| spec_id | Description |
+|---------|-------------|
+| `rd/het/by_covariate` | Effect heterogeneity by covariate |
+| `rd/het/interaction` | Running variable x covariate interaction |
+| `rd/het/subgroup` | Subgroup-specific RD estimates |
+
 ---
 
 ## Python Implementation Notes

@@ -1,958 +1,1048 @@
 """
 Specification Search for Paper 116442-V1
-"Competition and the Use of Foggy Pricing"
-Authors: Miravete (AEJ Microeconomics)
 
-This script replicates and extends the main analysis examining how competition
-(duopoly vs monopoly) affects "foggy" (confusing) pricing in cellular telephone markets.
+Paper: "Competition and the Use of Foggy Pricing"
+Authors: Miravete et al.
+Journal: AEJ: Microeconomics
+
+Main hypothesis: Competition (duopoly) leads to increased "fogginess" (tariff complexity)
+Method: Difference-in-differences with market and time fixed effects
+Treatment: DUOPOLY (0/1 indicator for market becoming duopoly)
+Outcomes: FOGGYi (count of foggy plans), SHFOGGYi (share of foggy plans), HHFOGGYi
 """
 
 import struct
 import numpy as np
 import pandas as pd
+import pyfixest as pf
 import json
 import warnings
-from pathlib import Path
-from scipy import stats
-import statsmodels.api as sm
-from statsmodels.regression.linear_model import OLS
-
 warnings.filterwarnings('ignore')
 
-# =============================================================================
-# Configuration
-# =============================================================================
+# ============================================================================
+# DATA LOADING
+# ============================================================================
 
-PAPER_ID = "116442-V1"
-PAPER_TITLE = "Competition and the Use of Foggy Pricing"
-JOURNAL = "AEJ-Microeconomics"
-
-BASE_PATH = Path("/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search")
-DATA_PATH = BASE_PATH / "data/downloads/extracted/116442-V1/20110032_Data/AEJ_Miravete_Data"
-OUTPUT_PATH = BASE_PATH / "data/downloads/extracted/116442-V1"
-
-# =============================================================================
-# Data Loading Functions
-# =============================================================================
-
-def read_gauss_fmt(filepath):
-    """Read a GAUSS .fmt file and return as numpy array"""
+def load_gauss_fmt(filepath, header_size=136, ncols=191, nrows=1801):
+    """Load GAUSS .fmt binary matrix file"""
     with open(filepath, 'rb') as f:
-        data = f.read()
+        f.seek(header_size)
+        data = np.frombuffer(f.read(), dtype='<f8')
+    return data[:nrows * ncols].reshape(nrows, ncols)
 
-    # Parse header - dimensions at offset 0x80, 0x84
-    nrows = struct.unpack('<I', data[0x80:0x84])[0]
-    ncols = struct.unpack('<I', data[0x84:0x88])[0]
+# Variable names from GAUSS code
+KNAMES = ['SCENARIO', 'MARKET', 'YEAR', 'DUOPOLY', 'WIRELINE', 'ALPHA_i', 'BETA_i',
+         'GAMMA_i', 'C_i', 'LAMBDA_i', 'Z0_i', 'ALPHA_j', 'BETA_j', 'GAMMA_j',
+         'C_j', 'LAMBDA_j', 'Z0_j', 'AP_PEAK', 'AP_OFFP', 'TIME', 'UNOBSERV',
+         'MKT_AGE', 'LEAD', 'BUSINESS', 'COMMUTE', 'TCELLS', 'GROWTH', 'INCOME',
+         'EDUCAT', 'COVERAGE', 'MEDINAGE', 'POVERTY', 'WAGE', 'ENERGY', 'OPERATE',
+         'RENT', 'PRIME', 'POPULAT', 'DENSITY', 'CRIME', 'VIOLENT', 'PROPERTY',
+         'SVCRIMES', 'TEMPERAT', 'RAIN', 'MULTIMKT', 'BELL', 'REGULAT', 'CORRELAT',
+         'CONSPLUS', 'PROFITS', 'WELFARE', 'EXPSALE', 'EXPTARF', 'EXPRATE', 'EXPMKUP',
+         'SURFACE', 'NORTH', 'WEST', 'BELLBELL', 'INDBELL', 'BELLIND', 'INDIND',
+         'LIN', 'SNET', 'CONTEL', 'GTE', 'VANG', 'MCCAW', 'USWEST', 'CENTEL',
+         'PACTEL', 'SWBELL', 'ALLTEL', 'AMERTECH', 'BELLATL', 'NYNEX', 'BELLSTH',
+         'REST', 'OTHER', 'PREG1', 'PREG2', 'VARPVRTY', 'ECOST', 'PLANS_i',
+         'PLANS_j', 'FOGGY1i', 'FOGGY2i', 'FOGGY3i', 'FOGGY4i', 'FOGGY5i', 'FOGGY6i',
+         'FOGGY1j', 'FOGGY2j', 'FOGGY3j', 'FOGGY4j', 'FOGGY5j', 'FOGGY6j', 'FEE_1i',
+         'PEAK_A1i', 'OFFP_A1i', 'PEAK_P1i', 'OFFP_P1i', 'FEE_2i', 'PEAK_A2i',
+         'OFFP_A2i', 'PEAK_P2i', 'OFFP_P2i', 'FEE_3i', 'PEAK_A3i', 'OFFP_A3i',
+         'PEAK_P3i', 'OFFP_P3i', 'FEE_4i', 'PEAK_A4i', 'OFFP_A4i', 'PEAK_P4i',
+         'OFFP_P4i', 'FEE_5i', 'PEAK_A5i', 'OFFP_A5i', 'PEAK_P5i', 'OFFP_P5i',
+         'FEE_6i', 'PEAK_A6i', 'OFFP_A6i', 'PEAK_P6i', 'OFFP_P6i', 'FEE_1j',
+         'PEAK_A1j', 'OFFP_A1j', 'PEAK_P1j', 'OFFP_P1j', 'FEE_2j', 'PEAK_A2j',
+         'OFFP_A2j', 'PEAK_P2j', 'OFFP_P2j', 'FEE_3j', 'PEAK_A3j', 'OFFP_A3j',
+         'PEAK_P3j', 'OFFP_P3j', 'FEE_4j', 'PEAK_A4j', 'OFFP_A4j', 'PEAK_P4j',
+         'OFFP_P4j', 'FEE_5j', 'PEAK_A5j', 'OFFP_A5j', 'PEAK_P5j', 'OFFP_P5j',
+         'FEE_6j', 'PEAK_A6j', 'OFFP_A6j', 'PEAK_P6j', 'OFFP_P6j', 'NEAREND',
+         'AP_PKOPK', 'PLANit', 'PLANjt', 'PLANit_1', 'PLANjt_1', 'EFFPLi',
+         'FOGGYi', 'SHFOGGYi', 'HHFOGGYi', 'EFFPLj', 'FOGGYj', 'SHFOGGYj',
+         'HHFOGGYj', 'PHS_PL_i', 'PHS_FG_i', 'PHS_PL_j', 'PHS_FG_j', 'POP90',
+         'FAM90', 'HHOLD90', 'AGE90', 'AGE90d', 'HSIZE90', 'HSIZE90d', 'TRAV90',
+         'TRAV90d', 'EDU90', 'EDU90d', 'INC90', 'INC90d', 'MEDINC', 'PCINC'][:191]
 
-    # Read the data matrix from offset 0x88 (136 bytes)
-    data_start = 0x88
-    n_elements = nrows * ncols
-    matrix_data = struct.unpack(f'<{n_elements}d', data[data_start:data_start + n_elements * 8])
-    matrix = np.array(matrix_data).reshape(nrows, ncols)
+# Load data
+DATA_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116442-V1/20110032_Data/AEJ_Miravete_Data/ALLX90_0.fmt'
 
-    return matrix
+data = load_gauss_fmt(DATA_PATH)
+df = pd.DataFrame(data, columns=KNAMES)
 
+# Data transformations following GAUSS code
+# Apply same transformations as in GAUSS code
 
-def get_column_names():
-    """Return variable names from the GAUSS code (193 total)"""
-    return [
-        "SCENARIO", "MARKET", "YEAR", "DUOPOLY", "WIRELINE", "ALPHA_i", "BETA_i",
-        "GAMMA_i", "C_i", "LAMBDA_i", "Z0_i", "ALPHA_j", "BETA_j", "GAMMA_j",
-        "C_j", "LAMBDA_j", "Z0_j", "AP_PEAK", "AP_OFFP", "TIME", "UNOBSERV",
-        "MKT_AGE", "LEAD", "BUSINESS", "COMMUTE", "TCELLS", "GROWTH", "INCOME",
-        "EDUCAT", "COVERAGE", "MEDINAGE", "POVERTY", "WAGE", "ENERGY", "OPERATE",
-        "RENT", "PRIME", "POPULAT", "DENSITY", "CRIME", "VIOLENT", "PROPERTY",
-        "SVCRIMES", "TEMPERAT", "RAIN", "MULTIMKT", "BELL", "REGULAT", "CORRELAT",
-        "CONSPLUS", "PROFITS", "WELFARE", "EXPSALE", "EXPTARF", "EXPRATE", "EXPMKUP",
-        "SURFACE", "NORTH", "WEST", "BELLBELL", "INDBELL", "BELLIND", "INDIND",
-        "LIN", "SNET", "CONTEL", "GTE", "VANG", "MCCAW", "USWEST",
-        "CENTEL", "PACTEL", "SWBELL", "ALLTEL", "AMERTECH", "BELLATL", "NYNEX",
-        "BELLSTH", "REST", "OTHER", "PREG1", "PREG2", "VARPVRTY", "ECOST",
-        "PLANS_i", "PLANS_j", "FOGGY1i", "FOGGY2i", "FOGGY3i", "FOGGY4i", "FOGGY5i",
-        "FOGGY6i", "FOGGY1j", "FOGGY2j", "FOGGY3j", "FOGGY4j", "FOGGY5j", "FOGGY6j",
-        "FEE_1i", "PEAK_A1i", "OFFP_A1i", "PEAK_P1i", "OFFP_P1i", "FEE_2i", "PEAK_A2i",
-        "OFFP_A2i", "PEAK_P2i", "OFFP_P2i", "FEE_3i", "PEAK_A3i", "OFFP_A3i", "PEAK_P3i",
-        "OFFP_P3i", "FEE_4i", "PEAK_A4i", "OFFP_A4i", "PEAK_P4i", "OFFP_P4i", "FEE_5i",
-        "PEAK_A5i", "OFFP_A5i", "PEAK_P5i", "OFFP_P5i", "FEE_6i", "PEAK_A6i", "OFFP_A6i",
-        "PEAK_P6i", "OFFP_P6i", "FEE_1j", "PEAK_A1j", "OFFP_A1j", "PEAK_P1j", "OFFP_P1j",
-        "FEE_2j", "PEAK_A2j", "OFFP_A2j", "PEAK_P2j", "OFFP_P2j", "FEE_3j", "PEAK_A3j",
-        "OFFP_A3j", "PEAK_P3j", "OFFP_P3j", "FEE_4j", "PEAK_A4j", "OFFP_A4j", "PEAK_P4j",
-        "OFFP_P4j", "FEE_5j", "PEAK_A5j", "OFFP_A5j", "PEAK_P5j", "OFFP_P5j", "FEE_6j",
-        "PEAK_A6j", "OFFP_A6j", "PEAK_P6j", "OFFP_P6j", "NEAREND", "AP_PKOPK", "PLANit",
-        "PLANjt", "PLANit_1", "PLANjt_1", "EFFPLi", "FOGGYi", "SHFOGGYi", "HHFOGGYi",
-        "EFFPLj", "FOGGYj", "SHFOGGYj", "HHFOGGYj", "PHS_PL_i", "PHS_FG_i", "PHS_PL_j",
-        "PHS_FG_j", "POP90", "FAM90", "HHOLD90", "AGE90", "AGE90d", "HSIZE90",
-        "HSIZE90d", "TRAV90", "TRAV90d", "EDU90", "EDU90d", "INC90", "INC90d",
-        "MEDINC", "PCINC", "AVGjSHFj", "AVGjHHFj"
-    ]
+# Select only wireline firms (WIRELINE == 1) as in the paper
+# Note: The GAUSS code filters to wireline firms for main analysis
+df_wire = df[df['WIRELINE'] == 1].copy()
 
+# Keep observations with positive MKT_AGE and positive PLANS (as per GAUSS code)
+df_wire = df_wire[df_wire['MKT_AGE'] > 0].copy()
+df_wire = df_wire[df_wire['PLANit'] > 0].copy()
 
-def load_and_prepare_data(sigma_scenario=1):
-    """
-    Load data and apply transformations as in the GAUSS code.
+# Create additional variables
+df_wire['MARKET_int'] = df_wire['MARKET'].astype(int)
+df_wire['TIME_int'] = df_wire['TIME'].astype(int)
 
-    sigma_scenario: 0-7 corresponds to different uncertainty levels
-        0: No uncertainty (degenerate)
-        1: sigma = 0.10*Mean (default)
-        2: sigma = 0.25*Mean
-        ...
-        7: sigma = 3.00*Mean
-    """
-    # Load the data file for uniform usage distribution (k=1)
-    filename = f"ALLX9{sigma_scenario}_1.fmt"
-    filepath = DATA_PATH / filename
+# Create FOGGYi_count = PLANit - EFFPLi (number of foggy plans)
+df_wire['FOGGYi_count'] = df_wire['PLANit'] - df_wire['EFFPLi']
+df_wire['FOGGYi_count'] = df_wire['FOGGYi_count'].clip(lower=0)
 
-    matrix = read_gauss_fmt(filepath)
-    colnames = get_column_names()
+# Log transformations for outcome variables
+df_wire['log_FOGGYi'] = np.log(df_wire['FOGGYi_count'] + 0.1)
+df_wire['log_PLANS_i'] = np.log(df_wire['PLANS_i'] + 0.1)
 
-    # Create DataFrame with available columns
-    df = pd.DataFrame(matrix[:, :len(colnames)], columns=colnames[:matrix.shape[1]])
+# Create treatment timing variable
+# TREATMNT is time since duopoly entry
+df_wire['treat_time'] = df_wire.groupby('MARKET_int')['TIME'].transform('min') - 1
+df_wire['TREATMNT'] = df_wire['TIME'] - df_wire['treat_time']
+df_wire.loc[df_wire['DUOPOLY'] == 0, 'TREATMNT'] = 0
 
-    # Apply transformations from GAUSS code
-    # Create YEAR92 indicator (TIME >= 30)
-    df['YEAR92'] = (df['TIME'] >= 30).astype(int)
+print(f"Dataset shape after filtering: {df_wire.shape}")
+print(f"Number of markets: {df_wire['MARKET_int'].nunique()}")
+print(f"Number of time periods: {df_wire['TIME_int'].nunique()}")
+print(f"Duopoly observations: {(df_wire['DUOPOLY'] == 1).sum()}")
+print(f"Monopoly observations: {(df_wire['DUOPOLY'] == 0).sum()}")
 
-    # Create AP_PKOPK as average of peak and off-peak Arrow-Pratt index
-    df['AP_PKOPK'] = (df['AP_PEAK'] + df['AP_OFFP']) / 2
+# ============================================================================
+# RESULTS STORAGE
+# ============================================================================
 
-    # Exclusions: market age > 0 and plans > 0
-    df = df[df['MKT_AGE'] > 0]
-    df = df[df['PLANit'] > 0]
+results = []
 
-    # Select only wireline firms (as in original code)
-    df = df[df['WIRELINE'] == 1].copy()
+PAPER_ID = '116442-V1'
+JOURNAL = 'AEJ-Microeconomics'
+PAPER_TITLE = 'Competition and the Use of Foggy Pricing'
 
-    # Define FOGGYi as PLANit - EFFPLi (actual - effective plans = foggy plans)
-    df['FOGGYi'] = df['PLANit'] - df['EFFPLi']
-    df['FOGGYi'] = df['FOGGYi'].clip(lower=0)  # Ensure non-negative
+def extract_results(model, spec_id, spec_tree_path, outcome_var, treatment_var,
+                   sample_desc, fixed_effects, controls_desc, cluster_var, model_type, df_used):
+    """Extract results from pyfixest model"""
+    try:
+        coef = model.coef()[treatment_var]
+        se = model.se()[treatment_var]
+        tstat = model.tstat()[treatment_var]
+        pval = model.pvalue()[treatment_var]
+        ci = model.confint()
+        ci_lower = ci.loc[treatment_var, '2.5%']
+        ci_upper = ci.loc[treatment_var, '97.5%']
 
-    # Calculate share of foggy plans
-    df['SHFOGGYi'] = df['FOGGYi'] / df['PLANit']
-    df['SHFOGGYi'] = df['SHFOGGYi'].fillna(0)
+        # Get all coefficients for JSON
+        all_coefs = model.coef()
+        all_se = model.se()
+        all_pval = model.pvalue()
 
-    # Define TREATMNT variable (quarters since duopoly)
-    df['TREATMNT'] = np.nan
-    for market in df['MARKET'].unique():
-        mask = df['MARKET'] == market
-        duopoly_times = df.loc[mask & (df['DUOPOLY'] == 1), 'TIME']
-        if len(duopoly_times) > 0:
-            treat_start = duopoly_times.min()
-            df.loc[mask, 'TREATMNT'] = df.loc[mask, 'TIME'] - treat_start
-
-    # Correct MULTIMKT to be zero in monopoly
-    df['MULTIMKT'] = df['MULTIMKT'] * df['DUOPOLY']
-
-    # Create market and time identifiers
-    df['MARKET'] = df['MARKET'].astype(int)
-    df['TIME'] = df['TIME'].astype(int)
-
-    return df
-
-
-# =============================================================================
-# Regression Functions
-# =============================================================================
-
-def create_dummies(df, col, prefix=None, drop_first=True):
-    """Create dummy variables for a categorical column"""
-    if prefix is None:
-        prefix = col
-    dummies = pd.get_dummies(df[col], prefix=prefix, drop_first=drop_first)
-    return dummies
-
-
-def demean_by_group(df, var, group_var):
-    """Demean a variable within groups"""
-    return df[var] - df.groupby(group_var)[var].transform('mean')
-
-
-def demean_twoway(df, var, group1, group2, max_iter=100, tol=1e-8):
-    """
-    Demean a variable by two groups iteratively (for two-way FE).
-    Uses alternating projection method.
-    """
-    demeaned = df[var].copy()
-    for _ in range(max_iter):
-        old = demeaned.copy()
-        # Demean by first group
-        demeaned = demeaned - df.groupby(group1)[var].transform('mean') + df[var].mean()
-        demeaned = demeaned - demeaned.groupby(df[group1]).transform('mean')
-        # Demean by second group
-        demeaned = demeaned - demeaned.groupby(df[group2]).transform('mean')
-        # Check convergence
-        if (np.abs(demeaned - old) < tol).all():
-            break
-    return demeaned
-
-
-def run_ols_with_fe(df, y_var, x_vars, fe_vars=None, cluster_var=None):
-    """
-    Run OLS regression with fixed effects absorbed using within transformation.
-
-    Parameters:
-    -----------
-    df : DataFrame
-    y_var : str - dependent variable
-    x_vars : list - independent variables
-    fe_vars : list - fixed effect variables to absorb
-    cluster_var : str - clustering variable for standard errors
-
-    Returns:
-    --------
-    dict with results
-    """
-    # Prepare data
-    df_reg = df.copy()
-
-    # Remove any observations with missing values
-    all_vars = [y_var] + x_vars + (fe_vars if fe_vars else [])
-    if cluster_var:
-        all_vars.append(cluster_var)
-    df_reg = df_reg.dropna(subset=all_vars)
-
-    if len(df_reg) < 10:
-        return {
-            'coefficient': np.nan,
-            'std_error': np.nan,
-            't_stat': np.nan,
-            'p_value': np.nan,
-            'ci_lower': np.nan,
-            'ci_upper': np.nan,
-            'n_obs': 0,
-            'r_squared': np.nan,
-            'coefficient_vector': {},
-            'success': False,
-            'error': 'Insufficient observations'
+        coef_vector = {
+            'treatment': {
+                'var': treatment_var,
+                'coef': float(coef),
+                'se': float(se),
+                'pval': float(pval)
+            },
+            'controls': [
+                {'var': v, 'coef': float(all_coefs[v]), 'se': float(all_se[v]), 'pval': float(all_pval[v])}
+                for v in all_coefs.index if v != treatment_var
+            ],
+            'fixed_effects': fixed_effects.split(' + ') if fixed_effects else [],
+            'diagnostics': {}
         }
 
-    # Apply within transformation for fixed effects
-    if fe_vars:
-        if len(fe_vars) == 2:
-            # Two-way FE: use iterative demeaning
-            y_demeaned = demean_twoway(df_reg, y_var, fe_vars[0], fe_vars[1])
-            X_demeaned = pd.DataFrame()
-            for var in x_vars:
-                X_demeaned[var] = demean_twoway(df_reg, var, fe_vars[0], fe_vars[1])
-        else:
-            # Single FE: simple demeaning
-            y_demeaned = demean_by_group(df_reg, y_var, fe_vars[0])
-            X_demeaned = pd.DataFrame()
-            for var in x_vars:
-                X_demeaned[var] = demean_by_group(df_reg, var, fe_vars[0])
-
-        X = X_demeaned
-        y = y_demeaned
-    else:
-        # No FE
-        X = df_reg[x_vars].copy()
-        X = sm.add_constant(X)
-        y = df_reg[y_var]
-
-    # Fit OLS
-    try:
-        if cluster_var and cluster_var in df_reg.columns:
-            # Clustered standard errors
-            model = OLS(y, X)
-            results = model.fit(cov_type='cluster', cov_kwds={'groups': df_reg[cluster_var]})
-        else:
-            # Robust standard errors
-            model = OLS(y, X)
-            results = model.fit(cov_type='HC1')
-
-        # Extract results for treatment variable (first x_var)
-        treat_var = x_vars[0]
-        if treat_var in results.params.index:
-            coef = results.params[treat_var]
-            se = results.bse[treat_var]
-            tstat = results.tvalues[treat_var]
-            pval = results.pvalues[treat_var]
-            ci = results.conf_int()
-            if treat_var in ci.index:
-                ci_lower, ci_upper = ci.loc[treat_var]
-            else:
-                ci_lower, ci_upper = np.nan, np.nan
-        else:
-            coef = se = tstat = pval = ci_lower = ci_upper = np.nan
-
-        # Get all coefficients for x_vars
-        coef_vector = {}
-        for var in x_vars:
-            if var in results.params.index:
-                coef_vector[var] = {
-                    'coef': float(results.params[var]),
-                    'se': float(results.bse[var]),
-                    'pval': float(results.pvalues[var])
-                }
-
-        # Calculate R-squared (within for FE models)
-        r_sq = float(results.rsquared) if not fe_vars else 1 - (y - results.fittedvalues).var() / y.var()
-
         return {
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': spec_id,
+            'spec_tree_path': spec_tree_path,
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
             'coefficient': float(coef),
             'std_error': float(se),
             't_stat': float(tstat),
             'p_value': float(pval),
             'ci_lower': float(ci_lower),
             'ci_upper': float(ci_upper),
-            'n_obs': int(results.nobs),
-            'r_squared': float(r_sq),
-            'coefficient_vector': coef_vector,
-            'success': True
+            'n_obs': int(model._N),
+            'r_squared': float(model._r2) if hasattr(model, '_r2') else np.nan,
+            'coefficient_vector_json': json.dumps(coef_vector),
+            'sample_desc': sample_desc,
+            'fixed_effects': fixed_effects,
+            'controls_desc': controls_desc,
+            'cluster_var': cluster_var,
+            'model_type': model_type,
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
         }
     except Exception as e:
-        return {
-            'coefficient': np.nan,
-            'std_error': np.nan,
-            't_stat': np.nan,
-            'p_value': np.nan,
-            'ci_lower': np.nan,
-            'ci_upper': np.nan,
-            'n_obs': 0,
-            'r_squared': np.nan,
-            'coefficient_vector': {},
-            'success': False,
-            'error': str(e)
-        }
+        print(f"Error extracting results for {spec_id}: {e}")
+        return None
 
+# ============================================================================
+# BASELINE SPECIFICATION
+# ============================================================================
 
-def run_poisson(df, y_var, x_vars, cluster_var=None):
-    """
-    Run Poisson regression for count data.
-    """
-    from statsmodels.discrete.discrete_model import Poisson
+# Main outcome is FOGGYi (number of foggy plans) as count data
+# Paper uses Poisson PML with market and time FE, clustered SE
 
-    df_reg = df.copy()
-    all_vars = [y_var] + x_vars
-    if cluster_var:
-        all_vars.append(cluster_var)
-    df_reg = df_reg.dropna(subset=all_vars)
+# Control variables from GAUSS code
+CONTROL_VARS = ['AP_PEAK', 'AP_OFFP']  # Arrow-Pratt indices
 
-    # Ensure y is non-negative integer
-    df_reg[y_var] = df_reg[y_var].clip(lower=0).round().astype(int)
+print("\n" + "="*60)
+print("BASELINE SPECIFICATION")
+print("="*60)
 
-    X = df_reg[x_vars]
-    X = sm.add_constant(X)
-    y = df_reg[y_var]
+# Baseline: OLS with log outcome, market + time FE, clustered by market
+try:
+    baseline = pf.feols(
+        'log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+        data=df_wire,
+        vcov={'CRV1': 'MARKET_int'}
+    )
+    result = extract_results(
+        baseline, 'baseline', 'methods/difference_in_differences.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms, positive MKT_AGE and PLANS',
+        'MARKET_int + TIME_int', 'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Baseline: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Baseline failed: {e}")
 
+# ============================================================================
+# FIXED EFFECTS VARIATIONS
+# ============================================================================
+
+print("\n" + "="*60)
+print("FIXED EFFECTS VARIATIONS")
+print("="*60)
+
+fe_specs = [
+    ('did/fe/unit_only', 'MARKET_int', 'Market FE only'),
+    ('did/fe/time_only', 'TIME_int', 'Time FE only'),
+    ('did/fe/twoway', 'MARKET_int + TIME_int', 'Two-way FE'),
+    ('did/fe/none', None, 'No fixed effects (pooled OLS)')
+]
+
+for spec_id, fe, fe_desc in fe_specs:
     try:
-        model = Poisson(y, X)
-        if cluster_var:
-            results = model.fit(cov_type='cluster', cov_kwds={'groups': df_reg[cluster_var]}, disp=0)
+        if fe:
+            formula = f'log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | {fe}'
         else:
-            results = model.fit(cov_type='HC1', disp=0)
+            formula = 'log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP'
 
-        treat_var = x_vars[0]
-        coef = results.params[treat_var]
-        se = results.bse[treat_var]
-        tstat = results.tvalues[treat_var]
-        pval = results.pvalues[treat_var]
-        ci_lower, ci_upper = results.conf_int().loc[treat_var]
-
-        coef_vector = {}
-        for var in x_vars:
-            if var in results.params.index:
-                coef_vector[var] = {
-                    'coef': float(results.params[var]),
-                    'se': float(results.bse[var]),
-                    'pval': float(results.pvalues[var])
-                }
-
-        return {
-            'coefficient': float(coef),
-            'std_error': float(se),
-            't_stat': float(tstat),
-            'p_value': float(pval),
-            'ci_lower': float(ci_lower),
-            'ci_upper': float(ci_upper),
-            'n_obs': int(results.nobs),
-            'r_squared': float(results.prsquared),  # Pseudo R-squared
-            'coefficient_vector': coef_vector,
-            'success': True
-        }
+        model = pf.feols(formula, data=df_wire, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, spec_id, 'methods/difference_in_differences.md#fixed-effects',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms', fe if fe else 'None',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+        )
+        if result:
+            results.append(result)
+            print(f"{spec_id}: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
     except Exception as e:
-        return {
-            'coefficient': np.nan,
-            'std_error': np.nan,
-            't_stat': np.nan,
-            'p_value': np.nan,
-            'ci_lower': np.nan,
-            'ci_upper': np.nan,
-            'n_obs': 0,
-            'r_squared': np.nan,
-            'coefficient_vector': {},
-            'success': False,
-            'error': str(e)
-        }
+        print(f"{spec_id} failed: {e}")
 
+# ============================================================================
+# CONTROL VARIABLE VARIATIONS
+# ============================================================================
 
-# =============================================================================
-# Specification Search
-# =============================================================================
+print("\n" + "="*60)
+print("CONTROL VARIABLE VARIATIONS")
+print("="*60)
 
-def run_specification_search():
-    """Run the full specification search"""
-
-    print("Loading data...")
-    df = load_and_prepare_data(sigma_scenario=1)
-    print(f"Data loaded: {len(df)} observations")
-    print(f"Unique markets: {df['MARKET'].nunique()}")
-    print(f"Unique time periods: {df['TIME'].nunique()}")
-    print(f"Duopoly observations: {(df['DUOPOLY'] == 1).sum()}")
-
-    results = []
-
-    # Define treatment and outcome variables
-    treatment_var = 'DUOPOLY'
-    outcome_vars = ['FOGGYi', 'SHFOGGYi', 'HHFOGGYi']
-
-    # Define control variables (from GAUSS code)
-    control_vars = ['AP_PEAK', 'AP_OFFP']
-
-    # Market characteristics that could serve as controls
-    market_controls = ['MULTIMKT', 'BELL', 'REGULAT']
-
-    # All controls
-    all_controls = control_vars + market_controls
-
-    # Fixed effects
-    market_fe = 'MARKET'
-    time_fe = 'TIME'
-
-    # Define method map
-    method_map = {
-        "method_code": "difference_in_differences",
-        "method_tree_path": "specification_tree/methods/difference_in_differences.md",
-        "specs_to_run": [],
-        "robustness_specs": []
-    }
-
-    spec_count = 0
-
-    # ==========================================================================
-    # 1. BASELINE SPECIFICATIONS (for each outcome)
-    # ==========================================================================
-
-    print("\nRunning baseline specifications...")
-
-    for outcome in outcome_vars:
-        spec_id = f"baseline_{outcome}"
-
-        result = run_ols_with_fe(
-            df=df,
-            y_var=outcome,
-            x_vars=[treatment_var] + control_vars,
-            fe_vars=[market_fe, time_fe],
-            cluster_var=market_fe
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': spec_id,
-            'spec_tree_path': 'methods/difference_in_differences.md#baseline',
-            'outcome_var': outcome,
-            'treatment_var': treatment_var,
-            'coefficient': result['coefficient'],
-            'std_error': result['std_error'],
-            't_stat': result['t_stat'],
-            'p_value': result['p_value'],
-            'ci_lower': result['ci_lower'],
-            'ci_upper': result['ci_upper'],
-            'n_obs': result['n_obs'],
-            'r_squared': result['r_squared'],
-            'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-            'sample_desc': 'Wireline firms only',
-            'fixed_effects': 'Market + Time FE',
-            'controls_desc': ', '.join(control_vars),
-            'cluster_var': market_fe,
-            'model_type': 'OLS with two-way FE',
-            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-        })
-        spec_count += 1
-        print(f"  {spec_id}: coef={result['coefficient']:.4f}, p={result['p_value']:.4f}")
-
-    # ==========================================================================
-    # 2. FIXED EFFECTS VARIATIONS
-    # ==========================================================================
-
-    print("\nRunning FE variations...")
-
-    fe_specs = [
-        ('did/fe/unit_only', [market_fe], 'Market FE only'),
-        ('did/fe/time_only', [time_fe], 'Time FE only'),
-        ('did/fe/twoway', [market_fe, time_fe], 'Market + Time FE'),
-        ('did/fe/none', None, 'No FE (pooled OLS)'),
-    ]
-
-    for outcome in outcome_vars:
-        for spec_id, fe_vars, fe_desc in fe_specs:
-            result = run_ols_with_fe(
-                df=df,
-                y_var=outcome,
-                x_vars=[treatment_var] + control_vars,
-                fe_vars=fe_vars,
-                cluster_var=market_fe if fe_vars else None
-            )
-
-            results.append({
-                'paper_id': PAPER_ID,
-                'journal': JOURNAL,
-                'paper_title': PAPER_TITLE,
-                'spec_id': f"{spec_id}_{outcome}",
-                'spec_tree_path': 'methods/difference_in_differences.md#fixed-effects',
-                'outcome_var': outcome,
-                'treatment_var': treatment_var,
-                'coefficient': result['coefficient'],
-                'std_error': result['std_error'],
-                't_stat': result['t_stat'],
-                'p_value': result['p_value'],
-                'ci_lower': result['ci_lower'],
-                'ci_upper': result['ci_upper'],
-                'n_obs': result['n_obs'],
-                'r_squared': result['r_squared'],
-                'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-                'sample_desc': 'Wireline firms only',
-                'fixed_effects': fe_desc,
-                'controls_desc': ', '.join(control_vars),
-                'cluster_var': market_fe if fe_vars else 'None',
-                'model_type': 'OLS',
-                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-            })
-            spec_count += 1
-
-    # ==========================================================================
-    # 3. CONTROL SET VARIATIONS
-    # ==========================================================================
-
-    print("\nRunning control variations...")
-
-    control_specs = [
-        ('did/controls/none', [], 'No controls'),
-        ('did/controls/minimal', control_vars[:1], 'AP_PEAK only'),
-        ('did/controls/baseline', control_vars, 'AP_PEAK, AP_OFFP'),
-        ('did/controls/full', all_controls, 'All controls'),
-    ]
-
-    for outcome in outcome_vars:
-        for spec_id, controls, ctrl_desc in control_specs:
-            x_vars = [treatment_var] + controls if controls else [treatment_var]
-
-            result = run_ols_with_fe(
-                df=df,
-                y_var=outcome,
-                x_vars=x_vars,
-                fe_vars=[market_fe, time_fe],
-                cluster_var=market_fe
-            )
-
-            results.append({
-                'paper_id': PAPER_ID,
-                'journal': JOURNAL,
-                'paper_title': PAPER_TITLE,
-                'spec_id': f"{spec_id}_{outcome}",
-                'spec_tree_path': 'methods/difference_in_differences.md#control-sets',
-                'outcome_var': outcome,
-                'treatment_var': treatment_var,
-                'coefficient': result['coefficient'],
-                'std_error': result['std_error'],
-                't_stat': result['t_stat'],
-                'p_value': result['p_value'],
-                'ci_lower': result['ci_lower'],
-                'ci_upper': result['ci_upper'],
-                'n_obs': result['n_obs'],
-                'r_squared': result['r_squared'],
-                'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-                'sample_desc': 'Wireline firms only',
-                'fixed_effects': 'Market + Time FE',
-                'controls_desc': ctrl_desc,
-                'cluster_var': market_fe,
-                'model_type': 'OLS with two-way FE',
-                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-            })
-            spec_count += 1
-
-    # ==========================================================================
-    # 4. SAMPLE RESTRICTIONS
-    # ==========================================================================
-
-    print("\nRunning sample restriction variations...")
-
-    # Early period (first half)
-    df_early = df[df['TIME'] <= df['TIME'].median()].copy()
-    # Late period (second half)
-    df_late = df[df['TIME'] > df['TIME'].median()].copy()
-    # Exclude always-treated (markets that start in duopoly)
-    always_treated = df.groupby('MARKET')['DUOPOLY'].min()
-    never_monopoly = always_treated[always_treated == 1].index
-    df_exclude_always = df[~df['MARKET'].isin(never_monopoly)].copy()
-
-    sample_specs = [
-        ('did/sample/full', df, 'Full sample'),
-        ('did/sample/early_period', df_early, 'First half of sample period'),
-        ('did/sample/late_period', df_late, 'Second half of sample period'),
-        ('did/sample/exclude_always_treated', df_exclude_always, 'Exclude always-treated markets'),
-    ]
-
-    for outcome in outcome_vars:
-        for spec_id, df_sample, sample_desc in sample_specs:
-            result = run_ols_with_fe(
-                df=df_sample,
-                y_var=outcome,
-                x_vars=[treatment_var] + control_vars,
-                fe_vars=[market_fe, time_fe],
-                cluster_var=market_fe
-            )
-
-            results.append({
-                'paper_id': PAPER_ID,
-                'journal': JOURNAL,
-                'paper_title': PAPER_TITLE,
-                'spec_id': f"{spec_id}_{outcome}",
-                'spec_tree_path': 'methods/difference_in_differences.md#sample-restrictions',
-                'outcome_var': outcome,
-                'treatment_var': treatment_var,
-                'coefficient': result['coefficient'],
-                'std_error': result['std_error'],
-                't_stat': result['t_stat'],
-                'p_value': result['p_value'],
-                'ci_lower': result['ci_lower'],
-                'ci_upper': result['ci_upper'],
-                'n_obs': result['n_obs'],
-                'r_squared': result['r_squared'],
-                'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-                'sample_desc': sample_desc,
-                'fixed_effects': 'Market + Time FE',
-                'controls_desc': ', '.join(control_vars),
-                'cluster_var': market_fe,
-                'model_type': 'OLS with two-way FE',
-                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-            })
-            spec_count += 1
-
-    # ==========================================================================
-    # 5. FUNCTIONAL FORM - POISSON (for count outcome FOGGYi)
-    # ==========================================================================
-
-    print("\nRunning Poisson regression for count outcome...")
-
-    # Poisson for FOGGYi (count outcome)
-    outcome = 'FOGGYi'
-    result = run_poisson(
-        df=df,
-        y_var=outcome,
-        x_vars=[treatment_var] + control_vars,
-        cluster_var=market_fe
+# No controls
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'did/controls/none', 'methods/difference_in_differences.md#control-sets',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'None', 'MARKET_int', 'OLS-FE', df_wire
     )
+    if result:
+        results.append(result)
+        print(f"No controls: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"No controls failed: {e}")
 
-    results.append({
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': f"robust/form/poisson_{outcome}",
-        'spec_tree_path': 'robustness/functional_form.md#alternative-estimators',
-        'outcome_var': outcome,
-        'treatment_var': treatment_var,
-        'coefficient': result['coefficient'],
-        'std_error': result['std_error'],
-        't_stat': result['t_stat'],
-        'p_value': result['p_value'],
-        'ci_lower': result['ci_lower'],
-        'ci_upper': result['ci_upper'],
-        'n_obs': result['n_obs'],
-        'r_squared': result['r_squared'],
-        'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-        'sample_desc': 'Wireline firms only',
-        'fixed_effects': 'None (Poisson)',
-        'controls_desc': ', '.join(control_vars),
-        'cluster_var': market_fe,
-        'model_type': 'Poisson PML',
-        'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-    })
-    spec_count += 1
-
-    # ==========================================================================
-    # 6. LOG TRANSFORMATION
-    # ==========================================================================
-
-    print("\nRunning log transformation specifications...")
-
-    for outcome in outcome_vars:
-        # Create log-transformed outcome
-        df[f'{outcome}_log'] = np.log(df[outcome] + 0.1)
-
-        result = run_ols_with_fe(
-            df=df,
-            y_var=f'{outcome}_log',
-            x_vars=[treatment_var] + control_vars,
-            fe_vars=[market_fe, time_fe],
-            cluster_var=market_fe
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f"robust/form/y_log_{outcome}",
-            'spec_tree_path': 'robustness/functional_form.md#outcome-variable-transformations',
-            'outcome_var': f'{outcome}_log',
-            'treatment_var': treatment_var,
-            'coefficient': result['coefficient'],
-            'std_error': result['std_error'],
-            't_stat': result['t_stat'],
-            'p_value': result['p_value'],
-            'ci_lower': result['ci_lower'],
-            'ci_upper': result['ci_upper'],
-            'n_obs': result['n_obs'],
-            'r_squared': result['r_squared'],
-            'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-            'sample_desc': 'Wireline firms only',
-            'fixed_effects': 'Market + Time FE',
-            'controls_desc': ', '.join(control_vars),
-            'cluster_var': market_fe,
-            'model_type': 'OLS with two-way FE (log outcome)',
-            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-        })
-        spec_count += 1
-
-    # ==========================================================================
-    # 7. LEAVE-ONE-OUT ROBUSTNESS
-    # ==========================================================================
-
-    print("\nRunning leave-one-out robustness checks...")
-
-    outcome = 'FOGGYi'  # Primary outcome
-
-    for drop_var in control_vars:
-        remaining_controls = [c for c in control_vars if c != drop_var]
-
-        result = run_ols_with_fe(
-            df=df,
-            y_var=outcome,
-            x_vars=[treatment_var] + remaining_controls,
-            fe_vars=[market_fe, time_fe],
-            cluster_var=market_fe
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': f"robust/loo/drop_{drop_var}",
-            'spec_tree_path': 'robustness/leave_one_out.md',
-            'outcome_var': outcome,
-            'treatment_var': treatment_var,
-            'coefficient': result['coefficient'],
-            'std_error': result['std_error'],
-            't_stat': result['t_stat'],
-            'p_value': result['p_value'],
-            'ci_lower': result['ci_lower'],
-            'ci_upper': result['ci_upper'],
-            'n_obs': result['n_obs'],
-            'r_squared': result['r_squared'],
-            'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-            'sample_desc': 'Wireline firms only',
-            'fixed_effects': 'Market + Time FE',
-            'controls_desc': f'Dropped: {drop_var}',
-            'cluster_var': market_fe,
-            'model_type': 'OLS with two-way FE',
-            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-        })
-        spec_count += 1
-
-    # ==========================================================================
-    # 8. CLUSTERING VARIATIONS
-    # ==========================================================================
-
-    print("\nRunning clustering variations...")
-
-    outcome = 'FOGGYi'
-
-    cluster_specs = [
-        ('robust/cluster/none', None, 'Robust (no clustering)'),
-        ('robust/cluster/unit', market_fe, 'Cluster by market'),
-        ('robust/cluster/time', time_fe, 'Cluster by time'),
-    ]
-
-    for spec_id, cluster, cluster_desc in cluster_specs:
-        result = run_ols_with_fe(
-            df=df,
-            y_var=outcome,
-            x_vars=[treatment_var] + control_vars,
-            fe_vars=[market_fe, time_fe],
-            cluster_var=cluster
-        )
-
-        results.append({
-            'paper_id': PAPER_ID,
-            'journal': JOURNAL,
-            'paper_title': PAPER_TITLE,
-            'spec_id': spec_id,
-            'spec_tree_path': 'robustness/clustering_variations.md',
-            'outcome_var': outcome,
-            'treatment_var': treatment_var,
-            'coefficient': result['coefficient'],
-            'std_error': result['std_error'],
-            't_stat': result['t_stat'],
-            'p_value': result['p_value'],
-            'ci_lower': result['ci_lower'],
-            'ci_upper': result['ci_upper'],
-            'n_obs': result['n_obs'],
-            'r_squared': result['r_squared'],
-            'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-            'sample_desc': 'Wireline firms only',
-            'fixed_effects': 'Market + Time FE',
-            'controls_desc': ', '.join(control_vars),
-            'cluster_var': cluster_desc,
-            'model_type': 'OLS with two-way FE',
-            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-        })
-        spec_count += 1
-
-    # ==========================================================================
-    # 9. DYNAMIC TREATMENT EFFECTS (Event Study)
-    # ==========================================================================
-
-    print("\nRunning event study specifications...")
-
-    outcome = 'FOGGYi'
-
-    # Create treatment timing dummies
-    df['TREAT_POST'] = (df['TREATMNT'] >= 0).astype(int) * df['DUOPOLY']
-
-    # Create period dummies for event study
-    for lag in range(7):  # 0 to 6 periods after treatment
-        df[f'TREAT_{lag}'] = ((df['TREATMNT'] == lag) & (df['DUOPOLY'] == 1)).astype(int)
-
-    # Event study with individual period dummies
-    event_vars = [f'TREAT_{i}' for i in range(7)]
-
-    result = run_ols_with_fe(
-        df=df,
-        y_var=outcome,
-        x_vars=event_vars + control_vars,
-        fe_vars=[market_fe, time_fe],
-        cluster_var=market_fe
+# Drop AP_PEAK
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/control/drop_AP_PEAK', 'robustness/leave_one_out.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
     )
+    if result:
+        results.append(result)
+        print(f"Drop AP_PEAK: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Drop AP_PEAK failed: {e}")
 
-    results.append({
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': 'did/dynamic/leads_lags',
-        'spec_tree_path': 'methods/difference_in_differences.md#dynamic-effects',
-        'outcome_var': outcome,
-        'treatment_var': 'Event study dummies (TREAT_0 to TREAT_6)',
-        'coefficient': result['coefficient_vector'].get('TREAT_0', {}).get('coef', np.nan),
-        'std_error': result['coefficient_vector'].get('TREAT_0', {}).get('se', np.nan),
-        't_stat': result['t_stat'],
-        'p_value': result['coefficient_vector'].get('TREAT_0', {}).get('pval', np.nan),
-        'ci_lower': result['ci_lower'],
-        'ci_upper': result['ci_upper'],
-        'n_obs': result['n_obs'],
-        'r_squared': result['r_squared'],
-        'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-        'sample_desc': 'Wireline firms only',
-        'fixed_effects': 'Market + Time FE',
-        'controls_desc': ', '.join(control_vars),
-        'cluster_var': market_fe,
-        'model_type': 'Event study with two-way FE',
-        'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-    })
-    spec_count += 1
+# Drop AP_OFFP
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/control/drop_AP_OFFP', 'robustness/leave_one_out.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Drop AP_OFFP: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Drop AP_OFFP failed: {e}")
 
-    # ==========================================================================
-    # 10. DIFFERENT UNCERTAINTY SCENARIOS
-    # ==========================================================================
+# Add more controls: MULTIMKT (multimarket contact)
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP + MULTIMKT | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/control/add_MULTIMKT', 'robustness/leave_one_out.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + MULTIMKT', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Add MULTIMKT: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Add MULTIMKT failed: {e}")
 
-    print("\nRunning different uncertainty scenario specifications...")
+# Add MKT_AGE (market experience)
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP + MKT_AGE | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/control/add_MKT_AGE', 'robustness/leave_one_out.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + MKT_AGE', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Add MKT_AGE: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Add MKT_AGE failed: {e}")
 
-    for sigma in [0, 2, 4, 7]:  # Different uncertainty levels
+# Full controls
+FULL_CONTROLS = ['AP_PEAK', 'AP_OFFP', 'MULTIMKT', 'MKT_AGE', 'LEAD']
+try:
+    ctrl_str = ' + '.join(FULL_CONTROLS)
+    model = pf.feols(f'log_FOGGYi ~ DUOPOLY + {ctrl_str} | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'did/controls/full', 'methods/difference_in_differences.md#control-sets',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        ctrl_str, 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Full controls: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Full controls failed: {e}")
+
+# ============================================================================
+# ALTERNATIVE OUTCOME VARIABLES
+# ============================================================================
+
+print("\n" + "="*60)
+print("ALTERNATIVE OUTCOME VARIABLES")
+print("="*60)
+
+# SHFOGGYi (share of foggy plans)
+try:
+    model = pf.feols('SHFOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/outcome/SHFOGGYi', 'robustness/functional_form.md',
+        'SHFOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"SHFOGGYi: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"SHFOGGYi failed: {e}")
+
+# HHFOGGYi (HHI of foggy plans)
+try:
+    model = pf.feols('HHFOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/outcome/HHFOGGYi', 'robustness/functional_form.md',
+        'HHFOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"HHFOGGYi: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"HHFOGGYi failed: {e}")
+
+# FOGGYi_count in levels
+try:
+    model = pf.feols('FOGGYi_count ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/outcome/FOGGYi_levels', 'robustness/functional_form.md',
+        'FOGGYi_count', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"FOGGYi levels: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"FOGGYi levels failed: {e}")
+
+# PLANS_i (total plans - placebo-like)
+try:
+    model = pf.feols('log_PLANS_i ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/outcome/log_PLANS_i', 'robustness/functional_form.md',
+        'log_PLANS_i', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"log_PLANS_i: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"log_PLANS_i failed: {e}")
+
+# EFFPLi (effective/non-dominated plans)
+try:
+    df_wire['log_EFFPLi'] = np.log(df_wire['EFFPLi'] + 0.1)
+    model = pf.feols('log_EFFPLi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/outcome/log_EFFPLi', 'robustness/functional_form.md',
+        'log_EFFPLi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"log_EFFPLi: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"log_EFFPLi failed: {e}")
+
+# ============================================================================
+# CLUSTERING VARIATIONS
+# ============================================================================
+
+print("\n" + "="*60)
+print("CLUSTERING VARIATIONS")
+print("="*60)
+
+# Robust SE (no clustering)
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov='hetero')
+    result = extract_results(
+        model, 'robust/cluster/none', 'robustness/clustering_variations.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'None (robust)', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Robust SE: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Robust SE failed: {e}")
+
+# Cluster by time
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'TIME_int'})
+    result = extract_results(
+        model, 'robust/cluster/time', 'robustness/clustering_variations.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'TIME_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Cluster time: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Cluster time failed: {e}")
+
+# Two-way clustering - pyfixest requires special syntax
+try:
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov='twoway')
+    result = extract_results(
+        model, 'robust/cluster/unit_time', 'robustness/clustering_variations.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int + TIME_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Two-way cluster: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Two-way cluster failed: {e}")
+
+# ============================================================================
+# SAMPLE RESTRICTIONS
+# ============================================================================
+
+print("\n" + "="*60)
+print("SAMPLE RESTRICTIONS")
+print("="*60)
+
+# Early period (TIME <= 15)
+try:
+    df_early = df_wire[df_wire['TIME'] <= 15]
+    if len(df_early) > 50:
+        model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                         data=df_early, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'robust/sample/early_period', 'robustness/sample_restrictions.md',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms, TIME <= 15', 'MARKET_int + TIME_int',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_early
+        )
+        if result:
+            results.append(result)
+            print(f"Early period: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Early period failed: {e}")
+
+# Late period (TIME > 15)
+try:
+    df_late = df_wire[df_wire['TIME'] > 15]
+    if len(df_late) > 50:
+        model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                         data=df_late, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'robust/sample/late_period', 'robustness/sample_restrictions.md',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms, TIME > 15', 'MARKET_int + TIME_int',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_late
+        )
+        if result:
+            results.append(result)
+            print(f"Late period: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Late period failed: {e}")
+
+# Trim outliers - top/bottom 5% of outcome
+try:
+    p5, p95 = df_wire['log_FOGGYi'].quantile([0.05, 0.95])
+    df_trim = df_wire[(df_wire['log_FOGGYi'] >= p5) & (df_wire['log_FOGGYi'] <= p95)]
+    if len(df_trim) > 50:
+        model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                         data=df_trim, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'robust/sample/trim_5pct', 'robustness/sample_restrictions.md',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms, trimmed 5%', 'MARKET_int + TIME_int',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_trim
+        )
+        if result:
+            results.append(result)
+            print(f"Trim 5%: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Trim 5% failed: {e}")
+
+# Winsorize outcome at 1%
+try:
+    df_wins = df_wire.copy()
+    p1, p99 = df_wins['log_FOGGYi'].quantile([0.01, 0.99])
+    df_wins['log_FOGGYi_wins'] = df_wins['log_FOGGYi'].clip(lower=p1, upper=p99)
+    model = pf.feols('log_FOGGYi_wins ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wins, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/sample/winsor_1pct', 'robustness/sample_restrictions.md',
+        'log_FOGGYi_wins', 'DUOPOLY', 'Wireline firms, winsorized 1%', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wins
+    )
+    if result:
+        results.append(result)
+        print(f"Winsorize 1%: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Winsorize 1% failed: {e}")
+
+# Drop first year
+try:
+    min_time = df_wire['TIME'].min()
+    df_no_first = df_wire[df_wire['TIME'] > min_time]
+    if len(df_no_first) > 50:
+        model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                         data=df_no_first, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'robust/sample/exclude_first_year', 'robustness/sample_restrictions.md',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms, excl first year', 'MARKET_int + TIME_int',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_no_first
+        )
+        if result:
+            results.append(result)
+            print(f"Excl first year: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Excl first year failed: {e}")
+
+# Drop last year
+try:
+    max_time = df_wire['TIME'].max()
+    df_no_last = df_wire[df_wire['TIME'] < max_time]
+    if len(df_no_last) > 50:
+        model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                         data=df_no_last, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'robust/sample/exclude_last_year', 'robustness/sample_restrictions.md',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms, excl last year', 'MARKET_int + TIME_int',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_no_last
+        )
+        if result:
+            results.append(result)
+            print(f"Excl last year: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Excl last year failed: {e}")
+
+# Drop specific time periods
+for drop_time in [5, 10, 15, 20, 25]:
+    try:
+        df_drop = df_wire[df_wire['TIME'] != drop_time]
+        if len(df_drop) > 50:
+            model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                             data=df_drop, vcov={'CRV1': 'MARKET_int'})
+            result = extract_results(
+                model, f'robust/sample/drop_time_{drop_time}', 'robustness/sample_restrictions.md',
+                'log_FOGGYi', 'DUOPOLY', f'Wireline firms, excl TIME={drop_time}', 'MARKET_int + TIME_int',
+                'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_drop
+            )
+            if result:
+                results.append(result)
+                print(f"Drop TIME={drop_time}: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+    except Exception as e:
+        print(f"Drop TIME={drop_time} failed: {e}")
+
+# Markets with min observations
+for min_obs in [3, 5, 10]:
+    try:
+        market_counts = df_wire.groupby('MARKET_int').size()
+        valid_markets = market_counts[market_counts >= min_obs].index
+        df_sub = df_wire[df_wire['MARKET_int'].isin(valid_markets)]
+        if len(df_sub) > 50 and df_sub['MARKET_int'].nunique() > 10:
+            model = pf.feols('log_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                             data=df_sub, vcov={'CRV1': 'MARKET_int'})
+            result = extract_results(
+                model, f'robust/sample/min_obs_{min_obs}', 'robustness/sample_restrictions.md',
+                'log_FOGGYi', 'DUOPOLY', f'Wireline firms, markets with >={min_obs} obs', 'MARKET_int + TIME_int',
+                'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_sub
+            )
+            if result:
+                results.append(result)
+                print(f"Min obs {min_obs}: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+    except Exception as e:
+        print(f"Min obs {min_obs} failed: {e}")
+
+# ============================================================================
+# FUNCTIONAL FORM VARIATIONS
+# ============================================================================
+
+print("\n" + "="*60)
+print("FUNCTIONAL FORM VARIATIONS")
+print("="*60)
+
+# IHS transformation
+try:
+    df_wire['ihs_FOGGYi'] = np.arcsinh(df_wire['FOGGYi_count'])
+    model = pf.feols('ihs_FOGGYi ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/funcform/ihs_outcome', 'robustness/functional_form.md',
+        'ihs_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"IHS: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"IHS failed: {e}")
+
+# Levels (no transformation)
+try:
+    model = pf.feols('FOGGYi_count ~ DUOPOLY + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/funcform/levels', 'robustness/functional_form.md',
+        'FOGGYi_count', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Levels: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Levels failed: {e}")
+
+# Squared treatment (nonlinear effect)
+try:
+    df_wire['DUOPOLY_sq'] = df_wire['DUOPOLY'] ** 2
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_sq + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/funcform/quadratic_treatment', 'robustness/functional_form.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + DUOPOLY_sq', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Quadratic: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Quadratic failed: {e}")
+
+# ============================================================================
+# HETEROGENEITY ANALYSES
+# ============================================================================
+
+print("\n" + "="*60)
+print("HETEROGENEITY ANALYSES")
+print("="*60)
+
+# By BELL status (Bell company vs non-Bell)
+try:
+    df_wire['DUOPOLY_x_BELL'] = df_wire['DUOPOLY'] * df_wire['BELL']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_BELL + BELL + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/BELL', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + BELL + DUOPOLY_x_BELL', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog BELL: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog BELL failed: {e}")
+
+# By REGULAT (regulation indicator)
+try:
+    df_wire['DUOPOLY_x_REGULAT'] = df_wire['DUOPOLY'] * df_wire['REGULAT']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_REGULAT + REGULAT + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/REGULAT', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + REGULAT + DUOPOLY_x_REGULAT', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog REGULAT: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog REGULAT failed: {e}")
+
+# By MULTIMKT (multimarket contact)
+try:
+    df_wire['MULTIMKT_high'] = (df_wire['MULTIMKT'] > df_wire['MULTIMKT'].median()).astype(int)
+    df_wire['DUOPOLY_x_MULTIMKT_high'] = df_wire['DUOPOLY'] * df_wire['MULTIMKT_high']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_MULTIMKT_high + MULTIMKT_high + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/MULTIMKT', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + MULTIMKT_high + DUOPOLY_x_MULTIMKT_high', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog MULTIMKT: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog MULTIMKT failed: {e}")
+
+# By market size (POPULAT)
+try:
+    df_wire['POPULAT_high'] = (df_wire['POPULAT'] > df_wire['POPULAT'].median()).astype(int)
+    df_wire['DUOPOLY_x_POPULAT_high'] = df_wire['DUOPOLY'] * df_wire['POPULAT_high']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_POPULAT_high + POPULAT_high + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/POPULAT', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + POPULAT_high + DUOPOLY_x_POPULAT_high', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog POPULAT: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog POPULAT failed: {e}")
+
+# By income (INCOME)
+try:
+    df_wire['INCOME_high'] = (df_wire['INCOME'] > df_wire['INCOME'].median()).astype(int)
+    df_wire['DUOPOLY_x_INCOME_high'] = df_wire['DUOPOLY'] * df_wire['INCOME_high']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_INCOME_high + INCOME_high + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/INCOME', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + INCOME_high + DUOPOLY_x_INCOME_high', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog INCOME: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog INCOME failed: {e}")
+
+# By MKT_AGE (market experience)
+try:
+    df_wire['MKT_AGE_high'] = (df_wire['MKT_AGE'] > df_wire['MKT_AGE'].median()).astype(int)
+    df_wire['DUOPOLY_x_MKT_AGE_high'] = df_wire['DUOPOLY'] * df_wire['MKT_AGE_high']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_MKT_AGE_high + MKT_AGE_high + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/MKT_AGE', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + MKT_AGE_high + DUOPOLY_x_MKT_AGE_high', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog MKT_AGE: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog MKT_AGE failed: {e}")
+
+# By geographic regions
+try:
+    df_wire['DUOPOLY_x_NORTH'] = df_wire['DUOPOLY'] * df_wire['NORTH']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_NORTH + NORTH + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/NORTH', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + NORTH + DUOPOLY_x_NORTH', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog NORTH: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog NORTH failed: {e}")
+
+try:
+    df_wire['DUOPOLY_x_WEST'] = df_wire['DUOPOLY'] * df_wire['WEST']
+    model = pf.feols('log_FOGGYi ~ DUOPOLY + DUOPOLY_x_WEST + WEST + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_wire, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/heterogeneity/WEST', 'robustness/heterogeneity.md',
+        'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP + WEST + DUOPOLY_x_WEST', 'MARKET_int', 'OLS-FE', df_wire
+    )
+    if result:
+        results.append(result)
+        print(f"Heterog WEST: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Heterog WEST failed: {e}")
+
+# ============================================================================
+# PLACEBO TESTS
+# ============================================================================
+
+print("\n" + "="*60)
+print("PLACEBO TESTS")
+print("="*60)
+
+# Pre-treatment period only (DUOPOLY == 0)
+try:
+    df_pre = df_wire[df_wire['DUOPOLY'] == 0]
+    # Create fake treatment (early vs late monopoly)
+    df_pre['FAKE_TREAT'] = (df_pre['TIME'] > df_pre['TIME'].median()).astype(int)
+    if len(df_pre) > 50:
+        model = pf.feols('log_FOGGYi ~ FAKE_TREAT + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                         data=df_pre, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'robust/placebo/pre_treatment', 'robustness/placebo_tests.md',
+            'log_FOGGYi', 'FAKE_TREAT', 'Monopoly period only', 'MARKET_int + TIME_int',
+            'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_pre
+        )
+        if result:
+            results.append(result)
+            print(f"Pre-treatment placebo: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Pre-treatment placebo failed: {e}")
+
+# Fake timing - shift treatment timing by 2 periods
+try:
+    df_fake = df_wire.copy()
+    df_fake['DUOPOLY_FAKE'] = df_fake.groupby('MARKET_int')['DUOPOLY'].shift(2).fillna(0)
+    model = pf.feols('log_FOGGYi ~ DUOPOLY_FAKE + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_fake, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/placebo/fake_timing_lead2', 'robustness/placebo_tests.md',
+        'log_FOGGYi', 'DUOPOLY_FAKE', 'Wireline firms, treatment shifted +2', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_fake
+    )
+    if result:
+        results.append(result)
+        print(f"Fake timing +2: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Fake timing +2 failed: {e}")
+
+# Fake treatment - random assignment
+try:
+    np.random.seed(42)
+    df_rand = df_wire.copy()
+    markets = df_rand['MARKET_int'].unique()
+    np.random.shuffle(markets)
+    fake_treated = markets[:len(markets)//2]
+    df_rand['DUOPOLY_RANDOM'] = df_rand['MARKET_int'].isin(fake_treated).astype(int)
+    model = pf.feols('log_FOGGYi ~ DUOPOLY_RANDOM + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_rand, vcov={'CRV1': 'MARKET_int'})
+    result = extract_results(
+        model, 'robust/placebo/random_treatment', 'robustness/placebo_tests.md',
+        'log_FOGGYi', 'DUOPOLY_RANDOM', 'Wireline firms, random treatment', 'MARKET_int + TIME_int',
+        'AP_PEAK + AP_OFFP', 'MARKET_int', 'OLS-FE', df_rand
+    )
+    if result:
+        results.append(result)
+        print(f"Random treatment: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"Random treatment failed: {e}")
+
+# ============================================================================
+# DYNAMIC TREATMENT EFFECTS (EVENT STUDY)
+# ============================================================================
+
+print("\n" + "="*60)
+print("DYNAMIC TREATMENT EFFECTS")
+print("="*60)
+
+# Create event time indicators
+try:
+    # Event time relative to duopoly entry
+    df_event = df_wire.copy()
+
+    # Find first duopoly period for each market
+    first_duo = df_event[df_event['DUOPOLY'] == 1].groupby('MARKET_int')['TIME'].min()
+    df_event['first_duopoly'] = df_event['MARKET_int'].map(first_duo)
+    df_event['event_time'] = df_event['TIME'] - df_event['first_duopoly']
+
+    # For never-treated, set event_time to large negative
+    df_event.loc[df_event['first_duopoly'].isna(), 'event_time'] = -99
+    df_event['first_duopoly'] = df_event['first_duopoly'].fillna(999)
+
+    # Create indicators for event time (binned)
+    for lag in [1, 2, 3, 4, 5, 6]:
+        df_event[f'post_{lag}'] = (df_event['event_time'] == lag).astype(int)
+    df_event['post_7plus'] = (df_event['event_time'] >= 7).astype(int)
+
+    # Event study regression
+    post_vars = ' + '.join([f'post_{i}' for i in range(1, 7)] + ['post_7plus'])
+    model = pf.feols(f'log_FOGGYi ~ {post_vars} + AP_PEAK + AP_OFFP | MARKET_int + TIME_int',
+                     data=df_event, vcov={'CRV1': 'MARKET_int'})
+
+    # Extract each lag coefficient
+    for lag in [1, 2, 3, 4, 5, 6]:
         try:
-            df_sigma = load_and_prepare_data(sigma_scenario=sigma)
-
-            result = run_ols_with_fe(
-                df=df_sigma,
-                y_var='FOGGYi',
-                x_vars=[treatment_var] + control_vars,
-                fe_vars=[market_fe, time_fe],
-                cluster_var=market_fe
-            )
-
-            sigma_desc = {0: 'No uncertainty', 2: 'sigma=0.25*Mean',
-                         4: 'sigma=1.00*Mean', 7: 'sigma=3.00*Mean'}
-
+            coef = model.coef()[f'post_{lag}']
+            se = model.se()[f'post_{lag}']
+            pval = model.pvalue()[f'post_{lag}']
             results.append({
                 'paper_id': PAPER_ID,
                 'journal': JOURNAL,
                 'paper_title': PAPER_TITLE,
-                'spec_id': f'custom/uncertainty_sigma{sigma}',
-                'spec_tree_path': 'custom',
-                'outcome_var': 'FOGGYi',
-                'treatment_var': treatment_var,
-                'coefficient': result['coefficient'],
-                'std_error': result['std_error'],
-                't_stat': result['t_stat'],
-                'p_value': result['p_value'],
-                'ci_lower': result['ci_lower'],
-                'ci_upper': result['ci_upper'],
-                'n_obs': result['n_obs'],
-                'r_squared': result['r_squared'],
-                'coefficient_vector_json': json.dumps(result['coefficient_vector']),
-                'sample_desc': f'Wireline firms, {sigma_desc.get(sigma, f"sigma scenario {sigma}")}',
-                'fixed_effects': 'Market + Time FE',
-                'controls_desc': ', '.join(control_vars),
-                'cluster_var': market_fe,
-                'model_type': 'OLS with two-way FE',
+                'spec_id': f'did/dynamic/lag_{lag}',
+                'spec_tree_path': 'methods/difference_in_differences.md#dynamic-effects',
+                'outcome_var': 'log_FOGGYi',
+                'treatment_var': f'post_{lag}',
+                'coefficient': float(coef),
+                'std_error': float(se),
+                't_stat': float(coef/se),
+                'p_value': float(pval),
+                'ci_lower': float(coef - 1.96*se),
+                'ci_upper': float(coef + 1.96*se),
+                'n_obs': int(model._N),
+                'r_squared': float(model._r2) if hasattr(model, '_r2') else np.nan,
+                'coefficient_vector_json': json.dumps({'treatment': {'var': f'post_{lag}', 'coef': float(coef), 'se': float(se), 'pval': float(pval)}}),
+                'sample_desc': 'Wireline firms',
+                'fixed_effects': 'MARKET_int + TIME_int',
+                'controls_desc': 'AP_PEAK + AP_OFFP',
+                'cluster_var': 'MARKET_int',
+                'model_type': 'OLS-FE',
                 'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
             })
-            spec_count += 1
+            print(f"Lag {lag}: coef={coef:.4f}, se={se:.4f}, p={pval:.4f}")
         except Exception as e:
-            print(f"  Warning: Could not load sigma scenario {sigma}: {e}")
+            print(f"Lag {lag} extraction failed: {e}")
+except Exception as e:
+    print(f"Event study failed: {e}")
 
-    print(f"\nTotal specifications run: {spec_count}")
+# ============================================================================
+# ESTIMATION METHOD VARIATIONS
+# ============================================================================
 
-    return results
+print("\n" + "="*60)
+print("ESTIMATION METHOD VARIATIONS")
+print("="*60)
 
+# First differences
+try:
+    df_fd = df_wire.sort_values(['MARKET_int', 'TIME']).copy()
+    for var in ['log_FOGGYi', 'DUOPOLY', 'AP_PEAK', 'AP_OFFP']:
+        df_fd[f'd_{var}'] = df_fd.groupby('MARKET_int')[var].diff()
+    df_fd = df_fd.dropna(subset=['d_log_FOGGYi', 'd_DUOPOLY', 'd_AP_PEAK', 'd_AP_OFFP'])
 
-# =============================================================================
-# Main Execution
-# =============================================================================
+    if len(df_fd) > 50:
+        model = pf.feols('d_log_FOGGYi ~ d_DUOPOLY + d_AP_PEAK + d_AP_OFFP | TIME_int',
+                         data=df_fd, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, 'did/method/first_diff', 'methods/panel_fixed_effects.md#estimation-method',
+            'd_log_FOGGYi', 'd_DUOPOLY', 'Wireline firms, first differences', 'TIME_int',
+            'd_AP_PEAK + d_AP_OFFP', 'MARKET_int', 'First Differences', df_fd
+        )
+        if result:
+            results.append(result)
+            print(f"First diff: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+except Exception as e:
+    print(f"First diff failed: {e}")
 
-if __name__ == "__main__":
-    print("=" * 70)
-    print(f"Specification Search for {PAPER_ID}")
-    print(f"{PAPER_TITLE}")
-    print("=" * 70)
+# ============================================================================
+# ADDITIONAL CONTROL COMBINATIONS
+# ============================================================================
 
-    # Run specification search
-    results = run_specification_search()
+print("\n" + "="*60)
+print("ADDITIONAL CONTROL COMBINATIONS")
+print("="*60)
 
-    # Convert to DataFrame
-    results_df = pd.DataFrame(results)
+# Incrementally add controls
+control_sets = [
+    ('robust/control/add_step1', ['AP_PEAK']),
+    ('robust/control/add_step2', ['AP_PEAK', 'AP_OFFP']),
+    ('robust/control/add_step3', ['AP_PEAK', 'AP_OFFP', 'MULTIMKT']),
+    ('robust/control/add_step4', ['AP_PEAK', 'AP_OFFP', 'MULTIMKT', 'MKT_AGE']),
+    ('robust/control/add_step5', ['AP_PEAK', 'AP_OFFP', 'MULTIMKT', 'MKT_AGE', 'LEAD']),
+    ('robust/control/add_step6', ['AP_PEAK', 'AP_OFFP', 'MULTIMKT', 'MKT_AGE', 'LEAD', 'BELL']),
+]
 
-    # Save results
-    output_file = OUTPUT_PATH / "specification_results.csv"
-    results_df.to_csv(output_file, index=False)
-    print(f"\nResults saved to: {output_file}")
+for spec_id, controls in control_sets:
+    try:
+        ctrl_str = ' + '.join(controls)
+        model = pf.feols(f'log_FOGGYi ~ DUOPOLY + {ctrl_str} | MARKET_int + TIME_int',
+                         data=df_wire, vcov={'CRV1': 'MARKET_int'})
+        result = extract_results(
+            model, spec_id, 'robustness/control_progression.md',
+            'log_FOGGYi', 'DUOPOLY', 'Wireline firms', 'MARKET_int + TIME_int',
+            ctrl_str, 'MARKET_int', 'OLS-FE', df_wire
+        )
+        if result:
+            results.append(result)
+            print(f"{spec_id}: coef={result['coefficient']:.4f}, se={result['std_error']:.4f}, p={result['p_value']:.4f}")
+    except Exception as e:
+        print(f"{spec_id} failed: {e}")
 
-    # Print summary statistics
-    print("\n" + "=" * 70)
-    print("SUMMARY STATISTICS")
-    print("=" * 70)
+# ============================================================================
+# SAVE RESULTS
+# ============================================================================
 
-    # Filter to valid results
-    valid_results = results_df[results_df['coefficient'].notna()].copy()
+print("\n" + "="*60)
+print("SAVING RESULTS")
+print("="*60)
 
-    print(f"\nTotal specifications: {len(results_df)}")
-    print(f"Valid specifications: {len(valid_results)}")
+# Convert to DataFrame
+results_df = pd.DataFrame(results)
 
-    if len(valid_results) > 0:
-        print(f"\nPositive coefficients: {(valid_results['coefficient'] > 0).sum()} ({100*(valid_results['coefficient'] > 0).mean():.1f}%)")
-        print(f"Significant at 5%: {(valid_results['p_value'] < 0.05).sum()} ({100*(valid_results['p_value'] < 0.05).mean():.1f}%)")
-        print(f"Significant at 1%: {(valid_results['p_value'] < 0.01).sum()} ({100*(valid_results['p_value'] < 0.01).mean():.1f}%)")
-        print(f"\nMedian coefficient: {valid_results['coefficient'].median():.4f}")
-        print(f"Mean coefficient: {valid_results['coefficient'].mean():.4f}")
-        print(f"Range: [{valid_results['coefficient'].min():.4f}, {valid_results['coefficient'].max():.4f}]")
+# Save to package directory
+OUTPUT_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116442-V1/specification_results.csv'
+results_df.to_csv(OUTPUT_PATH, index=False)
 
-    print("\nDone!")
+print(f"\nTotal specifications: {len(results_df)}")
+print(f"Saved to: {OUTPUT_PATH}")
+
+# Summary statistics
+print("\n" + "="*60)
+print("SUMMARY STATISTICS")
+print("="*60)
+print(f"Total specifications: {len(results_df)}")
+print(f"Positive coefficients: {(results_df['coefficient'] > 0).sum()} ({(results_df['coefficient'] > 0).mean()*100:.1f}%)")
+print(f"Significant at 5%: {(results_df['p_value'] < 0.05).sum()} ({(results_df['p_value'] < 0.05).mean()*100:.1f}%)")
+print(f"Significant at 1%: {(results_df['p_value'] < 0.01).sum()} ({(results_df['p_value'] < 0.01).mean()*100:.1f}%)")
+print(f"Median coefficient: {results_df['coefficient'].median():.4f}")
+print(f"Mean coefficient: {results_df['coefficient'].mean():.4f}")
+print(f"Range: [{results_df['coefficient'].min():.4f}, {results_df['coefficient'].max():.4f}]")

@@ -71,6 +71,33 @@ Test sensitivity of results to sample composition by running the baseline specif
 | `robust/sample/imputed_excluded` | Exclude imputed values |
 | `robust/sample/high_quality` | High data quality flag |
 
+### Influential Observations
+
+| spec_id | Description |
+|---------|-------------|
+| `robust/sample/drop_influential` | Drop high-leverage observations (Cook's D > 4/n) |
+| `robust/sample/drop_leverage` | Drop high leverage points |
+| `robust/sample/drop_residual_outliers` | Drop studentized residual outliers |
+| `robust/sample/jackknife_units` | Leave-one-unit-out sensitivity |
+
+### Survey and Measurement
+
+| spec_id | Description |
+|---------|-------------|
+| `robust/sample/survey_wave_1` | First survey wave only |
+| `robust/sample/survey_wave_last` | Last survey wave only |
+| `robust/sample/cross_section_t0` | Cross-section at baseline only |
+| `robust/sample/drop_missing_key_var` | Drop if missing on key variable |
+
+### Treatment-Based Restrictions
+
+| spec_id | Description |
+|---------|-------------|
+| `robust/sample/treated_only` | Treated units only |
+| `robust/sample/control_only` | Control units only |
+| `robust/sample/on_support` | Common support (propensity score) |
+| `robust/sample/trimmed_propensity` | Trim extreme propensity scores |
+
 ---
 
 ## Implementation Notes

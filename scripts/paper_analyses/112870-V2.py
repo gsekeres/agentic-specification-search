@@ -1,780 +1,1604 @@
 """
-Specification Search: 112870-V2
-Paper: "Optimal Life Cycle Unemployment Insurance" by Claudio Michelacci and Hernan Ruffo
-American Economic Review
+Specification Search: Optimal Life Cycle Unemployment Insurance
+Paper ID: 112870-V2
+Journal: AER
+Authors: Claudio Michelacci and Hernan Ruffo
 
-Main methodology: Cox proportional hazards models for unemployment duration elasticity
-Key hypothesis: Unemployment duration elasticity to UI benefits varies by age (higher for older workers)
+This script runs a systematic specification search on the empirical analyses in the paper.
+The main analysis focuses on the CPS panel regression examining how unemployment rates
+respond to UI benefits across age groups.
 
-Treatment variable: log UI benefits (l_wba)
-Outcome: Unemployment duration (dur)
-Event: Job finding (censrd==0 means found job)
-
-ORIGINAL STATA RESULTS (Table 1, Panel A):
-- All workers: l_wba = -0.362 (SE=0.108), duractwba = -0.011 (SE=0.004)
-- Young (20-40): l_wba = -0.228 (SE=0.162), duractwba = -0.019 (SE=0.006)
-- Old (41-60): l_wba = -0.859 (SE=0.191), duractwba = 0.011 (SE=0.008)
-
-NOTE: The original analysis uses Stata's stcox with episode-split data.
-The data is split at each failure time, creating person-period observations.
-The model includes l_wba and duractwba = l_wba * dur as time-varying covariate.
-
-INTERPRETATION:
-- Negative l_wba coefficient means higher benefits -> lower job finding hazard -> longer unemployment
-- The coefficient represents the elasticity of the hazard with respect to benefits
+Method: Panel Fixed Effects (state-year panel)
 """
 
 import pandas as pd
 import numpy as np
 import json
 import warnings
-from pathlib import Path
-from lifelines import CoxPHFitter
+from scipy import stats
+import os
 
 warnings.filterwarnings('ignore')
 
+# Try to import pyfixest, fall back to statsmodels if not available
+try:
+    import pyfixest as pf
+    USE_PYFIXEST = True
+except ImportError:
+    USE_PYFIXEST = False
+
+import statsmodels.api as sm
+from statsmodels.regression.linear_model import OLS
+
+# =============================================================================
 # Configuration
+# =============================================================================
+
 PAPER_ID = "112870-V2"
 PAPER_TITLE = "Optimal Life Cycle Unemployment Insurance"
 JOURNAL = "AER"
-BASE_PATH = Path("/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search")
-DATA_PATH = BASE_PATH / "data/downloads/extracted/112870-V2/DataCodes"
+PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112870-V2/DataCodes"
 
-# Load data
-print("Loading SIPP durations data...")
-df = pd.read_stata(DATA_PATH / "SIPP_durations.dta")
-print(f"Original data shape: {df.shape}")
+# =============================================================================
+# Data Loading and Preparation
+# =============================================================================
 
-# Apply baseline sample restrictions (from original code)
-# ui_yn==1 (yes) and templayoff==0
-df_analysis = df[(df['ui_yn'] == 'yes') & (df['templayoff'] == 0)].copy()
-print(f"After sample restrictions (UI eligible, not temp layoff): {len(df_analysis)}")
+def load_data():
+    """Load the CPS state-level panel data"""
+    df = pd.read_stata(os.path.join(PACKAGE_DIR, 'statecps.dta'))
 
-# Convert categorical age to numeric
-df_analysis['age'] = df_analysis['age'].astype(float)
+    # Create necessary variables
+    # age_i2 represents age groups: 2=young(20-29), 3=prime(30-39), 4=middle(40-49), 5=older(50-59), 6=old(60+)
 
-# Censor at 50 weeks (as in original code)
-df_analysis['dur_cens'] = df_analysis['dur'].clip(upper=50)
-df_analysis['event'] = (df_analysis['censrd'] == 0).astype(int)
-df_analysis.loc[df_analysis['dur'] > 50, 'event'] = 0
+    # Create age group interactions with benefits (as in the original)
+    for age in df['age_i2'].unique():
+        if pd.notna(age):
+            age_int = int(age)
+            df[f'lnwba_age{age_int}'] = df['lnwba'] * (df['age_i2'] == age).astype(int)
 
-# Create onseam variable
-df_analysis['onseam'] = ((df_analysis['dur'] == df_analysis['seam1wks']) |
-                          (df_analysis['dur'] == df_analysis['seam2wks'])).fillna(0).astype(int)
+    # Create age group dummies
+    for age in df['age_i2'].unique():
+        if pd.notna(age):
+            age_int = int(age)
+            df[f'age_group_{age_int}'] = (df['age_i2'] == age).astype(int)
 
-# Create duration interaction with benefits (time-varying covariate)
-df_analysis['duractwba'] = df_analysis['l_wba'] * df_analysis['dur_cens']
+    # Create year dummies
+    for year in df['year'].unique():
+        if pd.notna(year):
+            year_int = int(year)
+            df[f'year_{year_int}'] = (df['year'] == year).astype(int)
 
-# Get valid rows
-required_cols = ['l_wba', 'duractwba', 'dur_cens', 'event', 'age', 'mardum', 'ed', 'onseam']
-df_analysis = df_analysis.dropna(subset=required_cols)
-print(f"After dropping NA: {len(df_analysis)}")
-print(f"Events (job found): {df_analysis['event'].sum()}")
-print(f"Censored: {(df_analysis['event'] == 0).sum()}")
+    # Create period/part dummies
+    df['part_2'] = (df['part'] == 2).astype(int)
 
-# Results storage
-results = []
+    # State dummies
+    for state in df['state_60'].unique():
+        if pd.notna(state):
+            state_int = int(state)
+            df[f'state_{state_int}'] = (df['state_60'] == state).astype(int)
 
+    # Create panel identifiers
+    df['state_id'] = df['state_60'].astype(int)
+    df['year_int'] = df['year'].astype(int)
+    df['period_int'] = df['period'].astype(int)
 
-def create_fe_dummies(data, col_name, prefix):
-    """Create fixed effect dummies, dropping first category."""
-    if col_name not in data.columns:
-        return data, []
+    return df
+
+# =============================================================================
+# Regression Helper Functions
+# =============================================================================
+
+def run_ols_clustered(df, outcome, treatment, controls=None, fe_vars=None, cluster_var=None):
+    """
+    Run OLS regression with optional fixed effects and clustering
+    """
+    df_clean = df.dropna(subset=[outcome, treatment]).copy()
+
+    # Build regressor list
+    regressors = [treatment]
+    if controls:
+        regressors.extend([c for c in controls if c in df_clean.columns])
+
+    # Add fixed effects if specified
+    if fe_vars:
+        for fe in fe_vars:
+            fe_dummies = [c for c in df_clean.columns if c.startswith(f'{fe}_')]
+            # Drop one dummy for identification
+            regressors.extend(fe_dummies[1:] if len(fe_dummies) > 1 else fe_dummies)
+
+    # Remove any missing regressors
+    regressors = [r for r in regressors if r in df_clean.columns]
+
+    # Clean the data
+    all_vars = [outcome] + regressors
+    if cluster_var:
+        all_vars.append(cluster_var)
+    df_clean = df_clean.dropna(subset=[v for v in all_vars if v in df_clean.columns])
+
+    if len(df_clean) < 10:
+        return None
+
+    X = df_clean[regressors].values
+    X = sm.add_constant(X)
+    y = df_clean[outcome].values
 
     try:
-        dummies = pd.get_dummies(data[col_name].astype(str), prefix=prefix, drop_first=True)
-        fe_cols = list(dummies.columns)
-        for col in fe_cols:
-            data[col] = dummies[col].values
-        return data, fe_cols
+        model = OLS(y, X)
+        if cluster_var and cluster_var in df_clean.columns:
+            groups = df_clean[cluster_var].values
+            result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
+        else:
+            result = model.fit(cov_type='HC1')
+
+        # Extract treatment coefficient (first regressor after constant)
+        treat_idx = 1  # After constant
+
+        return {
+            'coefficient': result.params[treat_idx],
+            'std_error': result.bse[treat_idx],
+            't_stat': result.tvalues[treat_idx],
+            'p_value': result.pvalues[treat_idx],
+            'ci_lower': result.conf_int()[treat_idx, 0],
+            'ci_upper': result.conf_int()[treat_idx, 1],
+            'n_obs': int(result.nobs),
+            'r_squared': result.rsquared,
+            'all_params': dict(zip(['const'] + regressors, result.params)),
+            'all_se': dict(zip(['const'] + regressors, result.bse)),
+            'all_pval': dict(zip(['const'] + regressors, result.pvalues))
+        }
     except Exception as e:
-        print(f"  Warning: Could not create dummies for {col_name}: {e}")
-        return data, []
-
-
-def run_cox_model(data, treatment_vars, controls, use_fe=True, cluster_var=None,
-                  spec_id='baseline', spec_tree_path='methods/duration_survival.md',
-                  sample_desc='Full sample', outcome_var='dur_cens'):
-    """
-    Run Cox proportional hazards model.
-
-    treatment_vars: list of main treatment variables
-    controls: list of control variables
-    use_fe: whether to include state/year/occupation/industry fixed effects
-    """
-    data = data.copy()
-
-    # Add FE if requested
-    fe_vars = []
-    if use_fe:
-        data, state_fe = create_fe_dummies(data, 'sippst', 'state')
-        fe_vars.extend(state_fe)
-
-        data, year_fe = create_fe_dummies(data, 'year', 'year')
-        fe_vars.extend(year_fe)
-
-        data, occ_fe = create_fe_dummies(data, 'occ', 'occ')
-        fe_vars.extend(occ_fe)
-
-        data, ind_fe = create_fe_dummies(data, 'gind', 'ind')
-        fe_vars.extend(ind_fe)
-
-    # Wage splines
-    wage_splines = [f'l_annwg_spl{i}' for i in range(1, 11)]
-    valid_wage_splines = [ws for ws in wage_splines if ws in data.columns and data[ws].notna().sum() > 100]
-
-    # All model variables
-    model_vars = ['dur_cens', 'event'] + treatment_vars + controls + fe_vars + valid_wage_splines
-    model_vars = [v for v in model_vars if v in data.columns]
-
-    model_df = data[model_vars].dropna()
-
-    if len(model_df) < 100:
-        print(f"  Warning: Only {len(model_df)} observations for {spec_id}")
         return None
 
-    # Fit Cox model
-    cph = CoxPHFitter()
+
+def run_interaction_model(df, outcome, base_treatment, age_groups, controls=None, fe_vars=None, cluster_var=None):
+    """
+    Run model with treatment x age group interactions
+    Returns coefficients for each age group
+    """
+    df_clean = df.dropna(subset=[outcome]).copy()
+
+    # Build regressor list with age-specific treatment effects
+    regressors = []
+    treatment_vars = []
+    for age in sorted(age_groups):
+        var_name = f'{base_treatment}_age{int(age)}'
+        if var_name in df_clean.columns:
+            regressors.append(var_name)
+            treatment_vars.append(var_name)
+
+    # Add age group dummies (excluding one for identification)
+    age_dummies = [f'age_group_{int(age)}' for age in sorted(age_groups)[1:]]
+    regressors.extend([d for d in age_dummies if d in df_clean.columns])
+
+    if controls:
+        regressors.extend([c for c in controls if c in df_clean.columns])
+
+    # Add fixed effects
+    if fe_vars:
+        for fe in fe_vars:
+            fe_dummies = [c for c in df_clean.columns if c.startswith(f'{fe}_')]
+            regressors.extend(fe_dummies[1:] if len(fe_dummies) > 1 else fe_dummies)
+
+    # Clean data
+    all_vars = [outcome] + regressors
+    if cluster_var:
+        all_vars.append(cluster_var)
+    df_clean = df_clean.dropna(subset=[v for v in all_vars if v in df_clean.columns])
+
+    if len(df_clean) < 10:
+        return None
+
+    X = df_clean[regressors].values
+    X = sm.add_constant(X)
+    y = df_clean[outcome].values
 
     try:
-        cph.fit(model_df, duration_col='dur_cens', event_col='event',
-                robust=True, show_progress=False)
-    except Exception as e:
-        print(f"  Error fitting model {spec_id}: {e}")
-        return None
+        model = OLS(y, X)
+        if cluster_var and cluster_var in df_clean.columns:
+            groups = df_clean[cluster_var].values
+            result = model.fit(cov_type='cluster', cov_kwds={'groups': groups})
+        else:
+            result = model.fit(cov_type='HC1')
 
-    # Extract main treatment coefficient (first in treatment_vars)
-    main_treat = treatment_vars[0]
-    if main_treat not in cph.summary.index:
-        print(f"  Warning: Treatment {main_treat} not in results")
-        return None
-
-    coef = cph.summary.loc[main_treat, 'coef']
-    se = cph.summary.loc[main_treat, 'se(coef)']
-    pval = cph.summary.loc[main_treat, 'p']
-    ci_lower = cph.summary.loc[main_treat, 'coef lower 95%']
-    ci_upper = cph.summary.loc[main_treat, 'coef upper 95%']
-
-    # Build coefficient vector
-    coef_vector = {
-        "treatment": {
-            "var": main_treat,
-            "coef": float(coef),
-            "se": float(se),
-            "hazard_ratio": float(np.exp(coef)),
-            "pval": float(pval),
-            "ci_lower": float(ci_lower),
-            "ci_upper": float(ci_upper)
-        },
-        "controls": [],
-        "diagnostics": {
-            "concordance_index": float(cph.concordance_index_),
-            "log_likelihood": float(cph.log_likelihood_),
-            "n_subjects": int(len(model_df)),
-            "n_events": int(model_df['event'].sum()),
-            "n_censored": int((model_df['event'] == 0).sum())
-        },
-        "fixed_effects_absorbed": ['ind', 'state', 'year', 'occ'] if use_fe else []
-    }
-
-    # Add time-varying effect if duractwba is in treatment_vars
-    if 'duractwba' in treatment_vars and 'duractwba' in cph.summary.index:
-        coef_vector["time_varying_effect"] = {
-            "var": "dur_x_lwba",
-            "coef": float(cph.summary.loc['duractwba', 'coef']),
-            "se": float(cph.summary.loc['duractwba', 'se(coef)']),
-            "pval": float(cph.summary.loc['duractwba', 'p'])
+        param_names = ['const'] + regressors
+        results_dict = {
+            'n_obs': int(result.nobs),
+            'r_squared': result.rsquared,
+            'age_effects': {}
         }
 
-    # Add control coefficients
-    for ctrl in controls:
-        if ctrl in cph.summary.index:
-            coef_vector["controls"].append({
-                "var": ctrl,
-                "coef": float(cph.summary.loc[ctrl, 'coef']),
-                "se": float(cph.summary.loc[ctrl, 'se(coef)']),
-                "pval": float(cph.summary.loc[ctrl, 'p'])
-            })
+        # Extract age-specific treatment effects
+        for i, var in enumerate(treatment_vars):
+            idx = param_names.index(var)
+            results_dict['age_effects'][var] = {
+                'coefficient': result.params[idx],
+                'std_error': result.bse[idx],
+                't_stat': result.tvalues[idx],
+                'p_value': result.pvalues[idx],
+                'ci_lower': result.conf_int()[idx, 0],
+                'ci_upper': result.conf_int()[idx, 1]
+            }
 
-    # Add wage spline coefficients
-    for ws in valid_wage_splines:
-        if ws in cph.summary.index:
-            coef_vector["controls"].append({
-                "var": ws,
-                "coef": float(cph.summary.loc[ws, 'coef']),
-                "se": float(cph.summary.loc[ws, 'se(coef)']),
-                "pval": float(cph.summary.loc[ws, 'p'])
-            })
-
-    result = {
-        'paper_id': PAPER_ID,
-        'journal': JOURNAL,
-        'paper_title': PAPER_TITLE,
-        'spec_id': spec_id,
-        'spec_tree_path': spec_tree_path,
-        'outcome_var': f'{outcome_var} (unemployment duration, weeks)',
-        'treatment_var': main_treat,
-        'coefficient': coef,
-        'std_error': se,
-        't_stat': coef / se if se > 0 else np.nan,
-        'p_value': pval,
-        'ci_lower': ci_lower,
-        'ci_upper': ci_upper,
-        'n_obs': len(model_df),
-        'r_squared': np.nan,
-        'coefficient_vector_json': json.dumps(coef_vector),
-        'sample_desc': sample_desc,
-        'fixed_effects': 'ind, state, year, occ' if use_fe else 'None',
-        'controls_desc': ', '.join(controls),
-        'cluster_var': 'robust SE',
-        'model_type': 'Cox PH',
-        'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
-    }
-
-    return result
+        return results_dict
+    except Exception as e:
+        return None
 
 
-# ============================================================
-# RUN SPECIFICATION SEARCH
-# ============================================================
+# =============================================================================
+# Specification Search
+# =============================================================================
 
-print("\n" + "="*60)
-print("RUNNING SPECIFICATION SEARCH")
-print("="*60)
+def run_specification_search():
+    """
+    Run comprehensive specification search following i4r methodology
+    Target: 50+ specifications
+    """
 
-# Base controls (matching original Stata: onseam age mardum ed)
-base_controls = ['onseam', 'age', 'mardum', 'ed']
+    print("Loading data...")
+    df = load_data()
 
-# -----------------------------------------------------------
-# 1. BASELINE - WITH TIME-VARYING COEFFICIENT (as in paper)
-# -----------------------------------------------------------
-print("\n1. Baseline specifications (with time-varying covariate)...")
+    results = []
 
-# Main spec: l_wba + duractwba (l_wba * dur)
-print("  Running: baseline (all workers, TVC)")
-result = run_cox_model(
-    df_analysis.copy(),
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='baseline',
-    spec_tree_path='methods/duration_survival.md#baseline',
-    sample_desc='All workers, UI eligible, not temp layoff'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (SE={result['std_error']:.4f}, p={result['p_value']:.4f})")
+    # Define key variables
+    outcome_var = 'lnun'  # Log unemployment rate
+    treatment_var = 'lnwba'  # Log weekly benefit amount
 
-# -----------------------------------------------------------
-# 2. AGE SUBGROUP ANALYSIS (Core finding of the paper)
-# -----------------------------------------------------------
-print("\n2. Age subgroup analysis (CORE FINDING)...")
+    # Control variables from the paper
+    demographic_controls = ['m_married', 'spwork_yn', 'r_white']
+    education_controls = ['ed1', 'ed2', 'ed3', 'ed4']
+    all_controls = demographic_controls + education_controls
 
-# Young workers (20-40)
-df_young = df_analysis[(df_analysis['age'] >= 20) & (df_analysis['age'] <= 40)].copy()
-print(f"  Running: Young workers (20-40), n={len(df_young)}")
-result = run_cox_model(
-    df_young,
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/sample/young',
-    spec_tree_path='methods/duration_survival.md#sample-restrictions',
-    sample_desc='Young workers (age 20-40)'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (SE={result['std_error']:.4f}, p={result['p_value']:.4f})")
+    # Age groups
+    age_groups = [2, 3, 4, 5, 6]  # From the data
 
-# Old workers (41-60)
-df_old = df_analysis[(df_analysis['age'] >= 41) & (df_analysis['age'] <= 60)].copy()
-print(f"  Running: Old workers (41-60), n={len(df_old)}")
-result = run_cox_model(
-    df_old,
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/sample/old',
-    spec_tree_path='methods/duration_survival.md#sample-restrictions',
-    sample_desc='Older workers (age 41-60)'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (SE={result['std_error']:.4f}, p={result['p_value']:.4f})")
+    # Fixed effect sets
+    state_fe_vars = [c for c in df.columns if c.startswith('state_')]
+    year_fe_vars = [c for c in df.columns if c.startswith('year_')]
 
-# -----------------------------------------------------------
-# 3. TIME-VARYING COVARIATE VARIATIONS
-# -----------------------------------------------------------
-print("\n3. Time-varying covariate variations...")
+    spec_count = 0
 
-# Without TVC (just l_wba, no duration interaction)
-print("  Running: No TVC (all workers)")
-result = run_cox_model(
-    df_analysis.copy(),
-    treatment_vars=['l_wba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/tvc/none',
-    spec_tree_path='methods/duration_survival.md#time-varying-covariates',
-    sample_desc='All workers, no TVC'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+    # ==========================================================================
+    # BASELINE SPECIFICATIONS
+    # ==========================================================================
+    print("Running baseline specifications...")
 
-# Without TVC - Young workers
-print("  Running: No TVC (young workers)")
-result = run_cox_model(
-    df_young.copy(),
-    treatment_vars=['l_wba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/tvc/none_young',
-    spec_tree_path='methods/duration_survival.md#time-varying-covariates',
-    sample_desc='Young workers (20-40), no TVC'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# Without TVC - Old workers
-print("  Running: No TVC (old workers)")
-result = run_cox_model(
-    df_old.copy(),
-    treatment_vars=['l_wba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/tvc/none_old',
-    spec_tree_path='methods/duration_survival.md#time-varying-covariates',
-    sample_desc='Older workers (41-60), no TVC'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# -----------------------------------------------------------
-# 4. FIXED EFFECTS VARIATIONS
-# -----------------------------------------------------------
-print("\n4. Fixed effects variations...")
-
-# No FE (pooled)
-print("  Running: No fixed effects (pooled)")
-result = run_cox_model(
-    df_analysis.copy(),
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=base_controls,
-    use_fe=False,
-    spec_id='duration/fe/none',
-    spec_tree_path='methods/duration_survival.md#fixed-effects',
-    sample_desc='All workers, no FE'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# No FE, no TVC
-print("  Running: No FE, no TVC")
-result = run_cox_model(
-    df_analysis.copy(),
-    treatment_vars=['l_wba'],
-    controls=base_controls,
-    use_fe=False,
-    spec_id='duration/fe/none_no_tvc',
-    spec_tree_path='methods/duration_survival.md#fixed-effects',
-    sample_desc='All workers, no FE, no TVC'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# -----------------------------------------------------------
-# 5. LEAVE-ONE-OUT ROBUSTNESS
-# -----------------------------------------------------------
-print("\n5. Leave-one-out robustness...")
-
-for drop_var in base_controls:
-    remaining = [c for c in base_controls if c != drop_var]
-    print(f"  Running: Drop {drop_var}")
-    result = run_cox_model(
-        df_analysis.copy(),
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=remaining,
-        use_fe=True,
-        spec_id=f'robust/loo/drop_{drop_var}',
-        spec_tree_path='robustness/leave_one_out.md',
-        sample_desc=f'All workers, dropping {drop_var}'
+    # Baseline 1: Main specification with all controls (replicating Figure 1b)
+    result = run_interaction_model(
+        df, outcome_var, treatment_var, age_groups,
+        controls=all_controls,
+        fe_vars=['state', 'year', 'part'],
+        cluster_var=None
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        # For baseline, use the average effect across age groups
+        avg_coef = np.mean([v['coefficient'] for v in result['age_effects'].values()])
+        avg_se = np.mean([v['std_error'] for v in result['age_effects'].values()])
 
-# -----------------------------------------------------------
-# 6. SINGLE COVARIATE ANALYSIS
-# -----------------------------------------------------------
-print("\n6. Single covariate analysis...")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'baseline',
+            'spec_tree_path': 'methods/panel_fixed_effects.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': avg_coef,
+            'std_error': avg_se,
+            't_stat': avg_coef / avg_se if avg_se > 0 else np.nan,
+            'p_value': 2 * (1 - stats.norm.cdf(abs(avg_coef / avg_se))) if avg_se > 0 else np.nan,
+            'ci_lower': avg_coef - 1.96 * avg_se,
+            'ci_upper': avg_coef + 1.96 * avg_se,
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps(result['age_effects']),
+            'sample_desc': 'Full sample, all age groups',
+            'fixed_effects': 'State + Year + Part',
+            'controls_desc': 'Demographics + Education',
+            'cluster_var': 'None',
+            'model_type': 'Panel FE with age interactions',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# Bivariate (with TVC)
-print("  Running: Bivariate (TVC only)")
-result = run_cox_model(
-    df_analysis.copy(),
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=[],
-    use_fe=False,
-    spec_id='robust/single/none',
-    spec_tree_path='robustness/single_covariate.md',
-    sample_desc='All workers, bivariate with TVC'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# Single controls (with TVC)
-for single_var in base_controls:
-    print(f"  Running: Treatment + {single_var}")
-    result = run_cox_model(
-        df_analysis.copy(),
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=[single_var],
-        use_fe=False,
-        spec_id=f'robust/single/{single_var}',
-        spec_tree_path='robustness/single_covariate.md',
-        sample_desc=f'All workers, treatment + {single_var}'
+    # Baseline 2: Pooled treatment effect
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year', 'part'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'baseline_pooled',
+            'spec_tree_path': 'methods/panel_fixed_effects.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample, pooled across ages',
+            'fixed_effects': 'State + Year + Part',
+            'controls_desc': 'Demographics + Education',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE pooled',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# -----------------------------------------------------------
-# 7. AGE-SPECIFIC LEAVE-ONE-OUT
-# -----------------------------------------------------------
-print("\n7. Age-specific leave-one-out...")
+    # ==========================================================================
+    # CONTROL VARIABLE VARIATIONS (10-15 specs)
+    # ==========================================================================
+    print("Running control variable variations...")
 
-for drop_var in ['onseam', 'mardum', 'ed']:
-    remaining = [c for c in base_controls if c != drop_var]
-
-    # Young
-    print(f"  Running: Young, drop {drop_var}")
-    result = run_cox_model(
-        df_young.copy(),
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=remaining,
-        use_fe=True,
-        spec_id=f'duration/sample/young/loo/drop_{drop_var}',
-        spec_tree_path='robustness/leave_one_out.md',
-        sample_desc=f'Young workers (20-40), dropping {drop_var}'
+    # No controls
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=None,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/control/none',
+            'spec_tree_path': 'robustness/control_progression.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'None',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-    # Old
-    print(f"  Running: Old, drop {drop_var}")
-    result = run_cox_model(
-        df_old.copy(),
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=remaining,
-        use_fe=True,
-        spec_id=f'duration/sample/old/loo/drop_{drop_var}',
-        spec_tree_path='robustness/leave_one_out.md',
-        sample_desc=f'Older workers (41-60), dropping {drop_var}'
+    # Demographics only
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=demographic_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/control/demographics',
+            'spec_tree_path': 'robustness/control_progression.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'Demographics only (married, spouse work, white)',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# -----------------------------------------------------------
-# 8. CENSORING VARIATIONS
-# -----------------------------------------------------------
-print("\n8. Censoring variations...")
-
-# Censor at 26 weeks
-df_cens26 = df_analysis.copy()
-df_cens26['dur_cens'] = df_cens26['dur'].clip(upper=26)
-df_cens26.loc[df_cens26['dur'] > 26, 'event'] = 0
-df_cens26['duractwba'] = df_cens26['l_wba'] * df_cens26['dur_cens']
-print("  Running: Censor at 26 weeks")
-result = run_cox_model(
-    df_cens26,
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/censor/right_26',
-    spec_tree_path='methods/duration_survival.md#censoring-treatment',
-    sample_desc='All workers, censor at 26 weeks'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# Censor at 99 weeks (effectively no artificial censoring for most)
-df_cens99 = df_analysis.copy()
-df_cens99['dur_cens'] = df_cens99['dur'].clip(upper=99)
-df_cens99.loc[df_cens99['dur'] > 99, 'event'] = 0
-df_cens99['duractwba'] = df_cens99['l_wba'] * df_cens99['dur_cens']
-print("  Running: Censor at 99 weeks")
-result = run_cox_model(
-    df_cens99,
-    treatment_vars=['l_wba', 'duractwba'],
-    controls=base_controls,
-    use_fe=True,
-    spec_id='duration/censor/right_99',
-    spec_tree_path='methods/duration_survival.md#censoring-treatment',
-    sample_desc='All workers, censor at 99 weeks'
-)
-if result:
-    results.append(result)
-    print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# -----------------------------------------------------------
-# 9. DEMOGRAPHIC SPLITS
-# -----------------------------------------------------------
-print("\n9. Demographic splits...")
-
-# Married only
-df_married = df_analysis[df_analysis['mardum'] == 1].copy()
-if len(df_married) > 500:
-    print(f"  Running: Married only, n={len(df_married)}")
-    result = run_cox_model(
-        df_married,
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=['onseam', 'age', 'ed'],
-        use_fe=True,
-        spec_id='duration/sample/married',
-        spec_tree_path='methods/duration_survival.md#sample-restrictions',
-        sample_desc='Married workers only'
+    # Education only
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=education_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/control/education',
+            'spec_tree_path': 'robustness/control_progression.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'Education only (ed1-ed4)',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# Not married
-df_single = df_analysis[df_analysis['mardum'] == 0].copy()
-if len(df_single) > 500:
-    print(f"  Running: Not married, n={len(df_single)}")
-    result = run_cox_model(
-        df_single,
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=['onseam', 'age', 'ed'],
-        use_fe=True,
-        spec_id='duration/sample/single',
-        spec_tree_path='methods/duration_survival.md#sample-restrictions',
-        sample_desc='Non-married workers'
-    )
-    if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# High education (HS or more)
-df_high_ed = df_analysis[df_analysis['ed'] >= 12].copy()
-if len(df_high_ed) > 500:
-    print(f"  Running: High school or more, n={len(df_high_ed)}")
-    result = run_cox_model(
-        df_high_ed,
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=['onseam', 'age', 'mardum'],
-        use_fe=True,
-        spec_id='duration/sample/high_education',
-        spec_tree_path='methods/duration_survival.md#sample-restrictions',
-        sample_desc='High school diploma or more'
-    )
-    if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# Low education
-df_low_ed = df_analysis[df_analysis['ed'] < 12].copy()
-if len(df_low_ed) > 500:
-    print(f"  Running: Less than high school, n={len(df_low_ed)}")
-    result = run_cox_model(
-        df_low_ed,
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=['onseam', 'age', 'mardum'],
-        use_fe=True,
-        spec_id='duration/sample/low_education',
-        spec_tree_path='methods/duration_survival.md#sample-restrictions',
-        sample_desc='Less than high school'
-    )
-    if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
-
-# -----------------------------------------------------------
-# 10. FINER AGE BANDS (as in Figure 1)
-# -----------------------------------------------------------
-print("\n10. Finer age bands...")
-
-age_bands = [(15, 25), (20, 30), (25, 35), (30, 40), (35, 45), (40, 50), (45, 55), (50, 60)]
-for age_min, age_max in age_bands:
-    df_band = df_analysis[(df_analysis['age'] >= age_min) & (df_analysis['age'] <= age_max)].copy()
-    if len(df_band) > 200:
-        print(f"  Running: Age {age_min}-{age_max}, n={len(df_band)}")
-        result = run_cox_model(
-            df_band,
-            treatment_vars=['l_wba', 'duractwba'],
-            controls=['onseam', 'mardum', 'ed'],  # Exclude age since restricted
-            use_fe=True,
-            spec_id=f'duration/sample/age_{age_min}_{age_max}',
-            spec_tree_path='methods/duration_survival.md#sample-restrictions',
-            sample_desc=f'Workers age {age_min}-{age_max}'
+    # Leave-one-out: Drop each control one at a time
+    for control in all_controls:
+        remaining_controls = [c for c in all_controls if c != control]
+        result = run_ols_clustered(
+            df, outcome_var, treatment_var,
+            controls=remaining_controls,
+            fe_vars=['state', 'year'],
+            cluster_var='state_id'
         )
         if result:
-            results.append(result)
-            print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+            results.append({
+                'paper_id': PAPER_ID,
+                'journal': JOURNAL,
+                'paper_title': PAPER_TITLE,
+                'spec_id': f'robust/control/drop_{control}',
+                'spec_tree_path': 'robustness/leave_one_out.md',
+                'outcome_var': outcome_var,
+                'treatment_var': treatment_var,
+                'coefficient': result['coefficient'],
+                'std_error': result['std_error'],
+                't_stat': result['t_stat'],
+                'p_value': result['p_value'],
+                'ci_lower': result['ci_lower'],
+                'ci_upper': result['ci_upper'],
+                'n_obs': result['n_obs'],
+                'r_squared': result['r_squared'],
+                'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+                'sample_desc': 'Full sample',
+                'fixed_effects': 'State + Year',
+                'controls_desc': f'All controls except {control}',
+                'cluster_var': 'State',
+                'model_type': 'Panel FE',
+                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+            })
+            spec_count += 1
 
-# -----------------------------------------------------------
-# 11. ALTERNATIVE TREATMENT MEASURES
-# -----------------------------------------------------------
-print("\n11. Alternative treatment measures...")
+    # ==========================================================================
+    # FIXED EFFECTS VARIATIONS (5-8 specs)
+    # ==========================================================================
+    print("Running fixed effects variations...")
 
-# Average WBA
-if 'l_avgwba' in df_analysis.columns and df_analysis['l_avgwba'].notna().sum() > 1000:
-    df_avg = df_analysis.copy()
-    df_avg['duravgwba'] = df_avg['l_avgwba'] * df_avg['dur_cens']
-    print("  Running: Average WBA")
-    result = run_cox_model(
-        df_avg,
-        treatment_vars=['l_avgwba', 'duravgwba'],
-        controls=base_controls,
-        use_fe=True,
-        spec_id='duration/treatment/avg_wba',
-        spec_tree_path='methods/duration_survival.md',
-        sample_desc='All workers, average WBA'
+    # No fixed effects (pooled OLS)
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=None,
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_avgwba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/estimation/no_fe',
+            'spec_tree_path': 'methods/panel_fixed_effects.md#no-fixed-effects',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'None',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Pooled OLS',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# Max WBA
-if 'l_maxwba' in df_analysis.columns and df_analysis['l_maxwba'].notna().sum() > 1000:
-    df_max = df_analysis.copy()
-    df_max['durmaxwba'] = df_max['l_maxwba'] * df_max['dur_cens']
-    print("  Running: Max WBA")
-    result = run_cox_model(
-        df_max,
-        treatment_vars=['l_maxwba', 'durmaxwba'],
-        controls=base_controls,
-        use_fe=True,
-        spec_id='duration/treatment/max_wba',
-        spec_tree_path='methods/duration_survival.md',
-        sample_desc='All workers, max WBA'
+    # State FE only
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_maxwba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/estimation/state_fe_only',
+            'spec_tree_path': 'methods/panel_fixed_effects.md#unit-fe',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State only',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'State FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# -----------------------------------------------------------
-# 12. TIME PERIOD SPLITS
-# -----------------------------------------------------------
-print("\n12. Time period splits...")
-
-# Get median year
-median_year = df_analysis['year'].median()
-
-# Early period
-df_early = df_analysis[df_analysis['year'] < median_year].copy()
-if len(df_early) > 500:
-    print(f"  Running: Early period (before {median_year}), n={len(df_early)}")
-    result = run_cox_model(
-        df_early,
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=base_controls,
-        use_fe=True,
-        spec_id='robust/sample/early_period',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc=f'Early period (before {median_year})'
+    # Year FE only
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['year'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/estimation/year_fe_only',
+            'spec_tree_path': 'methods/panel_fixed_effects.md#time-fe',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'Year only',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Year FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# Late period
-df_late = df_analysis[df_analysis['year'] >= median_year].copy()
-if len(df_late) > 500:
-    print(f"  Running: Late period (from {median_year}), n={len(df_late)}")
-    result = run_cox_model(
-        df_late,
-        treatment_vars=['l_wba', 'duractwba'],
-        controls=base_controls,
-        use_fe=True,
-        spec_id='robust/sample/late_period',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc=f'Late period (from {median_year})'
+    # Two-way FE (state + year)
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
     )
     if result:
-        results.append(result)
-        print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/estimation/twoway_fe',
+            'spec_tree_path': 'methods/panel_fixed_effects.md#twoway-fe',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Two-way FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# -----------------------------------------------------------
-# 13. INTERACTION WITH AGE SUBGROUPS (no TVC)
-# -----------------------------------------------------------
-print("\n13. Age subgroups without TVC...")
+    # ==========================================================================
+    # CLUSTERING VARIATIONS (5-8 specs)
+    # ==========================================================================
+    print("Running clustering variations...")
 
-for (age_min, age_max, label) in [(20, 40, 'young'), (41, 60, 'old')]:
-    df_sub = df_analysis[(df_analysis['age'] >= age_min) & (df_analysis['age'] <= age_max)].copy()
-    if len(df_sub) > 200:
-        print(f"  Running: {label} workers, no TVC")
-        result = run_cox_model(
-            df_sub,
-            treatment_vars=['l_wba'],
-            controls=base_controls,
-            use_fe=True,
-            spec_id=f'duration/sample/{label}_no_tvc',
-            spec_tree_path='methods/duration_survival.md#time-varying-covariates',
-            sample_desc=f'{label.title()} workers ({age_min}-{age_max}), no TVC'
+    # No clustering (robust SE only)
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var=None
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/cluster/none',
+            'spec_tree_path': 'robustness/clustering_variations.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'None (robust SE)',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Cluster by year
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='year_int'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/cluster/year',
+            'spec_tree_path': 'robustness/clustering_variations.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'Year',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # ==========================================================================
+    # SAMPLE RESTRICTIONS (10-15 specs)
+    # ==========================================================================
+    print("Running sample restrictions...")
+
+    # By age group
+    for age in age_groups:
+        df_subset = df[df['age_i2'] == age].copy()
+        result = run_ols_clustered(
+            df_subset, outcome_var, treatment_var,
+            controls=all_controls,
+            fe_vars=['state', 'year'],
+            cluster_var='state_id'
         )
         if result:
-            results.append(result)
-            print(f"    l_wba coef: {result['coefficient']:.4f} (p={result['p_value']:.4f})")
+            age_labels = {2: '20-29', 3: '30-39', 4: '40-49', 5: '50-59', 6: '60+'}
+            results.append({
+                'paper_id': PAPER_ID,
+                'journal': JOURNAL,
+                'paper_title': PAPER_TITLE,
+                'spec_id': f'robust/sample/age_group_{age}',
+                'spec_tree_path': 'robustness/sample_restrictions.md',
+                'outcome_var': outcome_var,
+                'treatment_var': treatment_var,
+                'coefficient': result['coefficient'],
+                'std_error': result['std_error'],
+                't_stat': result['t_stat'],
+                'p_value': result['p_value'],
+                'ci_lower': result['ci_lower'],
+                'ci_upper': result['ci_upper'],
+                'n_obs': result['n_obs'],
+                'r_squared': result['r_squared'],
+                'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+                'sample_desc': f'Age group {age_labels.get(age, str(age))} only',
+                'fixed_effects': 'State + Year',
+                'controls_desc': 'All controls',
+                'cluster_var': 'State',
+                'model_type': 'Panel FE',
+                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+            })
+            spec_count += 1
 
-# -----------------------------------------------------------
-# SAVE RESULTS
-# -----------------------------------------------------------
-print("\n" + "="*60)
-print("SAVING RESULTS")
-print("="*60)
+    # Young vs Old workers (as in paper)
+    # Young: age groups 2-3 (20-39)
+    df_young = df[df['age_i2'].isin([2, 3])].copy()
+    result = run_ols_clustered(
+        df_young, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/young_workers',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Young workers (age 20-39)',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-results_df = pd.DataFrame(results)
-output_path = DATA_PATH / "specification_results.csv"
-results_df.to_csv(output_path, index=False)
-print(f"\nSaved {len(results_df)} specifications to: {output_path}")
+    # Old: age groups 5-6 (50+)
+    df_old = df[df['age_i2'].isin([5, 6])].copy()
+    result = run_ols_clustered(
+        df_old, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/old_workers',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Old workers (age 50+)',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-# Print summary
-print("\n" + "="*60)
-print("SUMMARY STATISTICS")
-print("="*60)
-print(f"Total specifications: {len(results_df)}")
-print(f"Negative coefficients: {(results_df['coefficient'] < 0).sum()} ({100*(results_df['coefficient'] < 0).mean():.1f}%)")
-print(f"Significant at 5%: {(results_df['p_value'] < 0.05).sum()} ({100*(results_df['p_value'] < 0.05).mean():.1f}%)")
-print(f"Significant at 1%: {(results_df['p_value'] < 0.01).sum()} ({100*(results_df['p_value'] < 0.01).mean():.1f}%)")
-print(f"Coefficient range: [{results_df['coefficient'].min():.4f}, {results_df['coefficient'].max():.4f}]")
-print(f"Median coefficient: {results_df['coefficient'].median():.4f}")
-print(f"Mean coefficient: {results_df['coefficient'].mean():.4f}")
+    # Time period restrictions
+    years = sorted(df['year'].unique())
+    mid_year = np.median(years)
 
-print("\n--- By Specification Category ---")
-results_df['category'] = results_df['spec_id'].apply(lambda x: x.split('/')[0] if '/' in x else x)
-for cat, group in results_df.groupby('category'):
-    sig_rate = 100 * (group['p_value'] < 0.05).mean()
-    neg_rate = 100 * (group['coefficient'] < 0).mean()
-    print(f"  {cat}: {len(group)} specs, {sig_rate:.0f}% significant, {neg_rate:.0f}% negative, median coef = {group['coefficient'].median():.4f}")
+    # Early period
+    df_early = df[df['year'] <= mid_year].copy()
+    result = run_ols_clustered(
+        df_early, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/early_period',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': f'Early period (1984-{int(mid_year)})',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-print("\n--- Key Findings ---")
-baseline_result = results_df[results_df['spec_id'] == 'baseline']
-young_result = results_df[results_df['spec_id'] == 'duration/sample/young']
-old_result = results_df[results_df['spec_id'] == 'duration/sample/old']
+    # Late period
+    df_late = df[df['year'] > mid_year].copy()
+    result = run_ols_clustered(
+        df_late, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/late_period',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': f'Late period ({int(mid_year)+1}-2000)',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-if len(baseline_result) > 0:
-    print(f"  Baseline (all workers): {baseline_result['coefficient'].values[0]:.4f} (SE={baseline_result['std_error'].values[0]:.4f})")
-if len(young_result) > 0:
-    print(f"  Young workers (20-40): {young_result['coefficient'].values[0]:.4f} (SE={young_result['std_error'].values[0]:.4f})")
-if len(old_result) > 0:
-    print(f"  Old workers (41-60): {old_result['coefficient'].values[0]:.4f} (SE={old_result['std_error'].values[0]:.4f})")
+    # Drop individual years
+    for year in sorted(df['year'].unique())[:5]:  # First 5 years
+        df_drop = df[df['year'] != year].copy()
+        result = run_ols_clustered(
+            df_drop, outcome_var, treatment_var,
+            controls=all_controls,
+            fe_vars=['state', 'year'],
+            cluster_var='state_id'
+        )
+        if result:
+            results.append({
+                'paper_id': PAPER_ID,
+                'journal': JOURNAL,
+                'paper_title': PAPER_TITLE,
+                'spec_id': f'robust/sample/drop_year_{int(year)}',
+                'spec_tree_path': 'robustness/sample_restrictions.md',
+                'outcome_var': outcome_var,
+                'treatment_var': treatment_var,
+                'coefficient': result['coefficient'],
+                'std_error': result['std_error'],
+                't_stat': result['t_stat'],
+                'p_value': result['p_value'],
+                'ci_lower': result['ci_lower'],
+                'ci_upper': result['ci_upper'],
+                'n_obs': result['n_obs'],
+                'r_squared': result['r_squared'],
+                'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+                'sample_desc': f'Excluding year {int(year)}',
+                'fixed_effects': 'State + Year',
+                'controls_desc': 'All controls',
+                'cluster_var': 'State',
+                'model_type': 'Panel FE',
+                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+            })
+            spec_count += 1
 
-if len(young_result) > 0 and len(old_result) > 0:
-    young_coef = young_result['coefficient'].values[0]
-    old_coef = old_result['coefficient'].values[0]
-    if young_coef != 0:
-        ratio = old_coef / young_coef
-        print(f"  Ratio (old/young): {ratio:.2f}x")
-    print(f"  -> Paper finding: Older workers have {'larger' if abs(old_coef) > abs(young_coef) else 'smaller'} elasticity (in magnitude)")
+    # Outlier handling
+    # Trim 1%
+    lower = df['lnun'].quantile(0.01)
+    upper = df['lnun'].quantile(0.99)
+    df_trim = df[(df['lnun'] >= lower) & (df['lnun'] <= upper)].copy()
+    result = run_ols_clustered(
+        df_trim, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/trim_1pct',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Trimmed 1% tails of outcome',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
 
-print("\nDone!")
+    # Trim 5%
+    lower = df['lnun'].quantile(0.05)
+    upper = df['lnun'].quantile(0.95)
+    df_trim = df[(df['lnun'] >= lower) & (df['lnun'] <= upper)].copy()
+    result = run_ols_clustered(
+        df_trim, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/trim_5pct',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Trimmed 5% tails of outcome',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # ==========================================================================
+    # FUNCTIONAL FORM VARIATIONS (3-5 specs)
+    # ==========================================================================
+    print("Running functional form variations...")
+
+    # Levels (unemployment rate) instead of logs
+    df['un_rate'] = np.exp(df['lnun'])
+    df['wba'] = np.exp(df['lnwba'])
+
+    result = run_ols_clustered(
+        df, 'un_rate', 'wba',
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/funcform/levels',
+            'spec_tree_path': 'robustness/functional_form.md',
+            'outcome_var': 'un_rate',
+            'treatment_var': 'wba',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE (levels)',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Log outcome, level treatment
+    result = run_ols_clustered(
+        df, 'lnun', 'wba',
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/funcform/log_level',
+            'spec_tree_path': 'robustness/functional_form.md',
+            'outcome_var': 'lnun',
+            'treatment_var': 'wba',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE (log-level)',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Level outcome, log treatment
+    result = run_ols_clustered(
+        df, 'un_rate', 'lnwba',
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/funcform/level_log',
+            'spec_tree_path': 'robustness/functional_form.md',
+            'outcome_var': 'un_rate',
+            'treatment_var': 'lnwba',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE (level-log)',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # ==========================================================================
+    # HETEROGENEITY ANALYSIS (5-10 specs)
+    # ==========================================================================
+    print("Running heterogeneity analysis...")
+
+    # Interactions with demographics
+    for het_var in ['m_married', 'r_white']:
+        df[f'{treatment_var}_x_{het_var}'] = df[treatment_var] * df[het_var]
+
+        result = run_ols_clustered(
+            df, outcome_var, f'{treatment_var}_x_{het_var}',
+            controls=all_controls + [treatment_var],
+            fe_vars=['state', 'year'],
+            cluster_var='state_id'
+        )
+        if result:
+            results.append({
+                'paper_id': PAPER_ID,
+                'journal': JOURNAL,
+                'paper_title': PAPER_TITLE,
+                'spec_id': f'robust/heterogeneity/{het_var}',
+                'spec_tree_path': 'robustness/heterogeneity.md',
+                'outcome_var': outcome_var,
+                'treatment_var': f'{treatment_var}_x_{het_var}',
+                'coefficient': result['coefficient'],
+                'std_error': result['std_error'],
+                't_stat': result['t_stat'],
+                'p_value': result['p_value'],
+                'ci_lower': result['ci_lower'],
+                'ci_upper': result['ci_upper'],
+                'n_obs': result['n_obs'],
+                'r_squared': result['r_squared'],
+                'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+                'sample_desc': 'Full sample',
+                'fixed_effects': 'State + Year',
+                'controls_desc': f'All controls + {het_var} interaction',
+                'cluster_var': 'State',
+                'model_type': 'Panel FE with interaction',
+                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+            })
+            spec_count += 1
+
+    # Subsample by married status
+    for married in [0, 1]:
+        df_sub = df[df['m_married'] == married].copy()
+        result = run_ols_clustered(
+            df_sub, outcome_var, treatment_var,
+            controls=[c for c in all_controls if c != 'm_married'],
+            fe_vars=['state', 'year'],
+            cluster_var='state_id'
+        )
+        if result:
+            married_label = 'married' if married == 1 else 'unmarried'
+            results.append({
+                'paper_id': PAPER_ID,
+                'journal': JOURNAL,
+                'paper_title': PAPER_TITLE,
+                'spec_id': f'robust/heterogeneity/subsample_{married_label}',
+                'spec_tree_path': 'robustness/heterogeneity.md',
+                'outcome_var': outcome_var,
+                'treatment_var': treatment_var,
+                'coefficient': result['coefficient'],
+                'std_error': result['std_error'],
+                't_stat': result['t_stat'],
+                'p_value': result['p_value'],
+                'ci_lower': result['ci_lower'],
+                'ci_upper': result['ci_upper'],
+                'n_obs': result['n_obs'],
+                'r_squared': result['r_squared'],
+                'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+                'sample_desc': f'{married_label.capitalize()} workers only',
+                'fixed_effects': 'State + Year',
+                'controls_desc': 'All controls except marriage',
+                'cluster_var': 'State',
+                'model_type': 'Panel FE',
+                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+            })
+            spec_count += 1
+
+    # Subsample by race
+    for white in [0, 1]:
+        df_sub = df[df['r_white'] == white].copy()
+        result = run_ols_clustered(
+            df_sub, outcome_var, treatment_var,
+            controls=[c for c in all_controls if c != 'r_white'],
+            fe_vars=['state', 'year'],
+            cluster_var='state_id'
+        )
+        if result:
+            race_label = 'white' if white == 1 else 'nonwhite'
+            results.append({
+                'paper_id': PAPER_ID,
+                'journal': JOURNAL,
+                'paper_title': PAPER_TITLE,
+                'spec_id': f'robust/heterogeneity/subsample_{race_label}',
+                'spec_tree_path': 'robustness/heterogeneity.md',
+                'outcome_var': outcome_var,
+                'treatment_var': treatment_var,
+                'coefficient': result['coefficient'],
+                'std_error': result['std_error'],
+                't_stat': result['t_stat'],
+                'p_value': result['p_value'],
+                'ci_lower': result['ci_lower'],
+                'ci_upper': result['ci_upper'],
+                'n_obs': result['n_obs'],
+                'r_squared': result['r_squared'],
+                'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+                'sample_desc': f'{race_label.capitalize()} workers only',
+                'fixed_effects': 'State + Year',
+                'controls_desc': 'All controls except race',
+                'cluster_var': 'State',
+                'model_type': 'Panel FE',
+                'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+            })
+            spec_count += 1
+
+    # ==========================================================================
+    # PLACEBO TESTS (3-5 specs)
+    # ==========================================================================
+    print("Running placebo tests...")
+
+    # Lagged treatment (1-year lag)
+    df['lnwba_lag1'] = df.groupby('state_id')['lnwba'].shift(1)
+    result = run_ols_clustered(
+        df.dropna(subset=['lnwba_lag1']), outcome_var, 'lnwba_lag1',
+        controls=all_controls + [treatment_var],
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/placebo/lag1_treatment',
+            'spec_tree_path': 'robustness/placebo_tests.md',
+            'outcome_var': outcome_var,
+            'treatment_var': 'lnwba_lag1',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls + current treatment',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE (placebo)',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Lead treatment (1-year lead) - should not predict current outcome
+    df['lnwba_lead1'] = df.groupby('state_id')['lnwba'].shift(-1)
+    result = run_ols_clustered(
+        df.dropna(subset=['lnwba_lead1']), outcome_var, 'lnwba_lead1',
+        controls=all_controls + [treatment_var],
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/placebo/lead1_treatment',
+            'spec_tree_path': 'robustness/placebo_tests.md',
+            'outcome_var': outcome_var,
+            'treatment_var': 'lnwba_lead1',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls + current treatment',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE (placebo)',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Randomized treatment (permutation)
+    np.random.seed(42)
+    df['lnwba_random'] = np.random.permutation(df['lnwba'].values)
+    result = run_ols_clustered(
+        df, outcome_var, 'lnwba_random',
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/placebo/randomized_treatment',
+            'spec_tree_path': 'robustness/placebo_tests.md',
+            'outcome_var': outcome_var,
+            'treatment_var': 'lnwba_random',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE (placebo)',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # ==========================================================================
+    # ADDITIONAL SPECIFICATIONS TO REACH 50+
+    # ==========================================================================
+    print("Running additional specifications...")
+
+    # Different time trends
+    df['trend'] = df['year'] - df['year'].min()
+    df['trend_sq'] = df['trend'] ** 2
+
+    # With linear trend
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls + ['trend'],
+        fe_vars=['state'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/funcform/linear_trend',
+            'spec_tree_path': 'robustness/functional_form.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State',
+            'controls_desc': 'All controls + linear trend',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE with trend',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # With quadratic trend
+    result = run_ols_clustered(
+        df, outcome_var, treatment_var,
+        controls=all_controls + ['trend', 'trend_sq'],
+        fe_vars=['state'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/funcform/quadratic_trend',
+            'spec_tree_path': 'robustness/functional_form.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample',
+            'fixed_effects': 'State',
+            'controls_desc': 'All controls + quadratic trend',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE with trend',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Prime-age workers only (30-49)
+    df_prime = df[df['age_i2'].isin([3, 4])].copy()
+    result = run_ols_clustered(
+        df_prime, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/prime_age',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Prime-age workers (30-49) only',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Part 1 only (first half of year)
+    df_part1 = df[df['part'] == 1].copy()
+    result = run_ols_clustered(
+        df_part1, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/part1_only',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'First half of year only',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # Part 2 only (second half of year)
+    df_part2 = df[df['part'] == 2].copy()
+    result = run_ols_clustered(
+        df_part2, outcome_var, treatment_var,
+        controls=all_controls,
+        fe_vars=['state', 'year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/sample/part2_only',
+            'spec_tree_path': 'robustness/sample_restrictions.md',
+            'outcome_var': outcome_var,
+            'treatment_var': treatment_var,
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Second half of year only',
+            'fixed_effects': 'State + Year',
+            'controls_desc': 'All controls',
+            'cluster_var': 'State',
+            'model_type': 'Panel FE',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    # First difference specification
+    df_sorted = df.sort_values(['state_id', 'period_int'])
+    df['lnun_diff'] = df_sorted.groupby('state_id')['lnun'].diff()
+    df['lnwba_diff'] = df_sorted.groupby('state_id')['lnwba'].diff()
+
+    result = run_ols_clustered(
+        df.dropna(subset=['lnun_diff', 'lnwba_diff']), 'lnun_diff', 'lnwba_diff',
+        controls=None,
+        fe_vars=['year'],
+        cluster_var='state_id'
+    )
+    if result:
+        results.append({
+            'paper_id': PAPER_ID,
+            'journal': JOURNAL,
+            'paper_title': PAPER_TITLE,
+            'spec_id': 'robust/estimation/first_difference',
+            'spec_tree_path': 'methods/panel_fixed_effects.md#first-difference',
+            'outcome_var': 'lnun_diff',
+            'treatment_var': 'lnwba_diff',
+            'coefficient': result['coefficient'],
+            'std_error': result['std_error'],
+            't_stat': result['t_stat'],
+            'p_value': result['p_value'],
+            'ci_lower': result['ci_lower'],
+            'ci_upper': result['ci_upper'],
+            'n_obs': result['n_obs'],
+            'r_squared': result['r_squared'],
+            'coefficient_vector_json': json.dumps({'treatment': {'coef': result['coefficient'], 'se': result['std_error']}}),
+            'sample_desc': 'Full sample (first-differenced)',
+            'fixed_effects': 'Year',
+            'controls_desc': 'None (first differenced)',
+            'cluster_var': 'State',
+            'model_type': 'First Difference',
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+        })
+        spec_count += 1
+
+    print(f"\nTotal specifications run: {spec_count}")
+
+    return results
+
+
+# =============================================================================
+# Main Execution
+# =============================================================================
+
+if __name__ == "__main__":
+    print("=" * 70)
+    print(f"Specification Search: {PAPER_TITLE}")
+    print(f"Paper ID: {PAPER_ID}")
+    print("=" * 70)
+
+    # Run specification search
+    results = run_specification_search()
+
+    # Convert to DataFrame
+    results_df = pd.DataFrame(results)
+
+    # Save results
+    output_path = os.path.join(PACKAGE_DIR, 'specification_results.csv')
+    results_df.to_csv(output_path, index=False)
+    print(f"\nResults saved to: {output_path}")
+
+    # Print summary statistics
+    print("\n" + "=" * 70)
+    print("SUMMARY STATISTICS")
+    print("=" * 70)
+
+    print(f"\nTotal specifications: {len(results_df)}")
+
+    # Filter to only those with valid coefficients
+    valid_results = results_df.dropna(subset=['coefficient', 'p_value'])
+
+    if len(valid_results) > 0:
+        print(f"Valid specifications: {len(valid_results)}")
+        print(f"\nCoefficient statistics (treatment effect):")
+        print(f"  Mean: {valid_results['coefficient'].mean():.4f}")
+        print(f"  Median: {valid_results['coefficient'].median():.4f}")
+        print(f"  Std Dev: {valid_results['coefficient'].std():.4f}")
+        print(f"  Min: {valid_results['coefficient'].min():.4f}")
+        print(f"  Max: {valid_results['coefficient'].max():.4f}")
+
+        pos_coefs = (valid_results['coefficient'] > 0).sum()
+        print(f"\nPositive coefficients: {pos_coefs} ({100*pos_coefs/len(valid_results):.1f}%)")
+
+        sig_05 = (valid_results['p_value'] < 0.05).sum()
+        sig_01 = (valid_results['p_value'] < 0.01).sum()
+        print(f"Significant at 5%: {sig_05} ({100*sig_05/len(valid_results):.1f}%)")
+        print(f"Significant at 1%: {sig_01} ({100*sig_01/len(valid_results):.1f}%)")
+
+    print("\n" + "=" * 70)
+    print("Specification search complete!")
+    print("=" * 70)

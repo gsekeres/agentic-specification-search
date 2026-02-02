@@ -1,140 +1,149 @@
-#!/usr/bin/env python3
 """
-Specification Search: Paper 205541-V1 (AER)
-Title: Beliefs and Cooperation in Repeated Prisoner's Dilemma Games
+Specification Search: Paper 205541-V1
+=====================================
+Title: Cooperation and Beliefs in Games with Repeated Interaction
+Topic: Experimental economics - cooperation in finitely and indefinitely repeated
+       prisoner's dilemma games with belief elicitation
+Method: Discrete choice models (probit/logit) with correlated random effects
 
-Paper Overview:
-- Lab experiment studying cooperation in repeated prisoner's dilemma games
-- Two game types: Finite (8 rounds) and Indefinite (random continuation)
-- Elicits subjects' beliefs about opponent cooperation probability
-- Main hypothesis: Beliefs affect cooperation decisions, and subjects are approximately Bayesian
-
-Method Classification:
-- method_code: discrete_choice
-- method_tree_path: specification_tree/methods/discrete_choice.md
-- The paper uses mixed-effects probit models for binary cooperation choices
-- Also uses mixed-effects tobit for bounded belief data
-
-Main outcome: coop (binary cooperation choice)
-Key treatment/exposure: belief (stated belief about opponent cooperation)
-Key moderators: finite (game type), late (late supergames), round
-Clustering: session
-Panel structure: Multiple observations per subject (id)
+Key variables:
+- Outcome: coop (cooperation decision, binary 0/1)
+- Treatment: finite (finite vs indefinite game horizon), beliefon (beliefs elicited)
+- Controls: supergame, focoop_m1 (other cooperated in previous supergame),
+            fcoop (cooperated in first supergame), risk (bomb choice), length_m1
+- Clustering: session
+- Panel: subject (id), repeated measures across supergames and rounds
 """
 
 import pandas as pd
 import numpy as np
-import statsmodels.api as sm
-import statsmodels.formula.api as smf
-from scipy import stats
 import json
 import warnings
 warnings.filterwarnings('ignore')
 
-# ============================================================================
-# Setup paths and load data
-# ============================================================================
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+from scipy import stats
 
+# Paths
 BASE_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search'
 DATA_PATH = f'{BASE_PATH}/data/downloads/extracted/205541-V1/data'
 OUTPUT_PATH = f'{BASE_PATH}/data/downloads/extracted/205541-V1'
 
-# Load main dataset
-df = pd.read_stata(f'{DATA_PATH}/dat_1.dta')
-
 # Paper metadata
 PAPER_ID = '205541-V1'
 JOURNAL = 'AER'
-PAPER_TITLE = 'Beliefs and Cooperation in Repeated Prisoner''s Dilemma Games'
+PAPER_TITLE = 'Cooperation and Beliefs in Games with Repeated Interaction'
 
-# ============================================================================
-# Data preparation (following original Stata code)
-# ============================================================================
+# Load data
+print("Loading data...")
+df = pd.read_stata(f'{DATA_PATH}/dat_1.dta')
+df_wtypes = pd.read_stata(f'{DATA_PATH}/dat_wtypes.dta')
+df_combined = pd.read_stata(f'{DATA_PATH}/dat_combined.dta')
 
-# Create lagged variables for round 1 analysis
-df_round1 = df[df['round'] == 1].copy()
-df_round1 = df_round1.sort_values(['id', 'supergame'])
+# Data preparation - replicate variable construction from est_2.do
+def prepare_data(df):
+    """Prepare data for analysis following original Stata code"""
+    df = df.copy()
 
-# First cooperation in supergame 1
-df_round1['fcoop'] = df_round1.groupby('id').apply(
-    lambda x: x[x['supergame']==1]['coop'].values[0] if 1 in x['supergame'].values else np.nan
-).reindex(df_round1['id']).values
+    # Create first supergame cooperation indicator
+    foo = df.loc[df['round'] == 1].loc[df['supergame'] == 1, ['id', 'coop']].rename(columns={'coop': 'fcoop'})
+    df = df.merge(foo, on='id', how='left')
 
-# Other's cooperation in previous supergame
-df_round1['focoop_m1'] = df_round1.groupby('id')['o_coop'].shift(1)
+    # Create valid round measure
+    df['foo'] = df['round'] * df['validround'].fillna(0)
+    df['max_round'] = df.groupby(['finite', 'session', 'supergame', 'id'])['foo'].transform('max')
+    df['length'] = df['max_round']
 
-# Length of previous supergame
-df_round1['length_m1'] = df_round1.groupby('id')['length'].shift(1)
+    # Keep only round 1
+    df_r1 = df[df['round'] == 1].copy()
 
-# Risk measure
-df_round1['risk'] = df_round1['bomb_choice']
+    # Create lagged variables for round 1 analysis
+    df_r1 = df_r1.sort_values(['id', 'supergame'])
+    df_r1['focoop_m1'] = df_r1.groupby('id')['o_coop'].shift(1)
+    df_r1['length_m1'] = df_r1.groupby('id')['length'].shift(1)
 
-# For late supergames analysis
-df_late = df[(df['late'] == 1) & (df['round'] <= 8)].copy()
+    # Risk measure
+    df_r1['risk'] = df_r1['bomb_choice']
 
-# ============================================================================
+    return df_r1
+
+# Prepare data for main analysis
+print("Preparing data...")
+df_r1 = prepare_data(df)
+df_r1 = df_r1.dropna(subset=['coop'])
+
+# Also prepare full data for round-level analysis
+df_full = df.copy()
+df_full['risk'] = df_full['bomb_choice']
+
 # Results storage
-# ============================================================================
 results = []
 
-def add_result(spec_id, spec_tree_path, outcome_var, treatment_var,
-               model_result, df_used, cluster_var=None, controls_desc='',
-               fixed_effects='None', sample_desc='Full sample', model_type='Probit',
-               extra_info=None):
-    """Helper function to add results in standardized format."""
+def add_result(spec_id, spec_tree_path, outcome_var, treatment_var, model_result,
+               sample_desc, model_type, cluster_var, controls_desc, fixed_effects,
+               data_df, formula_used):
+    """Add a result to the results list"""
 
-    # Extract coefficient info
+    # Get treatment coefficient and stats
     try:
-        coef = model_result.params[treatment_var]
-        se = model_result.bse[treatment_var]
-        pval = model_result.pvalues[treatment_var]
-        tstat = coef / se
+        if treatment_var in model_result.params.index:
+            coef = model_result.params[treatment_var]
+            se = model_result.bse[treatment_var]
+            t_stat = model_result.tvalues[treatment_var]
+            p_val = model_result.pvalues[treatment_var]
+        else:
+            # For models without explicit treatment var
+            coef = np.nan
+            se = np.nan
+            t_stat = np.nan
+            p_val = np.nan
     except:
-        # If treatment_var not in model (e.g., margins)
-        coef = extra_info.get('coef', np.nan) if extra_info else np.nan
-        se = extra_info.get('se', np.nan) if extra_info else np.nan
-        pval = extra_info.get('pval', np.nan) if extra_info else np.nan
-        tstat = coef / se if se > 0 else np.nan
+        coef = np.nan
+        se = np.nan
+        t_stat = np.nan
+        p_val = np.nan
 
-    ci_lower = coef - 1.96 * se
-    ci_upper = coef + 1.96 * se
+    # Compute CI
+    ci_lower = coef - 1.96 * se if not np.isnan(se) else np.nan
+    ci_upper = coef + 1.96 * se if not np.isnan(se) else np.nan
+
+    # Get R-squared (pseudo for logit/probit)
+    try:
+        r2 = model_result.prsquared if hasattr(model_result, 'prsquared') else model_result.rsquared
+    except:
+        r2 = np.nan
 
     # Build coefficient vector
-    coef_vector = {
-        'treatment': {
-            'var': treatment_var,
-            'coef': float(coef),
-            'se': float(se),
-            'pval': float(pval)
-        },
-        'controls': [],
-        'fixed_effects': [fixed_effects] if fixed_effects != 'None' else [],
-        'diagnostics': {}
-    }
-
-    # Add control coefficients
-    for var in model_result.params.index:
-        if var not in [treatment_var, 'Intercept', 'const'] and not var.startswith('C('):
-            try:
-                coef_vector['controls'].append({
-                    'var': var,
-                    'coef': float(model_result.params[var]),
-                    'se': float(model_result.bse[var]),
-                    'pval': float(model_result.pvalues[var])
-                })
-            except:
-                pass
-
-    # Add diagnostics
+    coef_vector = {"treatment": {}, "controls": [], "fixed_effects": [], "diagnostics": {}}
     try:
-        coef_vector['diagnostics']['pseudo_r2'] = float(model_result.prsquared) if hasattr(model_result, 'prsquared') else None
-        coef_vector['diagnostics']['ll_model'] = float(model_result.llf) if hasattr(model_result, 'llf') else None
-        coef_vector['diagnostics']['aic'] = float(model_result.aic) if hasattr(model_result, 'aic') else None
-        coef_vector['diagnostics']['bic'] = float(model_result.bic) if hasattr(model_result, 'bic') else None
+        for var in model_result.params.index:
+            if var == treatment_var:
+                coef_vector["treatment"] = {
+                    "var": var,
+                    "coef": float(model_result.params[var]),
+                    "se": float(model_result.bse[var]),
+                    "pval": float(model_result.pvalues[var])
+                }
+            elif var != 'Intercept' and var != 'const':
+                coef_vector["controls"].append({
+                    "var": var,
+                    "coef": float(model_result.params[var]),
+                    "se": float(model_result.bse[var]),
+                    "pval": float(model_result.pvalues[var])
+                })
     except:
         pass
 
-    n_obs = int(model_result.nobs) if hasattr(model_result, 'nobs') else len(df_used)
+    coef_vector["fixed_effects"] = fixed_effects.split('+') if fixed_effects else []
+    try:
+        coef_vector["diagnostics"] = {
+            "pseudo_r2": float(r2) if not np.isnan(r2) else None,
+            "ll": float(model_result.llf) if hasattr(model_result, 'llf') else None,
+            "aic": float(model_result.aic) if hasattr(model_result, 'aic') else None
+        }
+    except:
+        pass
 
     result = {
         'paper_id': PAPER_ID,
@@ -144,751 +153,795 @@ def add_result(spec_id, spec_tree_path, outcome_var, treatment_var,
         'spec_tree_path': spec_tree_path,
         'outcome_var': outcome_var,
         'treatment_var': treatment_var,
-        'coefficient': float(coef),
-        'std_error': float(se),
-        't_stat': float(tstat),
-        'p_value': float(pval),
-        'ci_lower': float(ci_lower),
-        'ci_upper': float(ci_upper),
-        'n_obs': n_obs,
-        'r_squared': coef_vector['diagnostics'].get('pseudo_r2'),
+        'coefficient': coef,
+        'std_error': se,
+        't_stat': t_stat,
+        'p_value': p_val,
+        'ci_lower': ci_lower,
+        'ci_upper': ci_upper,
+        'n_obs': int(model_result.nobs),
+        'r_squared': r2,
         'coefficient_vector_json': json.dumps(coef_vector),
         'sample_desc': sample_desc,
         'fixed_effects': fixed_effects,
         'controls_desc': controls_desc,
-        'cluster_var': cluster_var if cluster_var else 'None',
+        'cluster_var': cluster_var,
         'model_type': model_type,
         'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
     }
 
     results.append(result)
+    print(f"  {spec_id}: coef={coef:.4f}, se={se:.4f}, p={p_val:.4f}, n={int(model_result.nobs)}")
     return result
 
-# ============================================================================
-# BASELINE SPECIFICATIONS
-# Replicating Table 6/7: Determinants of Cooperation in Round 1
-# ============================================================================
 
-print("="*70)
-print("Running Baseline Specifications (Table 6/7 Replication)")
-print("="*70)
+def run_probit_clustered(formula, data, cluster_var='session'):
+    """Run probit with clustered standard errors"""
+    try:
+        model = smf.probit(formula, data=data)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': data[cluster_var]}, disp=0)
+        return result
+    except Exception as e:
+        print(f"Error in probit: {e}")
+        return None
 
-# Note: The paper uses mixed-effects probit with random effects for subject
-# and clustering at session level. Python's statsmodels has limited support
-# for this, so we use GEE and regular probit with clustered SE as approximations.
 
-# Baseline 1: Finite game, beliefon only
-df_fin_r1 = df_round1[(df_round1['finite'] == 1) & df_round1['beliefon'].notna()].copy()
+def run_logit_clustered(formula, data, cluster_var='session'):
+    """Run logit with clustered standard errors"""
+    try:
+        model = smf.logit(formula, data=data)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': data[cluster_var]}, disp=0)
+        return result
+    except Exception as e:
+        print(f"Error in logit: {e}")
+        return None
 
-try:
-    model = smf.probit('coop ~ beliefon', data=df_fin_r1).fit(
-        cov_type='cluster', cov_kwds={'groups': df_fin_r1['session']}, disp=0)
-    add_result(
-        spec_id='baseline',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1,
-        cluster_var='session',
-        controls_desc='None',
-        fixed_effects='None',
-        sample_desc='Finite game, round 1',
-        model_type='Probit'
-    )
-    print(f"Baseline (Finite, beliefon only): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in baseline finite: {e}")
 
-# Baseline 2: Finite game with controls (main specification from paper)
-df_fin_r1_full = df_fin_r1.dropna(subset=['beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+def run_ols_clustered(formula, data, cluster_var='session'):
+    """Run OLS (LPM) with clustered standard errors"""
+    try:
+        model = smf.ols(formula, data=data)
+        result = model.fit(cov_type='cluster', cov_kwds={'groups': data[cluster_var]}, disp=0)
+        return result
+    except Exception as e:
+        print(f"Error in OLS: {e}")
+        return None
 
-try:
-    model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                       data=df_fin_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['session']}, disp=0)
-    add_result(
-        spec_id='baseline_full_controls',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1_full,
-        cluster_var='session',
-        controls_desc='supergame, focoop_m1, fcoop, risk',
-        fixed_effects='None',
-        sample_desc='Finite game, round 1, complete cases',
-        model_type='Probit'
-    )
-    print(f"Baseline full (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in baseline finite full: {e}")
 
-# Baseline 3: Indefinite game, beliefon only
-df_inf_r1 = df_round1[(df_round1['finite'] == 0) & df_round1['beliefon'].notna()].copy()
+# ========================================
+# SECTION 1: BASELINE SPECIFICATIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 1: BASELINE SPECIFICATIONS")
+print("="*60)
 
-try:
-    model = smf.probit('coop ~ beliefon', data=df_inf_r1).fit(
-        cov_type='cluster', cov_kwds={'groups': df_inf_r1['session']}, disp=0)
-    add_result(
-        spec_id='baseline_indefinite',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_inf_r1,
-        cluster_var='session',
-        controls_desc='None',
-        fixed_effects='None',
-        sample_desc='Indefinite game, round 1',
-        model_type='Probit'
-    )
-    print(f"Baseline (Indefinite, beliefon only): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in baseline indefinite: {e}")
+# Baseline 1: Finite game - cooperation determinants (Table 6/7 replication)
+print("\n1.1 Baseline: Finite game determinants of round-1 cooperation")
+df_finite = df_r1[df_r1['finite'] == 1].dropna(subset=['coop', 'beliefon', 'supergame',
+                                                        'focoop_m1', 'fcoop', 'risk'])
 
-# Baseline 4: Indefinite game with controls
-df_inf_r1_full = df_inf_r1.dropna(subset=['beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk', 'length_m1'])
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    result = run_probit_clustered(formula, df_finite)
+    if result:
+        add_result('baseline', 'methods/discrete_choice.md#baseline',
+                  'coop', 'beliefon', result, 'Finite game, round 1',
+                  'probit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none',
+                  df_finite, formula)
 
-try:
-    model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1',
-                       data=df_inf_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_inf_r1_full['session']}, disp=0)
-    add_result(
-        spec_id='baseline_indefinite_full',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_inf_r1_full,
-        cluster_var='session',
-        controls_desc='supergame, focoop_m1, fcoop, risk, length_m1',
-        fixed_effects='None',
-        sample_desc='Indefinite game, round 1, complete cases',
-        model_type='Probit'
-    )
-    print(f"Baseline full (Indefinite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in baseline indefinite full: {e}")
+# Baseline 2: Indefinite game
+print("\n1.2 Baseline: Indefinite game determinants of round-1 cooperation")
+df_infinite = df_r1[df_r1['finite'] == 0].dropna(subset=['coop', 'beliefon', 'supergame',
+                                                          'focoop_m1', 'fcoop', 'risk', 'length_m1'])
 
-# ============================================================================
-# CORE DISCRETE CHOICE VARIATIONS
-# ============================================================================
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    result = run_probit_clustered(formula, df_infinite)
+    if result:
+        add_result('baseline_indefinite', 'methods/discrete_choice.md#baseline',
+                  'coop', 'beliefon', result, 'Indefinite game, round 1',
+                  'probit', 'session', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none',
+                  df_infinite, formula)
 
-print("\n" + "="*70)
-print("Running Model Type Variations")
-print("="*70)
 
-# Logit model
-try:
-    model = smf.logit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                      data=df_fin_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['session']}, disp=0)
-    add_result(
-        spec_id='discrete/binary/logit',
-        spec_tree_path='methods/discrete_choice.md#model-type-binary-outcome',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1_full,
-        cluster_var='session',
-        controls_desc='supergame, focoop_m1, fcoop, risk',
-        sample_desc='Finite game, round 1',
-        model_type='Logit'
-    )
-    print(f"Logit (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in logit: {e}")
+# ========================================
+# SECTION 2: MODEL TYPE VARIATIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 2: MODEL TYPE VARIATIONS")
+print("="*60)
 
-# Linear Probability Model
-try:
-    model = smf.ols('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                    data=df_fin_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['session']})
-    add_result(
-        spec_id='discrete/binary/lpm',
-        spec_tree_path='methods/discrete_choice.md#model-type-binary-outcome',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1_full,
-        cluster_var='session',
-        controls_desc='supergame, focoop_m1, fcoop, risk',
-        sample_desc='Finite game, round 1',
-        model_type='LPM'
-    )
-    print(f"LPM (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in LPM: {e}")
+# Logit for finite
+print("\n2.1 Logit: Finite game")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    result = run_logit_clustered(formula, df_finite)
+    if result:
+        add_result('discrete/binary/logit_finite', 'methods/discrete_choice.md#model-type-binary-outcome',
+                  'coop', 'beliefon', result, 'Finite game, round 1',
+                  'logit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none',
+                  df_finite, formula)
 
-# Indefinite game - Logit
-try:
-    model = smf.logit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1',
-                      data=df_inf_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_inf_r1_full['session']}, disp=0)
-    add_result(
-        spec_id='discrete/binary/logit_indefinite',
-        spec_tree_path='methods/discrete_choice.md#model-type-binary-outcome',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_inf_r1_full,
-        cluster_var='session',
-        controls_desc='supergame, focoop_m1, fcoop, risk, length_m1',
-        sample_desc='Indefinite game, round 1',
-        model_type='Logit'
-    )
-    print(f"Logit (Indefinite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in logit indefinite: {e}")
+# Logit for indefinite
+print("\n2.2 Logit: Indefinite game")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    result = run_logit_clustered(formula, df_infinite)
+    if result:
+        add_result('discrete/binary/logit_indefinite', 'methods/discrete_choice.md#model-type-binary-outcome',
+                  'coop', 'beliefon', result, 'Indefinite game, round 1',
+                  'logit', 'session', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none',
+                  df_infinite, formula)
 
-# LPM - Indefinite
-try:
-    model = smf.ols('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1',
-                    data=df_inf_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_inf_r1_full['session']})
-    add_result(
-        spec_id='discrete/binary/lpm_indefinite',
-        spec_tree_path='methods/discrete_choice.md#model-type-binary-outcome',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_inf_r1_full,
-        cluster_var='session',
-        controls_desc='supergame, focoop_m1, fcoop, risk, length_m1',
-        sample_desc='Indefinite game, round 1',
-        model_type='LPM'
-    )
-    print(f"LPM (Indefinite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error in LPM indefinite: {e}")
+# LPM for finite
+print("\n2.3 LPM: Finite game")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    result = run_ols_clustered(formula, df_finite)
+    if result:
+        add_result('discrete/binary/lpm_finite', 'methods/discrete_choice.md#model-type-binary-outcome',
+                  'coop', 'beliefon', result, 'Finite game, round 1',
+                  'OLS-LPM', 'session', 'supergame+focoop_m1+fcoop+risk', 'none',
+                  df_finite, formula)
 
-# ============================================================================
-# ALTERNATIVE OUTCOME: BELIEF AS DEPENDENT VARIABLE
-# Testing belief accuracy (belief - o_coop)
-# ============================================================================
+# LPM for indefinite
+print("\n2.4 LPM: Indefinite game")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    result = run_ols_clustered(formula, df_infinite)
+    if result:
+        add_result('discrete/binary/lpm_indefinite', 'methods/discrete_choice.md#model-type-binary-outcome',
+                  'coop', 'beliefon', result, 'Indefinite game, round 1',
+                  'OLS-LPM', 'session', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none',
+                  df_infinite, formula)
 
-print("\n" + "="*70)
-print("Running Belief Accuracy Specifications")
-print("="*70)
 
-# Create belief error variable
-df_late['belief_error'] = df_late['belief'] - df_late['o_coop']
+# ========================================
+# SECTION 3: CONTROL VARIATIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 3: CONTROL VARIATIONS")
+print("="*60)
 
-# OLS regression on belief error
-df_late_finite = df_late[df_late['finite'] == 1].copy()
-df_late_indefinite = df_late[df_late['finite'] == 0].copy()
+# No controls - finite
+print("\n3.1 No controls: Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon'
+    result = run_probit_clustered(formula, df_finite)
+    if result:
+        add_result('discrete/controls/none_finite', 'methods/discrete_choice.md#control-sets',
+                  'coop', 'beliefon', result, 'Finite game, round 1, no controls',
+                  'probit', 'session', 'none', 'none', df_finite, formula)
 
-try:
-    model = smf.ols('belief_error ~ round', data=df_late_finite.dropna(subset=['belief_error', 'round'])).fit(
-        cov_type='cluster', cov_kwds={'groups': df_late_finite.dropna(subset=['belief_error', 'round'])['session']})
-    add_result(
-        spec_id='belief_accuracy/finite',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='belief_error',
-        treatment_var='round',
-        model_result=model,
-        df_used=df_late_finite,
-        cluster_var='session',
-        controls_desc='None',
-        sample_desc='Finite game, late supergames, rounds 1-8',
-        model_type='OLS'
-    )
-    print(f"Belief error by round (Finite): coef={model.params['round']:.4f}, p={model.pvalues['round']:.4f}")
-except Exception as e:
-    print(f"Error in belief accuracy finite: {e}")
+# Minimal controls - finite
+print("\n3.2 Minimal controls (supergame only): Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame'
+    result = run_probit_clustered(formula, df_finite)
+    if result:
+        add_result('discrete/controls/minimal_finite', 'methods/discrete_choice.md#control-sets',
+                  'coop', 'beliefon', result, 'Finite game, round 1, minimal controls',
+                  'probit', 'session', 'supergame', 'none', df_finite, formula)
 
-try:
-    model = smf.ols('belief_error ~ round', data=df_late_indefinite.dropna(subset=['belief_error', 'round'])).fit(
-        cov_type='cluster', cov_kwds={'groups': df_late_indefinite.dropna(subset=['belief_error', 'round'])['session']})
-    add_result(
-        spec_id='belief_accuracy/indefinite',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='belief_error',
-        treatment_var='round',
-        model_result=model,
-        df_used=df_late_indefinite,
-        cluster_var='session',
-        controls_desc='None',
-        sample_desc='Indefinite game, late supergames, rounds 1-8',
-        model_type='OLS'
-    )
-    print(f"Belief error by round (Indefinite): coef={model.params['round']:.4f}, p={model.pvalues['round']:.4f}")
-except Exception as e:
-    print(f"Error in belief accuracy indefinite: {e}")
+# No controls - indefinite
+print("\n3.3 No controls: Indefinite")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon'
+    result = run_probit_clustered(formula, df_infinite)
+    if result:
+        add_result('discrete/controls/none_indefinite', 'methods/discrete_choice.md#control-sets',
+                  'coop', 'beliefon', result, 'Indefinite game, round 1, no controls',
+                  'probit', 'session', 'none', 'none', df_infinite, formula)
 
-# ============================================================================
-# CONTROL VARIATIONS
-# ============================================================================
+# Minimal controls - indefinite
+print("\n3.4 Minimal controls (supergame only): Indefinite")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame'
+    result = run_probit_clustered(formula, df_infinite)
+    if result:
+        add_result('discrete/controls/minimal_indefinite', 'methods/discrete_choice.md#control-sets',
+                  'coop', 'beliefon', result, 'Indefinite game, round 1, minimal controls',
+                  'probit', 'session', 'supergame', 'none', df_infinite, formula)
 
-print("\n" + "="*70)
-print("Running Control Variations")
-print("="*70)
 
-# No controls
-try:
-    model = smf.probit('coop ~ beliefon', data=df_fin_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['session']}, disp=0)
-    add_result(
-        spec_id='discrete/controls/none',
-        spec_tree_path='methods/discrete_choice.md#control-sets',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1_full,
-        cluster_var='session',
-        controls_desc='None',
-        sample_desc='Finite game, round 1',
-        model_type='Probit'
-    )
-    print(f"No controls (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+# ========================================
+# SECTION 4: LEAVE-ONE-OUT CONTROL VARIATIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 4: LEAVE-ONE-OUT CONTROL VARIATIONS")
+print("="*60)
 
-# ============================================================================
-# SAMPLE RESTRICTIONS
-# ============================================================================
+# Finite game controls
+finite_controls = ['supergame', 'focoop_m1', 'fcoop', 'risk']
+for ctrl in finite_controls:
+    print(f"\n4.{finite_controls.index(ctrl)+1} Drop {ctrl}: Finite")
+    remaining = [c for c in finite_controls if c != ctrl]
+    formula = f'coop ~ beliefon + {" + ".join(remaining)}'
+    df_temp = df_finite.dropna(subset=remaining + ['coop', 'beliefon'])
+    if len(df_temp) > 50:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result(f'robust/control/drop_{ctrl}_finite', 'robustness/leave_one_out.md',
+                      'coop', 'beliefon', result, f'Finite game, drop {ctrl}',
+                      'probit', 'session', '+'.join(remaining), 'none', df_temp, formula)
 
-print("\n" + "="*70)
-print("Running Sample Restrictions")
-print("="*70)
+# Indefinite game controls
+indefinite_controls = ['supergame', 'focoop_m1', 'fcoop', 'risk', 'length_m1']
+for ctrl in indefinite_controls:
+    print(f"\n4.{len(finite_controls)+indefinite_controls.index(ctrl)+1} Drop {ctrl}: Indefinite")
+    remaining = [c for c in indefinite_controls if c != ctrl]
+    formula = f'coop ~ beliefon + {" + ".join(remaining)}'
+    df_temp = df_infinite.dropna(subset=remaining + ['coop', 'beliefon'])
+    if len(df_temp) > 50:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result(f'robust/control/drop_{ctrl}_indefinite', 'robustness/leave_one_out.md',
+                      'coop', 'beliefon', result, f'Indefinite game, drop {ctrl}',
+                      'probit', 'session', '+'.join(remaining), 'none', df_temp, formula)
+
+
+# ========================================
+# SECTION 5: SAMPLE RESTRICTIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 5: SAMPLE RESTRICTIONS")
+print("="*60)
 
 # Early vs Late supergames
-df_early = df_round1[(df_round1['early'] == 1) & df_round1['beliefon'].notna()].copy()
-df_early_full = df_early.dropna(subset=['beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+print("\n5.1 Early supergames only: Finite")
+df_early_fin = df_finite[df_finite['early'] == 1]
+if len(df_early_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    df_temp = df_early_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/early_supergames_finite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Finite game, early supergames',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none', df_temp, formula)
 
-# Early supergames - Finite
-df_early_fin = df_early_full[df_early_full['finite'] == 1]
-if len(df_early_fin) > 10:
-    try:
-        model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                           data=df_early_fin).fit(
-            cov_type='cluster', cov_kwds={'groups': df_early_fin['session']}, disp=0)
-        add_result(
-            spec_id='robust/sample/early_period',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='coop',
-            treatment_var='beliefon',
-            model_result=model,
-            df_used=df_early_fin,
-            cluster_var='session',
-            controls_desc='supergame, focoop_m1, fcoop, risk',
-            sample_desc='Finite game, early supergames, round 1',
-            model_type='Probit'
-        )
-        print(f"Early supergames (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-    except Exception as e:
-        print(f"Error: {e}")
+print("\n5.2 Late supergames only: Finite")
+df_late_fin = df_finite[df_finite['late'] == 1]
+if len(df_late_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    df_temp = df_late_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/late_supergames_finite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Finite game, late supergames',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none', df_temp, formula)
 
-# Late supergames only (round 1)
-df_late_r1 = df_round1[(df_round1['late'] == 1) & df_round1['beliefon'].notna()].copy()
-df_late_r1_full = df_late_r1.dropna(subset=['beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+print("\n5.3 Early supergames only: Indefinite")
+df_early_inf = df_infinite[df_infinite['early'] == 1]
+if len(df_early_inf) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    df_temp = df_early_inf.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk', 'length_m1'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/early_supergames_indefinite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Indefinite game, early supergames',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none', df_temp, formula)
 
-df_late_r1_fin = df_late_r1_full[df_late_r1_full['finite'] == 1]
-if len(df_late_r1_fin) > 10:
-    try:
-        model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                           data=df_late_r1_fin).fit(
-            cov_type='cluster', cov_kwds={'groups': df_late_r1_fin['session']}, disp=0)
-        add_result(
-            spec_id='robust/sample/late_period',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='coop',
-            treatment_var='beliefon',
-            model_result=model,
-            df_used=df_late_r1_fin,
-            cluster_var='session',
-            controls_desc='supergame, focoop_m1, fcoop, risk',
-            sample_desc='Finite game, late supergames, round 1',
-            model_type='Probit'
-        )
-        print(f"Late supergames (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-    except Exception as e:
-        print(f"Error: {e}")
+print("\n5.4 Late supergames only: Indefinite")
+df_late_inf = df_infinite[df_infinite['late'] == 1]
+if len(df_late_inf) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    df_temp = df_late_inf.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk', 'length_m1'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/late_supergames_indefinite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Indefinite game, late supergames',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none', df_temp, formula)
 
-# First 4 supergames only
-df_first4 = df_round1[(df_round1['supergame'] <= 4) & df_round1['beliefon'].notna()].copy()
-df_first4_fin = df_first4[df_first4['finite'] == 1].dropna(subset=['beliefon', 'focoop_m1', 'fcoop', 'risk'])
+# Drop first supergame
+print("\n5.5 Drop first supergame: Finite")
+df_drop_first_fin = df_finite[df_finite['supergame'] > 1]
+if len(df_drop_first_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    df_temp = df_drop_first_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/drop_first_supergame_finite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Finite game, drop supergame 1',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none', df_temp, formula)
 
-if len(df_first4_fin) > 10:
-    try:
-        model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                           data=df_first4_fin).fit(
-            cov_type='cluster', cov_kwds={'groups': df_first4_fin['session']}, disp=0)
-        add_result(
-            spec_id='robust/sample/first_4_supergames',
-            spec_tree_path='robustness/sample_restrictions.md',
-            outcome_var='coop',
-            treatment_var='beliefon',
-            model_result=model,
-            df_used=df_first4_fin,
-            cluster_var='session',
-            controls_desc='supergame, focoop_m1, fcoop, risk',
-            sample_desc='Finite game, first 4 supergames, round 1',
-            model_type='Probit'
-        )
-        print(f"First 4 supergames (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-    except Exception as e:
-        print(f"Error: {e}")
+print("\n5.6 Drop first supergame: Indefinite")
+df_drop_first_inf = df_infinite[df_infinite['supergame'] > 1]
+if len(df_drop_first_inf) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    df_temp = df_drop_first_inf.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk', 'length_m1'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/drop_first_supergame_indefinite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Indefinite game, drop supergame 1',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none', df_temp, formula)
 
-# ============================================================================
-# LEAVE-ONE-OUT ROBUSTNESS
-# ============================================================================
+# Drop late supergames
+print("\n5.7 Drop late supergames: Finite")
+df_no_late_fin = df_finite[df_finite['late'] == 0]
+if len(df_no_late_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    df_temp = df_no_late_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/sample/drop_late_supergames_finite', 'robustness/sample_restrictions.md#time-based-restrictions',
+                      'coop', 'beliefon', result, 'Finite game, excluding late supergames',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none', df_temp, formula)
 
-print("\n" + "="*70)
-print("Running Leave-One-Out Specifications")
-print("="*70)
 
-controls_fin = ['supergame', 'focoop_m1', 'fcoop', 'risk']
+# ========================================
+# SECTION 6: CLUSTERING VARIATIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 6: CLUSTERING VARIATIONS")
+print("="*60)
 
-for drop_var in controls_fin:
-    remaining = [c for c in controls_fin if c != drop_var]
-    formula = f'coop ~ beliefon + {" + ".join(remaining)}'
+# Robust (no clustering) - finite
+print("\n6.1 Robust SE (no clustering): Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    model = smf.probit(formula, data=df_finite)
+    result = model.fit(cov_type='HC1', disp=0)
+    if result:
+        add_result('robust/cluster/none_finite', 'robustness/clustering_variations.md#single-level-clustering',
+                  'coop', 'beliefon', result, 'Finite game, robust SE',
+                  'probit', 'none', 'supergame+focoop_m1+fcoop+risk', 'none', df_finite, formula)
 
-    try:
-        model = smf.probit(formula, data=df_fin_r1_full).fit(
-            cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['session']}, disp=0)
-        add_result(
-            spec_id=f'robust/loo/drop_{drop_var}',
-            spec_tree_path='robustness/leave_one_out.md',
-            outcome_var='coop',
-            treatment_var='beliefon',
-            model_result=model,
-            df_used=df_fin_r1_full,
-            cluster_var='session',
-            controls_desc=', '.join(remaining),
-            sample_desc='Finite game, round 1',
-            model_type='Probit'
-        )
-        print(f"LOO drop {drop_var}: coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-    except Exception as e:
-        print(f"Error dropping {drop_var}: {e}")
+# Robust (no clustering) - indefinite
+print("\n6.2 Robust SE (no clustering): Indefinite")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    model = smf.probit(formula, data=df_infinite)
+    result = model.fit(cov_type='HC1', disp=0)
+    if result:
+        add_result('robust/cluster/none_indefinite', 'robustness/clustering_variations.md#single-level-clustering',
+                  'coop', 'beliefon', result, 'Indefinite game, robust SE',
+                  'probit', 'none', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none', df_infinite, formula)
 
-# ============================================================================
-# SINGLE COVARIATE SPECIFICATIONS
-# ============================================================================
+# Cluster by id (subject) - finite
+print("\n6.3 Cluster by subject: Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    result = run_probit_clustered(formula, df_finite, cluster_var='id')
+    if result:
+        add_result('robust/cluster/unit_finite', 'robustness/clustering_variations.md#single-level-clustering',
+                  'coop', 'beliefon', result, 'Finite game, cluster by subject',
+                  'probit', 'id', 'supergame+focoop_m1+fcoop+risk', 'none', df_finite, formula)
 
-print("\n" + "="*70)
-print("Running Single Covariate Specifications")
-print("="*70)
+# Cluster by id (subject) - indefinite
+print("\n6.4 Cluster by subject: Indefinite")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    result = run_probit_clustered(formula, df_infinite, cluster_var='id')
+    if result:
+        add_result('robust/cluster/unit_indefinite', 'robustness/clustering_variations.md#single-level-clustering',
+                  'coop', 'beliefon', result, 'Indefinite game, cluster by subject',
+                  'probit', 'id', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none', df_infinite, formula)
 
-# Bivariate (already run above as no controls)
 
-for single_var in controls_fin:
-    formula = f'coop ~ beliefon + {single_var}'
+# ========================================
+# SECTION 7: HETEROGENEITY ANALYSIS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 7: HETEROGENEITY ANALYSIS")
+print("="*60)
 
-    try:
-        model = smf.probit(formula, data=df_fin_r1_full).fit(
-            cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['session']}, disp=0)
-        add_result(
-            spec_id=f'robust/single/{single_var}',
-            spec_tree_path='robustness/single_covariate.md',
-            outcome_var='coop',
-            treatment_var='beliefon',
-            model_result=model,
-            df_used=df_fin_r1_full,
-            cluster_var='session',
-            controls_desc=single_var,
-            sample_desc='Finite game, round 1',
-            model_type='Probit'
-        )
-        print(f"Single {single_var}: coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-    except Exception as e:
-        print(f"Error single {single_var}: {e}")
+# By risk level (median split)
+print("\n7.1 Heterogeneity by risk: Low risk, Finite")
+risk_median = df_finite['risk'].median()
+df_low_risk_fin = df_finite[df_finite['risk'] <= risk_median]
+if len(df_low_risk_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop'
+    df_temp = df_low_risk_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/het/by_risk_low_finite', 'robustness/heterogeneity.md#socioeconomic-subgroups',
+                      'coop', 'beliefon', result, 'Finite game, low risk subjects',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop', 'none', df_temp, formula)
 
-# ============================================================================
-# CLUSTERING VARIATIONS
-# ============================================================================
+print("\n7.2 Heterogeneity by risk: High risk, Finite")
+df_high_risk_fin = df_finite[df_finite['risk'] > risk_median]
+if len(df_high_risk_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop'
+    df_temp = df_high_risk_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/het/by_risk_high_finite', 'robustness/heterogeneity.md#socioeconomic-subgroups',
+                      'coop', 'beliefon', result, 'Finite game, high risk subjects',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop', 'none', df_temp, formula)
 
-print("\n" + "="*70)
-print("Running Clustering Variations")
-print("="*70)
+# By first supergame cooperation
+print("\n7.3 Heterogeneity by first-supergame cooperation: Cooperators, Finite")
+df_first_coop_fin = df_finite[df_finite['fcoop'] == 1]
+if len(df_first_coop_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + risk'
+    df_temp = df_first_coop_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/het/by_fcoop_cooperators_finite', 'robustness/heterogeneity.md#baseline-characteristics',
+                      'coop', 'beliefon', result, 'Finite game, first-supergame cooperators',
+                      'probit', 'session', 'supergame+focoop_m1+risk', 'none', df_temp, formula)
 
-# Robust SE only (no clustering)
-try:
-    model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                       data=df_fin_r1_full).fit(cov_type='HC1', disp=0)
-    add_result(
-        spec_id='robust/cluster/none',
-        spec_tree_path='robustness/clustering_variations.md',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1_full,
-        cluster_var='None (Robust SE)',
-        controls_desc='supergame, focoop_m1, fcoop, risk',
-        sample_desc='Finite game, round 1',
-        model_type='Probit'
-    )
-    print(f"Robust SE (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+print("\n7.4 Heterogeneity by first-supergame cooperation: Defectors, Finite")
+df_first_defect_fin = df_finite[df_finite['fcoop'] == 0]
+if len(df_first_defect_fin) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + risk'
+    df_temp = df_first_defect_fin.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/het/by_fcoop_defectors_finite', 'robustness/heterogeneity.md#baseline-characteristics',
+                      'coop', 'beliefon', result, 'Finite game, first-supergame defectors',
+                      'probit', 'session', 'supergame+focoop_m1+risk', 'none', df_temp, formula)
 
-# Cluster by id (individual)
-try:
-    model = smf.probit('coop ~ beliefon + supergame + focoop_m1 + fcoop + risk',
-                       data=df_fin_r1_full).fit(
-        cov_type='cluster', cov_kwds={'groups': df_fin_r1_full['id']}, disp=0)
-    add_result(
-        spec_id='robust/cluster/unit',
-        spec_tree_path='robustness/clustering_variations.md',
-        outcome_var='coop',
-        treatment_var='beliefon',
-        model_result=model,
-        df_used=df_fin_r1_full,
-        cluster_var='id',
-        controls_desc='supergame, focoop_m1, fcoop, risk',
-        sample_desc='Finite game, round 1',
-        model_type='Probit'
-    )
-    print(f"Cluster by id (Finite): coef={model.params['beliefon']:.4f}, p={model.pvalues['beliefon']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+# Interaction specifications
+print("\n7.5 Interaction: beliefon x supergame, Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon * supergame + focoop_m1 + fcoop + risk'
+    df_temp = df_finite.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+    result = run_probit_clustered(formula, df_temp)
+    if result:
+        add_result('robust/het/interaction_supergame_finite', 'robustness/heterogeneity.md#interaction-specifications',
+                  'coop', 'beliefon', result, 'Finite game, beliefon x supergame interaction',
+                  'probit', 'session', 'supergame+focoop_m1+fcoop+risk+beliefon:supergame', 'none', df_temp, formula)
 
-# ============================================================================
-# ALTERNATIVE OUTCOME: BELIEF DIRECTLY
-# ============================================================================
+print("\n7.6 Interaction: beliefon x fcoop, Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon * fcoop + supergame + focoop_m1 + risk'
+    df_temp = df_finite.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+    result = run_probit_clustered(formula, df_temp)
+    if result:
+        add_result('robust/het/interaction_fcoop_finite', 'robustness/heterogeneity.md#interaction-specifications',
+                  'coop', 'beliefon', result, 'Finite game, beliefon x fcoop interaction',
+                  'probit', 'session', 'supergame+focoop_m1+risk+beliefon:fcoop', 'none', df_temp, formula)
 
-print("\n" + "="*70)
-print("Running Belief as Outcome Specifications")
-print("="*70)
+# Risk heterogeneity for indefinite
+print("\n7.7 Heterogeneity by risk: Low risk, Indefinite")
+risk_median_inf = df_infinite['risk'].median()
+df_low_risk_inf = df_infinite[df_infinite['risk'] <= risk_median_inf]
+if len(df_low_risk_inf) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + length_m1'
+    df_temp = df_low_risk_inf.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'length_m1'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/het/by_risk_low_indefinite', 'robustness/heterogeneity.md#socioeconomic-subgroups',
+                      'coop', 'beliefon', result, 'Indefinite game, low risk subjects',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+length_m1', 'none', df_temp, formula)
 
-# Test if belief differs by game type (finite vs indefinite)
-# Using late supergames, round 1
-df_late_r1_both = df[(df['late'] == 1) & (df['round'] == 1)].dropna(subset=['belief', 'finite'])
+print("\n7.8 Heterogeneity by risk: High risk, Indefinite")
+df_high_risk_inf = df_infinite[df_infinite['risk'] > risk_median_inf]
+if len(df_high_risk_inf) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + length_m1'
+    df_temp = df_high_risk_inf.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'length_m1'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/het/by_risk_high_indefinite', 'robustness/heterogeneity.md#socioeconomic-subgroups',
+                      'coop', 'beliefon', result, 'Indefinite game, high risk subjects',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop+length_m1', 'none', df_temp, formula)
 
-try:
-    model = smf.ols('belief ~ finite', data=df_late_r1_both).fit(
-        cov_type='cluster', cov_kwds={'groups': df_late_r1_both['session']})
-    add_result(
-        spec_id='belief_outcome/finite_effect',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='belief',
-        treatment_var='finite',
-        model_result=model,
-        df_used=df_late_r1_both,
-        cluster_var='session',
-        controls_desc='None',
-        sample_desc='Late supergames, round 1',
-        model_type='OLS'
-    )
-    print(f"Belief ~ finite: coef={model.params['finite']:.4f}, p={model.pvalues['finite']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
 
-# ============================================================================
-# MAIN HYPOTHESIS: BELIEF AFFECTS COOPERATION
-# Testing whether beliefs predict cooperation
-# ============================================================================
+# ========================================
+# SECTION 8: ADDITIONAL TREATMENT COMPARISONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 8: TREATMENT COMPARISONS (COMBINED DATA)")
+print("="*60)
 
-print("\n" + "="*70)
-print("Running Main Hypothesis: Belief -> Cooperation")
-print("="*70)
+# Prepare combined data for analysis
+df_comb = df_combined.copy()
+df_comb['risk'] = df_comb['bomb_choice']
 
-# Finite game, all rounds with beliefs
-df_finite_all = df[(df['finite'] == 1) & df['belief'].notna() & df['late'] == 1].copy()
-df_finite_all['coop_m1_x_belief'] = df_finite_all['coop_m1'] * df_finite_all['belief']
+# Create first-supergame cooperation
+foo = df_comb.loc[(df_comb['round'] == 1) & (df_comb['supergame'] == 1), ['id', 'session', 'coop']].rename(columns={'coop': 'fcoop'})
+df_comb = df_comb.merge(foo, on=['id', 'session'], how='left', suffixes=('', '_first'))
 
-# Belief predicting cooperation (main hypothesis)
-try:
-    model = smf.probit('coop ~ belief', data=df_finite_all).fit(
-        cov_type='cluster', cov_kwds={'groups': df_finite_all['session']}, disp=0)
-    add_result(
-        spec_id='main_hypothesis/belief_coop_finite',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='belief',
-        model_result=model,
-        df_used=df_finite_all,
-        cluster_var='session',
-        controls_desc='None',
-        sample_desc='Finite game, late supergames, all rounds with beliefs',
-        model_type='Probit'
-    )
-    print(f"Belief -> Coop (Finite): coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+# Filter to round 1
+df_comb_r1 = df_comb[df_comb['round'] == 1].copy()
+df_comb_r1 = df_comb_r1.sort_values(['id', 'session', 'supergame'])
+df_comb_r1['focoop_m1'] = df_comb_r1.groupby(['id', 'session'])['o_coop'].shift(1)
 
-# With round controls
-try:
-    model = smf.probit('coop ~ belief + round', data=df_finite_all).fit(
-        cov_type='cluster', cov_kwds={'groups': df_finite_all['session']}, disp=0)
-    add_result(
-        spec_id='main_hypothesis/belief_coop_finite_round',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='belief',
-        model_result=model,
-        df_used=df_finite_all,
-        cluster_var='session',
-        controls_desc='round',
-        sample_desc='Finite game, late supergames, all rounds with beliefs',
-        model_type='Probit'
-    )
-    print(f"Belief -> Coop + round (Finite): coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+# Effect of finite vs indefinite (pooled)
+print("\n8.1 Finite vs Indefinite comparison (pooled)")
+df_pooled = df_comb_r1[df_comb_r1['late'] == 1].copy()
+df_pooled = df_pooled[(df_pooled['lowr'] == 0) & (df_pooled['hight'] == 0)]
+if len(df_pooled) > 50:
+    formula = 'coop ~ finite + supergame + focoop_m1 + risk'
+    df_temp = df_pooled.dropna(subset=['coop', 'finite', 'supergame', 'focoop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('custom/treatment_finite_pooled', 'custom',
+                      'coop', 'finite', result, 'Pooled data, late supergames, finite effect',
+                      'probit', 'session', 'supergame+focoop_m1+risk', 'none', df_temp, formula)
 
-# Indefinite game
-df_indefinite_all = df[(df['finite'] == 0) & df['belief'].notna() & df['late'] == 1].copy()
+# Low R treatment effect
+print("\n8.2 Low R treatment effect (indefinite games)")
+df_inf_comb = df_comb_r1[(df_comb_r1['finite'] == 0) & (df_comb_r1['late'] == 1) & (df_comb_r1['hight'] == 0)]
+if len(df_inf_comb) > 50:
+    formula = 'coop ~ lowr + supergame + focoop_m1 + risk'
+    df_temp = df_inf_comb.dropna(subset=['coop', 'lowr', 'supergame', 'focoop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('custom/treatment_lowr', 'custom',
+                      'coop', 'lowr', result, 'Indefinite game, Low R treatment effect',
+                      'probit', 'session', 'supergame+focoop_m1+risk', 'none', df_temp, formula)
 
-try:
-    model = smf.probit('coop ~ belief', data=df_indefinite_all).fit(
-        cov_type='cluster', cov_kwds={'groups': df_indefinite_all['session']}, disp=0)
-    add_result(
-        spec_id='main_hypothesis/belief_coop_indefinite',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='belief',
-        model_result=model,
-        df_used=df_indefinite_all,
-        cluster_var='session',
-        controls_desc='None',
-        sample_desc='Indefinite game, late supergames, all rounds with beliefs',
-        model_type='Probit'
-    )
-    print(f"Belief -> Coop (Indefinite): coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+# High T treatment effect
+print("\n8.3 High T treatment effect (indefinite games)")
+df_inf_comb2 = df_comb_r1[(df_comb_r1['finite'] == 0) & (df_comb_r1['late'] == 1) & (df_comb_r1['lowr'] == 0)]
+if len(df_inf_comb2) > 50:
+    formula = 'coop ~ hight + supergame + focoop_m1 + risk'
+    df_temp = df_inf_comb2.dropna(subset=['coop', 'hight', 'supergame', 'focoop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('custom/treatment_hight', 'custom',
+                      'coop', 'hight', result, 'Indefinite game, High T treatment effect',
+                      'probit', 'session', 'supergame+focoop_m1+risk', 'none', df_temp, formula)
 
-# With round controls
-try:
-    model = smf.probit('coop ~ belief + round', data=df_indefinite_all).fit(
-        cov_type='cluster', cov_kwds={'groups': df_indefinite_all['session']}, disp=0)
-    add_result(
-        spec_id='main_hypothesis/belief_coop_indefinite_round',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='belief',
-        model_result=model,
-        df_used=df_indefinite_all,
-        cluster_var='session',
-        controls_desc='round',
-        sample_desc='Indefinite game, late supergames, all rounds with beliefs',
-        model_type='Probit'
-    )
-    print(f"Belief -> Coop + round (Indefinite): coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
 
-# ============================================================================
-# POOLED SPECIFICATIONS
-# ============================================================================
+# ========================================
+# SECTION 9: ALTERNATIVE OUTCOMES
+# ========================================
+print("\n" + "="*60)
+print("SECTION 9: ALTERNATIVE OUTCOMES")
+print("="*60)
 
-print("\n" + "="*70)
-print("Running Pooled Specifications")
-print("="*70)
+# Use belief as outcome (conditional on round and coop)
+print("\n9.1 Belief as outcome: Finite, round 1 cooperators")
+df_fin_coop = df_full[(df_full['finite'] == 1) & (df_full['round'] == 1) & (df_full['coop'] == 1) & (df_full['late'] == 1)]
+if len(df_fin_coop) > 50:
+    formula = 'belief ~ supergame + o_coop_m1 + risk'
+    df_temp = df_fin_coop.dropna(subset=['belief', 'supergame', 'o_coop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_ols_clustered(formula, df_temp)
+        if result:
+            add_result('robust/outcome/belief_cooperators_finite', 'robustness/measurement.md',
+                      'belief', 'supergame', result, 'Finite game, beliefs of cooperators',
+                      'OLS', 'session', 'o_coop_m1+risk', 'none', df_temp, formula)
 
-# Pooled: both game types
-df_pooled = df[df['belief'].notna() & (df['late'] == 1)].copy()
+print("\n9.2 Belief as outcome: Finite, round 1 defectors")
+df_fin_defect = df_full[(df_full['finite'] == 1) & (df_full['round'] == 1) & (df_full['coop'] == 0) & (df_full['late'] == 1)]
+if len(df_fin_defect) > 50:
+    formula = 'belief ~ supergame + o_coop_m1 + risk'
+    df_temp = df_fin_defect.dropna(subset=['belief', 'supergame', 'o_coop_m1', 'risk'])
+    if len(df_temp) > 30:
+        result = run_ols_clustered(formula, df_temp)
+        if result:
+            add_result('robust/outcome/belief_defectors_finite', 'robustness/measurement.md',
+                      'belief', 'supergame', result, 'Finite game, beliefs of defectors',
+                      'OLS', 'session', 'o_coop_m1+risk', 'none', df_temp, formula)
 
-try:
-    model = smf.probit('coop ~ belief + finite', data=df_pooled).fit(
-        cov_type='cluster', cov_kwds={'groups': df_pooled['session']}, disp=0)
-    add_result(
-        spec_id='pooled/belief_coop_both_games',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='belief',
-        model_result=model,
-        df_used=df_pooled,
-        cluster_var='session',
-        controls_desc='finite',
-        sample_desc='Both games, late supergames, all rounds with beliefs',
-        model_type='Probit'
-    )
-    print(f"Pooled (both games): coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
 
-# With interaction
-try:
-    model = smf.probit('coop ~ belief * finite + round', data=df_pooled).fit(
-        cov_type='cluster', cov_kwds={'groups': df_pooled['session']}, disp=0)
-    add_result(
-        spec_id='pooled/belief_coop_interaction',
-        spec_tree_path='methods/discrete_choice.md',
-        outcome_var='coop',
-        treatment_var='belief',
-        model_result=model,
-        df_used=df_pooled,
-        cluster_var='session',
-        controls_desc='finite, round, belief*finite',
-        sample_desc='Both games, late supergames, all rounds with beliefs',
-        model_type='Probit'
-    )
-    print(f"Pooled with interaction: coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}")
-except Exception as e:
-    print(f"Error: {e}")
+# ========================================
+# SECTION 10: ROUND-LEVEL ANALYSIS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 10: ROUND-LEVEL ANALYSIS")
+print("="*60)
 
-# ============================================================================
-# ROUND-BY-ROUND ANALYSIS
-# ============================================================================
+# Cooperation over all rounds (not just round 1)
+print("\n10.1 All rounds: Finite, late supergames")
+df_all_rounds_fin = df_full[(df_full['finite'] == 1) & (df_full['late'] == 1) & (df_full['round'] <= 8)]
+if len(df_all_rounds_fin) > 100:
+    formula = 'coop ~ belief + round + o_coop_m1'
+    df_temp = df_all_rounds_fin.dropna(subset=['coop', 'belief', 'round', 'o_coop_m1'])
+    if len(df_temp) > 50:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('custom/all_rounds_finite', 'custom',
+                      'coop', 'belief', result, 'Finite game, all rounds, belief effect',
+                      'probit', 'session', 'round+o_coop_m1', 'none', df_temp, formula)
 
-print("\n" + "="*70)
-print("Running Round-by-Round Specifications")
-print("="*70)
+print("\n10.2 All rounds: Indefinite, late supergames")
+df_all_rounds_inf = df_full[(df_full['finite'] == 0) & (df_full['late'] == 1) & (df_full['round'] <= 8)]
+if len(df_all_rounds_inf) > 100:
+    formula = 'coop ~ belief + round + o_coop_m1'
+    df_temp = df_all_rounds_inf.dropna(subset=['coop', 'belief', 'round', 'o_coop_m1'])
+    if len(df_temp) > 50:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('custom/all_rounds_indefinite', 'custom',
+                      'coop', 'belief', result, 'Indefinite game, all rounds, belief effect',
+                      'probit', 'session', 'round+o_coop_m1', 'none', df_temp, formula)
 
-for round_num in range(1, 9):
-    df_round = df[(df['finite'] == 1) & (df['late'] == 1) & (df['round'] == round_num) & df['belief'].notna()].copy()
 
-    if len(df_round) > 20:
-        try:
-            model = smf.probit('coop ~ belief', data=df_round).fit(
-                cov_type='cluster', cov_kwds={'groups': df_round['session']}, disp=0)
-            add_result(
-                spec_id=f'round_analysis/finite_round_{round_num}',
-                spec_tree_path='methods/discrete_choice.md',
-                outcome_var='coop',
-                treatment_var='belief',
-                model_result=model,
-                df_used=df_round,
-                cluster_var='session',
-                controls_desc='None',
-                sample_desc=f'Finite game, late supergames, round {round_num}',
-                model_type='Probit'
-            )
-            print(f"Finite Round {round_num}: coef={model.params['belief']:.4f}, p={model.pvalues['belief']:.4f}, n={len(df_round)}")
-        except Exception as e:
-            print(f"Error round {round_num}: {e}")
+# ========================================
+# SECTION 11: ADDITIONAL CONTROL PROGRESSIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 11: CONTROL PROGRESSIONS")
+print("="*60)
 
-# ============================================================================
-# Save results
-# ============================================================================
+# Build-up controls for finite
+print("\n11.1 Add supergame only: Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame'
+    result = run_probit_clustered(formula, df_finite)
+    if result:
+        add_result('robust/control/add_supergame_finite', 'robustness/control_progression.md',
+                  'coop', 'beliefon', result, 'Finite, add supergame',
+                  'probit', 'session', 'supergame', 'none', df_finite, formula)
 
-print("\n" + "="*70)
-print("Saving Results")
-print("="*70)
+print("\n11.2 Add supergame + focoop_m1: Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1'
+    df_temp = df_finite.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/control/add_focoop_m1_finite', 'robustness/control_progression.md',
+                      'coop', 'beliefon', result, 'Finite, add supergame+focoop_m1',
+                      'probit', 'session', 'supergame+focoop_m1', 'none', df_temp, formula)
 
-# Convert to DataFrame and save
+print("\n11.3 Add supergame + focoop_m1 + fcoop: Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop'
+    df_temp = df_finite.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop'])
+    if len(df_temp) > 30:
+        result = run_probit_clustered(formula, df_temp)
+        if result:
+            add_result('robust/control/add_fcoop_finite', 'robustness/control_progression.md',
+                      'coop', 'beliefon', result, 'Finite, add supergame+focoop_m1+fcoop',
+                      'probit', 'session', 'supergame+focoop_m1+fcoop', 'none', df_temp, formula)
+
+
+# ========================================
+# SECTION 12: SESSION-LEVEL DROP ANALYSIS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 12: DROP EACH SESSION")
+print("="*60)
+
+sessions = df_finite['session'].unique()
+for i, sess in enumerate(sessions[:5]):  # Limit to first 5 sessions
+    print(f"\n12.{i+1} Drop session {int(sess)}: Finite")
+    df_drop_sess = df_finite[df_finite['session'] != sess]
+    if len(df_drop_sess) > 50:
+        formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+        df_temp = df_drop_sess.dropna(subset=['coop', 'beliefon', 'supergame', 'focoop_m1', 'fcoop', 'risk'])
+        if len(df_temp) > 30:
+            result = run_probit_clustered(formula, df_temp)
+            if result:
+                add_result(f'robust/sample/drop_session_{int(sess)}_finite',
+                          'robustness/sample_restrictions.md#influential-observations',
+                          'coop', 'beliefon', result, f'Finite, drop session {int(sess)}',
+                          'probit', 'session', 'supergame+focoop_m1+fcoop+risk', 'none', df_temp, formula)
+
+
+# ========================================
+# SECTION 13: SUPERGAME-BY-SUPERGAME
+# ========================================
+print("\n" + "="*60)
+print("SECTION 13: BY SUPERGAME")
+print("="*60)
+
+for sg in range(1, 5):
+    print(f"\n13.{sg} Supergame {sg} only: Finite")
+    df_sg = df_finite[df_finite['supergame'] == sg]
+    if len(df_sg) > 30:
+        formula = 'coop ~ beliefon + focoop_m1 + fcoop + risk'
+        df_temp = df_sg.dropna(subset=['coop', 'beliefon', 'focoop_m1', 'fcoop', 'risk'])
+        if len(df_temp) > 20:
+            result = run_probit_clustered(formula, df_temp)
+            if result:
+                add_result(f'robust/sample/supergame_{sg}_finite',
+                          'robustness/sample_restrictions.md#time-based-restrictions',
+                          'coop', 'beliefon', result, f'Finite, supergame {sg} only',
+                          'probit', 'session', 'focoop_m1+fcoop+risk', 'none', df_temp, formula)
+
+
+# ========================================
+# SECTION 14: BELIEF ERROR ANALYSIS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 14: BELIEF ERROR ANALYSIS")
+print("="*60)
+
+# Create belief error variable
+df_full['belief_error'] = df_full['belief'] - df_full['o_coop']
+
+print("\n14.1 Belief error determinants: Finite, late supergames")
+df_be_fin = df_full[(df_full['finite'] == 1) & (df_full['late'] == 1) & (df_full['round'] <= 8)]
+if len(df_be_fin) > 100:
+    formula = 'belief_error ~ round + coop + o_coop_m1'
+    df_temp = df_be_fin.dropna(subset=['belief_error', 'round', 'coop', 'o_coop_m1'])
+    if len(df_temp) > 50:
+        result = run_ols_clustered(formula, df_temp)
+        if result:
+            add_result('custom/belief_error_finite', 'custom',
+                      'belief_error', 'round', result, 'Finite, belief error determinants',
+                      'OLS', 'session', 'coop+o_coop_m1', 'none', df_temp, formula)
+
+print("\n14.2 Belief error determinants: Indefinite, late supergames")
+df_be_inf = df_full[(df_full['finite'] == 0) & (df_full['late'] == 1) & (df_full['round'] <= 8)]
+if len(df_be_inf) > 100:
+    formula = 'belief_error ~ round + coop + o_coop_m1'
+    df_temp = df_be_inf.dropna(subset=['belief_error', 'round', 'coop', 'o_coop_m1'])
+    if len(df_temp) > 50:
+        result = run_ols_clustered(formula, df_temp)
+        if result:
+            add_result('custom/belief_error_indefinite', 'custom',
+                      'belief_error', 'round', result, 'Indefinite, belief error determinants',
+                      'OLS', 'session', 'coop+o_coop_m1', 'none', df_temp, formula)
+
+
+# ========================================
+# SECTION 15: ADDITIONAL INFERENCE VARIATIONS
+# ========================================
+print("\n" + "="*60)
+print("SECTION 15: ADDITIONAL INFERENCE VARIATIONS")
+print("="*60)
+
+# HC3 standard errors
+print("\n15.1 HC3 standard errors: Finite")
+if len(df_finite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk'
+    model = smf.probit(formula, data=df_finite)
+    result = model.fit(cov_type='HC3', disp=0)
+    if result:
+        add_result('robust/se/hc3_finite', 'robustness/clustering_variations.md#alternative-se-methods',
+                  'coop', 'beliefon', result, 'Finite game, HC3 SE',
+                  'probit', 'none (HC3)', 'supergame+focoop_m1+fcoop+risk', 'none', df_finite, formula)
+
+print("\n15.2 HC3 standard errors: Indefinite")
+if len(df_infinite) > 50:
+    formula = 'coop ~ beliefon + supergame + focoop_m1 + fcoop + risk + length_m1'
+    model = smf.probit(formula, data=df_infinite)
+    result = model.fit(cov_type='HC3', disp=0)
+    if result:
+        add_result('robust/se/hc3_indefinite', 'robustness/clustering_variations.md#alternative-se-methods',
+                  'coop', 'beliefon', result, 'Indefinite game, HC3 SE',
+                  'probit', 'none (HC3)', 'supergame+focoop_m1+fcoop+risk+length_m1', 'none', df_infinite, formula)
+
+
+# ========================================
+# Save Results
+# ========================================
+print("\n" + "="*60)
+print("SAVING RESULTS")
+print("="*60)
+
+# Convert to DataFrame
 results_df = pd.DataFrame(results)
-results_df.to_csv(f'{OUTPUT_PATH}/specification_results.csv', index=False)
 
-print(f"\nTotal specifications run: {len(results)}")
-print(f"Results saved to: {OUTPUT_PATH}/specification_results.csv")
+# Save to CSV
+output_file = f'{OUTPUT_PATH}/specification_results.csv'
+results_df.to_csv(output_file, index=False)
+print(f"\nSaved {len(results_df)} specifications to {output_file}")
 
-# ============================================================================
 # Summary statistics
-# ============================================================================
+print("\n" + "="*60)
+print("SUMMARY STATISTICS")
+print("="*60)
+print(f"Total specifications: {len(results_df)}")
+print(f"Positive coefficients: {(results_df['coefficient'] > 0).sum()} ({100*(results_df['coefficient'] > 0).mean():.1f}%)")
+print(f"Significant at 5%: {(results_df['p_value'] < 0.05).sum()} ({100*(results_df['p_value'] < 0.05).mean():.1f}%)")
+print(f"Significant at 1%: {(results_df['p_value'] < 0.01).sum()} ({100*(results_df['p_value'] < 0.01).mean():.1f}%)")
+print(f"Median coefficient: {results_df['coefficient'].median():.4f}")
+print(f"Mean coefficient: {results_df['coefficient'].mean():.4f}")
+print(f"Range: [{results_df['coefficient'].min():.4f}, {results_df['coefficient'].max():.4f}]")
 
-print("\n" + "="*70)
-print("Summary Statistics")
-print("="*70)
+# Category breakdown
+print("\n\nSpecification breakdown by category:")
+results_df['category'] = results_df['spec_id'].apply(lambda x: x.split('/')[0] if '/' in x else 'baseline')
+category_summary = results_df.groupby('category').agg({
+    'coefficient': ['count', lambda x: (x > 0).mean(), 'mean'],
+    'p_value': lambda x: (x < 0.05).mean()
+}).round(3)
+category_summary.columns = ['N', 'pct_positive', 'mean_coef', 'pct_sig_05']
+print(category_summary)
 
-# Filter to main hypothesis specifications (belief -> coop)
-main_results = results_df[results_df['treatment_var'] == 'belief']
-
-print(f"\nFor belief -> cooperation specifications:")
-print(f"  Total specifications: {len(main_results)}")
-print(f"  Positive coefficients: {sum(main_results['coefficient'] > 0)} ({100*sum(main_results['coefficient'] > 0)/len(main_results):.1f}%)")
-print(f"  Significant at 5%: {sum(main_results['p_value'] < 0.05)} ({100*sum(main_results['p_value'] < 0.05)/len(main_results):.1f}%)")
-print(f"  Significant at 1%: {sum(main_results['p_value'] < 0.01)} ({100*sum(main_results['p_value'] < 0.01)/len(main_results):.1f}%)")
-print(f"  Median coefficient: {main_results['coefficient'].median():.4f}")
-print(f"  Mean coefficient: {main_results['coefficient'].mean():.4f}")
-print(f"  Range: [{main_results['coefficient'].min():.4f}, {main_results['coefficient'].max():.4f}]")
-
-# All results
-print(f"\nFor all specifications:")
-print(f"  Total specifications: {len(results_df)}")
-print(f"  Positive coefficients: {sum(results_df['coefficient'] > 0)} ({100*sum(results_df['coefficient'] > 0)/len(results_df):.1f}%)")
-print(f"  Significant at 5%: {sum(results_df['p_value'] < 0.05)} ({100*sum(results_df['p_value'] < 0.05)/len(results_df):.1f}%)")
+print("\n\nDone!")
