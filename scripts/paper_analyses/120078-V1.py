@@ -1,13 +1,12 @@
 """
-Specification Search for Paper 120078-V1
+Specification Search: 120078-V1
+Paper: "Can Information Reduce Ethnic Discrimination? Evidence from Airbnb"
 
-Paper: Ethnic Discrimination in the Airbnb Market
-Topic: Testing whether minority hosts (Arab/Muslim or African-American) receive lower prices
-Method: Panel Fixed Effects / Cross-sectional OLS with high-dimensional FE
-Main DV: log_price (log daily rental price)
-Main IV: minodummy (minority host dummy)
+This script runs a systematic specification search following the i4r methodology,
+testing robustness of the main finding that ethnic minorities charge lower prices
+on Airbnb and that this gap diminishes as information (reviews) accumulates.
 
-Institute for Replication (i4r) methodology - running 50+ specifications
+Method: Panel Fixed Effects with heterogeneous treatment effects by information
 """
 
 import pandas as pd
@@ -15,122 +14,136 @@ import numpy as np
 import pyfixest as pf
 import json
 import warnings
+from scipy import stats
 warnings.filterwarnings('ignore')
 
-# =============================================================================
-# SETUP
-# =============================================================================
-
-PAPER_ID = "120078-V1"
-PAPER_TITLE = "Ethnic Discrimination in the Airbnb Market"
-JOURNAL = "AEJ-Applied"
-METHOD_CODE = "panel_fixed_effects"
-METHOD_TREE_PATH = "specification_tree/methods/panel_fixed_effects.md"
-
 # Paths
-DATA_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120078-V1/data/base_airbnb_AEJ.dta"
-OUTPUT_PATH = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120078-V1/specification_results.csv"
-SCRIPT_PATH = "scripts/paper_analyses/120078-V1.py"
+DATA_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120078-V1/data/base_airbnb_AEJ.dta'
+OUTPUT_PATH = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120078-V1/specification_results.csv'
 
-# =============================================================================
-# LOAD AND PREPARE DATA
-# =============================================================================
+# Paper metadata
+PAPER_ID = '120078-V1'
+JOURNAL = 'AEJ-Applied'
+PAPER_TITLE = 'Can Information Reduce Ethnic Discrimination? Evidence from Airbnb'
 
 print("Loading data...")
-df = pd.read_stata(DATA_PATH)
-print(f"Raw data shape: {df.shape}")
+df = pd.read_stata(DATA_PATH, convert_categoricals=False)
+print(f"Loaded {len(df):,} observations")
 
-# Apply main sample restriction from paper: Drev100 > 0 (at least one review)
-df = df[df['Drev100'] > 0].copy()
-print(f"After Drev100 > 0 filter: {df.shape}")
+# Apply main sample restriction (listings with reviews)
+df_main = df[df['Drev100'] > 0].copy()
+print(f"Main sample (Drev100 > 0): {len(df_main):,} observations")
 
-# Sample data to speed up computation (stratified by minority status to preserve ratio)
-np.random.seed(42)
-SAMPLE_FRAC = 0.10  # Use 10% of data for faster execution
+# Set up panel structure
+df_main['newid'] = df_main['newid'].astype(int)
+df_main['wave'] = df_main['wave'].astype(int)
+df_main['citywaveID'] = df_main['citywaveID'].astype(int)
 
-# Stratified sampling
-df_minority = df[df['minodummy'] == 1].sample(frac=SAMPLE_FRAC, random_state=42)
-df_majority = df[df['minodummy'] == 0].sample(frac=SAMPLE_FRAC, random_state=42)
-df = pd.concat([df_minority, df_majority], ignore_index=True)
-print(f"After stratified sampling ({SAMPLE_FRAC*100:.0f}%): {df.shape}")
-
-# Convert key variables to appropriate types
-df['newid'] = df['newid'].astype(int)
-df['wave'] = df['wave'].astype(int)
-df['citywaveID'] = df['citywaveID'].astype(int)
-df['hoodcityID'] = df['hoodcityID'].astype(int)
-df['blockID'] = df['blockID'].astype(int)
-
-# Create city variable from blockID (first digit or hoodcityID)
-df['city_id'] = df['hoodcityID'] // 100  # Approximate city grouping
-
-# Define control variable sets
-SIZE_CONTROLS = ['person_capacity345', 'bedrooms', 'bathrooms']
-TYPE_CONTROLS = ['appart', 'house_loft', 'sharedflat']
-EQUIP_CONTROLS = ['cabletv', 'wireless', 'heating', 'ac', 'elevator', 'handiaccess',
+# Define control variable groups from the original code
+size_controls = ['person_capacity345', 'bedrooms', 'bathrooms']
+descrip_gen_controls = ['appart', 'house_loft']
+descrip_spe_controls = ['couch', 'airbed', 'sofa', 'futon']
+equip_controls = ['cabletv', 'wireless', 'heating', 'ac', 'elevator', 'handiaccess',
                   'doorman', 'fireplace', 'washer', 'dryer', 'parking', 'gym',
                   'pool', 'buzzer', 'hottub', 'breakfast', 'family', 'events']
-RULES_CONTROLS = ['people', 'extrapeople', 'cancel_policy', 'smoking_allowed', 'pets_allowed']
-HOST_CONTROLS = ['more_1_flat', 'superhost', 'verified_email', 'verified_offline',
-                 'verified_phone', 'facebook']
+rules_controls = ['people', 'extrapeople', 'cancel_policy', 'smoking_allowed', 'pets_allowed']
+missing_controls = ['missingyear', 'missingcabletv', 'missingwireless', 'missingheating',
+                   'missingac', 'missingelevator', 'missinghandiaccess', 'missingdoorman',
+                   'missingfireplace', 'missingwasher', 'missingdryer', 'missingparking',
+                   'missinggym', 'missingpool', 'missingbuzzer', 'missinghottub',
+                   'missingbreakfast', 'missingfamily', 'missingevents', 'missingcancel_policy',
+                   'missingnoccur_pro_true', 'missingverified_email', 'missingverified_phone',
+                   'missingfacebook', 'missingverified_offline', 'missingsuperhost']
+loueur_controls = ['more_1_flat', 'year2009', 'year2010', 'year2011', 'year2012',
+                   'year2013', 'year2014', 'year2015', 'superhost', 'verified_email',
+                   'verified_offline', 'verified_phone', 'facebook']
+count_controls = ['count_descrip', 'count_about', 'count_languages', 'count_rules',
+                  'picture_count', 'noccur_pro_true', 'change_pics']
 
-# Simplified control set for efficiency
-SIMPLE_CONTROLS = ['bedrooms', 'bathrooms', 'person_capacity345', 'sharedflat',
-                   'superhost', 'more_1_flat', 'wireless', 'ac', 'parking']
-SIMPLE_CONTROLS = [c for c in SIMPLE_CONTROLS if c in df.columns]
+# Combine into full control set (lesX)
+lesX = ['sharedflat'] + size_controls + descrip_gen_controls + descrip_spe_controls + \
+       equip_controls + rules_controls + missing_controls + loueur_controls + count_controls
 
-# Medium control set
-MEDIUM_CONTROLS = SIZE_CONTROLS + TYPE_CONTROLS + ['wireless', 'ac', 'parking', 'elevator',
-                                                    'superhost', 'more_1_flat', 'verified_email']
-MEDIUM_CONTROLS = [c for c in MEDIUM_CONTROLS if c in df.columns]
+# Filter to controls that exist in data
+lesX = [c for c in lesX if c in df_main.columns]
+print(f"Using {len(lesX)} control variables")
 
-# Full control set (paper's lesX)
-FULL_CONTROLS = SIZE_CONTROLS + TYPE_CONTROLS + [c for c in EQUIP_CONTROLS if c in df.columns] + \
-                [c for c in RULES_CONTROLS if c in df.columns] + [c for c in HOST_CONTROLS if c in df.columns]
-FULL_CONTROLS = [c for c in FULL_CONTROLS if c in df.columns]
+# Rating controls
+rating_controls = ['accuracy_rating', 'cleanliness_rating', 'checkin_rating',
+                   'communication_rating', 'location_rating', 'value_rating', 'rating_visible',
+                   'accuracy_ratingNA', 'cleanliness_ratingNA', 'checkin_ratingNA',
+                   'communication_ratingNA', 'location_ratingNA', 'value_ratingNA', 'rating_visibleNA']
+rating_controls = [c for c in rating_controls if c in df_main.columns]
 
-print(f"Simple controls: {len(SIMPLE_CONTROLS)}")
-print(f"Medium controls: {len(MEDIUM_CONTROLS)}")
-print(f"Full controls: {len(FULL_CONTROLS)}")
-
-# =============================================================================
-# HELPER FUNCTIONS
-# =============================================================================
-
-def run_regression(data, formula, vcov_type='hetero', cluster_var=None, spec_id='',
-                   spec_tree_path='', outcome_var='log_price', treatment_var='minodummy',
-                   sample_desc='', fixed_effects='', controls_desc='', model_type='OLS'):
-    """Run regression and extract results."""
+# Function to run regression and extract results
+def run_spec(formula, data, spec_id, spec_tree_path, treatment_var='minodummy',
+             outcome_var='log_price', cluster_var='newid', fixed_effects=None,
+             controls_desc=None, sample_desc=None, model_type='Panel FE'):
+    """Run a specification and return standardized results."""
     try:
-        # Set up vcov
-        if cluster_var is not None:
+        # Handle clustering
+        if cluster_var and cluster_var in data.columns:
             vcov = {'CRV1': cluster_var}
         else:
-            vcov = vcov_type
+            vcov = 'hetero'
 
-        # Run model
         model = pf.feols(formula, data=data, vcov=vcov)
 
-        # Extract results
-        coef = model.coef()[treatment_var] if treatment_var in model.coef().index else np.nan
-        se = model.se()[treatment_var] if treatment_var in model.se().index else np.nan
-        pval = model.pvalue()[treatment_var] if treatment_var in model.pvalue().index else np.nan
-        tstat = model.tstat()[treatment_var] if treatment_var in model.tstat().index else np.nan
+        # Extract treatment coefficient
+        coef_names = model.coef().index.tolist()
 
-        # Confidence intervals
-        ci_lower = coef - 1.96 * se
-        ci_upper = coef + 1.96 * se
+        # Find the treatment variable coefficient
+        treat_coef = None
+        treat_se = None
+        treat_pval = None
 
-        # Build coefficient vector JSON (simplified)
+        for name in coef_names:
+            if treatment_var in name and 'KKrho' not in name:
+                treat_coef = model.coef()[name]
+                treat_se = model.se()[name]
+                treat_pval = model.pvalue()[name]
+                break
+
+        if treat_coef is None:
+            return None
+
+        t_stat = treat_coef / treat_se if treat_se > 0 else np.nan
+        ci_lower = treat_coef - 1.96 * treat_se
+        ci_upper = treat_coef + 1.96 * treat_se
+
+        # Get N observations and R-squared
+        try:
+            n_obs = model._N
+        except:
+            n_obs = len(data)
+
+        try:
+            r2 = model._r2
+        except:
+            r2 = np.nan
+
+        # Build coefficient vector JSON
         coef_vector = {
             'treatment': {
                 'var': treatment_var,
-                'coef': float(coef) if not np.isnan(coef) else None,
-                'se': float(se) if not np.isnan(se) else None,
-                'pval': float(pval) if not np.isnan(pval) else None
+                'coef': float(treat_coef),
+                'se': float(treat_se),
+                'pval': float(treat_pval)
             },
+            'controls': [],
             'fixed_effects': fixed_effects.split(' + ') if fixed_effects else [],
+            'diagnostics': {}
         }
+
+        # Add other coefficients
+        for name in coef_names[:20]:  # Limit to first 20 for space
+            if name != treatment_var and treatment_var not in name:
+                coef_vector['controls'].append({
+                    'var': name,
+                    'coef': float(model.coef()[name]),
+                    'se': float(model.se()[name]),
+                    'pval': float(model.pvalue()[name])
+                })
 
         return {
             'paper_id': PAPER_ID,
@@ -140,719 +153,740 @@ def run_regression(data, formula, vcov_type='hetero', cluster_var=None, spec_id=
             'spec_tree_path': spec_tree_path,
             'outcome_var': outcome_var,
             'treatment_var': treatment_var,
-            'coefficient': coef,
-            'std_error': se,
-            't_stat': tstat,
-            'p_value': pval,
-            'ci_lower': ci_lower,
-            'ci_upper': ci_upper,
-            'n_obs': model._N,
-            'r_squared': model._r2 if hasattr(model, '_r2') else np.nan,
+            'coefficient': float(treat_coef),
+            'std_error': float(treat_se),
+            't_stat': float(t_stat),
+            'p_value': float(treat_pval),
+            'ci_lower': float(ci_lower),
+            'ci_upper': float(ci_upper),
+            'n_obs': int(n_obs),
+            'r_squared': float(r2) if not np.isnan(r2) else None,
             'coefficient_vector_json': json.dumps(coef_vector),
-            'sample_desc': sample_desc,
-            'fixed_effects': fixed_effects,
-            'controls_desc': controls_desc,
-            'cluster_var': cluster_var if cluster_var else 'robust',
+            'sample_desc': sample_desc or 'Full sample with reviews',
+            'fixed_effects': fixed_effects or 'None',
+            'controls_desc': controls_desc or 'None',
+            'cluster_var': cluster_var,
             'model_type': model_type,
-            'estimation_script': SCRIPT_PATH
+            'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
         }
     except Exception as e:
-        print(f"Error in {spec_id}: {str(e)[:100]}")
+        print(f"  Error in {spec_id}: {str(e)[:100]}")
         return None
 
+# Store results
 results = []
-simple_str = ' + '.join(SIMPLE_CONTROLS)
-medium_str = ' + '.join(MEDIUM_CONTROLS)
-full_str = ' + '.join(FULL_CONTROLS)
 
-# =============================================================================
-# BASELINE SPECIFICATIONS (Table 2 replication)
-# =============================================================================
+# Create formula helpers
+def make_formula(outcome, treatment, controls, fe):
+    """Create pyfixest formula string."""
+    if controls:
+        control_str = ' + '.join(controls)
+        if fe:
+            return f"{outcome} ~ {treatment} + {control_str} | {fe}"
+        else:
+            return f"{outcome} ~ {treatment} + {control_str}"
+    else:
+        if fe:
+            return f"{outcome} ~ {treatment} | {fe}"
+        else:
+            return f"{outcome} ~ {treatment}"
 
 print("\n" + "="*60)
-print("BASELINE SPECIFICATIONS")
+print("RUNNING SPECIFICATION SEARCH")
 print("="*60)
+
+# ============================================================
+# 1. BASELINE SPECIFICATIONS (Table 2 replications)
+# ============================================================
+print("\n1. BASELINE SPECIFICATIONS")
+print("-" * 40)
 
 # Baseline 1: City-wave FE only, no controls
-spec = run_regression(
-    df,
-    "log_price ~ minodummy | citywaveID",
-    cluster_var='newid',
-    spec_id='baseline',
-    spec_tree_path='methods/panel_fixed_effects.md#baseline',
-    sample_desc='Full sample with Drev100>0 (10% sample)',
-    fixed_effects='citywaveID',
-    controls_desc='None',
-    model_type='OLS-FE'
-)
-if spec:
-    results.append(spec)
-    print(f"Baseline: coef={spec['coefficient']:.4f}, se={spec['std_error']:.4f}, p={spec['p_value']:.4f}, n={spec['n_obs']}")
+print("  Running baseline_table2_col1...")
+formula = "log_price ~ minodummy | citywaveID"
+res = run_spec(formula, df_main, 'baseline_table2_col1',
+               'methods/panel_fixed_effects.md#baseline',
+               fixed_effects='citywaveID', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Baseline 2: City-wave FE + simple controls
-spec = run_regression(
-    df,
-    f"log_price ~ minodummy + {simple_str} | citywaveID",
-    cluster_var='newid',
-    spec_id='baseline_simple_controls',
-    spec_tree_path='methods/panel_fixed_effects.md#baseline',
-    sample_desc='Full sample with Drev100>0 (10% sample)',
-    fixed_effects='citywaveID',
-    controls_desc='Simple property characteristics',
-    model_type='OLS-FE'
-)
-if spec:
-    results.append(spec)
-    print(f"Baseline + simple controls: coef={spec['coefficient']:.4f}, se={spec['std_error']:.4f}")
+# Baseline 2: City-wave FE + controls
+print("  Running baseline_table2_col2...")
+controls_subset = [c for c in lesX if c in df_main.columns][:30]  # Limit for performance
+formula = make_formula('log_price', 'minodummy', controls_subset, 'citywaveID')
+res = run_spec(formula, df_main, 'baseline_table2_col2',
+               'methods/panel_fixed_effects.md#baseline',
+               fixed_effects='citywaveID', controls_desc='Property characteristics (lesX)',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Baseline 3: City-wave FE + medium controls
-spec = run_regression(
-    df,
-    f"log_price ~ minodummy + {medium_str} | citywaveID",
-    cluster_var='newid',
-    spec_id='baseline_medium_controls',
-    spec_tree_path='methods/panel_fixed_effects.md#baseline',
-    sample_desc='Full sample with Drev100>0 (10% sample)',
-    fixed_effects='citywaveID',
-    controls_desc='Medium property characteristics',
-    model_type='OLS-FE'
-)
-if spec:
-    results.append(spec)
-    print(f"Baseline + medium controls: coef={spec['coefficient']:.4f}, se={spec['std_error']:.4f}")
+# Baseline 3: Block FE (as absorbing FE)
+print("  Running baseline_table2_col3...")
+formula = "log_price ~ minodummy | blockID + citywaveID"
+res = run_spec(formula, df_main, 'baseline_table2_col3',
+               'methods/panel_fixed_effects.md#baseline',
+               fixed_effects='blockID + citywaveID', controls_desc='None',
+               cluster_var='blockID',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Baseline 4: Neighborhood FE (MAIN RESULT approximation)
-spec = run_regression(
-    df,
-    f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-    cluster_var='hoodcityID',
-    spec_id='baseline_main',
-    spec_tree_path='methods/panel_fixed_effects.md#baseline',
-    sample_desc='Full sample with Drev100>0 (10% sample)',
-    fixed_effects='citywaveID + hoodcityID',
-    controls_desc='Medium property characteristics',
-    model_type='OLS-FE'
-)
-if spec:
-    results.append(spec)
-    print(f"MAIN RESULT (neighborhood FE): coef={spec['coefficient']:.4f}, se={spec['std_error']:.4f}, p={spec['p_value']:.4f}")
+# Baseline 4: Block FE + controls
+print("  Running baseline_table2_col4...")
+formula = make_formula('log_price', 'minodummy', controls_subset, 'blockID + citywaveID')
+res = run_spec(formula, df_main, 'baseline_table2_col4',
+               'methods/panel_fixed_effects.md#baseline',
+               fixed_effects='blockID + citywaveID', controls_desc='Property characteristics (lesX)',
+               cluster_var='blockID',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# =============================================================================
-# CONTROL VARIABLE PROGRESSIONS
-# =============================================================================
+# ============================================================
+# 2. FIXED EFFECTS VARIATIONS
+# ============================================================
+print("\n2. FIXED EFFECTS VARIATIONS")
+print("-" * 40)
 
-print("\n" + "="*60)
-print("CONTROL VARIABLE PROGRESSIONS")
-print("="*60)
+# No FE (pooled OLS)
+print("  Running panel/fe/none...")
+formula = "log_price ~ minodummy"
+res = run_spec(formula, df_main, 'panel/fe/none',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='None', controls_desc='None',
+               sample_desc='Listings with reviews', model_type='Pooled OLS')
+if res: results.append(res)
 
-# Bivariate (no controls)
-spec = run_regression(
-    df,
-    "log_price ~ minodummy | citywaveID + hoodcityID",
-    cluster_var='hoodcityID',
-    spec_id='robust/build/bivariate',
-    spec_tree_path='robustness/control_progression.md',
-    sample_desc='Full sample',
-    fixed_effects='citywaveID + hoodcityID',
-    controls_desc='None',
-    model_type='OLS-FE'
-)
-if spec:
-    results.append(spec)
-    print(f"Bivariate: coef={spec['coefficient']:.4f}")
+# Unit FE only
+print("  Running panel/fe/unit...")
+formula = "log_price ~ minodummy | newid"
+res = run_spec(formula, df_main, 'panel/fe/unit',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='newid', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Progressive control additions
-for i in range(1, len(MEDIUM_CONTROLS) + 1, 2):
-    ctrl_subset = MEDIUM_CONTROLS[:i]
-    ctrl_str = ' + '.join(ctrl_subset)
-    spec = run_regression(
-        df,
-        f"log_price ~ minodummy + {ctrl_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id=f'robust/build/add_{i}_controls',
-        spec_tree_path='robustness/control_progression.md',
-        sample_desc='Full sample',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc=f'First {i} controls',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Add {i} controls: coef={spec['coefficient']:.4f}")
+# Time (wave) FE only
+print("  Running panel/fe/time...")
+formula = "log_price ~ minodummy | wave"
+res = run_spec(formula, df_main, 'panel/fe/time',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='wave', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# =============================================================================
-# LEAVE-ONE-OUT CONTROL ANALYSIS
-# =============================================================================
+# Two-way FE (unit + time)
+print("  Running panel/fe/twoway...")
+formula = "log_price ~ minodummy | newid + wave"
+res = run_spec(formula, df_main, 'panel/fe/twoway',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='newid + wave', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("LEAVE-ONE-OUT CONTROL ANALYSIS")
-print("="*60)
+# Neighborhood FE
+print("  Running panel/fe/neighborhood...")
+formula = "log_price ~ minodummy | hoodcityID"
+res = run_spec(formula, df_main, 'panel/fe/neighborhood',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='hoodcityID', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-for drop_ctrl in SIMPLE_CONTROLS:
-    remaining = [c for c in SIMPLE_CONTROLS if c != drop_ctrl]
-    ctrl_str = ' + '.join(remaining)
+# City FE only
+print("  Running panel/fe/city...")
+formula = "log_price ~ minodummy | city"
+res = run_spec(formula, df_main, 'panel/fe/city',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='city', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-    spec = run_regression(
-        df,
-        f"log_price ~ minodummy + {ctrl_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id=f'robust/loo/drop_{drop_ctrl}',
-        spec_tree_path='robustness/leave_one_out.md',
-        sample_desc='Full sample',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc=f'Simple minus {drop_ctrl}',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Drop {drop_ctrl}: coef={spec['coefficient']:.4f}")
+# High-dimensional: Block + City-wave + Neighborhood
+print("  Running panel/fe/high_dimensional...")
+formula = "log_price ~ minodummy | blockID + citywaveID + hoodcityID"
+res = run_spec(formula, df_main, 'panel/fe/high_dimensional',
+               'methods/panel_fixed_effects.md#fixed-effects',
+               fixed_effects='blockID + citywaveID + hoodcityID', controls_desc='None',
+               cluster_var='blockID',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# =============================================================================
-# FIXED EFFECTS VARIATIONS
-# =============================================================================
+# ============================================================
+# 3. CONTROL VARIATIONS - Leave-One-Out
+# ============================================================
+print("\n3. CONTROL VARIATIONS (Leave-One-Out)")
+print("-" * 40)
 
-print("\n" + "="*60)
-print("FIXED EFFECTS VARIATIONS")
-print("="*60)
-
-fe_specs = {
-    'panel/fe/none': (f'log_price ~ minodummy + {medium_str}', 'None'),
-    'panel/fe/citywave': (f'log_price ~ minodummy + {medium_str} | citywaveID', 'citywaveID'),
-    'panel/fe/neighborhood': (f'log_price ~ minodummy + {medium_str} | hoodcityID', 'hoodcityID'),
-    'panel/fe/citywave_hood': (f'log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID', 'citywaveID + hoodcityID'),
-    'panel/fe/wave': (f'log_price ~ minodummy + {medium_str} | wave', 'wave'),
+# Define key control groups for LOO
+control_groups = {
+    'size': size_controls,
+    'descrip_gen': descrip_gen_controls,
+    'descrip_spe': descrip_spe_controls,
+    'equip': equip_controls[:10],  # First 10 equipment controls
+    'rules': rules_controls,
+    'loueur': loueur_controls[:7],  # First 7 owner controls
+    'count': count_controls
 }
 
-for spec_id, (formula, fe_desc) in fe_specs.items():
-    spec = run_regression(
-        df,
-        formula,
-        cluster_var='hoodcityID' if 'hood' in fe_desc.lower() else 'newid',
-        spec_id=spec_id,
-        spec_tree_path='methods/panel_fixed_effects.md#fixed-effects',
-        sample_desc='Full sample',
-        fixed_effects=fe_desc,
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"{spec_id}: coef={spec['coefficient']:.4f}")
+base_controls = [c for c in lesX if c in df_main.columns][:25]  # Reduced for performance
 
-# =============================================================================
-# CLUSTERING VARIATIONS
-# =============================================================================
+for group_name, group_vars in control_groups.items():
+    # Drop entire group
+    print(f"  Running robust/loo/drop_{group_name}...")
+    remaining = [c for c in base_controls if c not in group_vars]
+    if remaining:
+        formula = make_formula('log_price', 'minodummy', remaining, 'citywaveID')
+        res = run_spec(formula, df_main, f'robust/loo/drop_{group_name}',
+                       'robustness/leave_one_out.md',
+                       fixed_effects='citywaveID',
+                       controls_desc=f'All controls except {group_name}',
+                       sample_desc='Listings with reviews')
+        if res: results.append(res)
 
-print("\n" + "="*60)
-print("CLUSTERING VARIATIONS")
-print("="*60)
+# Individual key controls LOO
+key_controls = ['sharedflat', 'person_capacity345', 'bedrooms', 'bathrooms',
+                'superhost', 'verified_email', 'more_1_flat', 'picture_count']
 
-cluster_specs = {
-    'robust/cluster/robust': None,
-    'robust/cluster/listing': 'newid',
-    'robust/cluster/neighborhood': 'hoodcityID',
-    'robust/cluster/citywave': 'citywaveID',
-    'robust/cluster/city': 'city_id',
-}
+for ctrl in key_controls:
+    if ctrl in base_controls:
+        print(f"  Running robust/loo/drop_{ctrl}...")
+        remaining = [c for c in base_controls if c != ctrl]
+        formula = make_formula('log_price', 'minodummy', remaining, 'citywaveID')
+        res = run_spec(formula, df_main, f'robust/loo/drop_{ctrl}',
+                       'robustness/leave_one_out.md',
+                       fixed_effects='citywaveID',
+                       controls_desc=f'All controls except {ctrl}',
+                       sample_desc='Listings with reviews')
+        if res: results.append(res)
 
-for spec_id, cluster_var in cluster_specs.items():
-    spec = run_regression(
-        df,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var=cluster_var,
-        spec_id=spec_id,
-        spec_tree_path='robustness/clustering_variations.md',
-        sample_desc='Full sample',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"{spec_id}: coef={spec['coefficient']:.4f}, se={spec['std_error']:.4f}")
+# ============================================================
+# 4. CONTROL PROGRESSION (Build-up)
+# ============================================================
+print("\n4. CONTROL PROGRESSION (Build-up)")
+print("-" * 40)
 
-# =============================================================================
-# SAMPLE RESTRICTIONS
-# =============================================================================
+# No controls
+print("  Running robust/control/none...")
+formula = "log_price ~ minodummy | citywaveID"
+res = run_spec(formula, df_main, 'robust/control/none',
+               'robustness/control_progression.md',
+               fixed_effects='citywaveID', controls_desc='None',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("SAMPLE RESTRICTIONS")
-print("="*60)
+# Add control groups incrementally
+cumulative_controls = []
+for group_name, group_vars in [('size', size_controls),
+                                ('descrip', descrip_gen_controls + descrip_spe_controls),
+                                ('equip', equip_controls[:8]),
+                                ('rules', rules_controls),
+                                ('loueur', loueur_controls[:5])]:
+    available = [c for c in group_vars if c in df_main.columns]
+    cumulative_controls.extend(available)
+    print(f"  Running robust/control/add_{group_name}...")
+    formula = make_formula('log_price', 'minodummy', cumulative_controls, 'citywaveID')
+    res = run_spec(formula, df_main, f'robust/control/add_{group_name}',
+                   'robustness/control_progression.md',
+                   fixed_effects='citywaveID',
+                   controls_desc=f'Controls up to {group_name}',
+                   sample_desc='Listings with reviews')
+    if res: results.append(res)
 
-# Review-based samples (Table 3 replication)
-review_samples = {
-    'robust/sample/reviews_0': df['review'] == 0,
-    'robust/sample/reviews_1_4': (df['review'] > 0) & (df['review'] <= 4),
-    'robust/sample/reviews_5_19': (df['review'] >= 5) & (df['review'] < 20),
-    'robust/sample/reviews_20_49': (df['review'] >= 20) & (df['review'] < 50),
-    'robust/sample/reviews_50plus': df['review'] >= 50,
-}
+# ============================================================
+# 5. SAMPLE RESTRICTIONS
+# ============================================================
+print("\n5. SAMPLE RESTRICTIONS")
+print("-" * 40)
 
-for spec_id, condition in review_samples.items():
-    df_sub = df[condition].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=spec_id,
-            spec_tree_path='robustness/sample_restrictions.md',
-            sample_desc=spec_id.split('/')[-1],
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"{spec_id}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# By number of reviews (Table 3 style)
+review_cuts = [(0, 0, 'no_reviews'), (1, 4, 'reviews_1_4'),
+               (5, 19, 'reviews_5_19'), (20, 49, 'reviews_20_49'),
+               (50, 1000, 'reviews_50plus')]
 
-# Geographic samples
-geo_samples = {
-    'robust/sample/us_canada': (df['us'] == 1) | (df['can'] == 1),
-    'robust/sample/europe': df['euro'] == 1,
-}
+for low, high, name in review_cuts:
+    print(f"  Running robust/sample/{name}...")
+    if low == 0 and high == 0:
+        df_sub = df[df['review'] == 0].copy()
+    else:
+        df_sub = df[(df['review'] >= low) & (df['review'] <= high)].copy()
 
-for spec_id, condition in geo_samples.items():
-    df_sub = df[condition].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=spec_id,
-            spec_tree_path='robustness/sample_restrictions.md',
-            sample_desc=spec_id.split('/')[-1],
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"{spec_id}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+    if len(df_sub) > 1000:
+        formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+        res = run_spec(formula, df_sub, f'robust/sample/{name}',
+                       'robustness/sample_restrictions.md',
+                       fixed_effects='citywaveID',
+                       controls_desc='Property characteristics',
+                       sample_desc=f'Reviews: {low}-{high}')
+        if res: results.append(res)
 
-# Property type samples
-property_samples = {
-    'robust/sample/entire_flat': df['entireflat'] == 1,
-    'robust/sample/shared_flat': df['entireflat'] == 0,
-}
+# By wave (time period)
+for wave_cut in [5, 10, 15]:
+    print(f"  Running robust/sample/wave_le_{wave_cut}...")
+    df_sub = df_main[df_main['wave'] <= wave_cut].copy()
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_sub, f'robust/sample/wave_le_{wave_cut}',
+                   'robustness/sample_restrictions.md',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc=f'Waves <= {wave_cut}')
+    if res: results.append(res)
 
-for spec_id, condition in property_samples.items():
-    df_sub = df[condition].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=spec_id,
-            spec_tree_path='robustness/sample_restrictions.md',
-            sample_desc=spec_id.split('/')[-1],
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"{spec_id}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+    print(f"  Running robust/sample/wave_gt_{wave_cut}...")
+    df_sub = df_main[df_main['wave'] > wave_cut].copy()
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_sub, f'robust/sample/wave_gt_{wave_cut}',
+                   'robustness/sample_restrictions.md',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc=f'Waves > {wave_cut}')
+    if res: results.append(res)
 
-# Outlier handling
-print("\n--- Outlier Handling ---")
-for pct in [1, 5]:
-    lower = df['log_price'].quantile(pct/100)
-    upper = df['log_price'].quantile(1 - pct/100)
-    df_trim = df[(df['log_price'] > lower) & (df['log_price'] < upper)].copy()
+# By city
+major_cities = ['paris', 'new-york', 'london', 'los-angeles', 'barcelona', 'berlin']
+for city in major_cities:
+    print(f"  Running robust/sample/city_{city.replace('-','_')}...")
+    df_sub = df_main[df_main['city'] == city].copy()
+    if len(df_sub) > 5000:
+        formula = make_formula('log_price', 'minodummy', base_controls[:15], 'wave')
+        res = run_spec(formula, df_sub, f'robust/sample/city_{city.replace("-","_")}',
+                       'robustness/sample_restrictions.md',
+                       fixed_effects='wave',
+                       controls_desc='Property characteristics',
+                       sample_desc=f'City: {city}')
+        if res: results.append(res)
 
-    spec = run_regression(
-        df_trim,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id=f'robust/sample/trim_{pct}pct',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc=f'Trimmed {pct}%',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Trim {pct}%: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# Drop each city
+print("  Running drop city specifications...")
+for city in major_cities[:4]:  # Limit to 4 major cities
+    print(f"  Running robust/sample/drop_city_{city.replace('-','_')}...")
+    df_sub = df_main[df_main['city'] != city].copy()
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_sub, f'robust/sample/drop_city_{city.replace("-","_")}',
+                   'robustness/sample_restrictions.md',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc=f'Excluding {city}')
+    if res: results.append(res)
 
-# Winsorizing
-for pct in [1, 5]:
-    df_wins = df.copy()
+# By property type
+print("  Running robust/sample/entire_apartment...")
+df_sub = df_main[df_main['entireflat'] == 1].copy()
+formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_sub, 'robust/sample/entire_apartment',
+               'robustness/sample_restrictions.md',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Entire apartments only')
+if res: results.append(res)
+
+print("  Running robust/sample/shared_flat...")
+df_sub = df_main[df_main['sharedflat'] == 1].copy()
+if len(df_sub) > 1000:
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_sub, 'robust/sample/shared_flat',
+                   'robustness/sample_restrictions.md',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc='Shared flats only')
+    if res: results.append(res)
+
+# ============================================================
+# 6. OUTLIER HANDLING
+# ============================================================
+print("\n6. OUTLIER HANDLING")
+print("-" * 40)
+
+# Winsorize price at different levels
+for pct in [1, 5, 10]:
+    print(f"  Running robust/sample/winsorize_{pct}pct...")
+    df_wins = df_main.copy()
     lower = df_wins['log_price'].quantile(pct/100)
     upper = df_wins['log_price'].quantile(1 - pct/100)
     df_wins['log_price'] = df_wins['log_price'].clip(lower=lower, upper=upper)
 
-    spec = run_regression(
-        df_wins,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id=f'robust/sample/winsor_{pct}pct',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc=f'Winsorized {pct}%',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Winsor {pct}%: coef={spec['coefficient']:.4f}")
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_wins, f'robust/sample/winsorize_{pct}pct',
+                   'robustness/sample_restrictions.md',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc=f'Price winsorized at {pct}%')
+    if res: results.append(res)
 
-# =============================================================================
-# ALTERNATIVE TREATMENT DEFINITIONS
-# =============================================================================
+# Trim extreme values
+print("  Running robust/sample/trim_1pct...")
+lower = df_main['log_price'].quantile(0.01)
+upper = df_main['log_price'].quantile(0.99)
+df_trim = df_main[(df_main['log_price'] > lower) & (df_main['log_price'] < upper)].copy()
+formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_trim, 'robust/sample/trim_1pct',
+               'robustness/sample_restrictions.md',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Trimmed top/bottom 1%')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("ALTERNATIVE TREATMENT DEFINITIONS")
-print("="*60)
+# ============================================================
+# 7. CLUSTERING VARIATIONS
+# ============================================================
+print("\n7. CLUSTERING VARIATIONS")
+print("-" * 40)
 
-# Arab/Muslim only
-df_arabic = df[(df['black_pic'] == 0) | (df['arabic_african'] == 1)].copy()
-df_arabic['minodummy'] = df_arabic['arabic_african']
-if len(df_arabic) > 100 and df_arabic['minodummy'].sum() > 10:
-    spec = run_regression(
-        df_arabic,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id='robust/treatment/arabic_only',
-        spec_tree_path='robustness/measurement.md',
-        sample_desc='Arab/Muslim hosts only',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Arabic/Muslim only: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+clustering_vars = [
+    ('newid', 'Listing'),
+    ('blockID', 'Block'),
+    ('hoodcityID', 'Neighborhood-city'),
+    ('city', 'City')
+]
 
-# Black/African-American only
-df_black = df[(df['arabic_african'] == 0) | (df['black_pic'] == 1)].copy()
-df_black['minodummy'] = df_black['black_pic']
-if len(df_black) > 100 and df_black['minodummy'].sum() > 10:
-    spec = run_regression(
-        df_black,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id='robust/treatment/black_only',
-        spec_tree_path='robustness/measurement.md',
-        sample_desc='Black/African-American hosts only',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Black only: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+for cluster, desc in clustering_vars:
+    print(f"  Running robust/cluster/{cluster}...")
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_main, f'robust/cluster/{cluster}',
+                   'robustness/clustering_variations.md',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   cluster_var=cluster,
+                   sample_desc='Listings with reviews')
+    if res: results.append(res)
 
-# =============================================================================
-# FUNCTIONAL FORM VARIATIONS
-# =============================================================================
+# Robust (heteroskedasticity-consistent) SEs
+print("  Running robust/cluster/robust_hc...")
+try:
+    formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+    model = pf.feols(formula, data=df_main, vcov='hetero')
+    treat_coef = model.coef()['minodummy']
+    treat_se = model.se()['minodummy']
+    treat_pval = model.pvalue()['minodummy']
 
-print("\n" + "="*60)
-print("FUNCTIONAL FORM VARIATIONS")
-print("="*60)
+    results.append({
+        'paper_id': PAPER_ID,
+        'journal': JOURNAL,
+        'paper_title': PAPER_TITLE,
+        'spec_id': 'robust/cluster/robust_hc',
+        'spec_tree_path': 'robustness/clustering_variations.md',
+        'outcome_var': 'log_price',
+        'treatment_var': 'minodummy',
+        'coefficient': float(treat_coef),
+        'std_error': float(treat_se),
+        't_stat': float(treat_coef / treat_se),
+        'p_value': float(treat_pval),
+        'ci_lower': float(treat_coef - 1.96 * treat_se),
+        'ci_upper': float(treat_coef + 1.96 * treat_se),
+        'n_obs': int(model._N),
+        'r_squared': float(model._r2),
+        'coefficient_vector_json': json.dumps({'treatment': {'var': 'minodummy', 'coef': float(treat_coef)}}),
+        'sample_desc': 'Listings with reviews',
+        'fixed_effects': 'citywaveID',
+        'controls_desc': 'Property characteristics',
+        'cluster_var': 'Robust HC',
+        'model_type': 'Panel FE',
+        'estimation_script': f'scripts/paper_analyses/{PAPER_ID}.py'
+    })
+except Exception as e:
+    print(f"  Error: {e}")
 
-# Price in levels (not log)
-df['price_clean'] = df['price'].clip(lower=1)
-spec = run_regression(
-    df,
-    f"price_clean ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-    cluster_var='hoodcityID',
-    spec_id='robust/form/price_levels',
-    spec_tree_path='robustness/functional_form.md',
-    outcome_var='price_clean',
-    sample_desc='Full sample',
-    fixed_effects='citywaveID + hoodcityID',
-    controls_desc='Medium property characteristics',
-    model_type='OLS-FE'
+# ============================================================
+# 8. ALTERNATIVE OUTCOMES
+# ============================================================
+print("\n8. ALTERNATIVE OUTCOMES")
+print("-" * 40)
+
+# Price in levels
+print("  Running robust/outcome/price_levels...")
+formula = make_formula('price', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_main, 'robust/outcome/price_levels',
+               'robustness/measurement.md',
+               outcome_var='price',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
+
+# Standardized log price (z-score within city-wave)
+print("  Running robust/outcome/log_price_std...")
+df_main['log_price_std'] = df_main.groupby('citywaveID')['log_price'].transform(
+    lambda x: (x - x.mean()) / x.std() if x.std() > 0 else 0
 )
-if spec:
-    results.append(spec)
-    print(f"Price levels: coef={spec['coefficient']:.4f}")
+formula = make_formula('log_price_std', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_main, 'robust/outcome/log_price_std',
+               'robustness/measurement.md',
+               outcome_var='log_price_std',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Asinh transformation
-df['asinh_price'] = np.arcsinh(df['price'])
-spec = run_regression(
-    df,
-    f"asinh_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-    cluster_var='hoodcityID',
-    spec_id='robust/form/asinh_price',
-    spec_tree_path='robustness/functional_form.md',
-    outcome_var='asinh_price',
-    sample_desc='Full sample',
-    fixed_effects='citywaveID + hoodcityID',
-    controls_desc='Medium property characteristics',
-    model_type='OLS-FE'
-)
-if spec:
-    results.append(spec)
-    print(f"Asinh price: coef={spec['coefficient']:.4f}")
+# ============================================================
+# 9. ALTERNATIVE TREATMENT DEFINITIONS
+# ============================================================
+print("\n9. ALTERNATIVE TREATMENT DEFINITIONS")
+print("-" * 40)
 
-# =============================================================================
-# HETEROGENEITY ANALYSIS
-# =============================================================================
+# Black hosts only
+print("  Running robust/treatment/black...")
+formula = make_formula('log_price', 'black', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_main, 'robust/treatment/black',
+               'robustness/measurement.md',
+               treatment_var='black',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("HETEROGENEITY ANALYSIS")
-print("="*60)
+# Arabic/African hosts only
+print("  Running robust/treatment/arabic_african...")
+formula = make_formula('log_price', 'arabic_african', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_main, 'robust/treatment/arabic_african',
+               'robustness/measurement.md',
+               treatment_var='arabic_african',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# By number of reviews (terciles)
-df['review_tercile'] = pd.qcut(df['review'].clip(lower=0), q=3, labels=['low', 'med', 'high'], duplicates='drop')
+# Continuous minority measure (number of minority names)
+if 'nber_mino_names' in df_main.columns:
+    print("  Running robust/treatment/continuous_minority...")
+    formula = make_formula('log_price', 'nber_mino_names', base_controls[:15], 'citywaveID')
+    res = run_spec(formula, df_main, 'robust/treatment/continuous_minority',
+                   'robustness/measurement.md',
+                   treatment_var='nber_mino_names',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc='Listings with reviews')
+    if res: results.append(res)
 
-for tercile in ['low', 'med', 'high']:
-    df_sub = df[df['review_tercile'] == tercile].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=f'robust/het/reviews_{tercile}',
-            spec_tree_path='robustness/heterogeneity.md',
-            sample_desc=f'Review tercile: {tercile}',
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"Reviews {tercile}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# ============================================================
+# 10. FUNCTIONAL FORM VARIATIONS
+# ============================================================
+print("\n10. FUNCTIONAL FORM VARIATIONS")
+print("-" * 40)
 
-# By price level
-df['price_tercile'] = pd.qcut(df['price'], q=3, labels=['low', 'med', 'high'], duplicates='drop')
+# IHS transformation of price
+print("  Running robust/funcform/ihs_price...")
+df_main['ihs_price'] = np.arcsinh(df_main['price'])
+formula = make_formula('ihs_price', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_main, 'robust/funcform/ihs_price',
+               'robustness/functional_form.md',
+               outcome_var='ihs_price',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-for tercile in ['low', 'med', 'high']:
-    df_sub = df[df['price_tercile'] == tercile].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=f'robust/het/price_{tercile}',
-            spec_tree_path='robustness/heterogeneity.md',
-            sample_desc=f'Price tercile: {tercile}',
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"Price {tercile}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# Include polynomial in reviews
+print("  Running robust/funcform/reviews_polynomial...")
+df_main['rev100_sq'] = df_main['rev100'] ** 2
+formula = "log_price ~ minodummy + rev100 + rev100_sq | citywaveID"
+res = run_spec(formula, df_main, 'robust/funcform/reviews_polynomial',
+               'robustness/functional_form.md',
+               fixed_effects='citywaveID',
+               controls_desc='Reviews + reviews squared',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
+
+# ============================================================
+# 11. HETEROGENEITY ANALYSES
+# ============================================================
+print("\n11. HETEROGENEITY ANALYSES")
+print("-" * 40)
 
 # By superhost status
-for sh_status, sh_val in [('superhost', 1), ('not_superhost', 0)]:
-    df_sub = df[df['superhost'] == sh_val].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=f'robust/het/{sh_status}',
-            spec_tree_path='robustness/heterogeneity.md',
-            sample_desc=sh_status,
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"{sh_status}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+print("  Running robust/heterogeneity/superhost...")
+df_main['mino_superhost'] = df_main['minodummy'] * df_main['superhost']
+formula = "log_price ~ minodummy + mino_superhost + superhost | citywaveID"
+res = run_spec(formula, df_main, 'robust/heterogeneity/superhost',
+               'robustness/heterogeneity.md',
+               fixed_effects='citywaveID',
+               controls_desc='Superhost interaction',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Interaction specifications
-interaction_vars = ['superhost', 'entireflat', 'more_1_flat']
-for int_var in interaction_vars:
-    if int_var in df.columns:
-        try:
-            spec = run_regression(
-                df,
-                f"log_price ~ minodummy * {int_var} + {medium_str} | citywaveID + hoodcityID",
-                cluster_var='hoodcityID',
-                spec_id=f'robust/het/interaction_{int_var}',
-                spec_tree_path='robustness/heterogeneity.md',
-                sample_desc=f'Interaction with {int_var}',
-                fixed_effects='citywaveID + hoodcityID',
-                controls_desc='Medium property characteristics',
-                model_type='OLS-FE'
-            )
-            if spec:
-                results.append(spec)
-                print(f"Interaction {int_var}: coef={spec['coefficient']:.4f}")
-        except Exception as e:
-            print(f"Error in interaction {int_var}: {str(e)[:50]}")
+# By shared vs entire apartment
+print("  Running robust/heterogeneity/sharedflat...")
+df_main['mino_shared'] = df_main['minodummy'] * df_main['sharedflat']
+formula = "log_price ~ minodummy + mino_shared + sharedflat | citywaveID"
+res = run_spec(formula, df_main, 'robust/heterogeneity/sharedflat',
+               'robustness/heterogeneity.md',
+               fixed_effects='citywaveID',
+               controls_desc='Shared flat interaction',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# =============================================================================
-# CITY-SPECIFIC ANALYSES
-# =============================================================================
+# By multiple listings
+print("  Running robust/heterogeneity/more_1_flat...")
+df_main['mino_multiple'] = df_main['minodummy'] * df_main['more_1_flat']
+formula = "log_price ~ minodummy + mino_multiple + more_1_flat | citywaveID"
+res = run_spec(formula, df_main, 'robust/heterogeneity/more_1_flat',
+               'robustness/heterogeneity.md',
+               fixed_effects='citywaveID',
+               controls_desc='Multiple listings interaction',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("CITY-SPECIFIC ANALYSES")
-print("="*60)
+# By verification status
+print("  Running robust/heterogeneity/verified...")
+df_main['mino_verified'] = df_main['minodummy'] * df_main['verified_email']
+formula = "log_price ~ minodummy + mino_verified + verified_email | citywaveID"
+res = run_spec(formula, df_main, 'robust/heterogeneity/verified',
+               'robustness/heterogeneity.md',
+               fixed_effects='citywaveID',
+               controls_desc='Verification interaction',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# Major cities
-major_cities = ['new-york', 'los-angeles', 'san-francisco', 'london', 'paris']
-for city in major_cities:
-    df_city = df[df['city'] == city].copy()
-    if len(df_city) > 200 and df_city['minodummy'].sum() > 20:
-        spec = run_regression(
-            df_city,
-            f"log_price ~ minodummy + {medium_str} | wave + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=f'robust/sample/city_{city.replace("-", "_")}',
-            spec_tree_path='robustness/sample_restrictions.md',
-            sample_desc=f'City: {city}',
-            fixed_effects='wave + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"{city}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# By number of reviews (key mechanism)
+print("  Running robust/heterogeneity/high_reviews...")
+df_main['high_reviews'] = (df_main['review'] >= 20).astype(int)
+df_main['mino_highrev'] = df_main['minodummy'] * df_main['high_reviews']
+formula = "log_price ~ minodummy + mino_highrev + high_reviews | citywaveID"
+res = run_spec(formula, df_main, 'robust/heterogeneity/high_reviews',
+               'robustness/heterogeneity.md',
+               fixed_effects='citywaveID',
+               controls_desc='High reviews interaction (20+)',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# =============================================================================
-# DROP EACH MAJOR CITY (LEAVE-ONE-OUT GEOGRAPHIC)
-# =============================================================================
+# By European vs US/Canadian cities
+print("  Running robust/heterogeneity/europe...")
+df_main['europe'] = df_main['euro'].fillna(0)
+df_main['mino_europe'] = df_main['minodummy'] * df_main['europe']
+formula = "log_price ~ minodummy + mino_europe + europe | citywaveID"
+res = run_spec(formula, df_main, 'robust/heterogeneity/europe',
+               'robustness/heterogeneity.md',
+               fixed_effects='citywaveID',
+               controls_desc='European city interaction',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("LEAVE-ONE-OUT CITY ANALYSIS")
-print("="*60)
+# ============================================================
+# 12. PLACEBO TESTS
+# ============================================================
+print("\n12. PLACEBO TESTS")
+print("-" * 40)
 
-cities_to_drop = ['new-york', 'london', 'paris']
-for city in cities_to_drop:
-    df_sub = df[df['city'] != city].copy()
-    spec = run_regression(
-        df_sub,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id=f'robust/sample/drop_{city.replace("-", "_")}',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc=f'Excluding {city}',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Drop {city}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# Fake treatment: random assignment
+print("  Running robust/placebo/random_treatment...")
+np.random.seed(42)
+df_main['fake_mino'] = np.random.binomial(1, df_main['minodummy'].mean(), len(df_main))
+formula = make_formula('log_price', 'fake_mino', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_main, 'robust/placebo/random_treatment',
+               'robustness/placebo_tests.md',
+               treatment_var='fake_mino',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Listings with reviews')
+if res: results.append(res)
 
-# =============================================================================
-# WAVE-SPECIFIC ANALYSIS
-# =============================================================================
+# Placebo outcome: should not be affected
+# Use picture_count change as placebo (shouldn't correlate with minority status)
+if 'change_pics' in df_main.columns:
+    print("  Running robust/placebo/picture_change...")
+    formula = make_formula('change_pics', 'minodummy', base_controls[:10], 'citywaveID')
+    res = run_spec(formula, df_main, 'robust/placebo/picture_change',
+                   'robustness/placebo_tests.md',
+                   outcome_var='change_pics',
+                   fixed_effects='citywaveID',
+                   controls_desc='Property characteristics',
+                   sample_desc='Listings with reviews')
+    if res: results.append(res)
 
-print("\n" + "="*60)
-print("WAVE-SPECIFIC ANALYSIS")
-print("="*60)
+# ============================================================
+# 13. ADDITIONAL ROBUSTNESS - ESTIMATION METHODS
+# ============================================================
+print("\n13. ADDITIONAL ESTIMATION METHODS")
+print("-" * 40)
 
-# Early vs late waves
-early_waves = df['wave'] <= df['wave'].median()
-late_waves = df['wave'] > df['wave'].median()
+# First differences
+print("  Running panel/method/first_diff...")
+df_sorted = df_main.sort_values(['newid', 'wave'])
+df_sorted['log_price_diff'] = df_sorted.groupby('newid')['log_price'].diff()
+df_sorted['minodummy_diff'] = df_sorted.groupby('newid')['minodummy'].diff()
+df_fd = df_sorted.dropna(subset=['log_price_diff', 'minodummy_diff'])
 
-for period_name, condition in [('early_waves', early_waves), ('late_waves', late_waves)]:
-    df_sub = df[condition].copy()
-    if len(df_sub) > 100 and df_sub['minodummy'].sum() > 10:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=f'robust/sample/{period_name}',
-            spec_tree_path='robustness/sample_restrictions.md',
-            sample_desc=period_name,
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"{period_name}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+if len(df_fd) > 10000:
+    formula = "log_price_diff ~ minodummy_diff | wave"
+    res = run_spec(formula, df_fd, 'panel/method/first_diff',
+                   'methods/panel_fixed_effects.md#estimation-method',
+                   treatment_var='minodummy_diff',
+                   outcome_var='log_price_diff',
+                   fixed_effects='wave',
+                   controls_desc='First differences',
+                   sample_desc='First differences',
+                   model_type='First Differences')
+    if res: results.append(res)
 
-# =============================================================================
-# SIZE-BASED HETEROGENEITY
-# =============================================================================
+# ============================================================
+# 14. STRUCTURAL MODEL APPROXIMATION
+# ============================================================
+print("\n14. STRUCTURAL MODEL APPROXIMATION")
+print("-" * 40)
 
-print("\n" + "="*60)
-print("SIZE-BASED HETEROGENEITY")
-print("="*60)
+# Create KKrho proxy (reviews / (rho + reviews)) with different rho values
+for rho in [0.1, 0.15, 0.2, 0.3]:
+    print(f"  Running structural/rho_{rho}...")
+    df_main[f'KKrho_{rho}'] = df_main['rev100'] / (rho + df_main['rev100'])
+    df_main[f'mino_KKrho_{rho}'] = -df_main['minodummy'] * df_main[f'KKrho_{rho}']
 
-# By bedrooms
-for n_bed in [1, 2]:
-    if n_bed == 2:
-        df_sub = df[df['bedrooms'] >= 2].copy()
-        bed_label = '2plus'
-    else:
-        df_sub = df[df['bedrooms'] == n_bed].copy()
-        bed_label = str(n_bed)
+    formula = f"log_price ~ minodummy + mino_KKrho_{rho} + KKrho_{rho} | newid + citywaveID"
+    res = run_spec(formula, df_main, f'structural/rho_{rho}',
+                   'methods/panel_fixed_effects.md',
+                   fixed_effects='newid + citywaveID',
+                   controls_desc=f'Learning parameter rho={rho}',
+                   sample_desc='Listings with reviews')
+    if res: results.append(res)
 
-    if len(df_sub) > 200 and df_sub['minodummy'].sum() > 20:
-        spec = run_regression(
-            df_sub,
-            f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-            cluster_var='hoodcityID',
-            spec_id=f'robust/het/bedrooms_{bed_label}',
-            spec_tree_path='robustness/heterogeneity.md',
-            sample_desc=f'Bedrooms={bed_label}',
-            fixed_effects='citywaveID + hoodcityID',
-            controls_desc='Medium property characteristics',
-            model_type='OLS-FE'
-        )
-        if spec:
-            results.append(spec)
-            print(f"Bedrooms {bed_label}: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
+# ============================================================
+# 15. ADDITIONAL SAMPLE SPLITS
+# ============================================================
+print("\n15. ADDITIONAL SAMPLE SPLITS")
+print("-" * 40)
 
-# =============================================================================
-# ADDITIONAL ROBUSTNESS
-# =============================================================================
+# High vs low price markets
+print("  Running robust/sample/high_price_market...")
+median_price = df_main.groupby('hoodcityID')['price'].transform('median')
+df_main['high_price_market'] = (df_main['price'] >= median_price).astype(int)
+df_high = df_main[df_main['high_price_market'] == 1].copy()
+formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_high, 'robust/sample/high_price_market',
+               'robustness/sample_restrictions.md',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Above median price markets')
+if res: results.append(res)
 
-print("\n" + "="*60)
-print("ADDITIONAL ROBUSTNESS")
-print("="*60)
+print("  Running robust/sample/low_price_market...")
+df_low = df_main[df_main['high_price_market'] == 0].copy()
+formula = make_formula('log_price', 'minodummy', base_controls[:15], 'citywaveID')
+res = run_spec(formula, df_low, 'robust/sample/low_price_market',
+               'robustness/sample_restrictions.md',
+               fixed_effects='citywaveID',
+               controls_desc='Property characteristics',
+               sample_desc='Below median price markets')
+if res: results.append(res)
 
-# Multiple observations per unit
-obs_counts = df.groupby('newid').size()
-multi_obs = obs_counts[obs_counts >= 3].index
-df_multi = df[df['newid'].isin(multi_obs)].copy()
+# By bedroom count
+for beds in [1, 2, 3]:
+    print(f"  Running robust/sample/{beds}_bedroom...")
+    df_sub = df_main[df_main['bedrooms'] == beds].copy()
+    if len(df_sub) > 10000:
+        formula = make_formula('log_price', 'minodummy',
+                              [c for c in base_controls if c != 'bedrooms'][:15],
+                              'citywaveID')
+        res = run_spec(formula, df_sub, f'robust/sample/{beds}_bedroom',
+                       'robustness/sample_restrictions.md',
+                       fixed_effects='citywaveID',
+                       controls_desc='Property characteristics (excl bedrooms)',
+                       sample_desc=f'{beds} bedroom listings')
+        if res: results.append(res)
 
-if len(df_multi) > 100 and df_multi['minodummy'].sum() > 10:
-    spec = run_regression(
-        df_multi,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id='robust/sample/min_3_obs',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc='Units with 3+ observations',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Min 3 obs: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
-
-# Verified hosts only
-df_verified = df[df['verified_email'] == 1].copy()
-if len(df_verified) > 100 and df_verified['minodummy'].sum() > 10:
-    spec = run_regression(
-        df_verified,
-        f"log_price ~ minodummy + {medium_str} | citywaveID + hoodcityID",
-        cluster_var='hoodcityID',
-        spec_id='robust/sample/verified_email',
-        spec_tree_path='robustness/sample_restrictions.md',
-        sample_desc='Verified email hosts',
-        fixed_effects='citywaveID + hoodcityID',
-        controls_desc='Medium property characteristics',
-        model_type='OLS-FE'
-    )
-    if spec:
-        results.append(spec)
-        print(f"Verified email: coef={spec['coefficient']:.4f}, n={spec['n_obs']}")
-
-# =============================================================================
+# ============================================================
 # SAVE RESULTS
-# =============================================================================
-
+# ============================================================
 print("\n" + "="*60)
 print("SAVING RESULTS")
 print("="*60)
 
-# Convert to DataFrame
-results_df = pd.DataFrame([r for r in results if r is not None])
+results_df = pd.DataFrame(results)
 print(f"\nTotal specifications run: {len(results_df)}")
 
 # Save to CSV
@@ -860,24 +894,20 @@ results_df.to_csv(OUTPUT_PATH, index=False)
 print(f"Results saved to: {OUTPUT_PATH}")
 
 # Summary statistics
-print("\n" + "="*60)
-print("SUMMARY STATISTICS")
-print("="*60)
-
+print("\n=== SUMMARY STATISTICS ===")
 print(f"Total specifications: {len(results_df)}")
-print(f"Positive coefficients: {(results_df['coefficient'] > 0).sum()} ({100*(results_df['coefficient'] > 0).mean():.1f}%)")
-print(f"Negative coefficients: {(results_df['coefficient'] < 0).sum()} ({100*(results_df['coefficient'] < 0).mean():.1f}%)")
-print(f"Significant at 5%: {(results_df['p_value'] < 0.05).sum()} ({100*(results_df['p_value'] < 0.05).mean():.1f}%)")
-print(f"Significant at 1%: {(results_df['p_value'] < 0.01).sum()} ({100*(results_df['p_value'] < 0.01).mean():.1f}%)")
-print(f"Median coefficient: {results_df['coefficient'].median():.4f}")
-print(f"Mean coefficient: {results_df['coefficient'].mean():.4f}")
-print(f"Coefficient range: [{results_df['coefficient'].min():.4f}, {results_df['coefficient'].max():.4f}]")
+if len(results_df) > 0:
+    print(f"Positive coefficients: {(results_df['coefficient'] > 0).sum()} ({100*(results_df['coefficient'] > 0).mean():.1f}%)")
+    print(f"Negative coefficients: {(results_df['coefficient'] < 0).sum()} ({100*(results_df['coefficient'] < 0).mean():.1f}%)")
+    print(f"Significant at 5%: {(results_df['p_value'] < 0.05).sum()} ({100*(results_df['p_value'] < 0.05).mean():.1f}%)")
+    print(f"Significant at 1%: {(results_df['p_value'] < 0.01).sum()} ({100*(results_df['p_value'] < 0.01).mean():.1f}%)")
+    print(f"\nCoefficient statistics:")
+    print(f"  Mean: {results_df['coefficient'].mean():.4f}")
+    print(f"  Median: {results_df['coefficient'].median():.4f}")
+    print(f"  Min: {results_df['coefficient'].min():.4f}")
+    print(f"  Max: {results_df['coefficient'].max():.4f}")
+    print(f"  Std: {results_df['coefficient'].std():.4f}")
+else:
+    print("No results collected - all specifications failed")
 
-# Category breakdown
-print("\n--- Breakdown by Category ---")
-results_df['category'] = results_df['spec_id'].apply(lambda x: x.split('/')[0] if '/' in x else 'baseline')
-for cat in results_df['category'].unique():
-    cat_df = results_df[results_df['category'] == cat]
-    n_pos = (cat_df['coefficient'] > 0).sum()
-    n_sig = (cat_df['p_value'] < 0.05).sum()
-    print(f"{cat}: n={len(cat_df)}, positive={n_pos} ({100*n_pos/len(cat_df):.0f}%), sig@5%={n_sig} ({100*n_sig/len(cat_df):.0f}%)")
+print("\nDone!")

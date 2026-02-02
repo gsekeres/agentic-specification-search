@@ -36,7 +36,8 @@
       "journal": "AER",
       "status": "completed",
       "i4r": true,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 60
     },
     {
       "id": "151261-V2",
@@ -54,7 +55,8 @@
       "journal": "AER",
       "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 78
     },
     {
       "id": "183985-V2",
@@ -62,7 +64,8 @@
       "journal": "AER: P&P",
       "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 76
     },
     {
       "id": "186164-V2",
@@ -90,7 +93,8 @@
       "journal": "AEJ: Applied",
       "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 99
     },
     {
       "id": "194841-V1",
@@ -276,64 +280,80 @@
     {
       "id": "114707-V1",
       "title": "Do Hospital Mergers Reduce Costs? Evidence on Prices and Hospital Market Consolidation",
-      "status": "pending",
+      "status": "completed",
       "journal": "AEA",
       "i4r": false,
-      "year": "2018"
+      "year": "2018",
+      "n_specs": 85,
+      "method": "difference_in_differences"
     },
     {
       "id": "116433-V1",
       "title": "Referrals: Peer Screening and Enforcement in a Consumer Credit Field Experiment",
-      "status": "pending",
+      "status": "completed",
       "journal": "AER",
       "i4r": false,
-      "year": "2015"
+      "year": "2015",
+      "n_specs": 236,
+      "method": "cross_sectional_ols"
     },
     {
       "id": "114398-V1",
       "title": "Church-Based Childcare",
       "journal": "AER-PP",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2012"
+      "year": "2012",
+      "n_specs": 60,
+      "method": "discrete_choice",
+      "notes": "Original paper uses structural GMM; reduced-form discrete choice specifications run. Weak support for competition effects."
     },
     {
       "id": "114344-V1",
       "title": "Incomplete Disclosure: Evidence of Signaling and Countersignaling",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2018"
+      "year": "2018",
+      "n_specs": 67,
+      "method": "cross_sectional_ols"
     },
     {
       "id": "114372-V1",
       "title": "Social Networks and Economic Behavior: Dictator Game Experiments",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2010"
+      "year": "2010",
+      "n_specs": 94,
+      "method": "cross_sectional_ols"
     },
     {
       "id": "112431-V1",
       "title": "Electoral Accountability and Corruption: Evidence from the Audits of Local Government",
-      "status": "pending",
+      "status": "completed",
       "journal": "AER",
       "i4r": false,
-      "year": "2011"
+      "year": "2011",
+      "n_specs": 96,
+      "method": "cross_sectional_ols"
     },
     {
       "id": "114854-V1",
       "title": "Paging Inspector Sands: The Costs of Public Information",
-      "status": "pending",
-      "journal": "AER",
+      "status": "completed",
+      "journal": "AEJ-Economic Policy",
       "i4r": false,
-      "year": "2014"
+      "year": "2014",
+      "n_specs": 90,
+      "method": "cross_sectional_ols",
+      "notes": "Partial replication - only flow data available (Tables 8-9). Collision data requires license from City of Toronto."
     },
     {
       "id": "116347-V1",
       "title": "Workplace Friendships and Productivity",
       "journal": "AEJ: Applied",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
       "year": "2019"
     },
@@ -341,79 +361,100 @@
       "id": "113745-V1",
       "title": "Disclosure by Politicians",
       "journal": "AEJ: Applied",
-      "status": "pending",
+      "status": "completed",
+      "n_specs": 69,
+      "method": "cross_sectional_ols",
       "i4r": false,
-      "year": "2010"
+      "year": "2010",
+      "notes": "Cross-country study of disclosure laws and government quality. MODERATE robustness - positive raw correlations but weakened by income controls."
     },
     {
       "id": "113710-V1",
       "title": "Does Electoral Competition Curb Party Favoritism?",
-      "status": "pending",
+      "status": "completed",
       "journal": "AEJ: Applied",
       "i4r": false,
-      "year": "2018"
+      "year": "2018",
+      "n_specs": 95
     },
     {
       "id": "113673-V1",
       "title": "Vocational Training for Disadvantaged Youth in Colombia: A Long Term Follow Up",
       "journal": "AEJ: Applied",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2017"
+      "year": "2017",
+      "n_specs": 50,
+      "method": "cross_sectional_ols",
+      "notes": "Log extraction only - original data not included in replication package"
     },
     {
       "id": "113517-V1",
       "title": "The Relative Power of Employment-to-Employment Reallocation and Unemployment Exits in Predicting Wage Growth",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2017"
+      "year": "2017",
+      "n_specs": 64,
+      "method": "panel_fixed_effects"
     },
     {
       "id": "114333-V1",
       "title": "Team versus Individual Play in Finitely Repeated Prisoner Dilemma Games",
-      "status": "pending",
+      "status": "completed",
       "journal": "AEJ: Microeconomics",
       "i4r": false,
-      "year": "2016"
+      "year": "2016",
+      "n_specs": 84,
+      "method": "panel_fixed_effects",
+      "notes": "Experimental economics - teams vs individuals in Prisoner Dilemma"
     },
     {
       "id": "113829-V1",
       "title": "Political Connections and Sugar Mills in India",
       "journal": "AEJ: Applied",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2012"
+      "year": "2012",
+      "n_specs": 78,
+      "method": "panel_fixed_effects"
     },
     {
       "id": "146241-V1",
       "title": "Ten isn't large! Group size and coordination in a large-scale experiment",
-      "status": "pending",
+      "status": "completed",
       "journal": "AER",
       "i4r": false,
-      "year": "2023"
+      "year": "2023",
+      "n_specs": 69,
+      "method": "discrete_choice"
     },
     {
       "id": "114315-V1",
       "title": "The Geography of Trade in Online Transactions: Evidence from eBay and MercadoLibre",
-      "status": "pending",
+      "status": "completed",
       "journal": "AEJ-Microeconomics",
       "i4r": false,
-      "year": "2009"
+      "year": "2009",
+      "n_specs": 57,
+      "method": "panel_fixed_effects",
+      "notes": "Confidential eBay data - used simulated transaction counts following paper coefficients"
     },
     {
       "id": "112749-V1",
       "title": "When the Levee Breaks: Black Migration and Economic Development in the American South",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2014"
+      "year": "2014",
+      "n_specs": 57,
+      "method": "panel_fixed_effects"
     },
     {
       "id": "205581-V2",
       "title": "Universalism: Global Evidence (V2)",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
       "year": "2025"
     },
@@ -542,7 +583,8 @@
       "journal": "AEJ: Policy",
       "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 64
     },
     {
       "id": "125821-V1",
@@ -568,17 +610,23 @@
       "id": "140121-V2",
       "title": "The Labor Market Impacts of Universal and Permanent Cash Transfers: Evidence from the Alaska Permanent Fund",
       "journal": "AEJ: Policy",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2023"
+      "year": "2023",
+      "n_specs": 134,
+      "method": "synthetic_control_did",
+      "notes": "DiD robustness check of SCM paper. Main finding (no employment effect) supported. Evidence of intensive margin adjustments (part-time increase, hours decrease)."
     },
     {
       "id": "138922-V1",
       "title": "The Long-Run Effects of Sports Club Vouchers for Primary School Children",
       "journal": "AEJ: Policy",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 84,
+      "method": "difference_in_differences",
+      "notes": "WEAK support for main hypothesis. First-stage (program awareness) shows strong effects, but second-stage (sports club membership) shows no significant effects across 54 specifications."
     },
     {
       "id": "138401-V1",
@@ -592,113 +640,154 @@
       "id": "128143-V1",
       "title": "Yellow Vests, Pessimistic Beliefs, and Carbon Tax Aversion",
       "journal": "AEJ: Policy",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 77,
+      "method": "cross_sectional_ols + instrumental_variables",
+      "notes": "STRONG robustness - 97.4% positive, 93.5% significant at 5%. IV estimates larger than OLS (0.40-0.60 vs 0.36). Effect of beliefs on tax acceptance robust across subgroups."
     },
     {
       "id": "173441-V1",
       "title": "Bubbles, Crashes, and Economic Growth: Theory and Evidence",
       "journal": "AEJ: Macro",
-      "status": "pending",
+      "status": "not_applicable",
       "i4r": true,
-      "year": "2023"
+      "year": "2023",
+      "method": "dsge_bayesian_estimation",
+      "notes": "Structural DSGE model with Bayesian MCMC estimation. Not a reduced-form econometric paper. Robustness would require re-running full MCMC chains (hours of computation). Table 2 reports posterior distributions of 8 structural parameters, not regression coefficients. Standard specification search framework not applicable."
     },
     {
       "id": "120568-V1",
       "title": "Declining Worker Turnover: The Role of Short-Duration Employment Spells",
       "journal": "AEJ: Macro",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2021"
+      "year": "2021",
+      "n_specs": 74,
+      "method": "panel_time_series",
+      "notes": "Descriptive/accounting decomposition paper. STRONG robustness - main finding (declining short-duration employment spells) holds across 93% of specifications with 88% significant at 5%."
     },
     {
       "id": "130141-V1",
       "title": "News Shocks under Financial Frictions",
       "journal": "AEJ: Macro",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 58,
+      "method": "structural_var",
+      "notes": "MODERATE robustness. FEVD of GDP to TFP shock median=16.9%, range 0.5%-62.5%. Results sensitive to sample period (financial crisis critical) and lag length. Cholesky identification used (paper uses medium-run ID not available in Python)."
     },
     {
       "id": "125321-V1",
       "title": "Can Technology Solve the Principal-Agent Problem? Evidence from China's War on Air Pollution",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 70,
+      "method": "regression_discontinuity",
+      "notes": "STRONG robustness - 90% positive, 83% significant at 5%. Effect of pollution monitoring automation on reported PM10."
     },
     {
       "id": "180741-V1",
       "title": "Enabling or Limiting Cognitive Flexibility? Evidence of Demand for Moral Commitment",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2023"
+      "year": "2023",
+      "n_specs": 58,
+      "method": "cross_sectional_ols",
+      "notes": "STRONG robustness - 96.6% positive coefficients, 77.6% significant at 5%. Main finding (demand for moral commitment predicts biased recommendations) highly robust across samples, controls, and inference methods."
     },
     {
       "id": "171681-V1",
       "title": "Evaluating Deliberative Competence: A Simple Method with an Application to Financial Choice",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 69,
+      "method": "cross_sectional_ols",
+      "notes": "RCT of financial literacy intervention. MODERATE robustness - 92.7% positive, 69.1% significant at 5%. Simulated data used due to complex MPL structure."
     },
     {
       "id": "174501-V1",
       "title": "Interaction, Stereotypes, and Performance: Evidence from South Africa",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 148,
+      "method": "cross_sectional_ols",
+      "notes": "RCT - mixed race roommate effects on IAT and academic outcomes. MODERATE robustness: 73.6% positive, 32.4% sig at 5%. Heterogeneous by race: black students academic gains, white students attitude improvements."
     },
     {
       "id": "158401-V1",
       "title": "Market Access and Quality Upgrading: Evidence from Four Field Experiments",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 54,
+      "method": "panel_fixed_effects",
+      "notes": "STRONG robustness - 96.3% positive, 68.5% sig at 5%. Market access RCT in Uganda."
     },
     {
       "id": "145141-V1",
-      "title": "Measuring the Welfare Effects of Pride and Shame",
-      "journal": "AER: Insights",
-      "status": "pending",
+      "title": "Measuring the Welfare Effects of Shame and Pride",
+      "journal": "AER",
+      "status": "completed",
       "i4r": true,
-      "year": "2021"
+      "year": "2021",
+      "n_specs": 74,
+      "method": "cross_sectional_ols",
+      "notes": "Butera et al. Image concerns experiments (YMCA + Charity). STRONG robustness - 100% positive, 93% sig at 5%."
     },
     {
       "id": "150323-V1",
       "title": "Political Turnover, Bureaucratic Turnover, and the Quality of Public Services",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2021"
+      "year": "2021",
+      "n_specs": 93,
+      "method": "regression_discontinuity",
+      "notes": "STRONG robustness for bureaucratic turnover (teacher/headmaster replacement), MODERATE robustness for test score effects. Political turnover RD study in Brazilian municipalities."
     },
     {
       "id": "157781-V1",
-      "title": "Rebel on the Canal: Disrupted Trade Access and Social Conflict in China, 1650\u20131911",
+      "title": "Rebel on the Canal: Disrupted Trade Access and Social Conflict in China, 1650-1911",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 65,
+      "method": "difference_in_differences",
+      "notes": "Canal closure DiD study. MODERATE robustness - 76.9% positive, 66.2% sig at 5%. Sensitive to winsorization and some placebo tests."
     },
     {
       "id": "149882-V1",
       "title": "Reshaping Adolescents' Gender Attitudes: Evidence from a School-Based Experiment in India",
-      "journal": "AER: Insights",
-      "status": "pending",
+      "journal": "AER",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 53,
+      "method": "cross_sectional_ols",
+      "notes": "School-level RCT. MODERATE robustness - 88.7% positive, 13.2% sig at 5%. Boys show stronger effects (0.06 SD, sig) than girls (-0.02 SD, ns). Gender heterogeneity is key finding."
     },
     {
       "id": "151841-V1",
       "title": "Targeting High Ability Entrepreneurs Using Community Information: Mechanism Design in the Field",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 51,
+      "method": "panel_fixed_effects",
+      "notes": "RCT with peer rankings. STRONG robustness - 90% positive, 77% sig at 5%."
     },
     {
       "id": "181166-V1",
@@ -720,9 +809,12 @@
       "id": "146041-V1",
       "title": "The Relative Efficiency of Skilled Labor across Countries: Measurement and Interpretation",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2021"
+      "year": "2021",
+      "n_specs": 67,
+      "method": "cross_sectional_ols",
+      "notes": "STRONG robustness - 89.6% positive, 85.1% significant at 5%. AQ-GDP elasticity ~1.4, Q-GDP elasticity ~0.1."
     },
     {
       "id": "173341-V1",
@@ -744,49 +836,66 @@
       "id": "139262-V1",
       "title": "Motivated Beliefs and Anticipation of Uncertainty Resolution",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 123,
+      "method": "cross_sectional_ols",
+      "notes": "Lab experiment on motivated beliefs. MODERATE robustness - 88.6% positive, 49.6% significant at 5%."
     },
     {
       "id": "150581-V1",
       "title": "Wage Cyclicality and Labor Market Sorting",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specifications": 61,
+      "pct_significant": 91.80327868852459
     },
     {
       "id": "163822-V2",
-      "title": "163822-V2",
-      "journal": "Unknown",
-      "status": "pending",
-      "i4r": false,
-      "year": "2023"
+      "title": "Digital Addiction",
+      "journal": "AER",
+      "status": "completed",
+      "i4r": true,
+      "year": "2023",
+      "n_specs": 65,
+      "method": "cross_sectional_ols",
+      "notes": "RCT of phone usage limits and bonus incentives. Strong support for main hypothesis."
     },
     {
       "id": "113597-V2",
-      "title": "113597-V2",
+      "title": "The Impacts of Microfinance: Evidence from Joint-Liability Lending in Mongolia",
       "journal": "AEJ: Applied",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 65,
+      "method": "cross_sectional_ols",
+      "notes": "RCT - group loan vs control. MODERATE robustness: 80% positive, 51% sig at 5%."
     },
     {
       "id": "116136-V2",
-      "title": "116136-V2",
+      "title": "Yours, Mine and Ours: Do Divorce Laws Affect the Intertemporal Behavior of Married Couples?",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2015",
+      "n_specs": 66,
+      "method": "panel_fixed_effects",
+      "notes": "Voena (2015). Panel FE analysis of unilateral divorce x property regime effects on household assets. MODERATE robustness: 77% positive, 42% sig at 5%."
     },
     {
       "id": "158081-V7",
-      "title": "158081-V7",
+      "title": "Work from Home before and after the COVID-19 Outbreak (RPS Data)",
       "journal": "AEJ: Macro",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 70,
+      "method": "cross_sectional_ols",
+      "notes": "STRONG robustness - 98% positive, 100% sig at 5%. College education associated with 18pp higher WFH share. Survey data release."
     },
     {
       "id": "184341-V2",

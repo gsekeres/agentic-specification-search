@@ -21,6 +21,7 @@ Each paper is classified by primary empirical method. Select the appropriate met
 | Bunching Estimation | [methods/bunching_estimation.md](methods/bunching_estimation.md) | Kink/notch bunching elasticities |
 | Local Projection | [methods/local_projection.md](methods/local_projection.md) | Impulse responses, dynamic effects |
 | Duration/Survival | [methods/duration_survival.md](methods/duration_survival.md) | Hazard models, Cox regression |
+| DSGE Bayesian | [methods/dsge_bayesian_estimation.md](methods/dsge_bayesian_estimation.md) | Structural macro MCMC (NOT APPLICABLE) |
 
 ## Robustness Checks (Apply to All Methods)
 
