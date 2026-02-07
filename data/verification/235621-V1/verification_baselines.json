@@ -1,0 +1,24 @@
+{
+  "paper_id": "235621-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/235621-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Labor market experience has a positive and significant effect on log wages, with diminishing returns (concave wage-experience profile in a Mincerian wage equation).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "lw"
+      ],
+      "baseline_treatment_vars": [
+        "e"
+      ],
+      "notes": "Pooled OLS Mincer equation: lw = b0 + b1*e + b2*e^2 + b3*s, robust SEs, no FE. Coefficient b1 ~0.049 (4.9% per year). N=165097."
+    }
+  ],
+  "global_notes": "70 specs total. All positive and highly significant. One spec changes treatment to education (noncore). Six interaction specs classified as heterogeneity. Three functional form specs change coefficient scale."
+}

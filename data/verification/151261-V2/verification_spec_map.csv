@@ -1,0 +1,104 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+151261-V2,baseline,methods/instrumental_variables.md,s_emp,treatment,G1,baseline,1,1,core_controls,Primary baseline: IV-2SLS of treatment on employment,1.0
+151261-V2,baseline_enrollment,methods/instrumental_variables.md,s_enrolled_edu,treatment,G2,baseline_enrollment,1,1,core_controls,Baseline: IV-2SLS of treatment on enrollment,1.0
+151261-V2,baseline_income,methods/instrumental_variables.md,s_tot_income,treatment,G3,baseline_income,1,1,core_controls,Baseline: IV-2SLS of treatment on total income,1.0
+151261-V2,baseline_wstudy,methods/instrumental_variables.md,s_wstudy,treatment,G4,baseline_wstudy,1,1,core_controls,Baseline: IV-2SLS of treatment on work-study status,1.0
+151261-V2,baseline_nwnstudy,methods/instrumental_variables.md,s_nwnstudy,treatment,G5,baseline_nwnstudy,1,1,core_controls,Baseline: IV-2SLS of treatment on NEET status,1.0
+151261-V2,iv/first_stage/baseline,methods/instrumental_variables.md#first-stage,treatment,offered,,,,0,noncore_diagnostic,"First-stage regression: offered->treatment, not a test of core claim",0.95
+151261-V2,iv/first_stage/reduced_form_emp,methods/instrumental_variables.md#first-stage,s_emp,offered,G1,baseline,0,0,noncore_diagnostic,"Reduced form (ITT): offered->s_emp, diagnostic not core IV test",0.85
+151261-V2,iv/first_stage/reduced_form_enroll,methods/instrumental_variables.md#first-stage,s_enrolled_edu,offered,G2,baseline_enrollment,0,0,noncore_diagnostic,"Reduced form (ITT): offered->enrollment, diagnostic not core IV test",0.85
+151261-V2,iv/first_stage/reduced_form_income,methods/instrumental_variables.md#first-stage,s_tot_income,offered,G3,baseline_income,0,0,noncore_diagnostic,"Reduced form (ITT): offered->income, diagnostic not core IV test",0.85
+151261-V2,iv/first_stage/reduced_form_wstudy,methods/instrumental_variables.md#first-stage,s_wstudy,offered,G4,baseline_wstudy,0,0,noncore_diagnostic,"Reduced form (ITT): offered->wstudy, diagnostic not core IV test",0.85
+151261-V2,iv/first_stage/reduced_form_nwnstudy,methods/instrumental_variables.md#first-stage,s_nwnstudy,offered,G5,baseline_nwnstudy,0,0,noncore_diagnostic,"Reduced form (ITT): offered->nwnstudy, diagnostic not core IV test",0.85
+151261-V2,robust/outcome/s_soft_open,robustness/measurement.md,s_soft_open,treatment,,,,0,noncore_alt_outcome,"Different outcome (openness soft skill), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_conscien,robustness/measurement.md,s_soft_conscien,treatment,,,,0,noncore_alt_outcome,"Different outcome (conscientiousness), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_extrav,robustness/measurement.md,s_soft_extrav,treatment,,,,0,noncore_alt_outcome,"Different outcome (extraversion), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_agreeable,robustness/measurement.md,s_soft_agreeable,treatment,,,,0,noncore_alt_outcome,"Different outcome (agreeableness), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_neurotic,robustness/measurement.md,s_soft_neurotic,treatment,,,,0,noncore_alt_outcome,"Different outcome (neuroticism), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_grit,robustness/measurement.md,s_soft_grit,treatment,,,,0,noncore_alt_outcome,"Different outcome (grit), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_complydeadline,robustness/measurement.md,s_soft_complydeadline,treatment,,,,0,noncore_alt_outcome,"Different outcome (deadline compliance), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_adapt,robustness/measurement.md,s_soft_adapt,treatment,,,,0,noncore_alt_outcome,"Different outcome (adaptability), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_teamwork,robustness/measurement.md,s_soft_teamwork,treatment,,,,0,noncore_alt_outcome,"Different outcome (teamwork), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_punctuality,robustness/measurement.md,s_soft_punctuality,treatment,,,,0,noncore_alt_outcome,"Different outcome (punctuality), not a baseline claim",0.95
+151261-V2,robust/outcome/s_soft_workindex,robustness/measurement.md,s_soft_workindex,treatment,,,,0,noncore_alt_outcome,"Different outcome (work soft skills index), not a baseline claim",0.9
+151261-V2,robust/outcome/s_highsch_missedclass,robustness/measurement.md,s_highsch_missedclass,treatment,,,,0,noncore_alt_outcome,"Different outcome (missed class), not a baseline claim",0.95
+151261-V2,robust/outcome/s_highsch_whours,robustness/measurement.md,s_highsch_whours,treatment,,,,0,noncore_alt_outcome,"Different outcome (school work hours), not a baseline claim",0.95
+151261-V2,robust/outcome/s_TU_dur_study_,robustness/measurement.md,s_TU_dur_study_,treatment,,,,0,noncore_alt_outcome,"Different outcome (time use study duration), not a baseline claim",0.95
+151261-V2,robust/outcome/s_study_Grade,robustness/measurement.md,s_study_Grade,treatment,,,,0,noncore_alt_outcome,"Different outcome (study grade), not a baseline claim",0.95
+151261-V2,iv/controls/strata_only_emp,methods/instrumental_variables.md#control-sets,s_emp,treatment,G1,baseline,0,1,core_controls,Drops school/educ controls; same outcome/treatment as G1 baseline,0.95
+151261-V2,iv/controls/strata_only_enroll,methods/instrumental_variables.md#control-sets,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_controls,Drops school/educ controls; same outcome/treatment as G2 baseline,0.95
+151261-V2,iv/controls/strata_only_income,methods/instrumental_variables.md#control-sets,s_tot_income,treatment,G3,baseline_income,0,1,core_controls,Drops school/educ controls; same outcome/treatment as G3 baseline,0.95
+151261-V2,iv/controls/none_emp,methods/instrumental_variables.md#control-sets,s_emp,treatment,G1,baseline,0,1,core_controls,No controls; same outcome/treatment as G1 baseline,0.95
+151261-V2,iv/controls/none_enroll,methods/instrumental_variables.md#control-sets,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_controls,No controls; same outcome/treatment as G2 baseline,0.95
+151261-V2,iv/controls/none_income,methods/instrumental_variables.md#control-sets,s_tot_income,treatment,G3,baseline_income,0,1,core_controls,No controls; same outcome/treatment as G3 baseline,0.95
+151261-V2,iv/controls/full_emp,methods/instrumental_variables.md#control-sets,s_emp,treatment,G1,baseline,0,1,core_controls,Full controls (81 vs 70); same outcome/treatment as G1 baseline,0.95
+151261-V2,iv/controls/full_enroll,methods/instrumental_variables.md#control-sets,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_controls,Full controls (81 vs 70); same outcome/treatment as G2 baseline,0.95
+151261-V2,iv/controls/full_income,methods/instrumental_variables.md#control-sets,s_tot_income,treatment,G3,baseline_income,0,1,core_controls,Full controls (81 vs 70); same outcome/treatment as G3 baseline,0.95
+151261-V2,robust/loo/drop_female,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop female control; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_age,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop age control; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_number_kids,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop number_kids; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_b_father_comphighschool,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop father educ; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_b_mother_comphighschool,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop mother educ; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_b_books_more10,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop books; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_hours_school,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop hours_school; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_social_participant,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop social_participant; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_social_tus,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop social_tus; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_b_edu_course2015,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop edu_course2015; coef identical to baseline (suspicious),0.6
+151261-V2,robust/loo/drop_b_repprim_once,robustness/leave_one_out.md,s_emp,treatment,G1,baseline,0,1,core_controls,LOO drop repprim_once; coef identical to baseline (suspicious),0.6
+151261-V2,robust/sample/female_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Female subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/male_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Male subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/young_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Young subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/old_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Old subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/vulnerable_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Vulnerable subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/not_vulnerable_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Not vulnerable subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/high_ses_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,High SES subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/low_ses_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Low SES subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/academic_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Academic track subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/technical_emp,robustness/sample_restrictions.md,s_emp,treatment,G1,baseline,0,1,core_sample,Technical track subsample; same outcome/treatment as G1 baseline,0.9
+151261-V2,robust/sample/female_enroll,robustness/sample_restrictions.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_sample,Female subsample; same outcome/treatment as G2 baseline,0.9
+151261-V2,robust/sample/male_enroll,robustness/sample_restrictions.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_sample,Male subsample; same outcome/treatment as G2 baseline,0.9
+151261-V2,robust/sample/young_enroll,robustness/sample_restrictions.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_sample,Young subsample; same outcome/treatment as G2 baseline,0.9
+151261-V2,robust/sample/old_enroll,robustness/sample_restrictions.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_sample,Old subsample; same outcome/treatment as G2 baseline,0.9
+151261-V2,robust/sample/academic_enroll,robustness/sample_restrictions.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_sample,Academic track subsample; same outcome/treatment as G2 baseline,0.9
+151261-V2,robust/sample/technical_enroll,robustness/sample_restrictions.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_sample,Technical track subsample; same outcome/treatment as G2 baseline,0.9
+151261-V2,robust/sample/female_income,robustness/sample_restrictions.md,s_tot_income,treatment,G3,baseline_income,0,1,core_sample,Female subsample; same outcome/treatment as G3 baseline,0.9
+151261-V2,robust/sample/male_income,robustness/sample_restrictions.md,s_tot_income,treatment,G3,baseline_income,0,1,core_sample,Male subsample; same outcome/treatment as G3 baseline,0.9
+151261-V2,robust/sample/winsorize_1pct_income,robustness/sample_restrictions.md,s_tot_income_w,treatment,G3,baseline_income,0,1,core_funcform,Winsorized income at 1pct; functional form variant of G3 baseline,0.9
+151261-V2,robust/sample/trim_1pct_income,robustness/sample_restrictions.md,s_tot_income,treatment,G3,baseline_income,0,1,core_sample,Trimmed 1pct income; sample restriction of G3 baseline,0.9
+151261-V2,robust/cluster/robust_emp,robustness/clustering_variations.md,s_emp,treatment,G1,baseline,0,1,core_inference,Robust SE (same as baseline); confirms baseline inference,0.7
+151261-V2,robust/cluster/robust_enroll,robustness/clustering_variations.md,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_inference,Robust SE (same as baseline); confirms baseline inference,0.7
+151261-V2,robust/cluster/robust_income,robustness/clustering_variations.md,s_tot_income,treatment,G3,baseline_income,0,1,core_inference,Robust SE (same as baseline); confirms baseline inference,0.7
+151261-V2,iv/method/ols_emp,methods/instrumental_variables.md#estimation-method,s_emp,treatment,G1,baseline,0,1,core_method,OLS instead of IV; same outcome as G1 baseline,0.9
+151261-V2,iv/method/ols_enroll,methods/instrumental_variables.md#estimation-method,s_enrolled_edu,treatment,G2,baseline_enrollment,0,1,core_method,OLS instead of IV; same outcome as G2 baseline,0.9
+151261-V2,iv/method/ols_income,methods/instrumental_variables.md#estimation-method,s_tot_income,treatment,G3,baseline_income,0,1,core_method,OLS instead of IV; same outcome as G3 baseline,0.9
+151261-V2,iv/method/itt_emp,methods/instrumental_variables.md#estimation-method,s_emp,offered,G1,baseline,0,1,core_method,ITT (reduced form); tests same claim via different estimand,0.8
+151261-V2,iv/method/itt_enroll,methods/instrumental_variables.md#estimation-method,s_enrolled_edu,offered,G2,baseline_enrollment,0,1,core_method,ITT (reduced form); tests same claim via different estimand,0.8
+151261-V2,iv/method/itt_income,methods/instrumental_variables.md#estimation-method,s_tot_income,offered,G3,baseline_income,0,1,core_method,ITT (reduced form); tests same claim via different estimand,0.8
+151261-V2,robust/funcform/log_income,robustness/functional_form.md,log_income,treatment,G3,baseline_income,0,1,core_funcform,Log transform of income; functional form variant of G3 baseline,0.9
+151261-V2,robust/funcform/ihs_income,robustness/functional_form.md,ihs_income,treatment,G3,baseline_income,0,1,core_funcform,IHS transform of income; functional form variant of G3 baseline,0.9
+151261-V2,robust/heterogeneity/tus_participant_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity: TUS participant subgroup, not a robustness check",0.85
+151261-V2,robust/heterogeneity/non_tus_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity: non-TUS subgroup, not a robustness check",0.85
+151261-V2,robust/heterogeneity/first_time_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: first-time applicants subgroup,0.85
+151261-V2,robust/heterogeneity/morning_school_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: morning school subgroup,0.85
+151261-V2,robust/heterogeneity/afternoon_school_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: afternoon school subgroup,0.85
+151261-V2,robust/heterogeneity/low_ability_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: low ability subgroup,0.85
+151261-V2,robust/heterogeneity/high_ability_emp,robustness/heterogeneity.md,s_emp,treatment,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: high ability subgroup,0.85
+151261-V2,robust/placebo/balance_female,robustness/placebo_tests.md,female,offered,,,,0,noncore_placebo,"Balance test: lottery on gender, not a core claim",0.95
+151261-V2,robust/placebo/balance_age,robustness/placebo_tests.md,age,offered,,,,0,noncore_placebo,"Balance test: lottery on age, not a core claim",0.95
+151261-V2,robust/placebo/balance_b_mother_comphighschool,robustness/placebo_tests.md,b_mother_comphighschool,offered,,,,0,noncore_placebo,"Balance test: lottery on mother educ, not a core claim",0.95
+151261-V2,robust/placebo/balance_b_father_comphighschool,robustness/placebo_tests.md,b_father_comphighschool,offered,,,,0,noncore_placebo,"Balance test: lottery on father educ, not a core claim",0.95
+151261-V2,robust/placebo/balance_b_books_more10,robustness/placebo_tests.md,b_books_more10,offered,,,,0,noncore_placebo,"Balance test: lottery on books indicator, not a core claim",0.95
+151261-V2,robust/placebo/balance_educ_sec_acad,robustness/placebo_tests.md,educ_sec_acad,offered,,,,0,noncore_placebo,"Balance test: lottery on academic track, not a core claim",0.95
+151261-V2,robust/placebo/balance_educ_sec_tech,robustness/placebo_tests.md,educ_sec_tech,offered,,,,0,noncore_placebo,"Balance test: lottery on technical track, not a core claim",0.95
+151261-V2,robust/outcome/s_pension_contrib,robustness/measurement.md,s_pension_contrib,treatment,G1,baseline,0,1,core_method,Pension contributions proxy for formal employment; related to G1,0.7
+151261-V2,robust/outcome/s_emp_public,robustness/measurement.md,s_emp_public,treatment,,,,0,noncore_alt_outcome,"Different outcome (public employment type), not baseline claim",0.9
+151261-V2,robust/outcome/s_small_firm,robustness/measurement.md,s_small_firm,treatment,,,,0,noncore_alt_outcome,"Different outcome (small firm employment), not baseline claim",0.9
+151261-V2,robust/outcome/s_ind_manuf,robustness/measurement.md,s_ind_manuf,treatment,,,,0,noncore_alt_outcome,"Different outcome (manufacturing industry), not baseline claim",0.95
+151261-V2,robust/outcome/s_ind_trade,robustness/measurement.md,s_ind_trade,treatment,,,,0,noncore_alt_outcome,"Different outcome (trade industry), not baseline claim",0.95
+151261-V2,robust/outcome/s_ind_finserv,robustness/measurement.md,s_ind_finserv,treatment,,,,0,noncore_alt_outcome,"Different outcome (financial services), not baseline claim",0.95
+151261-V2,robust/outcome/s_ind_pubserv,robustness/measurement.md,s_ind_pubserv,treatment,,,,0,noncore_alt_outcome,"Different outcome (public services), not baseline claim",0.95
+151261-V2,robust/control/add_female,robustness/control_progression.md,s_emp,treatment,G1,baseline,0,1,core_controls,Stepwise adding female control; same outcome as G1 baseline,0.9
+151261-V2,robust/control/add_age,robustness/control_progression.md,s_emp,treatment,G1,baseline,0,1,core_controls,Stepwise adding age control; same outcome as G1 baseline,0.9
+151261-V2,robust/control/add_number_kids,robustness/control_progression.md,s_emp,treatment,G1,baseline,0,1,core_controls,Stepwise adding number_kids; same outcome as G1 baseline,0.9
+151261-V2,robust/control/add_b_father_comphighschool,robustness/control_progression.md,s_emp,treatment,G1,baseline,0,1,core_controls,Stepwise adding father educ; same outcome as G1 baseline,0.9
+151261-V2,robust/control/add_b_mother_comphighschool,robustness/control_progression.md,s_emp,treatment,G1,baseline,0,1,core_controls,Stepwise adding mother educ; same outcome as G1 baseline,0.9

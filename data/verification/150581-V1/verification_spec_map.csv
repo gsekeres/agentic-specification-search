@@ -1,0 +1,62 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+150581-V1,baseline/table2_col1,methods/panel_fixed_effects.md#baseline,lhrp2,unempl,G1,baseline/table2_col1,1,1,core_controls,Baseline Table 2 col 1 minimal controls,1.0
+150581-V1,baseline/table2_col2,methods/panel_fixed_effects.md#baseline,lhrp2,unempl,G1,baseline/table2_col2,1,1,core_controls,Baseline Table 2 col 2 adds EE UE transition indicators,1.0
+150581-V1,baseline/table2_col3,methods/panel_fixed_effects.md#baseline,lhrp2,unempl,G1,baseline/table2_col3,1,1,core_controls,Baseline Table 2 col 3 adds mismatch control,1.0
+150581-V1,baseline/table2_col4,methods/panel_fixed_effects.md#baseline,lhrp2,unempl,G1,baseline/table2_col4,1,1,core_controls,Baseline Table 2 col 4 adds full interactions,1.0
+150581-V1,baseline/table2_col5,methods/panel_fixed_effects.md#baseline,lhrp2,unempl,G1,baseline/table2_col5,1,1,core_controls,Baseline Table 2 col 5 over/under-qualification split,1.0
+150581-V1,robust/control/drop_age,robustness/leave_one_out.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_controls,Leave-one-out dropping age; same outcome treatment FE,1.0
+150581-V1,robust/control/drop_education,robustness/leave_one_out.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_controls,Leave-one-out dropping education; same estimand,1.0
+150581-V1,robust/control/drop_tenure,robustness/leave_one_out.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_controls,Leave-one-out dropping tenure; same estimand,1.0
+150581-V1,robust/control/drop_mismatch,robustness/leave_one_out.md,lhrp2,unempl,G1,baseline/table2_col2,0,1,core_controls,Leave-one-out dropping mismatch; identical to col2,1.0
+150581-V1,robust/control/drop_timetrend,robustness/leave_one_out.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_controls,Leave-one-out dropping time trend; same estimand,1.0
+150581-V1,robust/control/drop_monthfe,robustness/leave_one_out.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_controls,Leave-one-out dropping month FE; same estimand,1.0
+150581-V1,robust/control/minimal,robustness/control_progression.md,lhrp2,unempl,G1,baseline/table2_col1,0,1,core_controls,Minimal controls (EE UE only); tests robustness to controls,1.0
+150581-V1,robust/control/add_age,robustness/control_progression.md,lhrp2,unempl,G1,baseline/table2_col2,0,1,core_controls,Control progression adding age; same estimand,1.0
+150581-V1,robust/control/add_educ,robustness/control_progression.md,lhrp2,unempl,G1,baseline/table2_col2,0,1,core_controls,Control progression adding education; same estimand,1.0
+150581-V1,robust/control/add_tenure,robustness/control_progression.md,lhrp2,unempl,G1,baseline/table2_col2,0,1,core_controls,Control progression adding tenure; same estimand,1.0
+150581-V1,robust/control/add_mismatch,robustness/control_progression.md,lhrp2,unempl,G1,baseline/table2_col2,0,1,core_controls,Control progression adding mismatch; same estimand,1.0
+150581-V1,robust/sample/drop_recession,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Drops 2008-2010 recession years; same estimand,1.0
+150581-V1,robust/sample/pre_2000,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Pre-2000 subsample; same estimand different period,0.9
+150581-V1,robust/sample/post_2000,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Post-2000 subsample; same estimand different period,0.9
+150581-V1,robust/sample/post_1985,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Post-1985 subsample; same estimand,0.9
+150581-V1,robust/sample/young_workers,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Young workers (age<35) subsample; same estimand,0.85
+150581-V1,robust/sample/older_workers,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Older workers (age>=35) subsample; same estimand,0.85
+150581-V1,robust/sample/college,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,College graduates subsample; same estimand,0.85
+150581-V1,robust/sample/noncollege,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Non-college subsample; same estimand,0.85
+150581-V1,robust/sample/white,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,White workers subsample; same estimand,0.85
+150581-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Wages winsorized at 1%; outlier robustness,0.95
+150581-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Wages winsorized at 5%; outlier robustness,0.95
+150581-V1,robust/sample/drop_1990s,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Drops 1990s decade; same estimand,0.9
+150581-V1,robust/sample/drop_2000s,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Drops 2000s decade; same estimand,0.9
+150581-V1,robust/sample/drop_2010s,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Drops 2010s decade; same estimand,0.9
+150581-V1,robust/sample/tenure_under_10yr,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Tenure <= 10 years subsample; same estimand,0.9
+150581-V1,robust/sample/high_mismatch,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,High mismatch subsample; same estimand,0.85
+150581-V1,robust/sample/low_mismatch,robustness/sample_restrictions.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_sample,Low mismatch subsample; same estimand,0.85
+150581-V1,robust/outcome/wage_level,robustness/measurement.md,wage_level,unempl,G1,baseline/table2_col4,0,1,core_funcform,Level wages instead of log; same claim different scale,0.85
+150581-V1,robust/outcome/wage_ihs,robustness/functional_form.md,wage_ihs,unempl,G1,baseline/table2_col4,0,1,core_funcform,IHS transform instead of log; preserves interpretation,0.95
+150581-V1,robust/outcome/wage_standardized,robustness/measurement.md,lhrp2_std,unempl,G1,baseline/table2_col4,0,1,core_funcform,Standardized log wages; rescaling only,0.95
+150581-V1,robust/treatment/regional_unemp,robustness/measurement.md,lhrp2,unempl_region,G1,baseline/table2_col4,0,0,noncore_alt_treatment,Uses regional unemployment; different treatment variable changes causal object,0.75
+150581-V1,robust/treatment/unemp_standardized,robustness/measurement.md,lhrp2,unempl_std,G1,baseline/table2_col4,0,1,core_funcform,Standardized unemployment; rescaling only preserves estimand,0.9
+150581-V1,robust/treatment/high_unemp_dummy,robustness/measurement.md,lhrp2,high_unemp,G1,baseline/table2_col4,0,0,noncore_alt_treatment,Binary high-unemp dummy changes functional form and estimand fundamentally,0.7
+150581-V1,robust/cluster/hetero_robust,robustness/clustering_variations.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_inference,Heteroskedasticity-robust SE; same point estimate different inference,1.0
+150581-V1,robust/cluster/year_month,robustness/clustering_variations.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_inference,Cluster by year-month; same point estimate different inference,1.0
+150581-V1,robust/cluster/year,robustness/clustering_variations.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_inference,Cluster by year; same point estimate different inference,1.0
+150581-V1,robust/cluster/region,robustness/clustering_variations.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_inference,Cluster by region; same point estimate different inference,1.0
+150581-V1,robust/cluster/iid,robustness/clustering_variations.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_inference,IID standard errors; same point estimate different inference,1.0
+150581-V1,robust/estimation/no_fe,robustness/model_specification.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_fe,No FE (OLS); tests importance of FE structure,0.8
+150581-V1,robust/estimation/id_fe_only,robustness/model_specification.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_fe,Individual FE only; tests importance of industry-year occ-year FE,0.8
+150581-V1,robust/estimation/year_fe_only,robustness/model_specification.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_fe,Year FE only; tests importance of individual FE,0.8
+150581-V1,robust/estimation/id_year_fe,robustness/model_specification.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_fe,Individual + year FE; intermediate FE structure,0.85
+150581-V1,robust/estimation/id_industry_fe,robustness/model_specification.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_fe,Individual + industry FE; intermediate FE structure,0.8
+150581-V1,robust/estimation/id_occ_fe,robustness/model_specification.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_fe,Individual + occupation FE; intermediate FE structure,0.8
+150581-V1,robust/heterogeneity/by_education,robustness/heterogeneity.md,lhrp2,unempl,G1,baseline/table2_col4,0,0,noncore_heterogeneity,Interaction unemp*education; tests heterogeneity not main effect,0.85
+150581-V1,robust/heterogeneity/by_race,robustness/heterogeneity.md,lhrp2,unempl,G1,baseline/table2_col4,0,0,noncore_heterogeneity,Interaction unemp*white; tests heterogeneity not main effect,0.85
+150581-V1,robust/heterogeneity/by_region,robustness/heterogeneity.md,lhrp2,unempl,G1,baseline/table2_col4,0,0,noncore_heterogeneity,Interaction unemp*region; tests heterogeneity not main effect,0.85
+150581-V1,robust/heterogeneity/by_mismatch_level,robustness/heterogeneity.md,lhrp2,unempl,G1,baseline/table2_col4,0,0,noncore_heterogeneity,Interaction unemp*high_mismatch; tests heterogeneity not main effect,0.85
+150581-V1,robust/heterogeneity/triple_interact_educ,robustness/heterogeneity.md,lhrp2,unempl,G1,baseline/table2_col4,0,0,noncore_heterogeneity,Triple interaction with education; tests heterogeneity not main effect,0.85
+150581-V1,robust/placebo/lagged_unemp,robustness/placebo_tests.md,lhrp2,unempl_lag1,G1,baseline/table2_col4,0,0,noncore_placebo,Lagged unemployment as treatment; placebo/timing test,0.9
+150581-V1,robust/placebo/lead_unemp,robustness/placebo_tests.md,lhrp2,unempl_lead1,G1,baseline/table2_col4,0,0,noncore_placebo,Lead unemployment as treatment; placebo/timing test,0.9
+150581-V1,robust/placebo/random_transitions,robustness/placebo_tests.md,lhrp2,unempl,G1,baseline/table2_col4,0,0,noncore_placebo,Randomized transition indicators; placebo test,0.9
+150581-V1,robust/funcform/cubic_tenure,robustness/functional_form.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_funcform,Cubic tenure instead of quadratic; same estimand,0.95
+150581-V1,robust/funcform/cubic_age,robustness/functional_form.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_funcform,Cubic age instead of quadratic; same estimand,0.95
+150581-V1,robust/funcform/log_mismatch,robustness/functional_form.md,lhrp2,unempl,G1,baseline/table2_col4,0,1,core_funcform,Log mismatch instead of linear; same estimand,0.9

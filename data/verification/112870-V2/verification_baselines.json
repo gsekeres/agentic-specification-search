@@ -1,0 +1,39 @@
+{
+  "paper_id": "112870-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112870-V2",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Higher UI benefits (log weekly benefit amount) increase log unemployment rates in a state-year-age panel with state, year, and part fixed effects.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_pooled"
+      ],
+      "baseline_outcome_vars": [
+        "lnun"
+      ],
+      "baseline_treatment_vars": [
+        "lnwba"
+      ],
+      "notes": "Pooled specification with state+year+part FE, demographics and education controls, clustered at state. Coefficient=-0.476. Most robustness specs branch from this model."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "The unemployment elasticity with respect to UI benefits varies systematically across age groups, with differential responsiveness by age.",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "lnun"
+      ],
+      "baseline_treatment_vars": [
+        "lnwba"
+      ],
+      "notes": "Age-interaction baseline with lnwba x age group dummies. Base coefficient=0.508 for youngest group. No robustness specs directly test a comparable age-interaction model."
+    }
+  ],
+  "global_notes": "Spec search focused on CPS aggregate panel analysis. 52 specs total. One spec (subsample_nonwhite) has missing SE. Sign discrepancy between baselines warrants attention."
+}

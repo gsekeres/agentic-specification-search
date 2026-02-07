@@ -1,0 +1,54 @@
+{
+  "paper_id": "206781-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/206781-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Cash transfers increase household consumption (time-demeaned) in the GiveDirectly Kenya RCT.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/el_cons_T_hh"
+      ],
+      "baseline_outcome_vars": [
+        "el_cons_T_hh"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Primary consumption outcome. Coefficient ~286 PPP USD, p<0.001."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Cash transfers increase household assets (time-demeaned) in the GiveDirectly Kenya RCT.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/el_assets_T_hh"
+      ],
+      "baseline_outcome_vars": [
+        "el_assets_T_hh"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Primary assets outcome. Coefficient ~189 PPP USD, p<1e-11."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Cash transfers increase household income (time-demeaned) in the GiveDirectly Kenya RCT.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/el_income_T_hh"
+      ],
+      "baseline_outcome_vars": [
+        "el_income_T_hh"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Primary income outcome. Coefficient ~75 PPP USD, p=0.086. Weakest baseline."
+    }
+  ],
+  "global_notes": "Three baseline outcomes. Most robustness specs focus on G1 (consumption). Heterogeneity interaction specs report main coefficient for omitted subgroup."
+}

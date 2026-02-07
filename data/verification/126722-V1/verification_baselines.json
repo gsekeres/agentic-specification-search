@@ -1,0 +1,24 @@
+{
+  "paper_id": "126722-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/126722-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Patient vouchers for antimalarial drugs increase the probability that patients purchase any malaria treatment (simple or severe).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "treat_sev_simple_mal"
+      ],
+      "baseline_treatment_vars": [
+        "patient_voucher"
+      ],
+      "notes": "Single baseline from RCT in Mali. Coef 0.153 (SE=0.038, p<0.001). Includes 35 date dummies as controls, clustered at clinic-day level."
+    }
+  ],
+  "global_notes": "92 total specs. One primary claim (patient voucher increases treatment purchase). Alternative outcomes, heterogeneity interactions, placebos are non-core. Two het specs report interaction coefficient (treatment_var=patient_voucher_high). doctor_voucher_only and any_voucher change the treatment variable."
+}

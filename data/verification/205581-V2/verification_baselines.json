@@ -1,0 +1,54 @@
+{
+  "paper_id": "205581-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/205581-V2",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Moral framing treatment increases composite universalism scores (univ_overall) relative to baseline framing, controlling for demographics with country FE.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/univ_overall"
+      ],
+      "baseline_outcome_vars": [
+        "univ_overall"
+      ],
+      "baseline_treatment_vars": [
+        "moral_treatment"
+      ],
+      "notes": "Primary outcome. Coefficient ~0.554 on 0-100 scale, p<0.001. Baseline uses full controls (age, agesq, male_num, college, city, income_code), country FE, strata-clustered SEs."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Moral framing treatment increases domestic universalism (in-group vs domestic stranger allocation).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/univ_domestic"
+      ],
+      "baseline_outcome_vars": [
+        "univ_domestic"
+      ],
+      "baseline_treatment_vars": [
+        "moral_treatment"
+      ],
+      "notes": "Secondary outcome decomposing overall universalism. Coefficient ~0.392, p=0.006. Same specification as G1 but different outcome."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Moral framing treatment increases foreign universalism (in-group vs foreign stranger allocation).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/univ_foreign"
+      ],
+      "baseline_outcome_vars": [
+        "univ_foreign"
+      ],
+      "baseline_treatment_vars": [
+        "moral_treatment"
+      ],
+      "notes": "Secondary outcome decomposing overall universalism. Coefficient ~0.678, p<0.001. Same specification as G1 but different outcome."
+    }
+  ],
+  "global_notes": "Paper has three baseline outcomes representing the same treatment effect decomposed: overall, domestic, and foreign universalism. Most robustness specifications focus on the primary outcome (univ_overall) in G1. Several specifications are exact duplicates of baseline (same coefficient/SE), including: robust/cluster/strata, robust/estimation/country_fe_only, robust/funcform/quadratic_age, robust/weights/survey_weighted, robust/sample/complete_cases, and robust/control/add_income_code. The heterogeneity specs report the main effect coefficient from an interaction model, not the interaction term itself, which makes them difficult to interpret as tests of the main claim. Some outcome variations (raw data, difference) and treatment variations (deserving, moral_vs_deserving, three-arm) change the estimand."
+}

@@ -1,0 +1,27 @@
+{
+  "paper_id": "120078-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120078-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Ethnic minority hosts on Airbnb charge lower prices (ethnic price gap), measured by minodummy coefficient in log_price regression with city-wave and/or neighborhood fixed effects.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_table2_col1",
+        "baseline_table2_col2",
+        "baseline_table2_col3",
+        "baseline_table2_col4"
+      ],
+      "baseline_outcome_vars": [
+        "log_price"
+      ],
+      "baseline_treatment_vars": [
+        "minodummy"
+      ],
+      "notes": "Table 2 columns 1-4. Col4 with block+city-wave FE + controls is preferred. All measure same estimand under different conditioning sets."
+    }
+  ],
+  "global_notes": "77 valid specifications with no missing/invalid data. Main claim: ethnic minority hosts receive lower Airbnb prices. Heterogeneity specs report main effect of minodummy from interaction models (reference group effect). robust/control/none is numerically identical to baseline_table2_col1."
+}

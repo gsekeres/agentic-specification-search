@@ -1,0 +1,84 @@
+{
+  "paper_id": "208341-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/208341-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Land rental subsidies increase agricultural value added for Kenyan farmers.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ETwadj_ag_va1_r6_qaB_1"
+      ],
+      "baseline_outcome_vars": [
+        "ETwadj_ag_va1_r6_qaB_1"
+      ],
+      "baseline_treatment_vars": [
+        "rental_subsidy"
+      ],
+      "notes": "Primary claim. ITT effect. Coefficient ~19.84, p=0.15."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Land rental subsidies increase plot cultivation probability.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ETd2_1_plot_use_cltvtd_1"
+      ],
+      "baseline_outcome_vars": [
+        "ETd2_1_plot_use_cltvtd_1"
+      ],
+      "baseline_treatment_vars": [
+        "rental_subsidy"
+      ],
+      "notes": "Secondary outcome. Coefficient ~0.031, p=0.14."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Land rental subsidies increase agricultural input expenditure.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ETd34_ag_inputs1_B_1"
+      ],
+      "baseline_outcome_vars": [
+        "ETd34_ag_inputs1_B_1"
+      ],
+      "baseline_treatment_vars": [
+        "rental_subsidy"
+      ],
+      "notes": "Secondary outcome. Coefficient -1.89, p=0.86."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Land rental subsidies affect land rental expenditure.",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "baseline/ETL_val_1"
+      ],
+      "baseline_outcome_vars": [
+        "ETL_val_1"
+      ],
+      "baseline_treatment_vars": [
+        "rental_subsidy"
+      ],
+      "notes": "Land value outcome. Coefficient -3.53, p=0.19."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Land rental subsidies increase harvest value.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ETe1_3_h_value1_qa_1"
+      ],
+      "baseline_outcome_vars": [
+        "ETe1_3_h_value1_qa_1"
+      ],
+      "baseline_treatment_vars": [
+        "rental_subsidy"
+      ],
+      "notes": "Secondary outcome. Coefficient ~14.42, p=0.17."
+    }
+  ],
+  "global_notes": "RCT with 5 baseline outcomes. Primary claim is G1 (value added). Cash_drop specs are non-core alt treatment. First stage, mechanism, placebo are diagnostics."
+}

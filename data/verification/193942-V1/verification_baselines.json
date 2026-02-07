@@ -1,0 +1,39 @@
+{
+  "paper_id": "193942-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/193942-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Gavi vaccine program introduction increases vaccine coverage rates in recipient countries.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "coverage"
+      ],
+      "baseline_treatment_vars": [
+        "post"
+      ],
+      "notes": "Three-way FE (country-disease, cohort-disease, country-cohort), clustered at country. Coef=3.60pp, p<1e-7. Primary paper claim."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Gavi vaccine program introduction reduces child mortality rates.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "did/outcome/mortality_baseline"
+      ],
+      "baseline_outcome_vars": [
+        "rate"
+      ],
+      "baseline_treatment_vars": [
+        "post"
+      ],
+      "notes": "Mortality baseline shows POSITIVE coef (654.71, p=0.015), opposite of expected sign. Likely data reconstruction issue."
+    }
+  ],
+  "global_notes": "Two main claims: (1) coverage increase (strongly supported), (2) mortality reduction (wrong sign in reconstructed data). Placebo test (BCG) shows significant positive effect, potentially undermining causal interpretation."
+}

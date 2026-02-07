@@ -1,0 +1,39 @@
+{
+  "paper_id": "128143-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/128143-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Pessimistic beliefs about personal gains from a carbon tax with dividend reduce support for the policy.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "tax_acceptance"
+      ],
+      "baseline_treatment_vars": [
+        "believes_not_lose"
+      ],
+      "notes": "OLS of tax_acceptance on believes_not_lose with full controls. Self-interest channel (Table 4)."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Beliefs about environmental effectiveness of carbon tax increase policy approval.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_ee"
+      ],
+      "baseline_outcome_vars": [
+        "tax_approval"
+      ],
+      "baseline_treatment_vars": [
+        "believes_effective"
+      ],
+      "notes": "Environmental effectiveness channel. tax_approval outcome, believes_effective treatment."
+    }
+  ],
+  "global_notes": "Two channels: self-interest and environmental effectiveness. Drop_left/right/extreme_right identical to baseline (zero coefficients). Some alt outcome specs also change treatment."
+}

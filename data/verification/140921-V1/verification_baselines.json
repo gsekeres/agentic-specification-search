@@ -1,0 +1,58 @@
+{
+  "paper_id": "140921-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/140921-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Interruption of London Season increased probability aristocratic daughters married commoner.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "cOut"
+      ],
+      "baseline_treatment_vars": [
+        "syntheticT"
+      ],
+      "notes": "Primary outcome. Coef 0.0043, p=0.052."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Interruption decreased probability of marrying an heir.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_mheir"
+      ],
+      "baseline_outcome_vars": [
+        "mheir"
+      ],
+      "baseline_treatment_vars": [
+        "syntheticT"
+      ],
+      "notes": "Flip side of G1."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Interruption increased landholding mismatch between spouses.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_fmissmatch",
+        "baseline_fmissmatch2",
+        "baseline_fdown"
+      ],
+      "baseline_outcome_vars": [
+        "fmissmatch",
+        "fmissmatch2",
+        "fdown"
+      ],
+      "baseline_treatment_vars": [
+        "syntheticT"
+      ],
+      "notes": "Signs: fmissmatch +, fmissmatch2 -, fdown +."
+    }
+  ],
+  "global_notes": "Primary cOut borderline (p=0.052). Reduced form=baseline. Placebo biorder sig at 5%. Multiple duplicates."
+}

@@ -1,0 +1,129 @@
+{
+  "paper_id": "116433-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116433-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Enforcement reduces loan default rates.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_charged_off_enforcement"
+      ],
+      "baseline_outcome_vars": [
+        "charged_off"
+      ],
+      "baseline_treatment_vars": [
+        "enforcement"
+      ],
+      "notes": "Primary result."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Enforcement increases repayment.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_repaid_enforcement"
+      ],
+      "baseline_outcome_vars": [
+        "repaid"
+      ],
+      "baseline_treatment_vars": [
+        "enforcement"
+      ],
+      "notes": "coef=-0.094, p=0.056."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Enforcement reduces interest owed.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_interest_enforcement"
+      ],
+      "baseline_outcome_vars": [
+        "interest"
+      ],
+      "baseline_treatment_vars": [
+        "enforcement"
+      ],
+      "notes": "coef=-0.188, p=0.002."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Enforcement reduces portion unpaid.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_portion_enforcement"
+      ],
+      "baseline_outcome_vars": [
+        "portion"
+      ],
+      "baseline_treatment_vars": [
+        "enforcement"
+      ],
+      "notes": "coef=-0.129, p=0.017."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Selection reduces default rates.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_charged_off_selection"
+      ],
+      "baseline_outcome_vars": [
+        "charged_off"
+      ],
+      "baseline_treatment_vars": [
+        "selection"
+      ],
+      "notes": "Insignificant."
+    },
+    {
+      "baseline_group_id": "G6",
+      "claim_summary": "Selection increases repayment.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_repaid_selection"
+      ],
+      "baseline_outcome_vars": [
+        "repaid"
+      ],
+      "baseline_treatment_vars": [
+        "selection"
+      ],
+      "notes": "Insignificant."
+    },
+    {
+      "baseline_group_id": "G7",
+      "claim_summary": "Selection reduces interest owed.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_interest_selection"
+      ],
+      "baseline_outcome_vars": [
+        "interest"
+      ],
+      "baseline_treatment_vars": [
+        "selection"
+      ],
+      "notes": "Insignificant."
+    },
+    {
+      "baseline_group_id": "G8",
+      "claim_summary": "Selection reduces portion unpaid.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_portion_selection"
+      ],
+      "baseline_outcome_vars": [
+        "portion"
+      ],
+      "baseline_treatment_vars": [
+        "selection"
+      ],
+      "notes": "Insignificant."
+    }
+  ],
+  "global_notes": "2x2 factorial RCT. Many binary-outcome sample restrictions identical to baseline. low_income_repaid specs show identical coefs for enforcement and selection suggesting extraction bug. Heterogeneity/interaction specs change treatment variable."
+}

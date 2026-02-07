@@ -1,0 +1,77 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+183985-V2,baseline,methods/difference_in_differences.md,ltest,treat_post,G1,baseline,1,1,core_controls,Baseline spec: Panel FE DiD for log test scores with name_id FE and robust SE.,1.0
+183985-V2,did/fe/none,methods/difference_in_differences.md#fixed-effects,ltest,treat_post,G1,baseline,0,1,core_fe,Pooled OLS without individual FE; tests sensitivity to removing name_id FE.,0.95
+183985-V2,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,ltest,treat_post,G1,baseline,0,1,core_fe,Time FE only (post FE); drops individual FE from baseline.,0.95
+183985-V2,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,ltest,treat_post,G1,baseline,0,1,core_fe,Two-way FE (name_id + post); adds explicit time FE to baseline.,0.95
+183985-V2,did/controls/demographics,methods/difference_in_differences.md#control-sets,ltest,treat_post,G1,baseline,0,1,core_controls,Adds demographic controls without individual FE.,0.9
+183985-V2,did/controls/gpa,methods/difference_in_differences.md#control-sets,ltest,treat_post,G1,baseline,0,1,core_controls,Adds GPA categorical control to baseline Panel FE spec.,0.95
+183985-V2,did/controls/full,methods/difference_in_differences.md#control-sets,ltest,treat_post,G1,baseline,0,1,core_controls,Full controls (demographics+GPA+job+major) without individual FE.,0.9
+183985-V2,robust/funcform/levels,robustness/functional_form.md,test,treat_post,G1,baseline,0,1,core_funcform,Outcome in levels instead of log; same estimand different scale.,0.9
+183985-V2,robust/funcform/ihs,robustness/functional_form.md,ihs_test,treat_post,G1,baseline,0,1,core_funcform,IHS transformation instead of log; near-identical to baseline.,0.95
+183985-V2,robust/funcform/standardized,robustness/functional_form.md,test_std,treat_post,G1,baseline,0,1,core_funcform,Standardized test score outcome; same estimand in SD units.,0.9
+183985-V2,robust/sample/drop_low_baseline,robustness/sample_restrictions.md,ltest,treat_post,G1,baseline,0,1,core_sample,Drops bottom 10pct of baseline test scores.,0.95
+183985-V2,robust/sample/drop_high_baseline,robustness/sample_restrictions.md,ltest,treat_post,G1,baseline,0,1,core_sample,Drops top 10pct of baseline test scores.,0.95
+183985-V2,robust/sample/winsor_5pct,robustness/sample_restrictions.md,ltest_wins,treat_post,G1,baseline,0,1,core_sample,Winsorized outcome at 5pct tails.,0.9
+183985-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,ltest,treat_post,G1,baseline,0,1,core_sample,Trims 1pct from each tail of test score distribution.,0.95
+183985-V2,robust/sample/complete_demographics,robustness/sample_restrictions.md,ltest,treat_post,G1,baseline,0,1,core_sample,Restricts to students with complete demographic data.,0.95
+183985-V2,robust/sample/drop_zeros,robustness/sample_restrictions.md,ltest,treat_post,G1,baseline,0,1,core_sample,Drops zero test scores; identical result to baseline.,0.85
+183985-V2,robust/het/emoji_sad,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: sad-emoji recipients only.,0.9
+183985-V2,robust/het/emoji_neut_low,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: neutral-low emoji recipients only.,0.9
+183985-V2,robust/het/emoji_neut_high,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: neutral-high emoji recipients only.,0.9
+183985-V2,robust/het/emoji_happy,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: happy-emoji recipients only.,0.9
+183985-V2,robust/het/by_gender_male,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: male students only.,0.9
+183985-V2,robust/het/by_gender_female,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: female students only.,0.9
+183985-V2,robust/het/interaction_gender,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Gender interaction; treat_post coef is male-specific not average.,0.85
+183985-V2,robust/het/underclassmen,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: underclassmen only.,0.9
+183985-V2,robust/het/upperclassmen,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: upperclassmen only.,0.9
+183985-V2,robust/het/econ_major,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: econ majors only.,0.9
+183985-V2,robust/het/non_econ_major,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: non-econ majors only.,0.9
+183985-V2,robust/het/has_job,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: students with jobs.,0.9
+183985-V2,robust/het/no_job,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: students without jobs.,0.9
+183985-V2,robust/het/high_gpa,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: high GPA students.,0.9
+183985-V2,robust/het/low_gpa,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: low GPA students.,0.9
+183985-V2,robust/het/white,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: white students.,0.9
+183985-V2,robust/het/nonwhite,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: non-white students.,0.9
+183985-V2,robust/het/first_econ,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: first econ course students.,0.9
+183985-V2,robust/het/not_first_econ,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: not first econ course.,0.9
+183985-V2,robust/het/high_course_load,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: high course load students.,0.9
+183985-V2,robust/het/low_course_load,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: low course load students.,0.9
+183985-V2,robust/het/high_baseline_test,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: high baseline test score students.,0.9
+183985-V2,robust/het/low_baseline_test,robustness/heterogeneity.md,ltest,treat_post,G1,baseline,0,0,noncore_heterogeneity,Subgroup: low baseline test score students.,0.9
+183985-V2,robust/outcome/pass_fail,methods/difference_in_differences.md,pass,treat_post,G1,baseline,0,1,core_funcform,Pass/fail binary; alternative operationalization of exam performance.,0.8
+183985-V2,robust/outcome/grade_b_or_better,methods/difference_in_differences.md,grade_b,treat_post,G1,baseline,0,1,core_funcform,B-or-better binary; alternative operationalization of exam performance.,0.8
+183985-V2,robust/outcome/grade_a,methods/difference_in_differences.md,grade_a,treat_post,G1,baseline,0,1,core_funcform,A-grade binary; alternative operationalization of exam performance.,0.8
+183985-V2,did/outcome/quiz_score,methods/difference_in_differences.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,1,1,core_controls,Baseline for quiz score outcome (G2).,1.0
+183985-V2,did/outcome/attendance,methods/difference_in_differences.md,attend,treat_post,G3,did/outcome/attendance,1,1,core_controls,Baseline for attendance outcome (G3).,1.0
+183985-V2,did/outcome/attendance_nofe,methods/difference_in_differences.md#fixed-effects,attend,treat_post,G3,did/outcome/attendance,0,1,core_fe,Attendance without individual FE (pooled OLS).,0.9
+183985-V2,did/outcome/attend_twfe,methods/difference_in_differences.md#fixed-effects,attend,treat_post,G3,did/outcome/attendance,0,1,core_fe,Attendance with TWFE (name_id + class_day).,0.95
+183985-V2,did/outcome/quiz_twfe,methods/difference_in_differences.md#fixed-effects,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,1,core_fe,Quiz score with TWFE (name_id + class_day).,0.95
+183985-V2,robust/het/quiz_emoji_sad,robustness/heterogeneity.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,0,noncore_heterogeneity,Subgroup: quiz for sad-emoji recipients.,0.9
+183985-V2,robust/het/quiz_emoji_neut_low,robustness/heterogeneity.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,0,noncore_heterogeneity,Subgroup: quiz for neutral-low emoji recipients.,0.9
+183985-V2,robust/het/quiz_emoji_neut_high,robustness/heterogeneity.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,0,noncore_heterogeneity,Subgroup: quiz for neutral-high emoji recipients.,0.9
+183985-V2,robust/het/quiz_emoji_happy,robustness/heterogeneity.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,0,noncore_heterogeneity,Subgroup: quiz for happy-emoji recipients.,0.9
+183985-V2,robust/het/quiz_male,robustness/heterogeneity.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,0,noncore_heterogeneity,Subgroup: quiz for male students.,0.9
+183985-V2,robust/het/quiz_female,robustness/heterogeneity.md,q_score_cond,treat_post,G2,did/outcome/quiz_score,0,0,noncore_heterogeneity,Subgroup: quiz for female students.,0.9
+183985-V2,robust/het/attend_male,robustness/heterogeneity.md,attend,treat_post,G3,did/outcome/attendance,0,0,noncore_heterogeneity,Subgroup: attendance for male students.,0.9
+183985-V2,robust/het/attend_female,robustness/heterogeneity.md,attend,treat_post,G3,did/outcome/attendance,0,0,noncore_heterogeneity,Subgroup: attendance for female students.,0.9
+183985-V2,did/outcome/hw_attempted,methods/difference_in_differences.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,1,1,core_controls,Baseline for homework attempt outcome (G4).,1.0
+183985-V2,did/outcome/hw_score,methods/difference_in_differences.md,hw_score_cond,treat_post,,,0,0,noncore_alt_outcome,HW score conditional on attempt; different outcome from hw_binary.,0.8
+183985-V2,did/outcome/hw_attempted_nofe,methods/difference_in_differences.md#fixed-effects,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,1,core_fe,HW attempt without individual FE (pooled OLS).,0.9
+183985-V2,did/outcome/hw_twfe,methods/difference_in_differences.md#fixed-effects,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,1,core_fe,HW attempt with TWFE (name_id + hw_number).,0.95
+183985-V2,robust/het/hw_emoji_sad,robustness/heterogeneity.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,0,noncore_heterogeneity,Subgroup: HW attempt for sad-emoji recipients.,0.9
+183985-V2,robust/het/hw_emoji_neut_low,robustness/heterogeneity.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,0,noncore_heterogeneity,Subgroup: HW attempt for neutral-low emoji recipients.,0.9
+183985-V2,robust/het/hw_emoji_neut_high,robustness/heterogeneity.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,0,noncore_heterogeneity,Subgroup: HW attempt for neutral-high emoji recipients.,0.9
+183985-V2,robust/het/hw_emoji_happy,robustness/heterogeneity.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,0,noncore_heterogeneity,Subgroup: HW attempt for happy-emoji recipients.,0.9
+183985-V2,robust/het/hw_male,robustness/heterogeneity.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,0,noncore_heterogeneity,Subgroup: HW attempt for male students.,0.9
+183985-V2,robust/het/hw_female,robustness/heterogeneity.md,hw_binary,treat_post,G4,did/outcome/hw_attempted,0,0,noncore_heterogeneity,Subgroup: HW attempt for female students.,0.9
+183985-V2,robust/se/hc1,robustness/clustering_variations.md,ltest,treat_post,G1,baseline,0,1,core_inference,HC1 robust SE; identical to baseline which already uses robust SE.,0.85
+183985-V2,robust/cluster/treatment,robustness/clustering_variations.md,ltest,treat_post,G1,baseline,0,0,invalid,Clustering on treatment (2 clusters) gives degenerate SE near 0.,0.99
+183985-V2,robust/cluster/emoji,robustness/clustering_variations.md,ltest,treat_post,G1,baseline,0,1,core_inference,Clusters SE at emoji-category level.,0.85
+183985-V2,robust/cluster/gpa,robustness/clustering_variations.md,ltest,treat_post,G1,baseline,0,1,core_inference,Clusters SE at GPA category level; uses GPA-control spec.,0.8
+183985-V2,robust/placebo/baseline_balance,robustness/placebo_tests.md,ltest1,treatment,G1,baseline,0,0,noncore_placebo,Balance check: treatment on pre-treatment test scores.,0.95
+183985-V2,robust/placebo/pre_quiz_trend,robustness/placebo_tests.md,q_score_cond,fake_treat_post,G2,did/outcome/quiz_score,0,0,noncore_placebo,Pre-trend placebo for quiz using fake treatment timing.,0.95
+183985-V2,robust/placebo/pre_hw_trend,robustness/placebo_tests.md,hw_binary,fake_treat_post,G4,did/outcome/hw_attempted,0,0,noncore_placebo,Pre-trend placebo for HW attempt using fake treatment timing.,0.95
+183985-V2,robust/placebo/pre_attend_trend,robustness/placebo_tests.md,attend,fake_treat_post,G3,did/outcome/attendance,0,0,noncore_placebo,Pre-trend placebo for attendance using fake treatment timing.,0.95
+183985-V2,robust/funcform/first_difference,robustness/functional_form.md,test_change,treatment,G1,baseline,0,1,core_method,First-difference on treatment; equivalent estimand to DiD.,0.9
+183985-V2,robust/funcform/log_first_diff,robustness/functional_form.md,ltest_change,treatment,G1,baseline,0,1,core_method,Log first-difference on treatment; equivalent to baseline DiD.,0.9
+183985-V2,robust/funcform/first_diff_controls,robustness/functional_form.md,test_change,treatment,G1,baseline,0,1,core_method,First-difference with demographic controls.,0.9

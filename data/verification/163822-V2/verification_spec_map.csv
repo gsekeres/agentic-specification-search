@@ -1,0 +1,66 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+163822-V2,baseline,methods/cross_sectional_ols.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,1,1,core_controls,Baseline specification for Bonus treatment on FITSBY usage,1.0
+163822-V2,baseline_limit,methods/cross_sectional_ols.md,PD_P3_UsageFITSBY,L (Limit),G2,baseline_limit,1,1,core_controls,Baseline specification for Limit treatment on FITSBY usage,1.0
+163822-V2,robust/control/none,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; drops all controls (bivariate),0.95
+163822-V2,robust/control/baseline_only,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; controls baseline usage only,0.95
+163822-V2,robust/control/full_demographics,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; adds demographic controls,0.95
+163822-V2,robust/control/drop_strat_2,robustness/leave_one_out.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; drops stratification var 2,0.95
+163822-V2,robust/control/drop_strat_3,robustness/leave_one_out.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; drops stratification var 3,0.95
+163822-V2,robust/control/drop_strat_4,robustness/leave_one_out.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; drops stratification var 4,0.95
+163822-V2,robust/control/drop_strat_5,robustness/leave_one_out.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; drops stratification var 5,0.95
+163822-V2,robust/control/drop_strat_6,robustness/leave_one_out.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; drops stratification var 6,0.95
+163822-V2,robust/control/add_PD_P1_UsageFITSBY,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; progressive control addition step,0.95
+163822-V2,robust/control/add_strat_2,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; progressive control addition step,0.95
+163822-V2,robust/control/add_strat_3,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; progressive control addition step,0.95
+163822-V2,robust/control/add_strat_4,robustness/control_progression.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/treatment/sample; progressive control addition step,0.95
+163822-V2,robust/outcome/usage_total,robustness/measurement.md,PD_P3_Usage,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (total usage all apps vs FITSBY apps only),0.9
+163822-V2,robust/outcome/usage_p4,robustness/measurement.md,PD_P4_UsageFITSBY,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome period (Period 4 post-treatment vs Period 3 during treatment),0.85
+163822-V2,robust/outcome/usage_p432,robustness/measurement.md,PD_P432_UsageFITSBY,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome period (Periods 4+3+2 average vs Period 3 only),0.8
+163822-V2,robust/outcome/usage_p5432,robustness/measurement.md,PD_P5432_UsageFITSBY,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome period (Periods 5+4+3+2 average vs Period 3 only),0.8
+163822-V2,robust/outcome/swb_index,robustness/measurement.md,S3_SWBIndex_N,B (Bonus),,baseline,0,0,noncore_alt_outcome,Entirely different outcome concept (subjective well-being vs usage),0.95
+163822-V2,robust/outcome/addiction_index,robustness/measurement.md,S3_AddictionIndex_N,B (Bonus),,baseline,0,0,noncore_alt_outcome,Entirely different outcome concept (addiction index vs usage),0.95
+163822-V2,robust/outcome/sms_index,robustness/measurement.md,S3_SMSIndex_N,B (Bonus),,baseline,0,0,noncore_alt_outcome,Entirely different outcome concept (SMS index vs usage),0.95
+163822-V2,robust/outcome/app_facebook,robustness/measurement.md,PD_P3_Usage_Facebook,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (Facebook usage alone is a subcomponent not the aggregate),0.85
+163822-V2,robust/outcome/app_instagram,robustness/measurement.md,PD_P3_Usage_Instagram,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (Instagram usage alone is a subcomponent not the aggregate),0.85
+163822-V2,robust/outcome/app_twitter,robustness/measurement.md,PD_P3_Usage_Twitter,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (Twitter usage alone is a subcomponent not the aggregate),0.85
+163822-V2,robust/outcome/app_snapchat,robustness/measurement.md,PD_P3_Usage_Snapchat,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (Snapchat usage alone is a subcomponent not the aggregate),0.85
+163822-V2,robust/outcome/app_browser,robustness/measurement.md,PD_P3_Usage_Browser,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (Browser usage alone is a subcomponent not the aggregate),0.85
+163822-V2,robust/outcome/app_youtube,robustness/measurement.md,PD_P3_Usage_YouTube,B (Bonus),G1,baseline,0,0,noncore_alt_outcome,Different outcome (YouTube usage alone is a subcomponent not the aggregate),0.85
+163822-V2,robust/sample/male,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to male subsample,0.9
+163822-V2,robust/sample/female,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to female subsample,0.9
+163822-V2,robust/sample/young,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to young (age<30) subsample,0.9
+163822-V2,robust/sample/old,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to old (age>=30) subsample,0.9
+163822-V2,robust/sample/low_usage,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to low baseline usage subsample,0.9
+163822-V2,robust/sample/high_usage,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to high baseline usage subsample,0.9
+163822-V2,robust/sample/low_education,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to low education subsample,0.9
+163822-V2,robust/sample/high_education,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; restricts to high education subsample,0.9
+163822-V2,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; winsorizes outcome at 1%/99% to handle outliers,0.95
+163822-V2,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; winsorizes outcome at 5%/95% to handle outliers,0.95
+163822-V2,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; winsorizes outcome at 10%/90% to handle outliers,0.95
+163822-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; trims sample at 1%/99% extremes,0.95
+163822-V2,robust/sample/trim_5pct,robustness/sample_restrictions.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_sample,Same outcome/treatment; trims sample at 5%/95% extremes,0.95
+163822-V2,robust/funcform/log,robustness/functional_form.md,"log(PD_P3_UsageFITSBY+1)",B (Bonus),G1,baseline,0,1,core_funcform,Same treatment/sample; log transformation of outcome preserves direction,0.9
+163822-V2,robust/funcform/ihs,robustness/functional_form.md,arcsinh(PD_P3_UsageFITSBY),B (Bonus),G1,baseline,0,1,core_funcform,Same treatment/sample; inverse hyperbolic sine transformation of outcome,0.9
+163822-V2,robust/funcform/quadratic_baseline,robustness/functional_form.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_funcform,Same outcome/treatment/sample; adds quadratic baseline control,0.95
+163822-V2,robust/inference/classical_se,robustness/inference_alternatives.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_inference,Same outcome/treatment/sample/controls; uses classical (OLS) standard errors,0.95
+163822-V2,robust/inference/hc2_se,robustness/inference_alternatives.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_inference,Same outcome/treatment/sample/controls; uses HC2 robust standard errors,0.95
+163822-V2,robust/inference/hc3_se,robustness/inference_alternatives.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_inference,Same outcome/treatment/sample/controls; uses HC3 robust standard errors,0.95
+163822-V2,robust/heterogeneity/gender_main,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B (Bonus) x gender,G1,baseline,0,0,noncore_heterogeneity,Main effect from interaction model; not unconditional ATE,0.85
+163822-V2,robust/heterogeneity/gender_interaction,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B x gender (interaction),,baseline,0,0,noncore_heterogeneity,Interaction term testing differential treatment effect by gender,0.95
+163822-V2,robust/heterogeneity/age_main,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B (Bonus) x age,G1,baseline,0,0,noncore_heterogeneity,Main effect from interaction model; not unconditional ATE,0.85
+163822-V2,robust/heterogeneity/age_interaction,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B x age (interaction),,baseline,0,0,noncore_heterogeneity,Interaction term testing differential treatment effect by age,0.95
+163822-V2,robust/heterogeneity/baseline_usage_main,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B (Bonus) x baseline_usage,G1,baseline,0,0,noncore_heterogeneity,Main effect from interaction model; not unconditional ATE,0.85
+163822-V2,robust/heterogeneity/baseline_usage_interaction,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B x baseline_usage (interaction),,baseline,0,0,noncore_heterogeneity,Interaction term testing differential treatment effect by baseline usage,0.95
+163822-V2,robust/heterogeneity/education_main,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B (Bonus) x education,G1,baseline,0,0,noncore_heterogeneity,Main effect from interaction model; not unconditional ATE,0.85
+163822-V2,robust/heterogeneity/education_interaction,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B x education (interaction),,baseline,0,0,noncore_heterogeneity,Interaction term testing differential treatment effect by education,0.95
+163822-V2,robust/heterogeneity/addiction_main,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B (Bonus) x addiction,G1,baseline,0,0,noncore_heterogeneity,Main effect from interaction model; not unconditional ATE,0.85
+163822-V2,robust/heterogeneity/addiction_interaction,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B x addiction (interaction),,baseline,0,0,noncore_heterogeneity,Interaction term testing differential treatment effect by addiction level,0.95
+163822-V2,robust/heterogeneity/restriction_main,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B (Bonus) x restriction,G1,baseline,0,0,noncore_heterogeneity,Main effect from interaction model; not unconditional ATE,0.85
+163822-V2,robust/heterogeneity/restriction_interaction,robustness/heterogeneity.md,PD_P3_UsageFITSBY,B x restriction (interaction),,baseline,0,0,noncore_heterogeneity,Interaction term testing differential treatment effect by restriction,0.95
+163822-V2,robust/treatment/limit_nocontrols,robustness/control_progression.md,PD_P3_UsageFITSBY,L (Limit),G2,baseline_limit,0,1,core_controls,Same outcome/treatment as G2; drops all controls (bivariate),0.95
+163822-V2,robust/treatment/limit_fullcontrols,robustness/control_progression.md,PD_P3_UsageFITSBY,L (Limit),G2,baseline_limit,0,1,core_controls,Same outcome/treatment as G2; adds demographic controls,0.95
+163822-V2,robust/treatment/both_bonus,robustness/model_specification.md,PD_P3_UsageFITSBY,B (Bonus),G1,baseline,0,1,core_controls,Same outcome/sample for G1; adds Limit treatment as control,0.9
+163822-V2,robust/treatment/both_limit,robustness/model_specification.md,PD_P3_UsageFITSBY,L (Limit),G2,baseline_limit,0,1,core_controls,Same outcome/sample for G2; adds Bonus treatment as control,0.9
+163822-V2,robust/placebo/baseline_outcome,robustness/placebo_tests.md,PD_P1_UsageFITSBY,B (Bonus),,baseline,0,0,noncore_placebo,Placebo: tests Bonus effect on pre-treatment (Period 1) usage,0.95
+163822-V2,robust/placebo/education,robustness/placebo_tests.md,S1_Education,B (Bonus),,baseline,0,0,noncore_placebo,Placebo: tests Bonus effect on pre-treatment education (balance check),0.95
+163822-V2,robust/placebo/income,robustness/placebo_tests.md,S1_Income,B (Bonus),,baseline,0,0,noncore_placebo,Placebo: tests Bonus effect on pre-treatment income (balance check),0.95

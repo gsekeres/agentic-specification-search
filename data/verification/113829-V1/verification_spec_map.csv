@@ -1,0 +1,79 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+113829-V1,baseline,methods/panel_fixed_effects.md#baseline,rprice,interall,G1,baseline,1,1,core_controls,Baseline specification (Table 2 Col 2),1.0
+113829-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,rprice,interall,G1,baseline,0,1,core_fe,FE variation: no FE,0.95
+113829-V1,panel/fe/unit,methods/panel_fixed_effects.md#fixed-effects-structure,rprice,interall,G1,baseline,0,1,core_fe,FE variation: mill FE only,0.95
+113829-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,rprice,interall,G1,baseline,0,1,core_fe,FE variation: year FE only,0.95
+113829-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,rprice,interall,G1,baseline,0,1,core_fe,Two-way FE identical to baseline,1.0
+113829-V1,robust/control/none,robustness/leave_one_out.md,rprice,interall,G1,baseline,0,1,core_controls,Control variation: none,0.95
+113829-V1,robust/control/capacity_only,robustness/single_covariate.md,rprice,interall,G1,baseline,0,1,core_controls,Control variation: capacity only,0.95
+113829-V1,robust/control/rain_levels_only,robustness/leave_one_out.md,rprice,interall,G1,baseline,0,1,core_controls,"Control variation: capacity, monthly rainfall (no deviation",0.95
+113829-V1,robust/control/rain_devs_only,robustness/leave_one_out.md,rprice,interall,G1,baseline,0,1,core_controls,"Control variation: capacity, rainfall deviations (no levels",0.95
+113829-V1,robust/loo/drop_capacity,robustness/leave_one_out.md,rprice,interall,G1,baseline,0,1,core_controls,Control variation: rainfall controls (no capacity),0.95
+113829-V1,robust/control/full,robustness/control_progression.md,rprice,interall,G1,baseline,0,1,core_controls,"Control variation: capacity, recovery, propbreakdown, props",0.95
+113829-V1,robust/control/add_recovery,robustness/control_progression.md,rprice,interall,G1,baseline,0,1,core_controls,"Control variation: capacity, recovery, rainfall",0.95
+113829-V1,robust/control/minimal,robustness/control_progression.md,rprice,interall,G1,baseline,0,1,core_controls,Capacity only (dup of capacity_only),0.9
+113829-V1,robust/loo/drop_polcon,robustness/leave_one_out.md,rprice,interall,G1,baseline,0,1,core_controls,"Control variation: capacity, rainfall (no polcon main effec",0.95
+113829-V1,robust/treatment/pcconnected,robustness/measurement.md,rprice,pcconnected,G1,baseline,0,0,noncore_alt_treatment,Different treatment: pcconnected,0.85
+113829-V1,robust/treatment/acconnected,robustness/measurement.md,rprice,acconnected,G1,baseline,0,0,noncore_alt_treatment,Different treatment: acconnected,0.85
+113829-V1,robust/treatment/pcinter,robustness/measurement.md,rprice,pcinter,G1,baseline,0,0,noncore_alt_treatment,Different treatment: pcinter,0.85
+113829-V1,robust/treatment/acinter,robustness/measurement.md,rprice,acinter,G1,baseline,0,0,noncore_alt_treatment,Different treatment: acinter,0.85
+113829-V1,robust/treatment/polcon_only,robustness/measurement.md,rprice,polcon,G1,baseline,0,0,noncore_alt_treatment,Different treatment: polcon,0.85
+113829-V1,robust/treatment/interall_9497,robustness/measurement.md,rprice,interall_9497,G1,baseline,0,0,noncore_alt_treatment,Different treatment: interall_9497,0.85
+113829-V1,robust/outcome/lnrprice,robustness/functional_form.md#outcome-variable-transformations,lnrprice,interall,G1,baseline,0,1,core_funcform,Log price is func form of same outcome,0.9
+113829-V1,robust/outcome/recovery,robustness/functional_form.md,recovery,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: recovery,0.9
+113829-V1,robust/outcome/notinoperation,robustness/functional_form.md,notinoperation,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: notinoperation,0.9
+113829-V1,robust/outcome/actualhours,robustness/functional_form.md,actualhours,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: actualhours,0.9
+113829-V1,robust/outcome/canecrushed,robustness/functional_form.md,canecrushed,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: canecrushed,0.9
+113829-V1,robust/outcome/propbreakdown,robustness/functional_form.md,propbreakdown,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: propbreakdown,0.9
+113829-V1,robust/outcome/propshortage,robustness/functional_form.md,propshortage,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: propshortage,0.9
+113829-V1,robust/outcome/lime,robustness/functional_form.md,lime,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: lime,0.9
+113829-V1,robust/outcome/sulphur,robustness/functional_form.md,sulphur,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: sulphur,0.9
+113829-V1,robust/outcome/caneplant,robustness/functional_form.md,caneplant,interall,G1,baseline,0,0,noncore_alt_outcome,Different outcome: caneplant,0.9
+113829-V1,robust/cluster/robust_hc,robustness/clustering_variations.md#alternative-se-methods,rprice,interall,G1,baseline,0,1,core_inference,Clustering variation: hetero,0.95
+113829-V1,robust/cluster/year,robustness/clustering_variations.md#single-level-clustering,rprice,interall,G1,baseline,0,1,core_inference,Clustering variation: year,0.95
+113829-V1,robust/cluster/twoway_mill_year,robustness/clustering_variations.md#two-way-clustering,rprice,interall,G1,baseline,0,1,core_inference,"Clustering variation: {'CRV1': ['tabfinal', 'year']}",0.95
+113829-V1,robust/sample/early_period,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: 1993-1999,0.9
+113829-V1,robust/sample/late_period,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: 2000-2005,0.9
+113829-V1,robust/sample/exclude_first_year,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude 1993,0.9
+113829-V1,robust/sample/exclude_last_year,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude 2005,0.9
+113829-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md#outlier-handling,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: winsorized 1/99 pct,0.9
+113829-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md#outlier-handling,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: winsorized 5/95 pct,0.9
+113829-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outlier-handling,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: trim 1/99 pct,0.9
+113829-V1,robust/sample/polcheck_mills,robustness/sample_restrictions.md#treatment-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: mills with any political connection ever,0.9
+113829-V1,robust/sample/no_polcheck_mills,robustness/sample_restrictions.md#treatment-based-restrictions,rprice,capacity,G1,baseline,0,0,invalid,Treatment is capacity not interall,0.95
+113829-V1,robust/sample/large_mills,robustness/sample_restrictions.md#geographic/unit-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: above median capacity,0.9
+113829-V1,robust/sample/small_mills,robustness/sample_restrictions.md#geographic/unit-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: below median capacity,0.9
+113829-V1,robust/sample/min_obs_5,robustness/sample_restrictions.md#panel-specific,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: mills with 5+ observations,0.9
+113829-V1,robust/sample/drop_year_1993,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1993,0.9
+113829-V1,robust/sample/drop_year_1994,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1994,0.9
+113829-V1,robust/sample/drop_year_1995,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1995,0.9
+113829-V1,robust/sample/drop_year_1996,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1996,0.9
+113829-V1,robust/sample/drop_year_1997,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1997,0.9
+113829-V1,robust/sample/drop_year_1998,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1998,0.9
+113829-V1,robust/sample/drop_year_1999,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 1999,0.9
+113829-V1,robust/sample/drop_year_2000,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 2000,0.9
+113829-V1,robust/sample/drop_year_2001,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 2001,0.9
+113829-V1,robust/sample/drop_year_2002,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 2002,0.9
+113829-V1,robust/sample/drop_year_2003,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 2003,0.9
+113829-V1,robust/sample/drop_year_2004,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 2004,0.9
+113829-V1,robust/sample/drop_year_2005,robustness/sample_restrictions.md#time-based-restrictions,rprice,interall,G1,baseline,0,1,core_sample,Sample restriction: exclude year 2005,0.9
+113829-V1,robust/form/y_asinh,robustness/functional_form.md#outcome-variable-transformations,rprice_ihs,interall,G1,baseline,0,1,core_funcform,Functional form: outcome=rprice_ihs,0.9
+113829-V1,robust/form/quadratic_capacity,robustness/functional_form.md#nonlinear-specifications,rprice,interall,G1,baseline,0,1,core_funcform,Functional form: outcome=rprice,0.9
+113829-V1,robust/form/log_capacity,robustness/functional_form.md#control-variable-transformations,rprice,interall,G1,baseline,0,1,core_funcform,Functional form: outcome=rprice,0.9
+113829-V1,robust/form/y_standardized,robustness/functional_form.md#outcome-variable-transformations,rprice_std,interall,G1,baseline,0,1,core_funcform,Functional form: outcome=rprice_std,0.9
+113829-V1,robust/placebo/party_power,robustness/placebo_tests.md#outcome-placebos,rprice,partyinstate,G1,baseline,0,0,noncore_placebo,Placebo: treat=partyinstate out=rprice,0.95
+113829-V1,robust/placebo/outcome_capacity,robustness/placebo_tests.md#outcome-placebos,capacity,interall,G1,baseline,0,0,noncore_placebo,Placebo: treat=interall out=capacity,0.95
+113829-V1,robust/placebo/election_timing,robustness/placebo_tests.md,rprice,allin_int,G1,baseline,0,0,noncore_placebo,Placebo: treat=allin_int out=rprice,0.95
+113829-V1,robust/placebo/post_election,robustness/placebo_tests.md#temporal-placebos,rprice,pcinterafter,G1,baseline,0,0,noncore_placebo,Placebo: treat=pcinterafter out=rprice,0.95
+113829-V1,robust/het/close_election,robustness/heterogeneity.md#treatment-related-heterogeneity,rprice,close_all:interall,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treatment=close_all:interall,0.85
+113829-V1,robust/het/by_capacity,robustness/heterogeneity.md#baseline-characteristics,rprice,interall:high_capacity,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treatment=interall:high_capacity,0.85
+113829-V1,robust/het/by_period,robustness/heterogeneity.md#time-based-heterogeneity,rprice,interall:year_late,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treatment=interall:year_late,0.85
+113829-V1,robust/het/national_vs_state,robustness/heterogeneity.md,rprice,pcinter,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treatment=pcinter,0.85
+113829-V1,robust/het/win_vs_lose_pc,robustness/heterogeneity.md#treatment-related-heterogeneity,rprice,pcwin,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treatment=pcwin,0.85
+113829-V1,robust/het/win_vs_lose_ac,robustness/heterogeneity.md#treatment-related-heterogeneity,rprice,acwin,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treatment=acwin,0.85
+113829-V1,robust/het/subsample_high_capacity,robustness/heterogeneity.md#baseline-characteristics,rprice,interall,G1,baseline,0,1,core_sample,Subsample split: high capacity mills,0.85
+113829-V1,robust/het/subsample_low_capacity,robustness/heterogeneity.md#baseline-characteristics,rprice,interall,G1,baseline,0,1,core_sample,Subsample split: low capacity mills,0.85
+113829-V1,custom/pcall_pcinter,custom,rprice,pcinter,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: pcinter,0.85
+113829-V1,custom/acall_acinter,custom,rprice,acinter,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: acinter,0.85
+113829-V1,custom/election_season_pc,custom,rprice,pcinlse,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: pcinlse,0.85
+113829-V1,custom/election_season_ac,custom,rprice,acine,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: acine,0.85

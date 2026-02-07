@@ -1,0 +1,94 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+134041-V1,baseline,methods/cross_sectional_ols.md#baseline,z_lmpolicy_index,T1,G1,baseline,1,1,core_controls,Baseline specification: primary composite policy index,1.0
+134041-V1,baseline,methods/cross_sectional_ols.md#baseline,quotaanchor,T1,G2,baseline,1,1,core_controls,Baseline specification: individual policy item quotaanchor,1.0
+134041-V1,baseline,methods/cross_sectional_ols.md#baseline,AAanchor,T1,G2,baseline,1,1,core_controls,Baseline specification: individual policy item AAanchor,1.0
+134041-V1,baseline,methods/cross_sectional_ols.md#baseline,legislationanchor,T1,G2,baseline,1,1,core_controls,Baseline specification: individual policy item legislationanchor,1.0
+134041-V1,baseline,methods/cross_sectional_ols.md#baseline,transparencyanchor,T1,G2,baseline,1,1,core_controls,Baseline specification: individual policy item transparencyanchor,1.0
+134041-V1,baseline,methods/cross_sectional_ols.md#baseline,childcare,T1,G2,baseline,1,1,core_controls,Baseline specification: individual policy item childcare,1.0
+134041-V1,robust/control/none_z_lmpolicy_index,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,No controls bivariate; same outcome and treatment as G1,0.95
+134041-V1,robust/control/none_quotaanchor,robustness/control_progression.md,quotaanchor,T1,G2,baseline,0,1,core_controls,No controls bivariate; same outcome and treatment as G2 quotaanchor,0.95
+134041-V1,robust/control/none_AAanchor,robustness/control_progression.md,AAanchor,T1,G2,baseline,0,1,core_controls,No controls bivariate; same outcome and treatment as G2 AAanchor,0.95
+134041-V1,robust/loo/drop_wave,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop wave control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_gender,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop gender control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_prior,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop prior control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_democrat,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop democrat control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_indep,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop indep control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_otherpol,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop otherpol control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_midwest,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop midwest control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_south,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop south control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_west,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop west control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_age1,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop age1 control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_age2,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop age2 control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_age3,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop age3 control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_age4,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop age4 control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_anychildren,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop anychildren control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_loghhinc,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop loghhinc control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_associatemore,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop associatemore control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_fulltime,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop fulltime control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_parttime,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop parttime control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_selfemp,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop selfemp control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_unemp,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop unemp control; same outcome/treatment as G1,0.95
+134041-V1,robust/loo/drop_student,robustness/leave_one_out.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,LOO drop student control; same outcome/treatment as G1,0.95
+134041-V1,robust/control/add_wave,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to wave; same estimand,0.95
+134041-V1,robust/control/add_gender,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to gender; same estimand,0.95
+134041-V1,robust/control/add_prior,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to prior; same estimand,0.95
+134041-V1,robust/control/add_democrat,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to democrat; same estimand,0.95
+134041-V1,robust/control/add_indep,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to indep; same estimand,0.95
+134041-V1,robust/control/add_otherpol,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to otherpol; same estimand,0.95
+134041-V1,robust/control/add_midwest,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to midwest; same estimand,0.95
+134041-V1,robust/control/add_south,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to south; same estimand,0.95
+134041-V1,robust/control/add_west,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to west; same estimand,0.95
+134041-V1,robust/control/add_age1,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Incremental add controls up to age1; same estimand,0.95
+134041-V1,robust/sample/wave_1,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Wave 1 subsample; same outcome/treatment as G1,0.9
+134041-V1,robust/sample/wave_2,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Wave 2 subsample; same outcome/treatment as G1,0.9
+134041-V1,robust/sample/male_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Male subsample; same outcome/treatment as G1,0.85
+134041-V1,robust/sample/female_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Female subsample; same outcome/treatment as G1,0.85
+134041-V1,robust/sample/democrats_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Democrats subsample; same outcome/treatment as G1,0.85
+134041-V1,robust/sample/republicans_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Republicans subsample; same outcome/treatment as G1,0.85
+134041-V1,robust/sample/independents_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Independents subsample; same outcome/treatment as G1,0.85
+134041-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Trimmed 5/95 percentile; same outcome/treatment as G1,0.9
+134041-V1,robust/sample/northeast_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Northeast subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/midwest_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Midwest subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/south_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,South subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/west_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,West subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/age1_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Age group 1 subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/age2_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Age group 2 subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/age3_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Age group 3 subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/age4_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Age group 4 subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/sample/age5_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Age group 5 subsample; same outcome/treatment as G1,0.8
+134041-V1,robust/outcome/quotaanchor,robustness/measurement.md,quotaanchor,T1,G2,baseline,0,0,invalid,Exact duplicate of G2 baseline quotaanchor (same coef/p),0.95
+134041-V1,robust/outcome/AAanchor,robustness/measurement.md,AAanchor,T1,G2,baseline,0,0,invalid,Exact duplicate of G2 baseline AAanchor (same coef/p),0.95
+134041-V1,robust/outcome/legislationanchor,robustness/measurement.md,legislationanchor,T1,G2,baseline,0,0,invalid,Exact duplicate of G2 baseline legislationanchor (same coef/p),0.95
+134041-V1,robust/outcome/transparencyanchor,robustness/measurement.md,transparencyanchor,T1,G2,baseline,0,0,invalid,Exact duplicate of G2 baseline transparencyanchor (same coef/p),0.95
+134041-V1,robust/outcome/childcare,robustness/measurement.md,childcare,T1,G2,baseline,0,0,invalid,Exact duplicate of G2 baseline childcare (same coef/p),0.95
+134041-V1,robust/outcome/z_mani_index,robustness/measurement.md,z_mani_index,T1,,,0,0,noncore_alt_outcome,Manipulation check index; different claim than policy demand,0.9
+134041-V1,robust/outcome/large,robustness/measurement.md,large,T1,,,0,0,noncore_alt_outcome,Manipulation check item (large); different claim than policy,0.9
+134041-V1,robust/outcome/problem,robustness/measurement.md,problem,T1,,,0,0,noncore_alt_outcome,Manipulation check item (problem); different claim than policy,0.9
+134041-V1,robust/outcome/govmore,robustness/measurement.md,govmore,T1,,,0,0,noncore_alt_outcome,Manipulation check item (govmore); different claim than policy,0.9
+134041-V1,robust/inference/unweighted,robustness/inference_alternatives.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_inference,Unweighted OLS; same outcome/treatment as G1,0.95
+134041-V1,robust/inference/hc2,robustness/clustering_variations.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_inference,HC2 robust SE; same coef different inference,0.95
+134041-V1,robust/inference/hc3,robustness/clustering_variations.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_inference,HC3 robust SE; same coef different inference,0.95
+134041-V1,robust/cluster/wave,robustness/clustering_variations.md,z_lmpolicy_index,T1,G1,baseline,0,0,invalid,Clustered by wave (2 clusters); inference invalid,0.9
+134041-V1,robust/het/interaction_gender,robustness/heterogeneity.md,z_lmpolicy_index,T1,G1,baseline,0,0,noncore_heterogeneity,Interaction T1 x gender; changes estimand to conditional ATE,0.85
+134041-V1,robust/het/interaction_democrat,robustness/heterogeneity.md,z_lmpolicy_index,T1,G1,baseline,0,0,noncore_heterogeneity,Interaction T1 x democrat; changes estimand to conditional ATE,0.85
+134041-V1,robust/het/interaction_independent,robustness/heterogeneity.md,z_lmpolicy_index,T1,G1,baseline,0,0,noncore_heterogeneity,Interaction T1 x independent; changes estimand to conditional ATE,0.85
+134041-V1,robust/het/interaction_education,robustness/heterogeneity.md,z_lmpolicy_index,T1,G1,baseline,0,0,noncore_heterogeneity,Interaction T1 x education; changes estimand to conditional ATE,0.85
+134041-V1,robust/het/interaction_employee,robustness/heterogeneity.md,z_lmpolicy_index,T1,G1,baseline,0,0,noncore_heterogeneity,Interaction T1 x employee; changes estimand to conditional ATE,0.85
+134041-V1,robust/het/multiple_interactions,robustness/heterogeneity.md,z_lmpolicy_index,T1,G1,baseline,0,0,noncore_heterogeneity,Multiple interactions; changes estimand to conditional ATE,0.85
+134041-V1,robust/funcform/standardized,robustness/functional_form.md,z_lmpolicy_index (z-scored),T1,G1,baseline,0,1,core_funcform,Z-scored DV; linear rescaling preserves inference,0.9
+134041-V1,robust/funcform/quadratic_prior,robustness/functional_form.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_funcform,Adds quadratic prior term; same outcome/treatment,0.9
+134041-V1,robust/placebo/predetermined_gender,robustness/placebo_tests.md,gender,T1,,,0,0,noncore_placebo,Placebo: predetermined outcome gender; not a policy claim,0.95
+134041-V1,robust/placebo/predetermined_democrat,robustness/placebo_tests.md,democrat,T1,,,0,0,noncore_placebo,Placebo: predetermined outcome democrat; not a policy claim,0.95
+134041-V1,robust/placebo/predetermined_age1,robustness/placebo_tests.md,age1,T1,,,0,0,noncore_placebo,Placebo: predetermined outcome age1; not a policy claim,0.95
+134041-V1,robust/placebo/predetermined_midwest,robustness/placebo_tests.md,midwest,T1,,,0,0,noncore_placebo,Placebo: predetermined outcome midwest; not a policy claim,0.95
+134041-V1,robust/placebo/predetermined_republican,robustness/placebo_tests.md,republican,T1,,,0,0,invalid,Placebo on republican; coef~0 due to multicollinearity,0.9
+134041-V1,robust/control/demographics_z_lmpolicy_index,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Demographics-only controls; same outcome/treatment as G1,0.95
+134041-V1,robust/control/political_z_lmpolicy_index,robustness/control_progression.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_controls,Political-only controls; same outcome/treatment as G1,0.95
+134041-V1,robust/control/demographics_quotaanchor,robustness/control_progression.md,quotaanchor,T1,G2,baseline,0,1,core_controls,Demographics-only controls; same outcome as G2 quotaanchor,0.9
+134041-V1,robust/control/political_quotaanchor,robustness/control_progression.md,quotaanchor,T1,G2,baseline,0,1,core_controls,Political-only controls; same outcome as G2 quotaanchor,0.9
+134041-V1,robust/control/demographics_AAanchor,robustness/control_progression.md,AAanchor,T1,G2,baseline,0,1,core_controls,Demographics-only controls; same outcome as G2 AAanchor,0.9
+134041-V1,robust/control/political_AAanchor,robustness/control_progression.md,AAanchor,T1,G2,baseline,0,1,core_controls,Political-only controls; same outcome as G2 AAanchor,0.9
+134041-V1,robust/control/demographics_legislationanchor,robustness/control_progression.md,legislationanchor,T1,G2,baseline,0,1,core_controls,Demographics-only controls; same outcome as G2 legislationanchor,0.9
+134041-V1,robust/control/political_legislationanchor,robustness/control_progression.md,legislationanchor,T1,G2,baseline,0,1,core_controls,Political-only controls; same outcome as G2 legislationanchor,0.9
+134041-V1,robust/sample/fulltime_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Fulltime subsample; same outcome/treatment as G1,0.85
+134041-V1,robust/sample/parttime_only,robustness/sample_restrictions.md,z_lmpolicy_index,T1,G1,baseline,0,1,core_sample,Parttime subsample; same outcome/treatment as G1,0.8

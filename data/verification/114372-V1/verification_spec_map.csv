@@ -1,0 +1,95 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+114372-V1,baseline,methods/cross_sectional_ols.md#baseline,amount,height,G1,baseline,1,1,core_controls,Baseline: height on amount with full controls,1.0
+114372-V1,robust/loo/drop_asian,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping asian control; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_shy,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping shy control; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_shy_recipient,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping shy_recipient; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_popular,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping popular control; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_popular_recipient,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping popular_recipient; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_samerace,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping samerace; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_sameheight,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping sameheight; same outcome/treatment,0.95
+114372-V1,robust/loo/drop_sameconf,robustness/leave_one_out.md,amount,height,G1,baseline,0,1,core_controls,LOO dropping sameconf; same outcome/treatment,0.95
+114372-V1,robust/control/none,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,No controls; same outcome/treatment as baseline,0.95
+114372-V1,robust/control/add_asian,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental: only asian; same outcome/treatment,0.95
+114372-V1,robust/control/add_shy,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental: asian+shy; same outcome/treatment,0.95
+114372-V1,robust/control/add_shy_recipient,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental add shy_recipient; same outcome/treatment,0.95
+114372-V1,robust/control/add_popular,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental add popular; same outcome/treatment,0.95
+114372-V1,robust/control/add_popular_recipient,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental add popular_recipient; same outcome/treatment,0.95
+114372-V1,robust/control/add_samerace,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental add samerace; same outcome/treatment,0.95
+114372-V1,robust/control/add_sameheight,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Incremental add sameheight; same outcome/treatment,0.95
+114372-V1,robust/control/add_sameconf,robustness/control_progression.md,amount,height,G1,baseline,0,1,core_controls,Full controls same as baseline; same outcome/treatment,0.95
+114372-V1,robust/se/robust_hc1,robustness/clustering_variations.md#robust,amount,height,G1,baseline,0,1,core_inference,Robust HC1 SEs; same coef/outcome/treatment,0.95
+114372-V1,robust/se/hc2,robustness/clustering_variations.md#hc2,amount,height,G1,baseline,0,1,core_inference,HC2 SEs; same coef/outcome/treatment,0.95
+114372-V1,robust/se/hc3,robustness/clustering_variations.md#hc3,amount,height,G1,baseline,0,1,core_inference,HC3 SEs; same coef/outcome/treatment,0.95
+114372-V1,robust/se/classical,robustness/clustering_variations.md#classical,amount,height,G1,baseline,0,1,core_inference,Classical OLS SEs; same coef/outcome/treatment,0.95
+114372-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md#winsor,amount,height,G1,baseline,0,1,core_sample,Winsorized 5%; same treatment/outcome variable,0.9
+114372-V1,robust/sample/winsor_10pct,robustness/sample_restrictions.md#winsor,amount,height,G1,baseline,0,1,core_sample,Winsorized 10%; same treatment/outcome variable,0.9
+114372-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#trim,amount,height,G1,baseline,0,1,core_sample,Trimmed 1% tails; same treatment/outcome variable,0.9
+114372-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md#trim,amount,height,G1,baseline,0,1,core_sample,Trimmed 5% tails; same treatment/outcome variable,0.9
+114372-V1,robust/sample/same_race_only,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Same-race pairs subsample; same treatment/outcome,0.85
+114372-V1,robust/sample/diff_race_only,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Different-race pairs subsample; same treatment/outcome,0.85
+114372-V1,robust/sample/asian_only,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Asian subjects only; same treatment/outcome,0.85
+114372-V1,robust/sample/non_asian_only,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Non-Asian subjects only; same treatment/outcome,0.85
+114372-V1,robust/sample/same_height_only,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Same-height pairs only; same treatment/outcome,0.85
+114372-V1,robust/sample/diff_height_only,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Different-height pairs only; same treatment/outcome,0.85
+114372-V1,robust/sample/high_shy,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,High-shy subsample; same treatment/outcome,0.85
+114372-V1,robust/sample/low_shy,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Low-shy subsample; same treatment/outcome,0.85
+114372-V1,robust/funcform/log_outcome,robustness/functional_form.md#log,log_amount,height,G1,baseline,0,1,core_funcform,Log outcome; same treatment preserves interpretation,0.9
+114372-V1,robust/funcform/ihs_outcome,robustness/functional_form.md#ihs,ihs_amount,height,G1,baseline,0,1,core_funcform,IHS outcome; same treatment preserves interpretation,0.9
+114372-V1,robust/funcform/quadratic_height,robustness/functional_form.md#polynomial,amount,height,G1,baseline,0,1,core_funcform,Quadratic height; linear coef same outcome,0.85
+114372-V1,robust/treatment/shy_as_treatment,methods/cross_sectional_ols.md#treatment,amount,shy,,,0,0,noncore_alt_treatment,Treatment=shy; different causal object from height,0.95
+114372-V1,robust/treatment/popular_as_treatment,methods/cross_sectional_ols.md#treatment,amount,popular,,,0,0,noncore_alt_treatment,Treatment=popular; different causal object from height,0.95
+114372-V1,robust/treatment/samerace_as_treatment,methods/cross_sectional_ols.md#treatment,amount,samerace,,,0,0,noncore_alt_treatment,Treatment=samerace; different causal object from height,0.95
+114372-V1,robust/treatment/binary_height,methods/cross_sectional_ols.md#treatment,amount,height_binary,G1,baseline,0,1,core_funcform,Binary height (above median); same direction different scale,0.8
+114372-V1,robust/outcome/money_raw,methods/cross_sectional_ols.md#outcome,money,height,G1,baseline,0,1,core_funcform,Raw money not proportion; same concept rescaled,0.8
+114372-V1,robust/outcome/gave_any,methods/cross_sectional_ols.md#outcome,gave_any,height,G1,baseline,0,0,noncore_alt_outcome,Binary gave_any; different estimand (extensive margin),0.7
+114372-V1,robust/outcome/gave_half,methods/cross_sectional_ols.md#outcome,gave_half,height,G1,baseline,0,0,noncore_alt_outcome,Binary gave_half; different estimand (threshold),0.7
+114372-V1,robust/het/interaction_asian,robustness/heterogeneity.md#interaction,amount,height,G1,baseline,0,0,noncore_heterogeneity,Height x asian interaction; heterogeneity not baseline,0.85
+114372-V1,robust/het/interaction_samerace,robustness/heterogeneity.md#interaction,amount,height,G1,baseline,0,0,noncore_heterogeneity,Height x samerace interaction; heterogeneity not baseline,0.85
+114372-V1,robust/het/interaction_shy,robustness/heterogeneity.md#interaction,amount,height,G1,baseline,0,0,noncore_heterogeneity,Height x shy interaction; heterogeneity not baseline,0.85
+114372-V1,robust/het/interaction_popular,robustness/heterogeneity.md#interaction,amount,height,G1,baseline,0,0,noncore_heterogeneity,Height x popular interaction; heterogeneity not baseline,0.85
+114372-V1,earnings/table5,methods/cross_sectional_ols.md#baseline,receivesum,Height,G2,earnings/table6_popular,0,0,noncore_alt_treatment,Height as treatment on earnings; diff treatment from G2,0.9
+114372-V1,earnings/table6_popular,methods/cross_sectional_ols.md#baseline,receivesum,popular,G2,earnings/table6_popular,1,1,core_controls,G2 baseline: popular on receivesum full controls,1.0
+114372-V1,earnings/table6_height,methods/cross_sectional_ols.md#baseline,receivesum,Height,G2,earnings/table6_popular,0,0,noncore_alt_treatment,Height coef from Table 6; diff treatment from G2,0.9
+114372-V1,earnings/loo/drop_Height,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping Height; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_asian,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping asian; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_Shy,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping Shy; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_Confident,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping Confident; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_onlychild,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping onlychild; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_Optimistic,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping Optimistic; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_braces,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping braces; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_glasses,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping glasses; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_between,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping between; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_close,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping close; same outcome/treatment G2,0.95
+114372-V1,earnings/loo/drop_Power,robustness/leave_one_out.md,receivesum,popular,G2,earnings/table6_popular,0,1,core_controls,LOO dropping Power; same outcome/treatment G2,0.95
+114372-V1,earnings/sample/trim_5pct,robustness/sample_restrictions.md#trim,receivesum,popular,G2,earnings/table6_popular,0,1,core_sample,Trimmed 5% earnings; same treatment/outcome,0.9
+114372-V1,earnings/sample/winsor_5pct,robustness/sample_restrictions.md#winsor,receivesum,popular,G2,earnings/table6_popular,0,1,core_sample,Winsorized 5% earnings; same treatment/outcome,0.9
+114372-V1,earnings/sample/asian_only,robustness/sample_restrictions.md#subgroup,receivesum,popular,G2,earnings/table6_popular,0,1,core_sample,Asian-only subsample; same treatment/outcome,0.85
+114372-V1,earnings/sample/non_asian_only,robustness/sample_restrictions.md#subgroup,receivesum,popular,G2,earnings/table6_popular,0,1,core_sample,Non-Asian subsample; same treatment/outcome,0.85
+114372-V1,earnings/sample/high_popular,robustness/sample_restrictions.md#subgroup,receivesum,popular,G2,earnings/table6_popular,0,1,core_sample,High-popular subsample; restricted range same estimand,0.8
+114372-V1,earnings/treatment/between,methods/cross_sectional_ols.md#treatment,receivesum,between,G2,earnings/table6_popular,0,0,noncore_alt_treatment,Treatment=between centrality; different causal object,0.9
+114372-V1,earnings/treatment/close,methods/cross_sectional_ols.md#treatment,receivesum,close,G2,earnings/table6_popular,0,0,noncore_alt_treatment,Treatment=closeness centrality; different causal object,0.9
+114372-V1,earnings/treatment/power,methods/cross_sectional_ols.md#treatment,receivesum,Power,G2,earnings/table6_popular,0,0,noncore_alt_treatment,Treatment=Power centrality; different causal object,0.9
+114372-V1,earnings/funcform/log,robustness/functional_form.md#log,log_receivesum,popular,G2,earnings/table6_popular,0,1,core_funcform,Log outcome; same treatment preserves interpretation,0.9
+114372-V1,earnings/funcform/ihs,robustness/functional_form.md#ihs,ihs_receivesum,popular,G2,earnings/table6_popular,0,1,core_funcform,IHS outcome; same treatment preserves interpretation,0.9
+114372-V1,earnings/funcform/quadratic,robustness/functional_form.md#polynomial,receivesum,popular,G2,earnings/table6_popular,0,1,core_funcform,Quadratic popular; linear coef same outcome,0.85
+114372-V1,network/table3_samerace,methods/discrete_choice.md,link_dr,samerace,G3,network/table3_samerace,1,1,core_controls,G3 baseline: samerace on link_dr Table 3,1.0
+114372-V1,network/table3_sameheight,methods/discrete_choice.md,link_dr,sameheight,G3,network/table3_samerace,0,0,noncore_alt_treatment,Sameheight treatment; different causal object from samerace,0.9
+114372-V1,network/table4_samerace,methods/discrete_choice.md,link_dr,samerace,G3,network/table3_samerace,0,1,core_controls,Table 4 w/ degree dummies; same estimand more controls,0.9
+114372-V1,network/table4_d_dr_2,methods/discrete_choice.md,link_dr,d_dr_2,G3,network/table3_samerace,0,0,noncore_alt_treatment,Degree dummy treatment; different causal object,0.9
+114372-V1,network/loo/drop_sameheight,robustness/leave_one_out.md,link_dr,samerace,G3,network/table3_samerace,0,1,core_controls,LOO dropping sameheight; same outcome/treatment G3,0.95
+114372-V1,network/loo/drop_sameconf,robustness/leave_one_out.md,link_dr,samerace,G3,network/table3_samerace,0,1,core_controls,LOO dropping sameconf; same outcome/treatment G3,0.95
+114372-V1,network/loo/drop_sameboyfriend,robustness/leave_one_out.md,link_dr,samerace,G3,network/table3_samerace,0,1,core_controls,LOO dropping sameboyfriend; same outcome/treatment G3,0.95
+114372-V1,network/loo/drop_shy_recipient,robustness/leave_one_out.md,link_dr,samerace,G3,network/table3_samerace,0,1,core_controls,LOO dropping shy_recipient; same outcome/treatment G3,0.95
+114372-V1,network/loo/drop_height_partner,robustness/leave_one_out.md,link_dr,samerace,G3,network/table3_samerace,0,1,core_controls,LOO dropping height_partner; same outcome/treatment G3,0.95
+114372-V1,robust/sample/high_pop_recipient,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,High-popular recipient subsample; same treatment/outcome,0.85
+114372-V1,robust/sample/low_pop_recipient,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Low-popular recipient subsample; same treatment/outcome,0.85
+114372-V1,robust/sample/same_conf,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Same-confidence pairs; same treatment/outcome,0.85
+114372-V1,robust/sample/diff_conf,robustness/sample_restrictions.md#subgroup,amount,height,G1,baseline,0,1,core_sample,Different-confidence pairs; same treatment/outcome,0.85
+114372-V1,robust/placebo/randomized_height,robustness/placebo_tests.md,amount,height_placebo,G1,baseline,0,0,noncore_placebo,Randomized height placebo; diagnostic not robustness,0.9
+114372-V1,robust/placebo/randomized_height_all,robustness/placebo_tests.md,amount,height_placebo_all,G1,baseline,0,0,noncore_placebo,Globally randomized height placebo; diagnostic,0.9
+114372-V1,robust/placebo/randomized_pop_recipient,robustness/placebo_tests.md,amount,height,G1,baseline,0,0,noncore_placebo,Randomized popular_recipient placebo; diagnostic,0.9
+114372-V1,robust/het/interaction_sameconf,robustness/heterogeneity.md#interaction,amount,height,G1,baseline,0,0,noncore_heterogeneity,Height x sameconf interaction; heterogeneity not baseline,0.85
+114372-V1,robust/het/interaction_sameheight,robustness/heterogeneity.md#interaction,amount,height,G1,baseline,0,0,noncore_heterogeneity,Height x sameheight interaction; heterogeneity not baseline,0.85
+114372-V1,robust/control/minimal,methods/cross_sectional_ols.md#controls,amount,height,G1,baseline,0,1,core_controls,Minimal controls asian+shy only; same outcome/treatment,0.9
+114372-V1,robust/control/network_only,methods/cross_sectional_ols.md#controls,amount,height,G1,baseline,0,1,core_controls,Network controls only; same outcome/treatment,0.9
+114372-V1,robust/control/pair_characteristics,methods/cross_sectional_ols.md#controls,amount,height,G1,baseline,0,1,core_controls,Pair characteristics only; same outcome/treatment,0.9

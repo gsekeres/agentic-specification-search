@@ -1,0 +1,79 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+174781-V2,baseline,methods/cross_sectional_ols.md#baseline,mental_health_index,b_treat_work,G1,baseline,1,1,core_controls,Primary baseline specification for mental health index,1.0
+174781-V2,baseline/phq_sd_scale,methods/cross_sectional_ols.md#baseline,phq_sd_scale,b_treat_work,G2,baseline/phq_sd_scale,1,1,core_controls,Baseline for PHQ depression sub-index,1.0
+174781-V2,baseline/stress_index,methods/cross_sectional_ols.md#baseline,stress_index,b_treat_work,G2,baseline/stress_index,1,1,core_controls,Baseline for stress sub-index,1.0
+174781-V2,baseline/life_satisfaction,methods/cross_sectional_ols.md#baseline,life_satisfaction,b_treat_work,G2,baseline/life_satisfaction,1,1,core_controls,Baseline for life satisfaction sub-index,1.0
+174781-V2,baseline/sociability_a,methods/cross_sectional_ols.md#baseline,sociability_a,b_treat_work,G2,baseline/sociability_a,1,1,core_controls,Baseline for sociability sub-index,1.0
+174781-V2,baseline/selfworth_index,methods/cross_sectional_ols.md#baseline,selfworth_index,b_treat_work,G2,baseline/selfworth_index,1,1,core_controls,Baseline for self-worth sub-index,1.0
+174781-V2,baseline/control_index,methods/cross_sectional_ols.md#baseline,control_index,b_treat_work,G2,baseline/control_index,1,1,core_controls,Baseline for perceived control sub-index,1.0
+174781-V2,baseline/stability,methods/cross_sectional_ols.md#baseline,stability,b_treat_work,G2,baseline/stability,1,1,core_controls,Baseline for stability sub-index,1.0
+174781-V2,robust/build/bivariate,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,No controls; treatment only with FE; tests G1,0.95
+174781-V2,robust/build/ancova_only,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,ANCOVA control only (baseline MH); tests G1,0.95
+174781-V2,robust/build/demographics,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Demographics controls only; tests G1,0.95
+174781-V2,robust/build/household,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Household controls added; tests G1,0.95
+174781-V2,robust/build/education,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Education controls added; tests G1,0.95
+174781-V2,robust/build/full,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Full control set; tests G1,0.95
+174781-V2,robust/control/drop_b_mental_health_index,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop baseline MH control; tests G1,0.95
+174781-V2,robust/control/drop_female,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop female control; tests G1,0.95
+174781-V2,robust/control/drop_age,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop age control; tests G1,0.95
+174781-V2,robust/control/drop_marry_dum,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop marriage control; tests G1,0.95
+174781-V2,robust/control/drop_b_member_count,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop household size control; tests G1,0.95
+174781-V2,robust/control/drop_education_formal,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop formal education control; tests G1,0.95
+174781-V2,robust/control/drop_education_religious,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop religious education control; tests G1,0.95
+174781-V2,robust/control/drop_hh_head,robustness/leave_one_out.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Drop household head control; tests G1,0.95
+174781-V2,robust/sample/drop_camp_1,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Camp 1 only subsample; tests G1,0.9
+174781-V2,robust/sample/drop_camp_2,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Camp 2 only subsample; tests G1,0.9
+174781-V2,robust/sample/drop_camp_3,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Camp 3 only subsample; tests G1,0.9
+174781-V2,robust/sample/male_only,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Male only subsample; tests G1,0.9
+174781-V2,robust/sample/female_only,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Female only subsample; tests G1,0.9
+174781-V2,robust/sample/young,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Young subsample (age<=27); tests G1,0.9
+174781-V2,robust/sample/old,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Old subsample (age>27); tests G1,0.9
+174781-V2,robust/sample/married_only,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Married only subsample; tests G1,0.9
+174781-V2,robust/sample/educated,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Formally educated subsample; tests G1,0.9
+174781-V2,robust/sample/not_educated,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Not educated subsample; tests G1,0.9
+174781-V2,robust/sample/winsor_1pct,robustness/sample_restrictions.md,mental_health_index_w1,b_treat_work,G1,baseline,0,1,core_funcform,Winsorized outcome at 1%; tests G1,0.9
+174781-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Trimmed 1% tails; tests G1,0.9
+174781-V2,robust/outcome/phq_1,robustness/measurement.md,phq_1,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 1; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_2,robustness/measurement.md,phq_2,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 2; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_3,robustness/measurement.md,phq_3,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 3; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_4,robustness/measurement.md,phq_4,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 4; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_5,robustness/measurement.md,phq_5,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 5; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_6,robustness/measurement.md,phq_6,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 6; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_7,robustness/measurement.md,phq_7,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 7; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_8,robustness/measurement.md,phq_8,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 8; different outcome than composite index,0.9
+174781-V2,robust/outcome/phq_9,robustness/measurement.md,phq_9,b_treat_work,,,0,0,noncore_alt_outcome,Individual PHQ item 9; different outcome than composite index,0.9
+174781-V2,robust/outcome/depressed_binary,robustness/measurement.md,depressed,b_treat_work,,,0,0,noncore_alt_outcome,Binary depression indicator; different outcome measure,0.85
+174781-V2,robust/cluster/none,robustness/clustering_variations.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_inference,Robust SE without clustering; tests G1,0.95
+174781-V2,robust/cluster/camp,robustness/clustering_variations.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_inference,Cluster by camp; tests G1,0.95
+174781-V2,robust/cluster/enumerator,robustness/clustering_variations.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_inference,Cluster by enumerator; tests G1,0.95
+174781-V2,robust/estimation/no_fe,robustness/model_specification.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_fe,No fixed effects; tests G1,0.95
+174781-V2,robust/estimation/camp_fe_only,robustness/model_specification.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_fe,Camp FE only; tests G1,0.95
+174781-V2,robust/estimation/enum_fe_only,robustness/model_specification.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_fe,Enumerator FE only; tests G1,0.95
+174781-V2,robust/het/interaction_gender,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Gender interaction term; heterogeneity analysis not core test,0.85
+174781-V2,robust/het/interaction_age,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Age interaction term; heterogeneity analysis not core test,0.85
+174781-V2,robust/het/interaction_education,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Education interaction term; heterogeneity analysis not core test,0.85
+174781-V2,robust/het/interaction_baseline_y,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Baseline MH interaction; heterogeneity analysis not core test,0.85
+174781-V2,robust/het/interaction_married,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Marriage interaction term; heterogeneity analysis not core test,0.85
+174781-V2,robust/het/interaction_violence,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Violence interaction term; heterogeneity analysis not core test,0.85
+174781-V2,robust/het/by_baseline_outcome_low,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,Low baseline MH subgroup; heterogeneity split not core test,0.8
+174781-V2,robust/het/by_baseline_outcome_high,robustness/heterogeneity.md,mental_health_index,b_treat_work,G1,baseline,0,0,noncore_heterogeneity,High baseline MH subgroup; heterogeneity split not core test,0.8
+174781-V2,robust/placebo/outcome_predetermined,robustness/placebo_tests.md,b_mental_health_index,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline MH; balance check,0.95
+174781-V2,robust/placebo/baseline_phq_sd_scale,robustness/placebo_tests.md,b_phq_sd_scale,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline PHQ; balance check,0.95
+174781-V2,robust/placebo/baseline_stress_index,robustness/placebo_tests.md,b_stress_index,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline stress; balance check,0.95
+174781-V2,robust/placebo/baseline_life_satisfaction,robustness/placebo_tests.md,b_life_satisfaction,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline life satisfaction; balance check,0.95
+174781-V2,robust/placebo/baseline_sociability_a,robustness/placebo_tests.md,b_sociability_a,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline sociability; balance check,0.95
+174781-V2,robust/placebo/baseline_selfworth_index,robustness/placebo_tests.md,b_selfworth_index,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline self-worth; balance check,0.95
+174781-V2,robust/placebo/baseline_control_index,robustness/placebo_tests.md,b_control_index,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline control; balance check,0.95
+174781-V2,robust/placebo/baseline_stability,robustness/placebo_tests.md,b_stability,b_treat_work,,,0,0,noncore_placebo,Placebo: treatment on baseline stability; balance check,0.95
+174781-V2,robust/treatment/work_vs_control,robustness/measurement.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_sample,Work vs control excluding cash arm; same estimand restricted sample,0.85
+174781-V2,robust/treatment/cash_vs_control,robustness/measurement.md,mental_health_index,b_treat_largecash,,,0,0,noncore_alt_treatment,Cash vs control; different treatment variable changes causal object,0.9
+174781-V2,robust/treatment/work_vs_cash,robustness/measurement.md,mental_health_index,b_treat_work,,,0,0,noncore_alt_treatment,Work vs cash only; different comparison group changes estimand,0.85
+174781-V2,robust/treatment/any_vs_control,robustness/measurement.md,mental_health_index,any_treatment,,,0,0,noncore_alt_treatment,Any treatment vs control; different treatment variable,0.9
+174781-V2,robust/controls/full_mental_health_index,robustness/control_progression.md,mental_health_index,b_treat_work,G1,baseline,0,1,core_controls,Full controls for MH index; tests G1,0.95
+174781-V2,robust/controls/full_phq_sd_scale,robustness/control_progression.md,phq_sd_scale,b_treat_work,G2,baseline/phq_sd_scale,0,1,core_controls,Full controls for PHQ sub-index; tests G2,0.95
+174781-V2,robust/controls/full_stress_index,robustness/control_progression.md,stress_index,b_treat_work,G2,baseline/stress_index,0,1,core_controls,Full controls for stress sub-index; tests G2,0.95
+174781-V2,robust/controls/full_life_satisfaction,robustness/control_progression.md,life_satisfaction,b_treat_work,G2,baseline/life_satisfaction,0,1,core_controls,Full controls for life satisfaction; tests G2,0.95
+174781-V2,robust/controls/full_sociability_a,robustness/control_progression.md,sociability_a,b_treat_work,G2,baseline/sociability_a,0,1,core_controls,Full controls for sociability; tests G2,0.95
+174781-V2,robust/controls/full_selfworth_index,robustness/control_progression.md,selfworth_index,b_treat_work,G2,baseline/selfworth_index,0,1,core_controls,Full controls for self-worth; tests G2,0.95
+174781-V2,robust/controls/full_control_index,robustness/control_progression.md,control_index,b_treat_work,G2,baseline/control_index,0,1,core_controls,Full controls for perceived control; tests G2,0.95
+174781-V2,robust/controls/full_stability,robustness/control_progression.md,stability,b_treat_work,G2,baseline/stability,0,1,core_controls,Full controls for stability; tests G2,0.95

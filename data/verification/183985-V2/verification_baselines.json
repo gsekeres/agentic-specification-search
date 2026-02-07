@@ -1,0 +1,69 @@
+{
+  "paper_id": "183985-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/183985-V2",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Emoticon feedback improves subsequent exam scores (log test) relative to numeric-only feedback.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "ltest"
+      ],
+      "baseline_treatment_vars": [
+        "treat_post"
+      ],
+      "notes": "Panel FE DiD with name_id FE, robust SE. Coef=0.0226, p=0.084."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Emoticon feedback improves quiz scores conditional on attendance.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "did/outcome/quiz_score"
+      ],
+      "baseline_outcome_vars": [
+        "q_score_cond"
+      ],
+      "baseline_treatment_vars": [
+        "treat_post"
+      ],
+      "notes": "Secondary outcome. Coef=0.158, p<0.001. Pre-quiz placebo is significant (p=0.009)."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Emoticon feedback improves class attendance.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "did/outcome/attendance"
+      ],
+      "baseline_outcome_vars": [
+        "attend"
+      ],
+      "baseline_treatment_vars": [
+        "treat_post"
+      ],
+      "notes": "Secondary outcome. Coef=0.031, p=0.015."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Emoticon feedback affects homework attempt rates.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "did/outcome/hw_attempted"
+      ],
+      "baseline_outcome_vars": [
+        "hw_binary"
+      ],
+      "baseline_treatment_vars": [
+        "treat_post"
+      ],
+      "notes": "Secondary outcome. Coef=-0.012, p=0.322."
+    }
+  ],
+  "global_notes": "Multiple outcomes examined. Primary claim is exam scores (G1). The cluster(treatment) spec is invalid (degenerate with 2 clusters). Pre-quiz placebo is significant (p=0.009), raising parallel trends concerns for quiz outcome."
+}

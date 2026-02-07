@@ -1,0 +1,24 @@
+{
+  "paper_id": "114344-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/114344-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "A+ restaurants (top-half quality within A grade) are significantly more likely to voluntarily disclose their hygiene grade compared to lower-graded restaurants (CD-), consistent with signaling theory.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "disclosure"
+      ],
+      "baseline_treatment_vars": [
+        "half_grade_def1_d1"
+      ],
+      "notes": "Baseline replicates approximately Table 4, Column 2. Treatment is the A+ indicator (half_grade_def1_d1) with CD- as the omitted category. The coefficient represents the difference in disclosure probability between A+ and CD- restaurants. The paper also claims countersignaling (A+ restaurants with alternative quality signals disclose less), but the main estimand for the specification search is the A+ disclosure premium relative to CD-."
+    }
+  ],
+  "global_notes": "67 specifications with one clear baseline. Several heterogeneity specifications report interaction term coefficients rather than the main A+ coefficient, meaning they test the countersignaling hypothesis rather than providing a robustness check of the main signaling claim. The within-A-grade sample restriction (spec robust/sample/isA_pred1) changes the comparison group from CD- to A-, yielding a negative coefficient that represents a conceptually different estimand. Some functional form specs use a continuous treatment (num_grading) rather than the binary half-grade indicator, changing the treatment concept. Two alternative treatment specs (top_half_A, A_tercile_1) use different definitions of treatment but test a related hypothesis about within-grade quality and disclosure."
+}

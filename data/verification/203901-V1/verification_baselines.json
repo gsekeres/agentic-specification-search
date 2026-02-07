@@ -1,0 +1,24 @@
+{
+  "paper_id": "203901-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/203901-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "DEA crackdowns on rogue pain clinic doctors reduce county-level opioid dispensing (MME per capita) using staggered DiD with county and state-by-year FE.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "MME_PC"
+      ],
+      "baseline_treatment_vars": [
+        "treatment"
+      ],
+      "notes": "Single baseline. County + state-by-year FE, county clustering, +/-3 year window, no time-varying controls."
+    }
+  ],
+  "global_notes": "71 specs total. exclude_FL and drop_state_FL are exact duplicates. Several outcome rescalings yield identical t-stats. Heterogeneity interaction specs report treatment effect for reference category, changing the estimand."
+}

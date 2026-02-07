@@ -1,0 +1,157 @@
+{
+  "paper_id": "174501-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/174501-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Mixed-race roommate assignment reduces implicit racial prejudice (Race IAT) among white university students in South Africa.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/table3/race_iat_white"
+      ],
+      "baseline_outcome_vars": [
+        "DscoreraceIAT"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Primary claim from Table 3. Positive coefficient = higher D-score = reduced prejudice. White student subsample (N~117)."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Mixed-race roommate assignment improves academic performance (GPA) among black university students in South Africa.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/table4/gpa_black"
+      ],
+      "baseline_outcome_vars": [
+        "GPA"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Primary claim from Table 4. Black student subsample (N~332)."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Mixed-race roommate assignment has no significant effect on Race IAT for black students (null result).",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline/table3/race_iat_black"
+      ],
+      "baseline_outcome_vars": [
+        "DscoreraceIAT"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Table 3 null result for black students on Race IAT."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Mixed-race roommate assignment has no significant effect on Academic IAT for either race.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline/table3/academic_iat_white",
+        "baseline/table3/academic_iat_black"
+      ],
+      "baseline_outcome_vars": [
+        "DscoreacaIAT"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Table 3 null results for Academic IAT in both subsamples."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Mixed-race roommate assignment has no significant effect on GPA for white students.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline/table4/gpa_white"
+      ],
+      "baseline_outcome_vars": [
+        "GPA"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Table 4 null result for white students."
+    },
+    {
+      "baseline_group_id": "G6",
+      "claim_summary": "Mixed-race roommate assignment improves broader academic outcomes (exams passed, continuation, PCA performance) for black students.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/table4/examspassed_black",
+        "baseline/table4/continue_black",
+        "baseline/table4/pcaperf_black"
+      ],
+      "baseline_outcome_vars": [
+        "examspassed",
+        "continue",
+        "PCAperf"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Table 4 additional academic outcomes for black students. All significant positive."
+    },
+    {
+      "baseline_group_id": "G7",
+      "claim_summary": "Mixed-race roommate assignment improves social outcomes (friendship, attitudes, communication, social integration) especially for white students.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/table5/pcafriend_white",
+        "baseline/table5/pcafriend_black",
+        "baseline/table5/pcafriend_full",
+        "baseline/table5/pcaattitude_white",
+        "baseline/table5/pcaattitude_black",
+        "baseline/table5/pcaattitude_full",
+        "baseline/table5/pcacomm_white",
+        "baseline/table5/pcacomm_black",
+        "baseline/table5/pcacomm_full",
+        "baseline/table5/pcasocial_white",
+        "baseline/table5/pcasocial_black",
+        "baseline/table5/pcasocial_full"
+      ],
+      "baseline_outcome_vars": [
+        "PCAfriend",
+        "PCAattitude",
+        "PCAcomm",
+        "PCAsocial"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Table 5 social outcomes across both subsamples and full sample."
+    },
+    {
+      "baseline_group_id": "G8",
+      "claim_summary": "Mixed-race roommate assignment has null or attenuated effects on academic outcomes for white students and full sample.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline/table4/examspassed_white",
+        "baseline/table4/continue_white",
+        "baseline/table4/pcaperf_white",
+        "baseline/table4/gpa_full",
+        "baseline/table4/examspassed_full",
+        "baseline/table4/continue_full",
+        "baseline/table4/pcaperf_full"
+      ],
+      "baseline_outcome_vars": [
+        "examspassed",
+        "continue",
+        "PCAperf",
+        "GPA"
+      ],
+      "baseline_treatment_vars": [
+        "mixracebas"
+      ],
+      "notes": "Table 4 results for white students (null) and full sample (attenuated)."
+    }
+  ],
+  "global_notes": "This paper has many baseline specifications across multiple outcomes and subsamples (white vs black students). The two headline findings are (1) reduced racial prejudice for white students (G1) and (2) improved academic performance for black students (G2). Robustness checks primarily vary controls and sample restrictions for these two main claims. Note: the inference variation specs for GPA_black have a different coefficient than the Table 4 GPA baseline because they use Residence FE only rather than Residence + Program FE."
+}

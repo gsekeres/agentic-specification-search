@@ -1,0 +1,40 @@
+{
+  "paper_id": "145141-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/145141-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "WTP for public recognition of gym attendance increases with the number of gym visits (YMCA experiment).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "wtp"
+      ],
+      "baseline_treatment_vars": [
+        "visits"
+      ],
+      "notes": "Linear OLS of WTP on visits using the YMCA coherent sample. The quadratic version is a functional form variant, not a separate baseline."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "WTP for public recognition of charitable giving increases with the giving interval (charity experiments).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "charity/baseline/linear",
+        "charity/baseline/quadratic"
+      ],
+      "baseline_outcome_vars": [
+        "wtp"
+      ],
+      "baseline_treatment_vars": [
+        "interval"
+      ],
+      "notes": "Two baselines (linear and quadratic) on the pooled charity sample. Subsample specs are sample restriction robustness checks."
+    }
+  ],
+  "global_notes": "Two distinct experimental contexts (YMCA and charity) testing image concerns. Three specs flagged as potentially invalid due to duplicate results. OLS only; original paper also uses Tobit."
+}

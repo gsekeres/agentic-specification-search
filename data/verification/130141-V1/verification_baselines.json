@@ -1,0 +1,24 @@
+{
+  "paper_id": "130141-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/130141-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "TFP news shocks explain a significant share (15-25%) of GDP forecast error variance at business cycle frequencies (20 quarters) in a 7-variable SVAR with financial frictions.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "GDP (FEVD share)"
+      ],
+      "baseline_treatment_vars": [
+        "TFP_shock"
+      ],
+      "notes": "Baseline uses Cholesky identification with TFP ordered first, 5 lags, 7 variables. Paper uses medium-run identification. FEVD at h=20 is 22.3%."
+    }
+  ],
+  "global_notes": "SVAR methodology. Coefficient = FEVD share (0-1). Cholesky vs medium-run identification. Some specs are duplicates. Rolling windows use 4 lags. Placebo shuffled TFP shows 12% FEVD."
+}

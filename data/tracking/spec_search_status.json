@@ -355,7 +355,8 @@
       "journal": "AEJ: Applied",
       "status": "completed",
       "i4r": false,
-      "year": "2019"
+      "year": "2019",
+      "n_specs": 79
     },
     {
       "id": "113745-V1",
@@ -456,7 +457,8 @@
       "journal": "AER",
       "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 66
     },
     {
       "id": "140921-V1",
@@ -472,9 +474,10 @@
       "id": "120078-V1",
       "title": "Can Information Reduce Ethnic Discrimination? Evidence from Airbnb",
       "journal": "AEJ: Applied",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2021"
+      "year": "2021",
+      "n_specs": 77
     },
     {
       "id": "149481-V1",
@@ -632,9 +635,12 @@
       "id": "138401-V1",
       "title": "The Long-Term Effects of Measles Vaccination on Earnings and Employment",
       "journal": "AEJ: Policy",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 38,
+      "method": "panel_fixed_effects",
+      "notes": "Simplified treatment due to computational constraints on 16M row dataset. Below 50 spec target."
     },
     {
       "id": "128143-V1",
@@ -646,16 +652,6 @@
       "n_specs": 77,
       "method": "cross_sectional_ols + instrumental_variables",
       "notes": "STRONG robustness - 97.4% positive, 93.5% significant at 5%. IV estimates larger than OLS (0.40-0.60 vs 0.36). Effect of beliefs on tax acceptance robust across subgroups."
-    },
-    {
-      "id": "173441-V1",
-      "title": "Bubbles, Crashes, and Economic Growth: Theory and Evidence",
-      "journal": "AEJ: Macro",
-      "status": "not_applicable",
-      "i4r": true,
-      "year": "2023",
-      "method": "dsge_bayesian_estimation",
-      "notes": "Structural DSGE model with Bayesian MCMC estimation. Not a reduced-form econometric paper. Robustness would require re-running full MCMC chains (hours of computation). Table 2 reports posterior distributions of 8 structural parameters, not regression coefficients. Standard specification search framework not applicable."
     },
     {
       "id": "120568-V1",
@@ -785,7 +781,7 @@
       "status": "completed",
       "i4r": true,
       "year": "2022",
-      "n_specs": 51,
+      "n_specs": 183,
       "method": "panel_fixed_effects",
       "notes": "RCT with peer rankings. STRONG robustness - 90% positive, 77% sig at 5%."
     },
@@ -793,17 +789,23 @@
       "id": "181166-V1",
       "title": "Technological Change and the Consequences of Job Loss",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2023"
+      "year": "2023",
+      "n_specs": 67,
+      "method": "cross_sectional_ols",
+      "notes": "STRONG robustness - 98.5% negative, 88.1% sig at 5%. Tech change (computer/software requirements) predicts larger earnings losses for displaced workers. Effect ~2.3% per SD."
     },
     {
       "id": "184041-V1",
       "title": "The Common-Probability Auction Puzzle",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2023"
+      "year": "2023",
+      "n_specs": 133,
+      "method": "cross_sectional_ols",
+      "notes": "STRONG robustness - 97.7% positive, 96.2% sig at 5%. CV auctions elicit higher bids (~15 unit premium) vs CP auctions across all experiments."
     },
     {
       "id": "146041-V1",
@@ -820,17 +822,21 @@
       "id": "173341-V1",
       "title": "Vulnerability and Clientelism",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2022"
+      "year": "2022",
+      "n_specs": 92
     },
     {
       "id": "181581-V1",
       "title": "When a Doctor Falls from the Sky: The Impact of Easing Doctor Supply Constraints on Mortality",
       "journal": "AER: Insights",
-      "status": "pending",
+      "status": "completed",
       "i4r": true,
-      "year": "2023"
+      "year": "2023",
+      "n_specs": 93,
+      "method": "panel_fixed_effects",
+      "notes": "STRONG robustness - 98.8% negative coefficients for main outcome (mort7), 49.4% sig at 5%. RCT adding doctors to health facilities reduces 7-day infant mortality."
     },
     {
       "id": "139262-V1",
@@ -851,7 +857,8 @@
       "i4r": true,
       "year": "2022",
       "n_specifications": 61,
-      "pct_significant": 91.80327868852459
+      "pct_significant": 91.80327868852459,
+      "n_specs": 61
     },
     {
       "id": "163822-V2",
@@ -871,7 +878,7 @@
       "status": "completed",
       "i4r": false,
       "year": "2025",
-      "n_specs": 65,
+      "n_specs": 66,
       "method": "cross_sectional_ols",
       "notes": "RCT - group loan vs control. MODERATE robustness: 80% positive, 51% sig at 5%."
     },
@@ -901,15 +908,17 @@
       "id": "184341-V2",
       "title": "184341-V2",
       "journal": "AER: P&P",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 78,
+      "method": "cross_sectional_ols"
     },
     {
       "id": "214201-V1",
       "title": "214201-V1",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
       "year": "2025"
     },
@@ -917,15 +926,16 @@
       "id": "217741-V1",
       "title": "217741-V1",
       "journal": "AER: P&P",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 136
     },
     {
       "id": "223321-V1",
       "title": "223321-V1",
       "journal": "AER: P&P",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
       "year": "2025"
     },
@@ -933,7 +943,7 @@
       "id": "230401-V1",
       "title": "230401-V1",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
       "year": "2025"
     },
@@ -941,15 +951,17 @@
       "id": "193625-V1",
       "title": "193625-V1",
       "journal": "AEJ: Policy",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
-      "year": "2025"
+      "year": "2025",
+      "n_specs": 81,
+      "method": "difference_in_differences"
     },
     {
       "id": "207766-V1",
       "title": "207766-V1",
       "journal": "AER",
-      "status": "pending",
+      "status": "completed",
       "i4r": false,
       "year": "2025"
     }
@@ -1203,6 +1215,16 @@
       "notes": "Dorsey, Langer, McRae - Nested logit discrete choice model of gas station selection. Core data is confidential/proprietary: (1) IVBSS driving behavior data - contact Jim Sayer at UMTRI, (2) OPIS gas prices - proprietary, must purchase, (3) MTurk fuel gauge classifications - personal identifiers. Estimation requires cache/estimation_data.rda which is not included. Only public auxiliary data (DOE EV chargers, Census ACS) available.",
       "i4r": false,
       "year": "2025"
+    },
+    {
+      "id": "173441-V1",
+      "title": "Bubbles, Crashes, and Economic Growth: Theory and Evidence",
+      "journal": "AEJ: Macro",
+      "reason": "not_applicable",
+      "method": "dsge_bayesian_estimation",
+      "notes": "Structural DSGE model with Bayesian MCMC estimation. Not a reduced-form econometric paper - results are posterior distributions of structural parameters, not regression coefficients. Specification search framework not applicable: no treatment/outcome/controls structure to vary, and robustness checks would require re-running full MCMC chains (hours of computation per specification).",
+      "i4r": true,
+      "year": "2023"
     }
   ]
 }

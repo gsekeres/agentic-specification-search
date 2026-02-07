@@ -1,0 +1,40 @@
+{
+  "paper_id": "202864-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/202864-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Mixing attitude (att_std) positively predicts multiple mixing behavior in the ambiguous domain, controlling for risk aversion, gender, and experience.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/table1_ambiguous",
+        "baseline/table1/ambiguous"
+      ],
+      "baseline_outcome_vars": [
+        "multiple_mixing"
+      ],
+      "baseline_treatment_vars": [
+        "att_std"
+      ],
+      "notes": "baseline/table1_ambiguous and baseline/table1/ambiguous are identical regressions (same coefficients, N=88). Coefficient is 0.066, p=0.27, not statistically significant."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "There is more multiple mixing in the ambiguous domain than in the risk domain, reflecting genuine ambiguity attitudes rather than noise.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline/multiple_mixing"
+      ],
+      "baseline_outcome_vars": [
+        "multiple_mixing"
+      ],
+      "baseline_treatment_vars": [
+        "topic"
+      ],
+      "notes": "Primary domain-level finding. Coefficient of -0.25 (p<0.001) on topic. This is the papers strongest and most central result."
+    }
+  ],
+  "global_notes": "Two distinct baseline claims: (1) domain-level comparison showing more mixing under ambiguity vs risk (G2, highly significant), and (2) individual-level claim that mixing attitude predicts multiple mixing (G1, directionally positive but not significant). baseline/topic tests a different outcome (mixing_intensity_std) and is not a meaningful baseline. Table 2 cooperation analyses and domain t-tests represent separate claims."
+}

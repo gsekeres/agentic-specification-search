@@ -1,0 +1,53 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+112870-V2,baseline,methods/panel_fixed_effects.md,lnun,lnwba,G2,baseline,1,0,core_method,Age-interaction model; paper primary spec,0.9
+112870-V2,baseline_pooled,methods/panel_fixed_effects.md,lnun,lnwba,G1,baseline_pooled,1,0,core_method,Pooled model; most robustness specs compare to this,0.9
+112870-V2,robust/control/none,robustness/control_progression.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,No controls; same outcome/treatment/FE as pooled baseline,0.95
+112870-V2,robust/control/demographics,robustness/control_progression.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Demographics only controls; same outcome/treatment,0.95
+112870-V2,robust/control/education,robustness/control_progression.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Education only controls; same outcome/treatment,0.95
+112870-V2,robust/control/drop_m_married,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop married control; leave-one-out robustness,0.95
+112870-V2,robust/control/drop_spwork_yn,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop spouse work control; leave-one-out robustness,0.95
+112870-V2,robust/control/drop_r_white,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop race control; leave-one-out robustness,0.95
+112870-V2,robust/control/drop_ed1,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop ed1 control; leave-one-out robustness,0.95
+112870-V2,robust/control/drop_ed2,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop ed2 control; leave-one-out robustness,0.95
+112870-V2,robust/control/drop_ed3,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop ed3 control; leave-one-out robustness,0.95
+112870-V2,robust/control/drop_ed4,robustness/leave_one_out.md,lnun,lnwba,G1,baseline_pooled,0,1,core_controls,Drop ed4 control; leave-one-out robustness,0.95
+112870-V2,robust/estimation/no_fe,methods/panel_fixed_effects.md#no-fixed-effects,lnun,lnwba,G1,baseline_pooled,0,1,core_fe,No fixed effects; tests FE importance,0.9
+112870-V2,robust/estimation/state_fe_only,methods/panel_fixed_effects.md#unit-fe,lnun,lnwba,G1,baseline_pooled,0,1,core_fe,State FE only; omits year and part FE,0.9
+112870-V2,robust/estimation/year_fe_only,methods/panel_fixed_effects.md#time-fe,lnun,lnwba,G1,baseline_pooled,0,1,core_fe,Year FE only; omits state and part FE,0.9
+112870-V2,robust/estimation/twoway_fe,methods/panel_fixed_effects.md#twoway-fe,lnun,lnwba,G1,baseline_pooled,0,1,core_fe,State+Year FE; omits part FE vs baseline,0.9
+112870-V2,robust/cluster/none,robustness/clustering_variations.md,lnun,lnwba,G1,baseline_pooled,0,1,core_inference,Robust SE instead of clustered; same point estimate,0.95
+112870-V2,robust/cluster/year,robustness/clustering_variations.md,lnun,lnwba,G1,baseline_pooled,0,1,core_inference,Cluster by year; same point estimate different SE,0.95
+112870-V2,robust/sample/age_group_2,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Age 20-29 subsample; pooled effect within age group,0.7
+112870-V2,robust/sample/age_group_3,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Age 30-39 subsample; pooled effect within age group,0.7
+112870-V2,robust/sample/age_group_4,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Age 40-49 subsample; pooled effect within age group,0.7
+112870-V2,robust/sample/age_group_5,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Age 50-59 subsample; pooled effect within age group,0.7
+112870-V2,robust/sample/age_group_6,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Age 60+ subsample; pooled effect within age group,0.7
+112870-V2,robust/sample/young_workers,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Young workers (20-39) subsample; same estimand,0.85
+112870-V2,robust/sample/old_workers,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Old workers (50+) subsample; same estimand,0.85
+112870-V2,robust/sample/early_period,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Early period 1984-1992; time subsample,0.9
+112870-V2,robust/sample/late_period,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Late period 1993-2000; time subsample,0.9
+112870-V2,robust/sample/drop_year_1984,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Drop 1984; leave-one-year-out,0.95
+112870-V2,robust/sample/drop_year_1985,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Drop 1985; leave-one-year-out,0.95
+112870-V2,robust/sample/drop_year_1986,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Drop 1986; leave-one-year-out,0.95
+112870-V2,robust/sample/drop_year_1987,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Drop 1987; leave-one-year-out,0.95
+112870-V2,robust/sample/drop_year_1988,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Drop 1988; leave-one-year-out,0.95
+112870-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Trim 1% tails of outcome; winsorization check,0.9
+112870-V2,robust/sample/trim_5pct,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Trim 5% tails of outcome; winsorization check,0.9
+112870-V2,robust/funcform/levels,robustness/functional_form.md,un_rate,wba,G1,baseline_pooled,0,1,core_funcform,Levels instead of logs; different scale same claim,0.85
+112870-V2,robust/funcform/log_level,robustness/functional_form.md,lnun,wba,G1,baseline_pooled,0,1,core_funcform,"Log outcome, level treatment; semi-elasticity form",0.85
+112870-V2,robust/funcform/level_log,robustness/functional_form.md,un_rate,lnwba,G1,baseline_pooled,0,1,core_funcform,"Level outcome, log treatment; semi-elasticity form",0.85
+112870-V2,robust/heterogeneity/m_married,robustness/heterogeneity.md,lnun,lnwba_x_m_married,,,0,0,noncore_heterogeneity,Interaction with married; changes estimand to heterogeneity,0.9
+112870-V2,robust/heterogeneity/r_white,robustness/heterogeneity.md,lnun,lnwba_x_r_white,,,0,0,noncore_heterogeneity,Interaction with race; changes estimand to heterogeneity,0.9
+112870-V2,robust/heterogeneity/subsample_unmarried,robustness/heterogeneity.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Unmarried subsample; same outcome/treatment as pooled,0.75
+112870-V2,robust/heterogeneity/subsample_married,robustness/heterogeneity.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Married subsample; same outcome/treatment as pooled,0.75
+112870-V2,robust/heterogeneity/subsample_nonwhite,robustness/heterogeneity.md,lnun,lnwba,G1,baseline_pooled,0,0,invalid,Missing SE/p-value; N=41 too small for reliable inference,0.9
+112870-V2,robust/heterogeneity/subsample_white,robustness/heterogeneity.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,White subsample; same outcome/treatment as pooled,0.75
+112870-V2,robust/placebo/lag1_treatment,robustness/placebo_tests.md,lnun,lnwba_lag1,,,0,0,noncore_placebo,Lagged treatment placebo; different treatment variable,0.95
+112870-V2,robust/placebo/lead1_treatment,robustness/placebo_tests.md,lnun,lnwba_lead1,,,0,0,noncore_placebo,Lead treatment placebo; tests pre-trends,0.95
+112870-V2,robust/placebo/randomized_treatment,robustness/placebo_tests.md,lnun,lnwba_random,,,0,0,noncore_placebo,Randomized treatment placebo; falsification test,0.95
+112870-V2,robust/funcform/linear_trend,robustness/functional_form.md,lnun,lnwba,G1,baseline_pooled,0,1,core_funcform,State FE + linear trend instead of year FE,0.85
+112870-V2,robust/funcform/quadratic_trend,robustness/functional_form.md,lnun,lnwba,G1,baseline_pooled,0,1,core_funcform,State FE + quadratic trend instead of year FE,0.85
+112870-V2,robust/sample/prime_age,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Prime-age (30-49) subsample; same estimand,0.85
+112870-V2,robust/sample/part1_only,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,First half of year only; seasonal robustness,0.9
+112870-V2,robust/sample/part2_only,robustness/sample_restrictions.md,lnun,lnwba,G1,baseline_pooled,0,1,core_sample,Second half of year only; seasonal robustness,0.9
+112870-V2,robust/estimation/first_difference,methods/panel_fixed_effects.md#first-difference,lnun_diff,lnwba_diff,G1,baseline_pooled,0,1,core_method,First difference estimator; alternative to FE,0.8

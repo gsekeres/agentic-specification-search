@@ -1,0 +1,24 @@
+{
+  "paper_id": "113829-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113829-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Politically connected sugar mill chairmen manipulate cane prices during election years via interaction of political connection and election timing on real sugarcane prices.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "rprice"
+      ],
+      "baseline_treatment_vars": [
+        "interall"
+      ],
+      "notes": "Baseline replicates Table 2 Column 2. Treatment interall is polcon x election-year interaction. Negative sign means connected mills pay LOWER prices during elections within mill FE. Uses mill+year FE, mill clustering, capacity and rainfall controls."
+    }
+  ],
+  "global_notes": "78 total specs. One baseline group for rprice ~ interall with mill+year FE. Specs changing treatment to decomposed connection measures (pcinter, acinter, pcconnected, acconnected, polcon_only) are alternative treatments not testing the same estimand. Alternative outcomes (recovery, actualhours, etc.) not part of core claim. robust/sample/no_polcheck_mills reports capacity as treatment (interall is zero for never-connected mills, extraction artifact). robust/control/minimal duplicates robust/control/capacity_only exactly."
+}

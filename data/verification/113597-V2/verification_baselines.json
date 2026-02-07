@@ -1,0 +1,84 @@
+{
+  "paper_id": "113597-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113597-V2",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Joint-liability group microfinance loans increase enterprise ownership among borrowers in rural Mongolia.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "enterprise"
+      ],
+      "baseline_treatment_vars": [
+        "group"
+      ],
+      "notes": "Primary outcome. Coefficient 0.0775 (p=0.026) with soum-level clustering."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Joint-liability group microfinance loans increase sole entrepreneurship among borrowers.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/soleent"
+      ],
+      "baseline_outcome_vars": [
+        "soleent"
+      ],
+      "baseline_treatment_vars": [
+        "group"
+      ],
+      "notes": "Secondary outcome. Coefficient 0.085 (p=0.035)."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Joint-liability group microfinance loans increase total household consumption.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ln_totalc"
+      ],
+      "baseline_outcome_vars": [
+        "ln_totalc"
+      ],
+      "baseline_treatment_vars": [
+        "group"
+      ],
+      "notes": "Welfare outcome. Coefficient 0.114 (p=0.077), not significant at 5%."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Joint-liability group microfinance loans increase food consumption.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ln_foodc"
+      ],
+      "baseline_outcome_vars": [
+        "ln_foodc"
+      ],
+      "baseline_treatment_vars": [
+        "group"
+      ],
+      "notes": "Welfare outcome. Coefficient 0.170 (p=0.028)."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Joint-liability group microfinance loans affect scaled profit.",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "baseline/scaled_profit_r"
+      ],
+      "baseline_outcome_vars": [
+        "scaled_profit_r"
+      ],
+      "baseline_treatment_vars": [
+        "group"
+      ],
+      "notes": "Profit result is negative (-7.85, p=0.076). Direction ambiguous."
+    }
+  ],
+  "global_notes": "RCT studying microfinance in Mongolia with multiple outcomes. Primary claim is enterprise ownership (G1). Heterogeneity specs include interaction terms. One spec (robust/fe/soum_fe) failed. Custom specs use different treatment (indiv vs group)."
+}

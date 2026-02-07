@@ -1,0 +1,58 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+114315-V1,baseline_gravity_basic,methods/panel_fixed_effects.md#baseline,lntcount,lndist,G2,baseline_gravity_basic,1,1,core_method,Baseline for distance elasticity claim (G2),1.0
+114315-V1,baseline_gravity_samestate,methods/panel_fixed_effects.md#baseline,lntcount,samestate,G1,baseline_gravity_samestate,1,1,core_method,Baseline for home bias claim without FE,1.0
+114315-V1,baseline,methods/panel_fixed_effects.md#baseline,lntcount,samestate,G1,baseline,1,1,core_method,Primary baseline: two-way FE home bias,1.0
+114315-V1,baseline_volume,methods/panel_fixed_effects.md#baseline,lntvol,samestate,G3,baseline_volume,1,1,core_method,Baseline for volume outcome claim,1.0
+114315-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,lntcount,samestate,G1,baseline_gravity_samestate,0,1,core_fe,No FE with GDP controls; same treatment/outcome as G1,0.9
+114315-V1,panel/fe/seller_only,methods/panel_fixed_effects.md#fixed-effects-structure,lntcount,samestate,G1,baseline,0,1,core_fe,Seller-only FE variant of baseline,0.95
+114315-V1,panel/fe/buyer_only,methods/panel_fixed_effects.md#fixed-effects-structure,lntcount,samestate,G1,baseline,0,1,core_fe,Buyer-only FE variant of baseline,0.95
+114315-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,lntcount,samestate,G1,baseline,0,1,core_fe,Two-way FE; identical to baseline spec,0.95
+114315-V1,robust/control/none,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Drop all controls; samestate on lntcount with FE,0.85
+114315-V1,robust/control/add_distance,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Adds distance control to two-way FE baseline,0.95
+114315-V1,robust/control/add_shipping,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Adds shipping fraction control,0.95
+114315-V1,robust/control/add_timezone,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Adds timezone control,0.95
+114315-V1,robust/control/add_salestax,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Adds sales tax interaction control,0.95
+114315-V1,robust/control/full,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Full control set: distance shipping timezone salestax,0.95
+114315-V1,robust/loo/drop_lndist,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Leave-one-out: drop distance control,0.85
+114315-V1,robust/loo/drop_medshipfrac,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Leave-one-out: drop shipping fraction,0.95
+114315-V1,robust/loo/drop_sametimezone,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Leave-one-out: drop timezone control,0.95
+114315-V1,robust/loo/drop_adjacent,robustness/leave_one_out.md,lntcount,samestate,G1,baseline,0,1,core_controls,Leave-one-out: drop adjacent control,0.95
+114315-V1,robust/cluster/none,robustness/clustering_variations.md,lntcount,samestate,G1,baseline,0,1,core_inference,Robust HC standard errors (no clustering),0.95
+114315-V1,robust/cluster/seller_state,robustness/clustering_variations.md,lntcount,samestate,G1,baseline,0,1,core_inference,Cluster by seller state,0.95
+114315-V1,robust/cluster/buyer_state,robustness/clustering_variations.md,lntcount,samestate,G1,baseline,0,1,core_inference,Cluster by buyer state,0.95
+114315-V1,robust/cluster/twoway,robustness/clustering_variations.md,lntcount,samestate,G1,baseline,0,1,core_inference,Two-way clustering by seller and buyer state,0.95
+114315-V1,robust/sample/drop_CA,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Drop California from sample,0.95
+114315-V1,robust/sample/drop_TX,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Drop Texas from sample,0.95
+114315-V1,robust/sample/drop_NY,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Drop New York from sample,0.95
+114315-V1,robust/sample/drop_FL,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Drop Florida from sample,0.95
+114315-V1,robust/sample/cross_state_only,robustness/sample_restrictions.md,lntcount,lndist,G2,baseline_gravity_basic,0,1,core_sample,Cross-state only; treatment is lndist not samestate,0.7
+114315-V1,robust/sample/non_adjacent_only,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Non-adjacent state pairs only,0.95
+114315-V1,robust/sample/region_northeast,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Northeast region subsample,0.9
+114315-V1,robust/sample/region_midwest,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Midwest region subsample,0.9
+114315-V1,robust/sample/region_south,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,South region subsample,0.9
+114315-V1,robust/sample/region_west,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,West region subsample,0.9
+114315-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Winsorized outcome at 1 percent,0.9
+114315-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Winsorized at 5 pct; sign flips negative (suspicious),0.6
+114315-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,lntcount,samestate,G1,baseline,0,1,core_sample,Trimmed sample at 1 percent,0.9
+114315-V1,robust/outcome/log_volume,robustness/measurement.md,lntvol,samestate,G3,baseline_volume,0,1,core_funcform,Log volume outcome; replicates baseline_volume,0.95
+114315-V1,robust/outcome/levels,robustness/functional_form.md,tcount,samestate,G1,baseline,0,1,core_funcform,Levels instead of logs; same treatment/FE,0.85
+114315-V1,robust/outcome/ihs,robustness/functional_form.md,ihs_tcount,samestate,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine transform of counts,0.9
+114315-V1,robust/outcome/binary_above_median,robustness/measurement.md,high_trade,samestate,G1,baseline,0,0,noncore_alt_outcome,Binary outcome changes estimand substantially,0.8
+114315-V1,robust/funcform/distance_levels,robustness/functional_form.md,lntcount,samestate,G1,baseline,0,1,core_funcform,Distance in levels instead of logs,0.9
+114315-V1,robust/funcform/distance_squared,robustness/functional_form.md,lntcount,samestate,G1,baseline,0,1,core_funcform,Adds distance-squared polynomial term,0.95
+114315-V1,robust/funcform/distance_cubic,robustness/functional_form.md,lntcount,samestate,G1,baseline,0,1,core_funcform,Adds distance cubic polynomial,0.95
+114315-V1,robust/funcform/distance_bins,robustness/functional_form.md,lntcount,samestate,G1,baseline,0,1,core_funcform,Distance bins instead of continuous measure,0.9
+114315-V1,robust/heterogeneity/large_buyer,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with large buyer; heterogeneity analysis,0.85
+114315-V1,robust/heterogeneity/large_seller,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with large seller; heterogeneity analysis,0.85
+114315-V1,robust/heterogeneity/adjacent,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with adjacency; heterogeneity analysis,0.85
+114315-V1,robust/heterogeneity/timezone,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with same timezone; heterogeneity,0.85
+114315-V1,robust/heterogeneity/high_tax,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with high tax state; heterogeneity,0.85
+114315-V1,robust/heterogeneity/state_CA,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with California dummy; state heterogeneity,0.85
+114315-V1,robust/heterogeneity/state_NY,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with New York dummy; state heterogeneity,0.85
+114315-V1,robust/heterogeneity/state_FL,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with Florida dummy; state heterogeneity,0.85
+114315-V1,robust/heterogeneity/state_TX,robustness/heterogeneity.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Interaction with Texas dummy; state heterogeneity,0.85
+114315-V1,robust/placebo/random_samestate,robustness/placebo_tests.md,lntcount,fake_samestate,G1,baseline,0,0,noncore_placebo,Randomized treatment; placebo test not a core test,0.95
+114315-V1,robust/placebo/random_outcome,robustness/placebo_tests.md,fake_lntcount,samestate,G1,baseline,0,0,noncore_placebo,Randomized outcome; placebo test not a core test,0.95
+114315-V1,heterogeneity/seller_quality,methods/panel_fixed_effects.md,lntcount,samestate,G1,baseline,0,0,noncore_heterogeneity,Seller quality interactions; heterogeneity analysis,0.85
+114315-V1,robust/treatment/distance_only,robustness/measurement.md,lntcount,lndist,G2,baseline_gravity_basic,0,1,core_controls,Distance-only model without samestate; tests G2,0.8
+114315-V1,robust/treatment/same_region,robustness/measurement.md,lntcount,sameregion,,,0,0,noncore_alt_treatment,Same-region treatment changes causal object entirely,0.85

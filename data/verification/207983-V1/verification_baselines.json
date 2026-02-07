@@ -1,0 +1,39 @@
+{
+  "paper_id": "207983-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/207983-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Small class size (vs. regular) improves kindergarten standardized test scores in the Project STAR experiment.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "y"
+      ],
+      "baseline_treatment_vars": [
+        "small_class"
+      ],
+      "notes": "Baseline is OLS with school FE, no additional controls, full STAR sample. Coefficient ~5.27 points."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Teaching aide (vs. regular class) has no significant effect on kindergarten test scores in STAR.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline_aide"
+      ],
+      "baseline_outcome_vars": [
+        "y"
+      ],
+      "baseline_treatment_vars": [
+        "aide_class"
+      ],
+      "notes": "Aide treatment is a secondary finding. Coefficient ~0.24, not significant (p=0.74)."
+    }
+  ],
+  "global_notes": "Methodology paper using STAR as illustration. Two Benhassine specs from different dataset not comparable. Some heterogeneity subsample specs duplicate sample restriction specs. Interaction specs change estimand."
+}

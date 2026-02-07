@@ -1,0 +1,39 @@
+{
+  "paper_id": "114398-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/114398-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Same-denomination church competition within 4 miles is positively associated with the probability of providing childcare.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "ccare"
+      ],
+      "baseline_treatment_vars": [
+        "same_denom_4mi"
+      ],
+      "notes": "Logit of binary childcare provision on same-denomination church count within 4 miles, full controls, county FE. Coef=0.067 (p=0.170). Original paper uses structural GMM; this is a reduced-form approximation."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Different-denomination church competition within 4 miles is positively associated with the probability of providing childcare.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_diff_denom"
+      ],
+      "baseline_outcome_vars": [
+        "ccare"
+      ],
+      "baseline_treatment_vars": [
+        "diff_denom_4mi"
+      ],
+      "notes": "Secondary baseline from the same regression as G1, reporting coefficient on different-denomination competition. Coef=0.025 (p=0.375). No robustness specs directly target this coefficient."
+    }
+  ],
+  "global_notes": "60 reduced-form specifications from a paper that originally used structural GMM. Two baselines from the same regression (different treatment variables). Most robustness specs target same_denom_4mi (G1). Several city-level subsamples suffer from separation issues. Heterogeneity specs report interaction coefficients not main effects."
+}

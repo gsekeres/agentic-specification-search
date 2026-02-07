@@ -1,0 +1,24 @@
+{
+  "paper_id": "140161-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/140161-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Exposure to imposed fact-checking reduces French Facebook users stated intention to share fake news (Alt-Facts) on Facebook.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "want_share_fb"
+      ],
+      "baseline_treatment_vars": [
+        "survey (Imposed Fact-Check)"
+      ],
+      "notes": "Baseline is the bivariate OLS of want_share_fb on C(survey) with no controls, extracting C(survey)[T.2] coefficient. The paper Table 2 builds up controls progressively."
+    }
+  ],
+  "global_notes": "Single core claim (Imposed FC reduces sharing intent). Non-core: alt treatments (Voluntary FC, Imposed vs Voluntary), alt outcome (want_share_others), heterogeneity interactions, placebos on pre-treatment chars, sample restrictions. robust/outcome/want_share_fb duplicates robust/build/socioeconomic. robust/build/bivariate duplicates baseline. Logit/Probit on log-odds scale."
+}

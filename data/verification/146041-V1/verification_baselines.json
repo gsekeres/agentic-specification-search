@@ -1,0 +1,39 @@
+{
+  "paper_id": "146041-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/146041-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Relative skill efficiency (AQ=A_H/A_L) is positively associated with GDP per worker across countries, measured from domestic wage and labor supply data under a CES framework.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "l_irAQ53_dum_skti_hrs_secall"
+      ],
+      "baseline_treatment_vars": [
+        "l_y"
+      ],
+      "notes": "Baseline uses 12 countries with micro data, sigma=1.5. AQ is mechanically constructed from wage ratios and labor supply under CES assumption."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Relative human capital quality (Q) of immigrants is positively associated with origin-country GDP per worker, measured from immigrant wage differentials in the US.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "ols/Q/baseline_us"
+      ],
+      "baseline_outcome_vars": [
+        "l_irQ53_dum"
+      ],
+      "baseline_treatment_vars": [
+        "l_y"
+      ],
+      "notes": "Baseline uses ~101 origin countries of US immigrants. Q measures quality ratio of high-skill to low-skill human capital from relative immigrant earnings."
+    }
+  ],
+  "global_notes": "Two distinct claims (AQ from domestic data, Q from immigrant data) with different samples and outcome measures. Sectoral breakdowns are heterogeneity, not core robustness. Wage ratio and labor supply are AQ decomposition components representing different estimands. Coefficient magnitudes not comparable across G1 (~1.4) and G2 (~0.10)."
+}

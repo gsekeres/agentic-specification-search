@@ -1,0 +1,96 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+113710-V1,baseline,methods/regression_discontinuity.md#baseline,tk,ab,G1,baseline,1,1,core_method,Baseline IV-2SLS specification with quadratic polynomial,1.0
+113710-V1,rd/bandwidth/bw_full,methods/regression_discontinuity.md#bandwidth-selection,tk,ab,G1,baseline,0,1,core_sample,Full sample with linear polynomial; bandwidth variation,0.95
+113710-V1,rd/bandwidth/bw_386,methods/regression_discontinuity.md#bandwidth-selection,tk,ab,G1,baseline,0,1,core_sample,Bandwidth restricted to 0.386; same outcome/treatment,0.95
+113710-V1,rd/bandwidth/bw_193,methods/regression_discontinuity.md#bandwidth-selection,tk,ab,G1,baseline,0,1,core_sample,Bandwidth restricted to 0.193; same outcome/treatment,0.95
+113710-V1,rd/bandwidth/bw_0965,methods/regression_discontinuity.md#bandwidth-selection,tk,ab,G1,baseline,0,1,core_sample,Bandwidth restricted to 0.0965; same outcome/treatment,0.95
+113710-V1,rd/bandwidth/bw_048,methods/regression_discontinuity.md#bandwidth-selection,tk,ab,G1,baseline,0,1,core_sample,Bandwidth restricted to 0.048; same outcome/treatment,0.95
+113710-V1,rd/poly/local_linear,methods/regression_discontinuity.md#polynomial-order,tk,ab,G1,baseline,0,1,core_funcform,Linear polynomial instead of quadratic; same estimand,0.95
+113710-V1,rd/poly/local_quadratic,methods/regression_discontinuity.md#polynomial-order,tk,ab,G1,baseline,0,1,core_funcform,Identical to baseline (quadratic poly); duplicate row,0.85
+113710-V1,rd/poly/local_cubic,methods/regression_discontinuity.md#polynomial-order,tk,ab,G1,baseline,0,1,core_funcform,Cubic polynomial instead of quadratic; same estimand,0.95
+113710-V1,robust/cluster/municipality,robustness/clustering_variations.md#single-level-clustering,tk,ab,G1,baseline,0,1,core_inference,Same as baseline; municipality clustering (duplicate),0.85
+113710-V1,robust/cluster/region,robustness/clustering_variations.md#single-level-clustering,tk,ab,G1,baseline,0,1,core_inference,Cluster at region level instead of municipality,0.95
+113710-V1,robust/cluster/province,robustness/clustering_variations.md#single-level-clustering,tk,ab,G1,baseline,0,1,core_inference,Cluster at province level instead of municipality,0.95
+113710-V1,robust/cluster/none,robustness/clustering_variations.md#single-level-clustering,tk,ab,G1,baseline,0,1,core_inference,Robust SEs instead of clustered SEs,0.95
+113710-V1,rd/controls/none,methods/regression_discontinuity.md#control-sets,tk,ab,G1,baseline,0,1,core_controls,Linear poly with no additional controls; same estimand,0.95
+113710-V1,robust/control/add_lpob,robustness/control_progression.md,tk,ab,G1,baseline,0,1,core_controls,Adds log population control to linear specification,0.95
+113710-V1,robust/control/add_density,robustness/control_progression.md,tk,ab,G1,baseline,0,1,core_controls,Adds density control to specification,0.95
+113710-V1,robust/control/add_debt,robustness/control_progression.md,tk,ab,G1,baseline,0,1,core_controls,Adds debt control to specification,0.95
+113710-V1,robust/control/add_vcp,robustness/control_progression.md,tk,ab,G1,baseline,0,1,core_controls,Adds vote share communist party control,0.95
+113710-V1,robust/control/add_tipo,robustness/control_progression.md,tk,ab,G1,baseline,0,1,core_controls,Adds municipality type control; full control set,0.95
+113710-V1,rd/controls/full,methods/regression_discontinuity.md#control-sets,tk,ab,G1,baseline,0,1,core_controls,Full controls with linear poly; duplicate of add_tipo,0.85
+113710-V1,robust/loo/drop_lpob,robustness/leave_one_out.md,tk,ab,G1,baseline,0,1,core_controls,Drops log population from full control set,0.95
+113710-V1,robust/loo/drop_density,robustness/leave_one_out.md,tk,ab,G1,baseline,0,1,core_controls,Drops density from full control set,0.95
+113710-V1,robust/loo/drop_debt,robustness/leave_one_out.md,tk,ab,G1,baseline,0,1,core_controls,Drops debt from full control set,0.95
+113710-V1,robust/loo/drop_vcp,robustness/leave_one_out.md,tk,ab,G1,baseline,0,1,core_controls,Drops communist vote share from full control set,0.95
+113710-V1,robust/loo/drop_tipo,robustness/leave_one_out.md,tk,ab,G1,baseline,0,1,core_controls,Drops municipality type from full control set,0.95
+113710-V1,robust/sample/period_2,robustness/sample_restrictions.md#time-based-restrictions,tk,ab,G1,baseline,0,1,core_sample,Restricted to period 2 only; same outcome/treatment,0.9
+113710-V1,robust/sample/period_3,robustness/sample_restrictions.md#time-based-restrictions,tk,ab,G1,baseline,0,1,core_sample,Restricted to period 3 only; same outcome/treatment,0.9
+113710-V1,robust/sample/period_4,robustness/sample_restrictions.md#time-based-restrictions,tk,ab,G1,baseline,0,1,core_sample,Restricted to period 4 only; same outcome/treatment,0.9
+113710-V1,robust/sample/exclude_period_2,robustness/sample_restrictions.md#time-based-restrictions,tk,ab,G1,baseline,0,1,core_sample,Excludes period 2; same outcome/treatment,0.9
+113710-V1,robust/sample/exclude_period_3,robustness/sample_restrictions.md#time-based-restrictions,tk,ab,G1,baseline,0,1,core_sample,Excludes period 3; same outcome/treatment,0.9
+113710-V1,robust/sample/exclude_period_4,robustness/sample_restrictions.md#time-based-restrictions,tk,ab,G1,baseline,0,1,core_sample,Excludes period 4; same outcome/treatment,0.9
+113710-V1,robust/sample/drop_region_1,robustness/sample_restrictions.md#geographic-restrictions,tk,ab,G1,baseline,0,1,core_sample,Drops region 1; geographic leave-one-out,0.9
+113710-V1,robust/sample/drop_region_2,robustness/sample_restrictions.md#geographic-restrictions,tk,ab,G1,baseline,0,1,core_sample,Drops region 2; geographic leave-one-out,0.9
+113710-V1,robust/sample/drop_region_3,robustness/sample_restrictions.md#geographic-restrictions,tk,ab,G1,baseline,0,1,core_sample,Drops region 3; geographic leave-one-out,0.9
+113710-V1,robust/sample/drop_region_4,robustness/sample_restrictions.md#geographic-restrictions,tk,ab,G1,baseline,0,1,core_sample,Drops region 4; geographic leave-one-out,0.9
+113710-V1,robust/sample/drop_region_5,robustness/sample_restrictions.md#geographic-restrictions,tk,ab,G1,baseline,0,1,core_sample,Drops region 5; geographic leave-one-out,0.9
+113710-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md#outlier-handling,tk,ab,G1,baseline,0,1,core_sample,Winsorizes outcome at 1pct tails,0.9
+113710-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md#outlier-handling,tk,ab,G1,baseline,0,1,core_sample,Winsorizes outcome at 5pct tails,0.9
+113710-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md#outlier-handling,tk,ab,G1,baseline,0,1,core_sample,Winsorizes outcome at 10pct tails,0.9
+113710-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outlier-handling,tk,ab,G1,baseline,0,1,core_sample,Trims 1pct tails of outcome,0.9
+113710-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md#outlier-handling,tk,ab,G1,baseline,0,1,core_sample,Trims 5pct tails of outcome,0.9
+113710-V1,rd/donut/exclude_1pct,methods/regression_discontinuity.md#donut-hole-specifications,tk,ab,G1,baseline,0,1,core_sample,Donut hole excluding 1pct around cutoff,0.95
+113710-V1,rd/donut/exclude_2pct,methods/regression_discontinuity.md#donut-hole-specifications,tk,ab,G1,baseline,0,1,core_sample,Donut hole excluding 2pct around cutoff,0.95
+113710-V1,rd/donut/exclude_5pct,methods/regression_discontinuity.md#donut-hole-specifications,tk,ab,G1,baseline,0,1,core_sample,Donut hole excluding 5pct around cutoff,0.95
+113710-V1,robust/form/y_log,robustness/functional_form.md#outcome-variable-transformations,tk_log,ab,G1,baseline,0,1,core_funcform,Log-transformed outcome; tests same claim,0.9
+113710-V1,robust/form/y_asinh,robustness/functional_form.md#outcome-variable-transformations,tk_asinh,ab,G1,baseline,0,1,core_funcform,Asinh-transformed outcome; same claim,0.9
+113710-V1,robust/estimation/no_fe,robustness/model_specification.md,tk,ab,G1,baseline,0,1,core_fe,Drops region FE; tests sensitivity to FE,0.9
+113710-V1,robust/heterogeneity/electoral_competition,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Interaction with competition; HLATE estimand,0.85
+113710-V1,robust/heterogeneity/high_competition,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: high competition regions only,0.85
+113710-V1,robust/heterogeneity/low_competition,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: low competition regions only,0.85
+113710-V1,robust/heterogeneity/large_muni,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: large municipalities only,0.85
+113710-V1,robust/heterogeneity/small_muni,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: small municipalities only,0.85
+113710-V1,robust/heterogeneity/high_density,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: high density municipalities only,0.85
+113710-V1,robust/heterogeneity/low_density,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: low density municipalities only,0.85
+113710-V1,robust/heterogeneity/high_debt,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: high debt municipalities only,0.85
+113710-V1,robust/heterogeneity/low_debt,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Subsample: low debt municipalities only,0.85
+113710-V1,rd/placebo/cutoff_neg0_15,methods/regression_discontinuity.md#placebo-cutoff-tests,tk,ab,,,0,0,noncore_placebo,Placebo cutoff at -0.15; RD validity test,0.95
+113710-V1,rd/placebo/cutoff_0_15,methods/regression_discontinuity.md#placebo-cutoff-tests,tk,ab,,,0,0,noncore_placebo,Placebo cutoff at +0.15; RD validity test,0.95
+113710-V1,rd/placebo/cutoff_neg0_25,methods/regression_discontinuity.md#placebo-cutoff-tests,tk,ab,,,0,0,noncore_placebo,Placebo cutoff at -0.25; RD validity test,0.95
+113710-V1,rd/placebo/cutoff_0_25,methods/regression_discontinuity.md#placebo-cutoff-tests,tk,ab,,,0,0,noncore_placebo,Placebo cutoff at +0.25; RD validity test,0.95
+113710-V1,robust/treatment/coalition_alignment,robustness/measurement.md,tk,abcd,G1,baseline,0,1,core_method,Coalition alignment; alt measurement of same concept,0.8
+113710-V1,robust/treatment/bloc_alignment,robustness/measurement.md,tk,bloc,G1,baseline,0,1,core_method,Bloc alignment; alt measurement of same concept,0.8
+113710-V1,robust/outcome/total_transfers,robustness/measurement.md,tc,ab,G1,baseline,0,0,noncore_alt_outcome,Total transfers (tc); different outcome variable,0.8
+113710-V1,iv/method/liml,methods/instrumental_variables.md#estimation-method,tk,ab,G1,baseline,0,1,core_method,LIML estimation instead of 2SLS; weak-IV robust,0.95
+113710-V1,custom/did_within_municipality,custom,c_tk,c_ab,G1,baseline,0,1,core_method,"DiD within-muni; differenced vars, same claim",0.75
+113710-V1,iv/method/ols,methods/instrumental_variables.md#estimation-method,tk,ab,G1,baseline,0,1,core_method,"OLS without IV; different estimator, same claim",0.85
+113710-V1,iv/first_stage/baseline,methods/instrumental_variables.md#first-stage,ab,dab,,,0,0,noncore_diagnostic,First stage; tests instrument strength not main claim,0.95
+113710-V1,iv/first_stage/reduced_form,methods/instrumental_variables.md#first-stage,tk,dab,G1,baseline,0,1,core_method,Reduced form (ITT); same directional claim,0.85
+113710-V1,iv/first_stage/bw_0_5,methods/instrumental_variables.md#first-stage,ab,dab,,,0,0,noncore_diagnostic,First stage at bw=0.5; instrument strength,0.95
+113710-V1,iv/first_stage/bw_0_3,methods/instrumental_variables.md#first-stage,ab,dab,,,0,0,noncore_diagnostic,First stage at bw=0.3; instrument strength,0.95
+113710-V1,iv/first_stage/bw_0_15,methods/instrumental_variables.md#first-stage,ab,dab,,,0,0,noncore_diagnostic,First stage at bw=0.15; instrument strength,0.95
+113710-V1,iv/first_stage/bw_0_1,methods/instrumental_variables.md#first-stage,ab,dab,,,0,0,noncore_diagnostic,First stage at bw=0.1; instrument strength,0.95
+113710-V1,iv/first_stage/bw_0_05,methods/instrumental_variables.md#first-stage,ab,dab,,,0,0,noncore_diagnostic,First stage at bw=0.05; instrument strength,0.95
+113710-V1,robust/heterogeneity/region_1,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 1 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_2,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 2 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_3,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 3 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_4,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 4 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_5,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 5 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_6,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 6 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_7,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 7 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_8,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 8 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_9,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 9 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/heterogeneity/region_10,robustness/heterogeneity.md,tk,ab,G1,baseline,0,0,noncore_heterogeneity,Region 10 subsample OLS; region heterogeneity,0.9
+113710-V1,robust/sample/balanced_panel,robustness/sample_restrictions.md#panel-specific,tk,ab,G1,baseline,0,1,core_sample,"Balanced panel restriction; OLS, same claim",0.85
+113710-V1,robust/sample/min_obs_2,robustness/sample_restrictions.md#panel-specific,tk,ab,G1,baseline,0,1,core_sample,"Min 2 obs per unit; OLS, same claim",0.85
+113710-V1,robust/sample/min_obs_3,robustness/sample_restrictions.md#panel-specific,tk,ab,G1,baseline,0,1,core_sample,Min 3 obs per unit; duplicate of balanced_panel,0.8
+113710-V1,rd/validity/covariate_pob,methods/regression_discontinuity.md#validation-tests,pob,dab,,,0,0,noncore_diagnostic,Covariate balance for population; RD validity,0.95
+113710-V1,rd/validity/covariate_density,methods/regression_discontinuity.md#validation-tests,density,dab,,,0,0,noncore_diagnostic,Covariate balance for density; RD validity,0.95
+113710-V1,rd/validity/covariate_debt,methods/regression_discontinuity.md#validation-tests,debt,dab,,,0,0,noncore_diagnostic,Covariate balance for debt; RD validity,0.95
+113710-V1,rd/validity/covariate_tipo,methods/regression_discontinuity.md#validation-tests,tipo,dab,,,0,0,noncore_diagnostic,Covariate balance for muni type; RD validity,0.95
+113710-V1,rd/validity/covariate_vcp,methods/regression_discontinuity.md#validation-tests,vcp,dab,,,0,0,noncore_diagnostic,Covariate balance for communist vote; RD validity,0.95
+113710-V1,rd/sample/symmetric_bw_0_3,methods/regression_discontinuity.md#sample-restrictions,tk,ab,G1,baseline,0,1,core_sample,"Symmetric bw 0.3; OLS, same claim direction",0.85
+113710-V1,rd/sample/symmetric_bw_0_2,methods/regression_discontinuity.md#sample-restrictions,tk,ab,G1,baseline,0,1,core_sample,"Symmetric bw 0.2; OLS, same claim direction",0.85
+113710-V1,rd/sample/symmetric_bw_0_1,methods/regression_discontinuity.md#sample-restrictions,tk,ab,G1,baseline,0,1,core_sample,"Symmetric bw 0.1; OLS, same claim direction",0.85
+113710-V1,robust/form/interact_time,robustness/functional_form.md#interaction-terms,tk,ab,G1,baseline,0,1,core_funcform,Time-interacted model; main effect of alignment,0.8

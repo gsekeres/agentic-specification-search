@@ -1,0 +1,88 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+131981-V1,baseline,methods/regression_discontinuity.md#baseline,z_depression,before1955,G1,baseline,1,1,core_method,Baseline RD: z_depression on before1955 BW=45 linear,1.0
+131981-V1,rd/bandwidth/bw_17,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=17; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_24,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=24; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_30,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=30; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_36,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=36; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_45,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=45; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_48,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=48; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_60,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=60; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/bandwidth/bw_72,methods/regression_discontinuity.md#bandwidth-selection,z_depression,before1955,G1,baseline,0,1,core_method,Bandwidth=72; same outcome/treatment/controls as baseline,0.95
+131981-V1,rd/poly/linear_bw30,methods/regression_discontinuity.md#polynomial-order,z_depression,before1955,G1,baseline,0,1,core_method,Linear poly BW=30; same as baseline method variant,0.95
+131981-V1,rd/poly/linear_bw45,methods/regression_discontinuity.md#polynomial-order,z_depression,before1955,G1,baseline,0,1,core_method,Linear poly BW=45; same as baseline method variant,0.95
+131981-V1,rd/poly/linear_bw60,methods/regression_discontinuity.md#polynomial-order,z_depression,before1955,G1,baseline,0,1,core_method,Linear poly BW=60; same as baseline method variant,0.95
+131981-V1,rd/poly/quadratic_bw30,methods/regression_discontinuity.md#polynomial-order,z_depression,before1955,G1,baseline,0,1,core_funcform,Quadratic poly BW=30; functional form variation,0.9
+131981-V1,rd/poly/quadratic_bw45,methods/regression_discontinuity.md#polynomial-order,z_depression,before1955,G1,baseline,0,1,core_funcform,Quadratic poly BW=45; functional form variation,0.9
+131981-V1,rd/poly/quadratic_bw60,methods/regression_discontinuity.md#polynomial-order,z_depression,before1955,G1,baseline,0,1,core_funcform,Quadratic poly BW=60; functional form variation,0.9
+131981-V1,robust/outcome/z_depression,robustness/measurement.md,z_depression,before1955,G1,baseline,0,1,core_method,Duplicate of baseline (z_depression BW=45),0.95
+131981-V1,robust/outcome/z_somatic,robustness/measurement.md,z_somatic,before1955,G1,baseline,0,1,core_funcform,Somatic sub-index of same SRQ-20 measure,0.8
+131981-V1,robust/outcome/z_nonsomatic,robustness/measurement.md,z_nonsomatic,before1955,G1,baseline,0,1,core_funcform,Non-somatic sub-index of same SRQ-20 measure,0.8
+131981-V1,robust/outcome/sum_srq,robustness/measurement.md,sum_srq,before1955,G1,baseline,0,1,core_funcform,Raw SRQ sum; same mental health concept different scale,0.85
+131981-V1,robust/outcome/outside_week,robustness/measurement.md,outside_week,before1955,,,0,0,noncore_alt_outcome,Mobility outcome (days outside/week); different estimand,0.95
+131981-V1,robust/outcome/under_curfew,robustness/measurement.md,under_curfew,before1955,,,0,0,noncore_diagnostic,First-stage outcome (under curfew); RD validity check,0.95
+131981-V1,robust/outcome/never_out,robustness/measurement.md,never_out,before1955,,,0,0,noncore_alt_outcome,Mobility outcome (never goes out); different estimand,0.95
+131981-V1,rd/controls/none,methods/regression_discontinuity.md#control-sets,z_depression,before1955,G1,baseline,0,1,core_controls,No controls; same outcome/treatment/BW,0.95
+131981-V1,rd/controls/female_only,methods/regression_discontinuity.md#control-sets,z_depression,before1955,G1,baseline,0,1,core_controls,Only female control; same outcome/treatment/BW,0.95
+131981-V1,robust/loo/drop_ethnicity,robustness/leave_one_out.md,z_depression,before1955,G1,baseline,0,1,core_controls,Drop ethnicity control; same outcome/treatment/BW,0.95
+131981-V1,robust/loo/drop_education,robustness/leave_one_out.md,z_depression,before1955,G1,baseline,0,1,core_controls,Drop education control; same outcome/treatment/BW,0.95
+131981-V1,robust/loo/drop_female,robustness/leave_one_out.md,z_depression,before1955,G1,baseline,0,1,core_controls,Drop female control; same outcome/treatment/BW,0.95
+131981-V1,robust/cluster/robust,robustness/clustering_variations.md,z_depression,before1955,G1,baseline,0,1,core_inference,Robust HC SEs instead of clustered; same point estimate,0.95
+131981-V1,robust/cluster/modate,robustness/clustering_variations.md,z_depression,before1955,G1,baseline,0,1,core_inference,Cluster on modate (same as baseline); confirms inference,0.95
+131981-V1,robust/cluster/province,robustness/clustering_variations.md,z_depression,before1955,G1,baseline,0,1,core_inference,Cluster on province; alternative clustering level,0.95
+131981-V1,rd/donut/exclude_1mo,methods/regression_discontinuity.md#donut-hole-specifications,z_depression,before1955,G1,baseline,0,1,core_sample,Donut hole excluding 1mo near cutoff; same estimand,0.9
+131981-V1,rd/donut/exclude_2mo,methods/regression_discontinuity.md#donut-hole-specifications,z_depression,before1955,G1,baseline,0,1,core_sample,Donut hole excluding 2mo near cutoff; same estimand,0.9
+131981-V1,rd/donut/exclude_3mo,methods/regression_discontinuity.md#donut-hole-specifications,z_depression,before1955,G1,baseline,0,1,core_sample,Donut hole excluding 3mo near cutoff; same estimand,0.9
+131981-V1,rd/donut/exclude_5mo,methods/regression_discontinuity.md#donut-hole-specifications,z_depression,before1955,G1,baseline,0,1,core_sample,Donut hole excluding 5mo near cutoff; same estimand,0.9
+131981-V1,robust/sample/male_only,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,0,noncore_heterogeneity,Male-only subsample; heterogeneity not overall effect,0.75
+131981-V1,robust/sample/female_only,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,0,noncore_heterogeneity,Female-only subsample; heterogeneity not overall effect,0.75
+131981-V1,robust/sample/married,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,Married subsample; robustness to sample composition,0.7
+131981-V1,robust/sample/not_married,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,Not-married subsample; robustness to composition,0.7
+131981-V1,robust/sample/highschool,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,Highschool subsample; robustness to composition,0.7
+131981-V1,robust/sample/no_highschool,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,No-highschool subsample; robustness to composition,0.7
+131981-V1,robust/sample/chronic_disease,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,Chronic disease subsample; robustness to composition,0.7
+131981-V1,robust/sample/no_chronic_disease,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,No chronic disease subsample; robustness to composition,0.7
+131981-V1,robust/sample/prior_psych_support,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,Prior psych support subsample; robustness to composition,0.65
+131981-V1,robust/sample/no_prior_psych_support,robustness/sample_restrictions.md,z_depression,before1955,G1,baseline,0,1,core_sample,No prior psych support subsample; robustness,0.7
+131981-V1,robust/het/interaction_gender,robustness/heterogeneity.md#interaction-specifications,z_depression,before1955,G1,baseline,0,0,noncore_heterogeneity,Gender interaction; heterogeneity not main effect,0.9
+131981-V1,robust/het/interaction_married,robustness/heterogeneity.md#interaction-specifications,z_depression,before1955,G1,baseline,0,0,noncore_heterogeneity,Marital interaction; heterogeneity not main effect,0.9
+131981-V1,robust/het/interaction_chronic,robustness/heterogeneity.md#interaction-specifications,z_depression,before1955,G1,baseline,0,0,noncore_heterogeneity,Chronic disease interaction; heterogeneity not main,0.9
+131981-V1,robust/het/interaction_psych_support,robustness/heterogeneity.md#interaction-specifications,z_depression,before1955,G1,baseline,0,0,noncore_heterogeneity,Psych support interaction; heterogeneity not main,0.9
+131981-V1,rd/placebo/cutoff_-24mo,methods/regression_discontinuity.md#placebo-cutoff-tests,z_depression,before_placebo,,,0,0,noncore_placebo,Placebo cutoff -24mo; fake treatment for RD validity,0.95
+131981-V1,rd/placebo/cutoff_-12mo,methods/regression_discontinuity.md#placebo-cutoff-tests,z_depression,before_placebo,,,0,0,noncore_placebo,Placebo cutoff -12mo; fake treatment for RD validity,0.95
+131981-V1,rd/placebo/cutoff_+12mo,methods/regression_discontinuity.md#placebo-cutoff-tests,z_depression,before_placebo,,,0,0,noncore_placebo,Placebo cutoff +12mo; fake treatment for RD validity,0.95
+131981-V1,rd/placebo/cutoff_+24mo,methods/regression_discontinuity.md#placebo-cutoff-tests,z_depression,before_placebo,,,0,0,noncore_placebo,Placebo cutoff +24mo; fake treatment for RD validity,0.95
+131981-V1,rd/validity/covariate_highschool,methods/regression_discontinuity.md#validation-tests,highschool,before1955,,,0,0,noncore_diagnostic,Covariate balance for highschool; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_illiterate,methods/regression_discontinuity.md#validation-tests,illiterate,before1955,,,0,0,noncore_diagnostic,Covariate balance for illiterate; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_female,methods/regression_discontinuity.md#validation-tests,female,before1955,,,0,0,noncore_diagnostic,Covariate balance for female; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_married,methods/regression_discontinuity.md#validation-tests,married,before1955,,,0,0,noncore_diagnostic,Covariate balance for married; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_non_turk,methods/regression_discontinuity.md#validation-tests,non_turk,before1955,,,0,0,noncore_diagnostic,Covariate balance for non_turk; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_pre_covid_hhsize,methods/regression_discontinuity.md#validation-tests,pre_covid_hhsize,before1955,,,0,0,noncore_diagnostic,Covariate balance for pre_covid_hhsize; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_psych_support,methods/regression_discontinuity.md#validation-tests,psych_support,before1955,,,0,0,noncore_diagnostic,Covariate balance for psych_support; RD validity diagnostic,0.95
+131981-V1,rd/validity/covariate_chronic_disease,methods/regression_discontinuity.md#validation-tests,chronic_disease,before1955,,,0,0,noncore_diagnostic,Covariate balance for chronic_disease; RD validity diagnostic,0.95
+131981-V1,robust/outcome/channel_paid_employment,robustness/measurement.md,paid_employment,before1955,,,0,0,noncore_alt_outcome,Channel outcome (paid_employment); different estimand,0.9
+131981-V1,robust/outcome/channel_total_employment,robustness/measurement.md,total_employment,before1955,,,0,0,noncore_alt_outcome,Channel outcome (total_employment); different estimand,0.9
+131981-V1,robust/outcome/channel_job_to_return,robustness/measurement.md,job_to_return,before1955,,,0,0,noncore_alt_outcome,Channel outcome (job_to_return); different estimand,0.9
+131981-V1,robust/outcome/channel_money_as_usual,robustness/measurement.md,money_as_usual,before1955,,,0,0,noncore_alt_outcome,Channel outcome (money_as_usual); different estimand,0.9
+131981-V1,robust/outcome/channel_money_distressed,robustness/measurement.md,money_distressed,before1955,,,0,0,noncore_alt_outcome,Channel outcome (money_distressed); different estimand,0.9
+131981-V1,robust/outcome/channel_hh_size,robustness/measurement.md,hh_size,before1955,,,0,0,noncore_alt_outcome,Channel outcome (hh_size); different estimand,0.9
+131981-V1,robust/outcome/channel_conflict,robustness/measurement.md,conflict,before1955,,,0,0,noncore_alt_outcome,Channel outcome (conflict); different estimand,0.9
+131981-V1,robust/outcome/channel_limited_physical_act,robustness/measurement.md,limited_physical_act,before1955,,,0,0,noncore_alt_outcome,Channel outcome (limited_physical_act); different estimand,0.9
+131981-V1,robust/outcome/channel_lim_social_interaction,robustness/measurement.md,lim_social_interaction,before1955,,,0,0,noncore_alt_outcome,Channel outcome (lim_social_interaction); different estimand,0.9
+131981-V1,robust/outcome/symptom_head_ache,robustness/measurement.md,head_ache,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (head_ache); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_mal_appetite,robustness/measurement.md,mal_appetite,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (mal_appetite); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_sleeplessness,robustness/measurement.md,sleeplessness,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (sleeplessness); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_scared,robustness/measurement.md,scared,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (scared); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_shaking,robustness/measurement.md,shaking,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (shaking); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_nervous,robustness/measurement.md,nervous,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (nervous); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_indigestion,robustness/measurement.md,indigestion,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (indigestion); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_unfocused,robustness/measurement.md,unfocused,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (unfocused); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_unhappy,robustness/measurement.md,unhappy,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (unhappy); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_weepy,robustness/measurement.md,weepy,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (weepy); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_unwillingness,robustness/measurement.md,unwillingness,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (unwillingness); component of z_depression,0.75
+131981-V1,robust/outcome/symptom_undecisiveness,robustness/measurement.md,undecisiveness,before1955,G1,baseline,0,1,core_funcform,Individual SRQ symptom (undecisiveness); component of z_depression,0.75
+131981-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md#outlier-handling,z_depression_wins,before1955,G1,baseline,0,1,core_funcform,Winsorized 1% z_depression; outlier robustness,0.9
+131981-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md#outlier-handling,z_depression_wins,before1955,G1,baseline,0,1,core_funcform,Winsorized 5% z_depression; outlier robustness,0.9
+131981-V1,robust/sample/winsor_10pct,robustness/sample_restrictions.md#outlier-handling,z_depression_wins,before1955,G1,baseline,0,1,core_funcform,Winsorized 10% z_depression; outlier robustness,0.9
+131981-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outlier-handling,z_depression,before1955,G1,baseline,0,1,core_sample,Trimmed 1% extreme obs; sample restriction,0.9
+131981-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md#outlier-handling,z_depression,before1955,G1,baseline,0,1,core_sample,Trimmed 5% extreme obs; sample restriction,0.9
+131981-V1,rd/sample/symmetric,methods/regression_discontinuity.md#sample-restrictions,z_depression,before1955,G1,baseline,0,1,core_sample,Symmetric bandwidth sample; sample restriction,0.9

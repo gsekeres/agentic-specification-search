@@ -1,0 +1,58 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+198865-V1,baseline,methods/instrumental_variables.md#baseline,log_shipped,log_price,G1,baseline,1,1,core_controls,Baseline specification: cement OLS with market FE,1.0
+198865-V1,iv/method/2sls,methods/instrumental_variables.md#estimation-method,log_shipped,log_price,G1,baseline,0,1,core_method,2SLS with cost shifter IVs; same outcome/treatment as baseline,0.95
+198865-V1,iv/method/ols,methods/instrumental_variables.md#estimation-method,log_shipped,log_price,G1,baseline,0,0,invalid,Exact duplicate of baseline spec (identical coefficient and SE),0.95
+198865-V1,iv/instruments/single_cpi_coal_price,methods/instrumental_variables.md#instrument-sets,log_shipped,log_price,G1,baseline,0,1,core_method,Single IV (coal price); tests same claim with different instrument,0.85
+198865-V1,iv/instruments/single_cpi_electricity_price,methods/instrumental_variables.md#instrument-sets,log_shipped,log_price,G1,baseline,0,1,core_method,Single IV (electricity); tests same claim different instrument,0.85
+198865-V1,iv/instruments/single_cpi_ng_price,methods/instrumental_variables.md#instrument-sets,log_shipped,log_price,G1,baseline,0,1,core_method,Single IV (natural gas); positive coeff suggests invalid instrument,0.7
+198865-V1,iv/instruments/single_cpi_wage_hr,methods/instrumental_variables.md#instrument-sets,log_shipped,log_price,G1,baseline,0,0,invalid,Weak instrument (F=2.4); positive coeff likely invalid 2SLS,0.85
+198865-V1,iv/instruments/subset_energy,methods/instrumental_variables.md#instrument-sets,log_shipped,log_price,G1,baseline,0,1,core_method,Energy price IVs only; same claim different instrument subset,0.85
+198865-V1,iv/fe/none,methods/instrumental_variables.md#fixed-effects,log_shipped,log_price,G1,baseline,0,1,core_fe,No fixed effects; tests same claim without market FE,0.9
+198865-V1,iv/fe/time,methods/instrumental_variables.md#fixed-effects,log_shipped,log_price,G1,baseline,0,1,core_fe,Year FE only; tests same claim with time FE instead of market FE,0.9
+198865-V1,iv/fe/twoway,methods/instrumental_variables.md#fixed-effects,log_shipped,log_price,G1,baseline,0,1,core_fe,Two-way FE (market + year); same claim with additional FE,0.9
+198865-V1,iv/controls/full,methods/instrumental_variables.md#control-sets,log_shipped,log_price,G1,baseline,0,1,core_controls,Full demand controls added; tests same claim with controls,0.9
+198865-V1,robust/loo/drop_log_population,robustness/leave_one_out.md,log_shipped,log_price,G1,baseline,0,1,core_controls,LOO: drop population from full controls; same claim,0.85
+198865-V1,robust/loo/drop_log_units,robustness/leave_one_out.md,log_shipped,log_price,G1,baseline,0,1,core_controls,LOO: drop units from full controls; same claim,0.85
+198865-V1,robust/loo/drop_log_unemployment_rate,robustness/leave_one_out.md,log_shipped,log_price,G1,baseline,0,1,core_controls,LOO: drop unemployment from full controls; same claim,0.85
+198865-V1,robust/loo/drop_log_buildings,robustness/leave_one_out.md,log_shipped,log_price,G1,baseline,0,1,core_controls,LOO: drop buildings from full controls; same claim,0.85
+198865-V1,robust/control/add_log_population,robustness/control_progression.md,log_shipped,log_price,G1,baseline,0,1,core_controls,Control progression: add population; same outcome/treatment,0.9
+198865-V1,robust/control/add_log_units,robustness/control_progression.md,log_shipped,log_price,G1,baseline,0,1,core_controls,Control progression: add units; same outcome/treatment,0.9
+198865-V1,robust/control/add_log_unemployment_rate,robustness/control_progression.md,log_shipped,log_price,G1,baseline,0,1,core_controls,Control progression: add unemployment; same outcome/treatment,0.9
+198865-V1,robust/control/add_log_buildings,robustness/control_progression.md,log_shipped,log_price,G1,baseline,0,1,core_controls,Control progression: add buildings (= full controls); same claim,0.9
+198865-V1,robust/sample/early_period,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Early period (1984-1994) subsample; same claim,0.9
+198865-V1,robust/sample/late_period,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Late period (1995+) subsample; same claim,0.9
+198865-V1,robust/sample/drop_Atlanta,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Drop Atlanta market; same claim on trimmed sample,0.9
+198865-V1,robust/sample/drop_Baltimore_Philadelphia,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Drop Baltimore/Philadelphia; same claim on trimmed sample,0.9
+198865-V1,robust/sample/drop_Seattle,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Drop Seattle market; same claim on trimmed sample,0.9
+198865-V1,robust/sample/drop_San_Francisco,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Drop San Francisco; same claim on trimmed sample,0.9
+198865-V1,robust/sample/drop_San_Antonio,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Drop San Antonio; same claim on trimmed sample,0.9
+198865-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Winsorized at 1%/99%; same claim with outlier treatment,0.9
+198865-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,log_shipped,log_price,G1,baseline,0,1,core_sample,Trimmed at 5%/95%; same claim with outlier treatment,0.9
+198865-V1,robust/cluster/none,robustness/clustering_variations.md,log_shipped,log_price,G1,baseline,0,1,core_inference,HC1 robust SE instead of clustered; same coefficient,0.95
+198865-V1,robust/cluster/time,robustness/clustering_variations.md,log_shipped,log_price,G1,baseline,0,1,core_inference,Cluster by year instead of market; same coefficient,0.95
+198865-V1,robust/form/y_level,robustness/functional_form.md,shipped_level,price_level,G1,baseline,0,1,core_funcform,Level-level specification; same demand claim different units,0.8
+198865-V1,robust/form/log_level,robustness/functional_form.md,log_shipped,price_level,G1,baseline,0,1,core_funcform,Log-level semi-elasticity; same claim different functional form,0.8
+198865-V1,robust/form/quadratic,robustness/functional_form.md,log_shipped,log_price,G1,baseline,0,0,invalid,Reports linear term of quadratic; not comparable to elasticity,0.85
+198865-V1,baseline_airlines,methods/instrumental_variables.md#baseline,log_s_s0,price100,G2,baseline_airlines,1,1,core_controls,Baseline specification: airlines nested logit with controls,1.0
+198865-V1,iv/controls/none_airlines,methods/instrumental_variables.md#control-sets,log_s_s0,price100,G2,baseline_airlines,0,1,core_controls,No product controls; same outcome/treatment as airlines baseline,0.9
+198865-V1,robust/loo/drop_direct_airlines,robustness/leave_one_out.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_controls,LOO: drop direct indicator; same claim,0.9
+198865-V1,robust/loo/drop_HUB_origin_airlines,robustness/leave_one_out.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_controls,LOO: drop HUB_origin; same claim,0.9
+198865-V1,robust/loo/drop_HUB_dest_airlines,robustness/leave_one_out.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_controls,LOO: drop HUB_dest; same claim,0.9
+198865-V1,robust/loo/drop_miles1000_airlines,robustness/leave_one_out.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_controls,LOO: drop miles1000; same claim,0.9
+198865-V1,robust/sample/quarter_1,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Q1 2004 subsample; same claim on quarterly data,0.9
+198865-V1,robust/sample/quarter_2,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Q2 2004 subsample; same claim on quarterly data,0.9
+198865-V1,robust/sample/quarter_3,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Q3 2004 subsample; same claim on quarterly data,0.9
+198865-V1,robust/sample/quarter_4,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Q4 2004 subsample; same claim on quarterly data,0.9
+198865-V1,robust/sample/direct_only,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,0,noncore_alt_treatment,Direct flights only uses simple logit; changes model structure,0.75
+198865-V1,robust/sample/connecting_only,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,0,noncore_alt_treatment,Connecting only uses simple logit; changes model structure,0.75
+198865-V1,robust/sample/drop_American_Airlines_AA,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Drop American Airlines; same claim on trimmed sample,0.9
+198865-V1,robust/sample/drop_Delta_DL,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Drop Delta; same claim on trimmed sample,0.9
+198865-V1,robust/sample/drop_Southwest_WN,robustness/sample_restrictions.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_sample,Drop Southwest; same claim on trimmed sample,0.9
+198865-V1,robust/heterogeneity/legacy_carriers,robustness/heterogeneity.md,log_s_s0,price100,G2,baseline_airlines,0,0,noncore_heterogeneity,Legacy carriers only; tests heterogeneity not main claim,0.8
+198865-V1,robust/heterogeneity/lcc_carriers,robustness/heterogeneity.md,log_s_s0,price100,G2,baseline_airlines,0,0,noncore_heterogeneity,LCC carriers only; tests heterogeneity not main claim,0.8
+198865-V1,robust/heterogeneity/long_haul,robustness/heterogeneity.md,log_s_s0,price100,G2,baseline_airlines,0,0,noncore_heterogeneity,Long haul routes only; tests heterogeneity not main claim,0.8
+198865-V1,robust/heterogeneity/short_haul,robustness/heterogeneity.md,log_s_s0,price100,G2,baseline_airlines,0,0,noncore_heterogeneity,Short haul routes only; tests heterogeneity not main claim,0.8
+198865-V1,robust/cluster/airline,robustness/clustering_variations.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_inference,Cluster by airline instead of route; same coefficient,0.95
+198865-V1,robust/cluster/none_airlines,robustness/clustering_variations.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_inference,HC1 robust SE instead of clustered; same coefficient,0.95
+198865-V1,robust/form/simple_logit,robustness/functional_form.md,log_s_s0,price100,G2,baseline_airlines,0,1,core_funcform,Simple logit (sigma=0) vs nested logit; same claim,0.85
+198865-V1,robust/form/price_levels,robustness/functional_form.md,log_s_s0,price,G2,baseline_airlines,0,1,core_funcform,Price in dollars vs hundreds; mechanical rescaling,0.9

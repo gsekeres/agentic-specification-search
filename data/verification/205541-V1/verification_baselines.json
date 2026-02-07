@@ -1,0 +1,39 @@
+{
+  "paper_id": "205541-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/205541-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Belief elicitation (beliefon) does not significantly affect round-1 cooperation in finite repeated prisoners dilemma games.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "coop"
+      ],
+      "baseline_treatment_vars": [
+        "beliefon"
+      ],
+      "notes": "Finite game sample. Probit with session clustering. Controls: supergame, focoop_m1, fcoop, risk."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Belief elicitation (beliefon) does not significantly affect round-1 cooperation in indefinite repeated prisoners dilemma games.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "baseline_indefinite"
+      ],
+      "baseline_outcome_vars": [
+        "coop"
+      ],
+      "baseline_treatment_vars": [
+        "beliefon"
+      ],
+      "notes": "Indefinite game sample. Probit with session clustering. Controls: supergame, focoop_m1, fcoop, risk, length_m1."
+    }
+  ],
+  "global_notes": "Core finding is null effect of belief elicitation on behavior. Custom specs test different hypotheses and are non-core. Two drop_first_supergame specs produce identical coefficients to baselines suggesting filters had no effect. The no-controls indefinite spec shows sign flip due to omitted variable bias."
+}

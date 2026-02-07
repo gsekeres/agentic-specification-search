@@ -1,0 +1,27 @@
+{
+  "paper_id": "163822-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/163822-V2",
+  "verified_at": "2026-02-04",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Bonus incentives reduce FITSBY app usage (minutes/day) during the treatment period (Period 3).",
+      "expected_sign": "-",
+      "baseline_spec_ids": ["baseline"],
+      "baseline_outcome_vars": ["PD_P3_UsageFITSBY"],
+      "baseline_treatment_vars": ["B (Bonus)"],
+      "notes": "The main claim in the paper. Baseline coefficient is -56.10 (SE=3.08, p<0.001). FITSBY = Facebook, Instagram, Twitter, Snapchat, Browser, YouTube. The baseline model controls for baseline usage and stratification variables with HC1 robust SEs."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Screen-time limits (commitment devices) reduce FITSBY app usage (minutes/day) during the treatment period (Period 3).",
+      "expected_sign": "-",
+      "baseline_spec_ids": ["baseline_limit"],
+      "baseline_outcome_vars": ["PD_P3_UsageFITSBY"],
+      "baseline_treatment_vars": ["L (Limit)"],
+      "notes": "Second main claim. Baseline coefficient is -22.79 (SE=2.82, p<0.001). Same outcome and control structure as G1 but for the Limit treatment arm. Fewer robustness specs explore this treatment arm directly."
+    }
+  ],
+  "global_notes": "This is a well-executed RCT from Allcott, Gentzkow, and Song (2022) in the AER. The specification search explored 65 total specs. The majority (55 specs) focus on the Bonus treatment (G1), with only 4 specs directly testing the Limit treatment (G2). Heterogeneity analyses (12 specs) report interaction coefficients and conditional main effects that are not directly comparable to the unconditional treatment effect baselines. Alternative outcomes (individual apps, SWB, addiction index, SMS index, different time periods) test distinct claims and are classified as non-core. Three placebo tests confirm randomization balance. Sample restriction specs (by demographics, winsorization, trimming) are classified as core because they estimate the same treatment effect on subpopulations or with different outlier handling."
+}

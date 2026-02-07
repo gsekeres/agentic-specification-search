@@ -1,0 +1,27 @@
+{
+  "paper_id": "147561-V3",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/147561-V3",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Local tax collectors (city chiefs) increase property tax compliance relative to central collectors in Kananga, D.R. Congo.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_month_fe",
+        "baseline_full_fe",
+        "baseline_nonexempt"
+      ],
+      "baseline_outcome_vars": [
+        "taxes_paid"
+      ],
+      "baseline_treatment_vars": [
+        "t_l"
+      ],
+      "notes": "Four baselines represent an escalating FE structure: stratum only, +month, +month+house, and +month+house on non-exempt subsample. All measure the same estimand (Local vs Central effect on binary tax compliance). baseline_full_fe (stratum+month+house) is the preferred full specification; baseline_nonexempt is the restricted-sample analog."
+    }
+  ],
+  "global_notes": "The specification search is well-structured with 60 total specs. Most robustness specs clearly map to the core claim (G1). Alternative outcomes (tax amount, IHS tax amount, bribe, visits) test different dependent variables and are classified as non-core. Alternative treatments (CLI vs Central, Local vs CLI) change the causal comparison and are non-core. Heterogeneity specs restrict the sample to demographic subgroups. Placebo specs test falsification. One concern: the exempt_status placebo (robust/placebo/exempt_status) shows a significant positive coefficient (p=0.001), unexpected for a balance check."
+}

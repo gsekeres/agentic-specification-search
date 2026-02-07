@@ -1,0 +1,60 @@
+{
+  "paper_id": "113673-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113673-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "The Juventud en Accion vocational training program increases formal sector income for disadvantaged youth in Colombia.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ec/formal_income",
+        "baseline/es/formal_income"
+      ],
+      "baseline_outcome_vars": [
+        "contrib_inc_max"
+      ],
+      "baseline_treatment_vars": [
+        "select_h1",
+        "TK"
+      ],
+      "notes": "Two baselines for the same estimand on two independent samples: Entire Cohort (EC) and Evaluation Sample (ES)."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "The Juventud en Accion vocational training program increases formal sector employment for disadvantaged youth in Colombia.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ec/formal_employment",
+        "baseline/es/formal_employment"
+      ],
+      "baseline_outcome_vars": [
+        "pareado_max"
+      ],
+      "baseline_treatment_vars": [
+        "select_h1",
+        "TK"
+      ],
+      "notes": "Formal employment (binary indicator) is one of the paper primary outcomes. EC and ES samples both test the same claim."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "The Juventud en Accion vocational training program increases employment in large formal firms for disadvantaged youth in Colombia.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/ec/large_firm",
+        "baseline/es/large_firm"
+      ],
+      "baseline_outcome_vars": [
+        "N200"
+      ],
+      "baseline_treatment_vars": [
+        "select_h1",
+        "TK"
+      ],
+      "notes": "Large firm employment (N200) is a secondary primary outcome. EC and ES both test the same claim."
+    }
+  ],
+  "global_notes": "6 baseline specs for 3 outcomes x 2 samples. Many robustness specs are exact duplicates of baselines re-labeled under different categories. Displacement interaction specs test a different causal object. Balance tests are diagnostic. Heterogeneity by gender are subgroup analyses. Data extracted from log files."
+}

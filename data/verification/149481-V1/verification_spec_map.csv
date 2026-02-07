@@ -1,0 +1,148 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+149481-V1,exp1/donated/baseline,methods/cross_sectional_ols.md#baseline,donated,treat,G1,exp1/donated/baseline,1,1,core_controls,Paper baseline: full controls and FE,1.0
+149481-V1,exp1/donated/robust/build/bivariate,robustness/control_progression.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Control build-up: None,0.95
+149481-V1,exp1/donated/robust/build/baseline_vars,robustness/control_progression.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,"Control build-up: payment_amount2, var12",0.95
+149481-V1,exp1/donated/robust/build/demographics,robustness/control_progression.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,"Control build-up: female, age_display2, age_display3",0.95
+149481-V1,exp1/donated/robust/loo/drop_payment_amount2,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_var12,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_female,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_age_display2,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_age_display3,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_inc_display1,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_inc_display2,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_inc_display3,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/loo/drop_lor_display2,robustness/leave_one_out.md,donated,treat,G1,exp1/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/donated/robust/estimation/no_fe,robustness/model_specification.md,donated,treat,G1,exp1/donated/baseline,0,1,core_fe,No FE variant; tests FE sensitivity,0.95
+149481-V1,exp1/donated/robust/sample/high_baseline,robustness/sample_restrictions.md,donated,treat,G1,exp1/donated/baseline,0,1,core_sample,"Sample restriction: Experiment 1, high baseline donors",0.9
+149481-V1,exp1/donated/robust/sample/low_baseline,robustness/sample_restrictions.md,donated,treat,G1,exp1/donated/baseline,0,1,core_sample,"Sample restriction: Experiment 1, low baseline donors",0.9
+149481-V1,exp1/donated/robust/se/classical,robustness/clustering_variations.md,donated,treat,G1,exp1/donated/baseline,0,1,core_inference,SE variation: classical,0.95
+149481-V1,exp1/donated/robust/se/hc2,robustness/clustering_variations.md,donated,treat,G1,exp1/donated/baseline,0,1,core_inference,SE variation: hc2,0.95
+149481-V1,exp1/donated/robust/se/hc3,robustness/clustering_variations.md,donated,treat,G1,exp1/donated/baseline,0,1,core_inference,SE variation: hc3,0.95
+149481-V1,exp1/donated/robust/form/y_asinh,robustness/functional_form.md,asinh_donated,treat,G1,exp1/donated/baseline,0,1,core_funcform,Transform: outcome=asinh_donated,0.9
+149481-V1,exp1/donated/robust/het/female_only,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Subgroup (female only) not main avg effect,0.85
+149481-V1,exp1/donated/robust/het/male_only,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Subgroup (male only) not main avg effect,0.85
+149481-V1,exp1/donated/robust/het/interaction_gender,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Interaction (treat x female) changes estimand,0.9
+149481-V1,exp1/donated/robust/het/age_65plus,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Subgroup (age 65+) not main avg effect,0.85
+149481-V1,exp1/donated/robust/het/age_18_44,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Subgroup (age 18-44) not main avg effect,0.85
+149481-V1,exp1/donated/robust/het/income_high,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Subgroup (income 175k+) not main avg effect,0.85
+149481-V1,exp1/donated/robust/het/income_low,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Subgroup (income below 34k) not main avg effect,0.85
+149481-V1,exp1/donated/robust/het/interaction_baseline_gift,robustness/heterogeneity.md,donated,treat,G1,exp1/donated/baseline,0,0,noncore_heterogeneity,Interaction (treat x baseline_gift) changes estimand,0.9
+149481-V1,exp1/donated/robust/placebo/year2_outcome,robustness/placebo_tests.md,renewing_y2,treat,,,0,0,noncore_placebo,Placebo test using future outcome renewing_y2,0.95
+149481-V1,exp1/donated/robust/placebo/year3_outcome,robustness/placebo_tests.md,renewing_y3,treat,,,0,0,noncore_placebo,Placebo test using future outcome renewing_y3,0.95
+149481-V1,exp1/gift_cond/baseline,methods/cross_sectional_ols.md#baseline,gift_cond,treat,G2,exp1/gift_cond/baseline,1,1,core_controls,Paper baseline: full controls and FE,1.0
+149481-V1,exp1/gift_cond/robust/build/bivariate,robustness/control_progression.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Control build-up: None,0.95
+149481-V1,exp1/gift_cond/robust/build/baseline_vars,robustness/control_progression.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,"Control build-up: payment_amount2, var12",0.95
+149481-V1,exp1/gift_cond/robust/build/demographics,robustness/control_progression.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,"Control build-up: female, age_display2, age_display3",0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_payment_amount2,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_var12,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_female,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_age_display2,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_age_display3,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_inc_display1,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_inc_display2,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_inc_display3,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/loo/drop_lor_display2,robustness/leave_one_out.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp1/gift_cond/robust/estimation/no_fe,robustness/model_specification.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_fe,No FE variant; tests FE sensitivity,0.95
+149481-V1,exp1/gift_cond/robust/sample/winsor_1pct,robustness/sample_restrictions.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 1, winsorized 1%",0.9
+149481-V1,exp1/gift_cond/robust/sample/trim_1pct,robustness/sample_restrictions.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 1, trimmed 1%",0.9
+149481-V1,exp1/gift_cond/robust/sample/high_baseline,robustness/sample_restrictions.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 1, high baseline donors",0.9
+149481-V1,exp1/gift_cond/robust/sample/low_baseline,robustness/sample_restrictions.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 1, low baseline donors",0.9
+149481-V1,exp1/gift_cond/robust/se/classical,robustness/clustering_variations.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_inference,SE variation: classical,0.95
+149481-V1,exp1/gift_cond/robust/se/hc2,robustness/clustering_variations.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_inference,SE variation: hc2,0.95
+149481-V1,exp1/gift_cond/robust/se/hc3,robustness/clustering_variations.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_inference,SE variation: hc3,0.95
+149481-V1,exp1/gift_cond/robust/form/y_asinh,robustness/functional_form.md,asinh_gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_funcform,Transform: outcome=asinh_gift_cond,0.9
+149481-V1,exp1/gift_cond/robust/form/y_log,robustness/functional_form.md,log_gift_cond,treat,G2,exp1/gift_cond/baseline,0,1,core_funcform,Transform: outcome=log_gift_cond,0.9
+149481-V1,exp1/gift_cond/robust/het/female_only,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (female only) not main avg effect,0.85
+149481-V1,exp1/gift_cond/robust/het/male_only,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (male only) not main avg effect,0.85
+149481-V1,exp1/gift_cond/robust/het/interaction_gender,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Interaction (treat x female) changes estimand,0.9
+149481-V1,exp1/gift_cond/robust/het/age_65plus,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (age 65+) not main avg effect,0.85
+149481-V1,exp1/gift_cond/robust/het/age_18_44,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (age 18-44) not main avg effect,0.85
+149481-V1,exp1/gift_cond/robust/het/income_high,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (income 175k+) not main avg effect,0.85
+149481-V1,exp1/gift_cond/robust/het/income_low,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (income below 34k) not main avg effect,0.85
+149481-V1,exp1/gift_cond/robust/het/interaction_baseline_gift,robustness/heterogeneity.md,gift_cond,treat,G2,exp1/gift_cond/baseline,0,0,noncore_heterogeneity,Interaction (treat x baseline_gift) changes estimand,0.9
+149481-V1,exp2/donated/baseline,methods/cross_sectional_ols.md#baseline,donated,treat,G3,exp2/donated/baseline,1,1,core_controls,Paper baseline: full controls and FE,1.0
+149481-V1,exp2/donated/robust/build/bivariate,robustness/control_progression.md,donated,treat,G3,exp2/donated/baseline,0,1,core_controls,Control build-up: None,0.95
+149481-V1,exp2/donated/robust/build/baseline_vars,robustness/control_progression.md,donated,treat,G3,exp2/donated/baseline,0,1,core_controls,"Control build-up: payment_amount2, var12",0.95
+149481-V1,exp2/donated/robust/loo/drop_payment_amount2,robustness/leave_one_out.md,donated,treat,G3,exp2/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp2/donated/robust/loo/drop_var12,robustness/leave_one_out.md,donated,treat,G3,exp2/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp2/donated/robust/sample/high_baseline,robustness/sample_restrictions.md,donated,treat,G3,exp2/donated/baseline,0,1,core_sample,"Sample restriction: Experiment 2, high baseline donors",0.9
+149481-V1,exp2/donated/robust/sample/low_baseline,robustness/sample_restrictions.md,donated,treat,G3,exp2/donated/baseline,0,1,core_sample,"Sample restriction: Experiment 2, low baseline donors",0.9
+149481-V1,exp2/donated/robust/se/classical,robustness/clustering_variations.md,donated,treat,G3,exp2/donated/baseline,0,1,core_inference,SE variation: classical,0.95
+149481-V1,exp2/donated/robust/se/hc2,robustness/clustering_variations.md,donated,treat,G3,exp2/donated/baseline,0,1,core_inference,SE variation: hc2,0.95
+149481-V1,exp2/donated/robust/se/hc3,robustness/clustering_variations.md,donated,treat,G3,exp2/donated/baseline,0,1,core_inference,SE variation: hc3,0.95
+149481-V1,exp2/donated/robust/form/y_asinh,robustness/functional_form.md,asinh_donated,treat,G3,exp2/donated/baseline,0,1,core_funcform,Transform: outcome=asinh_donated,0.9
+149481-V1,exp2/donated/robust/het/interaction_baseline_gift,robustness/heterogeneity.md,donated,treat,G3,exp2/donated/baseline,0,0,noncore_heterogeneity,Interaction (treat x baseline_gift) changes estimand,0.9
+149481-V1,exp2/gift_cond/baseline,methods/cross_sectional_ols.md#baseline,gift_cond,treat,G4,exp2/gift_cond/baseline,1,1,core_controls,Paper baseline: full controls and FE,1.0
+149481-V1,exp2/gift_cond/robust/build/bivariate,robustness/control_progression.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_controls,Control build-up: None,0.95
+149481-V1,exp2/gift_cond/robust/build/baseline_vars,robustness/control_progression.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_controls,"Control build-up: payment_amount2, var12",0.95
+149481-V1,exp2/gift_cond/robust/loo/drop_payment_amount2,robustness/leave_one_out.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp2/gift_cond/robust/loo/drop_var12,robustness/leave_one_out.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp2/gift_cond/robust/sample/winsor_1pct,robustness/sample_restrictions.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 2, winsorized 1%",0.9
+149481-V1,exp2/gift_cond/robust/sample/trim_1pct,robustness/sample_restrictions.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 2, trimmed 1%",0.9
+149481-V1,exp2/gift_cond/robust/sample/high_baseline,robustness/sample_restrictions.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 2, high baseline donors",0.9
+149481-V1,exp2/gift_cond/robust/sample/low_baseline,robustness/sample_restrictions.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 2, low baseline donors",0.9
+149481-V1,exp2/gift_cond/robust/se/classical,robustness/clustering_variations.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_inference,SE variation: classical,0.95
+149481-V1,exp2/gift_cond/robust/se/hc2,robustness/clustering_variations.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_inference,SE variation: hc2,0.95
+149481-V1,exp2/gift_cond/robust/se/hc3,robustness/clustering_variations.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_inference,SE variation: hc3,0.95
+149481-V1,exp2/gift_cond/robust/form/y_asinh,robustness/functional_form.md,asinh_gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_funcform,Transform: outcome=asinh_gift_cond,0.9
+149481-V1,exp2/gift_cond/robust/form/y_log,robustness/functional_form.md,log_gift_cond,treat,G4,exp2/gift_cond/baseline,0,1,core_funcform,Transform: outcome=log_gift_cond,0.9
+149481-V1,exp2/gift_cond/robust/het/interaction_baseline_gift,robustness/heterogeneity.md,gift_cond,treat,G4,exp2/gift_cond/baseline,0,0,noncore_heterogeneity,Interaction (treat x baseline_gift) changes estimand,0.9
+149481-V1,exp3/donated/baseline,methods/cross_sectional_ols.md#baseline,donated,treat,G5,exp3/donated/baseline,1,1,core_controls,Paper baseline: full controls and FE,1.0
+149481-V1,exp3/donated/robust/build/bivariate,robustness/control_progression.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Control build-up: None,0.95
+149481-V1,exp3/donated/robust/build/baseline_vars,robustness/control_progression.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,"Control build-up: payment_amount2, var12",0.95
+149481-V1,exp3/donated/robust/build/demographics,robustness/control_progression.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,"Control build-up: female, age_display2, age_display3",0.95
+149481-V1,exp3/donated/robust/loo/drop_payment_amount2,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_var12,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_female,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_age_display2,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_age_display3,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_inc_display1,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_inc_display2,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_inc_display3,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/loo/drop_lor_display2,robustness/leave_one_out.md,donated,treat,G5,exp3/donated/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/donated/robust/estimation/no_fe,robustness/model_specification.md,donated,treat,G5,exp3/donated/baseline,0,1,core_fe,No FE variant; tests FE sensitivity,0.95
+149481-V1,exp3/donated/robust/sample/high_baseline,robustness/sample_restrictions.md,donated,treat,G5,exp3/donated/baseline,0,1,core_sample,"Sample restriction: Experiment 3, high baseline donors",0.9
+149481-V1,exp3/donated/robust/sample/low_baseline,robustness/sample_restrictions.md,donated,treat,G5,exp3/donated/baseline,0,1,core_sample,"Sample restriction: Experiment 3, low baseline donors",0.9
+149481-V1,exp3/donated/robust/se/classical,robustness/clustering_variations.md,donated,treat,G5,exp3/donated/baseline,0,1,core_inference,SE variation: classical,0.95
+149481-V1,exp3/donated/robust/se/hc2,robustness/clustering_variations.md,donated,treat,G5,exp3/donated/baseline,0,1,core_inference,SE variation: hc2,0.95
+149481-V1,exp3/donated/robust/se/hc3,robustness/clustering_variations.md,donated,treat,G5,exp3/donated/baseline,0,1,core_inference,SE variation: hc3,0.95
+149481-V1,exp3/donated/robust/form/y_asinh,robustness/functional_form.md,asinh_donated,treat,G5,exp3/donated/baseline,0,1,core_funcform,Transform: outcome=asinh_donated,0.9
+149481-V1,exp3/donated/robust/het/female_only,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Subgroup (female only) not main avg effect,0.85
+149481-V1,exp3/donated/robust/het/male_only,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Subgroup (male only) not main avg effect,0.85
+149481-V1,exp3/donated/robust/het/interaction_gender,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Interaction (treat x female) changes estimand,0.9
+149481-V1,exp3/donated/robust/het/age_65plus,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Subgroup (age 65+) not main avg effect,0.85
+149481-V1,exp3/donated/robust/het/age_18_44,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Subgroup (age 18-44) not main avg effect,0.85
+149481-V1,exp3/donated/robust/het/income_high,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Subgroup (income 175k+) not main avg effect,0.85
+149481-V1,exp3/donated/robust/het/income_low,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Subgroup (income below 34k) not main avg effect,0.85
+149481-V1,exp3/donated/robust/het/interaction_baseline_gift,robustness/heterogeneity.md,donated,treat,G5,exp3/donated/baseline,0,0,noncore_heterogeneity,Interaction (treat x baseline_gift) changes estimand,0.9
+149481-V1,exp3/gift_cond/baseline,methods/cross_sectional_ols.md#baseline,gift_cond,treat,G6,exp3/gift_cond/baseline,1,1,core_controls,Paper baseline: full controls and FE,1.0
+149481-V1,exp3/gift_cond/robust/build/bivariate,robustness/control_progression.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Control build-up: None,0.95
+149481-V1,exp3/gift_cond/robust/build/baseline_vars,robustness/control_progression.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,"Control build-up: payment_amount2, var12",0.95
+149481-V1,exp3/gift_cond/robust/build/demographics,robustness/control_progression.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,"Control build-up: female, age_display2, age_display3",0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_payment_amount2,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_var12,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_female,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_age_display2,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_age_display3,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_inc_display1,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_inc_display2,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_inc_display3,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/loo/drop_lor_display2,robustness/leave_one_out.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_controls,Leave-one-out: dropped one control var,0.95
+149481-V1,exp3/gift_cond/robust/estimation/no_fe,robustness/model_specification.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_fe,No FE variant; tests FE sensitivity,0.95
+149481-V1,exp3/gift_cond/robust/sample/winsor_1pct,robustness/sample_restrictions.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 3, winsorized 1%",0.9
+149481-V1,exp3/gift_cond/robust/sample/trim_1pct,robustness/sample_restrictions.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 3, trimmed 1%",0.9
+149481-V1,exp3/gift_cond/robust/sample/high_baseline,robustness/sample_restrictions.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 3, high baseline donors",0.9
+149481-V1,exp3/gift_cond/robust/sample/low_baseline,robustness/sample_restrictions.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_sample,"Sample restriction: Experiment 3, low baseline donors",0.9
+149481-V1,exp3/gift_cond/robust/se/classical,robustness/clustering_variations.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_inference,SE variation: classical,0.95
+149481-V1,exp3/gift_cond/robust/se/hc2,robustness/clustering_variations.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_inference,SE variation: hc2,0.95
+149481-V1,exp3/gift_cond/robust/se/hc3,robustness/clustering_variations.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_inference,SE variation: hc3,0.95
+149481-V1,exp3/gift_cond/robust/form/y_asinh,robustness/functional_form.md,asinh_gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_funcform,Transform: outcome=asinh_gift_cond,0.9
+149481-V1,exp3/gift_cond/robust/form/y_log,robustness/functional_form.md,log_gift_cond,treat,G6,exp3/gift_cond/baseline,0,1,core_funcform,Transform: outcome=log_gift_cond,0.9
+149481-V1,exp3/gift_cond/robust/het/female_only,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (female only) not main avg effect,0.85
+149481-V1,exp3/gift_cond/robust/het/male_only,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (male only) not main avg effect,0.85
+149481-V1,exp3/gift_cond/robust/het/interaction_gender,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Interaction (treat x female) changes estimand,0.9
+149481-V1,exp3/gift_cond/robust/het/age_65plus,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (age 65+) not main avg effect,0.85
+149481-V1,exp3/gift_cond/robust/het/age_18_44,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (age 18-44) not main avg effect,0.85
+149481-V1,exp3/gift_cond/robust/het/income_high,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (income 175k+) not main avg effect,0.85
+149481-V1,exp3/gift_cond/robust/het/income_low,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Subgroup (income below 34k) not main avg effect,0.85
+149481-V1,exp3/gift_cond/robust/het/interaction_baseline_gift,robustness/heterogeneity.md,gift_cond,treat,G6,exp3/gift_cond/baseline,0,0,noncore_heterogeneity,Interaction (treat x baseline_gift) changes estimand,0.9

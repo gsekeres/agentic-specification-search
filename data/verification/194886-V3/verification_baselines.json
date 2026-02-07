@@ -1,0 +1,60 @@
+{
+  "paper_id": "194886-V3",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/194886-V3",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Mobile Disburse (MD) and Mobile Account (MA) treatments increase monthly business profits (earn_business) relative to cash control.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_earn_business_MA",
+        "baseline_earn_business_MD"
+      ],
+      "baseline_outcome_vars": [
+        "earn_business"
+      ],
+      "baseline_treatment_vars": [
+        "treatment2",
+        "treatment3"
+      ],
+      "notes": "treatment2=MA, treatment3=MD. Primary claim is about MD. Both arms in same regression with strata FE and baseline outcome control."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "MD and MA treatments increase total savings (much_saved) relative to cash control.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_much_saved_MA",
+        "baseline_much_saved_MD"
+      ],
+      "baseline_outcome_vars": [
+        "much_saved"
+      ],
+      "baseline_treatment_vars": [
+        "treatment2",
+        "treatment3"
+      ],
+      "notes": "Savings is a primary outcome. Neither MA nor MD significant in baseline."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "MD and MA treatments increase business capital relative to cash control.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_capital_MA",
+        "baseline_capital_MD"
+      ],
+      "baseline_outcome_vars": [
+        "capital"
+      ],
+      "baseline_treatment_vars": [
+        "treatment2",
+        "treatment3"
+      ],
+      "notes": "Capital is a primary outcome. MD significant (p=0.004), MA not."
+    }
+  ],
+  "global_notes": "3-arm RCT. robust/se/hc1 and robust/control/baseline_only duplicate baselines. primary/* specs for much_saved and capital also duplicate baselines. Heterogeneity specs classified as non-core."
+}

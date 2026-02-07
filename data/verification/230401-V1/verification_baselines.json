@@ -1,0 +1,69 @@
+{
+  "paper_id": "230401-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/230401-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Black-owned businesses pay higher interest rates on small business loans compared to White-owned businesses, controlling for firm, loan, and lender characteristics.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "loanrate_w2"
+      ],
+      "baseline_treatment_vars": [
+        "black_50"
+      ],
+      "notes": "Primary result: treatment=black_50, outcome=loanrate_w2. Coefficient ~2.9 pp, p=0.002, N=1366, state+time FE, clustered at state level."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Hispanic-owned businesses pay higher interest rates on small business loans compared to White-owned businesses.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "loanrate_w2"
+      ],
+      "baseline_treatment_vars": [
+        "hisp_50"
+      ],
+      "notes": "Baseline row with treatment_var=hisp_50. Coefficient ~2.93 pp, p=0.008, N=1550."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Asian-owned businesses pay higher interest rates on small business loans compared to White-owned businesses.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "loanrate_w2"
+      ],
+      "baseline_treatment_vars": [
+        "asian_50"
+      ],
+      "notes": "Baseline row with treatment_var=asian_50. Coefficient ~2.56 pp, p=0.009, N=1253."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Native American-owned businesses pay higher interest rates on small business loans compared to White-owned businesses.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "loanrate_w2"
+      ],
+      "baseline_treatment_vars": [
+        "native_50"
+      ],
+      "notes": "Baseline row with treatment_var=native_50. Coefficient ~1.30 pp, p=0.26, N=1324. Not statistically significant."
+    }
+  ],
+  "global_notes": "The paper studies racial discrimination across four minority groups but the primary focus is on Black-owned businesses (G1). Most robustness specifications (54 of 60) use black_50 as the treatment variable. The baseline spec_id is shared across all four groups (all labeled baseline). Three specs labeled robust/treatment/* re-run the baseline for hisp_50, asian_50, and native_50 and are effectively duplicates of the G2/G3/G4 baselines with slightly different N. One spec (robust/outcome/collval_num) has a missing p-value and near-zero coefficient, flagged as invalid. Placebo tests use predetermined outcomes (term, busage, ceoexp) and are clearly non-core."
+}

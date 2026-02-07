@@ -1,0 +1,77 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+120483-V1,baseline,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline,1,1,core_controls,Baseline: 1790 no controls with state FE,1.0
+120483-V1,baseline_crop,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline_crop,1,1,core_controls,Baseline: 1790 crop controls with state FE,1.0
+120483-V1,baseline_full,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline_full,1,1,core_controls,Baseline: 1790 full controls with state FE,1.0
+120483-V1,baseline_1860,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline_1860,1,1,core_controls,Baseline: 1860 no controls with state FE,1.0
+120483-V1,baseline_1860_full,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline_1860_full,1,1,core_controls,Baseline: 1860 full controls with state FE,1.0
+120483-V1,baseline_slave_states_1790,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline_slave_states_1790,1,1,core_sample,Baseline: 1790 slave states only full controls,1.0
+120483-V1,baseline_slave_states_1860,methods/cross_sectional_ols.md#baseline,slaveratio,MAL,G1,baseline_slave_states_1860,1,1,core_sample,Baseline: 1860 slave states only full controls,1.0
+120483-V1,robust/control/drop_cotton,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops cotton from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_rice,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops rice from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_sugar,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops sugar from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_tea,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops tea from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_tobacco,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops tobacco from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_indigo,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops indigo from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_DISTSEA,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops DISTSEA from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_DISTRIV,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops DISTRIV from full 1790 controls; same outcome/treatment,1.0
+120483-V1,robust/control/drop_prec,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops precipitation from full 1790 controls,1.0
+120483-V1,robust/control/drop_temp,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops temperature from full 1790 controls,1.0
+120483-V1,robust/control/drop_ELEV,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops elevation from full 1790 controls,1.0
+120483-V1,robust/control/drop_lat_deg,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops latitude from full 1790 controls,1.0
+120483-V1,robust/control/drop_long_deg,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops longitude from full 1790 controls,1.0
+120483-V1,robust/control/drop_lat_long,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Drops lat*long interaction from full 1790 controls,1.0
+120483-V1,robust/control/none,robustness/control_progression.md,slaveratio,MAL,G1,baseline,0,1,core_controls,Duplicate of baseline (no controls 1790); control progression,0.9
+120483-V1,robust/control/add_cotton,robustness/control_progression.md,slaveratio,MAL,G1,baseline,0,1,core_controls,Progressively adding cotton to no-controls 1790 spec,1.0
+120483-V1,robust/control/add_rice,robustness/control_progression.md,slaveratio,MAL,G1,baseline,0,1,core_controls,Progressively adding rice to partial controls 1790,1.0
+120483-V1,robust/control/add_sugar,robustness/control_progression.md,slaveratio,MAL,G1,baseline,0,1,core_controls,Progressively adding sugar to partial controls 1790,1.0
+120483-V1,robust/control/add_tea,robustness/control_progression.md,slaveratio,MAL,G1,baseline,0,1,core_controls,Progressively adding tea to partial controls 1790,1.0
+120483-V1,robust/control/add_tobacco,robustness/control_progression.md,slaveratio,MAL,G1,baseline,0,1,core_controls,Progressively adding tobacco to partial controls 1790,1.0
+120483-V1,robust/control/add_indigo,robustness/control_progression.md,slaveratio,MAL,G1,baseline_crop,0,1,core_controls,All crops added; equivalent to baseline_crop,0.9
+120483-V1,robust/control/geo_only,robustness/control_progression.md,slaveratio,MAL,G1,baseline_full,0,1,core_controls,Geography controls only (no crops) 1790,1.0
+120483-V1,robust/control/crop_only,robustness/control_progression.md,slaveratio,MAL,G1,baseline_crop,0,1,core_controls,Crop controls only (no geography) 1790; same as baseline_crop,0.9
+120483-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Trimmed 1% tails of 1860 sample; same spec otherwise,1.0
+120483-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Trimmed 5% tails of 1860 sample; same spec otherwise,1.0
+120483-V1,robust/sample/trim_10pct,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Trimmed 10% tails of 1860 sample; same spec otherwise,1.0
+120483-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Winsorized 1% of 1860 sample; same spec otherwise,1.0
+120483-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Winsorized 5% of 1860 sample; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_1,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_2,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_3,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_4,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_5,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_6,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_7,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_8,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_9,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/drop_state_10,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Leave-one-state-out 1860; same spec otherwise,1.0
+120483-V1,robust/sample/high_malaria,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,High malaria counties only 1860; sample split,1.0
+120483-V1,robust/sample/low_malaria,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Low malaria counties only 1860; sample split,1.0
+120483-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,slaveratio,MAL,G1,baseline_full,0,1,core_inference,HC1 robust SEs instead of clustered; 1790 full controls,1.0
+120483-V1,robust/cluster/robust_hc1_1860,robustness/clustering_variations.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_inference,HC1 robust SEs instead of clustered; 1860 full controls,1.0
+120483-V1,robust/estimation/no_fe_1790,robustness/model_specification.md,slaveratio,MAL,G1,baseline_full,0,1,core_fe,Removes state FE from 1790 full controls spec,1.0
+120483-V1,robust/estimation/no_fe_1860,robustness/model_specification.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_fe,Removes state FE from 1860 full controls spec,1.0
+120483-V1,robust/funcform/log_outcome,robustness/model_specification.md,log_slaveratio,MAL,G1,baseline_1860_full,0,1,core_funcform,Log transform of slave ratio outcome; 1860 full controls,1.0
+120483-V1,robust/funcform/ihs_outcome,robustness/model_specification.md,ihs_slaveratio,MAL,G1,baseline_1860_full,0,1,core_funcform,IHS transform of slave ratio outcome; 1860 full controls,1.0
+120483-V1,robust/funcform/quadratic,robustness/model_specification.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_funcform,Adds MAL^2 quadratic term; 1860 full controls,1.0
+120483-V1,robust/outcome/blackratio,robustness/measurement.md,blackratio_1860,MAL,G1,baseline_1860_full,0,1,core_funcform,Uses black ratio instead of slave ratio; same concept,0.9
+120483-V1,robust/heterogeneity/cotton,robustness/heterogeneity.md,slaveratio,MAL,G1,baseline_1860_full,0,0,noncore_heterogeneity,Interaction MAL x cotton; tests heterogeneity not main effect,0.85
+120483-V1,robust/heterogeneity/slave_state,robustness/heterogeneity.md,slaveratio,MAL,G1,baseline_1860_full,0,0,noncore_heterogeneity,Interaction MAL x slave state; main coef is non-slave-state effect,0.85
+120483-V1,robust/heterogeneity/elevation,robustness/heterogeneity.md,slaveratio,MAL,G1,baseline_1860_full,0,0,noncore_heterogeneity,Interaction MAL x high elevation; tests heterogeneity,0.85
+120483-V1,robust/heterogeneity/coastal,robustness/heterogeneity.md,slaveratio,MAL,G1,baseline_1860_full,0,0,noncore_heterogeneity,Interaction MAL x coastal; tests heterogeneity,0.85
+120483-V1,robust/placebo/white_ratio,robustness/placebo_tests.md,white_ratio,MAL,G1,baseline_1860_full,0,0,noncore_placebo,Placebo: white ratio is mechanical inverse of slave ratio,1.0
+120483-V1,outcome/vote_lincoln,methods/cross_sectional_ols.md,vote1860_rep_pres,MAL,,,0,0,noncore_alt_outcome,Different outcome: Republican vote share 1860 election,1.0
+120483-V1,outcome/vote_breckinridge,methods/cross_sectional_ols.md,vote1860_demeq_pres,MAL,,,0,0,noncore_alt_outcome,Different outcome: pro-slavery Democrat vote share 1860,1.0
+120483-V1,outcome/vote_grant,methods/cross_sectional_ols.md,vote1868_rep_pres,MAL,,,0,0,noncore_alt_outcome,Different outcome: Republican vote share 1868 election,1.0
+120483-V1,outcome/vote_seymour,methods/cross_sectional_ols.md,vote1868_dem_pres,MAL,,,0,0,noncore_alt_outcome,Different outcome: Democrat vote share 1868 election,1.0
+120483-V1,outcome/proslavery_vote,methods/cross_sectional_ols.md,proslavery,MAL,,,0,0,noncore_alt_outcome,Different outcome: pro-slavery convention delegate votes,1.0
+120483-V1,cross_country/americas_minimal,methods/cross_sectional_ols.md,coloredratio,MAL,,,0,0,noncore_alt_outcome,Cross-country sample (US+Brazil+Cuba); different outcome/sample,0.9
+120483-V1,cross_country/americas_full,methods/cross_sectional_ols.md,coloredratio,MAL,,,0,0,noncore_alt_outcome,Cross-country sample with controls; different outcome/sample,0.9
+120483-V1,panel/baseline,methods/panel_fixed_effects.md,black_totalpop,mal1690_x_ME1790_std,G2,panel/baseline,1,1,core_method,Panel baseline: state panel 1630-1750 with state+year FE,1.0
+120483-V1,panel/early_period,robustness/sample_restrictions.md,black_totalpop,mal1690_x_ME1790_std,G2,panel/baseline,0,1,core_sample,Restricts panel to 1650-1720 early period,1.0
+120483-V1,robust/treatment/MAL_temp,robustness/measurement.md,slaveratio,MAL_temp,G1,baseline_1860_full,0,1,core_method,Alternative malaria measure: temperature-based; same outcome,0.95
+120483-V1,robust/treatment/MAL_risk,robustness/measurement.md,slaveratio,MAL_risk,G1,baseline_1860_full,0,1,core_method,Alternative malaria measure: risk-based; same outcome,0.95
+120483-V1,robust/treatment/MAL_clim,robustness/measurement.md,slaveratio,MAL_clim,G1,baseline_1860_full,0,1,core_method,Alternative malaria measure: climate-based; same outcome,0.95
+120483-V1,robust/sample/small_pop,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Bottom quartile population 1860; sample split,1.0
+120483-V1,robust/sample/large_pop,robustness/sample_restrictions.md,slaveratio,MAL,G1,baseline_1860_full,0,1,core_sample,Top quartile population 1860; sample split,1.0
+120483-V1,robust/heterogeneity/temperature,robustness/heterogeneity.md,slaveratio,MAL,G1,baseline_1860_full,0,0,noncore_heterogeneity,Interaction MAL x high temperature; tests heterogeneity,0.85
+120483-V1,robust/heterogeneity/precipitation,robustness/heterogeneity.md,slaveratio,MAL,G1,baseline_1860_full,0,0,noncore_heterogeneity,Interaction MAL x high precipitation; tests heterogeneity,0.85

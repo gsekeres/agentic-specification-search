@@ -1,0 +1,71 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+125321-V1,baseline,methods/regression_discontinuity.md#baseline,pm10,after,G1,baseline,1,1,core_controls,Baseline: PM10 on after with weather controls station+month FE,1.0
+125321-V1,rd/controls/none,methods/regression_discontinuity.md#control-sets,pm10,after,G1,baseline,0,1,core_controls,Drops all weather controls; tests sensitivity to controls,0.95
+125321-V1,rd/poly/order_2,methods/regression_discontinuity.md#polynomial-order,pm10,after,G1,baseline,0,1,core_method,Quadratic polynomial in running variable instead of linear,0.95
+125321-V1,rd/poly/order_3,methods/regression_discontinuity.md#polynomial-order,pm10,after,G1,baseline,0,1,core_method,Cubic polynomial in running variable,0.95
+125321-V1,rd/poly/order_4,methods/regression_discontinuity.md#polynomial-order,pm10,after,G1,baseline,0,1,core_method,Quartic polynomial in running variable,0.95
+125321-V1,rd/bandwidth/fixed_60d,methods/regression_discontinuity.md#bandwidth-selection,pm10,after,G1,baseline,0,1,core_method,Local poly RD 60-day bandwidth triangular kernel,0.85
+125321-V1,rd/bandwidth/fixed_90d,methods/regression_discontinuity.md#bandwidth-selection,pm10,after,G1,baseline,0,1,core_method,Local poly RD 90-day bandwidth triangular kernel,0.85
+125321-V1,rd/bandwidth/fixed_120d,methods/regression_discontinuity.md#bandwidth-selection,pm10,after,G1,baseline,0,1,core_method,Local poly RD 120-day bandwidth triangular kernel,0.85
+125321-V1,rd/bandwidth/fixed_180d,methods/regression_discontinuity.md#bandwidth-selection,pm10,after,G1,baseline,0,1,core_method,Local poly RD 180-day bandwidth triangular kernel,0.85
+125321-V1,rd/bandwidth/fixed_365d,methods/regression_discontinuity.md#bandwidth-selection,pm10,after,G1,baseline,0,1,core_method,Local poly RD 365-day bandwidth triangular kernel,0.85
+125321-V1,rd/kernel/triangular,methods/regression_discontinuity.md#kernel-function,pm10,after,G1,baseline,0,1,core_method,Local poly RD triangular kernel bw=90 same as fixed_90d,0.85
+125321-V1,rd/kernel/uniform,methods/regression_discontinuity.md#kernel-function,pm10,after,G1,baseline,0,1,core_method,Local poly RD uniform kernel bw=90,0.85
+125321-V1,rd/kernel/epanechnikov,methods/regression_discontinuity.md#kernel-function,pm10,after,G1,baseline,0,1,core_method,Local poly RD Epanechnikov kernel bw=90,0.85
+125321-V1,robust/sample/wave_1,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Wave 1 cities only major cities Sep 2012 automation,0.9
+125321-V1,robust/sample/wave_2,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Wave 2 cities only smaller cities Jan 2014 automation,0.9
+125321-V1,robust/sample/deadline_cities,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Deadline cities only subsample preserving same estimand,0.9
+125321-V1,robust/sample/non_deadline_cities,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Non-deadline cities subsample preserving same estimand,0.9
+125321-V1,robust/sample/year_2012,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Year 2012 only single-year sample restriction,0.85
+125321-V1,robust/sample/year_2013,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Year 2013 only single-year sample restriction,0.85
+125321-V1,robust/sample/drop_year_2012,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Excluding year 2012 leave-one-year-out restriction,0.9
+125321-V1,robust/sample/drop_year_2013,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Excluding year 2013 leave-one-year-out restriction,0.9
+125321-V1,robust/sample/drop_year_2014,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Excluding year 2014 leave-one-year-out restriction,0.9
+125321-V1,robust/sample/drop_year_2015,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Excluding year 2015 leave-one-year-out restriction,0.9
+125321-V1,robust/sample/drop_year_2016,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Excluding year 2016 leave-one-year-out restriction,0.9
+125321-V1,robust/control/drop_wind_speed,robustness/leave_one_out.md,pm10,after,G1,baseline,0,1,core_controls,Drops wind_speed from controls leave-one-out sensitivity,0.95
+125321-V1,robust/control/drop_rain,robustness/leave_one_out.md,pm10,after,G1,baseline,0,1,core_controls,Drops rain from controls leave-one-out sensitivity,0.95
+125321-V1,robust/control/drop_temp,robustness/leave_one_out.md,pm10,after,G1,baseline,0,1,core_controls,Drops temp from controls leave-one-out sensitivity,0.95
+125321-V1,robust/control/drop_rh,robustness/leave_one_out.md,pm10,after,G1,baseline,0,1,core_controls,Drops rh from controls leave-one-out sensitivity,0.95
+125321-V1,robust/control/only_wind_speed,robustness/single_covariate.md,pm10,after,G1,baseline,0,1,core_controls,Only wind_speed as control single covariate sensitivity,0.9
+125321-V1,robust/control/only_rain,robustness/single_covariate.md,pm10,after,G1,baseline,0,1,core_controls,Only rain as control single covariate sensitivity,0.9
+125321-V1,robust/control/only_temp,robustness/single_covariate.md,pm10,after,G1,baseline,0,1,core_controls,Only temp as control single covariate sensitivity,0.9
+125321-V1,robust/control/only_rh,robustness/single_covariate.md,pm10,after,G1,baseline,0,1,core_controls,Only rh as control single covariate sensitivity,0.9
+125321-V1,robust/control/add_1_wind_speed,robustness/control_progression.md,pm10,after,G1,baseline,0,1,core_controls,Progressive addition wind_speed only tests stability,0.9
+125321-V1,robust/control/add_2_rain,robustness/control_progression.md,pm10,after,G1,baseline,0,1,core_controls,Progressive addition wind_speed+rain tests stability,0.9
+125321-V1,robust/control/add_3_temp,robustness/control_progression.md,pm10,after,G1,baseline,0,1,core_controls,Progressive addition wind_speed+rain+temp tests stability,0.9
+125321-V1,robust/control/add_4_rh,robustness/control_progression.md,pm10,after,G1,baseline,0,1,core_controls,Full controls same as baseline final step of progression,0.95
+125321-V1,robust/outcome/log_pm10,robustness/functional_form.md,l_pm10,after,G1,baseline,0,1,core_funcform,Log PM10 outcome functional form variation preserving claim,0.9
+125321-V1,robust/funcform/ihs_pm10,robustness/functional_form.md,ihs_pm10,after,G1,baseline,0,1,core_funcform,IHS PM10 outcome functional form variation preserving claim,0.9
+125321-V1,robust/outcome/so2,robustness/measurement.md,so2,after,G1,baseline,0,0,noncore_alt_outcome,SO2 as outcome different pollutant tests distinct claim,0.85
+125321-V1,robust/outcome/no2,robustness/measurement.md,no2,after,G1,baseline,0,0,noncore_alt_outcome,NO2 as outcome different pollutant tests distinct claim,0.85
+125321-V1,robust/estimation/station_fe_only,robustness/model_specification.md,pm10,after,G1,baseline,0,1,core_fe,Station FE only drops month FE structure variation,0.9
+125321-V1,robust/estimation/month_fe_only,robustness/model_specification.md,pm10,after,G1,baseline,0,1,core_fe,Month FE only drops station FE structure variation,0.9
+125321-V1,robust/estimation/no_fe,robustness/model_specification.md,pm10,after,G1,baseline,0,1,core_fe,No fixed effects tests sensitivity to FE structure,0.9
+125321-V1,robust/estimation/city_month_fe,robustness/model_specification.md,pm10,after,G1,baseline,0,1,core_fe,City+month FE instead of station+month FE,0.9
+125321-V1,robust/estimation/station_yearmonth_fe,robustness/model_specification.md,pm10,after,G1,baseline,0,1,core_fe,Station+year-month FE more granular time FE,0.9
+125321-V1,robust/cluster/station,robustness/clustering_variations.md,pm10,after,G1,baseline,0,1,core_inference,Cluster at station level instead of city inference only,0.95
+125321-V1,rd/donut/exclude_7d,methods/regression_discontinuity.md#donut-hole-specifications,pm10,after,G1,baseline,0,1,core_sample,Donut hole excludes 7 days around cutoff,0.9
+125321-V1,rd/donut/exclude_14d,methods/regression_discontinuity.md#donut-hole-specifications,pm10,after,G1,baseline,0,1,core_sample,Donut hole excludes 14 days around cutoff,0.9
+125321-V1,rd/donut/exclude_30d,methods/regression_discontinuity.md#donut-hole-specifications,pm10,after,G1,baseline,0,1,core_sample,Donut hole excludes 30 days around cutoff,0.9
+125321-V1,rd/placebo/cutoff_-180,methods/regression_discontinuity.md#placebo-cutoff-tests,pm10,after,G1,baseline,0,0,noncore_placebo,Placebo cutoff T=-180 tests pre-existing discontinuity,0.9
+125321-V1,rd/placebo/cutoff_-90,methods/regression_discontinuity.md#placebo-cutoff-tests,pm10,after,G1,baseline,0,0,noncore_placebo,Placebo cutoff T=-90 tests pre-existing discontinuity,0.9
+125321-V1,rd/placebo/cutoff_-60,methods/regression_discontinuity.md#placebo-cutoff-tests,pm10,after,G1,baseline,0,0,noncore_placebo,Placebo cutoff T=-60 tests pre-existing discontinuity,0.9
+125321-V1,rd/placebo/cutoff_90,methods/regression_discontinuity.md#placebo-cutoff-tests,pm10,after,G1,baseline,0,0,noncore_placebo,Placebo cutoff T=+90 tests post-treatment spurious break,0.9
+125321-V1,rd/placebo/cutoff_180,methods/regression_discontinuity.md#placebo-cutoff-tests,pm10,after,G1,baseline,0,0,noncore_placebo,Placebo cutoff T=+180 tests post-treatment spurious break,0.9
+125321-V1,rd/placebo/outcome_wind_speed,robustness/placebo_tests.md,wind_speed,after,G1,baseline,0,0,noncore_placebo,Placebo outcome wind_speed unaffected by automation,0.95
+125321-V1,rd/placebo/outcome_rain,robustness/placebo_tests.md,rain,after,G1,baseline,0,0,noncore_placebo,Placebo outcome rain unaffected by automation,0.95
+125321-V1,rd/placebo/outcome_temp,robustness/placebo_tests.md,temp,after,G1,baseline,0,0,noncore_placebo,Placebo outcome temperature unaffected by automation,0.95
+125321-V1,rd/placebo/outcome_rh,robustness/placebo_tests.md,rh,after,G1,baseline,0,0,noncore_placebo,Placebo outcome relative humidity unaffected by automation,0.95
+125321-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,PM10 winsorized at 1pct outlier treatment preserving estimand,0.9
+125321-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,PM10 winsorized at 5pct outlier treatment preserving estimand,0.9
+125321-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,PM10 winsorized at 10pct outlier treatment preserving estimand,0.9
+125321-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,PM10 trimmed at 1pct tails sample restriction for outliers,0.9
+125321-V1,rd/sample/window_30d,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Window +/- 30 days around cutoff narrow sample restriction,0.85
+125321-V1,rd/sample/window_60d,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Window +/- 60 days around cutoff sample restriction,0.85
+125321-V1,rd/sample/window_90d,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Window +/- 90 days around cutoff sample restriction,0.85
+125321-V1,rd/sample/window_120d,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Window +/- 120 days around cutoff sample restriction,0.85
+125321-V1,rd/sample/window_180d,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Window +/- 180 days around cutoff sample restriction,0.85
+125321-V1,rd/sample/window_365d,robustness/sample_restrictions.md,pm10,after,G1,baseline,0,1,core_sample,Window +/- 365 days around cutoff sample restriction,0.85
+125321-V1,robust/heterogeneity/wave_1_local,robustness/heterogeneity.md,pm10,after,G1,baseline,0,0,noncore_heterogeneity,Wave 1 local RD bw=90 subgroup heterogeneity analysis,0.8
+125321-V1,robust/heterogeneity/wave_2_local,robustness/heterogeneity.md,pm10,after,G1,baseline,0,0,noncore_heterogeneity,Wave 2 local RD bw=90 subgroup heterogeneity analysis,0.8

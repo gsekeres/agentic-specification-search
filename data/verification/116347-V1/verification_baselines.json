@@ -1,0 +1,26 @@
+{
+  "paper_id": "116347-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116347-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Working alongside friends increases worker productivity, as measured by log productivity with worker and group-date fixed effects.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline/continuous_treatment"
+      ],
+      "baseline_outcome_vars": [
+        "logprod"
+      ],
+      "baseline_treatment_vars": [
+        "has_friend_present",
+        "num_friends_present"
+      ],
+      "notes": "The paper claims proximity to friends increases productivity. The replication uses presence-based treatment (has_friend_present) rather than the original proximity-based treatment (along_fr). The baseline has worker (id_str) and group-date (groupdate) FE clustered at worker level. The continuous treatment variant (num_friends_present) provides the same estimand with more variation. Both baselines are statistically insignificant (p=0.84 and p=0.31). The binary treatment has almost no within-worker variation (99.3% of obs have friends present)."
+    }
+  ],
+  "global_notes": "Major concern: The replication uses a different treatment variable (has_friend_present = any friend present at work that day) vs the original paper treatment (along_fr = friend working alongside in nearby position). This means the replication may not be testing the same causal mechanism. Many specifications errored due to collinearity from near-zero within-worker treatment variation. The heterogeneity and control-progression specs drop worker FE (using only groupdate FE), fundamentally changing the estimand and likely capturing selection rather than causal effects. Placebo tests use fake timing variables not testing the baseline claim."
+}

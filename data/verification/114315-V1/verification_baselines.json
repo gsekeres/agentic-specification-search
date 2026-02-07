@@ -1,0 +1,55 @@
+{
+  "paper_id": "114315-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/114315-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Same-state increases eBay trade (home bias) controlling for distance and state FE.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_gravity_samestate"
+      ],
+      "baseline_outcome_vars": [
+        "lntcount"
+      ],
+      "baseline_treatment_vars": [
+        "samestate"
+      ],
+      "notes": "Primary baseline with two-way FE."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Distance negatively affects online trade (gravity model).",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_gravity_basic"
+      ],
+      "baseline_outcome_vars": [
+        "lntcount"
+      ],
+      "baseline_treatment_vars": [
+        "lndist"
+      ],
+      "notes": "Distance elasticity baseline."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Home bias holds for dollar volume not just counts.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_volume"
+      ],
+      "baseline_outcome_vars": [
+        "lntvol"
+      ],
+      "baseline_treatment_vars": [
+        "samestate"
+      ],
+      "notes": "Volume outcome baseline."
+    }
+  ],
+  "global_notes": "Simulated data. 57 specs. Winsorize-5pct suspicious."
+}

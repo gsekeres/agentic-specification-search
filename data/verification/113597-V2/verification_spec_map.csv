@@ -1,0 +1,67 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+113597-V2,baseline,methods/cross_sectional_ols.md#baseline,enterprise,group,G1,,1,0,core_controls,Primary baseline: group loan effect on enterprise ownership,1.0
+113597-V2,baseline/soleent,methods/cross_sectional_ols.md#baseline,soleent,group,G2,,1,0,core_controls,Baseline for sole entrepreneurship outcome,1.0
+113597-V2,baseline/ln_totalc,methods/cross_sectional_ols.md#baseline,ln_totalc,group,G3,,1,0,core_controls,Baseline for log total consumption outcome,1.0
+113597-V2,baseline/ln_foodc,methods/cross_sectional_ols.md#baseline,ln_foodc,group,G4,,1,0,core_controls,Baseline for log food consumption outcome,1.0
+113597-V2,baseline/scaled_profit_r,methods/cross_sectional_ols.md#baseline,scaled_profit_r,group,G5,,1,0,core_controls,Baseline for scaled profit outcome,1.0
+113597-V2,robust/control/none,robustness/control_progression.md,enterprise,group,G1,baseline,0,1,core_controls,Bivariate regression: no controls added,0.95
+113597-V2,robust/control/baseline_only,robustness/control_progression.md,enterprise,group,G1,baseline,0,1,core_controls,Only baseline enterprise control fewer covariates,0.95
+113597-V2,robust/control/demographics,robustness/control_progression.md,enterprise,group,G1,baseline,0,1,core_controls,Demographics controls only subset of full controls,0.95
+113597-V2,robust/loo/drop_loan_baseline,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop loan_baseline control from full specification,0.95
+113597-V2,robust/loo/drop_eduvoc,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop eduvoc control from full specification,0.95
+113597-V2,robust/loo/drop_edusec,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop edusec control from full specification,0.95
+113597-V2,robust/loo/drop_age16,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop age16 control from full specification,0.95
+113597-V2,robust/loo/drop_under16,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop under16 control from full specification,0.95
+113597-V2,robust/loo/drop_marr_cohab,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop marr_cohab control from full specification,0.95
+113597-V2,robust/loo/drop_age,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop age control from full specification,0.95
+113597-V2,robust/loo/drop_age_sq,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop age_sq control from full specification,0.95
+113597-V2,robust/loo/drop_buddhist,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop buddhist control from full specification,0.95
+113597-V2,robust/loo/drop_hahl,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop hahl control from full specification,0.95
+113597-V2,robust/loo/drop_sep_f,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop sep_f control from full specification,0.95
+113597-V2,robust/loo/drop_nov_f,robustness/leave_one_out.md,enterprise,group,G1,baseline,0,1,core_controls,Drop nov_f control from full specification,0.95
+113597-V2,robust/sample/drop_aimag_1,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Drop aimag 1 from sample,0.9
+113597-V2,robust/sample/drop_aimag_2,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Drop aimag 2 from sample,0.9
+113597-V2,robust/sample/drop_aimag_3,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Drop aimag 3 from sample,0.9
+113597-V2,robust/sample/drop_aimag_4,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Drop aimag 4 from sample,0.9
+113597-V2,robust/sample/drop_aimag_5,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Drop aimag 5 from sample,0.9
+113597-V2,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,profit_r_wins,group,G5,baseline/scaled_profit_r,0,1,core_sample,Profit winsorized at 1pct tails tests G5 robustness,0.8
+113597-V2,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,profit_r_wins,group,G5,baseline/scaled_profit_r,0,1,core_sample,Profit winsorized at 5pct tails tests G5 robustness,0.8
+113597-V2,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,profit_r_wins,group,G5,baseline/scaled_profit_r,0,1,core_sample,Profit winsorized at 10pct tails tests G5 robustness,0.8
+113597-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Trim 1pct tails on consumption enterprise outcome,0.85
+113597-V2,robust/sample/low_education,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Low education subsample same outcome and treatment,0.8
+113597-V2,robust/sample/high_education,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,High education subsample same outcome and treatment,0.8
+113597-V2,robust/sample/had_baseline_loan,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,Had baseline loan subsample same outcome and treatment,0.8
+113597-V2,robust/sample/no_baseline_loan,robustness/sample_restrictions.md,enterprise,group,G1,baseline,0,1,core_sample,No baseline loan subsample same outcome and treatment,0.8
+113597-V2,robust/outcome/enterprise,robustness/measurement.md,enterprise,group,G1,baseline,0,1,core_controls,Duplicate of baseline enterprise spec,0.95
+113597-V2,robust/outcome/soleent,robustness/measurement.md,soleent,group,G2,baseline/soleent,0,1,core_controls,Duplicate of baseline soleent spec,0.95
+113597-V2,robust/outcome/scaled_profit_r,robustness/measurement.md,scaled_profit_r,group,G5,baseline/scaled_profit_r,0,1,core_controls,Duplicate of baseline profit spec,0.95
+113597-V2,robust/outcome/ln_totalc,robustness/measurement.md,ln_totalc,group,G3,baseline/ln_totalc,0,1,core_controls,Duplicate of baseline consumption spec,0.95
+113597-V2,robust/outcome/ln_foodc,robustness/measurement.md,ln_foodc,group,G4,baseline/ln_foodc,0,1,core_controls,Duplicate of baseline food consumption spec,0.95
+113597-V2,robust/outcome/scaled_assets,robustness/measurement.md,scaled_assets,group,,,0,0,noncore_alt_outcome,New outcome scaled assets not in any baseline group,0.9
+113597-V2,robust/outcome/hours_total,robustness/measurement.md,hours_total,group,,,0,0,noncore_alt_outcome,New outcome total hours not in any baseline group,0.9
+113597-V2,robust/outcome/ln_nondurc,robustness/measurement.md,ln_nondurc,group,,,0,0,noncore_alt_outcome,New outcome log non-durable consumption not in baselines,0.9
+113597-V2,robust/outcome/ln_durc,robustness/measurement.md,ln_durc,group,,,0,0,noncore_alt_outcome,New outcome log durable consumption not in baselines,0.9
+113597-V2,robust/cluster/robust_only,robustness/clustering_variations.md#single-level-clustering,enterprise,group,G1,baseline,0,1,core_inference,Robust SE without clustering same point estimate,0.95
+113597-V2,robust/cluster/aimag,robustness/clustering_variations.md#single-level-clustering,enterprise,group,G1,baseline,0,1,core_inference,Cluster at aimag level instead of soum,0.95
+113597-V2,robust/cluster/household,robustness/clustering_variations.md#single-level-clustering,enterprise,group,G1,baseline,0,1,core_inference,Cluster at household level instead of soum,0.95
+113597-V2,robust/cluster/aimag_soleent,robustness/clustering_variations.md,soleent,group,G2,baseline/soleent,0,1,core_inference,Soleent with aimag clustering instead of soum,0.9
+113597-V2,robust/cluster/aimag_ln_totalc,robustness/clustering_variations.md,ln_totalc,group,G3,baseline/ln_totalc,0,1,core_inference,Log total consumption with aimag clustering,0.9
+113597-V2,robust/cluster/aimag_scaled_profit_r,robustness/clustering_variations.md,scaled_profit_r,group,G5,baseline/scaled_profit_r,0,1,core_inference,Scaled profit with aimag clustering,0.9
+113597-V2,robust/fe/no_aimag_dummies,robustness/model_specification.md,enterprise,group,G1,baseline,0,1,core_fe,No aimag dummies removes geographic controls,0.9
+113597-V2,robust/fe/aimag_fe,robustness/model_specification.md,enterprise,group,G1,baseline,0,1,core_fe,Aimag FE nearly identical to baseline with dummies,0.9
+113597-V2,robust/fe/soum_fe,robustness/model_specification.md,enterprise,group,G1,baseline,0,0,invalid,Failed estimation error extracting group coef with soum FE,0.95
+113597-V2,robust/funcform/totalc_level,robustness/functional_form.md,totalc,group,G3,baseline/ln_totalc,0,1,core_funcform,Total consumption in levels instead of log,0.85
+113597-V2,robust/funcform/ihs_profit,robustness/functional_form.md,ihs_profit,group,G5,baseline/scaled_profit_r,0,1,core_funcform,IHS transformation of profit instead of scaled,0.85
+113597-V2,robust/funcform/ln_totalc_pc,robustness/functional_form.md,ln_totalc_pc,group,G3,baseline/ln_totalc,0,1,core_funcform,Log per capita consumption instead of log total,0.85
+113597-V2,robust/heterogeneity/education,robustness/heterogeneity.md,enterprise,group,G1,baseline,0,0,noncore_heterogeneity,Education interaction term changes main coef meaning,0.85
+113597-V2,robust/heterogeneity/baseline_loan,robustness/heterogeneity.md,enterprise,group,G1,baseline,0,0,noncore_heterogeneity,Baseline loan interaction changes main coef meaning,0.85
+113597-V2,robust/heterogeneity/age,robustness/heterogeneity.md,enterprise,group,G1,baseline,0,0,noncore_heterogeneity,Age interaction term changes main coef meaning,0.85
+113597-V2,robust/heterogeneity/hh_size,robustness/heterogeneity.md,enterprise,group,G1,baseline,0,0,noncore_heterogeneity,HH size interaction changes main coef meaning,0.85
+113597-V2,robust/heterogeneity/buddhist,robustness/heterogeneity.md,enterprise,group,G1,baseline,0,0,noncore_heterogeneity,Buddhist interaction term changes main coef meaning,0.85
+113597-V2,robust/heterogeneity/education_soleent,robustness/heterogeneity.md,soleent,group,G2,baseline/soleent,0,0,noncore_heterogeneity,Education interaction for soleent outcome,0.85
+113597-V2,robust/heterogeneity/education_ln_totalc,robustness/heterogeneity.md,ln_totalc,group,G3,baseline/ln_totalc,0,0,noncore_heterogeneity,Education interaction for log consumption outcome,0.85
+113597-V2,robust/placebo/outcome_buddhist,robustness/placebo_tests.md,buddhist,group,,,0,0,noncore_placebo,Placebo: buddhist is predetermined should be null,0.95
+113597-V2,robust/placebo/outcome_hahl,robustness/placebo_tests.md,hahl,group,,,0,0,noncore_placebo,Placebo: hahl is predetermined should be null,0.95
+113597-V2,robust/placebo/outcome_under16,robustness/placebo_tests.md,under16,group,,,0,0,noncore_placebo,Placebo: under16 is predetermined should be null,0.95
+113597-V2,custom/indiv_vs_control/enterprise,custom,enterprise,indiv,,,0,0,noncore_alt_treatment,Different treatment (individual loan) changes causal object,0.95
+113597-V2,custom/indiv_vs_control/soleent,custom,soleent,indiv,,,0,0,noncore_alt_treatment,Different treatment (individual loan) changes causal object,0.95

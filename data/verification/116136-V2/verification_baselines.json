@@ -1,0 +1,27 @@
+{
+  "paper_id": "116136-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116136-V2",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Unilateral divorce laws combined with community property regimes increase household asset accumulation relative to other property division regimes.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline/children",
+        "baseline/state_controls",
+        "baseline/full"
+      ],
+      "baseline_outcome_vars": [
+        "assets"
+      ],
+      "baseline_treatment_vars": [
+        "uni_comprop"
+      ],
+      "notes": "Four baseline specs represent progressive control additions (Age+Year, +Children, +State, +Marriage duration). baseline/full is the preferred specification with all controls. All use Individual FE and state clustering. The first three baselines are marginally insignificant (p~0.063-0.068) while baseline/full is significant (p=0.003) due to the addition of marriage duration controls restricting the sample."
+    }
+  ],
+  "global_notes": "Paper studies effect of unilateral divorce on assets, interacted with property division regime. The main treatment uni_comprop is an interaction of unilateral divorce adoption with community property regime. Several specifications have null/missing coefficients because the treatment variable was collinear or dropped in restricted subsamples. The functional form specs (log, IHS) show negative signs, contradicting the baseline. The first-difference specification shows a large negative and highly significant coefficient, which is a major concern for the baseline claim."
+}

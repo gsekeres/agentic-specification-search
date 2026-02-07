@@ -1,0 +1,94 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+181581-V1,baseline,methods/panel_fixed_effects.md#baseline,mort7,doctor,G1,baseline,1,1,core_controls,Table 4 Col 1 baseline: mort7 on doctor with strata FE only,1.0
+181581-V1,baseline_mlp,methods/panel_fixed_effects.md#baseline,mort7,mlp,G2,baseline_mlp,1,1,core_controls,Baseline for MLP treatment arm from same regression as baseline,1.0
+181581-V1,baseline_basic_controls,methods/panel_fixed_effects.md#baseline,mort7,doctor,G1,baseline_basic_controls,1,1,core_controls,Table 4 Col 2 baseline: adds basic individual/demographic controls,1.0
+181581-V1,baseline_extended_controls,methods/panel_fixed_effects.md#baseline,mort7,doctor,G1,baseline_extended_controls,1,1,core_controls,Table 4 Col 3 preferred baseline: extended controls including health center vars,1.0
+181581-V1,did/fe/none,methods/panel_fixed_effects.md#fixed-effects,mort7,doctor,G1,baseline_extended_controls,0,1,core_fe,No fixed effects with extended controls; tests FE structure sensitivity,0.95
+181581-V1,did/fe/strata_only,methods/panel_fixed_effects.md#fixed-effects,mort7,doctor,G1,baseline_extended_controls,0,1,core_fe,Strata FE only (no time FE) with extended controls,0.95
+181581-V1,did/fe/time_only,methods/panel_fixed_effects.md#fixed-effects,mort7,doctor,G1,baseline_extended_controls,0,1,core_fe,Quarter FE only (no strata FE) with extended controls,0.95
+181581-V1,did/fe/state_only,methods/panel_fixed_effects.md#fixed-effects,mort7,doctor,G1,baseline_extended_controls,0,1,core_fe,State FE instead of strata FE with extended controls,0.95
+181581-V1,did/fe/state_time,methods/panel_fixed_effects.md#fixed-effects,mort7,doctor,G1,baseline_extended_controls,0,1,core_fe,State + quarter FE instead of strata + quarter FE,0.95
+181581-V1,robust/loo/drop_cct,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop cct from extended controls,0.95
+181581-V1,robust/loo/drop_magedum_1,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop magedum_1 from extended controls,0.95
+181581-V1,robust/loo/drop_magedum_2,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop magedum_2 from extended controls,0.95
+181581-V1,robust/loo/drop_magedum_3,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop magedum_3 from extended controls,0.95
+181581-V1,robust/loo/drop_magedum_4,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop magedum_4 from extended controls,0.95
+181581-V1,robust/loo/drop_magedum_5,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,0,invalid,Identical to baseline_extended_controls; magedum_5 likely does not exist in model,0.95
+181581-V1,robust/loo/drop_first,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop first birth indicator from extended controls,0.95
+181581-V1,robust/loo/drop_hausa,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hausa ethnicity from extended controls,0.95
+181581-V1,robust/loo/drop_mschool_1,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop mschool_1 from extended controls,0.95
+181581-V1,robust/loo/drop_mschool_2,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop mschool_2 from extended controls,0.95
+181581-V1,robust/loo/drop_mschool_3,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop mschool_3 from extended controls,0.95
+181581-V1,robust/loo/drop_mschool_4,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,0,invalid,Identical to baseline_extended_controls; mschool_4 likely does not exist in model,0.95
+181581-V1,robust/loo/drop_autonomy,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop autonomy from extended controls,0.95
+181581-V1,robust/loo/drop_car,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop car from extended controls,0.95
+181581-V1,robust/loo/drop_last,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop last birth indicator from extended controls,0.95
+181581-V1,robust/loo/drop_gest,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop gestational age from extended controls,0.95
+181581-V1,robust/loo/drop_male,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop male indicator from extended controls,0.95
+181581-V1,robust/loo/drop_hc_deliveries,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hc_deliveries from extended controls,0.95
+181581-V1,robust/loo/drop_hc_cesarean,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hc_cesarean from extended controls,0.95
+181581-V1,robust/loo/drop_hc_transfusion,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hc_transfusion from extended controls,0.95
+181581-V1,robust/loo/drop_hc_clean_1,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hc_clean_1 from extended controls,0.95
+181581-V1,robust/loo/drop_hc_clean_2,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hc_clean_2 from extended controls,0.95
+181581-V1,robust/loo/drop_hc_clean_3,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Leave-one-out: drop hc_clean_3 from extended controls,0.95
+181581-V1,robust/loo/drop_hc_clean_4,robustness/leave_one_out.md,mort7,doctor,G1,baseline_extended_controls,0,0,invalid,Identical to baseline_extended_controls; hc_clean_4 likely does not exist in model,0.95
+181581-V1,robust/control/none,robustness/control_progression.md,mort7,doctor,G1,baseline,0,1,core_controls,No controls with strata+time FE; comparable to baseline with added time FE,0.9
+181581-V1,robust/control/add_1_cct,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 1 control (cct),0.9
+181581-V1,robust/control/add_2_magedum_1,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 2 controls,0.9
+181581-V1,robust/control/add_3_magedum_2,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 3 controls,0.9
+181581-V1,robust/control/add_4_magedum_3,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 4 controls,0.9
+181581-V1,robust/control/add_5_magedum_4,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 5 controls,0.9
+181581-V1,robust/control/add_6_magedum_5,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 6 controls,0.9
+181581-V1,robust/control/add_7_first,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 7 controls,0.9
+181581-V1,robust/control/add_8_hausa,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 8 controls,0.9
+181581-V1,robust/control/add_9_mschool_1,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 9 controls,0.9
+181581-V1,robust/control/add_10_mschool_2,robustness/control_progression.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_controls,Incremental control addition: first 10 controls,0.9
+181581-V1,robust/sample/drop_qtr_-1187,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,0,invalid,Identical to baseline_extended_controls; quarter -1187 likely does not exist,0.95
+181581-V1,robust/sample/drop_qtr_190,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,0,invalid,Identical to baseline_extended_controls; quarter 190 likely absent from data,0.95
+181581-V1,robust/sample/drop_qtr_191,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop quarter 191 from sample; tests time-period sensitivity,0.9
+181581-V1,robust/sample/drop_qtr_192,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop quarter 192 from sample; tests time-period sensitivity,0.9
+181581-V1,robust/sample/drop_qtr_193,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop quarter 193 from sample; tests time-period sensitivity,0.9
+181581-V1,robust/sample/drop_qtr_194,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop quarter 194 from sample; tests time-period sensitivity,0.9
+181581-V1,robust/sample/drop_state_jigawa,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop Jigawa state from sample; geographic sensitivity,0.9
+181581-V1,robust/sample/drop_state_akwa_ibom,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop Akwa Ibom state; geographic sensitivity,0.9
+181581-V1,robust/sample/drop_state_kano,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop Kano state; geographic sensitivity,0.9
+181581-V1,robust/sample/drop_state_gombe,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop Gombe state; geographic sensitivity,0.9
+181581-V1,robust/sample/drop_state_bauchi,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Drop Bauchi state; geographic sensitivity,0.9
+181581-V1,robust/sample/male_only,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Male children subsample; tests gender-specific effects,0.9
+181581-V1,robust/sample/female_only,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Female children subsample; tests gender-specific effects,0.9
+181581-V1,robust/sample/first_birth,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,First births only subsample,0.9
+181581-V1,robust/sample/later_births,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Later births only subsample,0.9
+181581-V1,robust/sample/dose_1,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Dose level 1 subsample (low doctor attendance),0.85
+181581-V1,robust/sample/dose_2,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Dose level 2 subsample (high doctor attendance),0.85
+181581-V1,robust/sample/hausa_only,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Hausa ethnicity subsample,0.9
+181581-V1,robust/sample/non_hausa,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Non-Hausa subsample,0.9
+181581-V1,robust/sample/cct_offered,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,CCT offered subsample,0.9
+181581-V1,robust/sample/cct_not_offered,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,CCT not offered subsample,0.9
+181581-V1,robust/sample/csection,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,C-section deliveries subsample (small N caveat),0.8
+181581-V1,robust/sample/no_csection,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Non-C-section deliveries subsample,0.9
+181581-V1,robust/sample/singleton,robustness/sample_restrictions.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Singleton births only subsample,0.9
+181581-V1,robust/outcome/mort30,robustness/measurement.md,mort30,doctor,G1,baseline_extended_controls,0,1,core_funcform,30-day mortality; related mortality outcome preserving same claim,0.85
+181581-V1,robust/outcome/birthweight,robustness/measurement.md,birthwt,doctor,,,,0,noncore_alt_outcome,Different outcome (birthweight); not testing mortality claim,0.95
+181581-V1,robust/outcome/low_birthweight,robustness/measurement.md,lbw,doctor,,,,0,noncore_alt_outcome,Different outcome (low birthweight); not testing mortality claim,0.95
+181581-V1,robust/outcome/log_weight,robustness/measurement.md,log_weight,doctor,,,,0,noncore_alt_outcome,Different outcome (log child weight); not testing mortality claim,0.95
+181581-V1,robust/outcome/log_length,robustness/measurement.md,log_length,doctor,,,,0,noncore_alt_outcome,Different outcome (log child length); not testing mortality claim,0.95
+181581-V1,robust/outcome/postpart_fever,robustness/measurement.md,postpart2,doctor,,,,0,noncore_alt_outcome,Different outcome (postpartum fever); not testing mortality claim,0.95
+181581-V1,robust/cluster/none,robustness/clustering_variations.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_inference,Robust SE instead of clustered; inference variation only,0.95
+181581-V1,robust/cluster/strata,robustness/clustering_variations.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_inference,Cluster at strata level instead of facility; inference variation,0.95
+181581-V1,robust/cluster/state,robustness/clustering_variations.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_inference,Cluster at state level instead of facility; inference variation,0.95
+181581-V1,robust/treatment/doctor_vs_control,robustness/model_specification.md,mort7,doctor,G1,baseline_extended_controls,0,1,core_sample,Doctor vs control only (drops MLP arm from sample),0.9
+181581-V1,robust/treatment/mlp_vs_control,robustness/model_specification.md,mort7,mlp,G2,baseline_mlp,0,1,core_sample,MLP vs control only (drops doctor arm from sample),0.9
+181581-V1,robust/treatment/any_intervention,robustness/model_specification.md,mort7,any_treat,,,,0,noncore_alt_treatment,Different treatment (any_treat pools doctor+MLP); changes causal object,0.85
+181581-V1,robust/heterogeneity/doctor_x_male,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Interaction doctor x male; main effect in heterogeneity model,0.85
+181581-V1,robust/heterogeneity/doctor_x_first,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Interaction doctor x first birth; main effect in heterogeneity model,0.85
+181581-V1,robust/heterogeneity/doctor_x_hausa,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Interaction doctor x hausa; main effect in heterogeneity model,0.85
+181581-V1,robust/heterogeneity/doctor_x_cct,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Interaction doctor x cct; main effect in heterogeneity model,0.85
+181581-V1,robust/placebo/pastdeath,robustness/placebo_tests.md,pastdeath,doctor,,,,0,noncore_placebo,Placebo: past death is pre-determined; should not be affected by treatment,0.95
+181581-V1,robust/placebo/mother_age,robustness/placebo_tests.md,magedum,doctor,,,,0,noncore_placebo,Placebo: mother age is pre-determined; should not be affected,0.95
+181581-V1,robust/placebo/mother_education,robustness/placebo_tests.md,mschool,doctor,,,,0,noncore_placebo,Placebo: mother education is pre-determined; should not be affected,0.95
+181581-V1,robust/placebo/ethnicity,robustness/placebo_tests.md,hausa,doctor,,,,0,noncore_placebo,Placebo: ethnicity is pre-determined; should not be affected,0.95
+181581-V1,robust/heterogeneity/hc_hc_equipment,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Heterogeneity by health center equipment; main effect reported,0.85
+181581-V1,robust/heterogeneity/hc_hc_deliveries,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Heterogeneity by health center delivery volume; main effect reported,0.85
+181581-V1,robust/heterogeneity/hc_hc_workers,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Heterogeneity by health center workers; main effect reported,0.85
+181581-V1,robust/heterogeneity/autonomy,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Heterogeneity by maternal autonomy; main effect reported,0.85
+181581-V1,robust/heterogeneity/car,robustness/heterogeneity.md,mort7,doctor,G1,baseline_extended_controls,0,0,noncore_heterogeneity,Heterogeneity by car ownership (wealth proxy); main effect reported,0.85

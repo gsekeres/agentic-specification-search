@@ -1,0 +1,39 @@
+{
+  "paper_id": "138401-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/138401-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Exposure to measles vaccination in childhood (high-measles states x post-vaccine cohort exposure) reduces adult employment probability.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "employed"
+      ],
+      "baseline_treatment_vars": [
+        "treatment"
+      ],
+      "notes": "Treatment is high_measles (median split) x exposure. Paper hypothesizes vaccination IMPROVES outcomes but simplified treatment produces negative sign."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Exposure to measles vaccination in childhood reduces adult log wages.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_lnwage"
+      ],
+      "baseline_outcome_vars": [
+        "lnwage"
+      ],
+      "baseline_treatment_vars": [
+        "treatment"
+      ],
+      "notes": "Same treatment as G1 but log wage outcome, restricted to positive wage earners."
+    }
+  ],
+  "global_notes": "Major issues: (1) Several specs have identical coefs/SEs/N as baseline due to broken subsample filters. (2) robust/outcome/lnwage duplicates baseline_lnwage. (3) Simplified treatment. (4) Missing female specs. (5) FE-only specs show expected sign flips."
+}

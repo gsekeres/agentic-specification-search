@@ -1,0 +1,24 @@
+{
+  "paper_id": "111185-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/111185-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Climate damages follow a power law in temperature with exponent d2 approximately 2, estimated via log-log meta-regression from Howard and Sterner (2017) data.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "log_correct"
+      ],
+      "baseline_treatment_vars": [
+        "logt"
+      ],
+      "notes": "Single baseline from Table 1. Coefficient on logt is damage exponent d2 = 1.88 (SE = 0.45). N=43."
+    }
+  ],
+  "global_notes": "Single empirical claim (Table 1). 78 specs. Bootstrap has invalid p>1. Heterogeneity interaction specs report conditional main effects."
+}

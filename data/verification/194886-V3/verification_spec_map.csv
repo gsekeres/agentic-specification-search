@@ -1,0 +1,117 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+194886-V3,baseline_earn_business_MA,methods/cross_sectional_ols.md#baseline,earn_business,treatment2,G1,baseline_earn_business_MA,1,1,core_controls,Baseline MA on earn_business,1.0
+194886-V3,baseline_earn_business_MD,methods/cross_sectional_ols.md#baseline,earn_business,treatment3,G1,baseline_earn_business_MD,1,1,core_controls,Baseline MD on earn_business,1.0
+194886-V3,baseline_much_saved_MA,methods/cross_sectional_ols.md#baseline,much_saved,treatment2,G2,baseline_much_saved_MA,1,1,core_controls,Baseline MA on much_saved,1.0
+194886-V3,baseline_much_saved_MD,methods/cross_sectional_ols.md#baseline,much_saved,treatment3,G2,baseline_much_saved_MD,1,1,core_controls,Baseline MD on much_saved,1.0
+194886-V3,baseline_capital_MA,methods/cross_sectional_ols.md#baseline,capital,treatment2,G3,baseline_capital_MA,1,1,core_controls,Baseline MA on capital,1.0
+194886-V3,baseline_capital_MD,methods/cross_sectional_ols.md#baseline,capital,treatment3,G3,baseline_capital_MD,1,1,core_controls,Baseline MD on capital,1.0
+194886-V3,robust/control/none_MA,robustness/control_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_controls,No controls bivariate; same outcome/treatment,0.95
+194886-V3,robust/control/baseline_only_MA,robustness/control_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_controls,Baseline only control; duplicates baseline,0.95
+194886-V3,robust/control/demographics_MA,robustness/control_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_controls,Adds demographic controls,0.95
+194886-V3,robust/control/imbalanced_MA,robustness/control_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_controls,Adds imbalanced variable controls,0.95
+194886-V3,robust/control/time_trend_MA,robustness/control_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_controls,Adds time trend controls,0.95
+194886-V3,robust/control/takeup_correlates_MA,robustness/control_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_controls,Adds takeup correlates as controls,0.95
+194886-V3,robust/control/none_MD,robustness/control_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_controls,No controls bivariate; same outcome/treatment,0.95
+194886-V3,robust/control/baseline_only_MD,robustness/control_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_controls,Baseline only control; duplicates baseline,0.95
+194886-V3,robust/control/demographics_MD,robustness/control_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_controls,Adds demographic controls,0.95
+194886-V3,robust/control/imbalanced_MD,robustness/control_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_controls,Adds imbalanced variable controls,0.95
+194886-V3,robust/control/time_trend_MD,robustness/control_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_controls,Adds time trend controls,0.95
+194886-V3,robust/control/takeup_correlates_MD,robustness/control_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_controls,Adds takeup correlates as controls,0.95
+194886-V3,robust/sample/no_winsorize_MA,robustness/sample_restrictions.md,earn_business_100,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,No winsorization; alternative trimming,0.9
+194886-V3,robust/sample/winsor_995_MA,robustness/sample_restrictions.md,earn_business_995,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Winsorized at 99.5%,0.9
+194886-V3,robust/sample/winsor_98_MA,robustness/sample_restrictions.md,earn_business_98,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Winsorized at 98%,0.9
+194886-V3,robust/sample/winsor_95_MA,robustness/sample_restrictions.md,earn_business_95,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Winsorized at 95%,0.9
+194886-V3,robust/sample/trim_top5pct_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Trims top 5% of outcome,0.9
+194886-V3,robust/sample/drop_Makindye_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Excludes Makindye branch,0.9
+194886-V3,robust/sample/drop_Zanna_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Excludes Zanna branch,0.9
+194886-V3,robust/sample/drop_Kibuli_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Excludes Kibuli branch,0.9
+194886-V3,robust/sample/married_only_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Married subsample only,0.85
+194886-V3,robust/sample/unmarried_only_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Unmarried subsample only,0.85
+194886-V3,robust/sample/high_profit_base_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,High baseline profit subsample,0.8
+194886-V3,robust/sample/low_profit_base_MA,robustness/sample_restrictions.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_sample,Low baseline profit subsample,0.8
+194886-V3,robust/sample/no_winsorize_MD,robustness/sample_restrictions.md,earn_business_100,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,No winsorization; alternative trimming,0.9
+194886-V3,robust/sample/winsor_995_MD,robustness/sample_restrictions.md,earn_business_995,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Winsorized at 99.5%,0.9
+194886-V3,robust/sample/winsor_98_MD,robustness/sample_restrictions.md,earn_business_98,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Winsorized at 98%,0.9
+194886-V3,robust/sample/winsor_95_MD,robustness/sample_restrictions.md,earn_business_95,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Winsorized at 95%,0.9
+194886-V3,robust/sample/trim_top5pct_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Trims top 5% of outcome,0.9
+194886-V3,robust/sample/drop_Makindye_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Excludes Makindye branch,0.9
+194886-V3,robust/sample/drop_Zanna_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Excludes Zanna branch,0.9
+194886-V3,robust/sample/drop_Kibuli_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Excludes Kibuli branch,0.9
+194886-V3,robust/sample/married_only_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Married subsample only,0.85
+194886-V3,robust/sample/unmarried_only_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Unmarried subsample only,0.85
+194886-V3,robust/sample/high_profit_base_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,High baseline profit subsample,0.8
+194886-V3,robust/sample/low_profit_base_MD,robustness/sample_restrictions.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_sample,Low baseline profit subsample,0.8
+194886-V3,robust/outcome/monthly_profit_MA,robustness/alternative_outcomes.md,monthly_profit,treatment2,G1,baseline_earn_business_MA,0,0,noncore_alt_outcome,Different outcome (monthly_profit),0.85
+194886-V3,robust/outcome/weekly_profit_MA,robustness/alternative_outcomes.md,weekly_profit,treatment2,G1,baseline_earn_business_MA,0,0,noncore_alt_outcome,Different outcome (weekly_profit),0.85
+194886-V3,robust/outcome/saving_MA,robustness/alternative_outcomes.md,saving,treatment2,G2,baseline_much_saved_MA,0,0,noncore_alt_outcome,Different savings measure,0.8
+194886-V3,robust/outcome/net_saving_MA,robustness/alternative_outcomes.md,net_saving,treatment2,G2,baseline_much_saved_MA,0,0,noncore_alt_outcome,Different savings measure (net),0.8
+194886-V3,robust/outcome/inventory_value_MA,robustness/alternative_outcomes.md,inventory_value,treatment2,G3,baseline_capital_MA,0,0,noncore_alt_outcome,Different capital measure (inventory only),0.8
+194886-V3,robust/outcome/monthly_profit_MD,robustness/alternative_outcomes.md,monthly_profit,treatment3,G1,baseline_earn_business_MD,0,0,noncore_alt_outcome,Different outcome (monthly_profit),0.85
+194886-V3,robust/outcome/weekly_profit_MD,robustness/alternative_outcomes.md,weekly_profit,treatment3,G1,baseline_earn_business_MD,0,0,noncore_alt_outcome,Different outcome (weekly_profit),0.85
+194886-V3,robust/outcome/saving_MD,robustness/alternative_outcomes.md,saving,treatment3,G2,baseline_much_saved_MD,0,0,noncore_alt_outcome,Different savings measure,0.8
+194886-V3,robust/outcome/net_saving_MD,robustness/alternative_outcomes.md,net_saving,treatment3,G2,baseline_much_saved_MD,0,0,noncore_alt_outcome,Different savings measure (net),0.8
+194886-V3,robust/outcome/inventory_value_MD,robustness/alternative_outcomes.md,inventory_value,treatment3,G3,baseline_capital_MD,0,0,noncore_alt_outcome,Different capital measure (inventory only),0.8
+194886-V3,robust/se/hc1_MA,robustness/clustering_variations.md#alt,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_inference,HC1 robust SE; duplicates baseline,0.9
+194886-V3,robust/cluster/strata_MA,robustness/clustering_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_inference,Clustering at strata level,0.95
+194886-V3,robust/cluster/branch_MA,robustness/clustering_variations.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_inference,Clustering at branch level,0.95
+194886-V3,robust/se/hc1_MD,robustness/clustering_variations.md#alt,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_inference,HC1 robust SE; duplicates baseline,0.9
+194886-V3,robust/cluster/strata_MD,robustness/clustering_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_inference,Clustering at strata level,0.95
+194886-V3,robust/cluster/branch_MD,robustness/clustering_variations.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_inference,Clustering at branch level,0.95
+194886-V3,robust/estimation/no_fe_MA,robustness/estimation_method.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_fe,Drops strata FE; pooled OLS,0.9
+194886-V3,robust/estimation/branch_fe_MA,robustness/estimation_method.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_fe,Branch FE instead of strata FE,0.9
+194886-V3,robust/estimation/no_fe_MD,robustness/estimation_method.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_fe,Drops strata FE; pooled OLS,0.9
+194886-V3,robust/estimation/branch_fe_MD,robustness/estimation_method.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_fe,Branch FE instead of strata FE,0.9
+194886-V3,robust/funcform/log_outcome_MA,robustness/functional_form.md,ln_earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_funcform,Log transform of outcome,0.9
+194886-V3,robust/funcform/ihs_outcome_MA,robustness/functional_form.md,ihs_earn_business,treatment2,G1,baseline_earn_business_MA,0,1,core_funcform,IHS transform of outcome,0.9
+194886-V3,robust/funcform/log_outcome_MD,robustness/functional_form.md,ln_earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_funcform,Log transform of outcome,0.9
+194886-V3,robust/funcform/ihs_outcome_MD,robustness/functional_form.md,ihs_earn_business,treatment3,G1,baseline_earn_business_MD,0,1,core_funcform,IHS transform of outcome,0.9
+194886-V3,robust/heterogeneity/high_profits_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/high_profits_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/high_profits_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/high_profits_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/above_m_median_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/above_m_median_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/above_m_median_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/above_m_median_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/hyperbolic_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/hyperbolic_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/hyperbolic_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/hyperbolic_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/impatient_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/impatient_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/impatient_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/impatient_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/married_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/married_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/married_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/married_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/above_med_emp_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/above_med_emp_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/above_med_emp_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/above_med_emp_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/spouse_fam_takes_base_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/spouse_fam_takes_base_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/spouse_fam_takes_base_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/spouse_fam_takes_base_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/hetero_family_median_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/hetero_family_median_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/hetero_family_median_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/hetero_family_median_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/hetero_selfc_median_main_MA,robustness/heterogeneity.md,earn_business,treatment2,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/hetero_selfc_median_interact_MA,robustness/heterogeneity.md,earn_business,treatment2_het,G1,baseline_earn_business_MA,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/heterogeneity/hetero_selfc_median_main_MD,robustness/heterogeneity.md,earn_business,treatment3,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Main effect in interaction model; estimand changed,0.85
+194886-V3,robust/heterogeneity/hetero_selfc_median_interact_MD,robustness/heterogeneity.md,earn_business,treatment3_het,G1,baseline_earn_business_MD,0,0,noncore_heterogeneity,Interaction term; heterogeneity not main effect,0.95
+194886-V3,robust/placebo/hh_assets_MA,robustness/placebo_tests.md,hh_asset_value,treatment2,,,0,0,noncore_placebo,Placebo: household assets not business,0.95
+194886-V3,robust/placebo/hh_assets_MD,robustness/placebo_tests.md,hh_asset_value,treatment3,,,0,0,noncore_placebo,Placebo: household assets not business,0.95
+194886-V3,primary/much_saved_MA,methods/cross_sectional_ols.md,much_saved,treatment2,G2,baseline_much_saved_MA,0,1,core_controls,Duplicate of baseline_much_saved_MA,0.95
+194886-V3,primary/much_saved_MD,methods/cross_sectional_ols.md,much_saved,treatment3,G2,baseline_much_saved_MD,0,1,core_controls,Duplicate of baseline_much_saved_MD,0.95
+194886-V3,primary/capital_MA,methods/cross_sectional_ols.md,capital,treatment2,G3,baseline_capital_MA,0,1,core_controls,Duplicate of baseline_capital_MA,0.95
+194886-V3,primary/capital_MD,methods/cross_sectional_ols.md,capital,treatment3,G3,baseline_capital_MD,0,1,core_controls,Duplicate of baseline_capital_MD,0.95
+194886-V3,robust/sample/much_saved_no_winsorize_MA,robustness/sample_restrictions.md,much_saved_100,treatment2,G2,baseline_much_saved_MA,0,1,core_sample,No winsorization of much_saved,0.9
+194886-V3,robust/sample/much_saved_winsor_95_MA,robustness/sample_restrictions.md,much_saved_95,treatment2,G2,baseline_much_saved_MA,0,1,core_sample,much_saved winsorized at 95%,0.9
+194886-V3,robust/sample/much_saved_no_winsorize_MD,robustness/sample_restrictions.md,much_saved_100,treatment3,G2,baseline_much_saved_MD,0,1,core_sample,No winsorization of much_saved,0.9
+194886-V3,robust/sample/much_saved_winsor_95_MD,robustness/sample_restrictions.md,much_saved_95,treatment3,G2,baseline_much_saved_MD,0,1,core_sample,much_saved winsorized at 95%,0.9
+194886-V3,robust/sample/capital_no_winsorize_MA,robustness/sample_restrictions.md,capital_100,treatment2,G3,baseline_capital_MA,0,1,core_sample,No winsorization of capital,0.9
+194886-V3,robust/sample/capital_winsor_95_MA,robustness/sample_restrictions.md,capital_95,treatment2,G3,baseline_capital_MA,0,1,core_sample,capital winsorized at 95%,0.9
+194886-V3,robust/sample/capital_no_winsorize_MD,robustness/sample_restrictions.md,capital_100,treatment3,G3,baseline_capital_MD,0,1,core_sample,No winsorization of capital,0.9
+194886-V3,robust/sample/capital_winsor_95_MD,robustness/sample_restrictions.md,capital_95,treatment3,G3,baseline_capital_MD,0,1,core_sample,capital winsorized at 95%,0.9

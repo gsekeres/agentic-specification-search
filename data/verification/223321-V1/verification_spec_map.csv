@@ -1,0 +1,63 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+223321-V1,baseline_no_controls,methods/cross_sectional_ols.md#baseline,not_hisp,par_Arrived0_8,G1,baseline_no_controls,1,1,core_controls,Baseline with no controls; same outcome and treatment,1.0
+223321-V1,baseline_basic_controls,methods/cross_sectional_ols.md#baseline,not_hisp,par_Arrived0_8,G1,baseline_basic_controls,1,1,core_controls,Baseline with basic demographic controls,1.0
+223321-V1,baseline,methods/cross_sectional_ols.md#baseline,not_hisp,par_Arrived0_8,G1,baseline,1,1,core_controls,Paper preferred baseline with full controls,1.0
+223321-V1,robust/loo/drop_year,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus year dummies; same outcome/treatment,0.95
+223321-V1,robust/loo/drop_child_age,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus child age dummies,0.95
+223321-V1,robust/loo/drop_par_age,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus parent age dummies,0.95
+223321-V1,robust/loo/drop_sex,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus sex dummies,0.95
+223321-V1,robust/loo/drop_par_english,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus parent English ability,0.95
+223321-V1,robust/loo/drop_par_educ,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus parent education,0.95
+223321-V1,robust/loo/drop_family_structure,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus family structure,0.95
+223321-V1,robust/loo/drop_intermarriage,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus intermarriage dummies,0.95
+223321-V1,robust/loo/drop_state,robustness/leave_one_out.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Full controls minus state dummies,0.95
+223321-V1,robust/build/bivariate,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline_no_controls,0,1,core_controls,Bivariate; duplicates baseline_no_controls,0.95
+223321-V1,robust/build/demographics,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline_basic_controls,0,1,core_controls,Year + child age + sex controls only,0.95
+223321-V1,robust/build/par_demographics,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline_basic_controls,0,1,core_controls,Add parent demographics to basic controls,0.95
+223321-V1,robust/build/add_english,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Progressive control addition: add English ability,0.95
+223321-V1,robust/build/add_education,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Progressive control addition: add education,0.95
+223321-V1,robust/build/add_family,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Progressive control addition: add family structure,0.95
+223321-V1,robust/build/add_intermarriage,robustness/control_progression.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_controls,Progressive control addition: add intermarriage,0.95
+223321-V1,robust/sample/early_period,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Restrict to 2000-2009; same outcome/treatment/controls,0.90
+223321-V1,robust/sample/late_period,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Restrict to 2010-2019; same outcome/treatment/controls,0.90
+223321-V1,robust/sample/drop_year_2000,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Exclude Census 2000; same outcome/treatment/controls,0.90
+223321-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Exclude year 2010; same outcome/treatment/controls,0.90
+223321-V1,robust/sample/young_children,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Restrict to young children (0-5); subsample test,0.85
+223321-V1,robust/sample/school_age,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Restrict to school-age children; subsample test,0.85
+223321-V1,robust/sample/teens,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Restrict to teens; subsample test,0.85
+223321-V1,robust/sample/male_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Male children only; subsample test,0.85
+223321-V1,robust/sample/female_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Female children only; subsample test,0.85
+223321-V1,robust/sample/par_mother,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Immigrant parent is mother; subsample test,0.85
+223321-V1,robust/sample/par_father,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Immigrant parent is father; subsample test,0.85
+223321-V1,robust/sample/both_parents,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Two-parent families only; subsample test,0.85
+223321-V1,robust/sample/single_parent,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Single-parent families only; subsample test,0.85
+223321-V1,robust/sample/california_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,California only; geographic subsample,0.85
+223321-V1,robust/sample/texas_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Texas only; geographic subsample,0.85
+223321-V1,robust/sample/arizona_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Arizona only; geographic subsample,0.85
+223321-V1,robust/sample/traditional_states,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,CA TX AZ NM only; traditional destination states,0.85
+223321-V1,robust/sample/non_traditional_states,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Outside CA TX AZ NM; non-traditional states,0.85
+223321-V1,robust/sample/census_2000_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,Census 2000 only; single-survey subsample,0.85
+223321-V1,robust/sample/acs_only,robustness/sample_restrictions.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_sample,ACS only 2001-2019; single-survey subsample,0.85
+223321-V1,robust/weights/unweighted,robustness/measurement.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_method,Unweighted OLS vs WLS; same outcome/treatment/controls,0.90
+223321-V1,robust/se/hc2,robustness/clustering_variations.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_inference,HC2 robust SEs instead of HC1; same point estimate,0.95
+223321-V1,robust/se/hc3,robustness/clustering_variations.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_inference,HC3 robust SEs instead of HC1; same point estimate,0.95
+223321-V1,robust/cluster/state,robustness/clustering_variations.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_inference,Clustered SEs at state level; same point estimate,0.95
+223321-V1,robust/cluster/year,robustness/clustering_variations.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_inference,Clustered SEs at year level; same point estimate,0.95
+223321-V1,robust/het/interaction_gender,robustness/heterogeneity.md,not_hisp,treat_x_female,G1,baseline,0,0,noncore_heterogeneity,Treatment var is interaction (treat_x_female); heterogeneity,0.90
+223321-V1,robust/het/interaction_par_gender,robustness/heterogeneity.md,not_hisp,treat_x_par_female,G1,baseline,0,0,noncore_heterogeneity,Treatment var is interaction (treat_x_par_female); heterogeneity,0.90
+223321-V1,robust/het/interaction_family,robustness/heterogeneity.md,not_hisp,treat_x_both_parents,G1,baseline,0,0,noncore_heterogeneity,Treatment var is interaction (treat_x_both_parents); heterogeneity,0.90
+223321-V1,robust/het/interaction_english,robustness/heterogeneity.md,not_hisp,treat_x_english_fluent,G1,baseline,0,0,noncore_heterogeneity,Treatment var is interaction (treat_x_english_fluent); heterogeneity,0.90
+223321-V1,robust/het/by_low_education,robustness/heterogeneity.md,not_hisp,par_Arrived0_8,G1,baseline,0,0,noncore_heterogeneity,Subsample by parent low education; heterogeneity split,0.80
+223321-V1,robust/het/by_high_education,robustness/heterogeneity.md,not_hisp,par_Arrived0_8,G1,baseline,0,0,noncore_heterogeneity,Subsample by parent high education; heterogeneity split,0.80
+223321-V1,robust/het/by_intermarried,robustness/heterogeneity.md,not_hisp,par_Arrived0_8,G1,baseline,0,0,noncore_heterogeneity,Subsample: intermarried families only; heterogeneity split,0.80
+223321-V1,robust/het/by_not_intermarried,robustness/heterogeneity.md,not_hisp,par_Arrived0_8,G1,baseline,0,0,noncore_heterogeneity,Subsample: not-intermarried families; heterogeneity split,0.80
+223321-V1,robust/placebo/parent_hisp,robustness/placebo_tests.md,par_not_hisp,par_Arrived0_8,G1,baseline,0,0,noncore_placebo,Different outcome (parent not Hispanic); placebo test,0.95
+223321-V1,robust/estimation/logit,methods/discrete_choice.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_method,Logit estimation; same claim but different scale,0.80
+223321-V1,robust/estimation/probit,methods/discrete_choice.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_method,Probit estimation; same claim but different scale,0.80
+223321-V1,ols/method/lpm_weighted,methods/cross_sectional_ols.md,not_hisp,par_Arrived0_8,G1,baseline,0,1,core_method,Exact duplicate of baseline (same coef/p-value),0.95
+223321-V1,robust/treatment/continuous,robustness/measurement.md,not_hisp,par_AgeAtArrival,G1,baseline,0,1,core_funcform,Continuous treatment (age at arrival); same concept,0.80
+223321-V1,robust/treatment/cutoff_5,robustness/measurement.md,not_hisp,par_Arrived0_5,G1,baseline,0,1,core_funcform,Treatment cutoff at age 5 instead of 8; same concept,0.80
+223321-V1,robust/treatment/cutoff_6,robustness/measurement.md,not_hisp,par_Arrived0_6,G1,baseline,0,1,core_funcform,Treatment cutoff at age 6 instead of 8; same concept,0.80
+223321-V1,robust/treatment/cutoff_7,robustness/measurement.md,not_hisp,par_Arrived0_7,G1,baseline,0,1,core_funcform,Treatment cutoff at age 7 instead of 8; same concept,0.80
+223321-V1,robust/treatment/cutoff_9,robustness/measurement.md,not_hisp,par_Arrived0_9,G1,baseline,0,1,core_funcform,Treatment cutoff at age 9 instead of 8; same concept,0.80
+223321-V1,robust/treatment/cutoff_10,robustness/measurement.md,not_hisp,par_Arrived0_10,G1,baseline,0,1,core_funcform,Treatment cutoff at age 10 instead of 8; same concept,0.80

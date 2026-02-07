@@ -1,0 +1,57 @@
+{
+  "paper_id": "113517-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113517-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Employment-to-employment (EE) reallocation rate positively predicts nominal wage growth at the market-time level, persisting when controlling for UE transitions.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_ee_ue",
+        "baseline_ee_ue_ur"
+      ],
+      "baseline_outcome_vars": [
+        "xdlogern_nom"
+      ],
+      "baseline_treatment_vars": [
+        "xee"
+      ],
+      "notes": "Three baseline variants report EE coeff on nominal earnings growth: (1) EE alone with market FE, (2) EE controlling for UE, (3) EE controlling for UE and UR. Horse race spec (baseline_ee_ue) is most canonical."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "UE transition rate predicts nominal wage growth but effect is weaker than EE when both included.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_ue",
+        "baseline_ee_ue_ue"
+      ],
+      "baseline_outcome_vars": [
+        "xdlogern_nom"
+      ],
+      "baseline_treatment_vars": [
+        "xue"
+      ],
+      "notes": "UE alone (baseline_ue) and UE coeff from horse race (baseline_ee_ue_ue)."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Unemployment rate predicts nominal wage growth when entered alone but adds little when EE and UE controlled.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_ur"
+      ],
+      "baseline_outcome_vars": [
+        "xdlogern_nom"
+      ],
+      "baseline_treatment_vars": [
+        "xur"
+      ],
+      "notes": "UR alone with market FE. Secondary comparison variable."
+    }
+  ],
+  "global_notes": "Paper tests relative predictive power of EE vs UE vs UR for wage growth using SIPP 1996-2013 market-time panels. G1 is primary claim. Several robustness specs identical to baseline_ee_ue (min_obs_10, min_obs_20, weighted, cluster/none). Demographic subgroup specs classified as core_sample; interaction heterogeneity specs as noncore_heterogeneity."
+}

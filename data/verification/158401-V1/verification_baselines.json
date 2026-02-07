@@ -1,0 +1,84 @@
+{
+  "paper_id": "158401-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/158401-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Providing market access for quality maize increases farmer yield (tons per hectare) in Uganda.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_yield"
+      ],
+      "baseline_outcome_vars": [
+        "yield_ha_ton"
+      ],
+      "baseline_treatment_vars": [
+        "buy_treatment"
+      ],
+      "notes": "Primary ANCOVA specification with season FE and baseline yield control, clustered at village level."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Providing market access for quality maize increases the price received by farmers (UGX per kg).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_price_ugx"
+      ],
+      "baseline_outcome_vars": [
+        "price_ugx"
+      ],
+      "baseline_treatment_vars": [
+        "buy_treatment"
+      ],
+      "notes": "Price outcome baseline. Distinct claim about the quality channel mechanism."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Providing market access for quality maize increases total harvest (tons).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_harvest_ton"
+      ],
+      "baseline_outcome_vars": [
+        "harvest_ton"
+      ],
+      "baseline_treatment_vars": [
+        "buy_treatment"
+      ],
+      "notes": "Harvest outcome baseline. Not significant in baseline (p=0.50)."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Providing market access for quality maize increases harvest value (UGX).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_harvest_value_ugx"
+      ],
+      "baseline_outcome_vars": [
+        "harvest_value_ugx"
+      ],
+      "baseline_treatment_vars": [
+        "buy_treatment"
+      ],
+      "notes": "Harvest value outcome baseline. Not significant (p=0.25)."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Providing market access for quality maize affects the share of harvest sold.",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "baseline_share_sold"
+      ],
+      "baseline_outcome_vars": [
+        "share_sold"
+      ],
+      "baseline_treatment_vars": [
+        "buy_treatment"
+      ],
+      "notes": "Share sold outcome baseline. Not significant (p=0.97)."
+    }
+  ],
+  "global_notes": "Five distinct baseline outcomes. Primary claim is yield (G1). Most robustness specs target yield. Several robustness/measurement specs duplicate baselines. Heterogeneity specs include interaction terms. First-differenced spec uses transformed outcome."
+}

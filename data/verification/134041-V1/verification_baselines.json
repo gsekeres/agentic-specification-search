@@ -1,0 +1,43 @@
+{
+  "paper_id": "134041-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/134041-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Information about the gender wage gap (T1) increases demand for labor market policy (composite z-scored index).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "z_lmpolicy_index"
+      ],
+      "baseline_treatment_vars": [
+        "T1"
+      ],
+      "notes": "The z_lmpolicy_index is the primary outcome: a z-scored average of five individual policy demand items. The baseline row 1 with outcome z_lmpolicy_index is the canonical result. Coef=0.062, p=0.014, n=3031. Note that spec_id=baseline is shared across all 6 baseline rows; this group uses only the row where outcome_var=z_lmpolicy_index."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Information about the gender wage gap (T1) increases support for specific labor market policies (individual policy items).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "quotaanchor",
+        "AAanchor",
+        "legislationanchor",
+        "transparencyanchor",
+        "childcare"
+      ],
+      "baseline_treatment_vars": [
+        "T1"
+      ],
+      "notes": "Five individual policy items are the components of z_lmpolicy_index. All share spec_id=baseline distinguished by outcome_var. AAanchor (p=0.001) and legislationanchor (p=0.001) are significant; quotaanchor (p=0.118), transparencyanchor (p=0.488), and childcare (p=0.939) are not. These are secondary baselines."
+    }
+  ],
+  "global_notes": "All 6 baseline rows share spec_id=baseline (non-unique); they are distinguished by outcome_var. Rows 58-62 (robust/outcome/*) exactly duplicate the G2 baselines with identical coefficients and p-values. Rows 63-66 (z_mani_index, large, problem, govmore) test the manipulation check / first-stage effect, which is a different claim than policy demand. Row 70 (cluster by wave) has an implausibly small p-value (1.87e-08) from clustering on only 2 wave groups. Row 83 (placebo/republican) has coefficient ~2.65e-16 likely due to multicollinearity with democrat+indep+otherpol."
+}

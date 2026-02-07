@@ -1,0 +1,81 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+116540-V2,baseline,methods/cross_sectional_ols.md#baseline,own_home_u42,treat,G1,baseline,1,1,core_controls,Baseline specification with full controls,1.0
+116540-V2,robust/build/bivariate,robustness/control_progression.md#bivariate,own_home_u42,treat,G1,baseline,0,1,core_controls,No controls; same outcome and treatment,0.95
+116540-V2,robust/build/demographics,robustness/control_progression.md#demographics,own_home_u42,treat,G1,baseline,0,1,core_controls,Demographic controls only; same estimand,0.95
+116540-V2,robust/build/socioeconomic,robustness/control_progression.md#socioeconomic,own_home_u42,treat,G1,baseline,0,1,core_controls,Demographic + socioeconomic controls; same estimand,0.95
+116540-V2,robust/build/full,robustness/control_progression.md#full,own_home_u42,treat,G1,baseline,0,1,core_controls,Full control set including scales; same estimand,0.95
+116540-V2,robust/loo/drop_female,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop female control,0.95
+116540-V2,robust/loo/drop_race_cau,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop race_cau control,0.95
+116540-V2,robust/loo/drop_married,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop married control,0.95
+116540-V2,robust/loo/drop_age_35_plus,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop age_35_plus control,0.95
+116540-V2,robust/loo/drop_hh_adult,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop hh_adult control,0.95
+116540-V2,robust/loo/drop_has_children,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop has_children control,0.95
+116540-V2,robust/loo/drop_high_income,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop high_income control,0.95
+116540-V2,robust/loo/drop_own_bank,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop own_bank control,0.95
+116540-V2,robust/loo/drop_own_car,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop own_car control,0.95
+116540-V2,robust/loo/drop_ins_heal,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop ins_heal control,0.95
+116540-V2,robust/loo/drop_unsubsidized,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop unsubsidized control,0.95
+116540-V2,robust/loo/drop_late_cohort,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop late_cohort control,0.95
+116540-V2,robust/loo/drop_tri_ed_1,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop tri_ed_1 control,0.95
+116540-V2,robust/loo/drop_tri_ed_2,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop tri_ed_2 control,0.95
+116540-V2,robust/loo/drop_own_bus,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop own_bus control,0.95
+116540-V2,robust/loo/drop_own_prop,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop own_prop control,0.95
+116540-V2,robust/loo/drop_own_ira,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop own_ira control,0.95
+116540-V2,robust/loo/drop_src_welf,robustness/leave_one_out.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop src_welf control,0.95
+116540-V2,robust/sample/unsubsidized_only,robustness/sample_restrictions.md,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: unsubsidized renters only,0.9
+116540-V2,robust/sample/female_only,robustness/sample_restrictions.md#female_only,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: female respondents only,0.9
+116540-V2,robust/sample/male_only,robustness/sample_restrictions.md#male_only,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: male respondents only,0.9
+116540-V2,robust/sample/married_only,robustness/sample_restrictions.md#married_only,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: married respondents only,0.9
+116540-V2,robust/sample/unmarried_only,robustness/sample_restrictions.md#unmarried_only,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: unmarried respondents only,0.9
+116540-V2,robust/sample/young,robustness/sample_restrictions.md#young,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: respondents under 35,0.9
+116540-V2,robust/sample/old,robustness/sample_restrictions.md#old,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: respondents 35 and older,0.9
+116540-V2,robust/sample/high_income,robustness/sample_restrictions.md#high_income,own_home_u42,treat,G1,baseline,0,0,noncore_heterogeneity,Subsample by income tests heterogeneity not main ITT,0.7
+116540-V2,robust/sample/low_income,robustness/sample_restrictions.md#low_income,own_home_u42,treat,G1,baseline,0,0,noncore_heterogeneity,Subsample by income tests heterogeneity not main ITT,0.7
+116540-V2,robust/sample/nonwhite_only,robustness/sample_restrictions.md#nonwhite_only,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: nonwhite only; same estimand on subsample,0.85
+116540-V2,robust/sample/with_children,robustness/sample_restrictions.md#with_children,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: respondents with children,0.9
+116540-V2,robust/sample/without_children,robustness/sample_restrictions.md#without_children,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: respondents without children,0.9
+116540-V2,robust/sample/with_bank,robustness/sample_restrictions.md#with_bank,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: respondents with bank account,0.9
+116540-V2,robust/sample/less_than_hs,robustness/sample_restrictions.md#less_than_hs,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: less than HS education (N=41),0.85
+116540-V2,robust/sample/hs_or_more,robustness/sample_restrictions.md#hs_or_more,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: HS or more education,0.9
+116540-V2,robust/method/lpm_no_controls,methods/cross_sectional_ols.md#bivariate,own_home_u42,treat,G1,baseline,0,0,invalid,Duplicate of bivariate spec (row 2); identical coefficient,0.95
+116540-V2,robust/het/interaction_high_income,robustness/heterogeneity.md#interactions,own_home_u42,treat x high_income,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_female,robustness/heterogeneity.md#interactions,own_home_u42,treat x female,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_race_cau,robustness/heterogeneity.md#interactions,own_home_u42,treat x race_cau,G1,baseline,0,0,invalid,Coefficient=0 and empty p-value; race_cau has no variation,0.95
+116540-V2,robust/het/interaction_married,robustness/heterogeneity.md#interactions,own_home_u42,treat x married,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_tri_ed_1,robustness/heterogeneity.md#interactions,own_home_u42,treat x tri_ed_1,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_has_children,robustness/heterogeneity.md#interactions,own_home_u42,treat x has_children,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_late_cohort,robustness/heterogeneity.md#interactions,own_home_u42,treat x late_cohort,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_own_bank,robustness/heterogeneity.md#interactions,own_home_u42,treat x own_bank,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_src_welf,robustness/heterogeneity.md#interactions,own_home_u42,treat x src_welf,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_own_car,robustness/heterogeneity.md#interactions,own_home_u42,treat x own_car,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/het/interaction_ins_heal,robustness/heterogeneity.md#interactions,own_home_u42,treat x ins_heal,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests differential effect not main ITT,0.9
+116540-V2,robust/se/hc0,robustness/clustering_variations.md#hc,own_home_u42,treat,G1,baseline,0,1,core_inference,HC0 standard errors; same coefficient different inference,0.95
+116540-V2,robust/se/hc2,robustness/clustering_variations.md#hc,own_home_u42,treat,G1,baseline,0,1,core_inference,HC2 standard errors; same coefficient different inference,0.95
+116540-V2,robust/se/hc3,robustness/clustering_variations.md#hc,own_home_u42,treat,G1,baseline,0,1,core_inference,HC3 standard errors; same coefficient different inference,0.95
+116540-V2,robust/cluster/cohort,robustness/clustering_variations.md#cohort,own_home_u42,treat,G1,baseline,0,1,core_inference,Clustered by cohort; same coefficient different inference,0.95
+116540-V2,robust/form/age_quadratic,robustness/functional_form.md#quadratic,own_home_u42,treat,G1,baseline,0,1,core_funcform,Age as quadratic rather than binary; same estimand,0.9
+116540-V2,robust/form/log_income,robustness/functional_form.md#log,own_home_u42,treat,G1,baseline,0,1,core_funcform,Log income instead of binary; same estimand,0.9
+116540-V2,robust/form/continuous_income,robustness/functional_form.md#continuous,own_home_u42,treat,G1,baseline,0,1,core_funcform,Continuous income instead of binary; same estimand,0.9
+116540-V2,robust/form/income_quartiles,robustness/functional_form.md#categorical,own_home_u42,treat,G1,baseline,0,1,core_funcform,Income quartiles instead of binary; same estimand,0.9
+116540-V2,robust/placebo/own_bus,robustness/placebo_tests.md,own_bus,treat,G1,baseline,0,0,noncore_placebo,Placebo outcome: business ownership not homeownership,0.95
+116540-V2,robust/placebo/own_car,robustness/placebo_tests.md,own_car,treat,G1,baseline,0,0,noncore_placebo,Placebo outcome: car ownership not homeownership,0.95
+116540-V2,robust/placebo/own_ira,robustness/placebo_tests.md,own_ira,treat,G1,baseline,0,0,noncore_placebo,Placebo outcome: IRA ownership not homeownership,0.95
+116540-V2,robust/placebo/sat_heal_good,robustness/placebo_tests.md,sat_heal_good,treat,G1,baseline,0,0,noncore_placebo,Placebo outcome: health satisfaction not homeownership,0.95
+116540-V2,robust/placebo/sat_fin_good,robustness/placebo_tests.md,sat_fin_good,treat,G1,baseline,0,0,noncore_placebo,Placebo outcome: financial satisfaction not homeownership,0.95
+116540-V2,robust/sample/college_grad,robustness/sample_restrictions.md#college_grad,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: college graduates only (N=74),0.85
+116540-V2,robust/sample/some_college,robustness/sample_restrictions.md#some_college,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: some college only,0.9
+116540-V2,robust/sample/early_cohort,robustness/sample_restrictions.md#early_cohort,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: early survey cohorts,0.9
+116540-V2,robust/sample/late_cohort,robustness/sample_restrictions.md#late_cohort,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: late survey cohorts,0.9
+116540-V2,robust/sample/welfare_recipient,robustness/sample_restrictions.md#welfare,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: welfare recipients only,0.9
+116540-V2,robust/sample/non_welfare,robustness/sample_restrictions.md#non_welfare,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: non-welfare recipients only,0.9
+116540-V2,robust/sample/insured,robustness/sample_restrictions.md#insured,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: health insured only,0.9
+116540-V2,robust/sample/uninsured,robustness/sample_restrictions.md#uninsured,own_home_u42,treat,G1,baseline,0,1,core_sample,Subsample: uninsured only,0.9
+116540-V2,robust/single/female,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: female only,0.95
+116540-V2,robust/single/race_cau,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: race_cau only,0.95
+116540-V2,robust/single/married,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: married only,0.95
+116540-V2,robust/single/age_35_plus,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: age_35_plus only,0.95
+116540-V2,robust/single/high_income,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: high_income only,0.95
+116540-V2,robust/single/own_bank,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: own_bank only,0.95
+116540-V2,robust/single/has_children,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: has_children only,0.95
+116540-V2,robust/single/late_cohort,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: late_cohort only,0.95
+116540-V2,robust/single/ins_heal,robustness/single_covariate.md,own_home_u42,treat,G1,baseline,0,1,core_controls,Single control: ins_heal only,0.95

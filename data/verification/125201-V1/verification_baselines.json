@@ -1,0 +1,24 @@
+{
+  "paper_id": "125201-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/125201-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Hot days (days with max temperature >= 32C) increase the overall mortality rate in Mexican municipalities.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "death_rate_scaled"
+      ],
+      "baseline_treatment_vars": [
+        "hot_days"
+      ],
+      "notes": "Single baseline: Panel FE with muni_id + year_month FE, cold_days and precip controls, clustered at muni_id. Coef 0.0058, p<0.001."
+    }
+  ],
+  "global_notes": "64 specs total. 14 heterogeneity specs, 2 alt-outcome specs, 3 alt-treatment specs, and 2 placebo tests classified as non-core (21 total non-core). 43 core specs test the baseline claim through FE, controls, sample, inference, functional form, and method variations. The all_temp_bins spec changes treatment_var to scale_32_p_m but conceptually measures the same heat effect."
+}

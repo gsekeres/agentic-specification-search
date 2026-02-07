@@ -1,0 +1,24 @@
+{
+  "paper_id": "149882-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/149882-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "The Breakthrough school-based gender-sensitization program improves adolescents gender-egalitarian attitudes (standardized gender index) at Endline 1.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "E_Sgender_index2_std"
+      ],
+      "baseline_treatment_vars": [
+        "B_treat"
+      ],
+      "notes": "Single baseline: cross-sectional OLS with baseline gender index, grade FE, district FE, school clustering. Coefficient 0.014 SD, p=0.42. Index simplified vs paper."
+    }
+  ],
+  "global_notes": "54 rows total. Winsorized/trimmed specs likely have coding errors (scale change). Some control progression specs are duplicates. Heterogeneity specs report main effects not interactions."
+}

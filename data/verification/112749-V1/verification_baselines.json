@@ -1,0 +1,24 @@
+{
+  "paper_id": "112749-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112749-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Flooded counties experienced larger declines in Black population share (log) after the 1927 Mississippi flood, using county and state-year FE with continuous flood intensity treatment.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "lnfrac_black"
+      ],
+      "baseline_treatment_vars": [
+        "flood_intensity"
+      ],
+      "notes": "Baseline uses lnfrac_black outcome, flood_intensity treatment, County FE + State-Year FE, clustered at fips. baseline_lagged_dv has null treatment coef. Baseline coef is 0.026, p=0.63."
+    }
+  ],
+  "global_notes": "Issues: (1) baseline coef small and insignificant. (2) 8 specs have null treatment coefs. (3) Cross-section specs estimate different model. (4) Some FE specs omit critical identification. (5) frac_black outcome and levels funcform are duplicates."
+}

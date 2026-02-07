@@ -1,0 +1,58 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+112749-V1,baseline,methods/panel_fixed_effects.md#baseline,lnfrac_black,flood_intensity,G1,baseline,1,1,core_method,Baseline specification with County+State-Year FE,1.0
+112749-V1,baseline_lagged_dv,methods/panel_fixed_effects.md#baseline,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/outcome/lnpopulation_black,robustness/measurement.md#alternative-outcomes,lnpopulation_black,flood_intensity,,,0,0,noncore_alt_outcome,Different outcome: log Black population not share,0.9
+112749-V1,robust/outcome/lnpopulation,robustness/measurement.md#alternative-outcomes,lnpopulation,flood_intensity,,,0,0,noncore_alt_outcome,Different outcome: log total population not Black share,0.95
+112749-V1,robust/outcome/frac_black,robustness/measurement.md#alternative-outcomes,frac_black,flood_intensity,G1,baseline,0,1,core_funcform,Same concept (Black share) in levels vs log,0.85
+112749-V1,panel/fe/unit,methods/panel_fixed_effects.md#fixed-effects-structure,lnfrac_black,flood_intensity,G1,baseline,0,0,noncore_diagnostic,County FE only omits state-year FE needed for ID,0.8
+112749-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,lnfrac_black,flood_intensity,G1,baseline,0,0,noncore_diagnostic,Year FE only omits county FE; conflates cross-county diffs,0.85
+112749-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,lnfrac_black,flood_intensity,G1,baseline,0,0,noncore_diagnostic,No FE pooled OLS; not causal estimate,0.9
+112749-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,lnfrac_black,flood_intensity,G1,baseline,0,1,core_fe,County+Year FE variant of baseline; valid robustness,0.85
+112749-V1,panel/fe/state_year,methods/panel_fixed_effects.md#fixed-effects-structure,lnfrac_black,flood_intensity,G1,baseline,0,0,noncore_diagnostic,State+Year FE; lacks county FE so not within-county,0.8
+112749-V1,robust/control/lagged_dv_only,robustness/control_progression.md#incremental,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/control/add_lag2,robustness/control_progression.md#incremental,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/control/add_lag3,robustness/control_progression.md#incremental,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/control/add_lag4,robustness/control_progression.md#incremental,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/control/drop_lag2,robustness/leave_one_out.md,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/control/drop_lag3,robustness/leave_one_out.md,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/control/drop_lag4,robustness/leave_one_out.md,lnfrac_black,flood_intensity,G1,baseline,0,0,invalid,Treatment coefficient is null; extraction failure,1.0
+112749-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md#robust,lnfrac_black,flood_intensity,G1,baseline,0,1,core_inference,Same model with HC1 robust SEs instead of county cluster,0.95
+112749-V1,robust/cluster/state,robustness/clustering_variations.md#single-level,lnfrac_black,flood_intensity,G1,baseline,0,1,core_inference,Same model with state-level clustering,0.95
+112749-V1,robust/sample/drop_year_1930,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops 1930 year from panel; valid sample restriction,0.9
+112749-V1,robust/sample/drop_year_1940,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops 1940 year from panel; valid sample restriction,0.9
+112749-V1,robust/sample/drop_year_1950,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops 1950 year from panel; valid sample restriction,0.9
+112749-V1,robust/sample/drop_year_1960,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops 1960 year from panel; valid sample restriction,0.9
+112749-V1,robust/sample/drop_year_1970,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops 1970 year from panel; valid sample restriction,0.9
+112749-V1,robust/sample/drop_state_1,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/drop_state_5,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/drop_state_12,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/drop_state_13,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/drop_state_20,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/early_period,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Restricts to 1930-1960 early period subsample,0.85
+112749-V1,robust/sample/late_period,robustness/sample_restrictions.md#time,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Restricts to post-1950 late period subsample,0.85
+112749-V1,robust/sample/flooded_only,robustness/sample_restrictions.md#treatment,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Restricts to flooded counties only; intensive margin,0.8
+112749-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md#outliers,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Winsorizes outcome at 1%; outlier robustness,0.9
+112749-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md#outliers,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Winsorizes outcome at 5%; outlier robustness,0.9
+112749-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md#outliers,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Winsorizes outcome at 10%; aggressive outlier trim,0.85
+112749-V1,robust/treatment/binary,robustness/measurement.md#treatment-definition,lnfrac_black,flood_binary,,,0,0,noncore_alt_treatment,Binary flood indicator changes causal object from intensity,0.8
+112749-V1,robust/treatment/intensity_squared,robustness/functional_form.md#polynomial,lnfrac_black,flood_intensity + sq,G1,baseline,0,1,core_funcform,Adds squared treatment; tests nonlinearity of same claim,0.8
+112749-V1,robust/funcform/levels,robustness/functional_form.md#levels,frac_black,flood_intensity,G1,baseline,0,0,unclear,Identical to robust/outcome/frac_black; likely duplicate,0.7
+112749-V1,robust/funcform/ihs,robustness/functional_form.md#ihs,ihs_frac_black,flood_intensity,G1,baseline,0,1,core_funcform,IHS transform of Black share; preserves interpretation,0.85
+112749-V1,robust/heterogeneity/plantation,robustness/heterogeneity.md#subgroup,lnfrac_black,flood_intensity * plantation,,,0,0,noncore_heterogeneity,Interaction with plantation dummy; heterogeneity analysis,0.9
+112749-V1,robust/heterogeneity/high_intensity,robustness/heterogeneity.md#subgroup,lnfrac_black,flood_intensity * high,,,0,0,noncore_heterogeneity,Interaction with high intensity; heterogeneity analysis,0.9
+112749-V1,robust/heterogeneity/high_black_share,robustness/heterogeneity.md#subgroup,lnfrac_black,flood_intensity,,,0,0,noncore_heterogeneity,Subsample of high Black share counties; heterogeneity,0.85
+112749-V1,robust/heterogeneity/low_black_share,robustness/heterogeneity.md#subgroup,lnfrac_black,flood_intensity,,,0,0,noncore_heterogeneity,Subsample of low Black share counties; heterogeneity,0.85
+112749-V1,robust/heterogeneity/mississippi,robustness/heterogeneity.md#subgroup,lnfrac_black,flood_intensity * MS,,,0,0,noncore_heterogeneity,Interaction with Mississippi state; heterogeneity,0.9
+112749-V1,robust/placebo/random_permutation,robustness/placebo_tests.md#randomization,lnfrac_black,flood_intensity_random,,,0,0,noncore_placebo,Random permutation of treatment; placebo test,1.0
+112749-V1,robust/weights/population,robustness/measurement.md#weights,lnfrac_black,flood_intensity,G1,baseline,0,1,core_method,Population-weighted version of baseline regression,0.85
+112749-V1,robust/weights/black_population,robustness/measurement.md#weights,lnfrac_black,flood_intensity,G1,baseline,0,1,core_method,Black-pop-weighted version of baseline regression,0.85
+112749-V1,panel/method/long_differences,methods/panel_fixed_effects.md#estimation-method,long_diff_lnfrac_black,flood_intensity,G1,baseline,0,1,core_method,Long differences 1930-1970; alternative DiD method,0.8
+112749-V1,custom/cross_section_1970,methods/cross_sectional_ols.md,lnfrac_black,flood_intensity,,,0,0,noncore_diagnostic,Cross-section at 1970; tests levels not changes,0.9
+112749-V1,custom/cross_section_1930,methods/cross_sectional_ols.md,lnfrac_black,flood_intensity,,,0,0,noncore_diagnostic,Cross-section at 1930; tests levels not changes,0.9
+112749-V1,custom/cross_section_1950,methods/cross_sectional_ols.md,lnfrac_black,flood_intensity,,,0,0,noncore_diagnostic,Cross-section at 1950; tests levels not changes,0.9
+112749-V1,custom/cross_section_1960,methods/cross_sectional_ols.md,lnfrac_black,flood_intensity,,,0,0,noncore_diagnostic,Cross-section at 1960; tests levels not changes,0.9
+112749-V1,robust/sample/drop_state_22,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops Louisiana; key geographic robustness check,0.9
+112749-V1,robust/sample/drop_state_28,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops Mississippi; key geographic robustness check,0.9
+112749-V1,robust/sample/drop_state_37,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/drop_state_45,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9
+112749-V1,robust/sample/drop_state_47,robustness/sample_restrictions.md#geography,lnfrac_black,flood_intensity,G1,baseline,0,1,core_sample,Drops one state; leave-one-out geographic robustness,0.9

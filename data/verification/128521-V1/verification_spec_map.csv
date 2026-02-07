@@ -1,0 +1,59 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+128521-V1,baseline,methods/difference_in_differences.md#baseline,agg_mr_tot,cotton_dist_post,G1,baseline,1,1,core_controls,Baseline: no controls TWFE with district+period FE,1.0
+128521-V1,baseline_controls,methods/difference_in_differences.md#baseline,agg_mr_tot,cotton_dist_post,G1,baseline_controls,1,1,core_controls,Baseline with full demographic and region controls,1.0
+128521-V1,baseline_nearby,methods/difference_in_differences.md#baseline,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,1,1,core_controls,Baseline with controls plus nearby district indicators,1.0
+128521-V1,baseline_continuous,methods/difference_in_differences.md#baseline,agg_mr_tot,cotton_eshr_post,G1,baseline_continuous,1,1,core_method,Baseline with continuous treatment (cotton employment share),1.0
+128521-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,agg_mr_tot,cotton_dist_post,G1,baseline,0,0,noncore_diagnostic,"No FE: omits unit FE, positive coef, fundamentally different estimand",0.95
+128521-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,agg_mr_tot,cotton_dist_post,G1,baseline,0,1,core_fe,"District FE only (no period FE), preserves within-unit comparison",0.8
+128521-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,agg_mr_tot,cotton_dist_post,G1,baseline,0,0,noncore_diagnostic,"Period FE only: omits unit FE, positive coef, different estimand",0.95
+128521-V1,did/fe/region_x_time,methods/difference_in_differences.md#fixed-effects,agg_mr_tot,cotton_dist_post,G1,baseline,0,1,core_fe,Adds region x period FE to baseline district+period FE,0.9
+128521-V1,did/fe/county_x_time,methods/difference_in_differences.md#fixed-effects,agg_mr_tot,cotton_dist_post,G1,baseline,0,1,core_fe,Adds county x period FE to baseline district FE,0.9
+128521-V1,did/controls/none,methods/difference_in_differences.md#control-sets,agg_mr_tot,cotton_dist_post,G1,baseline,0,1,core_controls,Same as baseline (no controls); duplicate spec,0.95
+128521-V1,did/controls/minimal,methods/difference_in_differences.md#control-sets,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Minimal controls: log pop density only,0.95
+128521-V1,robust/control/drop_ln_popdensity,robustness/leave_one_out.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Leave-one-out: drop log population density from controls,0.95
+128521-V1,robust/control/drop_linkable_shr_tot,robustness/leave_one_out.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Leave-one-out: drop linkable share from controls,0.95
+128521-V1,robust/control/drop_under_15_shr,robustness/leave_one_out.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Leave-one-out: drop under-15 share from controls,0.95
+128521-V1,robust/control/drop_elderly_shr,robustness/leave_one_out.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Leave-one-out: drop elderly share from controls,0.95
+128521-V1,robust/control/add_ln_popdensity,robustness/control_progression.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Control progression: add log pop density only,0.95
+128521-V1,robust/control/add_linkable_shr_tot,robustness/control_progression.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Control progression: add linkable share,0.95
+128521-V1,robust/control/add_under_15_shr,robustness/control_progression.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Control progression: add under-15 share,0.95
+128521-V1,robust/control/add_elderly_shr,robustness/control_progression.md,agg_mr_tot,cotton_dist_post,G1,baseline_controls,0,1,core_controls,Control progression: add elderly share,0.95
+128521-V1,robust/cluster/none,robustness/clustering_variations.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_inference,Robust SE (no clustering) instead of district clustering,0.95
+128521-V1,robust/cluster/county,robustness/clustering_variations.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_inference,County-level clustering instead of district clustering,0.95
+128521-V1,robust/cluster/region,robustness/clustering_variations.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_inference,Region-level clustering instead of district clustering,0.95
+128521-V1,robust/sample/drop_nearby,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Drop nearby districts; cotton + far districts only,0.9
+128521-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Trim 1% tails of mortality distribution,0.9
+128521-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Winsorize 5% tails of mortality distribution,0.9
+128521-V1,robust/sample/drop_region_wales,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Drop Wales region from sample,0.9
+128521-V1,robust/sample/drop_region_midlands,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Drop Midlands region from sample,0.9
+128521-V1,robust/sample/drop_region_north,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Drop North region from sample,0.9
+128521-V1,robust/sample/drop_region_south,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Drop South region from sample,0.9
+128521-V1,robust/sample/drop_region_london,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Drop London region from sample,0.9
+128521-V1,robust/outcome/agg_mr_under15,robustness/measurement.md,agg_mr_under15,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,"Different outcome: under-15 mortality rate, not total",0.85
+128521-V1,robust/outcome/agg_mr_15_24,robustness/measurement.md,agg_mr_15_24,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,Different outcome: 15-24 age group mortality rate,0.85
+128521-V1,robust/outcome/agg_mr_25_34,robustness/measurement.md,agg_mr_25_34,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,Different outcome: 25-34 age group mortality rate,0.85
+128521-V1,robust/outcome/agg_mr_35_44,robustness/measurement.md,agg_mr_35_44,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,Different outcome: 35-44 age group mortality rate,0.85
+128521-V1,robust/outcome/agg_mr_45_54,robustness/measurement.md,agg_mr_45_54,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,Different outcome: 45-54 age group mortality rate,0.85
+128521-V1,robust/outcome/agg_mr_55_64,robustness/measurement.md,agg_mr_55_64,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,Different outcome: 55-64 age group mortality rate,0.85
+128521-V1,robust/outcome/agg_mr_over64,robustness/measurement.md,agg_mr_over64,cotton_dist_post,G1,baseline_nearby,0,0,noncore_alt_outcome,Different outcome: over-64 age group mortality rate,0.85
+128521-V1,robust/treatment/continuous,methods/difference_in_differences.md#treatment-definition,agg_mr_tot,cotton_eshr_post,G1,baseline_continuous,0,1,core_method,Continuous treatment (cotton employment share); same as baseline_continuous,0.95
+128521-V1,robust/treatment/nearby_post_25,robustness/model_specification.md,agg_mr_tot,nearby_post_25,G1,baseline_nearby,0,0,noncore_alt_treatment,Treatment is nearby_post_25 not cotton_dist_post; different causal object,0.9
+128521-V1,robust/treatment/nearby_post_50,robustness/model_specification.md,agg_mr_tot,nearby_post_50,G1,baseline_nearby,0,0,noncore_alt_treatment,Treatment is nearby_post_50 not cotton_dist_post; different causal object,0.9
+128521-V1,robust/treatment/nearby_post_75,robustness/model_specification.md,agg_mr_tot,nearby_post_75,G1,baseline_nearby,0,0,noncore_alt_treatment,Treatment is nearby_post_75 not cotton_dist_post; different causal object,0.9
+128521-V1,robust/funcform/ihs_outcome,robustness/model_specification.md,log_mr,cotton_dist_post,G1,baseline_nearby,0,1,core_funcform,IHS/log transformation of outcome; preserves treatment and estimand,0.9
+128521-V1,robust/funcform/density_squared,robustness/model_specification.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_controls,Adds density squared to controls; same outcome and treatment,0.9
+128521-V1,robust/weights/unweighted,robustness/model_specification.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_method,Unweighted regression (baseline is population-weighted),0.95
+128521-V1,robust/weights/log_population,robustness/model_specification.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_method,Log population weights instead of population weights,0.95
+128521-V1,robust/heterogeneity/high_density,robustness/heterogeneity.md,agg_mr_tot,treat_x_highdensity,G1,baseline_nearby,0,0,noncore_heterogeneity,Interaction of treatment with high density; different estimand,0.9
+128521-V1,robust/heterogeneity/high_elderly,robustness/heterogeneity.md,agg_mr_tot,treat_x_elderly,G1,baseline_nearby,0,0,noncore_heterogeneity,Interaction of treatment with elderly share; different estimand,0.9
+128521-V1,robust/heterogeneity/region_midlands,robustness/heterogeneity.md,agg_mr_tot,treat_x_region_midlands,G1,baseline_nearby,0,0,noncore_heterogeneity,Interaction of treatment with Midlands region; different estimand,0.9
+128521-V1,robust/heterogeneity/region_north,robustness/heterogeneity.md,agg_mr_tot,treat_x_region_north,G1,baseline_nearby,0,0,noncore_heterogeneity,Interaction of treatment with North region; different estimand,0.9
+128521-V1,robust/heterogeneity/high_cotton_share,robustness/heterogeneity.md,agg_mr_tot,treat_x_high_cotton,G1,baseline_nearby,0,0,noncore_heterogeneity,Interaction of treatment with high cotton share; different estimand,0.9
+128521-V1,robust/placebo/nearby_effect,robustness/placebo_tests.md,agg_mr_tot,nearby_post_25,,,0,0,noncore_placebo,Placebo: nearby effect on non-cotton districts only,0.95
+128521-V1,robust/placebo/pop_growth,robustness/placebo_tests.md,pop_growth,cotton_dist,,,0,0,noncore_placebo,"Placebo: population growth outcome, cross-section, not DiD",0.95
+128521-V1,robust/weights/pop_cens_under15,robustness/model_specification.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_method,Weighted by under-15 census population,0.9
+128521-V1,robust/weights/pop_cens_15_54,robustness/model_specification.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_method,Weighted by 15-54 census population,0.9
+128521-V1,robust/weights/pop_cens_over54,robustness/model_specification.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_method,Weighted by over-54 census population,0.9
+128521-V1,robust/sample/middle_pop_quartiles,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Middle 50% districts by population,0.85
+128521-V1,robust/sample/large_districts,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Large districts only (above median population),0.85
+128521-V1,robust/sample/small_districts,robustness/sample_restrictions.md,agg_mr_tot,cotton_dist_post,G1,baseline_nearby,0,1,core_sample,Small districts only (below median population),0.85

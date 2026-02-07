@@ -1,0 +1,63 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+125821-V1,baseline,methods/regression_discontinuity.md#baseline,tot_exp_mem,treatment,G1,,1,1,core_method,Baseline specification for main RDD claim,1.0
+125821-V1,rd/bandwidth/bw5,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,"Bandwidth=5; same outcome/treatment, narrower window",0.95
+125821-V1,rd/bandwidth/bw10,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,"Exact duplicate of baseline (bw=10), identical results",0.95
+125821-V1,rd/bandwidth/bw15,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=15; wider window around cutoff,0.95
+125821-V1,rd/bandwidth/bw20,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=20; wider window around cutoff,0.95
+125821-V1,rd/bandwidth/bw7,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=7; narrower window around cutoff,0.95
+125821-V1,rd/bandwidth/bw12,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=12; slightly wider window around cutoff,0.95
+125821-V1,rd/bandwidth/full,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Full sample bandwidth; same estimand different precision,0.95
+125821-V1,rd/poly/local_quadratic,methods/regression_discontinuity.md#polynomial-order,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Local quadratic polynomial; same outcome/treatment/bandwidth,0.95
+125821-V1,rd/poly/global_linear,methods/regression_discontinuity.md#polynomial-order,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Duplicate of rd/bandwidth/full; global linear = full sample,0.9
+125821-V1,rd/poly/global_quadratic,methods/regression_discontinuity.md#polynomial-order,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Global quadratic polynomial; same estimand different functional form,0.95
+125821-V1,rd/kernel/triangular,methods/regression_discontinuity.md#kernel-function,tot_exp_mem,treatment,G1,baseline,0,0,invalid,Exact duplicate of baseline; kernel weighting not implemented,0.95
+125821-V1,rd/kernel/uniform,methods/regression_discontinuity.md#kernel-function,tot_exp_mem,treatment,G1,baseline,0,0,invalid,Exact duplicate of baseline; kernel weighting not implemented,0.95
+125821-V1,rd/kernel/epanechnikov,methods/regression_discontinuity.md#kernel-function,tot_exp_mem,treatment,G1,baseline,0,0,invalid,Exact duplicate of baseline; kernel weighting not implemented,0.95
+125821-V1,rd/controls/none,methods/regression_discontinuity.md#control-sets,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,No controls; same outcome/treatment/bandwidth,0.95
+125821-V1,rd/controls/minimal,methods/regression_discontinuity.md#control-sets,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Minimal controls (membership + econ_disadv_percent only),0.95
+125821-V1,rd/controls/baseline,methods/regression_discontinuity.md#control-sets,tot_exp_mem,treatment,G1,baseline,0,0,invalid,Exact duplicate of baseline; labeled as control variant but identical,0.95
+125821-V1,rd/controls/full,methods/regression_discontinuity.md#control-sets,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Full controls adding turnover_LA and AverageLocalExperience,0.95
+125821-V1,robust/control/drop_membership,robustness/leave_one_out.md,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Drop membership control from full set,0.95
+125821-V1,robust/control/drop_econ_disadv_percent,robustness/leave_one_out.md,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Drop econ_disadv_percent control from full set,0.95
+125821-V1,robust/control/drop_urban_centric_locale,robustness/leave_one_out.md,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Drop urban_centric_locale control from full set,0.95
+125821-V1,robust/control/drop_above_median,robustness/leave_one_out.md,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Drop above_median control from full set,0.95
+125821-V1,robust/control/drop_turnover_LA,robustness/leave_one_out.md,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Drop turnover_LA control from full set,0.95
+125821-V1,robust/control/drop_AverageLocalExperience,robustness/leave_one_out.md,tot_exp_mem,treatment,G1,baseline,0,1,core_controls,Drop AverageLocalExperience control from full set,0.95
+125821-V1,robust/outcome/tot_exp_inst_mem,robustness/measurement.md,tot_exp_inst_mem,treatment,G1,baseline,0,0,noncore_alt_outcome,"Instructional expenditures is a sub-component, different outcome concept",0.85
+125821-V1,robust/outcome/compensation,robustness/measurement.md,compensation,treatment,,,0,0,noncore_alt_outcome,Teacher compensation is a different outcome concept from total expenditures,0.9
+125821-V1,robust/outcome/dropout_rate,robustness/measurement.md,dropout_rate,treatment,,,0,0,noncore_alt_outcome,Dropout rate is an entirely different outcome domain,0.95
+125821-V1,robust/outcome/log_el_avgsalary,robustness/measurement.md,log_el_avgsalary,treatment,,,0,0,noncore_alt_outcome,Log elementary salary is a different outcome concept,0.95
+125821-V1,rd/donut/exclude_1pct,methods/regression_discontinuity.md#donut-hole-specifications,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Donut hole excluding 1pp near cutoff; same estimand,0.95
+125821-V1,rd/donut/exclude_2pct,methods/regression_discontinuity.md#donut-hole-specifications,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Donut hole excluding 2pp near cutoff; same estimand,0.95
+125821-V1,rd/donut/exclude_3pct,methods/regression_discontinuity.md#donut-hole-specifications,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Donut hole excluding 3pp near cutoff; same estimand,0.95
+125821-V1,rd/donut/exclude_5pct,methods/regression_discontinuity.md#donut-hole-specifications,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Donut hole excluding 5pp near cutoff; same estimand,0.95
+125821-V1,robust/sample/early_period,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Early period subsample (year<=2005); same estimand,0.9
+125821-V1,robust/sample/late_period,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Late period subsample (year>2005); same estimand,0.9
+125821-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Trimmed top/bottom 1% of outcome; same estimand,0.95
+125821-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Trimmed top/bottom 5% of outcome; same estimand,0.95
+125821-V1,robust/sample/urban_suburban,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Urban/suburban districts only; same estimand restricted sample,0.85
+125821-V1,robust/sample/rural,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Rural districts only; same estimand restricted sample,0.85
+125821-V1,robust/sample/large_districts,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Above-median enrollment districts; same estimand restricted sample,0.85
+125821-V1,robust/sample/small_districts,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Below-median enrollment districts; same estimand restricted sample,0.85
+125821-V1,robust/sample/high_poverty,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,High poverty districts; same estimand restricted sample,0.85
+125821-V1,robust/sample/low_poverty,robustness/sample_restrictions.md,tot_exp_mem,treatment,G1,baseline,0,1,core_sample,Low poverty districts; same estimand restricted sample,0.85
+125821-V1,robust/cluster/none,robustness/clustering_variations.md,tot_exp_mem,treatment,G1,baseline,0,1,core_inference,Robust SE (no clustering); same point estimate different inference,0.95
+125821-V1,robust/cluster/leaid,robustness/clustering_variations.md,tot_exp_mem,treatment,G1,baseline,0,1,core_inference,Clustered by LEA ID; same point estimate different inference,0.95
+125821-V1,rd/placebo/cutoff_40,methods/regression_discontinuity.md#placebo-cutoff-tests,tot_exp_mem,treatment_at_40,,,0,0,noncore_placebo,"Placebo cutoff at 40%; different treatment, falsification test",0.95
+125821-V1,rd/placebo/cutoff_45,methods/regression_discontinuity.md#placebo-cutoff-tests,tot_exp_mem,treatment_at_45,,,0,0,noncore_placebo,"Placebo cutoff at 45%; different treatment, falsification test",0.95
+125821-V1,rd/placebo/cutoff_55,methods/regression_discontinuity.md#placebo-cutoff-tests,tot_exp_mem,treatment_at_55,,,0,0,noncore_placebo,"Placebo cutoff at 55%; different treatment, falsification test",0.95
+125821-V1,rd/placebo/cutoff_60,methods/regression_discontinuity.md#placebo-cutoff-tests,tot_exp_mem,treatment_at_60,,,0,0,noncore_placebo,"Placebo cutoff at 60%; different treatment, falsification test",0.95
+125821-V1,robust/heterogeneity/urban,robustness/heterogeneity.md,tot_exp_mem,treatment_urban_interaction,,,0,0,noncore_heterogeneity,Interaction term for urban; heterogeneity not a baseline claim,0.95
+125821-V1,robust/heterogeneity/large_district,robustness/heterogeneity.md,tot_exp_mem,treatment_large_interaction,,,0,0,noncore_heterogeneity,Interaction term for large districts; heterogeneity not baseline,0.95
+125821-V1,robust/heterogeneity/high_poverty,robustness/heterogeneity.md,tot_exp_mem,treatment_highpov_interaction,,,0,0,noncore_heterogeneity,Interaction for high poverty; heterogeneity not a baseline claim,0.95
+125821-V1,robust/funcform/log_outcome,robustness/functional_form.md,log_tot_exp_mem,treatment,G1,baseline,0,1,core_funcform,Log transformation of outcome; same estimand different scale,0.9
+125821-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_tot_exp_mem,treatment,G1,baseline,0,1,core_funcform,IHS transformation of outcome; same estimand different scale,0.9
+125821-V1,rd/bandwidth/sensitivity_3,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=3; very narrow sensitivity check,0.95
+125821-V1,rd/bandwidth/sensitivity_4,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=4; narrow sensitivity check,0.95
+125821-V1,rd/bandwidth/sensitivity_6,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=6; sensitivity check,0.95
+125821-V1,rd/bandwidth/sensitivity_8,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=8; sensitivity check,0.95
+125821-V1,rd/bandwidth/sensitivity_25,methods/regression_discontinuity.md#bandwidth-selection,tot_exp_mem,treatment,G1,baseline,0,1,core_method,Bandwidth=25; wide sensitivity check,0.95
+125821-V1,robust/outcome/tot_exp_ss_mem,robustness/measurement.md,tot_exp_ss_mem,treatment,G1,baseline,0,0,noncore_alt_outcome,"Support services expenditures is a sub-component, different outcome",0.85
+125821-V1,robust/outcome/interest_debt_mem,robustness/measurement.md,interest_debt_mem,treatment,,,0,0,noncore_alt_outcome,Interest on debt is a different outcome concept from total expenditures,0.9
+125821-V1,robust/outcome/LT_debt_out_mem,robustness/measurement.md,LT_debt_out_mem,treatment,,,0,0,noncore_alt_outcome,Long-term debt outstanding is a different outcome concept,0.9
+125821-V1,robust/outcome/ratio_stdnts_to_staff_licensed,robustness/measurement.md,ratio_stdnts_to_staff_licensed,treatment,,,0,0,noncore_alt_outcome,Student-teacher ratio is a different outcome domain entirely,0.95

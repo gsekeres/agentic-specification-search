@@ -1,0 +1,104 @@
+{
+  "paper_id": "198483-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/198483-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "NSP treatment improves economic welfare as measured by the Anderson economic index (male respondents).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/index_Economic_Andr_M"
+      ],
+      "baseline_outcome_vars": [
+        "index_Economic_Andr_M"
+      ],
+      "baseline_treatment_vars": [
+        "treatment_FU1"
+      ],
+      "notes": "Primary economic outcome. Not significant (p=0.226). Most robustness checks target this outcome."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "NSP treatment improves public goods provision as measured by the Anderson public goods index.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/index_PublicGoods_Andr"
+      ],
+      "baseline_outcome_vars": [
+        "index_PublicGoods_Andr"
+      ],
+      "baseline_treatment_vars": [
+        "treatment_FU1"
+      ],
+      "notes": "Significant (p=0.017). One heterogeneity robustness spec targets this outcome."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "NSP treatment improves subjective economic perceptions.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/index_Economic_Andr_Subj"
+      ],
+      "baseline_outcome_vars": [
+        "index_Economic_Andr_Subj"
+      ],
+      "baseline_treatment_vars": [
+        "treatment_FU1"
+      ],
+      "notes": "Highly significant (p<1e-11). One heterogeneity robustness spec targets this outcome."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "NSP treatment improves attitudes toward government.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/index_Attitudes_Andr_M"
+      ],
+      "baseline_outcome_vars": [
+        "index_Attitudes_Andr_M"
+      ],
+      "baseline_treatment_vars": [
+        "treatment_FU1"
+      ],
+      "notes": "Significant (p<0.001). One heterogeneity robustness spec targets this outcome."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "NSP treatment improves perceived security (male and female respondents).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/index_Security_perc_Andr_M",
+        "baseline/index_Security_perc_Andr_F",
+        "baseline/security/index_Security_perc_Andr_M",
+        "baseline/security/index_Security_perc_Andr_F"
+      ],
+      "baseline_outcome_vars": [
+        "index_Security_perc_Andr_M",
+        "index_Security_perc_Andr_F"
+      ],
+      "baseline_treatment_vars": [
+        "treatment_FU1"
+      ],
+      "notes": "Both male and female perceived security baselines are significant. Rows 51-52 are exact duplicates of rows 5-6 under baseline/security/ prefix."
+    },
+    {
+      "baseline_group_id": "G6",
+      "claim_summary": "NSP treatment affects experienced security incidents.",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "baseline/index_Security_exp_Andr_M",
+        "baseline/security/index_Security_exp_Andr_M"
+      ],
+      "baseline_outcome_vars": [
+        "index_Security_exp_Andr_M"
+      ],
+      "baseline_treatment_vars": [
+        "treatment_FU1"
+      ],
+      "notes": "Not significant (p=0.974). Row 53 duplicates row 7."
+    }
+  ],
+  "global_notes": "This paper evaluates NSP across multiple outcome domains (economic, public goods, attitudes, security). 10 baseline rows, 3 are exact duplicates (rows 51-53 repeat rows 5-7). Bulk of robustness specs target G1 economic index. Heterogeneity specs (15/71 rows) are substantial. Five placebo tests use pre-treatment security incidents. Some FE variation specs (Village FE, no FE) change the estimand fundamentally from the matched-pairs design."
+}

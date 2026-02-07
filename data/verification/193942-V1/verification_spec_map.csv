@@ -1,0 +1,60 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+193942-V1,baseline,methods/difference_in_differences.md#baseline,coverage,post,G1,baseline,1,1,core_method,Primary baseline: coverage ~ post with three-way FE,1.0
+193942-V1,did/outcome/mortality_baseline,methods/difference_in_differences.md#baseline,rate,post,G2,did/outcome/mortality_baseline,1,1,core_method,Mortality baseline: rate ~ post; sign is wrong (positive),0.7
+193942-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,coverage,post,G1,baseline,0,1,core_fe,Unit FE only (country-disease); drops time and three-way FE,0.95
+193942-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,coverage,post,G1,baseline,0,1,core_fe,Time FE only (cohort-disease); drops unit and three-way FE,0.95
+193942-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,coverage,post,G1,baseline,0,1,core_fe,Two-way FE (country-disease + cohort-disease); drops country-cohort,0.95
+193942-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,coverage,post,G1,baseline,0,1,core_fe,No fixed effects at all; pooled OLS comparison,0.9
+193942-V1,robust/sample/new_vaccines,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to new vaccines (PCV ROTA); same outcome/treatment/FE,0.85
+193942-V1,robust/sample/old_vaccines,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to pre-existing vaccines; same outcome/treatment/FE,0.85
+193942-V1,robust/sample/gavi_recipients,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to Gavi-recipient countries only,0.9
+193942-V1,robust/sample/post_2000,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to post-2000 cohorts; same specification,0.9
+193942-V1,robust/sample/early_period,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to 2000-2009; same specification,0.9
+193942-V1,robust/sample/late_period,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to 2010-2019; same specification,0.9
+193942-V1,robust/cluster/robust_se,robustness/clustering_variations.md,coverage,post,G1,baseline,0,1,core_inference,HC robust SE instead of clustered; same point estimate,0.95
+193942-V1,robust/cluster/disease,robustness/clustering_variations.md,coverage,post,G1,baseline,0,1,core_inference,Cluster at disease level instead of country; same point estimate,0.95
+193942-V1,robust/form/y_log,robustness/functional_form.md,log_coverage,post,G1,baseline,0,1,core_funcform,Log-transformed outcome; same claim different functional form,0.9
+193942-V1,robust/form/y_asinh,robustness/functional_form.md,ihs_coverage,post,G1,baseline,0,1,core_funcform,IHS-transformed outcome; same claim different functional form,0.9
+193942-V1,robust/heterogeneity/disease_DTP,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,DTP-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_HEPB,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,HEPB-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_MCV,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,MCV-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_PCV,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,PCV-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_ROTA,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,ROTA-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_POL,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,POL-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_IPV,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,IPV-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_RCV,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,RCV-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/heterogeneity/disease_YF,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,YF-only subsample; vaccine-specific heterogeneity,0.85
+193942-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,coverage_wins,post,G1,baseline,0,1,core_sample,Winsorized outcome at 5%; outlier robustness check,0.9
+193942-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Trimmed top/bottom 1%; outlier robustness check,0.9
+193942-V1,robust/placebo/bcg_unaffected,robustness/placebo_tests.md,coverage,post_any,G1,baseline,0,0,noncore_placebo,BCG placebo; different treatment var (post_any) on unaffected vaccine,0.95
+193942-V1,robust/heterogeneity/mortality_diarrhea,robustness/heterogeneity.md,rate,post,G2,did/outcome/mortality_baseline,0,0,noncore_heterogeneity,Diarrhea-specific mortality; cause-of-death heterogeneity,0.85
+193942-V1,robust/heterogeneity/mortality_respiratory,robustness/heterogeneity.md,rate,post,G2,did/outcome/mortality_baseline,0,0,noncore_heterogeneity,Respiratory-specific mortality; cause-of-death heterogeneity,0.85
+193942-V1,robust/heterogeneity/mortality_measles,robustness/heterogeneity.md,rate,post,G2,did/outcome/mortality_baseline,0,0,noncore_heterogeneity,Measles-specific mortality; cause-of-death heterogeneity,0.85
+193942-V1,robust/form/mortality_log,robustness/functional_form.md,log_rate,post,G2,did/outcome/mortality_baseline,0,1,core_funcform,Log mortality rate; functional form test of G2 claim,0.85
+193942-V1,robust/sample/drop_year_2005,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Drops year 2005; leave-one-year-out robustness,0.9
+193942-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Drops year 2010; leave-one-year-out robustness,0.9
+193942-V1,robust/sample/drop_year_2015,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Drops year 2015; leave-one-year-out robustness,0.9
+193942-V1,robust/sample/drop_year_2018,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Drops year 2018; leave-one-year-out robustness,0.9
+193942-V1,robust/sample/drop_year_2019,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Drops year 2019; leave-one-year-out robustness,0.9
+193942-V1,robust/sample/exclude_POL,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes POL vaccine; leave-one-vaccine-out robustness,0.9
+193942-V1,robust/sample/exclude_HEPB,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes HEPB vaccine; leave-one-vaccine-out robustness,0.9
+193942-V1,robust/sample/exclude_MCV,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes MCV vaccine; leave-one-vaccine-out robustness,0.9
+193942-V1,robust/sample/exclude_RCV,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes RCV vaccine; leave-one-vaccine-out robustness,0.9
+193942-V1,robust/heterogeneity/region_Africa,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,Africa-only subsample; regional heterogeneity,0.85
+193942-V1,robust/heterogeneity/region_Asia,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,Asia-only subsample; regional heterogeneity,0.85
+193942-V1,robust/heterogeneity/region_LatAm,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,LatAm-only subsample; regional heterogeneity,0.85
+193942-V1,did/treatment/intensity,methods/difference_in_differences.md#treatment-definition,coverage,years_since_intro,G1,baseline,0,0,noncore_alt_treatment,Continuous treatment (years since intro) changes estimand to dose-response,0.8
+193942-V1,robust/sample/window_1990_2010,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to 1990-2010 window; same specification,0.9
+193942-V1,robust/sample/window_1995_2015,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to 1995-2015 window; same specification,0.9
+193942-V1,robust/sample/window_2000_2015,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to 2000-2015 window; same specification,0.9
+193942-V1,robust/sample/window_2005_2019,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Restricts to 2005-2019 window; same specification,0.9
+193942-V1,robust/sample/ever_treated_only,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Ever-treated country-vaccine pairs only; same specification,0.9
+193942-V1,robust/heterogeneity/high_baseline_coverage,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,Above-median baseline coverage countries; heterogeneity split,0.85
+193942-V1,robust/heterogeneity/low_baseline_coverage,robustness/heterogeneity.md,coverage,post,G1,baseline,0,0,noncore_heterogeneity,Below-median baseline coverage countries; heterogeneity split,0.85
+193942-V1,robust/sample/exclude_india,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes India; leave-one-country-out robustness,0.9
+193942-V1,robust/sample/exclude_nigeria,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes Nigeria; leave-one-country-out robustness,0.9
+193942-V1,robust/sample/exclude_indonesia,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes Indonesia; leave-one-country-out robustness,0.9
+193942-V1,robust/sample/exclude_pakistan,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes Pakistan; leave-one-country-out robustness,0.9
+193942-V1,robust/sample/exclude_bangladesh,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes Bangladesh; leave-one-country-out robustness,0.9
+193942-V1,robust/sample/exclude_brazil,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes Brazil; leave-one-country-out robustness,0.9
+193942-V1,robust/sample/exclude_ethiopia,robustness/sample_restrictions.md,coverage,post,G1,baseline,0,1,core_sample,Excludes Ethiopia; leave-one-country-out robustness,0.9

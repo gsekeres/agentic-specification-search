@@ -1,0 +1,55 @@
+{
+  "paper_id": "113888-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113888-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ROT financial training improves standardized business practices among microentrepreneurs in the Dominican Republic.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "e_zBusPrac"
+      ],
+      "baseline_treatment_vars": [
+        "treat_rot"
+      ],
+      "notes": "Primary result. ANCOVA with b_zBusPrac, clustered by barrio. Coef=0.139, p<0.001."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ROT training reduces reporting mistakes among microentrepreneurs.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "e_repAnyMistake"
+      ],
+      "baseline_treatment_vars": [
+        "treat_rot"
+      ],
+      "notes": "Secondary. Coef=-0.081, p=0.015."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "ROT training increases sales among microentrepreneurs.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "e_zSales",
+        "e_salesWkBad_w01"
+      ],
+      "baseline_treatment_vars": [
+        "treat_rot"
+      ],
+      "notes": "Secondary. Borderline significant (p~0.05-0.06)."
+    }
+  ],
+  "global_notes": "8 baseline rows (4 treat_rot, 4 pooled). Primary claim is G1. Heterogeneity non-core."
+}

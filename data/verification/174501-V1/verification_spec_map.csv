@@ -1,0 +1,149 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+174501-V1,baseline/table3/race_iat_white,methods/cross_sectional_ols.md#baseline,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,1,1,core_method,Baseline: Race IAT white students (Table 3),1.0
+174501-V1,baseline/table3/race_iat_black,methods/cross_sectional_ols.md#baseline,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,1,1,core_method,Baseline: Race IAT black students (Table 3),1.0
+174501-V1,baseline/table3/academic_iat_white,methods/cross_sectional_ols.md#baseline,DscoreacaIAT,mixracebas,G4,baseline/table3/academic_iat_white,1,1,core_method,Baseline: Academic IAT white (Table 3),1.0
+174501-V1,baseline/table3/academic_iat_black,methods/cross_sectional_ols.md#baseline,DscoreacaIAT,mixracebas,G4,baseline/table3/academic_iat_black,1,1,core_method,Baseline: Academic IAT black (Table 3),1.0
+174501-V1,baseline/table4/gpa_white,methods/cross_sectional_ols.md#baseline,GPA,mixracebas,G5,baseline/table4/gpa_white,1,1,core_method,Baseline: GPA white students (Table 4),1.0
+174501-V1,baseline/table4/gpa_black,methods/cross_sectional_ols.md#baseline,GPA,mixracebas,G2,baseline/table4/gpa_black,1,1,core_method,Baseline: GPA black students (Table 4),1.0
+174501-V1,baseline/table4/gpa_full,methods/cross_sectional_ols.md#baseline,GPA,mixracebas,G8,baseline/table4/gpa_full,1,1,core_method,Baseline: GPA full sample (Table 4),1.0
+174501-V1,baseline/table4/examspassed_white,methods/cross_sectional_ols.md#baseline,examspassed,mixracebas,G8,baseline/table4/examspassed_white,1,1,core_method,Baseline: academic outcome white/full (Table 4),1.0
+174501-V1,baseline/table4/examspassed_black,methods/cross_sectional_ols.md#baseline,examspassed,mixracebas,G6,baseline/table4/examspassed_black,1,1,core_method,Baseline: academic outcome black (Table 4),1.0
+174501-V1,baseline/table4/examspassed_full,methods/cross_sectional_ols.md#baseline,examspassed,mixracebas,G8,baseline/table4/examspassed_full,1,1,core_method,Baseline: academic outcome white/full (Table 4),1.0
+174501-V1,baseline/table4/continue_white,methods/cross_sectional_ols.md#baseline,continue,mixracebas,G8,baseline/table4/continue_white,1,1,core_method,Baseline: academic outcome white/full (Table 4),1.0
+174501-V1,baseline/table4/continue_black,methods/cross_sectional_ols.md#baseline,continue,mixracebas,G6,baseline/table4/continue_black,1,1,core_method,Baseline: academic outcome black (Table 4),1.0
+174501-V1,baseline/table4/continue_full,methods/cross_sectional_ols.md#baseline,continue,mixracebas,G8,baseline/table4/continue_full,1,1,core_method,Baseline: academic outcome white/full (Table 4),1.0
+174501-V1,baseline/table4/pcaperf_white,methods/cross_sectional_ols.md#baseline,PCAperf,mixracebas,G8,baseline/table4/pcaperf_white,1,1,core_method,Baseline: academic outcome white/full (Table 4),1.0
+174501-V1,baseline/table4/pcaperf_black,methods/cross_sectional_ols.md#baseline,PCAperf,mixracebas,G6,baseline/table4/pcaperf_black,1,1,core_method,Baseline: academic outcome black (Table 4),1.0
+174501-V1,baseline/table4/pcaperf_full,methods/cross_sectional_ols.md#baseline,PCAperf,mixracebas,G8,baseline/table4/pcaperf_full,1,1,core_method,Baseline: academic outcome white/full (Table 4),1.0
+174501-V1,baseline/table5/pcafriend_white,methods/cross_sectional_ols.md#baseline,PCAfriend,mixracebas,G7,baseline/table5/pcafriend_white,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcafriend_black,methods/cross_sectional_ols.md#baseline,PCAfriend,mixracebas,G7,baseline/table5/pcafriend_black,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcafriend_full,methods/cross_sectional_ols.md#baseline,PCAfriend,mixracebas,G7,baseline/table5/pcafriend_full,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcaattitude_white,methods/cross_sectional_ols.md#baseline,PCAattitude,mixracebas,G7,baseline/table5/pcaattitude_white,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcaattitude_black,methods/cross_sectional_ols.md#baseline,PCAattitude,mixracebas,G7,baseline/table5/pcaattitude_black,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcaattitude_full,methods/cross_sectional_ols.md#baseline,PCAattitude,mixracebas,G7,baseline/table5/pcaattitude_full,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcacomm_white,methods/cross_sectional_ols.md#baseline,PCAcomm,mixracebas,G7,baseline/table5/pcacomm_white,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcacomm_black,methods/cross_sectional_ols.md#baseline,PCAcomm,mixracebas,G7,baseline/table5/pcacomm_black,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcacomm_full,methods/cross_sectional_ols.md#baseline,PCAcomm,mixracebas,G7,baseline/table5/pcacomm_full,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcasocial_white,methods/cross_sectional_ols.md#baseline,PCAsocial,mixracebas,G7,baseline/table5/pcasocial_white,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcasocial_black,methods/cross_sectional_ols.md#baseline,PCAsocial,mixracebas,G7,baseline/table5/pcasocial_black,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,baseline/table5/pcasocial_full,methods/cross_sectional_ols.md#baseline,PCAsocial,mixracebas,G7,baseline/table5/pcasocial_full,1,1,core_method,Baseline: social outcome (Table 5),1.0
+174501-V1,robust/control/none_DscoreraceIAT_white,robustness/control_progression.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/own_only_DscoreraceIAT_white,robustness/control_progression.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/drop_Female_num_DscoreraceIAT_white,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/drop_Falseuct2012_DscoreraceIAT_white,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/drop_privateschool_nomiss_DscoreraceIAT_white,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/drop_durpcabas_nomiss_DscoreraceIAT_white,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/drop_consbas_nomiss_DscoreraceIAT_white,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/none_GPA_black,robustness/control_progression.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/own_only_GPA_black,robustness/control_progression.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/drop_Female_num_GPA_black,robustness/leave_one_out.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/drop_Falseuct2012_GPA_black,robustness/leave_one_out.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/drop_privateschool_nomiss_GPA_black,robustness/leave_one_out.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/drop_durpcabas_nomiss_GPA_black,robustness/leave_one_out.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/drop_consbas_nomiss_GPA_black,robustness/leave_one_out.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/none_DscoreraceIAT_black,robustness/control_progression.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/own_only_DscoreraceIAT_black,robustness/control_progression.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/drop_Female_num_DscoreraceIAT_black,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/drop_Falseuct2012_DscoreraceIAT_black,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/drop_privateschool_nomiss_DscoreraceIAT_black,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/drop_durpcabas_nomiss_DscoreraceIAT_black,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/drop_consbas_nomiss_DscoreraceIAT_black,robustness/leave_one_out.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/none_GPA_white,robustness/control_progression.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/own_only_GPA_white,robustness/control_progression.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/drop_Female_num_GPA_white,robustness/leave_one_out.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/drop_Falseuct2012_GPA_white,robustness/leave_one_out.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/drop_privateschool_nomiss_GPA_white,robustness/leave_one_out.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/drop_durpcabas_nomiss_GPA_white,robustness/leave_one_out.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/drop_consbas_nomiss_GPA_white,robustness/leave_one_out.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/inference/HC0_DscoreraceIAT_white,robustness/clustering_variations.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_inference,SE type variation on Race IAT white,0.9
+174501-V1,robust/inference/HC2_DscoreraceIAT_white,robustness/clustering_variations.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_inference,SE type variation on Race IAT white,0.9
+174501-V1,robust/inference/HC3_DscoreraceIAT_white,robustness/clustering_variations.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_inference,SE type variation on Race IAT white,0.9
+174501-V1,robust/inference/HC0_GPA_black,robustness/clustering_variations.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_inference,SE type variation on GPA black,0.9
+174501-V1,robust/inference/HC2_GPA_black,robustness/clustering_variations.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_inference,SE type variation on GPA black,0.9
+174501-V1,robust/inference/HC3_GPA_black,robustness/clustering_variations.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_inference,SE type variation on GPA black,0.9
+174501-V1,robust/outcome/year2_GPA2013_black,robustness/measurement.md,GPA2013,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_GPA2013_white,robustness/measurement.md,GPA2013,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_examspassed2013_black,robustness/measurement.md,examspassed2013,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_examspassed2013_white,robustness/measurement.md,examspassed2013,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_continue2013_black,robustness/measurement.md,continue2013,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_continue2013_white,robustness/measurement.md,continue2013,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_PCAperf2013_black,robustness/measurement.md,PCAperf2013,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/year2_PCAperf2013_white,robustness/measurement.md,PCAperf2013,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Year 2 outcome; different time period,0.8
+174501-V1,robust/outcome/stillinres_black,robustness/measurement.md,stillinres,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Residential sorting; different from baseline claims,0.85
+174501-V1,robust/outcome/stillinres_white,robustness/measurement.md,stillinres,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Residential sorting; different from baseline claims,0.85
+174501-V1,robust/outcome/Inresmix_yr2_black,robustness/measurement.md,Inresmix_yr2,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Residential sorting; different from baseline claims,0.85
+174501-V1,robust/outcome/Inresmix_yr2_white,robustness/measurement.md,Inresmix_yr2,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Residential sorting; different from baseline claims,0.85
+174501-V1,robust/outcome/Same_ro_yr2_black,robustness/measurement.md,Same_ro_yr2,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_alt_outcome,Residential sorting; different from baseline claims,0.85
+174501-V1,robust/outcome/Same_ro_yr2_white,robustness/measurement.md,Same_ro_yr2,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_alt_outcome,Residential sorting; different from baseline claims,0.85
+174501-V1,robust/outcome/pctFriendsdiff_net_white,robustness/measurement.md,pctFriendsdiff_net,mixracebas,G7,baseline/table5/pcafriend_white,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/pctFriendsdiff_net_black,robustness/measurement.md,pctFriendsdiff_net,mixracebas,G7,baseline/table5/pcafriend_black,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/pctStudydiffer_net_white,robustness/measurement.md,pctStudydiffer_net,mixracebas,G7,baseline/table5/pcafriend_white,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/pctStudydiffer_net_black,robustness/measurement.md,pctStudydiffer_net,mixracebas,G7,baseline/table5/pcafriend_black,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/LeisuOth_white,robustness/measurement.md,LeisuOth,mixracebas,G7,baseline/table5/pcafriend_white,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/LeisuOth_black,robustness/measurement.md,LeisuOth,mixracebas,G7,baseline/table5/pcafriend_black,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/StudyOth_white,robustness/measurement.md,StudyOth,mixracebas,G7,baseline/table5/pcafriend_white,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/outcome/StudyOth_black,robustness/measurement.md,StudyOth,mixracebas,G7,baseline/table5/pcafriend_black,0,0,noncore_alt_outcome,Component social outcome; different var than PCA,0.8
+174501-V1,robust/placebo/baseline_DscoreraceIATbas_white,robustness/placebo_tests.md,DscoreraceIATbas,mixracebas,G1,baseline/table3/race_iat_white,0,0,noncore_placebo,Placebo: baseline Race IAT (pre-treatment),0.95
+174501-V1,robust/placebo/baseline_DscoreraceIATbas_black,robustness/placebo_tests.md,DscoreraceIATbas,mixracebas,G3,baseline/table3/race_iat_black,0,0,noncore_placebo,Placebo: baseline Race IAT (pre-treatment),0.95
+174501-V1,robust/placebo/baseline_DscoreacaIATbas_white,robustness/placebo_tests.md,DscoreacaIATbas,mixracebas,G4,baseline/table3/academic_iat_white,0,0,noncore_placebo,Placebo: baseline Academic IAT (pre-treat),0.95
+174501-V1,robust/placebo/baseline_DscoreacaIATbas_black,robustness/placebo_tests.md,DscoreacaIATbas,mixracebas,G4,baseline/table3/academic_iat_black,0,0,noncore_placebo,Placebo: baseline Academic IAT (pre-treat),0.95
+174501-V1,robust/placebo/baseline_attitude_white,robustness/placebo_tests.md,L_PCAattitude,mixracebas,G7,baseline/table5/pcaattitude_white,0,0,noncore_placebo,Placebo: baseline attitude (pre-treatment),0.95
+174501-V1,robust/placebo/baseline_attitude_black,robustness/placebo_tests.md,L_PCAattitude,mixracebas,G7,baseline/table5/pcaattitude_black,0,0,noncore_placebo,Placebo: baseline attitude (pre-treatment),0.95
+174501-V1,robust/sample/female_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Gender subsample on Race IAT white,0.85
+174501-V1,robust/sample/female_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Gender subsample on GPA black,0.85
+174501-V1,robust/sample/female_IAT_black,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_sample,Gender subsample on Race IAT black,0.85
+174501-V1,robust/sample/female_GPA_white,robustness/sample_restrictions.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_sample,Gender subsample on GPA white,0.85
+174501-V1,robust/sample/male_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Gender subsample on Race IAT white,0.85
+174501-V1,robust/sample/male_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Gender subsample on GPA black,0.85
+174501-V1,robust/sample/male_IAT_black,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_sample,Gender subsample on Race IAT black,0.85
+174501-V1,robust/sample/male_GPA_white,robustness/sample_restrictions.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_sample,Gender subsample on GPA white,0.85
+174501-V1,robust/sample/drop_res7_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Leave-one-residence-out on GPA black,0.85
+174501-V1,robust/sample/drop_res7_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Leave-one-residence-out on IAT white,0.85
+174501-V1,robust/sample/drop_res2_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Leave-one-residence-out on GPA black,0.85
+174501-V1,robust/sample/drop_res2_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Leave-one-residence-out on IAT white,0.85
+174501-V1,robust/sample/drop_res10_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Leave-one-residence-out on GPA black,0.85
+174501-V1,robust/sample/drop_res10_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Leave-one-residence-out on IAT white,0.85
+174501-V1,robust/sample/drop_res8_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Leave-one-residence-out on GPA black,0.85
+174501-V1,robust/sample/drop_res8_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Leave-one-residence-out on IAT white,0.85
+174501-V1,robust/sample/drop_res6_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Leave-one-residence-out on GPA black,0.85
+174501-V1,robust/sample/drop_res6_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Leave-one-residence-out on IAT white,0.85
+174501-V1,robust/sample/drop_res9_GPA_black,robustness/sample_restrictions.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_sample,Leave-one-residence-out on GPA black,0.85
+174501-V1,robust/sample/drop_res9_IAT_white,robustness/sample_restrictions.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_sample,Leave-one-residence-out on IAT white,0.85
+174501-V1,robust/heterogeneity/gender_DscoreraceIAT_white,robustness/heterogeneity.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,0,noncore_heterogeneity,Heterogeneity interaction on IAT white,0.9
+174501-V1,robust/heterogeneity/private_DscoreraceIAT_white,robustness/heterogeneity.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,0,noncore_heterogeneity,Heterogeneity interaction on IAT white,0.9
+174501-V1,robust/heterogeneity/foreign_DscoreraceIAT_white,robustness/heterogeneity.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,0,noncore_heterogeneity,Heterogeneity interaction on IAT white,0.9
+174501-V1,robust/heterogeneity/gender_GPA_black,robustness/heterogeneity.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_heterogeneity,Heterogeneity interaction on GPA black,0.9
+174501-V1,robust/heterogeneity/private_GPA_black,robustness/heterogeneity.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_heterogeneity,Heterogeneity interaction on GPA black,0.9
+174501-V1,robust/heterogeneity/foreign_GPA_black,robustness/heterogeneity.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,0,noncore_heterogeneity,Heterogeneity interaction on GPA black,0.9
+174501-V1,robust/heterogeneity/gender_DscoreraceIAT_black,robustness/heterogeneity.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,0,noncore_heterogeneity,Heterogeneity interaction on IAT black,0.9
+174501-V1,robust/heterogeneity/private_DscoreraceIAT_black,robustness/heterogeneity.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,0,noncore_heterogeneity,Heterogeneity interaction on IAT black,0.9
+174501-V1,robust/heterogeneity/foreign_DscoreraceIAT_black,robustness/heterogeneity.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,0,noncore_heterogeneity,Heterogeneity interaction on IAT black,0.9
+174501-V1,robust/heterogeneity/gender_GPA_white,robustness/heterogeneity.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_heterogeneity,Heterogeneity interaction on GPA white,0.9
+174501-V1,robust/heterogeneity/private_GPA_white,robustness/heterogeneity.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_heterogeneity,Heterogeneity interaction on GPA white,0.9
+174501-V1,robust/heterogeneity/foreign_GPA_white,robustness/heterogeneity.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,0,noncore_heterogeneity,Heterogeneity interaction on GPA white,0.9
+174501-V1,robust/estimation/no_fe_DscoreraceIAT_white,robustness/model_specification.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_fe,No FE variation on Race IAT white,0.85
+174501-V1,robust/estimation/no_fe_GPA_black,robustness/model_specification.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_fe,No FE variation on GPA black,0.85
+174501-V1,robust/estimation/no_fe_DscoreraceIAT_black,robustness/model_specification.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_fe,No FE variation on Race IAT black,0.85
+174501-V1,robust/estimation/no_fe_GPA_white,robustness/model_specification.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_fe,No FE variation on GPA white,0.85
+174501-V1,robust/control/no_rocontrols_DscoreraceIAT_white,robustness/control_progression.md,DscoreraceIAT,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_controls,Control variation on Race IAT white,0.9
+174501-V1,robust/control/no_rocontrols_DscoreraceIAT_black,robustness/control_progression.md,DscoreraceIAT,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_controls,Control variation on Race IAT black,0.9
+174501-V1,robust/control/no_rocontrols_DscoreacaIAT_white,robustness/control_progression.md,DscoreacaIAT,mixracebas,G4,baseline/table3/academic_iat_white,0,1,core_controls,Control variation on Academic IAT white,0.9
+174501-V1,robust/control/no_rocontrols_DscoreacaIAT_black,robustness/control_progression.md,DscoreacaIAT,mixracebas,G4,baseline/table3/academic_iat_black,0,1,core_controls,Control variation on Academic IAT black,0.9
+174501-V1,robust/control/no_rocontrols_GPA_white,robustness/control_progression.md,GPA,mixracebas,G5,baseline/table4/gpa_white,0,1,core_controls,Control variation on GPA white,0.9
+174501-V1,robust/control/no_rocontrols_GPA_black,robustness/control_progression.md,GPA,mixracebas,G2,baseline/table4/gpa_black,0,1,core_controls,Control variation on GPA black,0.9
+174501-V1,robust/control/no_rocontrols_examspassed_white,robustness/control_progression.md,examspassed,mixracebas,G8,baseline/table4/examspassed_white,0,1,core_controls,Control variation on exams white,0.9
+174501-V1,robust/control/no_rocontrols_examspassed_black,robustness/control_progression.md,examspassed,mixracebas,G6,baseline/table4/examspassed_black,0,1,core_controls,Control variation on exams black,0.9
+174501-V1,robust/control/no_rocontrols_continue_white,robustness/control_progression.md,continue,mixracebas,G8,baseline/table4/continue_white,0,1,core_controls,Control variation on continue white,0.9
+174501-V1,robust/control/no_rocontrols_continue_black,robustness/control_progression.md,continue,mixracebas,G6,baseline/table4/continue_black,0,1,core_controls,Control variation on continue black,0.9
+174501-V1,robust/control/no_rocontrols_PCAperf_white,robustness/control_progression.md,PCAperf,mixracebas,G8,baseline/table4/pcaperf_white,0,1,core_controls,Control variation on PCAperf white,0.9
+174501-V1,robust/control/no_rocontrols_PCAperf_black,robustness/control_progression.md,PCAperf,mixracebas,G6,baseline/table4/pcaperf_black,0,1,core_controls,Control variation on PCAperf black,0.9
+174501-V1,robust/outcome/Cooperate_full,robustness/measurement.md,Cooperate,mixracebas,G7,baseline/table5/pcasocial_full,0,0,noncore_alt_outcome,Pro-social behavior; not in baseline tables,0.8
+174501-V1,robust/outcome/Cooperate_white,robustness/measurement.md,Cooperate,mixracebas,G7,baseline/table5/pcasocial_white,0,0,noncore_alt_outcome,Pro-social behavior; not in baseline tables,0.8
+174501-V1,robust/outcome/Cooperate_black,robustness/measurement.md,Cooperate,mixracebas,G7,baseline/table5/pcasocial_black,0,0,noncore_alt_outcome,Pro-social behavior; not in baseline tables,0.8
+174501-V1,robust/outcome/Pris_coopbelief_full,robustness/measurement.md,Pris_coopbelief,mixracebas,G7,baseline/table5/pcasocial_full,0,0,noncore_alt_outcome,Pro-social behavior; not in baseline tables,0.8
+174501-V1,robust/outcome/Pris_coopbelief_white,robustness/measurement.md,Pris_coopbelief,mixracebas,G7,baseline/table5/pcasocial_white,0,0,noncore_alt_outcome,Pro-social behavior; not in baseline tables,0.8
+174501-V1,robust/outcome/Pris_coopbelief_black,robustness/measurement.md,Pris_coopbelief,mixracebas,G7,baseline/table5/pcasocial_black,0,0,noncore_alt_outcome,Pro-social behavior; not in baseline tables,0.8
+174501-V1,robust/funcform/standardized_DscoreraceIAT_white,robustness/functional_form.md,DscoreraceIAT_std,mixracebas,G1,baseline/table3/race_iat_white,0,1,core_funcform,Standardized Race IAT; same estimand,0.9
+174501-V1,robust/funcform/standardized_DscoreraceIAT_black,robustness/functional_form.md,DscoreraceIAT_std,mixracebas,G3,baseline/table3/race_iat_black,0,1,core_funcform,Standardized Race IAT; same estimand,0.9
+174501-V1,robust/funcform/standardized_GPA_white,robustness/functional_form.md,GPA_std,mixracebas,G5,baseline/table4/gpa_white,0,1,core_funcform,Standardized GPA; same estimand,0.9
+174501-V1,robust/funcform/standardized_GPA_black,robustness/functional_form.md,GPA_std,mixracebas,G2,baseline/table4/gpa_black,0,1,core_funcform,Standardized GPA; same estimand,0.9

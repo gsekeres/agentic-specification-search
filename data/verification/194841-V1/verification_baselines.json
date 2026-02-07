@@ -1,0 +1,24 @@
+{
+  "paper_id": "194841-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/194841-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Forecast revisions positively predict forecast errors (beta > 0), indicating forecasters under-react to news consistent with rational inattention (Coibion-Gorodnichenko regression).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "log_forecast_error"
+      ],
+      "baseline_treatment_vars": [
+        "forecast_revision"
+      ],
+      "notes": "Single baseline specification: bivariate OLS of log forecast error on forecast revision using SPF GDP data (157 obs after 99th percentile outlier removal). Beta = 0.757, SE = 0.299, p = 0.012."
+    }
+  ],
+  "global_notes": "This paper has a single core empirical claim tested via the CG regression. The specification search produced 70 specifications total. Several rows duplicate earlier rows (early_period = subsample1_early; late_period = subsample2_late). Some alternative outcome specifications (absolute, squared, sign, large_error) change the estimand substantially and are classified as non-core. Heterogeneity interaction terms test moderation rather than the main claim and are classified as non-core. Placebo tests are correctly identified. Growth rate functional form reverses sign. First differences and GLS AR(1) reverse sign."
+}

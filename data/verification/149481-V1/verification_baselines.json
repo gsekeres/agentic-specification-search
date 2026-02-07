@@ -1,0 +1,99 @@
+{
+  "paper_id": "149481-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/149481-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Thank-you calls increase donation probability (binary) among existing donors at public TV stations (Experiment 1).",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "exp1/donated/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "donated"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Experiment 1 is the largest sample (N=462K). Baseline includes station x execution-date FE and full demographic controls. Paper finds null effect."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Thank-you calls increase conditional gift amount among existing donors at public TV stations (Experiment 1).",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "exp1/gift_cond/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "gift_cond"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Conditional on donating. Same experiment as G1 but different outcome. Paper finds null effect."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Thank-you calls increase donation probability (binary) among existing donors at a national non-profit (Experiment 2).",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "exp2/donated/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "donated"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Experiment 2 has no FE in baseline (no station x date groups). Fewer controls available (no demographics). Paper finds null effect."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Thank-you calls increase conditional gift amount among existing donors at a national non-profit (Experiment 2).",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "exp2/gift_cond/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "gift_cond"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Conditional on donating. Same experiment as G3 but different outcome. Paper finds null effect."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Thank-you calls (new script) increase donation probability among existing donors at public TV stations (Experiment 3).",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "exp3/donated/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "donated"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Experiment 3 uses a new call script. Paper finds null effect (p=0.134)."
+    },
+    {
+      "baseline_group_id": "G6",
+      "claim_summary": "Thank-you calls (new script) increase conditional gift amount among existing donors at public TV stations (Experiment 3).",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "exp3/gift_cond/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "gift_cond"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Conditional on donating. Same experiment as G5 but different outcome. Paper finds null effect."
+    }
+  ],
+  "global_notes": "This paper reports null findings across all three experiments and both outcomes. The six baselines correspond to 3 experiments x 2 outcomes. Expected sign is marked unknown because the paper tests whether the effect is positive but ultimately finds null effects. All specifications use treat (thank-you call assignment) as treatment. Experiments 1 and 3 include station x execution-date FE; Experiment 2 has no FE. Heterogeneity and interaction specs are classified as non-core since they test conditional effects rather than the main average treatment effect."
+}

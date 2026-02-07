@@ -1,0 +1,25 @@
+{
+  "paper_id": "157781-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/157781-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "The closure of the Grand Canal in 1825 increased rebellions in counties along the canal, measured as asinh(rebellion onsets per 100km^2).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_with_controls"
+      ],
+      "baseline_outcome_vars": [
+        "ashonset_km2"
+      ],
+      "baseline_treatment_vars": [
+        "interaction1"
+      ],
+      "notes": "Both baselines test the same claim; baseline has no controls while baseline_with_controls adds larea_after and rug_after. The canonical specification uses unit (OBJECTID) + year FE with clustering at the county level."
+    }
+  ],
+  "global_notes": "65 total specifications. Several specs have numerically zero coefficients due to estimation failures (winsorization at 1/5/10 pct, early_period, late_period, canal_counties_only, non_canal_counties). The pre-treatment trend spec uses a different treatment variable and a restricted sample, making it a diagnostic. The alternative treatment spec (distance_canal) changes the causal object. Heterogeneity specs add triple-interaction terms and thus test a different estimand. Some outcome variants (attacks, defend) represent genuinely different outcome concepts."
+}

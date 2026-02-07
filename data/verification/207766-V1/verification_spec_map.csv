@@ -1,0 +1,150 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+207766-V1,baseline,methods/regression_discontinuity.md#baseline,amount_congr1_3_pcap,alignm > 0,G1,baseline,1,1,core_method,Primary baseline: congruent org transfers RD,1.0
+207766-V1,baseline,methods/regression_discontinuity.md#baseline,amount_congr2_3_pcap,alignm > 0,,,1,0,noncore_alt_outcome,"Moderate org baseline; null expected, contrast test",0.95
+207766-V1,baseline,methods/regression_discontinuity.md#baseline,amount_congr3_3_pcap,alignm > 0,,,1,0,noncore_alt_outcome,"Non-congruent org baseline; null expected, contrast",0.95
+207766-V1,baseline,methods/regression_discontinuity.md#baseline,amount_pcap,alignm > 0,G2,baseline,1,1,core_method,Secondary baseline: total org transfers RD,1.0
+207766-V1,rd/bandwidth/mult_0.50,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_0.60,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_0.70,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_0.75,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_0.80,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_0.90,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.00,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.10,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.20,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.25,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.30,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.40,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/mult_1.50,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/fixed_5,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/fixed_7,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/fixed_10,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/fixed_15,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/bandwidth/fixed_20,methods/regression_discontinuity.md#bandwidth-selection,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Bandwidth variation on congruent transfers,0.95
+207766-V1,rd/poly/order_1,methods/regression_discontinuity.md#polynomial-order,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Polynomial order variation on congruent transfers,0.95
+207766-V1,rd/poly/order_1,methods/regression_discontinuity.md#polynomial-order,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/poly/order_1,methods/regression_discontinuity.md#polynomial-order,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/poly/order_1,methods/regression_discontinuity.md#polynomial-order,amount_pcap,alignm > 0,G2,baseline,0,1,core_funcform,Polynomial order variation on total transfers,0.9
+207766-V1,rd/poly/order_2,methods/regression_discontinuity.md#polynomial-order,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Polynomial order variation on congruent transfers,0.95
+207766-V1,rd/poly/order_2,methods/regression_discontinuity.md#polynomial-order,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/poly/order_2,methods/regression_discontinuity.md#polynomial-order,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/poly/order_2,methods/regression_discontinuity.md#polynomial-order,amount_pcap,alignm > 0,G2,baseline,0,1,core_funcform,Polynomial order variation on total transfers,0.9
+207766-V1,rd/poly/order_3,methods/regression_discontinuity.md#polynomial-order,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Polynomial order variation on congruent transfers,0.95
+207766-V1,rd/poly/order_3,methods/regression_discontinuity.md#polynomial-order,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/poly/order_3,methods/regression_discontinuity.md#polynomial-order,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/poly/order_3,methods/regression_discontinuity.md#polynomial-order,amount_pcap,alignm > 0,G2,baseline,0,1,core_funcform,Polynomial order variation on total transfers,0.9
+207766-V1,rd/kernel/triangular,methods/regression_discontinuity.md#kernel-function,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Kernel function variation on congruent transfers,0.95
+207766-V1,rd/kernel/triangular,methods/regression_discontinuity.md#kernel-function,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/kernel/triangular,methods/regression_discontinuity.md#kernel-function,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/kernel/triangular,methods/regression_discontinuity.md#kernel-function,amount_pcap,alignm > 0,G2,baseline,0,1,core_method,Kernel variation on total transfers,0.9
+207766-V1,rd/kernel/uniform,methods/regression_discontinuity.md#kernel-function,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Kernel function variation on congruent transfers,0.95
+207766-V1,rd/kernel/uniform,methods/regression_discontinuity.md#kernel-function,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/kernel/uniform,methods/regression_discontinuity.md#kernel-function,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/kernel/uniform,methods/regression_discontinuity.md#kernel-function,amount_pcap,alignm > 0,G2,baseline,0,1,core_method,Kernel variation on total transfers,0.9
+207766-V1,rd/kernel/epanechnikov,methods/regression_discontinuity.md#kernel-function,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_method,Kernel function variation on congruent transfers,0.95
+207766-V1,rd/kernel/epanechnikov,methods/regression_discontinuity.md#kernel-function,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/kernel/epanechnikov,methods/regression_discontinuity.md#kernel-function,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/kernel/epanechnikov,methods/regression_discontinuity.md#kernel-function,amount_pcap,alignm > 0,G2,baseline,0,1,core_method,Kernel variation on total transfers,0.9
+207766-V1,rd/sample/leftright_only,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Left-right races only; cleaner RD subsample,0.9
+207766-V1,rd/sample/leftright_only,robustness/sample_restrictions.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/sample/leftright_only,robustness/sample_restrictions.md,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/sample/leftright_only,robustness/sample_restrictions.md,amount_pcap,alignm > 0,G2,baseline,0,1,core_sample,Left-right races; total transfers robustness,0.9
+207766-V1,rd/sample/year_2005,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2006,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2007,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2008,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2009,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2010,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2011,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2012,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2013,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2014,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2015,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/year_2016,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_diagnostic,Single-year subsample; diagnostic not robustness,0.85
+207766-V1,rd/sample/drop_year_2005,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2006,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2007,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2008,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2009,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2010,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2011,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2012,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2013,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2014,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2015,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/drop_year_2016,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Leave-one-year-out; sample robustness check,0.95
+207766-V1,rd/sample/pre_election_years,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Pre-election years only; heterogeneity split,0.85
+207766-V1,rd/sample/non_pre_election_years,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Non-pre-election years; heterogeneity split,0.85
+207766-V1,rd/sample/large_municipalities,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Large municipalities; heterogeneity by size,0.85
+207766-V1,rd/sample/small_municipalities,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Small municipalities; heterogeneity by size,0.85
+207766-V1,rd/sample/campaign_spending_capped,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Pop>=9000 spending capped; institutional sample cut,0.8
+207766-V1,rd/sample/campaign_spending_uncapped,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Pop<9000 spending uncapped; institutional cut,0.8
+207766-V1,rd/sample/two_candidates,robustness/sample_restrictions.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Two-candidate races; cleaner RD subsample,0.85
+207766-V1,rd/sample/two_candidates,robustness/sample_restrictions.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/donut/exclude_0.5pp,methods/regression_discontinuity.md#donut-hole-specifications,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Donut hole exclusion near cutoff,0.95
+207766-V1,rd/donut/exclude_1.0pp,methods/regression_discontinuity.md#donut-hole-specifications,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Donut hole exclusion near cutoff,0.95
+207766-V1,rd/donut/exclude_2.0pp,methods/regression_discontinuity.md#donut-hole-specifications,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Donut hole exclusion near cutoff,0.95
+207766-V1,rd/donut/exclude_3.0pp,methods/regression_discontinuity.md#donut-hole-specifications,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Donut hole exclusion near cutoff,0.95
+207766-V1,rd/donut/exclude_5.0pp,methods/regression_discontinuity.md#donut-hole-specifications,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_sample,Donut hole exclusion near cutoff,0.95
+207766-V1,rd/outcome/split_2groups,robustness/measurement.md,amount_congr1_2_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Alt congruence classification; measurement robust,0.85
+207766-V1,rd/outcome/split_2groups,robustness/measurement.md,amount_congr2_2_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/split_4groups,robustness/measurement.md,amount_congr1_4_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Alt congruence classification; measurement robust,0.85
+207766-V1,rd/outcome/split_4groups,robustness/measurement.md,amount_congr2_4_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/split_4groups,robustness/measurement.md,amount_congr3_4_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/split_4groups,robustness/measurement.md,amount_congr4_4_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/extensive_margin,robustness/measurement.md,ntr_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_alt_outcome,Extensive margin congr1; different outcome concept,0.85
+207766-V1,rd/outcome/extensive_margin,robustness/measurement.md,ntr_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/extensive_margin,robustness/measurement.md,ntr_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/extensive_margin,robustness/measurement.md,ntr_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Total transfer variant; mechanism test,0.8
+207766-V1,rd/outcome/young_orgs,robustness/measurement.md,amount_congr1_3_yng_pcap,alignm > 0,G1,baseline,0,0,noncore_alt_outcome,Young orgs only; mechanism decomposition,0.8
+207766-V1,rd/outcome/young_orgs,robustness/measurement.md,amount_congr2_3_yng_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/young_orgs,robustness/measurement.md,amount_congr3_3_yng_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/young_orgs,robustness/measurement.md,amount_yng_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Total transfer variant; mechanism test,0.8
+207766-V1,rd/outcome/old_orgs,robustness/measurement.md,amount_congr1_3_old_pcap,alignm > 0,G1,baseline,0,0,noncore_alt_outcome,Old orgs only; mechanism decomposition,0.8
+207766-V1,rd/outcome/old_orgs,robustness/measurement.md,amount_congr2_3_old_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/old_orgs,robustness/measurement.md,amount_congr3_3_old_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/old_orgs,robustness/measurement.md,amount_old_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Total transfer variant; mechanism test,0.8
+207766-V1,rd/outcome/winsorized_95,robustness/sample_restrictions.md#outlier-treatment,amount_w95_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Winsorized congruent transfers; outlier robustness,0.9
+207766-V1,rd/outcome/winsorized_95,robustness/sample_restrictions.md#outlier-treatment,amount_w95_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/winsorized_95,robustness/sample_restrictions.md#outlier-treatment,amount_w95_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/winsorized_95,robustness/sample_restrictions.md#outlier-treatment,amount_w95_pcap,alignm > 0,G2,baseline,0,1,core_funcform,Winsorized total transfers; outlier robustness,0.85
+207766-V1,rd/outcome/winsorized_99,robustness/sample_restrictions.md#outlier-treatment,amount_w99_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_funcform,Winsorized congruent transfers; outlier robustness,0.9
+207766-V1,rd/outcome/winsorized_99,robustness/sample_restrictions.md#outlier-treatment,amount_w99_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/winsorized_99,robustness/sample_restrictions.md#outlier-treatment,amount_w99_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/winsorized_99,robustness/sample_restrictions.md#outlier-treatment,amount_w99_pcap,alignm > 0,G2,baseline,0,1,core_funcform,Winsorized total transfers; outlier robustness,0.85
+207766-V1,rd/outcome/multiple_ministries,robustness/measurement.md,amount_congr1_3_multimin_pcap,alignm > 0,G1,baseline,0,0,noncore_alt_outcome,Multi-ministry congr1 orgs; decomposition,0.8
+207766-V1,rd/outcome/multiple_ministries,robustness/measurement.md,amount_congr2_3_multimin_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/multiple_ministries,robustness/measurement.md,amount_congr3_3_multimin_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/multiple_ministries,robustness/measurement.md,amount_multimin_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Total transfer variant; mechanism test,0.8
+207766-V1,rd/outcome/single_ministry,robustness/measurement.md,amount_congr1_3_onemin_pcap,alignm > 0,G1,baseline,0,0,noncore_alt_outcome,Single-ministry congr1 orgs; decomposition,0.8
+207766-V1,rd/outcome/single_ministry,robustness/measurement.md,amount_congr2_3_onemin_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/single_ministry,robustness/measurement.md,amount_congr3_3_onemin_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/single_ministry,robustness/measurement.md,amount_onemin_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Total transfer variant; mechanism test,0.8
+207766-V1,rd/outcome/nonlocal_orgs,robustness/measurement.md,amount_hq_congr1_3_noloc_pcap,alignm > 0,G1,baseline,0,0,noncore_alt_outcome,Non-local HQ congr1 orgs; mechanism test,0.8
+207766-V1,rd/outcome/nonlocal_orgs,robustness/measurement.md,amount_hq_congr2_3_noloc_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/nonlocal_orgs,robustness/measurement.md,amount_hq_congr3_3_noloc_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Non-congruent org variant; contrast test,0.9
+207766-V1,rd/outcome/nonlocal_orgs,robustness/measurement.md,amount_hq_noloc_pcap,alignm > 0,,,0,0,noncore_alt_outcome,Total transfer variant; mechanism test,0.8
+207766-V1,rd/het/campaign_spending_high,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/campaign_spending_low,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/govt_party_popular,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/govt_party_popular,robustness/heterogeneity.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_heterogeneity,Heterogeneity on moderate orgs; contrast test,0.9
+207766-V1,rd/het/govt_party_unpopular,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/govt_party_unpopular,robustness/heterogeneity.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_heterogeneity,Heterogeneity on moderate orgs; contrast test,0.9
+207766-V1,rd/het/incumbent_incumbent,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/incumbent_incumbent,robustness/heterogeneity.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_heterogeneity,Heterogeneity on moderate orgs; contrast test,0.9
+207766-V1,rd/het/incumbent_new,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/incumbent_new,robustness/heterogeneity.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_heterogeneity,Heterogeneity on moderate orgs; contrast test,0.9
+207766-V1,rd/het/turnout_low,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/turnout_low,robustness/heterogeneity.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_heterogeneity,Heterogeneity on moderate orgs; contrast test,0.9
+207766-V1,rd/het/turnout_high,robustness/heterogeneity.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity subsample; tests effect moderation,0.9
+207766-V1,rd/het/turnout_high,robustness/heterogeneity.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_heterogeneity,Heterogeneity on moderate orgs; contrast test,0.9
+207766-V1,rd/placebo/cutoff_-15,methods/regression_discontinuity.md#placebo-cutoff-tests,amount_congr1_3_pcap,alignm > -15,,,0,0,noncore_placebo,Placebo cutoff test; validates design not core claim,0.95
+207766-V1,rd/placebo/cutoff_-10,methods/regression_discontinuity.md#placebo-cutoff-tests,amount_congr1_3_pcap,alignm > -10,,,0,0,noncore_placebo,Placebo cutoff test; validates design not core claim,0.95
+207766-V1,rd/placebo/cutoff_-5,methods/regression_discontinuity.md#placebo-cutoff-tests,amount_congr1_3_pcap,alignm > -5,,,0,0,noncore_placebo,Placebo cutoff test; validates design not core claim,0.95
+207766-V1,rd/placebo/cutoff_5,methods/regression_discontinuity.md#placebo-cutoff-tests,amount_congr1_3_pcap,alignm > 5,,,0,0,noncore_placebo,Placebo cutoff test; validates design not core claim,0.95
+207766-V1,rd/placebo/cutoff_10,methods/regression_discontinuity.md#placebo-cutoff-tests,amount_congr1_3_pcap,alignm > 10,,,0,0,noncore_placebo,Placebo cutoff test; validates design not core claim,0.95
+207766-V1,rd/placebo/cutoff_15,methods/regression_discontinuity.md#placebo-cutoff-tests,amount_congr1_3_pcap,alignm > 15,,,0,0,noncore_placebo,Placebo cutoff test; validates design not core claim,0.95
+207766-V1,rd/inference/no_cluster,robustness/clustering_variations.md,amount_congr1_3_pcap,alignm > 0,G1,baseline,0,1,core_inference,No clustering; inference variation only,0.95
+207766-V1,rd/inference/no_cluster,robustness/clustering_variations.md,amount_congr2_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Moderate org outcome; null expected, contrast",0.9
+207766-V1,rd/inference/no_cluster,robustness/clustering_variations.md,amount_congr3_3_pcap,alignm > 0,,,0,0,noncore_alt_outcome,"Non-congruent org outcome; null expected, contrast",0.9
+207766-V1,rd/inference/no_cluster,robustness/clustering_variations.md,amount_pcap,alignm > 0,G2,baseline,0,1,core_inference,No clustering on total transfers,0.9

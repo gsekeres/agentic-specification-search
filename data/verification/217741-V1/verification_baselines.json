@@ -1,0 +1,39 @@
+{
+  "paper_id": "217741-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/217741-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Higher AI exposure (Webb patent-based measure) is associated with positive changes in female employment shares across European occupations and sectors.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_Webb"
+      ],
+      "baseline_outcome_vars": [
+        "DHSshEmployee"
+      ],
+      "baseline_treatment_vars": [
+        "PCT_aiW"
+      ],
+      "notes": "Webb measure baseline is marginally insignificant (p=0.068)."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Higher AI exposure (Felten ability-application-based measure) is associated with positive changes in female employment shares across European occupations and sectors.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_Felten"
+      ],
+      "baseline_outcome_vars": [
+        "DHSshEmployee"
+      ],
+      "baseline_treatment_vars": [
+        "PCT_aiF"
+      ],
+      "notes": "Felten measure baseline is strongly significant (p=0.0005)."
+    }
+  ],
+  "global_notes": "Paper uses two alternative AI exposure measures (Webb patent-based, Felten ability-based) as parallel treatments. Sector-specific subsamples are heterogeneity. Alternative outcome shWomen tests a different estimand."
+}

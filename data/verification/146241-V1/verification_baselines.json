@@ -1,0 +1,24 @@
+{
+  "paper_id": "146241-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/146241-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Larger groups coordinate worse than smaller groups in the bank-run game, leading to higher withdrawal (bank run) rates.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "withdraw"
+      ],
+      "baseline_treatment_vars": [
+        "large"
+      ],
+      "notes": "Logit regression of withdraw on large (binary: 1=large group 80-90, 0=small group 10) with full controls (rhoValue_high, pastDecision, pastGroupRunning, rValueF, leeftijd, female), using Period 8 data and all treatments except treatment 7. N=1178. Coefficient=0.507, SE=0.196, p=0.010. Clustered by groep_ID."
+    }
+  ],
+  "global_notes": "69 total specifications. 45 are core tests of the group-size claim (controls, sample, inference, method, FE, and functional form variations). 24 are non-core: 5 placebo tests (training periods and permuted treatments), 13 heterogeneity/interaction specs (conditional main effects not comparable to unconditional baseline), and 6 alternative-treatment specs (pastDecision within single treatments, testing a different hypothesis). The paper Table 4 columns 2-3 and 5 include interaction terms that change the estimand of the large coefficient, making them non-comparable to the baseline."
+}

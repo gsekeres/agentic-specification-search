@@ -1,0 +1,18 @@
+{
+  "paper_id": "150581-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/150581-V1",
+  "verified_at": "2026-02-04",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Wages are negatively related to the unemployment rate (negative wage-unemployment semi-elasticity), estimated via panel FE regression of log hourly wages on the unemployment rate.",
+      "expected_sign": "-",
+      "baseline_spec_ids": ["baseline/table2_col1", "baseline/table2_col2", "baseline/table2_col3", "baseline/table2_col4", "baseline/table2_col5"],
+      "baseline_outcome_vars": ["lhrp2"],
+      "baseline_treatment_vars": ["unempl"],
+      "notes": "Columns 1-5 of Table 2 progressively add controls (transition indicators, mismatch, full interactions). All share the same outcome (log hourly pay), treatment (aggregate unemployment rate), sample, FE structure, and clustering. They represent a single canonical claim with varying control sets. Column 4 (with full interactions) is likely the preferred specification, but all columns represent the same estimand."
+    }
+  ],
+  "global_notes": "This analysis uses simulated data (not the actual NLSY79), as noted in the SPECIFICATION_SEARCH.md. This is a significant caveat: magnitudes and significance levels may not match the original paper. The specification search identified 61 specifications across controls variations, sample restrictions, inference variations, alternative outcomes/treatments, FE structure variations, functional form changes, heterogeneity analyses, and placebo tests. Several estimation method specs (no FE, individual FE only) yield positive coefficients, suggesting the FE structure is critical for identification. The paper's richer claim about heterogeneity by transition type and mismatch is partially tested via heterogeneity specs but these are interaction-based (not separate baseline claims)."
+}

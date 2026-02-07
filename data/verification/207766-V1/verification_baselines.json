@@ -1,0 +1,27 @@
+{
+  "paper_id": "207766-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/207766-V1",
+  "verified_at": "2026-02-04",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Municipalities where the ruling party narrowly won receive significantly more government transfers per capita to politically congruent nonprofit organizations than municipalities where the ruling party narrowly lost (RD estimate ~1.39 euros/capita).",
+      "expected_sign": "+",
+      "baseline_spec_ids": ["baseline"],
+      "baseline_outcome_vars": ["amount_congr1_3_pcap"],
+      "baseline_treatment_vars": ["alignm > 0"],
+      "notes": "Primary claim of the paper. Uses 3-group political classification of organizations. Baseline coefficient is 1.39 with p < 0.001. Only the congruent (congr1) outcome row with spec_id=baseline is included; the congr2 and congr3 baseline rows are contrast/falsification tests and are classified as non-core."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Total government transfers per capita to nonprofit organizations are higher in municipalities where the ruling party narrowly won (RD estimate ~1.08 euros/capita).",
+      "expected_sign": "+",
+      "baseline_spec_ids": ["baseline"],
+      "baseline_outcome_vars": ["amount_pcap"],
+      "baseline_treatment_vars": ["alignm > 0"],
+      "notes": "Secondary claim. The total transfer effect is weaker (p=0.023) and less robust than the congruent-specific effect. The paper emphasizes the congruent-specific channel as the main finding."
+    }
+  ],
+  "global_notes": "The paper has 4 baseline rows (congr1, congr2, congr3, total) but the core hypothesis is about congruent org transfers (congr1). The moderate (congr2) and non-congruent (congr3) outcomes serve as falsification/contrast tests where a null effect is expected. Many specs run all 4 outcomes together, so the CSV has groups of 4 rows with the same spec_id. Only the congr1 and total rows are treated as core tests. Heterogeneity splits (campaign spending, turnout, incumbency, municipality size) are classified as non-core because they test effect moderation rather than the main claim. Single-year regressions are classified as diagnostics. The spec search correctly identifies the RD as the method and the treatment is the sharp cutoff at alignm=0."
+}

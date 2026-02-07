@@ -1,0 +1,28 @@
+{
+  "paper_id": "128521-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/128521-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Cotton districts experienced an apparent decrease in aggregate mortality rates relative to non-cotton districts during the Lancashire Cotton Famine (1861-1865), reflecting migration bias in aggregate data.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_controls",
+        "baseline_nearby",
+        "baseline_continuous"
+      ],
+      "baseline_outcome_vars": [
+        "agg_mr_tot"
+      ],
+      "baseline_treatment_vars": [
+        "cotton_dist_post",
+        "cotton_eshr_post"
+      ],
+      "notes": "Four baseline specs: (1) no controls, (2) with controls, (3) with nearby district indicators, (4) continuous treatment. All use TWFE with district+period FE on total aggregate mortality rate. baseline_continuous uses cotton_eshr_post rather than binary."
+    }
+  ],
+  "global_notes": "Spec search uses aggregate registrar data only. Several specs change treatment to nearby_post indicators or interactions; not core tests. Two FE variations omit unit FE producing positive coefficients. Placebo tests correctly identified as non-core."
+}

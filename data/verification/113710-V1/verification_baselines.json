@@ -1,0 +1,24 @@
+{
+  "paper_id": "113710-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113710-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Political alignment (same party controls municipal and regional government) causes higher intergovernmental transfers per capita from regional to local governments, identified via fuzzy RD at the 50% vote share threshold.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "tk"
+      ],
+      "baseline_treatment_vars": [
+        "ab"
+      ],
+      "notes": "Baseline uses IV-2SLS with local quadratic polynomial (dist1, dist2), region FE (codccaa), clustered at municipality (codiine). Coefficient ~98 euros per capita."
+    }
+  ],
+  "global_notes": "The specification search covers 95 specs. One main baseline claim: alignment causes higher transfers. Competition-moderation is secondary (heterogeneity). First-stage/reduced-form and covariate balance tests are diagnostic. Placebo cutoff tests are noncore_placebo. Several specs duplicate results under different labels. Some OLS specs use a different estimator but test the same directional claim. Region-specific heterogeneity specs run OLS on individual region subsamples."
+}

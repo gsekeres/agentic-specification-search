@@ -1,0 +1,75 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+145141-V1,baseline,methods/cross_sectional_ols.md#baseline,wtp,visits,G1,,1,1,core_method,Baseline specification tagged in spec_tree_path,1.0
+145141-V1,ymca/form/quadratic,methods/cross_sectional_ols.md#functional-form,wtp,visits,G1,baseline,0,1,core_funcform,Quadratic functional form of visits on same sample,0.9
+145141-V1,ymca/sample/monotonic_linear,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Monotonic subsample restriction preserving same estimand,0.9
+145141-V1,ymca/sample/monotonic_quadratic,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Monotonic subsample restriction preserving same estimand,0.9
+145141-V1,ymca/sample/close_belief_2,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to beliefs,0.9
+145141-V1,ymca/sample/close_belief_4,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to beliefs,0.9
+145141-V1,ymca/sample/close_belief_6,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to beliefs,0.9
+145141-V1,ymca/sample/close_belief_8,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to beliefs,0.9
+145141-V1,ymca/sample/close_past_2,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to past behavior,0.9
+145141-V1,ymca/sample/close_past_4,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to past behavior,0.9
+145141-V1,ymca/sample/close_past_6,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to past behavior,0.9
+145141-V1,ymca/sample/close_past_8,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample restricted to respondents close to past behavior,0.9
+145141-V1,ymca/heterogeneity/high_past_linear,robustness/heterogeneity.md,wtp,visits,G1,baseline,0,0,noncore_heterogeneity,Subsample split by past attendance level (heterogeneity),0.85
+145141-V1,ymca/heterogeneity/high_past_quadratic,robustness/heterogeneity.md,wtp,visits,G1,baseline,0,0,noncore_heterogeneity,Subsample split by past attendance level (heterogeneity),0.85
+145141-V1,ymca/heterogeneity/low_past_linear,robustness/heterogeneity.md,wtp,visits,G1,baseline,0,0,noncore_heterogeneity,Subsample split by past attendance level (heterogeneity),0.85
+145141-V1,ymca/heterogeneity/low_past_quadratic,robustness/heterogeneity.md,wtp,visits,G1,baseline,0,0,noncore_heterogeneity,Subsample split by past attendance level (heterogeneity),0.85
+145141-V1,ymca/interact/past_linear,methods/cross_sectional_ols.md#interaction-effects,wtp,visits,G1,baseline,0,0,noncore_heterogeneity,Interaction with past attendance tests heterogeneity not main effect,0.8
+145141-V1,ymca/interact/past_quadratic,methods/cross_sectional_ols.md#interaction-effects,wtp,visits,G1,baseline,0,0,noncore_heterogeneity,Interaction with past attendance tests heterogeneity not main effect,0.8
+145141-V1,ymca/se/robust_linear,robustness/clustering_variations.md,wtp,visits,G1,baseline,0,1,core_inference,"Robust SE instead of clustered SE, same point estimate",0.95
+145141-V1,ymca/se/robust_quadratic,robustness/clustering_variations.md,wtp,visits,G1,baseline,0,1,core_inference,"Robust SE instead of clustered SE, same point estimate",0.95
+145141-V1,ymca/form/interval_idx_linear,robustness/functional_form.md,wtp,interval_idx,G1,baseline,0,1,core_funcform,Alternative treatment coding (interval index vs raw visits),0.9
+145141-V1,ymca/form/interval_idx_quadratic,robustness/functional_form.md,wtp,interval_idx,G1,baseline,0,1,core_funcform,Alternative treatment coding with quadratic term,0.9
+145141-V1,ymca/form/ln_visits_linear,robustness/functional_form.md,wtp,ln_visits,G1,baseline,0,1,core_funcform,Log transformation of treatment variable,0.9
+145141-V1,ymca/form/ln_visits_quadratic,robustness/functional_form.md,wtp,ln_visits,G1,baseline,0,1,core_funcform,Log transformation with quadratic term,0.9
+145141-V1,ymca/sample/excl_above_20,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample excluding high-visit outliers,0.9
+145141-V1,ymca/sample/excl_above_15,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample excluding high-visit outliers,0.9
+145141-V1,ymca/sample/excl_above_10,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,1,core_sample,Sample excluding high-visit outliers,0.9
+145141-V1,ymca/sample/excl_above_7,robustness/sample_restrictions.md,wtp,visits,G1,baseline,0,0,invalid,"Duplicate of excl_above_10: identical coef, SE, and N",0.95
+145141-V1,charity/baseline/linear,methods/cross_sectional_ols.md#baseline,wtp,interval,G2,,1,1,core_method,Baseline specification tagged in spec_tree_path,1.0
+145141-V1,charity/baseline/quadratic,methods/cross_sectional_ols.md#baseline,wtp,interval,G2,,1,1,core_method,Baseline specification tagged in spec_tree_path,1.0
+145141-V1,charity/sample/prolific_linear,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/linear,0,1,core_sample,Prolific subsample of pooled charity baseline,0.9
+145141-V1,charity/sample/prolific_quadratic,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,Prolific subsample of pooled charity baseline,0.9
+145141-V1,charity/sample/berkeley_linear,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/linear,0,1,core_sample,Berkeley subsample of pooled charity baseline,0.9
+145141-V1,charity/sample/berkeley_quadratic,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,Berkeley subsample of pooled charity baseline,0.9
+145141-V1,charity/sample/bu_linear,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/linear,0,1,core_sample,BU subsample of pooled charity baseline,0.9
+145141-V1,charity/sample/bu_quadratic,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,BU subsample of pooled charity baseline,0.9
+145141-V1,charity/heterogeneity/prolific_above_med,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample split by median anonymity score (heterogeneity),0.85
+145141-V1,charity/heterogeneity/prolific_below_med,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample split by median anonymity score (heterogeneity),0.85
+145141-V1,charity/heterogeneity/berkeley_above_med,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample split by median anonymity score (heterogeneity),0.85
+145141-V1,charity/heterogeneity/berkeley_below_med,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample split by median anonymity score (heterogeneity),0.85
+145141-V1,charity/heterogeneity/bu_above_med,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample split by median anonymity score (heterogeneity),0.85
+145141-V1,charity/heterogeneity/bu_below_med,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample split by median anonymity score (heterogeneity),0.85
+145141-V1,charity/control/prolific_groupsize_linear,robustness/control_progression.md,wtp,interval,G2,charity/baseline/linear,0,1,core_controls,Adding group size dummies as controls,0.9
+145141-V1,charity/control/prolific_groupsize_quadratic,robustness/control_progression.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_controls,Adding group size dummies as controls,0.9
+145141-V1,charity/interact/prolific_group15,methods/cross_sectional_ols.md#interaction-effects,wtp,interval,G2,charity/baseline/linear,0,0,noncore_heterogeneity,Interaction with group size tests heterogeneity not main effect,0.8
+145141-V1,charity/interact/prolific_group300,methods/cross_sectional_ols.md#interaction-effects,wtp,interval,G2,charity/baseline/linear,0,0,noncore_heterogeneity,Interaction with group size tests heterogeneity not main effect,0.8
+145141-V1,charity/interact/prolific_all_groups,methods/cross_sectional_ols.md#interaction-effects,wtp,interval,G2,charity/baseline/linear,0,0,noncore_heterogeneity,Interaction with group size tests heterogeneity not main effect,0.8
+145141-V1,charity/se/prolific_robust_linear,robustness/clustering_variations.md,wtp,interval,G2,charity/baseline/linear,0,1,core_inference,"Robust SE instead of clustered SE, same point estimate",0.95
+145141-V1,charity/se/prolific_robust_quadratic,robustness/clustering_variations.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_inference,"Robust SE instead of clustered SE, same point estimate",0.95
+145141-V1,charity/se/berkeley_robust_linear,robustness/clustering_variations.md,wtp,interval,G2,charity/baseline/linear,0,1,core_inference,"Robust SE instead of clustered SE, same point estimate",0.95
+145141-V1,charity/se/berkeley_robust_quadratic,robustness/clustering_variations.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_inference,"Robust SE instead of clustered SE, same point estimate",0.95
+145141-V1,charity/form/prolific_cubic,robustness/functional_form.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_funcform,Cubic polynomial functional form extension,0.9
+145141-V1,charity/form/berkeley_cubic,robustness/functional_form.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_funcform,Cubic polynomial functional form extension,0.9
+145141-V1,charity/sample/prolific_winsorized,robustness/sample_restrictions.md,wtp_wins,interval,G2,charity/baseline/quadratic,0,1,core_funcform,Winsorized outcome is a functional form change on same sample,0.85
+145141-V1,charity/sample/berkeley_winsorized,robustness/sample_restrictions.md,wtp_wins,interval,G2,charity/baseline/quadratic,0,1,core_funcform,Winsorized outcome is a functional form change on same sample,0.85
+145141-V1,charity/sample/prolific_trimmed,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,0,invalid,Identical to prolific_quadratic: trimming removed zero obs,0.95
+145141-V1,charity/sample/berkeley_trimmed,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,0,invalid,Identical to berkeley_quadratic: trimming removed zero obs,0.95
+145141-V1,charity/heterogeneity/prolific_female,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample restricted to females (heterogeneity),0.85
+145141-V1,charity/heterogeneity/prolific_male,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample restricted to males (heterogeneity),0.85
+145141-V1,charity/heterogeneity/berkeley_female,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample restricted to females (heterogeneity),0.85
+145141-V1,charity/heterogeneity/berkeley_male,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample restricted to males (heterogeneity),0.85
+145141-V1,charity/heterogeneity/prolific_young,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample restricted to young participants (heterogeneity),0.85
+145141-V1,charity/heterogeneity/prolific_old,robustness/heterogeneity.md,wtp,interval,G2,charity/baseline/quadratic,0,0,noncore_heterogeneity,Subsample restricted to old participants (heterogeneity),0.85
+145141-V1,charity/placebo/prolific_anon_pts,robustness/placebo_tests.md,wtp,anom_interval,G2,charity/baseline/quadratic,0,0,noncore_placebo,Uses fake treatment (anonymous interval) to test identification,0.95
+145141-V1,charity/placebo/berkeley_anon_pts,robustness/placebo_tests.md,wtp,anom_interval,G2,charity/baseline/quadratic,0,0,noncore_placebo,Uses fake treatment (anonymous interval) to test identification,0.95
+145141-V1,charity/placebo/bu_anon_pts,robustness/placebo_tests.md,wtp,anom_interval,G2,charity/baseline/quadratic,0,0,noncore_placebo,Uses fake treatment (anonymous interval) to test identification,0.95
+145141-V1,charity/control/prolific_no_controls,robustness/control_progression.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_controls,No additional controls beyond treatment polynomial,0.9
+145141-V1,charity/control/prolific_age,robustness/control_progression.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_controls,Adding age as demographic control,0.9
+145141-V1,charity/control/prolific_female,robustness/control_progression.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_controls,Adding female indicator as demographic control,0.9
+145141-V1,charity/control/prolific_all_demo,robustness/control_progression.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_controls,Adding all demographic controls (age and female),0.9
+145141-V1,charity/sample/prolific_excl_bottom,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,Excluding bottom of interval distribution,0.9
+145141-V1,charity/sample/prolific_excl_top,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,Excluding top of interval distribution,0.9
+145141-V1,charity/sample/berkeley_excl_bottom,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,Excluding bottom of interval distribution,0.9
+145141-V1,charity/sample/berkeley_excl_top,robustness/sample_restrictions.md,wtp,interval,G2,charity/baseline/quadratic,0,1,core_sample,Excluding top of interval distribution,0.9

@@ -1,0 +1,67 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+140161-V1,baseline,methods/cross_sectional_ols.md#baseline,want_share_fb,survey (Imposed Fact-Check),G1,baseline,1,1,core_controls,Canonical baseline: no-controls OLS of want_share_fb on Imposed FC.,1.0
+140161-V1,robust/build/bivariate,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Exact duplicate of baseline (no controls). Redundant but valid.,0.95
+140161-V1,robust/build/strata,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,"Adds stratification controls (male, education).",0.95
+140161-V1,robust/build/demographics,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Adds strata + age controls.,0.95
+140161-V1,robust/build/socioeconomic,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Adds strata + socioeconomic controls.,0.95
+140161-V1,robust/build/fb_vars,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Adds strata + socio + Facebook usage controls.,0.95
+140161-V1,robust/build/vote,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Adds strata + socio + FB + political controls.,0.95
+140161-V1,robust/build/full,robustness/control_progression.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full control set including behavioral controls.,0.95
+140161-V1,robust/loo/drop_male,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus male; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_low_educ,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus low_educ; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_mid_educ,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus mid_educ; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_age,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus age; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_age_sqr,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus age_sqr; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_income_clean,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus income_clean; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_married,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus married; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_single,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus single; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_village,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus village; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_town,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus town; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_children,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus children; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_catholic,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus catholic; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_muslim,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus muslim; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_no_religion,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus no_religion; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_religious,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus religious; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_use_FB,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus use_FB; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_often_share_fb,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus often_share_fb; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_log_nb_friends_fb,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus log_nb_friends_fb; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_second_mlp,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus second_mlp; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_negative_image_UE,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus negative_image_UE; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_altruism,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus altruism; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_reciprocity,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus reciprocity; tests sensitivity.,0.95
+140161-V1,robust/loo/drop_image,robustness/leave_one_out.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Full controls minus image; tests sensitivity.,0.95
+140161-V1,robust/outcome/want_share_fb,robustness/measurement.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_controls,Same outcome with strata+socio controls; duplicates build/socioeconomic.,0.85
+140161-V1,robust/outcome/want_share_others,robustness/measurement.md,want_share_others,survey (Imposed Fact-Check),G1,baseline,0,0,noncore_alt_outcome,Different outcome (share with others vs FB); not same estimand.,0.8
+140161-V1,robust/treatment/voluntary_fc_vs_control,methods/cross_sectional_ols.md,want_share_fb,survey (Voluntary Fact-Check vs Alt-Facts),G1,baseline,0,0,noncore_alt_treatment,Different treatment arm (Voluntary FC vs control).,0.85
+140161-V1,robust/treatment/imposed_vs_voluntary,methods/cross_sectional_ols.md,want_share_fb,Imposed vs Voluntary Fact-Check,,,0,0,noncore_alt_treatment,Different causal contrast and sample (Surveys 2-3 only).,0.9
+140161-V1,robust/sample/male_only,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Male respondents only.,0.85
+140161-V1,robust/sample/female_only,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Female respondents only.,0.85
+140161-V1,robust/sample/young,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Young respondents (age <= 35).,0.85
+140161-V1,robust/sample/old,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Old respondents (age >= 65).,0.85
+140161-V1,robust/sample/middle_aged,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Middle-aged (35 < age < 65).,0.85
+140161-V1,robust/sample/low_education,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Low education respondents.,0.85
+140161-V1,robust/sample/high_education,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: High education respondents.,0.85
+140161-V1,robust/sample/city_only,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: City residents only.,0.85
+140161-V1,robust/sample/rural_only,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Rural/town residents only.,0.85
+140161-V1,robust/sample/le_pen_voters,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Le Pen voters only.,0.85
+140161-V1,robust/sample/non_le_pen_voters,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Non-Le Pen voters.,0.85
+140161-V1,robust/sample/religious,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Religious respondents.,0.85
+140161-V1,robust/sample/not_religious,robustness/sample_restrictions.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_sample,Same treatment/outcome on subsample: Non-religious respondents.,0.85
+140161-V1,robust/het/interaction_gender,robustness/heterogeneity.md,want_share_fb,survey x male interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/het/interaction_age_young,robustness/heterogeneity.md,want_share_fb,survey x young interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/het/interaction_education,robustness/heterogeneity.md,want_share_fb,survey x high_educ interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/het/interaction_le_pen,robustness/heterogeneity.md,want_share_fb,survey x Le Pen voter interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/het/interaction_fb_usage,robustness/heterogeneity.md,want_share_fb,survey x FB usage interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/het/interaction_religious,robustness/heterogeneity.md,want_share_fb,survey x religious interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/het/interaction_city,robustness/heterogeneity.md,want_share_fb,survey x city interaction,,,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect.,0.9
+140161-V1,robust/inference/classical_se,robustness/inference_alternatives.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_inference,Same point estimate with classical SE; inference variation.,0.95
+140161-V1,robust/inference/hc2_se,robustness/inference_alternatives.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_inference,Same point estimate with HC2 robust SE; inference variation.,0.95
+140161-V1,robust/inference/hc3_se,robustness/inference_alternatives.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_inference,Same point estimate with HC3 robust SE; inference variation.,0.95
+140161-V1,robust/estimation/logit,methods/discrete_choice.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_method,Logit for binary outcome; same claim different estimator.,0.9
+140161-V1,robust/estimation/probit,methods/discrete_choice.md,want_share_fb,survey (Imposed Fact-Check),G1,baseline,0,1,core_method,Probit for binary outcome; same claim different estimator.,0.9
+140161-V1,robust/placebo/altruism,robustness/placebo_tests.md,altruism,survey (Imposed Fact-Check),,,0,0,noncore_placebo,Placebo outcome (altruism); pre-treatment should be unaffected.,0.95
+140161-V1,robust/placebo/reciprocity,robustness/placebo_tests.md,reciprocity,survey (Imposed Fact-Check),,,0,0,noncore_placebo,Placebo outcome (reciprocity); pre-treatment should be unaffected.,0.95
+140161-V1,robust/placebo/image,robustness/placebo_tests.md,image,survey (Imposed Fact-Check),,,0,0,noncore_placebo,Placebo outcome (image); pre-treatment should be unaffected.,0.95
+140161-V1,robust/treatment/voluntary_fc_bivariate,methods/cross_sectional_ols.md,want_share_fb,survey (Voluntary Fact-Check vs Control),,,0,0,noncore_alt_treatment,Voluntary FC vs control no controls; different treatment arm.,0.85
+140161-V1,robust/treatment/voluntary_fc_strata,methods/cross_sectional_ols.md,want_share_fb,survey (Voluntary Fact-Check vs Control),,,0,0,noncore_alt_treatment,Voluntary FC vs control strata controls; different treatment arm.,0.85
+140161-V1,robust/treatment/voluntary_fc_full,methods/cross_sectional_ols.md,want_share_fb,survey (Voluntary Fact-Check vs Control),,,0,0,noncore_alt_treatment,Voluntary FC vs control all controls; different treatment arm.,0.85

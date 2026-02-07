@@ -1,0 +1,79 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+184341-V2,baseline/sdq_totdiff_e1,methods/cross_sectional_ols.md#baseline,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,1,0,core_controls,Baseline specification for SDQ total difficulties at E1,1.0
+184341-V2,baseline/sdq_emotion_e1,methods/cross_sectional_ols.md#baseline,sdq_emotion_e1,treat,G3,baseline/sdq_emotion_e1,1,0,core_controls,Baseline specification for SDQ emotion subscale at E1,1.0
+184341-V2,baseline/sdq_conduct_e1,methods/cross_sectional_ols.md#baseline,sdq_conduct_e1,treat,G4,baseline/sdq_conduct_e1,1,0,core_controls,Baseline specification for SDQ conduct subscale at E1,1.0
+184341-V2,baseline/sdq_hyper_e1,methods/cross_sectional_ols.md#baseline,sdq_hyper_e1,treat,G5,baseline/sdq_hyper_e1,1,0,core_controls,Baseline specification for SDQ hyperactivity subscale at E1,1.0
+184341-V2,baseline/sdq_peer_e1,methods/cross_sectional_ols.md#baseline,sdq_peer_e1,treat,G6,baseline/sdq_peer_e1,1,0,core_controls,Baseline specification for SDQ peer problems subscale at E1,1.0
+184341-V2,baseline/sdq_totdiff_e2,methods/cross_sectional_ols.md#baseline,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,1,0,core_controls,Baseline specification for SDQ total difficulties at E2,1.0
+184341-V2,baseline/sdq_emotion_e2,methods/cross_sectional_ols.md#baseline,sdq_emotion_e2,treat,G7,baseline/sdq_emotion_e2,1,0,core_controls,Baseline specification for SDQ emotion subscale at E2,1.0
+184341-V2,baseline/sdq_conduct_e2,methods/cross_sectional_ols.md#baseline,sdq_conduct_e2,treat,G8,baseline/sdq_conduct_e2,1,0,core_controls,Baseline specification for SDQ conduct subscale at E2,1.0
+184341-V2,baseline/sdq_hyper_e2,methods/cross_sectional_ols.md#baseline,sdq_hyper_e2,treat,G9,baseline/sdq_hyper_e2,1,0,core_controls,Baseline specification for SDQ hyperactivity subscale at E2,1.0
+184341-V2,baseline/sdq_peer_e2,methods/cross_sectional_ols.md#baseline,sdq_peer_e2,treat,G10,baseline/sdq_peer_e2,1,0,core_controls,Baseline specification for SDQ peer problems subscale at E2,1.0
+184341-V2,robust/control/none,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Removes all controls; same outcome/treatment/sample as G1,0.95
+184341-V2,robust/loo/drop_child_age,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops child_age control,0.95
+184341-V2,robust/loo/drop_gender,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops gender control,0.95
+184341-V2,robust/loo/drop_baseline_literacy_score,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops baseline_literacy_score control,0.95
+184341-V2,robust/loo/drop_baseline_numeracy_score,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops baseline_numeracy_score control,0.95
+184341-V2,robust/loo/drop_pvt_tutor,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops pvt_tutor control,0.95
+184341-V2,robust/loo/drop_birth_order,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops birth_order control,0.95
+184341-V2,robust/loo/drop_children_no,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops children_no control,0.95
+184341-V2,robust/loo/drop_total_income,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops total_income control,0.95
+184341-V2,robust/loo/drop_reli_dummy,robustness/leave_one_out.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Leave-one-out: drops reli_dummy control,0.95
+184341-V2,robust/control/add_child_age,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to child_age,0.95
+184341-V2,robust/control/add_gender,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to gender,0.95
+184341-V2,robust/control/add_baseline_literacy_score,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to literacy,0.95
+184341-V2,robust/control/add_baseline_numeracy_score,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to numeracy,0.95
+184341-V2,robust/control/add_pvt_tutor,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to pvt_tutor,0.95
+184341-V2,robust/control/add_birth_order,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to birth_order,0.95
+184341-V2,robust/control/add_children_no,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to children_no,0.95
+184341-V2,robust/control/add_total_income,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: adds controls up to total_income,0.95
+184341-V2,robust/control/add_reli_dummy,robustness/control_progression.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_controls,Control progression: full controls (matches baseline),0.95
+184341-V2,robust/sample/female_only,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to females; same outcome/treatment,0.9
+184341-V2,robust/sample/male_only,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to males; same outcome/treatment,0.9
+184341-V2,robust/sample/young,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to younger children,0.9
+184341-V2,robust/sample/old,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to older children,0.9
+184341-V2,robust/sample/low_income,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to low-income households,0.9
+184341-V2,robust/sample/high_income,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to high-income households,0.9
+184341-V2,robust/sample/muslim,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to Muslim households,0.9
+184341-V2,robust/sample/non_muslim,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Sample restriction to non-Muslim households,0.9
+184341-V2,robust/sample/winsor_1pct,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Outcome winsorized at 1%; same estimand,0.95
+184341-V2,robust/sample/winsor_5pct,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Outcome winsorized at 5%; same estimand,0.95
+184341-V2,robust/sample/winsor_10pct,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Outcome winsorized at 10%; same estimand,0.95
+184341-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Outcome trimmed at 1%; same estimand,0.95
+184341-V2,robust/sample/trim_5pct,robustness/sample_restrictions.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_sample,Outcome trimmed at 5%; same estimand,0.95
+184341-V2,robust/outcome/standardized,robustness/functional_form.md,sdq_totdiff_e1_std,treat,G1,baseline/sdq_totdiff_e1,0,1,core_funcform,Standardized outcome; rescaling of same estimand,0.95
+184341-V2,robust/form/y_log,robustness/functional_form.md,sdq_totdiff_e1_log,treat,G1,baseline/sdq_totdiff_e1,0,1,core_funcform,Log transformation of outcome,0.9
+184341-V2,robust/form/y_asinh,robustness/functional_form.md,sdq_totdiff_e1_asinh,treat,G1,baseline/sdq_totdiff_e1,0,1,core_funcform,Arcsinh transformation of outcome,0.9
+184341-V2,robust/outcome/binary_high,robustness/functional_form.md,high_difficulties,treat,G1,baseline/sdq_totdiff_e1,0,1,core_funcform,Binary indicator for above-median difficulties,0.85
+184341-V2,robust/se/classical,robustness/clustering_variations.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_inference,Classical (homoskedastic) SEs; same point estimate,0.95
+184341-V2,robust/se/hc2,robustness/clustering_variations.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_inference,HC2 robust SEs; same point estimate,0.95
+184341-V2,robust/se/hc3,robustness/clustering_variations.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_inference,HC3 robust SEs; same point estimate,0.95
+184341-V2,robust/cluster/union,robustness/clustering_variations.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_inference,Clustered SEs by union; same point estimate,0.95
+184341-V2,robust/estimation/no_fe,methods/cross_sectional_ols.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_fe,Drops all fixed effects; same outcome/treatment,0.9
+184341-V2,robust/estimation/grade_fe_only,methods/cross_sectional_ols.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_fe,Only grade FE; drops union FE,0.9
+184341-V2,robust/estimation/union_fe_only,methods/cross_sectional_ols.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,1,core_fe,Only union FE; drops grade FE,0.9
+184341-V2,robust/het/interaction_gender,robustness/heterogeneity.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,0,noncore_heterogeneity,Interaction term changes estimand to conditional ATE,0.85
+184341-V2,robust/het/interaction_age,robustness/heterogeneity.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,0,noncore_heterogeneity,Interaction term changes estimand to conditional ATE,0.85
+184341-V2,robust/het/interaction_income,robustness/heterogeneity.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,0,noncore_heterogeneity,Interaction term changes estimand to conditional ATE,0.85
+184341-V2,robust/het/interaction_baseline_literacy,robustness/heterogeneity.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,0,noncore_heterogeneity,Interaction term changes estimand to conditional ATE,0.85
+184341-V2,robust/het/interaction_baseline_numeracy,robustness/heterogeneity.md,sdq_totdiff_e1,treat,G1,baseline/sdq_totdiff_e1,0,0,noncore_heterogeneity,Interaction term changes estimand to conditional ATE,0.85
+184341-V2,robust/e2/no_controls,robustness/leave_one_out.md,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,0,1,core_controls,No controls for E2 total difficulties,0.95
+184341-V2,robust/e2/sample/female_only,robustness/sample_restrictions.md,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,0,1,core_sample,E2 total difficulties restricted to females,0.9
+184341-V2,robust/e2/sample/male_only,robustness/sample_restrictions.md,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,0,1,core_sample,E2 total difficulties restricted to males,0.9
+184341-V2,robust/e2/estimation/no_fe,methods/cross_sectional_ols.md,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,0,1,core_fe,E2 total difficulties without fixed effects,0.9
+184341-V2,robust/e2/sample/winsor_1pct,robustness/sample_restrictions.md,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,0,1,core_sample,E2 total difficulties winsorized at 1%,0.95
+184341-V2,robust/e2/sample/winsor_5pct,robustness/sample_restrictions.md,sdq_totdiff_e2,treat,G2,baseline/sdq_totdiff_e2,0,1,core_sample,E2 total difficulties winsorized at 5%,0.95
+184341-V2,robust/subscale/sdq_emotion_e1/no_controls,robustness/leave_one_out.md,sdq_emotion_e1,treat,G3,baseline/sdq_emotion_e1,0,1,core_controls,Emotion subscale with no controls,0.95
+184341-V2,robust/subscale/sdq_emotion_e1/female,robustness/sample_restrictions.md,sdq_emotion_e1,treat,G3,baseline/sdq_emotion_e1,0,1,core_sample,Emotion subscale restricted to females,0.9
+184341-V2,robust/subscale/sdq_emotion_e1/male,robustness/sample_restrictions.md,sdq_emotion_e1,treat,G3,baseline/sdq_emotion_e1,0,1,core_sample,Emotion subscale restricted to males,0.9
+184341-V2,robust/subscale/sdq_conduct_e1/no_controls,robustness/leave_one_out.md,sdq_conduct_e1,treat,G4,baseline/sdq_conduct_e1,0,1,core_controls,Conduct subscale with no controls,0.95
+184341-V2,robust/subscale/sdq_conduct_e1/female,robustness/sample_restrictions.md,sdq_conduct_e1,treat,G4,baseline/sdq_conduct_e1,0,1,core_sample,Conduct subscale restricted to females,0.9
+184341-V2,robust/subscale/sdq_conduct_e1/male,robustness/sample_restrictions.md,sdq_conduct_e1,treat,G4,baseline/sdq_conduct_e1,0,1,core_sample,Conduct subscale restricted to males,0.9
+184341-V2,robust/subscale/sdq_hyper_e1/no_controls,robustness/leave_one_out.md,sdq_hyper_e1,treat,G5,baseline/sdq_hyper_e1,0,1,core_controls,Hyperactivity subscale with no controls,0.95
+184341-V2,robust/subscale/sdq_hyper_e1/female,robustness/sample_restrictions.md,sdq_hyper_e1,treat,G5,baseline/sdq_hyper_e1,0,1,core_sample,Hyperactivity subscale restricted to females,0.9
+184341-V2,robust/subscale/sdq_hyper_e1/male,robustness/sample_restrictions.md,sdq_hyper_e1,treat,G5,baseline/sdq_hyper_e1,0,1,core_sample,Hyperactivity subscale restricted to males,0.9
+184341-V2,robust/subscale/sdq_peer_e1/no_controls,robustness/leave_one_out.md,sdq_peer_e1,treat,G6,baseline/sdq_peer_e1,0,1,core_controls,Peer problems subscale with no controls,0.95
+184341-V2,robust/subscale/sdq_peer_e1/female,robustness/sample_restrictions.md,sdq_peer_e1,treat,G6,baseline/sdq_peer_e1,0,1,core_sample,Peer problems subscale restricted to females,0.9
+184341-V2,robust/subscale/sdq_peer_e1/male,robustness/sample_restrictions.md,sdq_peer_e1,treat,G6,baseline/sdq_peer_e1,0,1,core_sample,Peer problems subscale restricted to males,0.9
+184341-V2,robust/placebo/baseline_literacy,robustness/placebo_tests.md,baseline_literacy_score,treat,,,0,0,noncore_placebo,Placebo: treatment on pre-treatment literacy score,1.0
+184341-V2,robust/placebo/baseline_numeracy,robustness/placebo_tests.md,baseline_numeracy_score,treat,,,0,0,noncore_placebo,Placebo: treatment on pre-treatment numeracy score,1.0

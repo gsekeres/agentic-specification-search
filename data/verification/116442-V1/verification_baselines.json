@@ -1,0 +1,24 @@
+{
+  "paper_id": "116442-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116442-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Duopoly entry in US cellular markets increases the number of foggy (dominated) tariff plans offered by wireline carriers.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "log_FOGGYi"
+      ],
+      "baseline_treatment_vars": [
+        "DUOPOLY"
+      ],
+      "notes": "Two-way FE (market + time), controls AP_PEAK + AP_OFFP, clustered at market level. Coef=0.314, p=0.125. The spec did/fe/twoway is an exact duplicate. Several control-addition specs produce identical estimates because added variables are collinear with market FE."
+    }
+  ],
+  "global_notes": "56 total specs. Baseline result is not statistically significant (p=0.125). Significance is highly sensitive to FE structure and clustering. Multiple specs are exact duplicates of baseline due to collinearity with market FE. Dynamic effects use different treatment variables (event-time indicators). Two alternative outcomes (log_PLANS_i, log_EFFPLi) measure different quantities than foggy plans."
+}

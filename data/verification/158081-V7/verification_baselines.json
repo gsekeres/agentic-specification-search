@@ -1,0 +1,24 @@
+{
+  "paper_id": "158081-V7",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/158081-V7",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "College-educated workers have substantially higher WFH share than non-college workers, with a roughly 18 percentage point gap.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "wfh_share"
+      ],
+      "baseline_treatment_vars": [
+        "college"
+      ],
+      "notes": "Baseline regresses wfh_share on college with age, age squared, and female as controls (N=69,373). Descriptive paper, not causal."
+    }
+  ],
+  "global_notes": "Survey data release documenting WFH patterns. Several specs use alternative treatments or outcomes that change the estimand. Race variables show collinearity issues. Heterogeneity specs change sample composition."
+}

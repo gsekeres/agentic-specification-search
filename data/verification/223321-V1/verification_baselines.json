@@ -1,0 +1,26 @@
+{
+  "paper_id": "223321-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/223321-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Children of Mexican immigrant parents who arrived in the US at ages 0-8 are more likely to not identify as Hispanic than children of parents who arrived at ages 9-17.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_no_controls",
+        "baseline_basic_controls"
+      ],
+      "baseline_outcome_vars": [
+        "not_hisp"
+      ],
+      "baseline_treatment_vars": [
+        "par_Arrived0_8"
+      ],
+      "notes": "Three baseline specs represent a control-progression from no controls to full controls. The papers preferred specification is baseline (full controls), which yields an insignificant coefficient (p=0.10). The no-controls and basic-controls baselines are significant but largely driven by confounding through intermarriage."
+    }
+  ],
+  "global_notes": "The paper tests whether parents age at arrival affects childs Hispanic identification. The core claim is sensitive to controls: significant without intermarriage controls but insignificant with full controls. 62 total specs. Heterogeneity interaction specs change the treatment variable to an interaction term and are non-core. The placebo uses a different outcome. Logit/probit are core_method but different scale. Alternative treatment cutoffs test the same concept."
+}

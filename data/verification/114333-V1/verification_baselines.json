@@ -1,0 +1,24 @@
+{
+  "paper_id": "114333-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/114333-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Teams cooperate more (or differently) than individuals in finitely repeated Prisoner Dilemma games, as measured by the cooperation rate.",
+      "expected_sign": "unknown",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "cooperate"
+      ],
+      "baseline_treatment_vars": [
+        "is_team"
+      ],
+      "notes": "The baseline uses the full sample with Block FE and Round FE, clustered at the player level. The paper finds a small positive but insignificant effect (+1.5pp, p=0.74). Expected sign is unknown because the paper documents both directions depending on game phase."
+    }
+  ],
+  "global_notes": "This paper studies team vs individual play in repeated PD. The core claim is about the average cooperation rate difference (is_team -> cooperate). The specification search also includes defection timing outcomes (coop_end_round on a different dataset), alternative game-theoretic outcomes (mutual_coop, mutual_defect, got_suckered, temptation, payoff), a placebo with fake_team treatment, and extensive heterogeneity by block and round. The defection timing analysis uses a different dataset and outcome concept, so it is classified as non-core. Many heterogeneity specs restrict to single blocks or rounds, testing subgroup effects rather than the average treatment effect."
+}

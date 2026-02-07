@@ -1,0 +1,28 @@
+{
+  "paper_id": "195301-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/195301-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Higher share of political prisoners (enemies) in nearby 1952 Gulag camps causes higher wages in modern Russian firms, identified via within-Oblast variation using employee-weighted OLS.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_w_controls_1",
+        "baseline_full_controls",
+        "baseline_no_moscow",
+        "baseline_no_moscow_full"
+      ],
+      "baseline_outcome_vars": [
+        "lnwage"
+      ],
+      "baseline_treatment_vars": [
+        "share_enemies_1952_100"
+      ],
+      "notes": "Five baseline specs differ by control sets and sample (with/without Moscow). All use lnwage, share_enemies_1952_100, Oblast FE, WLS by employees, Gulag cluster SEs."
+    }
+  ],
+  "global_notes": "64 specs total. robust/control/none duplicates baseline. robust/estimation/no_fe flips sign (expected). Unweighted OLS yields near-zero coefficient (0.036), highlighting sensitivity to employee weighting."
+}

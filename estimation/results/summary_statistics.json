@@ -1,0 +1,81 @@
+{
+  "sample_a_claim_level": {
+    "label": "Sample A (claim level)",
+    "n_papers": 40,
+    "n_specs": 40,
+    "specs_per_paper_mean": 1.0,
+    "specs_per_paper_median": 1.0,
+    "specs_per_paper_q1": 1.0,
+    "specs_per_paper_q3": 1.0,
+    "z_abs_mean": 4.895725856021786,
+    "z_abs_median": 3.1724945698964313,
+    "z_abs_sd": 4.498606355132554,
+    "z_abs_q1": 2.4158714673678494,
+    "z_abs_q3": 6.58115688530455,
+    "frac_significant_005": 0.825,
+    "journal_composition": {
+      "AER: Insights": 13,
+      "AEJ: Policy": 11,
+      "AEJ: Applied": 8,
+      "AER": 6,
+      "AEJ: Macro": 2
+    }
+  },
+  "sample_b_all_specs": {
+    "label": "Sample B (all specs)",
+    "n_papers": 95,
+    "n_specs": 6957,
+    "specs_per_paper_mean": 73.23157894736842,
+    "specs_per_paper_median": 67.0,
+    "specs_per_paper_q1": 58.5,
+    "specs_per_paper_q3": 83.5,
+    "z_abs_mean": 3.4943926441825957,
+    "z_abs_median": 2.275697276561829,
+    "z_abs_sd": 3.69341339125286,
+    "z_abs_q1": 1.0484767348303443,
+    "z_abs_q3": 4.376183753152775,
+    "frac_significant_005": 0.5554118154376887,
+    "journal_composition": {
+      "AER": 20,
+      "AEJ: Policy": 11,
+      "AEJ: Applied": 10,
+      "AEJ: Micro": 10,
+      "AER: P&P": 4,
+      "AEJ: Macro": 3
+    }
+  },
+  "sample_b_verified_core": {
+    "label": "Sample B (verified core)",
+    "n_papers": 95,
+    "n_specs": 4812,
+    "specs_per_paper_mean": 50.65263157894737,
+    "specs_per_paper_median": 45.0,
+    "specs_per_paper_q1": 39.0,
+    "specs_per_paper_q3": 58.0,
+    "z_abs_mean": 3.9013782733151454,
+    "z_abs_median": 2.533121166638807,
+    "z_abs_sd": 3.8769309043443885,
+    "z_abs_q1": 1.3929008992967091,
+    "z_abs_q3": 5.016897313619758,
+    "frac_significant_005": 0.6234413965087282,
+    "journal_composition": {
+      "AER": 20,
+      "AEJ: Policy": 11,
+      "AEJ: Applied": 10,
+      "AEJ: Micro": 10,
+      "AER: P&P": 4,
+      "AEJ: Macro": 3
+    }
+  },
+  "i4r_comparison": {
+    "n_papers": 40,
+    "t_orig_mean": 2.8259999999999996,
+    "t_i4r_mean": 2.686,
+    "t_AI_abs_mean": 4.895725856021786,
+    "agreement_counts": {
+      "discrepant": 31,
+      "close": 8,
+      "exact": 1
+    }
+  }
+}

@@ -1,0 +1,59 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+180741-V1,baseline,methods/cross_sectional_ols.md#baseline,recommendincentive,choicebefore,G1,baseline,1,1,core_controls,Primary baseline: choicebefore->recommendincentive assigned prefs full controls,1.0
+180741-V1,baseline_not_assigned,methods/cross_sectional_ols.md#baseline,recommendincentive,choicebefore,G1,baseline,0,0,noncore_diagnostic,Not-assigned subsample; effect expected null; diagnostic,0.9
+180741-V1,baseline_combined,methods/cross_sectional_ols.md#baseline,recommendincentive,choicebefore,G1,baseline_combined,1,1,core_controls,Baseline pooling assigned+not-assigned with interaction terms,1.0
+180741-V1,robust/control/none,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Bivariate regression no controls same outcome/treatment/sample,0.95
+180741-V1,robust/control/demographics,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Demographics only controls same outcome/treatment/sample,0.95
+180741-V1,robust/control/add_incentiveB,robustness/control_progression.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Control progression adding incentiveB,0.95
+180741-V1,robust/control/add_noconflict,robustness/control_progression.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Control progression adding noconflict indicator,0.95
+180741-V1,robust/control/add_interaction,robustness/control_progression.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Control progression adding choicebefore*noconflict interaction,0.95
+180741-V1,robust/control/add_wave_fe,robustness/control_progression.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Control progression adding wave FE,0.95
+180741-V1,robust/control/add_treatment_indicators,robustness/control_progression.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Control progression adding treatment indicators,0.95
+180741-V1,robust/control/drop_age,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Full controls minus age,0.95
+180741-V1,robust/control/drop_female,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Full controls minus female,0.95
+180741-V1,robust/control/drop_incentiveB,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Full controls minus incentiveB,0.95
+180741-V1,robust/control/drop_wave_fe,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Full controls minus wave FE,0.95
+180741-V1,robust/control/add_selfishness,robustness/control_progression.md,recommendincentive,choicebefore,G1,baseline,0,1,core_controls,Adding selfishness control; smaller N due to MPL data,0.9
+180741-V1,robust/inference/classical_se,robustness/inference_alternatives.md,recommendincentive,choicebefore,G1,baseline,0,1,core_inference,Classical non-robust SEs; same coefficient as baseline,0.95
+180741-V1,robust/inference/hc1,robustness/inference_alternatives.md,recommendincentive,choicebefore,G1,baseline,0,1,core_inference,HC1 robust SEs; same coefficient as baseline,0.95
+180741-V1,robust/inference/hc2,robustness/inference_alternatives.md,recommendincentive,choicebefore,G1,baseline,0,1,core_inference,HC2 robust SEs; same coefficient as baseline,0.95
+180741-V1,robust/sample/conflict_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Conflict situations only; same treatment/outcome,0.95
+180741-V1,robust/sample/noconflict_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,No-conflict situations only; tests if effect persists,0.8
+180741-V1,robust/sample/female_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Female participants only subsample,0.95
+180741-V1,robust/sample/male_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Male participants only subsample,0.95
+180741-V1,robust/sample/professionals_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Professionals only subsample,0.95
+180741-V1,robust/sample/mturk_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,MTurk participants only; duplicate of choicefree_only,0.95
+180741-V1,robust/sample/wave1_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Wave 1 only subsample,0.95
+180741-V1,robust/sample/wave2_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Wave 2 only subsample,0.95
+180741-V1,robust/sample/wave3_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Wave 3 only subsample,0.95
+180741-V1,robust/sample/young_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Young participants age<35 subsample,0.95
+180741-V1,robust/sample/old_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,Older participants age>=35 subsample,0.95
+180741-V1,robust/sample/choicefree_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,ChoiceFree treatment only; duplicate of mturk_only,0.95
+180741-V1,robust/sample/paybefore_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,PayBefore incentive first costly treatment only,0.95
+180741-V1,robust/sample/payafter_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,PayAfter quality first costly treatment only,0.95
+180741-V1,robust/treatment/getbefore,robustness/measurement.md,recommendincentive,getbefore,G1,baseline,0,0,noncore_alt_treatment,Treatment=getbefore; same coef as baseline tautological in assigned subsample,0.7
+180741-V1,robust/treatment/getyourchoice,robustness/measurement.md,recommendincentive,getyourchoice,G1,baseline_combined,0,0,noncore_alt_treatment,Treatment=getyourchoice; tests different causal object,0.85
+180741-V1,robust/treatment/interaction_pref_assign,robustness/measurement.md,recommendincentive,choicebefore_X_getbefore,G1,baseline,0,0,noncore_alt_treatment,Treatment is preference*assignment interaction; different estimand,0.8
+180741-V1,robust/outcome/belief,robustness/measurement.md,belief,choicebefore,G1,baseline,0,0,noncore_alt_outcome,Outcome changed to belief continuous; different DV,0.9
+180741-V1,robust/outcome/logitbelief,robustness/measurement.md,logitbelief,choicebefore,G1,baseline,0,0,noncore_alt_outcome,Outcome changed to logit belief; different DV,0.9
+180741-V1,robust/heterogeneity/by_gender,robustness/heterogeneity.md,recommendincentive,choicebefore_X_female,G1,baseline,0,0,noncore_heterogeneity,Treatment is gender interaction; heterogeneity not core claim,0.9
+180741-V1,robust/heterogeneity/by_conflict,robustness/heterogeneity.md,recommendincentive,choicebefore_X_conflict,G1,baseline,0,0,noncore_heterogeneity,Treatment is conflict interaction; heterogeneity test,0.85
+180741-V1,robust/heterogeneity/by_selfishness,robustness/heterogeneity.md,recommendincentive,choicebefore_X_selfish,G1,baseline,0,0,noncore_heterogeneity,Treatment is selfishness interaction; heterogeneity test,0.9
+180741-V1,robust/heterogeneity/by_professionals,robustness/heterogeneity.md,recommendincentive,choicebefore_X_professionals,G1,baseline_combined,0,0,noncore_heterogeneity,Treatment is professional interaction; heterogeneity test,0.9
+180741-V1,robust/heterogeneity/by_age,robustness/heterogeneity.md,recommendincentive,choicebefore_X_age,G1,baseline_combined,0,0,noncore_heterogeneity,Treatment is age interaction; heterogeneity test,0.9
+180741-V1,nochoice/baseline_conflict,methods/cross_sectional_ols.md#baseline,recommendincentive,seeincentivefirst,G2,nochoice/baseline_conflict,1,1,core_controls,NoChoice experiment baseline conflict only,1.0
+180741-V1,nochoice/baseline_noconflict,methods/cross_sectional_ols.md#baseline,recommendincentive,seeincentivefirst,G2,nochoice/baseline_conflict,0,0,noncore_placebo,NoChoice no-conflict; effect expected null; placebo-like,0.85
+180741-V1,nochoice/baseline_combined,methods/cross_sectional_ols.md#baseline,recommendincentive,seeincentivefirst,G2,nochoice/baseline_combined,1,1,core_controls,NoChoice experiment baseline all situations with interaction,1.0
+180741-V1,nochoice/control/none,robustness/leave_one_out.md,recommendincentive,seeincentivefirst,G2,nochoice/baseline_conflict,0,1,core_controls,NoChoice bivariate regression no controls,0.95
+180741-V1,nochoice/sample/female_only,robustness/sample_restrictions.md,recommendincentive,seeincentivefirst,G2,nochoice/baseline_combined,0,1,core_sample,NoChoice female only subsample,0.95
+180741-V1,nochoice/sample/male_only,robustness/sample_restrictions.md,recommendincentive,seeincentivefirst,G2,nochoice/baseline_combined,0,1,core_sample,NoChoice male only subsample,0.95
+180741-V1,demand/baseline,methods/cross_sectional_ols.md#baseline,choicebefore,seeincentivecostly,G3,demand/baseline,1,1,core_controls,Demand baseline: seeincentivecostly predicts choicebefore,1.0
+180741-V1,demand/with_selfishness,methods/cross_sectional_ols.md#baseline,choicebefore,stdalpha,G3,demand/baseline,0,0,noncore_alt_treatment,Treatment changed to stdalpha; different causal object,0.85
+180741-V1,robust/placebo/noconflict_effect,robustness/placebo_tests.md,recommendincentive,choicebefore,G1,baseline,0,0,noncore_placebo,Placebo: choicebefore in no-conflict; identical to noconflict_only,0.9
+180741-V1,robust/funcform/age_squared,robustness/functional_form.md,recommendincentive,choicebefore,G1,baseline,0,1,core_funcform,Adding age-squared to controls; functional form variation,0.95
+180741-V1,robust/funcform/log_age,robustness/functional_form.md,recommendincentive,choicebefore,G1,baseline,0,1,core_funcform,Using log age instead of age; functional form variation,0.95
+180741-V1,robust/sample/high_stakes_10x,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,High stakes 10x subsample assigned preferences,0.9
+180741-V1,robust/sample/high_stakes_100x,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,1,core_sample,High stakes 100x subsample assigned preferences,0.9
+180741-V1,not_assigned/control/none,robustness/leave_one_out.md,recommendincentive,choicebefore,G1,baseline,0,0,noncore_diagnostic,Not-assigned subsample bivariate; diagnostic for G1,0.9
+180741-V1,not_assigned/sample/conflict_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,0,noncore_diagnostic,Not-assigned conflict-only; diagnostic for G1,0.9
+180741-V1,not_assigned/sample/female_only,robustness/sample_restrictions.md,recommendincentive,choicebefore,G1,baseline,0,0,noncore_diagnostic,Not-assigned female only; diagnostic for G1,0.9

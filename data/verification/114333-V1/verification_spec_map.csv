@@ -1,0 +1,85 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+114333-V1,baseline,methods/panel_fixed_effects.md,cooperate,is_team,G1,baseline,1,1,core_controls,"Baseline spec: is_team -> cooperate with Block+Round FE, full sample",1.0
+114333-V1,panel/fe/none,methods/panel_fixed_effects.md,cooperate,is_team,G1,baseline,0,1,core_fe,"Same outcome/treatment, no fixed effects; tests FE sensitivity",0.95
+114333-V1,robust/control/none,robustness/leave_one_out.md,cooperate,is_team,G1,baseline,0,1,core_controls,No controls or FE; stripped-down version of baseline,0.95
+114333-V1,robust/control/add_round,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_controls,Adds round control instead of FE; control variation,0.95
+114333-V1,robust/control/add_block_fe,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_fe,Only Block FE (drops Round FE from baseline),0.95
+114333-V1,robust/control/add_round_fe,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_fe,Only Round FE (drops Block FE from baseline),0.95
+114333-V1,robust/control/full_fe,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_fe,Block+Round FE; matches baseline exactly,0.95
+114333-V1,robust/control/add_lag_coop,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_controls,Adds lagged own cooperation as control,0.9
+114333-V1,robust/control/add_lag_opponent,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_controls,Adds lagged opponent cooperation as control,0.9
+114333-V1,robust/control/full_with_lags,robustness/control_progression.md,cooperate,is_team,G1,baseline,0,1,core_controls,Full model with all lag controls added,0.9
+114333-V1,robust/sample/early_blocks,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,First 5 super-games only; broad sample restriction,0.85
+114333-V1,robust/sample/late_blocks,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Last 5 super-games only; broad sample restriction,0.85
+114333-V1,robust/sample/early_rounds,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Rounds 1-5 only; tests if effect differs in early rounds,0.85
+114333-V1,robust/sample/late_rounds,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Rounds 6-10 only; tests endgame behavior,0.85
+114333-V1,robust/sample/exclude_final_round,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Drops final round; removes endgame effect,0.9
+114333-V1,robust/sample/only_final_round,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,0,noncore_heterogeneity,"Final round only; subgroup analysis of endgame, not avg effect",0.8
+114333-V1,robust/sample/exclude_first_round,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Drops first round; removes initial-move effect,0.9
+114333-V1,robust/sample/first_supergame_only,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,0,noncore_heterogeneity,"Single super-game subsample; heterogeneity, not avg effect test",0.8
+114333-V1,robust/sample/exclude_first_supergame,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Drops first super-game; removes learning phase,0.9
+114333-V1,robust/sample/drop_session_120125_1258,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120125_1450,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120131_1219,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120131_1338,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120208_1601,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120210_1202,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120507_1150,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120507_1457,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120509_1153,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/sample/drop_session_120509_1446,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Leave-one-session-out robustness check,0.95
+114333-V1,robust/outcome/mutual_coop,robustness/outcome_variation.md,mutual_coop,is_team,,,0,0,noncore_alt_outcome,"Different outcome (mutual cooperation), not the baseline claim",0.9
+114333-V1,robust/outcome/mutual_defect,robustness/outcome_variation.md,mutual_defect,is_team,,,0,0,noncore_alt_outcome,"Different outcome (mutual defection), not the baseline claim",0.9
+114333-V1,robust/outcome/defect,robustness/outcome_variation.md,defect,is_team,,,0,0,noncore_alt_outcome,Mechanical complement of cooperate (1-cooperate); redundant,0.9
+114333-V1,robust/outcome/got_suckered,robustness/outcome_variation.md,got_suckered,is_team,,,0,0,noncore_alt_outcome,"Different outcome (got suckered), distinct from coop rate",0.9
+114333-V1,robust/outcome/temptation,robustness/outcome_variation.md,temptation,is_team,,,0,0,noncore_alt_outcome,"Different outcome (temptation payoff), distinct from coop rate",0.9
+114333-V1,robust/outcome/payoff,robustness/outcome_variation.md,outcome,is_team,,,0,0,noncore_alt_outcome,"Different outcome (total payoff), not cooperation rate",0.9
+114333-V1,robust/cluster/none,robustness/inference_variation.md,cooperate,is_team,G1,baseline,0,1,core_inference,Robust (no cluster) SEs instead of player-clustered,0.95
+114333-V1,robust/cluster/session,robustness/inference_variation.md,cooperate,is_team,G1,baseline,0,1,core_inference,Session-level clustering instead of player-level,0.95
+114333-V1,robust/cluster/player,robustness/inference_variation.md,cooperate,is_team,G1,baseline,0,1,core_inference,Player-level clustering; matches baseline,0.95
+114333-V1,robust/cluster/block,robustness/inference_variation.md,cooperate,is_team,G1,baseline,0,1,core_inference,Block-level clustering instead of player-level,0.95
+114333-V1,discrete/binary/logit,methods/discrete_choice.md,cooperate,is_team,G1,baseline,0,1,core_method,Logit instead of LPM; same outcome and treatment,0.9
+114333-V1,discrete/binary/probit,methods/discrete_choice.md,cooperate,is_team,G1,baseline,0,1,core_method,Probit instead of LPM; same outcome and treatment,0.9
+114333-V1,robust/form/quadratic_round,robustness/functional_form.md,cooperate,is_team,G1,baseline,0,1,core_funcform,Quadratic in round instead of round FE,0.9
+114333-V1,robust/form/log_period,robustness/functional_form.md,cooperate,is_team,G1,baseline,0,1,core_funcform,Log period control instead of round FE,0.9
+114333-V1,robust/form/linear_trend,robustness/functional_form.md,cooperate,is_team,G1,baseline,0,1,core_funcform,Linear period trend instead of round FE,0.9
+114333-V1,robust/placebo/round1_only,robustness/placebo.md,cooperate,is_team,,,0,0,noncore_placebo,Round 1 only as placebo for initial cooperation (pre-strategic),0.85
+114333-V1,robust/placebo/randomized_treatment,robustness/placebo.md,cooperate,fake_team,,,0,0,noncore_placebo,Randomized (fake) treatment; classic placebo test,0.95
+114333-V1,robust/het/by_early_late_blocks,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Interaction with early blocks indicator; heterogeneity analysis,0.9
+114333-V1,robust/het/by_early_late_rounds,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Interaction with late rounds indicator; heterogeneity analysis,0.9
+114333-V1,robust/het/by_final_round,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Interaction with final round; heterogeneity analysis,0.9
+114333-V1,robust/het/early_blocks_only,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Blocks 1-5 subsample; same as robust/sample/early_blocks,0.85
+114333-V1,robust/het/late_blocks_only,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Blocks 6-10 subsample; same as robust/sample/late_blocks,0.85
+114333-V1,robust/het/block_1,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_2,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_3,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_4,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_5,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_6,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_7,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_8,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_9,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/block_10,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single block subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_1,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_2,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_3,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_4,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_5,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_6,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_7,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_8,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_9,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,robust/het/round_10,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,"Single round subsample; heterogeneity, not avg effect test",0.9
+114333-V1,custom/defection_timing,methods/panel_fixed_effects.md,coop_end_round,is_team,,,0,0,noncore_alt_outcome,Different outcome (defection timing) on different dataset,0.95
+114333-V1,custom/defection_timing_with_sg,methods/panel_fixed_effects.md,coop_end_round,is_team,,,0,0,noncore_alt_outcome,Different outcome (defection timing) with super game control,0.95
+114333-V1,custom/defection_timing_with_cooppath,methods/panel_fixed_effects.md,coop_end_round,is_team,,,0,0,noncore_alt_outcome,Different outcome (defection timing) with coop path control,0.95
+114333-V1,robust/sample/middle_blocks,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Middle blocks 3-7; trimmed sample restriction,0.85
+114333-V1,robust/sample/middle_rounds,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Rounds 2-9; excludes first and last rounds,0.85
+114333-V1,robust/sample/last_3_blocks,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,Last 3 super-games; experienced-player subsample,0.85
+114333-V1,robust/sample/first_3_blocks,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,1,core_sample,First 3 super-games; early-learning subsample,0.85
+114333-V1,robust/sample/after_mutual_coop,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,0,noncore_heterogeneity,Conditional on prior mutual cooperation; heterogeneity by history,0.8
+114333-V1,robust/sample/after_got_suckered,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,0,noncore_heterogeneity,Conditional on prior suckered outcome; heterogeneity by history,0.8
+114333-V1,robust/sample/opponent_coop_last,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,0,noncore_heterogeneity,Conditional on opponent cooperated last; heterogeneity by history,0.8
+114333-V1,robust/sample/opponent_defect_last,robustness/sample_restriction.md,cooperate,is_team,G1,baseline,0,0,noncore_heterogeneity,Conditional on opponent defected last; heterogeneity by history,0.8
+114333-V1,robust/het/interaction_round,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Interaction with round; heterogeneity analysis of time trend,0.9
+114333-V1,robust/het/interaction_block,robustness/heterogeneity.md,cooperate,is_team,,,0,0,noncore_heterogeneity,Interaction with block; heterogeneity analysis of learning,0.9

@@ -1,0 +1,57 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+116442-V1,baseline,methods/difference_in_differences.md,log_FOGGYi,DUOPOLY,G1,baseline,1,1,core_method,"Baseline: two-way FE DiD with market clustering.",1.0
+116442-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_fe,"Market FE only; drops time FE from baseline.",0.95
+116442-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_fe,"Time FE only; drops market FE from baseline.",0.95
+116442-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_fe,"Exact duplicate of baseline (same coef/SE/p).",0.95
+116442-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_fe,"No fixed effects; pooled OLS.",0.95
+116442-V1,did/controls/none,methods/difference_in_differences.md#control-sets,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"No controls; same FE and clustering as baseline.",0.95
+116442-V1,robust/control/drop_AP_PEAK,robustness/leave_one_out.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Drops AP_PEAK control from baseline.",0.95
+116442-V1,robust/control/drop_AP_OFFP,robustness/leave_one_out.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Drops AP_OFFP control from baseline.",0.95
+116442-V1,robust/control/add_MULTIMKT,robustness/leave_one_out.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Adds MULTIMKT; identical coef due to FE collinearity.",0.85
+116442-V1,robust/control/add_MKT_AGE,robustness/leave_one_out.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Adds MKT_AGE; identical coef due to FE collinearity.",0.85
+116442-V1,did/controls/full,methods/difference_in_differences.md#control-sets,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Full controls including LEAD; coef changes to 0.186.",0.95
+116442-V1,robust/outcome/SHFOGGYi,robustness/functional_form.md,SHFOGGYi,DUOPOLY,G1,baseline,0,1,core_funcform,"Share of foggy plans; alt measure of same concept.",0.85
+116442-V1,robust/outcome/HHFOGGYi,robustness/functional_form.md,HHFOGGYi,DUOPOLY,G1,baseline,0,1,core_funcform,"HHI of foggy plans; alt measure of same concept.",0.8
+116442-V1,robust/outcome/FOGGYi_levels,robustness/functional_form.md,FOGGYi_count,DUOPOLY,G1,baseline,0,1,core_funcform,"Foggy plan count in levels instead of log.",0.95
+116442-V1,robust/outcome/log_PLANS_i,robustness/functional_form.md,log_PLANS_i,DUOPOLY,G1,baseline,0,0,noncore_alt_outcome,"Total plans not foggy plans; different outcome concept.",0.85
+116442-V1,robust/outcome/log_EFFPLi,robustness/functional_form.md,log_EFFPLi,DUOPOLY,G1,baseline,0,0,noncore_alt_outcome,"Effective (non-dominated) plans; different outcome.",0.85
+116442-V1,robust/cluster/none,robustness/clustering_variations.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_inference,"Robust SEs without clustering; same coef smaller SE.",1.0
+116442-V1,robust/cluster/time,robustness/clustering_variations.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_inference,"Clustering by time instead of market; same coef.",1.0
+116442-V1,robust/sample/early_period,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Restricts to TIME<=15; subsample of baseline.",0.9
+116442-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Trims 5% outliers of outcome variable.",0.95
+116442-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,log_FOGGYi_wins,DUOPOLY,G1,baseline,0,1,core_sample,"Winsorizes outcome at 1%; similar to baseline.",0.95
+116442-V1,robust/sample/exclude_first_year,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Excludes first time period from sample.",0.95
+116442-V1,robust/sample/exclude_last_year,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Excludes last time period from sample.",0.95
+116442-V1,robust/sample/drop_time_5,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Drops TIME=5 observations from sample.",0.95
+116442-V1,robust/sample/drop_time_10,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Drops TIME=10 observations from sample.",0.95
+116442-V1,robust/sample/drop_time_15,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Drops TIME=15 observations from sample.",0.95
+116442-V1,robust/sample/drop_time_20,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Drops TIME=20; identical to baseline (no such obs).",0.7
+116442-V1,robust/sample/drop_time_25,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Drops TIME=25; identical to baseline (no such obs).",0.7
+116442-V1,robust/sample/min_obs_3,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Markets with >=3 obs; minor sample restriction.",0.95
+116442-V1,robust/sample/min_obs_5,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Markets with >=5 obs; drops small markets.",0.95
+116442-V1,robust/sample/min_obs_10,robustness/sample_restrictions.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_sample,"Markets with >=10 obs; drops small markets.",0.95
+116442-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_FOGGYi,DUOPOLY,G1,baseline,0,1,core_funcform,"IHS transform of foggy count instead of log.",0.95
+116442-V1,robust/funcform/levels,robustness/functional_form.md,FOGGYi_count,DUOPOLY,G1,baseline,0,1,core_funcform,"Foggy count in levels; duplicate of FOGGYi_levels.",0.95
+116442-V1,robust/funcform/quadratic_treatment,robustness/functional_form.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_funcform,"Adds DUOPOLY_sq; identical coef (binary treatment).",0.8
+116442-V1,robust/heterogeneity/BELL,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with BELL; tests heterogeneity not main.",0.9
+116442-V1,robust/heterogeneity/REGULAT,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with REGULAT; tests heterogeneity.",0.9
+116442-V1,robust/heterogeneity/MULTIMKT,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with MULTIMKT_high; tests heterogeneity.",0.9
+116442-V1,robust/heterogeneity/POPULAT,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with POPULAT_high; tests heterogeneity.",0.9
+116442-V1,robust/heterogeneity/INCOME,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with INCOME_high; tests heterogeneity.",0.9
+116442-V1,robust/heterogeneity/MKT_AGE,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with MKT_AGE_high; tests heterogeneity.",0.9
+116442-V1,robust/heterogeneity/NORTH,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with NORTH; geographic heterogeneity.",0.9
+116442-V1,robust/heterogeneity/WEST,robustness/heterogeneity.md,log_FOGGYi,DUOPOLY,G1,baseline,0,0,noncore_heterogeneity,"Interaction with WEST; geographic heterogeneity.",0.9
+116442-V1,robust/placebo/fake_timing_lead2,robustness/placebo_tests.md,log_FOGGYi,DUOPOLY_FAKE,G1,baseline,0,0,noncore_placebo,"Fake treatment timing shifted +2 periods; placebo.",1.0
+116442-V1,did/dynamic/lag_1,methods/difference_in_differences.md#dynamic-effects,log_FOGGYi,post_1,G1,baseline,0,0,noncore_diagnostic,"Event-study lag 1; different treatment var post_1.",0.85
+116442-V1,did/dynamic/lag_2,methods/difference_in_differences.md#dynamic-effects,log_FOGGYi,post_2,G1,baseline,0,0,noncore_diagnostic,"Event-study lag 2; different treatment var post_2.",0.85
+116442-V1,did/dynamic/lag_3,methods/difference_in_differences.md#dynamic-effects,log_FOGGYi,post_3,G1,baseline,0,0,noncore_diagnostic,"Event-study lag 3; different treatment var post_3.",0.85
+116442-V1,did/dynamic/lag_4,methods/difference_in_differences.md#dynamic-effects,log_FOGGYi,post_4,G1,baseline,0,0,noncore_diagnostic,"Event-study lag 4; different treatment var post_4.",0.85
+116442-V1,did/dynamic/lag_5,methods/difference_in_differences.md#dynamic-effects,log_FOGGYi,post_5,G1,baseline,0,0,noncore_diagnostic,"Event-study lag 5; different treatment var post_5.",0.85
+116442-V1,did/dynamic/lag_6,methods/difference_in_differences.md#dynamic-effects,log_FOGGYi,post_6,G1,baseline,0,0,noncore_diagnostic,"Event-study lag 6; different treatment var post_6.",0.85
+116442-V1,did/method/first_diff,methods/panel_fixed_effects.md#estimation-method,d_log_FOGGYi,d_DUOPOLY,G1,baseline,0,1,core_method,"First differences estimator; equivalent DiD approach.",0.9
+116442-V1,robust/control/add_step1,robustness/control_progression.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Control progression step 1: AP_PEAK only.",0.95
+116442-V1,robust/control/add_step2,robustness/control_progression.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Control progression step 2: matches baseline controls.",0.95
+116442-V1,robust/control/add_step3,robustness/control_progression.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Adds MULTIMKT; identical coef due to FE collinearity.",0.85
+116442-V1,robust/control/add_step4,robustness/control_progression.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Adds MKT_AGE; identical coef due to FE collinearity.",0.85
+116442-V1,robust/control/add_step5,robustness/control_progression.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Adds LEAD; matches did/controls/full result.",0.95
+116442-V1,robust/control/add_step6,robustness/control_progression.md,log_FOGGYi,DUOPOLY,G1,baseline,0,1,core_controls,"Adds BELL; identical to step5 due to FE collinearity.",0.85

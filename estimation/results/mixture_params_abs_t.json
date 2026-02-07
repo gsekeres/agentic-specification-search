@@ -1,0 +1,554 @@
+{
+  "index": "abs_t",
+  "winsorize_threshold": 20.0,
+  "i4r_benchmark": {
+    "primary": {
+      "distribution": "truncnorm",
+      "truncation_lo": 0.0,
+      "sigma_constraint": null,
+      "pi": {
+        "N": 0.027124948574287957,
+        "H": 0.723418712959957,
+        "L": 0.24945633846575505
+      },
+      "mu": {
+        "N": 0.3799999962124612,
+        "H": 2.438633343061476,
+        "L": 3.6502376861219155
+      },
+      "sigma": {
+        "N": 1.0023067661989455e-06,
+        "H": 0.487973385530792,
+        "L": 0.8028946493062418
+      },
+      "log_likelihood": -34.09803292794774,
+      "aic": 84.19606585589548,
+      "bic": 97.70710148880697,
+      "n_obs": 40,
+      "n_params": 8,
+      "converged": true,
+      "n_iter": 115,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    }
+  },
+  "spec_level": {
+    "equal_weight": {
+      "distribution": "truncnorm",
+      "truncation_lo": 0.0,
+      "sigma_constraint": null,
+      "pi": {
+        "N": 0.8039969804350539,
+        "H": 0.09297497564473639,
+        "L": 0.10302804392020971
+      },
+      "mu": {
+        "N": 0.4539198762621826,
+        "H": 6.908608099033038,
+        "L": 11.815628195000588
+      },
+      "sigma": {
+        "N": 2.324460409546825,
+        "H": 1.219429533529217,
+        "L": 4.146118672622435
+      },
+      "log_likelihood": -15521.898251076347,
+      "aic": 31059.796502152694,
+      "bic": 31114.576531160084,
+      "n_obs": 6957,
+      "n_params": 8,
+      "converged": true,
+      "n_iter": 73,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    "baseline_only": {
+      "distribution": "truncnorm",
+      "truncation_lo": 0.0,
+      "sigma_constraint": null,
+      "pi": {
+        "N": 0.8478151510348086,
+        "H": 0.10263072459152561,
+        "L": 0.049554124373665694
+      },
+      "mu": {
+        "N": 1.2620375430211823,
+        "H": 7.037338317867713,
+        "L": 13.355316669718077
+      },
+      "sigma": {
+        "N": 1.870339864107261,
+        "H": 0.7579844622793287,
+        "L": 3.3895930456644603
+      },
+      "log_likelihood": -539.7423282143452,
+      "aic": 1095.4846564286904,
+      "bic": 1123.9392809222868,
+      "n_obs": 259,
+      "n_params": 8,
+      "converged": true,
+      "n_iter": 44,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    "winsor_sensitivity": {
+      "winsor_15": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": null,
+        "pi": {
+          "N": 0.8468851160839597,
+          "H": 0.11054967467835572,
+          "L": 0.04256520923768466
+        },
+        "mu": {
+          "N": 1.2672158140121443,
+          "H": 7.088984068491603,
+          "L": 13.380800286735688
+        },
+        "sigma": {
+          "N": 1.8609560959705629,
+          "H": 0.8527697410528451,
+          "L": 1.238776018862375
+        },
+        "log_likelihood": -531.9892949934921,
+        "aic": 1079.9785899869842,
+        "bic": 1108.4332144805805,
+        "n_obs": 259,
+        "n_params": 8,
+        "converged": true,
+        "n_iter": 51,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      },
+      "winsor_10": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": null,
+        "pi": {
+          "N": 0.2104872637819373,
+          "H": 0.5957671015080295,
+          "L": 0.1937456347100332
+        },
+        "mu": {
+          "N": 1.2024033333079452e-06,
+          "H": 2.394441036497766,
+          "L": 7.272056475543387
+        },
+        "sigma": {
+          "N": 0.589140329119573,
+          "H": 0.9863801928692241,
+          "L": 1.8730235791643721
+        },
+        "log_likelihood": -517.5276688162725,
+        "aic": 1051.055337632545,
+        "bic": 1079.5099621261413,
+        "n_obs": 259,
+        "n_params": 8,
+        "converged": true,
+        "n_iter": 52,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      }
+    },
+    "trim_sensitivity": {
+      "trim_abs_le_10": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": null,
+        "pi": {
+          "N": 0.19354182997001193,
+          "H": 0.6703238905257769,
+          "L": 0.13613427950421114
+        },
+        "mu": {
+          "N": 8.207048817812413e-07,
+          "H": 2.367557260988501,
+          "L": 6.880151840346633
+        },
+        "sigma": {
+          "N": 0.5280530581523486,
+          "H": 1.093142822176459,
+          "L": 0.9817147427276148
+        },
+        "log_likelihood": -461.21758295043566,
+        "aic": 938.4351659008713,
+        "bic": 966.5425958701911,
+        "n_obs": 248,
+        "n_params": 8,
+        "converged": true,
+        "n_iter": 54,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      },
+      "trim_abs_le_10_sigma_fixed_1": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": "fixed_1",
+        "pi": {
+          "N": 0.30962182553822554,
+          "H": 0.5532039023797423,
+          "L": 0.1371742720820322
+        },
+        "mu": {
+          "N": 7.346303270361329e-09,
+          "H": 2.6243598061435907,
+          "L": 6.86721557648131
+        },
+        "sigma": {
+          "N": 1.0,
+          "H": 1.0,
+          "L": 1.0
+        },
+        "log_likelihood": -462.56000205052965,
+        "aic": 935.1200041010593,
+        "bic": 952.6871478318842,
+        "n_obs": 248,
+        "n_params": 5,
+        "converged": true,
+        "n_iter": 29,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      },
+      "trim_abs_le_10_sigma_geq_1": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": "geq_1",
+        "pi": {
+          "N": 0.3096376898622806,
+          "H": 0.5531858386372195,
+          "L": 0.13717647150050002
+        },
+        "mu": {
+          "N": 4.035710335628593e-23,
+          "H": 2.6244062200723155,
+          "L": 6.8673513638571135
+        },
+        "sigma": {
+          "N": 1.0000002506799952,
+          "H": 1.0,
+          "L": 1.0
+        },
+        "log_likelihood": -462.5600033451673,
+        "aic": 941.1200066903345,
+        "bic": 969.2274366596544,
+        "n_obs": 248,
+        "n_params": 8,
+        "converged": true,
+        "n_iter": 86,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      }
+    }
+  },
+  "spec_level_verified_core": {
+    "z_column": "Z_abs",
+    "all_core": {
+      "distribution": "truncnorm",
+      "truncation_lo": 0.0,
+      "sigma_constraint": null,
+      "pi": {
+        "N": 0.7700583820300959,
+        "H": 0.11326997869378591,
+        "L": 0.11667163927611816
+      },
+      "mu": {
+        "N": 1.4287002577216938,
+        "H": 6.968474191422719,
+        "L": 12.201910460106836
+      },
+      "sigma": {
+        "N": 1.932098989889252,
+        "H": 1.2270131210564605,
+        "L": 4.033981553135801
+      },
+      "log_likelihood": -11214.215591013854,
+      "aic": 22444.431182027707,
+      "bic": 22496.262126644462,
+      "n_obs": 4812,
+      "n_params": 8,
+      "converged": true,
+      "n_iter": 64,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    "baseline_only": {
+      "distribution": "truncnorm",
+      "truncation_lo": 0.0,
+      "sigma_constraint": null,
+      "pi": {
+        "N": 0.7776968643327317,
+        "H": 0.139836998254286,
+        "L": 0.08246613741298231
+      },
+      "mu": {
+        "N": 1.7184363406146472,
+        "H": 6.998710879881974,
+        "L": 13.734594718813753
+      },
+      "sigma": {
+        "N": 1.687548156497006,
+        "H": 0.8189660483740381,
+        "L": 3.6499478589315775
+      },
+      "log_likelihood": -620.8630037201731,
+      "aic": 1257.7260074403462,
+      "bic": 1286.6310322914508,
+      "n_obs": 274,
+      "n_params": 8,
+      "converged": true,
+      "n_iter": 43,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    }
+  },
+  "k_sensitivity": {
+    "K=2": {
+      "truncnorm": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": null,
+        "pi": {
+          "Low": 0.4741040028718994,
+          "High": 0.5258959971281006
+        },
+        "mu": {
+          "Low": 5.499706168463392e-06,
+          "High": 1.4601407523090288
+        },
+        "sigma": {
+          "Low": 7.5990611287543395,
+          "High": 1.6042469476613326
+        },
+        "log_likelihood": -11258.075232666306,
+        "aic": 22526.150465332612,
+        "bic": 22558.544805718084,
+        "n_obs": 4812,
+        "n_params": 5,
+        "converged": true,
+        "n_iter": 44,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      },
+      "gamma": {
+        "distribution": "gamma",
+        "sigma_constraint": null,
+        "pi": {
+          "Low": 0.9211249369736463,
+          "High": 0.07887506302635366
+        },
+        "mu": {
+          "Low": 3.713947992155602,
+          "High": 19.99997651443961
+        },
+        "sigma": {
+          "Low": 4.23509230204189,
+          "High": 0.0019623689528108896
+        },
+        "log_likelihood": -8802.682954191594,
+        "aic": 17615.365908383188,
+        "bic": 17647.76024876866,
+        "n_obs": 4812,
+        "n_params": 5,
+        "converged": true,
+        "n_iter": 38,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      }
+    },
+    "K=3": {
+      "truncnorm": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": null,
+        "pi": {
+          "N": 0.7700620390971984,
+          "H": 0.11326181882080492,
+          "L": 0.11667614208199664
+        },
+        "mu": {
+          "N": 1.4286672347774072,
+          "H": 6.968495334880309,
+          "L": 12.20180863174687
+        },
+        "sigma": {
+          "N": 1.9321402293353314,
+          "H": 1.2269113740578719,
+          "L": 4.034010308844766
+        },
+        "log_likelihood": -11214.21559080761,
+        "aic": 22444.43118161522,
+        "bic": 22496.262126231974,
+        "n_obs": 4812,
+        "n_params": 8,
+        "converged": true,
+        "n_iter": 58,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      },
+      "gamma": {
+        "distribution": "gamma",
+        "sigma_constraint": null,
+        "pi": {
+          "N": 4.189802488892724e-07,
+          "H": 0.8760398471103505,
+          "L": 0.12395973390940065
+        },
+        "mu": {
+          "N": 0.13598778267924821,
+          "H": 4.466371911522135,
+          "L": 20.00023814416898
+        },
+        "sigma": {
+          "N": 5.745243596478639,
+          "H": 5.676280712546847,
+          "L": 0.0016006545221340098
+        },
+        "log_likelihood": -8890.057120301706,
+        "aic": 17796.114240603412,
+        "bic": 17847.945185220167,
+        "n_obs": 4812,
+        "n_params": 8,
+        "converged": true,
+        "n_iter": 46,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      }
+    },
+    "K=4": {
+      "truncnorm": {
+        "distribution": "truncnorm",
+        "truncation_lo": 0.0,
+        "sigma_constraint": null,
+        "pi": {
+          "N": 0.7682411890760573,
+          "H1": 0.14345956140116428,
+          "H2": 0.07021679026795748,
+          "L": 0.01808245925482093
+        },
+        "mu": {
+          "N": 1.4358994218912167,
+          "H1": 7.033793014647587,
+          "H2": 12.567068826940142,
+          "L": 18.619741667335038
+        },
+        "sigma": {
+          "N": 1.9098238696789374,
+          "H1": 1.3989969635449933,
+          "H2": 2.0346714478493455,
+          "L": 0.9496098806292048
+        },
+        "log_likelihood": -11177.672672547455,
+        "aic": 22377.34534509491,
+        "bic": 22448.61289394295,
+        "n_obs": 4812,
+        "n_params": 11,
+        "converged": true,
+        "n_iter": 108,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      },
+      "gamma": {
+        "distribution": "gamma",
+        "sigma_constraint": null,
+        "pi": {
+          "N": 9.708219228062845e-12,
+          "H1": 5.088365364230399e-11,
+          "H2": 0.9192957408171846,
+          "L": 0.08070425912222347
+        },
+        "mu": {
+          "N": 0.286778054893127,
+          "H1": 2.402182187322902,
+          "H2": 3.366174709912446,
+          "L": 19.99995290487446
+        },
+        "sigma": {
+          "N": 6.452679033583986,
+          "H1": 6.646838191899264,
+          "H2": 3.9933943058347015,
+          "L": 0.0026149306997048528
+        },
+        "log_likelihood": -8902.456916816602,
+        "aic": 17826.913833633203,
+        "bic": 17898.181382481245,
+        "n_obs": 4812,
+        "n_params": 11,
+        "converged": true,
+        "n_iter": 50,
+        "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+      }
+    }
+  },
+  "folded_normal_robustness": {
+    "K=2": {
+      "distribution": "foldnorm",
+      "sigma_constraint": "fixed_1",
+      "fix_null_mean_zero": true,
+      "pi": {
+        "Low": 0.5720079059529232,
+        "High": 0.4279920940470769
+      },
+      "mu": {
+        "Low": 0.0,
+        "High": 5.068856176772968
+      },
+      "sigma": {
+        "Low": 1.0,
+        "High": 1.0
+      },
+      "log_likelihood": -11745.52805203044,
+      "aic": 23495.05610406088,
+      "bic": 23507.84072407942,
+      "n_obs": 4413,
+      "n_params": 2,
+      "converged": true,
+      "n_iter": 5,
+      "optimizer_message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL"
+    },
+    "K=3": {
+      "distribution": "foldnorm",
+      "sigma_constraint": "fixed_1",
+      "fix_null_mean_zero": true,
+      "pi": {
+        "N": 0.27915319360669505,
+        "H": 0.5436842696848416,
+        "L": 0.17716253670846324
+      },
+      "mu": {
+        "N": 0.0,
+        "H": 2.7240447681653954,
+        "L": 7.063719095395908
+      },
+      "sigma": {
+        "N": 1.0,
+        "H": 1.0,
+        "L": 1.0
+      },
+      "log_likelihood": -9095.226495347504,
+      "aic": 18198.45299069501,
+      "bic": 18224.022230732087,
+      "n_obs": 4413,
+      "n_params": 4,
+      "converged": true,
+      "n_iter": 8,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    },
+    "K=4": {
+      "distribution": "foldnorm",
+      "sigma_constraint": "fixed_1",
+      "fix_null_mean_zero": true,
+      "pi": {
+        "N": 0.1887528889646997,
+        "H1": 0.5210370682854285,
+        "H2": 0.16207656483813698,
+        "L": 0.1281334779117348
+      },
+      "mu": {
+        "N": 0.0,
+        "H1": 2.115647160294781,
+        "H2": 4.602211652951812,
+        "L": 7.568233397869262
+      },
+      "sigma": {
+        "N": 1.0,
+        "H1": 1.0,
+        "H2": 1.0,
+        "L": 1.0
+      },
+      "log_likelihood": -8939.123589341956,
+      "aic": 17890.247178683912,
+      "bic": 17928.60103873953,
+      "n_obs": 4413,
+      "n_params": 6,
+      "converged": true,
+      "n_iter": 18,
+      "optimizer_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH"
+    }
+  }
+}

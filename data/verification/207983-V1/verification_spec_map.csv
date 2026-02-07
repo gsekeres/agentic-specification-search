@@ -1,0 +1,76 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+207983-V1,baseline,methods/cross_sectional_ols.md,y,small_class,G1,baseline,1,1,core_controls,Primary baseline: small class effect with school FE only,1.0
+207983-V1,baseline_aide,methods/cross_sectional_ols.md,y,aide_class,G2,baseline_aide,1,1,core_controls,Aide treatment baseline: null effect as expected,1.0
+207983-V1,robust/control/none,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/add_female,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/add_whiteasian,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/add_teacher_exp,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/add_white_teacher,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/add_lunch,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/add_masters,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/full,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/loo/drop_female,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/loo/drop_whiteasian,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/loo/drop_teacher_exp,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/loo/drop_white_teacher,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/loo/drop_lunch,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/loo/drop_masters,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/sample/female_only,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/male_only,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/whiteasian_only,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/minority_only,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/freelunch_only,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/nolunch_only,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/trim_10pct,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,y_wins,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,y_wins,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/low_exp_teacher,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/high_exp_teacher,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/masters_teacher,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/sample/no_masters_teacher,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction preserving same estimand,0.9
+207983-V1,robust/cluster/classical,robustness/clustering_variations.md,y,small_class,G1,baseline,0,1,core_inference,"Different SE calculation, same point estimate",0.95
+207983-V1,robust/cluster/hc1,robustness/clustering_variations.md,y,small_class,G1,baseline,0,1,core_inference,"Different SE calculation, same point estimate",0.95
+207983-V1,robust/cluster/hc2,robustness/clustering_variations.md,y,small_class,G1,baseline,0,1,core_inference,"Different SE calculation, same point estimate",0.95
+207983-V1,robust/cluster/hc3,robustness/clustering_variations.md,y,small_class,G1,baseline,0,1,core_inference,"Different SE calculation, same point estimate",0.95
+207983-V1,robust/cluster/school,robustness/clustering_variations.md,y,small_class,G1,baseline,0,1,core_inference,"Different SE calculation, same point estimate",0.95
+207983-V1,robust/form/y_standardized,robustness/functional_form.md,y_std,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/form/y_log,robustness/functional_form.md,y_log,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/form/y_asinh,robustness/functional_form.md,y_asinh,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/form/y_rank,robustness/functional_form.md,y_rank,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/form/quantile_25,robustness/functional_form.md,y,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/form/quantile_50,robustness/functional_form.md,y,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/form/quantile_75,robustness/functional_form.md,y,small_class,G1,baseline,0,1,core_funcform,Functional form change preserving treatment effect direction,0.9
+207983-V1,robust/estimation/no_fe,methods/cross_sectional_ols.md#fixed-effects,y,small_class,G1,baseline,0,1,core_fe,Removes school FE; tests sensitivity to FE structure,0.9
+207983-V1,robust/estimation/fe_with_controls,methods/cross_sectional_ols.md#fixed-effects,y,small_class,G1,baseline,0,1,core_controls,FE with full controls; tests sensitivity to controls,0.9
+207983-V1,robust/het/interaction_gender,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,Interaction model; reported coef is for omitted category not average,0.85
+207983-V1,robust/het/interaction_race,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,Interaction model; reported coef is for omitted category not average,0.85
+207983-V1,robust/het/interaction_ses,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,Interaction model; reported coef is for omitted category not average,0.85
+207983-V1,robust/het/interaction_teacher_exp,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,Interaction model; reported coef is for omitted category not average,0.85
+207983-V1,robust/het/interaction_teacher_edu,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,Interaction model; reported coef is for omitted category not average,0.85
+207983-V1,robust/het/by_gender_male,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,"Subsample split for heterogeneity, not average effect",0.8
+207983-V1,robust/het/by_gender_female,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,"Subsample split for heterogeneity, not average effect",0.8
+207983-V1,robust/het/by_race_whiteasian,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,"Subsample split for heterogeneity, not average effect",0.8
+207983-V1,robust/het/by_race_minority,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,"Subsample split for heterogeneity, not average effect",0.8
+207983-V1,robust/het/by_ses_low,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,"Subsample split for heterogeneity, not average effect",0.8
+207983-V1,robust/het/by_ses_high,robustness/heterogeneity.md,y,small_class,G1,baseline,0,0,noncore_heterogeneity,"Subsample split for heterogeneity, not average effect",0.8
+207983-V1,robust/treatment/any_vs_control,methods/cross_sectional_ols.md,y,any_treatment,G1,baseline,0,0,noncore_alt_treatment,Any treatment vs control; different treatment definition,0.9
+207983-V1,robust/treatment/small_vs_control,methods/cross_sectional_ols.md,y,small_class,G1,baseline,0,1,core_sample,Drops aide arm from sample; same treatment definition,0.85
+207983-V1,robust/treatment/aide_vs_control,methods/cross_sectional_ols.md,y,aide_class,G2,baseline_aide,0,1,core_sample,Aide vs control only; drops small class arm,0.85
+207983-V1,robust/treatment/small_vs_aide,methods/cross_sectional_ols.md,y,small_vs_aide,,,0,0,noncore_alt_treatment,Small vs aide comparison; different reference group,0.9
+207983-V1,robust/placebo/teacher_exp,robustness/placebo_tests.md,teacher_exp,small_class,G1,baseline,0,0,noncore_placebo,Placebo/balance test with predetermined outcome,0.95
+207983-V1,robust/placebo/white_teacher,robustness/placebo_tests.md,white_teacher_int,small_class,G1,baseline,0,0,noncore_placebo,Placebo/balance test with predetermined outcome,0.95
+207983-V1,robust/placebo/masters,robustness/placebo_tests.md,masters_int_out,small_class,G1,baseline,0,0,noncore_placebo,Placebo/balance test with predetermined outcome,0.95
+207983-V1,robust/placebo/female_balance,robustness/placebo_tests.md,female_int,small_class,G1,baseline,0,0,noncore_placebo,Placebo/balance test with predetermined outcome,0.95
+207983-V1,robust/placebo/race_balance,robustness/placebo_tests.md,whiteasian_int,small_class,G1,baseline,0,0,noncore_placebo,Placebo/balance test with predetermined outcome,0.95
+207983-V1,robust/sample/girls_only,robustness/sample_restrictions.md,enroll_attend_May2010,lct_father,,,0,0,noncore_alt_outcome,"Different dataset (Benhassine Morocco CCT), not STAR",0.95
+207983-V1,robust/sample/boys_only,robustness/sample_restrictions.md,enroll_attend_May2010,lct_father,,,0,0,noncore_alt_outcome,"Different dataset (Benhassine Morocco CCT), not STAR",0.95
+207983-V1,robust/control/demographics_only,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/teacher_only,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/control/student_teacher,robustness/leave_one_out.md,y,small_class,G1,baseline,0,1,core_controls,Varies controls while keeping same outcome/treatment/FE,0.95
+207983-V1,robust/sample/low_performers,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction by performance quartile,0.7
+207983-V1,robust/sample/high_performers,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction by performance quartile,0.7
+207983-V1,robust/sample/middle_performers,robustness/sample_restrictions.md,y,small_class,G1,baseline,0,1,core_sample,Sample restriction by performance quartile,0.7
+207983-V1,robust/inference/aide_baseline,robustness/inference_alternatives.md,y,aide_class,G2,baseline_aide,0,1,core_controls,Aide treatment with controls variation,0.9
+207983-V1,robust/inference/aide_full_controls,robustness/inference_alternatives.md,y,aide_class,G2,baseline_aide,0,1,core_controls,Aide treatment with controls variation,0.9

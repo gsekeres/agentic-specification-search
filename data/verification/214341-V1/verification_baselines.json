@@ -1,0 +1,73 @@
+{
+  "paper_id": "214341-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/214341-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Workers on online gig platforms earn positive markup relative to their minimum willingness to accept (WTA), with mean markup > 1.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_weighted"
+      ],
+      "baseline_outcome_vars": [
+        "hrly_surp_rel_min"
+      ],
+      "baseline_treatment_vars": [
+        "mean_surplus"
+      ],
+      "notes": "Unweighted ~1.24 (24% markup); IPW-weighted ~1.38. Both means of hourly surplus ratio."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Workers earn positive markup relative to their ex-post willingness to accept, with mean markup > 1.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_weighted"
+      ],
+      "baseline_outcome_vars": [
+        "hrly_surp_rel_expost"
+      ],
+      "baseline_treatment_vars": [
+        "mean_surplus"
+      ],
+      "notes": "Unweighted ~1.16 (16% markup); IPW-weighted ~1.15. Ex-post WTA based on actual job experience."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Workers earn positive markup relative to their outside wage, with mean markup > 1.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_weighted"
+      ],
+      "baseline_outcome_vars": [
+        "hrly_surp_rel_outside"
+      ],
+      "baseline_treatment_vars": [
+        "mean_surplus"
+      ],
+      "notes": "Unweighted ~1.50 (50% markup); IPW-weighted ~1.23. Smaller sample (n=46) due to missing outside wage."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Workers earn positive markup on fixed-price contracts relative to ex-post WTA, with mean markup > 1.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_weighted"
+      ],
+      "baseline_outcome_vars": [
+        "fixed_surp_rel_expost"
+      ],
+      "baseline_treatment_vars": [
+        "mean_surplus"
+      ],
+      "notes": "Unweighted ~1.87 (87% markup); IPW-weighted ~1.62. Largest markups. n=99 fixed-price contracts."
+    }
+  ],
+  "global_notes": "This paper estimates worker surplus as ratios (wage/WTA) where >1 indicates positive surplus. The treatment_var is coded as mean_surplus for baselines, which is descriptive (not causal regression). spec_ids baseline and baseline_weighted are reused across groups (distinguished by outcome_var). Control variation and OLS predictor specs change treatment to log_numjobs etc., testing different estimands. Heterogeneity specs also use different treatments (c_US, high_experience). Sample restriction and tercile splits are borderline between core_sample and noncore_heterogeneity but are classified as core because they compute the same mean surplus in subsamples rather than testing interaction effects."
+}

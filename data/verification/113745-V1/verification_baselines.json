@@ -1,0 +1,24 @@
+{
+  "paper_id": "113745-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113745-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Public disclosure of politicians financial asset values is associated with better government effectiveness conditional on income democracy and press freedom.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "goveff_96_07"
+      ],
+      "baseline_treatment_vars": [
+        "v_cit_mp_prac_all"
+      ],
+      "notes": "Baseline coef is -0.20 (p=0.14) insignificant. Raw bivariate is positive but conditional on log GNI democracy and press freedom it turns negative."
+    }
+  ],
+  "global_notes": "Cross-country OLS study (Djankov et al. 2010) with 175 countries. Baseline is insignificant (p=0.14). 69 total specs."
+}

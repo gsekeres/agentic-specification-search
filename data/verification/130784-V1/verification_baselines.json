@@ -1,0 +1,69 @@
+{
+  "paper_id": "130784-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/130784-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Child marriage bans reduce the probability of marriage before age 18, with effects proportional to pre-ban regional child marriage prevalence.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "childmarriage"
+      ],
+      "baseline_treatment_vars": [
+        "bancohort_pcdist"
+      ],
+      "notes": "Primary claim. did/fe/twoway and robust/cluster/countryregionurban are exact duplicates of baseline."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Child marriage bans increase years of female education.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "did/sample_full/outcome_educ"
+      ],
+      "baseline_outcome_vars": [
+        "educ"
+      ],
+      "baseline_treatment_vars": [
+        "bancohort_pcdist"
+      ],
+      "notes": "Secondary outcome. robust/outcome/educ is a duplicate."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Child marriage bans increase female employment probability.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "did/sample_full/outcome_employed"
+      ],
+      "baseline_outcome_vars": [
+        "employed"
+      ],
+      "baseline_treatment_vars": [
+        "bancohort_pcdist"
+      ],
+      "notes": "Secondary outcome. robust/outcome/employed is a duplicate."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Child marriage bans increase the age at first marriage.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "did/sample_full/outcome_marriage_age"
+      ],
+      "baseline_outcome_vars": [
+        "marriage_age"
+      ],
+      "baseline_treatment_vars": [
+        "bancohort_pcdist"
+      ],
+      "notes": "Secondary outcome. robust/outcome/marriage_age is a duplicate."
+    }
+  ],
+  "global_notes": "Analyzed using SIMULATED DATA (not actual DHS/MACHEquity data). Many duplicate specs across robust/outcome and did/ branches. Primary claim is G1 (child marriage reduction); G2-G4 are secondary outcomes. Heterogeneity splits classified as noncore since they test subgroup effects."
+}

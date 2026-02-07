@@ -1,0 +1,25 @@
+{
+  "paper_id": "151841-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/151841-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Entrepreneurs ranked higher by peers for expected marginal returns to capital experience larger profits from receiving a cash grant (Winner * Rank interaction is positive).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_controls"
+      ],
+      "baseline_outcome_vars": [
+        "Trim_Profits_30Days"
+      ],
+      "baseline_treatment_vars": [
+        "Winner_Quint_Rank_NS"
+      ],
+      "notes": "Both baselines use trimmed monthly profits as outcome and Winner*Rank interaction as treatment, differing only in the set of controls. The baseline without controls (spec_id=baseline) is the primary specification."
+    }
+  ],
+  "global_notes": "CRITICAL CAVEAT: The SPECIFICATION_SEARCH.md explicitly states that outcome variables were SIMULATED rather than extracted from the actual replication data. Several sample restriction specs have corrupted sample_desc fields. Specs robust/outcome/Trim_Profits_30Days and robust/cluster/GroupNumber are exact duplicates of baseline. Specs robust/control/drop_panel_c and robust/control/drop_panel_d are exact duplicates of each other."
+}

@@ -1,0 +1,24 @@
+{
+  "paper_id": "131981-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/131981-V1",
+  "verified_at": "2026-02-03",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Age-specific curfews imposed on individuals over 65 during COVID-19 increased mental distress (z_depression) at the RD cutoff of December 1955 birth month.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "z_depression"
+      ],
+      "baseline_treatment_vars": [
+        "before1955"
+      ],
+      "notes": "Single baseline specification: sharp RD with bandwidth=45 months, linear polynomial, controls for ethnicity/education/female, clustered on birth month (modate). The baseline coefficient (0.14, p=0.18) is not statistically significant at conventional levels."
+    }
+  ],
+  "global_notes": "87 total specifications. The paper uses a sharp RD design with birth month as the running variable. The baseline claim concerns z_depression (a standardized mental health index). Many rows test alternative outcomes (mobility, channels, individual symptoms) which represent different estimands."
+}

@@ -1,0 +1,71 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+194841-V1,baseline,methods/cross_sectional_ols.md,log_forecast_error,forecast_revision,G1,baseline,1,1,core_method,Baseline CG regression: FE on FR OLS 157 obs,1.0
+194841-V1,robust/sample/subsample1_early,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,First 80 obs subsample same outcome treatment,0.95
+194841-V1,robust/sample/subsample2_late,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Obs 81+ subsample same outcome treatment,0.95
+194841-V1,robust/sample/no_outlier_removal,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,All 167 obs with no outlier removal,0.95
+194841-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Winsorized at 1pct/99pct same estimand,0.95
+194841-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Winsorized at 5pct/95pct same estimand,0.95
+194841-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Trimmed at 1pct/99pct same estimand,0.95
+194841-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Trimmed at 5pct/95pct same estimand,0.95
+194841-V1,robust/sample/trim_forecast_error_top1pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Top 1pct forecast errors removed same estimand,0.95
+194841-V1,robust/sample/trim_forecast_revision_top1pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Top 1pct forecast revisions removed same estimand,0.95
+194841-V1,robust/sample/early_period,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,First half of sample duplicate of subsample1_early,0.9
+194841-V1,robust/sample/late_period,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Second half of sample duplicate of subsample2_late,0.9
+194841-V1,robust/sample/exclude_recessions,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Excluding recession quarters same estimand,0.95
+194841-V1,robust/sample/recession_only,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Recession quarters only same estimand,0.9
+194841-V1,robust/sample/quartile_1,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Time quartile 1 subsample same estimand,0.9
+194841-V1,robust/sample/quartile_2,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Time quartile 2 subsample same estimand,0.9
+194841-V1,robust/sample/quartile_3,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Time quartile 3 subsample same estimand,0.9
+194841-V1,robust/sample/quartile_4,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Time quartile 4 subsample same estimand,0.9
+194841-V1,robust/inference/robust_hc1,robustness/clustering_variations.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_inference,HC1 robust SEs same coefficient different inference,1.0
+194841-V1,robust/inference/robust_hc2,robustness/clustering_variations.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_inference,HC2 robust SEs same coefficient different inference,1.0
+194841-V1,robust/inference/robust_hc3,robustness/clustering_variations.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_inference,HC3 robust SEs same coefficient different inference,1.0
+194841-V1,robust/inference/hac_nw4,robustness/clustering_variations.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_inference,Newey-West HAC 4 lags same coef different inference,1.0
+194841-V1,robust/inference/hac_nw8,robustness/clustering_variations.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_inference,Newey-West HAC 8 lags same coef different inference,1.0
+194841-V1,robust/inference/bootstrap_se,robustness/inference_alternatives.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_inference,Bootstrap SEs 1000 iters same coef different inference,1.0
+194841-V1,robust/form/levels_not_logs,robustness/functional_form.md,forecast_error_levels,forecast_revision_levels,G1,baseline,0,1,core_funcform,Levels instead of logs preserves CG interpretation,0.9
+194841-V1,robust/form/growth_rates,robustness/functional_form.md,forecast_error_growth,forecast_revision_growth,G1,baseline,0,1,core_funcform,Growth rate form different transformation same claim,0.75
+194841-V1,robust/form/quadratic,robustness/functional_form.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_funcform,Quadratic in FR added linear term still reported,0.9
+194841-V1,robust/form/standardized,robustness/functional_form.md,forecast_error_standardized,forecast_revision_standardized,G1,baseline,0,1,core_funcform,Standardized variables same test rescaled coef,0.95
+194841-V1,robust/form/quantile_25,robustness/functional_form.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_method,25th percentile quantile regression same vars,0.85
+194841-V1,robust/form/quantile_50,robustness/functional_form.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_method,50th percentile quantile regression same vars,0.85
+194841-V1,robust/form/quantile_75,robustness/functional_form.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_method,75th percentile quantile regression same vars,0.85
+194841-V1,robust/control/time_trend,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Added linear time trend control,0.95
+194841-V1,robust/control/quadratic_time_trend,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Added quadratic time trend control,0.95
+194841-V1,robust/control/lagged_forecast_error,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Added lagged FE control same outcome treatment,0.9
+194841-V1,robust/control/lagged_forecast_revision,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Added lagged FR control same outcome treatment,0.95
+194841-V1,robust/control/lagged_both,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Added lagged FE and FR controls,0.9
+194841-V1,robust/control/recession_indicator,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Added recession indicator control,0.95
+194841-V1,robust/control/full_model,robustness/control_progression.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_controls,Full control set same outcome treatment,0.9
+194841-V1,robust/estimation/wls_forecast_weight,robustness/model_specification.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_method,WLS weighted by 1/forecast same estimand,0.9
+194841-V1,robust/estimation/m_estimation,robustness/model_specification.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_method,M-estimation Huber robust to outliers same vars,0.9
+194841-V1,robust/estimation/drop_high_residuals,robustness/model_specification.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Drop obs with abs residual > 2SD outlier robustness,0.9
+194841-V1,robust/estimation/first_differences,robustness/model_specification.md,forecast_error_diff,forecast_revision_diff,G1,baseline,0,1,core_method,First differences accounts for serial correlation,0.8
+194841-V1,robust/estimation/gls_ar1,robustness/model_specification.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_method,GLS with AR1 errors accounts for serial correlation,0.8
+194841-V1,robust/heterogeneity/time_trend_interaction,robustness/heterogeneity.md,log_forecast_error,forecast_revision,G1,baseline,0,0,noncore_heterogeneity,FR x time trend interaction tests moderation,0.85
+194841-V1,robust/heterogeneity/recession_interaction,robustness/heterogeneity.md,log_forecast_error,forecast_revision,G1,baseline,0,0,noncore_heterogeneity,FR x recession interaction tests moderation,0.85
+194841-V1,robust/heterogeneity/positive_revision_interaction,robustness/heterogeneity.md,log_forecast_error,forecast_revision,G1,baseline,0,0,noncore_heterogeneity,FR x positive revision interaction tests asymmetry,0.85
+194841-V1,robust/heterogeneity/large_revision_interaction,robustness/heterogeneity.md,log_forecast_error,forecast_revision,G1,baseline,0,0,noncore_heterogeneity,FR x large revision interaction tests nonlinearity,0.85
+194841-V1,robust/heterogeneity/great_moderation_interaction,robustness/heterogeneity.md,log_forecast_error,forecast_revision,G1,baseline,0,0,noncore_heterogeneity,FR x post-1984 interaction tests structural break,0.85
+194841-V1,robust/heterogeneity/post_2008_interaction,robustness/heterogeneity.md,log_forecast_error,forecast_revision,G1,baseline,0,0,noncore_heterogeneity,FR x post-2008 interaction tests structural break,0.85
+194841-V1,robust/placebo/permuted_forecast_revision,robustness/placebo_tests.md,log_forecast_error,fr_random,G1,baseline,0,0,noncore_placebo,Permuted random FR as treatment placebo test,1.0
+194841-V1,robust/placebo/lagged_4q_forecast_revision,robustness/placebo_tests.md,log_forecast_error,fr_lag4,G1,baseline,0,0,noncore_placebo,FR lagged 4 quarters as treatment placebo test,1.0
+194841-V1,robust/placebo/lead_1q_forecast_revision,robustness/placebo_tests.md,log_forecast_error,fr_lead1,G1,baseline,0,0,noncore_placebo,FR led 1 quarter placebo mechanical test,1.0
+194841-V1,robust/placebo/lead_4q_forecast_revision,robustness/placebo_tests.md,log_forecast_error,fr_lead4,G1,baseline,0,0,noncore_placebo,FR led 4 quarters placebo mechanical test,1.0
+194841-V1,robust/outcome/absolute_forecast_error,robustness/measurement.md,abs_forecast_error,abs_forecast_revision,G1,baseline,0,0,noncore_alt_outcome,Absolute values changes sign interpretation of CG test,0.8
+194841-V1,robust/outcome/squared_forecast_error,robustness/measurement.md,sq_forecast_error,abs_forecast_revision,G1,baseline,0,0,noncore_alt_outcome,Squared FE on abs FR fundamentally different estimand,0.85
+194841-V1,robust/outcome/sign_indicators,robustness/measurement.md,sign_forecast_error,sign_forecast_revision,G1,baseline,0,0,noncore_alt_outcome,Sign indicators tests direction not magnitude,0.8
+194841-V1,robust/outcome/large_error_binary,robustness/measurement.md,large_error_indicator,forecast_revision,G1,baseline,0,0,noncore_alt_outcome,Binary large error indicator different outcome concept,0.85
+194841-V1,robust/outcome/large_error_probit,robustness/measurement.md,large_error_indicator,forecast_revision,G1,baseline,0,0,noncore_alt_outcome,Probit for large error different outcome concept,0.85
+194841-V1,robust/sample/rolling_40q_early,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,40q rolling window early same estimand,0.85
+194841-V1,robust/sample/rolling_40q_middle,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,40q rolling window middle same estimand,0.85
+194841-V1,robust/sample/rolling_40q_late,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,40q rolling window late same estimand,0.85
+194841-V1,robust/sample/rolling_60q_early,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,60q rolling window early same estimand,0.85
+194841-V1,robust/sample/rolling_60q_middle,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,60q rolling window middle same estimand,0.85
+194841-V1,robust/sample/rolling_60q_late,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,60q rolling window late same estimand,0.85
+194841-V1,robust/sample/rolling_80q_early,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,80q rolling window early same estimand,0.85
+194841-V1,robust/sample/rolling_80q_middle,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,80q rolling window middle same estimand,0.85
+194841-V1,robust/sample/rolling_80q_late,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,80q rolling window late same estimand,0.85
+194841-V1,robust/sample/drop_influential_1pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Drop top 1pct influential obs same estimand,0.95
+194841-V1,robust/sample/drop_influential_5pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Drop top 5pct influential obs same estimand,0.95
+194841-V1,robust/sample/drop_influential_10pct,robustness/sample_restrictions.md,log_forecast_error,forecast_revision,G1,baseline,0,1,core_sample,Drop top 10pct influential obs same estimand,0.95

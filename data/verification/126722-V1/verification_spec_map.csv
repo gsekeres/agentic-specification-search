@@ -1,0 +1,93 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+126722-V1,baseline,methods/cross_sectional_ols.md,treat_sev_simple_mal,patient_voucher,G1,baseline,1,1,core_controls,Baseline: patient_voucher on treat_sev_simple_mal,1.0
+126722-V1,robust/outcome/RXtreat_sev_simple_mal,robustness/outcome_variations.md,RXtreat_sev_simple_mal,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: doctor-prescribed treatment,0.9
+126722-V1,robust/outcome/treat_severe_mal,robustness/outcome_variations.md,treat_severe_mal,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: severe malaria treatment only,0.9
+126722-V1,robust/outcome/RXtreat_severe_mal,robustness/outcome_variations.md,RXtreat_severe_mal,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: prescribed severe malaria treatment,0.9
+126722-V1,robust/outcome/used_vouchers_admin,robustness/outcome_variations.md,used_vouchers_admin,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: actual voucher usage (mechanism),0.9
+126722-V1,robust/outcome/expected_mal_match_any,robustness/outcome_variations.md,expected_mal_match_any,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: treatment-illness match quality,0.9
+126722-V1,robust/outcome/RXexpected_mal_match_any,robustness/outcome_variations.md,RXexpected_mal_match_any,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: prescribed treatment-illness match,0.9
+126722-V1,robust/control/none,robustness/control_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,No controls; same outcome and treatment,0.95
+126722-V1,robust/control/date_fe_only,robustness/control_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Date FE only; identical to baseline,0.95
+126722-V1,robust/control/basic_patient,robustness/control_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Date FE + basic patient controls added,0.95
+126722-V1,robust/control/full,robustness/control_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Full controls; same outcome and treatment,0.95
+126722-V1,robust/control/drop_num_symptoms,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop num_symptoms control,0.95
+126722-V1,robust/control/drop_daysillness99,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop daysillness99 control,0.95
+126722-V1,robust/control/drop_agepatient,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop agepatient control,0.95
+126722-V1,robust/control/drop_under5,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop under5 control,0.95
+126722-V1,robust/control/drop_genderpatient,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop genderpatient control,0.95
+126722-V1,robust/control/drop_respondent,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop respondent control,0.95
+126722-V1,robust/control/drop_gender,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop gender control,0.95
+126722-V1,robust/control/drop_ethnic_bambara,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop ethnic_bambara control,0.95
+126722-V1,robust/control/drop_speak_french,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop speak_french control,0.95
+126722-V1,robust/control/drop_readwrite_fluent_french,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop readwrite_fluent_french control,0.95
+126722-V1,robust/control/drop_prischoolorless,robustness/leave_one_out.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Leave-one-out: drop prischoolorless control,0.95
+126722-V1,robust/control/add_num_symptoms,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add num_symptoms to controls,0.95
+126722-V1,robust/control/add_daysillness99,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add daysillness99 to controls,0.95
+126722-V1,robust/control/add_agepatient,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add agepatient to controls,0.95
+126722-V1,robust/control/add_under5,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add under5 to controls,0.95
+126722-V1,robust/control/add_genderpatient,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add genderpatient to controls,0.95
+126722-V1,robust/control/add_respondent,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add respondent to controls,0.95
+126722-V1,robust/control/add_gender,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add gender to controls,0.95
+126722-V1,robust/control/add_ethnic_bambara,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add ethnic_bambara to controls,0.95
+126722-V1,robust/control/add_speak_french,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add speak_french to controls,0.95
+126722-V1,robust/control/add_readwrite_fluent_french,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add readwrite_fluent_french to controls,0.95
+126722-V1,robust/control/add_prischoolorless,robustness/control_progression.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Incremental: add prischoolorless to controls,0.95
+126722-V1,robust/treatment/patient_voucher_only,robustness/treatment_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Omits doctor_voucher from model; same treatment+outcome,0.85
+126722-V1,robust/treatment/doctor_voucher_only,robustness/treatment_variations.md,treat_sev_simple_mal,doctor_voucher,,,0,0,noncore_alt_treatment,Different treatment: doctor_voucher not patient_voucher,0.95
+126722-V1,robust/treatment/any_voucher,robustness/treatment_variations.md,treat_sev_simple_mal,any_voucher,,,0,0,noncore_alt_treatment,Different treatment: any_voucher pools both types,0.9
+126722-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_inference,Robust HC1 SEs (unclustered); same estimate,0.95
+126722-V1,robust/cluster/clinic_day,robustness/clustering_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_inference,Clustered by clinic-day; identical to baseline,0.95
+126722-V1,robust/cluster/date,robustness/clustering_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_inference,Clustered by date; same estimate wider SEs,0.95
+126722-V1,robust/sample/under5,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: under5,0.9
+126722-V1,robust/sample/age5plus,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: age5plus,0.9
+126722-V1,robust/sample/male,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: male,0.9
+126722-V1,robust/sample/female,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: female,0.9
+126722-V1,robust/sample/high_malaria_risk,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: high_malaria_risk,0.9
+126722-V1,robust/sample/low_malaria_risk,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: low_malaria_risk,0.9
+126722-V1,robust/sample/trim_daysill_1pct,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: trim_daysill_1pct,0.9
+126722-V1,robust/sample/multiple_symptoms,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: multiple_symptoms,0.9
+126722-V1,robust/sample/single_symptom,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: single_symptom,0.9
+126722-V1,robust/sample/non_pregnant,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: non_pregnant,0.9
+126722-V1,robust/sample/french_speaker,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: french_speaker,0.9
+126722-V1,robust/sample/non_french_speaker,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: non_french_speaker,0.9
+126722-V1,robust/het/malaria_risk,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher_high,,,0,0,noncore_heterogeneity,Reports interaction coef (patient_voucher_high) not main,0.95
+126722-V1,robust/het/under5,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with under5 interaction,0.85
+126722-V1,robust/het/gender,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with gender interaction,0.85
+126722-V1,robust/het/num_symptoms,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with num_symptoms interaction,0.85
+126722-V1,robust/het/patient_info,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with patient_info interaction,0.85
+126722-V1,robust/het/education,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with education interaction,0.85
+126722-V1,robust/het/days_ill,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with days_ill interaction,0.85
+126722-V1,robust/het/ethnicity,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with ethnicity interaction,0.85
+126722-V1,robust/funcform/pred_mal_continuous,robustness/functional_form.md,pred_mal_pos,patient_voucher,,,0,0,noncore_alt_outcome,Func form but different outcome: pred_mal_pos,0.9
+126722-V1,robust/funcform/expected_match,robustness/functional_form.md,expected_mal_match_any,patient_voucher,,,0,0,noncore_alt_outcome,Func form but different outcome: expected match,0.9
+126722-V1,robust/placebo/pred_mal_no_effect,robustness/placebo_tests.md,pred_mal_pos,patient_voucher,,,0,0,noncore_placebo,Placebo: voucher should not affect pred malaria,0.95
+126722-V1,robust/placebo/age_no_effect,robustness/placebo_tests.md,agepatient,patient_voucher,,,0,0,noncore_placebo,Placebo: voucher should not affect patient age,0.95
+126722-V1,robust/placebo/daysill_no_effect,robustness/placebo_tests.md,daysillness99,patient_voucher,,,0,0,noncore_placebo,Placebo: voucher should not affect days ill,0.95
+126722-V1,robust/placebo/symptoms_no_effect,robustness/placebo_tests.md,num_symptoms,patient_voucher,,,0,0,noncore_placebo,Placebo: voucher should not affect symptom count,0.95
+126722-V1,robust/sample/moderate_risk,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: moderate_risk,0.9
+126722-V1,robust/sample/patient_respondent,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: patient_respondent,0.9
+126722-V1,robust/sample/literate,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: literate,0.9
+126722-V1,robust/sample/illiterate,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: illiterate,0.9
+126722-V1,robust/outcome/severe_full_controls,robustness/outcome_variations.md,treat_severe_mal,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: severe malaria treatment only,0.9
+126722-V1,robust/outcome/prescribed_full_controls,robustness/outcome_variations.md,RXtreat_sev_simple_mal,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: doctor-prescribed treatment,0.9
+126722-V1,robust/outcome/voucher_usage_full_controls,robustness/outcome_variations.md,used_vouchers_admin,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: actual voucher usage (mechanism),0.9
+126722-V1,robust/control/include_doc_info,robustness/control_variations.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_controls,Add doctor info treatment as control,0.95
+126722-V1,robust/sample/young_below_median,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: young_below_median,0.9
+126722-V1,robust/sample/old_above_median,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: old_above_median,0.9
+126722-V1,robust/sample/bambara,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: bambara,0.9
+126722-V1,robust/sample/non_bambara,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: non_bambara,0.9
+126722-V1,robust/sample/higher_education,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: higher_education,0.9
+126722-V1,robust/sample/primary_or_less,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: primary_or_less,0.9
+126722-V1,robust/sample/short_illness,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: short_illness,0.9
+126722-V1,robust/sample/long_illness,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: long_illness,0.9
+126722-V1,robust/sample/no_patient_info,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: no_patient_info,0.9
+126722-V1,robust/sample/with_patient_info,robustness/sample_restrictions.md,treat_sev_simple_mal,patient_voucher,G1,baseline,0,1,core_sample,Sample restriction: with_patient_info,0.9
+126722-V1,robust/outcome/expected_mal_match_any_pos,robustness/outcome_variations.md,expected_mal_match_any_pos,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: positive match component,0.9
+126722-V1,robust/outcome/expected_mal_match_any_neg,robustness/outcome_variations.md,expected_mal_match_any_neg,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: negative match component,0.9
+126722-V1,robust/outcome/RXexpected_mal_match_any_pos,robustness/outcome_variations.md,RXexpected_mal_match_any_pos,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: prescribed positive match,0.9
+126722-V1,robust/outcome/RXexpected_mal_match_any_neg,robustness/outcome_variations.md,RXexpected_mal_match_any_neg,patient_voucher,,,0,0,noncore_alt_outcome,Alt outcome: prescribed negative match,0.9
+126722-V1,robust/het/continuous_age,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with continuous_age interaction,0.85
+126722-V1,robust/het/pred_malaria_continuous,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with pred_malaria_continuous interaction,0.85
+126722-V1,robust/het/french_speaking,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with french_speaking interaction,0.85
+126722-V1,robust/het/literacy,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher,,,0,0,noncore_heterogeneity,Het: main effect from model with literacy interaction,0.85
+126722-V1,robust/het/risk_x_info,robustness/heterogeneity.md,treat_sev_simple_mal,patient_voucher_high,,,0,0,noncore_heterogeneity,Reports interaction coef (patient_voucher_high) not main,0.95

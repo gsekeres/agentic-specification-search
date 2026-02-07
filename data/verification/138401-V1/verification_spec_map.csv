@@ -1,0 +1,39 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+138401-V1,baseline,methods/panel_fixed_effects.md,employed,treatment,G1,baseline,1,1,core_method,Primary employment baseline specification.,1.0
+138401-V1,baseline_lnwage,methods/panel_fixed_effects.md,lnwage,treatment,G2,baseline_lnwage,1,1,core_method,Primary log wage baseline specification.,1.0
+138401-V1,robust/control/none,robustness/leave_one_out.md,employed,treatment,G1,baseline,0,1,core_controls,Drops all controls; same outcome/treatment/FE.,0.95
+138401-V1,robust/control/only_black,robustness/leave_one_out.md,employed,treatment,G1,baseline,0,1,core_controls,Drops female control; identical coef/SE suspicious but plausible.,0.7
+138401-V1,robust/control/only_female,robustness/leave_one_out.md,employed,treatment,G1,baseline,0,1,core_controls,Drops black control; coef matches no-controls spec.,0.85
+138401-V1,robust/fe/bpl_only,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_fe,Only birthplace FE; drops birthyr and year FE. Sign flips.,0.8
+138401-V1,robust/fe/year_only,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_fe,Only year FE; drops bpl and birthyr FE. Sign flips.,0.8
+138401-V1,robust/fe/birthyr_only,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_fe,Only birthyear FE; same sign as baseline.,0.85
+138401-V1,robust/fe/bpl_year,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_fe,BPL + year FE only; drops birthyr FE. Sign flips.,0.8
+138401-V1,robust/cluster/bpl,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_inference,Clusters at state level; same coef different SE.,0.95
+138401-V1,robust/cluster/birthyr,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_inference,Clusters at birthyear; same coef different SE.,0.95
+138401-V1,robust/cluster/robust_se,robustness/clustering_variations.md,employed,treatment,G1,baseline,0,1,core_inference,Robust SEs instead of clustered; same coef different SE.,0.95
+138401-V1,robust/sample/males,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,0,invalid,INVALID: Same coef/SE/N as baseline; male filter failed.,0.99
+138401-V1,robust/sample/white,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,White subsample; different coef and N confirm filter worked.,0.9
+138401-V1,robust/sample/black,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Black subsample; different coef and N confirm filter worked.,0.9
+138401-V1,robust/sample/pre_vaccine,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,0,noncore_placebo,Pre-vaccine cohorts are a placebo/falsification test.,0.85
+138401-V1,robust/sample/post_vaccine,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Post-vaccine cohorts; restricted sample tests same claim.,0.85
+138401-V1,robust/sample/young,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Age<45 subsample; different coef and N confirm filter worked.,0.85
+138401-V1,robust/sample/older,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Age>=45 subsample; different coef and N confirm filter worked.,0.85
+138401-V1,robust/sample/drop_year_2005,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,0,invalid,INVALID: Same coef/SE/N as baseline; year filter failed.,0.99
+138401-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,0,invalid,INVALID: Same coef/SE/N as baseline; year filter failed.,0.99
+138401-V1,robust/sample/drop_year_2015,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,0,invalid,INVALID: Same coef/SE/N as baseline; year filter failed.,0.99
+138401-V1,robust/outcome/lnwage,robustness/functional_form.md,lnwage,treatment,G2,baseline_lnwage,0,0,invalid,INVALID: Perfect duplicate of baseline_lnwage.,0.99
+138401-V1,robust/heterogeneity/black,robustness/heterogeneity.md,employed,treat_x_black,G1,baseline,0,0,noncore_heterogeneity,Interaction treatment x black; tests differential effect.,0.95
+138401-V1,robust/placebo/random,robustness/placebo.md,employed,placebo_treatment,G1,baseline,0,0,noncore_placebo,Randomly permuted treatment; falsification test.,0.99
+138401-V1,robust/sample/drop_northeast,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Drops northeast; different coef and N confirm filter worked.,0.9
+138401-V1,robust/sample/drop_south,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Drops south; different coef and N confirm filter worked.,0.9
+138401-V1,robust/sample/drop_midwest,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Drops midwest; different coef and N confirm filter worked.,0.9
+138401-V1,robust/sample/drop_west,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Drops west; different coef and N confirm filter worked.,0.9
+138401-V1,robust/funcform/winsorized,robustness/functional_form.md,lnwage_wins,treatment,G2,baseline_lnwage,0,1,core_funcform,Winsorized log wage at 1%/99%; same treatment/sample.,0.9
+138401-V1,robust/sample/years_2000_2008,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Restricts to 2000-2008; different N confirms filter worked.,0.85
+138401-V1,robust/sample/years_2009_2017,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Restricts to 2009-2017; different N confirms filter worked.,0.85
+138401-V1,robust/sample/cohort_1940s,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,0,noncore_placebo,1940s cohort is pre-vaccine; limited exposure is a placebo test.,0.8
+138401-V1,robust/sample/cohort_1950s,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,1950s cohort with partial vaccine exposure; tests same claim.,0.8
+138401-V1,robust/sample/cohort_1960s,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,1960s cohort with full vaccine exposure; tests same claim.,0.85
+138401-V1,robust/sample/drop_top5_measles,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Drops top 5 measles states; different coef/N confirm filter.,0.9
+138401-V1,robust/sample/drop_bottom5_measles,robustness/sample_restrictions.md,employed,treatment,G1,baseline,0,1,core_sample,Drops bottom 5 measles states; different coef/N confirm filter.,0.9
+138401-V1,robust/outcome/lnwage_males,robustness/sample_restrictions.md,lnwage,treatment,G2,baseline_lnwage,0,0,invalid,INVALID: Same coef/SE/N as baseline_lnwage; male filter failed.,0.99

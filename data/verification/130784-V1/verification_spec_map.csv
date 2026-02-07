@@ -1,0 +1,78 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+130784-V1,baseline,methods/difference_in_differences.md#baseline,childmarriage,bancohort_pcdist,G1,baseline,1,1,core_method,Canonical baseline: childmarriage on bancohort_pcdist with full FE,1.0
+130784-V1,robust/outcome/childmarriage17,robustness/measurement.md,childmarriage17,bancohort_pcdist,G1,baseline,0,1,core_funcform,Alternative marriage threshold (before 17 vs 18); same claim,0.9
+130784-V1,robust/outcome/childmarriage16,robustness/measurement.md,childmarriage16,bancohort_pcdist,G1,baseline,0,1,core_funcform,Alternative marriage threshold (before 16); same claim concept,0.85
+130784-V1,robust/outcome/childmarriage15,robustness/measurement.md,childmarriage15,bancohort_pcdist,G1,baseline,0,1,core_funcform,Alternative marriage threshold (before 15); same claim concept,0.8
+130784-V1,robust/outcome/childmarriage14,robustness/measurement.md,childmarriage14,bancohort_pcdist,G1,baseline,0,0,noncore_placebo,Marriage before 14 is far below ban age; acts as placebo test,0.85
+130784-V1,robust/outcome/marriage_age,robustness/measurement.md,marriage_age,bancohort_pcdist,G4,did/sample_full/outcome_marriage_age,0,1,core_funcform,Duplicate of G4 baseline; continuous marriage age outcome,0.95
+130784-V1,robust/outcome/educ,robustness/measurement.md,educ,bancohort_pcdist,G2,did/sample_full/outcome_educ,0,1,core_funcform,Duplicate of G2 baseline; education outcome,0.95
+130784-V1,robust/outcome/employed,robustness/measurement.md,employed,bancohort_pcdist,G3,did/sample_full/outcome_employed,0,1,core_funcform,Duplicate of G3 baseline; employment outcome,0.95
+130784-V1,robust/treatment/bancohort_pcdist2,methods/difference_in_differences.md#treatment-definition,childmarriage,bancohort_pcdist2,G1,baseline,0,1,core_method,Alternative distance-weighted treatment (squared); same estimand,0.9
+130784-V1,robust/treatment/bancohort_pcdist40,methods/difference_in_differences.md#treatment-definition,childmarriage,bancohort_pcdist40,G1,baseline,0,1,core_method,Alternative distance cutoff (40km); same estimand concept,0.9
+130784-V1,robust/treatment/bancohort_pcdist50,methods/difference_in_differences.md#treatment-definition,childmarriage,bancohort_pcdist50,G1,baseline,0,1,core_method,Alternative distance cutoff (50km); same estimand concept,0.9
+130784-V1,robust/treatment/bancohort_pcdist25,methods/difference_in_differences.md#treatment-definition,childmarriage,bancohort_pcdist25,G1,baseline,0,1,core_method,Alternative distance cutoff (25km); same estimand concept,0.9
+130784-V1,robust/treatment/bancohort_pc,methods/difference_in_differences.md#treatment-definition,childmarriage,bancohort_pc,G1,baseline,0,1,core_method,Binary treatment (no intensity weighting); same claim,0.85
+130784-V1,did/fe/countryage_only,methods/difference_in_differences.md#fixed-effects,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_fe,Country-age FE only (drop countryregionurban FE),0.95
+130784-V1,did/fe/countryregionurban_only,methods/difference_in_differences.md#fixed-effects,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_fe,Countryregionurban FE only (drop countryage FE),0.95
+130784-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_fe,Exact duplicate of baseline (both FEs); identical coefficient,0.95
+130784-V1,robust/cluster/countryregionurban,robustness/clustering_variations.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_inference,Same as baseline clustering; duplicate point estimate,0.95
+130784-V1,robust/cluster/country,robustness/clustering_variations.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_inference,Cluster at country level; same coef different SE,0.95
+130784-V1,robust/se/robust,robustness/clustering_variations.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_inference,HC robust SE (no clustering); same coef different SE,0.95
+130784-V1,robust/sample/urban_only,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Urban subsample only; same outcome and treatment,0.9
+130784-V1,robust/sample/rural_only,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Rural subsample only; same outcome and treatment,0.9
+130784-V1,robust/sample/countries_min16,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Countries with baseline min marriage age 16-17 only,0.9
+130784-V1,robust/sample/countries_min14,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Countries with baseline min marriage age 14-15 only,0.9
+130784-V1,robust/sample/countries_nomin,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Countries with no baseline min marriage age only,0.9
+130784-V1,robust/sample/age_control_40,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Control cohort under age 40; trimming older individuals,0.9
+130784-V1,robust/sample/age_control_35,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Control cohort under age 35; trimming older individuals,0.9
+130784-V1,robust/sample/age_control_30,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Control cohort under age 30; trimming older individuals,0.9
+130784-V1,robust/sample/age_15_40,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Ages 15-40 sample restriction,0.9
+130784-V1,robust/sample/age_15_35,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Ages 15-35 sample restriction,0.9
+130784-V1,robust/sample/age_15_30,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Ages 15-30 sample restriction,0.9
+130784-V1,robust/sample/age_18_49,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Ages 18-49 (drop youngest cohorts); same claim,0.9
+130784-V1,robust/sample/age_20_45,robustness/sample_restrictions.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Ages 20-45 sample restriction,0.9
+130784-V1,robust/loo/drop_Albania,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Albania,0.95
+130784-V1,robust/loo/drop_Benin,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Benin,0.95
+130784-V1,robust/loo/drop_Democratic_Republic_,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude DRC,0.95
+130784-V1,robust/loo/drop_Egypt,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Egypt,0.95
+130784-V1,robust/loo/drop_Ethiopia,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Ethiopia,0.95
+130784-V1,robust/loo/drop_Guinea,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Guinea,0.95
+130784-V1,robust/loo/drop_Jordan,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Jordan,0.95
+130784-V1,robust/loo/drop_Kazakhstan,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Kazakhstan,0.95
+130784-V1,robust/loo/drop_Liberia,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Liberia,0.95
+130784-V1,robust/loo/drop_Madagascar,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Madagascar,0.95
+130784-V1,robust/loo/drop_Maldives,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Maldives,0.95
+130784-V1,robust/loo/drop_Namibia,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Namibia,0.95
+130784-V1,robust/loo/drop_Nepal,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Nepal,0.95
+130784-V1,robust/loo/drop_Nigeria,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Nigeria,0.95
+130784-V1,robust/loo/drop_Peru,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Peru,0.95
+130784-V1,robust/loo/drop_Sierra_Leone,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Sierra Leone,0.95
+130784-V1,robust/loo/drop_Togo,robustness/leave_one_out.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Leave-one-out: exclude Togo,0.95
+130784-V1,robust/heterogeneity/by_urban_rural,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Rural subsample heterogeneity; subgroup not overall claim,0.85
+130784-V1,robust/heterogeneity/by_urban_urban,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Urban subsample heterogeneity; subgroup not overall claim,0.85
+130784-V1,robust/heterogeneity/age_young,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Age 15-24 subgroup; heterogeneity not overall estimand,0.85
+130784-V1,robust/heterogeneity/age_middle,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Age 25-34 subgroup; heterogeneity not overall estimand,0.85
+130784-V1,robust/heterogeneity/age_older,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Age 35-49 subgroup; heterogeneity not overall estimand,0.85
+130784-V1,robust/heterogeneity/high_intensity,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Above-median ban intensity subgroup; heterogeneity split,0.85
+130784-V1,robust/heterogeneity/low_intensity,robustness/heterogeneity.md,childmarriage,bancohort_pcdist,G1,baseline,0,0,noncore_heterogeneity,Below-median ban intensity subgroup; heterogeneity split,0.85
+130784-V1,robust/funcform/educ_log,robustness/functional_form.md,educ_log,bancohort_pcdist,G2,did/sample_full/outcome_educ,0,1,core_funcform,Log education outcome; functional form variation of G2,0.9
+130784-V1,robust/funcform/educ_ihs,robustness/functional_form.md,educ_ihs,bancohort_pcdist,G2,did/sample_full/outcome_educ,0,1,core_funcform,IHS education outcome; functional form variation of G2,0.9
+130784-V1,robust/funcform/marriage_age_log,robustness/functional_form.md,marriage_age_log,bancohort_pcdist,G4,did/sample_full/outcome_marriage_age,0,1,core_funcform,Log marriage age; functional form variation of G4,0.9
+130784-V1,robust/funcform/marriage_age_ihs,robustness/functional_form.md,marriage_age_ihs,bancohort_pcdist,G4,did/sample_full/outcome_marriage_age,0,1,core_funcform,IHS marriage age; functional form variation of G4,0.9
+130784-V1,robust/placebo/preban_cohort_trend,robustness/placebo_tests.md,childmarriage,fake_treat_dist,G1,baseline,0,0,noncore_placebo,Pre-ban cohort placebo; fake treatment for parallel trends,0.95
+130784-V1,did/outcome/married_before_17,methods/difference_in_differences.md,childmarriage17,bancohort_pcdist,G1,baseline,0,1,core_funcform,Duplicate of robust/outcome/childmarriage17; marriage before 17,0.9
+130784-V1,did/outcome/married_before_16,methods/difference_in_differences.md,childmarriage16,bancohort_pcdist,G1,baseline,0,1,core_funcform,Duplicate of robust/outcome/childmarriage16; marriage before 16,0.85
+130784-V1,did/outcome/married_before_15,methods/difference_in_differences.md,childmarriage15,bancohort_pcdist,G1,baseline,0,1,core_funcform,Duplicate of robust/outcome/childmarriage15; marriage before 15,0.8
+130784-V1,did/outcome/married_before_14,methods/difference_in_differences.md,childmarriage14,bancohort_pcdist,G1,baseline,0,0,noncore_placebo,Duplicate of robust/outcome/childmarriage14; placebo below ban age,0.85
+130784-V1,did/sample_full/outcome_educ,methods/difference_in_differences.md,educ,bancohort_pcdist,G2,did/sample_full/outcome_educ,1,1,core_method,G2 baseline: education outcome on full sample,1.0
+130784-V1,did/sample_full/outcome_employed,methods/difference_in_differences.md,employed,bancohort_pcdist,G3,did/sample_full/outcome_employed,1,1,core_method,G3 baseline: employment outcome on full sample,1.0
+130784-V1,did/sample_full/outcome_marriage_age,methods/difference_in_differences.md,marriage_age,bancohort_pcdist,G4,did/sample_full/outcome_marriage_age,1,1,core_method,G4 baseline: marriage age outcome on full sample,1.0
+130784-V1,did/sample_urban/outcome_childmarriage,methods/difference_in_differences.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Urban subsample; duplicate of robust/sample/urban_only,0.9
+130784-V1,did/sample_urban/outcome_educ,methods/difference_in_differences.md,educ,bancohort_pcdist,G2,did/sample_full/outcome_educ,0,1,core_sample,Education on urban subsample; sample variation of G2,0.85
+130784-V1,did/sample_urban/outcome_employed,methods/difference_in_differences.md,employed,bancohort_pcdist,G3,did/sample_full/outcome_employed,0,1,core_sample,Employment on urban subsample; sample variation of G3,0.85
+130784-V1,did/sample_urban/outcome_marriage_age,methods/difference_in_differences.md,marriage_age,bancohort_pcdist,G4,did/sample_full/outcome_marriage_age,0,1,core_sample,Marriage age on urban subsample; sample variation of G4,0.85
+130784-V1,did/sample_rural/outcome_childmarriage,methods/difference_in_differences.md,childmarriage,bancohort_pcdist,G1,baseline,0,1,core_sample,Rural subsample; duplicate of robust/sample/rural_only,0.9
+130784-V1,did/sample_rural/outcome_educ,methods/difference_in_differences.md,educ,bancohort_pcdist,G2,did/sample_full/outcome_educ,0,1,core_sample,Education on rural subsample; sample variation of G2,0.85
+130784-V1,did/sample_rural/outcome_employed,methods/difference_in_differences.md,employed,bancohort_pcdist,G3,did/sample_full/outcome_employed,0,1,core_sample,Employment on rural subsample; sample variation of G3,0.85
+130784-V1,did/sample_rural/outcome_marriage_age,methods/difference_in_differences.md,marriage_age,bancohort_pcdist,G4,did/sample_full/outcome_marriage_age,0,1,core_sample,Marriage age on rural subsample; sample variation of G4,0.85
+130784-V1,did/treatment/binary,methods/difference_in_differences.md#treatment-definition,childmarriage,bancohort_pc,G1,baseline,0,1,core_method,Duplicate of robust/treatment/bancohort_pc; binary treatment,0.85
