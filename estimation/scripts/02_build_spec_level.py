@@ -123,6 +123,35 @@ def _expected_sign_to_int(s: str) -> int:
     return 0
 
 
+def _build_bib_journal_map(bib_path: Path) -> dict[str, str]:
+    """Extract paper_id -> journal mapping from replicated_papers.bib.
+
+    Bib keys are expected to contain the paper_id (e.g., 'paper_112345V1').
+    """
+    mapping: dict[str, str] = {}
+    if not bib_path.exists():
+        return mapping
+
+    current_key = ""
+    with open(bib_path, "r") as f:
+        for line in f:
+            # Match bib entry key
+            m = re.match(r"@\w+\{(\S+),", line)
+            if m:
+                current_key = m.group(1)
+                continue
+            # Match journal field
+            m = re.match(r"\s*journal\s*=\s*\{(.+?)\}", line)
+            if m and current_key:
+                journal = m.group(1)
+                # Extract paper_id from bib key (e.g., paper_112345V1 -> 112345-V1)
+                pid_m = re.search(r"(\d{6})[-_]?(V\d+)", current_key, re.IGNORECASE)
+                if pid_m:
+                    paper_id = f"{pid_m.group(1)}-{pid_m.group(2).upper()}"
+                    mapping[paper_id] = journal
+    return mapping
+
+
 def parse_tree_path(spec_tree_path):
     """
     Parse specification tree path into components for distance calculation.
@@ -330,6 +359,34 @@ def main():
     df['year'] = df['paper_id'].map(lambda x: metadata.get(x, {}).get('year', ''))
     df['method'] = df['paper_id'].map(lambda x: metadata.get(x, {}).get('method', ''))
     df['i4r'] = df['paper_id'].map(lambda x: metadata.get(x, {}).get('i4r', False))
+
+    # Fill missing journals from bib file (authoritative source) and normalize
+    bib_file = BASE_DIR.parent / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
+    bib_journal_map = _build_bib_journal_map(bib_file)
+    journal_from_bib = df['paper_id'].map(bib_journal_map)
+    # Use bib journal when available, fall back to existing
+    mask = journal_from_bib.notna() & (journal_from_bib != '')
+    df.loc[mask, 'journal'] = journal_from_bib[mask]
+    # For any remaining blanks, try metadata
+    still_missing = df['journal'].isna() | (df['journal'] == '')
+    journal_from_meta = df['paper_id'].map(lambda x: metadata.get(x, {}).get('journal', ''))
+    df.loc[still_missing, 'journal'] = journal_from_meta[still_missing]
+    # Normalize all journal names to canonical short forms
+    JOURNAL_NORMALIZE = {
+        "American Economic Review": "AER",
+        "American Economic Journal: Applied Economics": "AEJ: Applied",
+        "American Economic Journal: Economic Policy": "AEJ: Policy",
+        "American Economic Journal: Macroeconomics": "AEJ: Macro",
+        "American Economic Journal: Microeconomics": "AEJ: Micro",
+        "American Economic Review: Insights": "AER: Insights",
+        "AERI": "AER: Insights",
+        "AEA Papers and Proceedings": "AER: P&P",
+        "AEJ-Macro": "AEJ: Macro",
+        "AEJ-Applied": "AEJ: Applied",
+        "AEJ-Policy": "AEJ: Policy",
+        "AEJ-Micro": "AEJ: Micro",
+    }
+    df['journal'] = df['journal'].replace(JOURNAL_NORMALIZE)
 
     # Create within-paper ordering (for AR(1) estimation)
     print("\nCreating specification ordering...")

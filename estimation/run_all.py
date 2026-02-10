@@ -106,7 +106,6 @@ def main():
 
         # Mixture extensions
         run_python("12_bootstrap_mixture_ci.py")
-        run_python("14_leave_one_out_cv.py")
         run_python("15_journal_subgroup.py")
         run_python("16_posterior_assignment.py")
 

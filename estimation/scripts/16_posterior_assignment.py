@@ -160,9 +160,9 @@ def main() -> None:
 
     fig, ax = plt.subplots(figsize=(10, 4.5))
 
-    ax.bar(x, p_n, width=1.0, color=COLORS["N"], label="Null (N)", linewidth=0)
-    ax.bar(x, p_h, width=1.0, bottom=p_n, color=COLORS["H"], label="High-impact (H)", linewidth=0)
-    ax.bar(x, p_l, width=1.0, bottom=p_n + p_h, color=COLORS["L"], label="Low-impact (L)", linewidth=0)
+    ax.bar(x, p_n, width=1.0, color=COLORS["N"], label=r"$N$", linewidth=0)
+    ax.bar(x, p_h, width=1.0, bottom=p_n, color=COLORS["H"], label=r"$M$", linewidth=0)
+    ax.bar(x, p_l, width=1.0, bottom=p_n + p_h, color=COLORS["L"], label=r"$E$", linewidth=0)
 
     ax.set_xlim(-0.5, n_specs - 0.5)
     ax.set_ylim(0, 1)
