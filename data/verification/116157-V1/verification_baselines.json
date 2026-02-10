@@ -1,0 +1,32 @@
+{
+  "paper_id": "116157-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116157-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Sophisticated (low expense ratio) investors withdrew significantly more from money market funds during the September 2008 crisis week.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "spec_001"
+      ],
+      "baseline_outcome_vars": [
+        "cum_logflow_12_19_pp"
+      ],
+      "baseline_treatment_vars": [
+        "soph_frac35"
+      ],
+      "baseline_coefficient": -35.789,
+      "baseline_se": 10.852,
+      "baseline_pvalue": 0.001,
+      "baseline_n": 166,
+      "baseline_r_squared": 0.094,
+      "sample_desc": "Prime Inst, ER<=35bp",
+      "controls_desc": "std_expr, std_log_fund_tna, std_avgyield, std_liquid, std_fund_business_ks",
+      "cluster_var": "fundid",
+      "notes": "Table 3 Column 3. Cross-sectional OLS of cumulative log flows (Sept 12-19, 2008) on fraction of fund assets in institutional share classes with ER<=35bp. A one-unit increase in sophisticated investor fraction is associated with 35.8pp more outflow."
+    }
+  ],
+  "global_notes": "Single baseline group. The paper has one primary claim: sophisticated investors (proxied by low expense ratio share classes) ran harder during the crisis. Specifications 044, 045, 069-070 use fund/complex FE with expense ratio as within-fund treatment, which is an alternative identification strategy testing the same underlying claim. Specifications 075-079 are auxiliary (Table 1 first-stage, Table 4 dynamics) supporting identification rather than the main result. spec_025 (incl_retail) produces identical coefficients to spec_001 because the sample restriction ER<=35bp already excludes retail classes."
+}

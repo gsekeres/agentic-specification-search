@@ -1,12 +1,12 @@
 {
   "paper_id": "125821-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/125821-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/125821-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Passing a school operating referendum (vote share >= 50%) increases total school district expenditures per member in Wisconsin.",
+      "claim_summary": "Passing an operating referendum (vote share >= 50%) increases school district total expenditures per member by approximately $641.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "treatment"
       ],
-      "notes": "Single baseline: local linear RDD with bandwidth=10, controls for membership, econ_disadv_percent, urban_centric_locale, above_median, clustered by district_code. Coefficient=641.24, p=0.063. Note that rd/bandwidth/bw10, rd/controls/baseline, rd/kernel/triangular, rd/kernel/uniform, and rd/kernel/epanechnikov all produce identical results to the baseline (exact duplicates). Similarly, rd/poly/global_linear and rd/bandwidth/full are identical."
+      "notes": "RDD with 10pp bandwidth, local linear polynomial, baseline controls (membership, econ_disadv_percent, urban_centric_locale, above_median), clustered by district_code. Coefficient 641.24 (SE 344.34, p=0.063). N=4,240. Marginally significant at 10% level."
     }
   ],
-  "global_notes": "Of 62 total specifications, several spec_ids are exact duplicates of the baseline (identical coefficients, SEs, p-values): rd/bandwidth/bw10, rd/controls/baseline, and all three kernel variants (triangular, uniform, epanechnikov). Also rd/poly/global_linear and rd/bandwidth/full are identical. The kernel specifications appear to not have been implemented with actual kernel weighting, producing spurious robustness that is actually repetition. Alternative outcomes (8 specs) test different claims and are classified as non-core. Placebo cutoff tests (4 specs) and heterogeneity interaction terms (3 specs) are non-core by design."
+  "global_notes": "Paper studies Wisconsin school referendum elections using RDD. The baseline is only marginally significant (p=0.063). The running variable is vote percentage centered at 50%. 79% of specs show positive coefficients. The spec rd/bandwidth/bw10 is an exact duplicate of baseline. Polynomial linear specs at BW=30,45,60 duplicate bandwidth specs. Several kernel specs (triangular, uniform, epanechnikov) produce identical results to baseline."
 }

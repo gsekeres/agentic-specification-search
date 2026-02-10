@@ -1,12 +1,12 @@
 {
   "paper_id": "120483-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120483-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/120483-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Higher malaria ecology (MAL) is associated with a higher share of slaves (slaveratio) in US counties, estimated via cross-sectional OLS with state fixed effects.",
+      "claim_summary": "Higher malaria ecology suitability is associated with higher slave population shares in the early United States, reflecting the relative productivity advantage of African labor in malaria-prone areas.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline",
@@ -23,23 +23,8 @@
       "baseline_treatment_vars": [
         "MAL"
       ],
-      "notes": "Seven baseline specs spanning 1790 and 1860 cross-sections with varying control sets and samples. The primary baselines are baseline_1860_full and baseline_full."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "Malaria ecology affected black population shares in a panel of US states from 1630-1780, using state and year fixed effects.",
-      "expected_sign": "+",
-      "baseline_spec_ids": [
-        "panel/baseline"
-      ],
-      "baseline_outcome_vars": [
-        "black_totalpop"
-      ],
-      "baseline_treatment_vars": [
-        "mal1690_x_ME1790_std"
-      ],
-      "notes": "Panel specification uses a different treatment variable and outcome from the cross-sectional analysis."
+      "notes": "The 1860 full-controls spec (baseline_1860_full) is the strongest: coef=0.192 (p<0.001). The 1790 full-controls spec (baseline_full) is weaker: coef=0.065 (p=0.156). 95% of all specs show positive coefficients, 67% are significant at 5%."
     }
   ],
-  "global_notes": "The paper tests malaria ecology -> slavery via two approaches: (1) county-level cross-sectional OLS with state FE for 1790 and 1860 (G1), and (2) state-level panel FE over 1630-1780 (G2). Political outcome regressions and cross-country comparisons are secondary claims."
+  "global_notes": "Paper studies malaria ecology and slavery in early US. County-level cross-sectional analysis with state FE. 76 total specs. Multiple baseline variants across 1790/1860 data and control sets. The 1860 results are stronger than 1790. Alternative malaria measures (MAL_temp, MAL_risk, MAL_clim) all confirm the finding. Political outcome specs (voting patterns) provide supporting but secondary evidence."
 }

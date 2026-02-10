@@ -1,12 +1,12 @@
 {
   "paper_id": "125321-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/125321-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/125321-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Automation of air pollution monitoring stations increases reported PM10 levels by approximately 30 ug/m3, indicating prior manipulation/under-reporting.",
+      "claim_summary": "Automation of air pollution monitoring stations in China increases reported PM10 levels, indicating that pre-automation readings were manipulated downward.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "after"
       ],
-      "notes": "Single baseline: parametric RD (linear polynomial) with station and month FE, weather controls (wind_speed, rain, temp, rh), clustered at city level. Coefficient ~32.7 ug/m3. The after variable is an indicator for post-automation date (T>=0 in the RD framework)."
+      "notes": "Baseline coefficient 32.71 ug/m3 (p<0.001). After automation, reported PM10 increases by ~33 ug/m3, indicating substantial prior under-reporting. Effect is robust across polynomial orders, FE structures, controls, and sample restrictions. 90% positive, 83% significant at 5%. Local RD estimates at narrow bandwidths are noisy but directionally consistent."
     }
   ],
-  "global_notes": "70 specifications total. Single baseline clearly identified (spec_id=baseline). Key issues: (1) The placebo cutoff tests (rd/placebo/cutoff_*) appear mis-implemented -- they shift the cutoff date but the after variable likely still references the true automation date, so they remain significant because they still capture the true treatment effect. These are not valid placebo tests and all show large significant coefficients (29.8-31.2). (2) SO2 and NO2 are different outcome variables testing a related but distinct claim about other pollutants. (3) The bandwidth/kernel specifications use local polynomial methods producing quite different point estimates from the parametric baseline (e.g., coef~1.8 at bw=90 vs ~32.7 parametric). (4) Heterogeneity specs (wave_1_local, wave_2_local) are subgroup analyses using local polynomial RD with bw=90. (5) Three pairs of duplicate specifications exist: rd/kernel/triangular = rd/bandwidth/fixed_90d, robust/control/add_1_wind_speed = robust/control/only_wind_speed, robust/control/add_4_rh = baseline."
+  "global_notes": "RD study of automated pollution monitoring in China. 70 total specs. Staggered RD design (different cities automated at different times). The increase in reported PM10 after automation is very robust to parametric specifications. Local polynomial RD at narrow bandwidths (30-60 days) shows noisy insignificant estimates, but wider bandwidths confirm the finding. Placebo tests on weather variables show no discontinuity. Alternative pollutants (SO2, NO2) also show increases after automation."
 }

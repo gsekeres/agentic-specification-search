@@ -1,71 +1,71 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-235621-V1,baseline,methods/panel_fixed_effects.md#baseline,lw,e,G1,baseline,1,1,core_controls,This is the baseline Mincer equation specification,1.0
-235621-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,Adds year FE to baseline; same outcome/treatment,0.95
-235621-V1,panel/fe/cohort,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,Adds cohort FE to baseline; same outcome/treatment,0.95
-235621-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,Adds year+cohort two-way FE; same outcome/treatment,0.95
-235621-V1,robust/build/bivariate,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Bivariate regression with no controls,0.95
-235621-V1,robust/build/add_exp_sq,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Adds experience-squared only as control,0.95
-235621-V1,robust/build/add_education,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Adds education; identical to baseline,0.95
-235621-V1,robust/build/demographics,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Adds male and black demographic controls,0.95
-235621-V1,robust/build/geographic,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Adds region dummies to demographic controls,0.95
-235621-V1,robust/build/add_college,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Adds college indicator to controls,0.95
-235621-V1,robust/build/full,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,"Full controls: demographics, education, region",0.95
-235621-V1,robust/build/kitchen_sink,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Kitchen sink with year FE and all controls,0.95
-235621-V1,robust/control/drop_e2,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out: drops experience-squared control,0.95
-235621-V1,robust/control/drop_s,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out: drops education control,0.95
-235621-V1,robust/control/drop_male,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out: drops male indicator control,0.95
-235621-V1,robust/control/drop_black,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out: drops black indicator control,0.95
-235621-V1,robust/control/drop_college,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out: drops college indicator control,0.95
-235621-V1,robust/cluster/year,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Clusters standard errors by year,0.95
-235621-V1,robust/cluster/cohort,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Clusters standard errors by 5-year cohort,0.95
-235621-V1,robust/se/hc1,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Uses HC1 heteroskedasticity-robust SEs,0.95
-235621-V1,robust/cluster/none,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Uses IID (homoskedastic) standard errors,0.95
-235621-V1,robust/sample/early_period,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to 1968-1987 subsample,0.95
-235621-V1,robust/sample/late_period,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to 1988-2007 subsample,0.95
-235621-V1,robust/sample/male_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to male workers only,0.9
-235621-V1,robust/sample/female_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to female workers only,0.9
-235621-V1,robust/sample/college_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to college-educated workers only,0.9
-235621-V1,robust/sample/noncollege_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to non-college workers only,0.9
-235621-V1,robust/sample/young,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to workers age 35 or below,0.9
-235621-V1,robust/sample/old,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to workers age above 35,0.9
-235621-V1,robust/sample/exclude_neast,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes Northeast region observations,0.95
-235621-V1,robust/sample/exclude_ncenter,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes North Central region observations,0.95
-235621-V1,robust/sample/exclude_south,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes South region observations,0.95
-235621-V1,robust/sample/exclude_west,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes West region observations,0.95
-235621-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Trims top and bottom 1% of wage outliers,0.95
-235621-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Trims top and bottom 5% of wage outliers,0.95
-235621-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,lw_wins,e,G1,baseline,0,1,core_sample,Winsorizes wages at 1%; outcome lw_wins same concept,0.9
-235621-V1,robust/sample/black_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to Black workers only,0.9
-235621-V1,robust/sample/nonblack_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to non-Black workers only,0.9
-235621-V1,robust/form/e_linear,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Linear experience only; omits quadratic term,0.95
-235621-V1,robust/form/e_cubic,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Adds cubic experience term to functional form,0.95
-235621-V1,robust/form/e_log,robustness/functional_form.md,lw,log_e,G1,baseline,0,1,core_funcform,Log-experience functional form; different scale but same concept,0.8
-235621-V1,robust/form/s_quadratic,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Adds quadratic schooling term; treatment unchanged,0.95
-235621-V1,robust/form/e_s_interact,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Adds experience*education interaction to controls,0.9
-235621-V1,robust/form/y_level,robustness/functional_form.md,w,e,G1,baseline,0,1,core_funcform,Outcome in wage levels not logs; different scale same concept,0.8
-235621-V1,robust/form/y_standardized,robustness/functional_form.md,lw_std,e,G1,baseline,0,1,core_funcform,Standardized log wages outcome; different scale same concept,0.85
-235621-V1,robust/het/interaction_gender,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Gender interaction changes interpretation of main e coeff,0.85
-235621-V1,robust/het/interaction_race,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Race interaction changes interpretation of main e coeff,0.85
-235621-V1,robust/het/interaction_education,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Education interaction changes interpretation of main e coeff,0.85
-235621-V1,robust/het/by_cohort,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Cohort interaction changes interpretation of main e coeff,0.85
-235621-V1,robust/het/by_period,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Period interaction changes interpretation of main e coeff,0.85
-235621-V1,robust/sample/exclude_first_year,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes first survey year (1968),0.95
-235621-V1,robust/sample/exclude_last_year,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes last survey year (2007),0.95
-235621-V1,robust/sample/min_exp_5,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to workers with 5+ years experience,0.95
-235621-V1,robust/sample/max_exp_20,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to workers with under 20 years experience,0.95
-235621-V1,robust/sample/high_education,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to workers with 12+ years education,0.9
-235621-V1,robust/sample/low_education,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to workers with under 12 years education,0.9
-235621-V1,robust/estimation/unit_fe_only,methods/panel_fixed_effects.md#estimation-method,lw,e,G1,baseline,0,1,core_fe,Cohort FE with expanded demographic controls,0.95
-235621-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,No FE with demographic controls; FE structure variation,0.95
-235621-V1,robust/build/add_age,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Adds age as additional control variable,0.95
-235621-V1,robust/sample/mid_experience,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to 5-30 years experience range,0.95
-235621-V1,robust/sample/exclude_1970s,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes 1970s decade observations,0.95
-235621-V1,robust/sample/exclude_1980s,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes 1980s decade observations,0.95
-235621-V1,robust/sample/exclude_1990s,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Excludes 1990s decade observations,0.95
-235621-V1,robust/weights/survey_weights,robustness/measurement.md,lw,e,G1,baseline,0,1,core_method,Applies PSID survey sampling weights,0.95
-235621-V1,robust/weights/unweighted,robustness/measurement.md,lw,e,G1,baseline,0,1,core_method,Unweighted OLS; same as drop_college spec values,0.9
-235621-V1,robust/sample/prime_age,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Restricts to prime-age workers (25-54),0.95
-235621-V1,robust/het/triple_diff,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Triple interaction male*college*e is heterogeneity analysis,0.85
-235621-V1,robust/het/by_region_south,robustness/heterogeneity.md,lw,e,G1,baseline,0,1,core_sample,South subsample split; same regression on subset,0.85
-235621-V1,robust/het/by_region_nonsouth,robustness/heterogeneity.md,lw,e,G1,baseline,0,1,core_sample,Non-South subsample; same as exclude_south spec,0.85
-235621-V1,robust/outcome/returns_education,robustness/measurement.md,lw,s,G1,baseline,0,0,noncore_alt_treatment,Treatment is education (s) not experience (e); different claim,0.95
+235621-V1,baseline,methods/panel_fixed_effects.md#baseline,lw,e,G1,baseline,1,1,core_method,Baseline Mincer equation: e on lw with cohort FE,1.0
+235621-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,FE variation: time,0.9
+235621-V1,panel/fe/cohort,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,FE variation: cohort,0.9
+235621-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,FE variation: twoway,0.9
+235621-V1,robust/build/bivariate,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: bivariate,0.9
+235621-V1,robust/build/add_exp_sq,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: add_exp_sq,0.9
+235621-V1,robust/build/add_education,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: add_education,0.9
+235621-V1,robust/build/demographics,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: demographics,0.9
+235621-V1,robust/build/geographic,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: geographic,0.9
+235621-V1,robust/build/add_college,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: add_college,0.9
+235621-V1,robust/build/full,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: full,0.9
+235621-V1,robust/build/kitchen_sink,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: kitchen_sink,0.9
+235621-V1,robust/control/drop_e2,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out control: drop_e2,0.9
+235621-V1,robust/control/drop_s,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out control: drop_s,0.9
+235621-V1,robust/control/drop_male,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out control: drop_male,0.9
+235621-V1,robust/control/drop_black,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out control: drop_black,0.9
+235621-V1,robust/control/drop_college,robustness/leave_one_out.md,lw,e,G1,baseline,0,1,core_controls,Leave-one-out control: drop_college,0.9
+235621-V1,robust/cluster/year,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Inference variation: year,0.9
+235621-V1,robust/cluster/cohort,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Inference variation: cohort,0.9
+235621-V1,robust/se/hc1,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Inference variation: hc1,0.9
+235621-V1,robust/cluster/none,robustness/clustering_variations.md,lw,e,G1,baseline,0,1,core_inference,Inference variation: none,0.9
+235621-V1,robust/sample/early_period,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Time period split: early_period,0.9
+235621-V1,robust/sample/late_period,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Time period split: late_period,0.9
+235621-V1,robust/sample/male_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Gender subgroup: male_only,0.9
+235621-V1,robust/sample/female_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Gender subgroup: female_only,0.9
+235621-V1,robust/sample/college_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Education subgroup: college_only,0.9
+235621-V1,robust/sample/noncollege_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Education subgroup: noncollege_only,0.9
+235621-V1,robust/sample/young,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Age/experience subgroup: young,0.9
+235621-V1,robust/sample/old,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Age/experience subgroup: old,0.9
+235621-V1,robust/sample/exclude_neast,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_neast,0.9
+235621-V1,robust/sample/exclude_ncenter,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_ncenter,0.9
+235621-V1,robust/sample/exclude_south,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_south,0.9
+235621-V1,robust/sample/exclude_west,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_west,0.9
+235621-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Outlier treatment: trim_1pct,0.9
+235621-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Outlier treatment: trim_5pct,0.9
+235621-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,lw_wins,e,G1,baseline,0,1,core_sample,Outlier treatment: winsor_1pct,0.9
+235621-V1,robust/sample/black_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Race subgroup: black_only,0.9
+235621-V1,robust/sample/nonblack_only,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Race subgroup: nonblack_only,0.9
+235621-V1,robust/form/e_linear,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Functional form: e_linear,0.9
+235621-V1,robust/form/e_cubic,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Functional form: e_cubic,0.9
+235621-V1,robust/form/e_log,robustness/functional_form.md,lw,log_e,G1,baseline,0,1,core_funcform,Functional form: e_log,0.9
+235621-V1,robust/form/s_quadratic,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Functional form: s_quadratic,0.9
+235621-V1,robust/form/e_s_interact,robustness/functional_form.md,lw,e,G1,baseline,0,1,core_funcform,Functional form: e_s_interact,0.9
+235621-V1,robust/form/y_level,robustness/functional_form.md,w,e,G1,baseline,0,1,core_funcform,Functional form: y_level,0.9
+235621-V1,robust/form/y_standardized,robustness/functional_form.md,lw_std,e,G1,baseline,0,1,core_funcform,Functional form: y_standardized,0.9
+235621-V1,robust/het/interaction_gender,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: interaction_gender,0.9
+235621-V1,robust/het/interaction_race,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: interaction_race,0.9
+235621-V1,robust/het/interaction_education,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: interaction_education,0.9
+235621-V1,robust/het/by_cohort,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_cohort,0.9
+235621-V1,robust/het/by_period,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_period,0.9
+235621-V1,robust/sample/exclude_first_year,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_first_year,0.9
+235621-V1,robust/sample/exclude_last_year,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_last_year,0.9
+235621-V1,robust/sample/min_exp_5,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Experience range restriction: min_exp_5,0.9
+235621-V1,robust/sample/max_exp_20,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Experience range restriction: max_exp_20,0.9
+235621-V1,robust/sample/high_education,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Education level subgroup: high_education,0.9
+235621-V1,robust/sample/low_education,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Education level subgroup: low_education,0.9
+235621-V1,robust/estimation/unit_fe_only,methods/panel_fixed_effects.md#estimation-method,lw,e,G1,baseline,0,1,core_fe,Estimation: unit_fe_only,0.9
+235621-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,lw,e,G1,baseline,0,1,core_fe,FE variation: none,0.9
+235621-V1,robust/build/add_age,robustness/control_progression.md,lw,e,G1,baseline,0,1,core_controls,Control progression: add_age,0.9
+235621-V1,robust/sample/mid_experience,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Age/experience subgroup: mid_experience,0.9
+235621-V1,robust/sample/exclude_1970s,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_1970s,0.9
+235621-V1,robust/sample/exclude_1980s,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_1980s,0.9
+235621-V1,robust/sample/exclude_1990s,robustness/sample_restrictions.md,lw,e,G1,baseline,0,1,core_sample,Sample exclusion: exclude_1990s,0.9
+235621-V1,robust/weights/survey_weights,robustness/measurement.md,lw,e,G1,baseline,0,1,core_sample,Weighting: survey_weights,0.9
+235621-V1,robust/weights/unweighted,robustness/measurement.md,lw,e,G1,baseline,0,1,core_sample,Weighting: unweighted,0.9
+235621-V1,robust/sample/prime_age,robustness/sample_restrictions.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Age/experience subgroup: prime_age,0.9
+235621-V1,robust/het/triple_diff,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: triple_diff,0.9
+235621-V1,robust/het/by_region_south,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_region_south,0.9
+235621-V1,robust/het/by_region_nonsouth,robustness/heterogeneity.md,lw,e,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_region_nonsouth,0.9
+235621-V1,robust/outcome/returns_education,robustness/measurement.md,lw,s,G1,baseline,0,0,noncore_alt_treatment,Returns to education instead of experience,0.9

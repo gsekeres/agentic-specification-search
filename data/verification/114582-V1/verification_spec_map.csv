@@ -1,0 +1,85 @@
+spec_id,baseline_id,classification,category,notes
+baseline,baseline,baseline,baseline,Original paper specification
+baseline_nox,baseline_nox,baseline,baseline,Original paper specification
+baseline_so2,baseline_so2,baseline,baseline,Original paper specification
+baseline_tx_only_co2,baseline,core,sample,TX-only sample (vs TX+OK)
+baseline_tx_only_nox,baseline,core,sample,TX-only sample (vs TX+OK)
+baseline_tx_only_so2,baseline,core,sample,TX-only sample (vs TX+OK)
+table4_gload_coal_tx_only,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_cc_tx_only,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_gt_tx_only,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_tx_only,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_coal_txok,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_cc_txok,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_gt_txok,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table4_gload_txok,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table5_coal,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table5_gas,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table5_nuclear,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table5_hydro,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table5_other,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+table5_supply,baseline,non_core,alt_outcome,Table replication (different outcome: generation/fuel type)
+robust/nw_lag/1,baseline,core,other,Spec: robust/nw_lag/1
+robust/nw_lag/6,baseline,core,other,Spec: robust/nw_lag/6
+robust/nw_lag/12,baseline,core,other,Spec: robust/nw_lag/12
+robust/nw_lag/18,baseline,core,other,Spec: robust/nw_lag/18
+robust/nw_lag/36,baseline,core,other,Spec: robust/nw_lag/36
+robust/nw_lag/48,baseline,core,other,Spec: robust/nw_lag/48
+robust/control/no_spp_load,baseline,core,controls,Control variable variation
+robust/control/linear_load,baseline,core,controls,Control variable variation
+robust/control/quadratic_load,baseline,core,controls,Control variable variation
+robust/control/none,baseline,core,controls,Control variable variation
+robust/control/cubic_load_no_spp,baseline,core,controls,Control variable variation
+robust/control/spp_load_only,baseline,core,controls,Control variable variation
+robust/control/drop_load,baseline,core,controls,Control variable variation
+robust/control/drop_load2,baseline,core,controls,Control variable variation
+robust/control/drop_load3,baseline,core,controls,Control variable variation
+robust/control/drop_spp_load,baseline,core,controls,Control variable variation
+robust/control/drop_spp_load2,baseline,core,controls,Control variable variation
+robust/control/drop_spp_load3,baseline,core,controls,Control variable variation
+robust/sample/year_2007,baseline,core,sample,Sample restriction
+robust/sample/year_2008,baseline,core,sample,Sample restriction
+robust/sample/year_2009,baseline,core,sample,Sample restriction
+robust/sample/year_2010,baseline,core,sample,Sample restriction
+robust/sample/year_2011,baseline,core,sample,Sample restriction
+robust/sample/drop_year_2007,baseline,core,sample,Sample restriction
+robust/sample/drop_year_2008,baseline,core,sample,Sample restriction
+robust/sample/drop_year_2009,baseline,core,sample,Sample restriction
+robust/sample/drop_year_2010,baseline,core,sample,Sample restriction
+robust/sample/drop_year_2011,baseline,core,sample,Sample restriction
+appendix_table2_subsample,baseline,core,sample,Appendix table subsample
+lagged_model_co2,baseline,non_core,diagnostics,Lagged model specification
+lagged_model_nox,baseline,non_core,diagnostics,Lagged model specification
+lagged_model_so2,baseline,non_core,diagnostics,Lagged model specification
+robust/se/ols_homoskedastic,baseline,core,inference,Inference/clustering variation
+robust/se/hc1_robust,baseline,core,inference,Inference/clustering variation
+robust/sample/winter,baseline,core,sample,Sample restriction
+robust/sample/spring,baseline,core,sample,Sample restriction
+robust/sample/summer,baseline,core,sample,Sample restriction
+robust/sample/fall,baseline,core,sample,Sample restriction
+robust/sample/time_night,baseline,core,sample,Sample restriction
+robust/sample/time_morning,baseline,core,sample,Sample restriction
+robust/sample/time_afternoon,baseline,core,sample,Sample restriction
+robust/sample/time_evening,baseline,core,sample,Sample restriction
+robust/sample/time_peak,baseline,core,sample,Sample restriction
+robust/sample/time_offpeak,baseline,core,sample,Sample restriction
+external_cost_low,baseline,non_core,diagnostics,External cost calculation variant
+external_cost_high,baseline,non_core,diagnostics,External cost calculation variant
+robust/sample/low_wind,baseline,core,sample,Sample restriction
+robust/sample/mid_wind,baseline,core,sample,Sample restriction
+robust/sample/high_wind,baseline,core,sample,Sample restriction
+robust/sample/low_load,baseline,core,sample,Sample restriction
+robust/sample/mid_load,baseline,core,sample,Sample restriction
+robust/sample/high_load,baseline,core,sample,Sample restriction
+robust/sample/early_2007_2009,baseline,core,sample,Sample restriction
+robust/sample/late_2010_2012,baseline,core,sample,Sample restriction
+robust/functional_form/load_x_spp_interaction,baseline,core,funcform,Functional form variation
+robust/sample/weekday,baseline,core,sample,Sample restriction
+robust/sample/weekend,baseline,core,sample,Sample restriction
+robust/sample/trim_wind_1pct,baseline,core,sample,Sample restriction
+robust/sample/trim_wind_5pct,baseline,core,sample,Sample restriction
+robust/sample/nonzero_wind,baseline,core,sample,Sample restriction
+robust/sample/month_1,baseline,core,sample,Sample restriction
+robust/sample/month_4,baseline,core,sample,Sample restriction
+robust/sample/month_7,baseline,core,sample,Sample restriction
+robust/sample/month_10,baseline,core,sample,Sample restriction

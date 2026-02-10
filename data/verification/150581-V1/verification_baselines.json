@@ -1,18 +1,28 @@
 {
   "paper_id": "150581-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/150581-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/150581-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Wages are negatively related to the unemployment rate (negative wage-unemployment semi-elasticity), estimated via panel FE regression of log hourly wages on the unemployment rate.",
+      "claim_summary": "Wages are negatively related to the unemployment rate (negative wage-unemployment semi-elasticity), controlling for individual, industry-year, and occupation-year fixed effects.",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline/table2_col1", "baseline/table2_col2", "baseline/table2_col3", "baseline/table2_col4", "baseline/table2_col5"],
-      "baseline_outcome_vars": ["lhrp2"],
-      "baseline_treatment_vars": ["unempl"],
-      "notes": "Columns 1-5 of Table 2 progressively add controls (transition indicators, mismatch, full interactions). All share the same outcome (log hourly pay), treatment (aggregate unemployment rate), sample, FE structure, and clustering. They represent a single canonical claim with varying control sets. Column 4 (with full interactions) is likely the preferred specification, but all columns represent the same estimand."
+      "baseline_spec_ids": [
+        "baseline/table2_col1",
+        "baseline/table2_col2",
+        "baseline/table2_col3",
+        "baseline/table2_col4",
+        "baseline/table2_col5"
+      ],
+      "baseline_outcome_vars": [
+        "lhrp2"
+      ],
+      "baseline_treatment_vars": [
+        "unempl"
+      ],
+      "notes": "Table 2 columns 1-5 progressively add controls. Col 4 (full controls + mismatch interactions) is the primary specification: coef=-0.0044 (p<0.001)."
     }
   ],
-  "global_notes": "This analysis uses simulated data (not the actual NLSY79), as noted in the SPECIFICATION_SEARCH.md. This is a significant caveat: magnitudes and significance levels may not match the original paper. The specification search identified 61 specifications across controls variations, sample restrictions, inference variations, alternative outcomes/treatments, FE structure variations, functional form changes, heterogeneity analyses, and placebo tests. Several estimation method specs (no FE, individual FE only) yield positive coefficients, suggesting the FE structure is critical for identification. The paper's richer claim about heterogeneity by transition type and mismatch is partially tested via heterogeneity specs but these are interaction-based (not separate baseline claims)."
+  "global_notes": "Paper studies wage cyclicality using NLSY79 panel data. The analysis uses simulated data due to data access constraints. The five Table 2 columns form a control progression. Specifications with only individual FE show positive coefficients (wrong sign), highlighting the importance of industry-year and occupation-year FE."
 }

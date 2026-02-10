@@ -4,16 +4,16 @@
 ==========================
 
 Parametric bootstrap confidence intervals for the 3-component
-truncated-normal mixture parameters.
+folded-normal mixture parameters (sigma=1 fixed, |t| <= 10).
 
 Algorithm:
   1. Load fitted params from mixture_params_abs_t.json
-     (key: spec_level_verified_core.baseline_only).
-  2. Load real data to get n_obs.
-  3. For B=200 bootstrap replications:
-     a. Draw n_obs samples from the fitted mixture.
-     b. Re-fit the 3-component truncated-normal mixture.
-     c. Record pi, mu, sigma for each component (sorted by mu).
+     (key: mu_free_sigma1_comparison.foldnorm_K=3_trim10).
+  2. Load real data (verified-core, trimmed to |t| <= 10) to get n_obs.
+  3. For B=500 bootstrap replications:
+     a. Draw n_obs samples from the fitted folded-normal mixture.
+     b. Re-fit the 3-component folded-normal mixture (sigma=1 fixed).
+     c. Record pi, mu for each component (sorted by mu).
   4. Output point estimates, bootstrap SE, and 2.5/97.5 percentiles.
 
 Reads:
@@ -35,7 +35,7 @@ import time
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import truncnorm as sp_truncnorm
+from scipy.stats import foldnorm as sp_foldnorm
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -53,13 +53,14 @@ OUTPUT_JSON = RESULTS_DIR / "bootstrap_mixture_ci.json"
 OUTPUT_NAME = "fig_bootstrap_mixture_ci.pdf"
 
 # Bootstrap parameters
-B = 200
+B = 500
 SEED = 42
+TRIM_THRESHOLD = 10.0
 COMPONENT_ORDER = ["N", "H", "L"]
 
 
 # ---------------------------------------------------------------------------
-# Import fit_truncnorm_mixture from 04_fit_mixture.py
+# Import fit_foldnorm_mixture from 04_fit_mixture.py
 # ---------------------------------------------------------------------------
 def _import_fit_mixture():
     spec = importlib.util.spec_from_file_location(
@@ -67,21 +68,20 @@ def _import_fit_mixture():
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.fit_truncnorm_mixture
+    return mod.fit_foldnorm_mixture
 
 
 # ---------------------------------------------------------------------------
-# Sampling from a truncated normal (lo=0)
+# Sampling from a folded normal
 # ---------------------------------------------------------------------------
-def sample_truncnorm(mu: float, sigma: float, lo: float, size: int,
-                     rng: np.random.Generator) -> np.ndarray:
-    """Draw samples from N(mu, sigma^2) truncated to [lo, +inf)."""
+def sample_foldnorm(mu: float, sigma: float, size: int,
+                    rng: np.random.Generator) -> np.ndarray:
+    """Draw samples from |N(mu, sigma^2)| (folded normal)."""
     sigma = max(sigma, 1e-8)
-    a = (lo - mu) / sigma
-    b = np.inf
-    # scipy truncnorm parameterisation: a, b in standard units, loc=mu, scale=sigma
-    return sp_truncnorm.rvs(a, b, loc=mu, scale=sigma, size=size,
-                            random_state=rng)
+    # scipy foldnorm: c = mu/sigma, loc=0, scale=sigma
+    c = mu / sigma
+    return sp_foldnorm.rvs(c, loc=0, scale=sigma, size=size,
+                           random_state=rng)
 
 
 # ---------------------------------------------------------------------------
@@ -95,74 +95,72 @@ def main() -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     FIG_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 1. Load fitted parameters
+    # 1. Load fitted parameters (folded-normal K=3, sigma=1, |t|<=10)
     with open(MIXTURE_FILE, "r") as f:
         all_params = json.load(f)
-    params = all_params["spec_level_verified_core"]["baseline_only"]
+    params = all_params["mu_free_sigma1_comparison"]["foldnorm_K=3_trim10"]
     pi = params["pi"]
     mu = params["mu"]
     sigma = params["sigma"]
-    lo = float(params.get("truncation_lo", 0.0))
 
-    print("\nPoint estimates (spec_level_verified_core.baseline_only):")
+    print("\nPoint estimates (foldnorm K=3, sigma=1, |t|<=10):")
     for k in COMPONENT_ORDER:
         print(f"  {k}: pi={pi[k]:.4f}, mu={mu[k]:.4f}, sigma={sigma[k]:.4f}")
-    print(f"  truncation_lo={lo}")
 
-    # 2. Load real data to get n_obs
+    # 2. Load real data (trimmed to |t| <= 10) to get n_obs
     import pandas as pd
     df = pd.read_csv(DATA_FILE)
     z = pd.to_numeric(df["Z_abs"], errors="coerce").to_numpy(dtype=float)
     z = z[np.isfinite(z)]
+    z = z[z <= TRIM_THRESHOLD]
     n_obs = len(z)
-    print(f"\nn_obs = {n_obs}")
+    print(f"\nn_obs = {n_obs} (|t| <= {TRIM_THRESHOLD})")
 
     # 3. Import the fitting function
-    fit_truncnorm_mixture = _import_fit_mixture()
+    fit_foldnorm_mixture = _import_fit_mixture()
 
     # 4. Bootstrap
     pi_arr = np.array([pi[k] for k in COMPONENT_ORDER])
     mu_arr = np.array([mu[k] for k in COMPONENT_ORDER])
     sig_arr = np.array([sigma[k] for k in COMPONENT_ORDER])
 
-    # Storage: (B, 9) for pi_N, pi_H, pi_L, mu_N, mu_H, mu_L, sigma_N, sigma_H, sigma_L
-    boot_params = np.full((B, 9), np.nan)
+    # Storage: (B, 6) for pi_N, pi_H, pi_L, mu_N, mu_H, mu_L (sigma fixed at 1)
+    boot_params = np.full((B, 6), np.nan)
 
     rng = np.random.default_rng(SEED)
     t0 = time.time()
     n_failed = 0
 
     for b in range(B):
-        if (b + 1) % 20 == 0 or b == 0:
+        if (b + 1) % 50 == 0 or b == 0:
             elapsed = time.time() - t0
             print(f"  Bootstrap replication {b + 1}/{B}  ({elapsed:.1f}s elapsed)")
 
-        # a. Draw n_obs samples from the fitted mixture
-        # Choose components
+        # a. Draw n_obs samples from the fitted folded-normal mixture
         components = rng.choice(3, size=n_obs, p=pi_arr)
         samples = np.empty(n_obs)
         for k in range(3):
             mask = components == k
             n_k = mask.sum()
             if n_k > 0:
-                samples[mask] = sample_truncnorm(
-                    mu_arr[k], sig_arr[k], lo, n_k, rng
+                samples[mask] = sample_foldnorm(
+                    mu_arr[k], sig_arr[k], n_k, rng
                 )
 
-        # Winsorize at 20 (matching original pipeline)
-        samples = np.minimum(samples, 20.0)
+        # Trim to |t| <= 10 (matching original pipeline)
+        samples = samples[samples <= TRIM_THRESHOLD]
 
-        # b. Re-fit the mixture
+        # b. Re-fit the folded-normal mixture (sigma=1 fixed)
         try:
-            result = fit_truncnorm_mixture(
+            result = fit_foldnorm_mixture(
                 samples, n_components=3, n_init=10,
-                random_state=int(b), lo=lo
+                sigma_constraint="fixed_1",
+                random_state=int(b),
             )
-            # c. Record (already sorted by mu inside fit_truncnorm_mixture)
+            # c. Record (already sorted by mu)
             labels = list(result["pi"].keys())  # sorted by mu
             boot_params[b, 0:3] = [result["pi"][l] for l in labels]
             boot_params[b, 3:6] = [result["mu"][l] for l in labels]
-            boot_params[b, 6:9] = [result["sigma"][l] for l in labels]
         except Exception as e:
             n_failed += 1
             if n_failed <= 5:
@@ -179,13 +177,12 @@ def main() -> None:
     n_valid = boot_valid.shape[0]
     print(f"  {n_valid} valid replications")
 
-    # 5. Compute summaries
+    # 5. Compute summaries (sigma fixed at 1, so only 6 params)
     param_names = [
         "pi_N", "pi_H", "pi_L",
         "mu_N", "mu_H", "mu_L",
-        "sigma_N", "sigma_H", "sigma_L",
     ]
-    point_estimates = list(pi_arr) + list(mu_arr) + list(sig_arr)
+    point_estimates = list(pi_arr) + list(mu_arr)
 
     summary = {}
     for i, name in enumerate(param_names):
@@ -203,6 +200,9 @@ def main() -> None:
         "n_valid": n_valid,
         "n_obs": n_obs,
         "seed": SEED,
+        "distribution": "foldnorm",
+        "sigma_constraint": "fixed_1",
+        "trim_threshold": TRIM_THRESHOLD,
         "parameters": summary,
     }
 
@@ -231,18 +231,15 @@ def main() -> None:
         "axes.spines.right": False,
     })
 
-    fig, axes = plt.subplots(3, 3, figsize=(10, 8), constrained_layout=True)
+    fig, axes = plt.subplots(2, 3, figsize=(10, 6), constrained_layout=True)
 
     nice_labels = {
         "pi_N": r"$\pi_N$",
-        "pi_H": r"$\pi_H$",
-        "pi_L": r"$\pi_L$",
+        "pi_H": r"$\pi_M$",
+        "pi_L": r"$\pi_E$",
         "mu_N": r"$\mu_N$",
-        "mu_H": r"$\mu_H$",
-        "mu_L": r"$\mu_L$",
-        "sigma_N": r"$\sigma_N$",
-        "sigma_H": r"$\sigma_H$",
-        "sigma_L": r"$\sigma_L$",
+        "mu_H": r"$\mu_M$",
+        "mu_L": r"$\mu_E$",
     }
 
     for i, name in enumerate(param_names):
@@ -269,7 +266,7 @@ def main() -> None:
             ax.legend(frameon=False, fontsize=8)
 
     fig.suptitle(
-        f"Parametric Bootstrap ($B={B}$): Mixture Parameter Distributions",
+        f"Parametric Bootstrap ($B={B}$): Folded-Normal Mixture ($\\sigma=1$)",
         fontsize=13,
     )
 

@@ -1,18 +1,24 @@
 {
   "paper_id": "181166-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/181166-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/181166-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Workers displaced from occupations experiencing greater technological change (increased computer/software requirements) suffer larger earnings losses.",
+      "claim_summary": "Tech change leads to larger earnings losses for displaced workers.",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline"],
-      "baseline_outcome_vars": ["d_ln_real_earn_win1"],
-      "baseline_treatment_vars": ["d_computer_2017_2007_n"],
-      "notes": "Single baseline specification from Table 2 of the paper. Treatment is normalized change in computer/software requirements (2007-2017) at the occupation level. Outcome is change in log real weekly earnings (winsorized at 2.5%). Model includes year and year-of-job-loss FE, full demographic/employment controls, clustered at displaced occupation level (dwocc1990), weighted by DWS supplement weights."
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "d_ln_real_earn_win1"
+      ],
+      "baseline_treatment_vars": [
+        "d_computer_2017_2007_n"
+      ],
+      "notes": "Coef -0.023. CPS DWS 2010-2018, clustered by occupation."
     }
   ],
-  "global_notes": "Paper has a single core claim with one baseline specification. The specification search produced 67 specs total. One critical data quality issue: the shuffled_treatment placebo (spec 66) has identical coefficient, SE, p-value, and R-squared to the baseline, indicating the shuffle was not properly applied. Several heterogeneity specs report the treatment_var as the interaction term name but the coefficient in coefficient_vector_json actually corresponds to the main treatment effect d_computer_2017_2007_n; this is a labeling inconsistency in those rows."
+  "global_notes": "Paper: Technological Change and the Consequences of Job Loss (AER: Insights)."
 }

@@ -1,71 +1,71 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-116347-V1,baseline,methods/panel_fixed_effects.md#baseline,logprod,has_friend_present,G1,baseline,1,0,core_controls,"Primary baseline: worker + group-date FE, clustered by worker",1.0
-116347-V1,baseline/continuous_treatment,methods/panel_fixed_effects.md#baseline,logprod,num_friends_present,G1,baseline,1,0,core_controls,Second baseline using continuous treatment measure (num friends),1.0
-116347-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: no FE (pooled OLS with age control),0.9
-116347-V1,panel/fe/unit,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: worker FE only (drops group-date FE),0.9
-116347-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: date FE only (drops worker FE),0.9
-116347-V1,panel/fe/group,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: group FE only,0.9
-116347-V1,panel/fe/groupdate,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: groupdate FE only (drops worker FE),0.9
-116347-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: worker + date FE (vs worker + groupdate),0.9
-116347-V1,robust/cluster/unit,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Cluster variation: unit (worker) - same as baseline cluster,0.95
-116347-V1,robust/cluster/time,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Cluster variation: by date,0.95
-116347-V1,robust/cluster/group,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,0,invalid,SE near zero (5.4e-17) - numerical artifact from clustering at absorbed FE level,1.0
-116347-V1,robust/cluster/none,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Cluster variation: no clustering (homoskedastic SE),0.95
-116347-V1,robust/cluster/groupdate,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Cluster variation: by group-date,0.95
-116347-V1,robust/sample/early_period,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: early period only (N=2823),0.85
-116347-V1,robust/sample/late_period,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: late period only (N=2907),0.85
-116347-V1,robust/sample/group_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error: all variables collinear in group_1 subsample,1.0
-116347-V1,robust/sample/group_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: group_2 subsample (N=1850),0.85
-116347-V1,robust/sample/group_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error: all variables collinear in group_3 subsample,1.0
-116347-V1,robust/sample/drop_group_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop group_1 (N=2785),0.85
-116347-V1,robust/sample/drop_group_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error: all variables collinear when dropping group_2,1.0
-116347-V1,robust/sample/drop_group_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop group_3 (N=4795),0.85
-116347-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: winsorize outcome at 1%,0.9
-116347-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: winsorize outcome at 5%,0.9
-116347-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: winsorize outcome at 10%,0.9
-116347-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: trim outcome at 1% (N=5614),0.9
-116347-V1,robust/sample/fullday_only,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: full-day workers only (N=4525),0.85
-116347-V1,robust/sample/partday_only,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: part-day workers only (N=1154),0.85
-116347-V1,robust/sample/young,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: young workers only (N=2807),0.85
-116347-V1,robust/sample/old,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error: all variables collinear in old worker subsample,1.0
-116347-V1,robust/sample/age_tercile_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: age tercile 1 (N=1702),0.85
-116347-V1,robust/sample/age_tercile_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error: all variables collinear in age tercile 2,1.0
-116347-V1,robust/sample/age_tercile_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error: all variables collinear in age tercile 3,1.0
-116347-V1,robust/outcome/prod_level,robustness/functional_form.md,prod,has_friend_present,G1,baseline,0,1,core_funcform,Functional form: productivity in levels instead of log,0.9
-116347-V1,robust/outcome/work,robustness/measurement.md,work,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,"Different outcome: work (not productivity), different concept",0.85
-116347-V1,robust/outcome/logwork,robustness/functional_form.md,logwork,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,"Different outcome: log work hours, different concept from productivity",0.85
-116347-V1,robust/outcome/logwage,robustness/measurement.md,logwage,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,"Different outcome: log wage, different concept from productivity",0.85
-116347-V1,robust/outcome/mins,robustness/measurement.md,mins,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,"Different outcome: minutes worked, different concept from productivity",0.8
-116347-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_prod,has_friend_present,G1,baseline,0,1,core_funcform,Functional form: IHS transform of productivity (similar to log),0.95
-116347-V1,robust/funcform/log_plus1,robustness/functional_form.md,log_prod_plus1,has_friend_present,G1,baseline,0,1,core_funcform,Functional form: log(prod+1) transform of productivity,0.95
-116347-V1,robust/heterogeneity/age,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by age; drops worker FE, changes estimand fundamentally",0.9
-116347-V1,robust/heterogeneity/std_extr,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by extraversion; drops worker FE, changes estimand",0.9
-116347-V1,robust/heterogeneity/std_agre,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by agreeableness; drops worker FE, changes estimand",0.9
-116347-V1,robust/heterogeneity/std_cons,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by conscientiousness; drops worker FE, changes estimand",0.9
-116347-V1,robust/heterogeneity/std_neur,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by neuroticism; drops worker FE, changes estimand",0.9
-116347-V1,robust/heterogeneity/std_open,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by openness; drops worker FE, changes estimand",0.9
-116347-V1,robust/heterogeneity/group,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,"Heterogeneity by group; uses worker+date FE, duplicate of panel/fe/twoway",0.85
-116347-V1,robust/heterogeneity/intensity,robustness/heterogeneity.md,logprod,num_friends_present,G1,baseline/continuous_treatment,0,0,noncore_heterogeneity,Treatment intensity using num_friends; duplicate of baseline/continuous_treatment,0.85
-116347-V1,robust/placebo/prior_period,robustness/placebo_tests.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error in placebo prior period test,1.0
-116347-V1,robust/placebo/fake_timing_25,robustness/placebo_tests.md,logprod,fake_post_0,,,0,0,noncore_placebo,"Placebo: fake timing cutoff at 25th percentile, different treatment",0.95
-116347-V1,robust/placebo/fake_timing_50,robustness/placebo_tests.md,logprod,fake_post_1,,,0,0,noncore_placebo,"Placebo: fake timing cutoff at 50th percentile, different treatment",0.95
-116347-V1,robust/placebo/fake_timing_75,robustness/placebo_tests.md,logprod,fake_post_2,,,0,0,noncore_placebo,"Placebo: fake timing cutoff at 75th percentile, different treatment",0.95
-116347-V1,robust/treatment/at_least_1_friends,robustness/measurement.md,logprod,has_1_friends,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: has_1_friends identical to has_friend_present (redundant),0.9
-116347-V1,robust/treatment/at_least_2_friends,robustness/measurement.md,logprod,has_2_friends,G1,baseline,0,0,noncore_alt_treatment,"Alt treatment: has 2+ friends present, changes causal object",0.8
-116347-V1,robust/treatment/at_least_3_friends,robustness/measurement.md,logprod,has_3_friends,G1,baseline,0,0,noncore_alt_treatment,"Alt treatment: has 3+ friends present, changes causal object",0.8
-116347-V1,robust/treatment/log_num_friends,robustness/measurement.md,logprod,log_num_friends,G1,baseline/continuous_treatment,0,0,noncore_alt_treatment,"Alt treatment: log(num_friends), functional form change on treatment side",0.75
-116347-V1,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,logprod_diff,treat_diff,G1,baseline,0,1,core_method,Method variation: first differences (equivalent to FE under assumptions),0.85
-116347-V1,robust/sample/balanced,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,"Error: zero-size array, balanced panel has no observations",1.0
-116347-V1,robust/sample/min_obs_5,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: min 5 obs per worker (identical to baseline),0.9
-116347-V1,robust/sample/min_obs_10,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: min 10 obs per worker (identical to baseline),0.9
-116347-V1,robust/sample/drop_singletons,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop singletons (identical to baseline),0.9
-116347-V1,robust/sample/time_tercile_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error in time tercile 1 subsample,1.0
-116347-V1,robust/sample/time_tercile_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: time tercile 2 (N=1996),0.85
-116347-V1,robust/sample/time_tercile_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: time tercile 3 (N=1907),0.85
-116347-V1,robust/sample/high_prod_workers,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,0,invalid,Collinearity error in high-productivity worker subsample,1.0
-116347-V1,robust/sample/low_prod_workers,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: low-productivity workers (N=2695),0.85
-116347-V1,robust/control/with_age,robustness/control_progression.md,logprod,has_friend_present,G1,baseline,0,0,noncore_diagnostic,"Control progression with age; drops worker FE, changes estimand",0.85
-116347-V1,robust/control/with_personality,robustness/control_progression.md,logprod,has_friend_present,G1,baseline,0,0,noncore_diagnostic,"Control progression with personality; drops worker FE, changes estimand",0.85
-116347-V1,robust/control/all_controls,robustness/control_progression.md,logprod,has_friend_present,G1,baseline,0,0,noncore_diagnostic,"Control progression all; drops worker FE, changes estimand",0.85
-116347-V1,robust/sample/experienced,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: experienced workers only (N=4525),0.85
-116347-V1,robust/sample/inexperienced,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: inexperienced workers only (N=1151),0.85
+116347-V1,baseline,methods/panel_fixed_effects.md#baseline,logprod,has_friend_present,G1,baseline,1,1,core_fe,"Primary baseline: worker + group-date FE, logprod on has_friend_present",1.0
+116347-V1,baseline/continuous_treatment,methods/panel_fixed_effects.md#baseline,logprod,num_friends_present,G1,baseline,1,1,core_controls,Baseline with continuous treatment (num_friends_present),0.95
+116347-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: none,0.95
+116347-V1,panel/fe/unit,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: unit,0.95
+116347-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: time,0.95
+116347-V1,panel/fe/group,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: group,0.95
+116347-V1,panel/fe/groupdate,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: groupdate,0.95
+116347-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,logprod,has_friend_present,G1,baseline,0,1,core_fe,FE variation: twoway,0.95
+116347-V1,robust/cluster/unit,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Clustering variation: unit,0.95
+116347-V1,robust/cluster/time,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Clustering variation: time,0.95
+116347-V1,robust/cluster/group,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Clustering variation: group,0.95
+116347-V1,robust/cluster/none,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Clustering variation: none,0.95
+116347-V1,robust/cluster/groupdate,robustness/clustering_variations.md,logprod,has_friend_present,G1,baseline,0,1,core_inference,Clustering variation: groupdate,0.95
+116347-V1,robust/sample/early_period,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: early_period,0.9
+116347-V1,robust/sample/late_period,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: late_period,0.9
+116347-V1,robust/sample/group_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: group_1,0.9
+116347-V1,robust/sample/group_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: group_2,0.9
+116347-V1,robust/sample/group_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: group_3,0.9
+116347-V1,robust/sample/drop_group_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop_group_1,0.9
+116347-V1,robust/sample/drop_group_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop_group_2,0.9
+116347-V1,robust/sample/drop_group_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop_group_3,0.9
+116347-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: winsorize_1pct,0.9
+116347-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: winsorize_5pct,0.9
+116347-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: winsorize_10pct,0.9
+116347-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: trim_1pct,0.9
+116347-V1,robust/sample/fullday_only,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: fullday_only,0.9
+116347-V1,robust/sample/partday_only,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: partday_only,0.9
+116347-V1,robust/sample/young,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: young,0.9
+116347-V1,robust/sample/old,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: old,0.9
+116347-V1,robust/sample/age_tercile_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: age_tercile_1,0.9
+116347-V1,robust/sample/age_tercile_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: age_tercile_2,0.9
+116347-V1,robust/sample/age_tercile_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: age_tercile_3,0.9
+116347-V1,robust/outcome/prod_level,robustness/functional_form.md,prod,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: prod,0.9
+116347-V1,robust/outcome/work,robustness/measurement.md,work,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: work,0.9
+116347-V1,robust/outcome/logwork,robustness/functional_form.md,logwork,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: logwork,0.9
+116347-V1,robust/outcome/logwage,robustness/measurement.md,logwage,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: logwage,0.9
+116347-V1,robust/outcome/mins,robustness/measurement.md,mins,has_friend_present,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: mins,0.9
+116347-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_prod,has_friend_present,G1,baseline,0,1,core_funcform,Functional form: ihs_outcome,0.9
+116347-V1,robust/funcform/log_plus1,robustness/functional_form.md,log_prod_plus1,has_friend_present,G1,baseline,0,1,core_funcform,Functional form: log_plus1,0.9
+116347-V1,robust/heterogeneity/age,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: age,0.9
+116347-V1,robust/heterogeneity/std_extr,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: std_extr,0.9
+116347-V1,robust/heterogeneity/std_agre,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: std_agre,0.9
+116347-V1,robust/heterogeneity/std_cons,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: std_cons,0.9
+116347-V1,robust/heterogeneity/std_neur,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: std_neur,0.9
+116347-V1,robust/heterogeneity/std_open,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: std_open,0.9
+116347-V1,robust/heterogeneity/group,robustness/heterogeneity.md,logprod,has_friend_present,G1,baseline,0,1,core_fe,Two-way FE (worker + date) equivalent,0.9
+116347-V1,robust/heterogeneity/intensity,robustness/heterogeneity.md,logprod,num_friends_present,G1,baseline,0,0,noncore_alt_treatment,Continuous treatment (num_friends_present) as heterogeneity,0.9
+116347-V1,robust/placebo/prior_period,robustness/placebo_tests.md,logprod,has_friend_present,G1,baseline,0,0,noncore_placebo,Placebo: prior_period,0.9
+116347-V1,robust/placebo/fake_timing_25,robustness/placebo_tests.md,logprod,fake_post_0,G1,baseline,0,0,noncore_placebo,Placebo: fake_timing_25,0.9
+116347-V1,robust/placebo/fake_timing_50,robustness/placebo_tests.md,logprod,fake_post_1,G1,baseline,0,0,noncore_placebo,Placebo: fake_timing_50,0.9
+116347-V1,robust/placebo/fake_timing_75,robustness/placebo_tests.md,logprod,fake_post_2,G1,baseline,0,0,noncore_placebo,Placebo: fake_timing_75,0.9
+116347-V1,robust/treatment/at_least_1_friends,robustness/measurement.md,logprod,has_1_friends,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: has_1_friends,0.9
+116347-V1,robust/treatment/at_least_2_friends,robustness/measurement.md,logprod,has_2_friends,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: has_2_friends,0.9
+116347-V1,robust/treatment/at_least_3_friends,robustness/measurement.md,logprod,has_3_friends,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: has_3_friends,0.9
+116347-V1,robust/treatment/log_num_friends,robustness/measurement.md,logprod,log_num_friends,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: log_num_friends,0.9
+116347-V1,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,logprod_diff,treat_diff,G1,baseline,0,1,core_method,First differences estimation,0.9
+116347-V1,robust/sample/balanced,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: balanced,0.9
+116347-V1,robust/sample/min_obs_5,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: min_obs_5,0.9
+116347-V1,robust/sample/min_obs_10,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: min_obs_10,0.9
+116347-V1,robust/sample/drop_singletons,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: drop_singletons,0.9
+116347-V1,robust/sample/time_tercile_1,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: time_tercile_1,0.9
+116347-V1,robust/sample/time_tercile_2,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: time_tercile_2,0.9
+116347-V1,robust/sample/time_tercile_3,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: time_tercile_3,0.9
+116347-V1,robust/sample/high_prod_workers,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: high_prod_workers,0.9
+116347-V1,robust/sample/low_prod_workers,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: low_prod_workers,0.9
+116347-V1,robust/control/with_age,robustness/control_progression.md,logprod,has_friend_present,G1,baseline,0,1,core_controls,Controls added to groupdate FE spec: with_age,0.9
+116347-V1,robust/control/with_personality,robustness/control_progression.md,logprod,has_friend_present,G1,baseline,0,1,core_controls,Controls added to groupdate FE spec: with_personality,0.9
+116347-V1,robust/control/all_controls,robustness/control_progression.md,logprod,has_friend_present,G1,baseline,0,1,core_controls,Controls added to groupdate FE spec: all_controls,0.9
+116347-V1,robust/sample/experienced,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: experienced,0.9
+116347-V1,robust/sample/inexperienced,robustness/sample_restrictions.md,logprod,has_friend_present,G1,baseline,0,1,core_sample,Sample restriction: inexperienced,0.9

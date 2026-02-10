@@ -1,17 +1,14 @@
 {
   "paper_id": "116136-V2",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116136-V2",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/116136-V2",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Unilateral divorce laws combined with community property regimes increase household asset accumulation relative to other property division regimes.",
+      "claim_summary": "Unilateral divorce laws combined with community property regimes lead to higher household asset accumulation. The interaction of unilateral divorce adoption with community property (uni_comprop) increases assets.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline",
-        "baseline/children",
-        "baseline/state_controls",
         "baseline/full"
       ],
       "baseline_outcome_vars": [
@@ -20,8 +17,8 @@
       "baseline_treatment_vars": [
         "uni_comprop"
       ],
-      "notes": "Four baseline specs represent progressive control additions (Age+Year, +Children, +State, +Marriage duration). baseline/full is the preferred specification with all controls. All use Individual FE and state clustering. The first three baselines are marginally insignificant (p~0.063-0.068) while baseline/full is significant (p=0.003) due to the addition of marriage duration controls restricting the sample."
+      "notes": "Baseline/full is the preferred specification with full controls (age + year + children + marriage duration) and individual FE, clustered at state level. Coefficient ~16,957 (p=0.003). The simpler baselines (baseline, baseline/children, baseline/state_controls) use subsets of controls and are marginally insignificant (p~0.06)."
     }
   ],
-  "global_notes": "Paper studies effect of unilateral divorce on assets, interacted with property division regime. The main treatment uni_comprop is an interaction of unilateral divorce adoption with community property regime. Several specifications have null/missing coefficients because the treatment variable was collinear or dropped in restricted subsamples. The functional form specs (log, IHS) show negative signs, contradicting the baseline. The first-difference specification shows a large negative and highly significant coefficient, which is a major concern for the baseline claim."
+  "global_notes": "Paper is 'Yours, Mine and Ours: Do Divorce Laws Affect the Intertemporal Behavior of Married Couples?' by Alessandra Voena (AER 2015). The main treatment is the interaction of unilateral divorce adoption with community property regime (uni_comprop). All 66 specs use assets as the outcome except 2 alternative outcomes (has_positive_assets, assets_quintile) and 2 transformed outcomes (log_assets, ihs_assets). Some specs have empty coefficients due to convergence failures (late_period, eqdistr_only, title_only, age_older, 1980s, 1990s). The first-differenced spec (panel/method/first_diff) shows a negative coefficient with p=0.0, which may reflect a computational issue. There are 4 baseline variants differing only in control sets: baseline (age+year), baseline/children (age+year+children), baseline/state_controls (+state dummies), baseline/full (full controls including marriage duration). Only baseline/full achieves p<0.05."
 }

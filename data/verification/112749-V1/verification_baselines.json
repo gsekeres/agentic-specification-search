@@ -1,13 +1,13 @@
 {
   "paper_id": "112749-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112749-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/112749-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Flooded counties experienced larger declines in Black population share (log) after the 1927 Mississippi flood, using county and state-year FE with continuous flood intensity treatment.",
-      "expected_sign": "+",
+      "claim_summary": "Flooded counties in the 1927 Mississippi flood experienced larger relative declines in Black population share in subsequent decades, consistent with the flood accelerating Black out-migration from the South.",
+      "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline"
       ],
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "flood_intensity"
       ],
-      "notes": "Baseline uses lnfrac_black outcome, flood_intensity treatment, County FE + State-Year FE, clustered at fips. baseline_lagged_dv has null treatment coef. Baseline coef is 0.026, p=0.63."
+      "notes": "Baseline coefficient 0.026 (SE 0.054, p=0.633) -- POSITIVE and insignificant. The SPECIFICATION_SEARCH.md notes weak support. The expected sign based on the paper's hypothesis is negative (flood reduces Black share), but the baseline specification shows a positive coefficient. County and year FE are included. Many control variations (lagged DV) failed to produce results."
     }
   ],
-  "global_notes": "Issues: (1) baseline coef small and insignificant. (2) 8 specs have null treatment coefs. (3) Cross-section specs estimate different model. (4) Some FE specs omit critical identification. (5) frac_black outcome and levels funcform are duplicates."
+  "global_notes": "Paper is 'When the Levee Breaks' (AER). The baseline specification yields a positive, insignificant coefficient, contrary to expectations. Many specifications (7 of 57) produced missing results due to data issues with lagged dependent variables. Cross-sectional specifications (1930, 1950, 1960, 1970) show large positive coefficients because they capture level differences rather than within-county changes. The two-way FE specification (county + year) yields a negative coefficient (-0.072). Results are highly sensitive to FE structure."
 }

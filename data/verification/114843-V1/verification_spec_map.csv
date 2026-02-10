@@ -1,0 +1,132 @@
+spec_id,baseline_id,classification,category,notes
+baseline/pooled_iv/growth_hc_poly3,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/pooled_iv/growth_hc_interact_poly3,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/panel_iv/growth_hc_poly3,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/pooled_iv/growth_hc_poly4,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/pooled_iv/growth_hc_interact_poly4,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/panel_iv/growth_hc_poly4,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/pooled_iv/growth_hc_poly5,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/pooled_iv/growth_hc_interact_poly5,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+baseline/panel_iv/growth_hc_poly5,baseline/pooled_iv/growth_hc_poly3,baseline,baseline,Baseline specification (different poly orders/panel vs pooled)
+robust/het/hc_var/pooled_growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/panel_growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/pooled_invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/panel_invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/pooled_growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/panel_growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/pooled_invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/panel_invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/pooled_growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/panel_growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/pooled_invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/hc_var/panel_invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/pooled_growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/panel_growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/pooled_invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/panel_invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/pooled_growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/panel_growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/pooled_invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/panel_invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/pooled_growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/panel_growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/pooled_invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog/panel_invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/pooled_growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/panel_growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/pooled_invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/panel_invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/pooled_growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/panel_growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/pooled_invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/panel_invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/pooled_growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/panel_growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/pooled_invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/het/qog_var/panel_invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity: human capital / quality of government interaction
+robust/outcome/invest_hc_pooled_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Investment outcome (vs growth)
+robust/outcome/invest_hc_panel_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Investment outcome (vs growth)
+robust/outcome/invest_hc_pooled_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Investment outcome (vs growth)
+robust/outcome/invest_hc_panel_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Investment outcome (vs growth)
+robust/outcome/invest_hc_pooled_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Investment outcome (vs growth)
+robust/outcome/invest_hc_panel_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Investment outcome (vs growth)
+robust/poly/poly2_growth_pooled,baseline/pooled_iv/growth_hc_poly3,core,other,Spec: robust/poly/poly2_growth_pooled
+robust/poly/poly2_invest_pooled,baseline/pooled_iv/growth_hc_poly3,core,other,Spec: robust/poly/poly2_invest_pooled
+robust/poly/poly6_growth_pooled,baseline/pooled_iv/growth_hc_poly3,core,other,Spec: robust/poly/poly6_growth_pooled
+robust/poly/poly6_invest_pooled,baseline/pooled_iv/growth_hc_poly3,core,other,Spec: robust/poly/poly6_invest_pooled
+robust/reduced_form/growth_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly3_hc,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly3_qog,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly3,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly3_hc,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly3_qog,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly4_hc,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly4_qog,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly4,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly4_hc,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly4_qog,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly5_hc,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/growth_poly5_qog,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly5,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly5_hc,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/reduced_form/invest_poly5_qog,baseline/pooled_iv/growth_hc_poly3,non_core,diagnostics,Reduced form specification
+robust/sample/period_1989,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/period_1994,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/period_2000,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/drop_period_1989,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/drop_period_1994,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/drop_period_2000,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/bandwidth_50pct,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/bandwidth_75pct,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/bandwidth_100pct,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/eligible_only,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/table4_sample_poly3,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/sample/table4_sample_poly4,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/method/naive_ols_poly3,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/naive_ols_poly4,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/naive_ols_poly5,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/lpm_first_stage_poly3,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/lpm_first_stage_poly4,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/lpm_first_stage_poly5,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/region_fe_growth,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/method/region_fe_invest,baseline/pooled_iv/growth_hc_poly3,core,method,Alternative estimation method
+robust/no_interaction/growth_poly3,baseline/pooled_iv/growth_hc_poly3,core,funcform,Without eligibility interaction terms
+robust/no_interaction/invest_poly3,baseline/pooled_iv/growth_hc_poly3,core,funcform,Without eligibility interaction terms
+robust/no_interaction/growth_poly4,baseline/pooled_iv/growth_hc_poly3,core,funcform,Without eligibility interaction terms
+robust/no_interaction/invest_poly4,baseline/pooled_iv/growth_hc_poly3,core,funcform,Without eligibility interaction terms
+robust/no_interaction/growth_poly5,baseline/pooled_iv/growth_hc_poly3,core,funcform,Without eligibility interaction terms
+robust/no_interaction/invest_poly5,baseline/pooled_iv/growth_hc_poly3,core,funcform,Without eligibility interaction terms
+robust/inference/robust_se_poly3,baseline/pooled_iv/growth_hc_poly3,core,inference,Inference/clustering variation
+robust/inference/robust_se_poly4,baseline/pooled_iv/growth_hc_poly3,core,inference,Inference/clustering variation
+robust/inference/robust_se_poly5,baseline/pooled_iv/growth_hc_poly3,core,inference,Inference/clustering variation
+robust/inference/year_dummies,baseline/pooled_iv/growth_hc_poly3,core,inference,Inference/clustering variation
+robust/functional_form/linear_growth,baseline/pooled_iv/growth_hc_poly3,core,funcform,Functional form variation
+robust/functional_form/linear_invest,baseline/pooled_iv/growth_hc_poly3,core,funcform,Functional form variation
+robust/functional_form/quadratic_growth,baseline/pooled_iv/growth_hc_poly3,core,funcform,Functional form variation
+robust/functional_form/quadratic_invest,baseline/pooled_iv/growth_hc_poly3,core,funcform,Functional form variation
+robust/functional_form/log_invest,baseline/pooled_iv/growth_hc_poly3,core,funcform,Functional form variation
+robust/leave_one_out/drop_gdpcap_3,baseline/pooled_iv/growth_hc_poly3,core,controls,Leave-one-out or single control variation
+robust/leave_one_out/drop_gdpcap_2,baseline/pooled_iv/growth_hc_poly3,core,controls,Leave-one-out or single control variation
+robust/leave_one_out/drop_gdpcap,baseline/pooled_iv/growth_hc_poly3,core,controls,Leave-one-out or single control variation
+robust/leave_one_out/drop_gdpcap_i_3,baseline/pooled_iv/growth_hc_poly3,core,controls,Leave-one-out or single control variation
+robust/leave_one_out/drop_gdpcap_i_2,baseline/pooled_iv/growth_hc_poly3,core,controls,Leave-one-out or single control variation
+robust/leave_one_out/drop_gdpcap_i,baseline/pooled_iv/growth_hc_poly3,core,controls,Leave-one-out or single control variation
+robust/placebo/random_treatment,baseline/pooled_iv/growth_hc_poly3,non_core,placebo,Placebo/falsification test
+robust/placebo/first_period_only,baseline/pooled_iv/growth_hc_poly3,non_core,placebo,Placebo/falsification test
+robust/table8/all_three_growth,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Table 8 decomposition (literacy/capital/protestant)
+robust/table8/all_three_invest,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Table 8 decomposition (literacy/capital/protestant)
+robust/table8/lit_prot_growth,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Table 8 decomposition (literacy/capital/protestant)
+robust/table8/lit_prot_invest,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Table 8 decomposition (literacy/capital/protestant)
+robust/table8/lit_cap_growth,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Table 8 decomposition (literacy/capital/protestant)
+robust/table8/lit_cap_invest,baseline/pooled_iv/growth_hc_poly3,non_core,alt_outcome,Table 8 decomposition (literacy/capital/protestant)
+robust/heterogeneity/low_gdp,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity subsample
+robust/heterogeneity/high_gdp,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity subsample
+robust/heterogeneity/low_hc,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity subsample
+robust/heterogeneity/high_hc,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity subsample
+robust/heterogeneity/low_qog,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity subsample
+robust/heterogeneity/high_qog,baseline/pooled_iv/growth_hc_poly3,non_core,heterogeneity,Heterogeneity subsample
+robust/donut/donut_10pct,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/donut/donut_20pct,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction
+robust/donut/donut_30pct,baseline/pooled_iv/growth_hc_poly3,core,sample,Sample restriction

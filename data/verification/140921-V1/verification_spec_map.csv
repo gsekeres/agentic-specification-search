@@ -1,67 +1,67 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-140921-V1,baseline,methods/cross_sectional_ols.md#baseline,cOut,syntheticT,G1,baseline,1,1,core_controls,Primary baseline: cOut on syntheticT with standard controls,1.0
-140921-V1,baseline_mheir,methods/cross_sectional_ols.md#baseline,mheir,syntheticT,G2,baseline_mheir,1,1,core_controls,Baseline for married-heir outcome,1.0
-140921-V1,baseline_fmissmatch,methods/cross_sectional_ols.md#baseline,fmissmatch,syntheticT,G3,baseline_fmissmatch,1,1,core_controls,Baseline for absolute landholding mismatch,1.0
-140921-V1,baseline_fmissmatch2,methods/cross_sectional_ols.md#baseline,fmissmatch2,syntheticT,G3,baseline_fmissmatch2,1,1,core_controls,Baseline for signed landholding mismatch,1.0
-140921-V1,baseline_fdown,methods/cross_sectional_ols.md#baseline,fdown,syntheticT,G3,baseline_fdown,1,1,core_controls,Baseline for married-down indicator,1.0
-140921-V1,robust/control/none,robustness/control_progression.md#no-controls,cOut,syntheticT,G1,baseline,0,1,core_controls,No controls; same outcome/treatment as baseline,1.0
-140921-V1,robust/control/drop_pr4,robustness/leave_one_out.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Drop pr4 control; same outcome/treatment,1.0
-140921-V1,robust/control/drop_biorder,robustness/leave_one_out.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Drop biorder control; same outcome/treatment,1.0
-140921-V1,robust/control/drop_hengpee,robustness/leave_one_out.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Drop hengpee control; same outcome/treatment,1.0
-140921-V1,robust/control/add_pr4,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Only pr4 as control; progressive build-up,1.0
-140921-V1,robust/control/add_biorder,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,pr4+biorder controls; same as drop_hengpee,0.9
-140921-V1,robust/control/add_hengpee,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Identical to baseline (all 3 controls included),0.7
-140921-V1,robust/control/extended,robustness/control_progression.md#extended,cOut,syntheticT,G1,baseline,0,1,core_controls,Add distlondon control; extended specification,1.0
-140921-V1,robust/control/with_age,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Add age controls; tests sensitivity to age,1.0
-140921-V1,robust/control/with_landholdings,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Add log father landholdings; extended controls,1.0
-140921-V1,robust/sample/drop_byear_1825,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1825; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1826,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1826; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1827,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1827; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1828,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1828; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1829,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1829; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1830,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1830; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1831,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1831; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1832,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1832; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1833,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1833; leave-one-out by year,1.0
-140921-V1,robust/sample/drop_byear_1834,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Drop birth year 1834; leave-one-out by year,1.0
-140921-V1,robust/sample/young,robustness/sample_restrictions.md#age-groups,cOut,syntheticT,G1,baseline,0,1,core_sample,Restrict to age 15-25 in 1861; subsample,0.9
-140921-V1,robust/sample/older,robustness/sample_restrictions.md#age-groups,cOut,syntheticT,G1,baseline,0,1,core_sample,Restrict to age 26-35 in 1861; subsample,0.9
-140921-V1,robust/sample/high_rank,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,High-rank daughters only; subsample test,0.85
-140921-V1,robust/sample/low_rank,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Low-rank daughters only; subsample test,0.85
-140921-V1,robust/sample/english_only,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,English peerage only; subsample test,0.9
-140921-V1,robust/sample/trimmed_1pct,robustness/sample_restrictions.md#outliers,cOut,syntheticT,G1,baseline,0,1,core_sample,Trim 1pct tails; identical to baseline (no effect),0.7
-140921-V1,robust/sample/firstborn,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,First-born daughters only; subsample test,0.85
-140921-V1,robust/sample/later_born,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Later-born daughters only; subsample test,0.85
-140921-V1,robust/outcome/mheir,robustness/measurement.md#alternative-outcomes,mheir,syntheticT,G2,baseline_mheir,0,1,core_controls,Duplicate of baseline_mheir; same coef/SE,0.6
-140921-V1,robust/outcome/fmissmatch,robustness/measurement.md#alternative-outcomes,fmissmatch,syntheticT,G3,baseline_fmissmatch,0,1,core_controls,Duplicate of baseline_fmissmatch; same coef/SE,0.6
-140921-V1,robust/outcome/fmissmatch2,robustness/measurement.md#alternative-outcomes,fmissmatch2,syntheticT,G3,baseline_fmissmatch2,0,1,core_controls,Duplicate of baseline_fmissmatch2; same coef/SE,0.6
-140921-V1,robust/outcome/fdown,robustness/measurement.md#alternative-outcomes,fdown,syntheticT,G3,baseline_fdown,0,1,core_controls,Duplicate of baseline_fdown; same coef/SE,0.6
-140921-V1,robust/outcome/dist,robustness/measurement.md#alternative-outcomes,dist,syntheticT,,,0,0,noncore_alt_outcome,Distance between seats; different outcome concept,0.85
-140921-V1,robust/outcome/dist_extended,robustness/measurement.md#alternative-outcomes,dist,syntheticT,,,0,0,noncore_alt_outcome,Distance with extended controls; different outcome,0.85
-140921-V1,robust/outcome/celibacy,robustness/measurement.md#alternative-outcomes,celibacy,syntheticT,,,0,0,noncore_alt_outcome,Celibacy outcome; different sample and outcome,0.9
-140921-V1,robust/outcome/celibacy_extended,robustness/measurement.md#alternative-outcomes,celibacy,syntheticT,,,0,0,noncore_alt_outcome,Celibacy with extended controls; different outcome,0.9
-140921-V1,robust/inference/hc1,robustness/inference_alternatives.md#robust-se,cOut,syntheticT,G1,baseline,0,1,core_inference,HC1 robust SE instead of cluster; same coef,1.0
-140921-V1,robust/inference/hc3,robustness/inference_alternatives.md#robust-se,cOut,syntheticT,G1,baseline,0,1,core_inference,HC3 robust SE instead of cluster; same coef,1.0
-140921-V1,robust/inference/classical,robustness/inference_alternatives.md#classical,cOut,syntheticT,G1,baseline,0,1,core_inference,Classical SE; same coef different inference,1.0
-140921-V1,robust/funcform/standardized,robustness/functional_form.md,cOut,syntheticT_std,G1,baseline,0,1,core_funcform,Standardized treatment; rescaled coefficient,0.95
-140921-V1,robust/funcform/quadratic,robustness/functional_form.md#polynomial,cOut,syntheticT,G1,baseline,0,1,core_funcform,Quadratic treatment; tests linearity assumption,0.9
-140921-V1,robust/funcform/log_treatment,robustness/functional_form.md#log,cOut,log_syntheticT,G1,baseline,0,1,core_funcform,Log treatment; nonlinear transformation,0.9
-140921-V1,robust/funcform/binary_treatment,robustness/functional_form.md#binary,cOut,syntheticT_high,G1,baseline,0,1,core_funcform,Binary treatment indicator; coarsened version,0.9
-140921-V1,robust/heterogeneity/by_rank,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Main effect with rank interaction; heterogeneity,0.7
-140921-V1,robust/heterogeneity/by_rank_interaction,robustness/heterogeneity.md#interactions,cOut,syntheticT_x_pr4,,,0,0,noncore_heterogeneity,Interaction term coefficient; not main effect,0.95
-140921-V1,robust/heterogeneity/by_peerage,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Main effect with peerage interaction; heterogeneity,0.7
-140921-V1,robust/heterogeneity/by_birthorder,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Main effect with birth order interaction,0.7
-140921-V1,robust/heterogeneity/by_distlondon,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Main effect with distlondon interaction,0.7
-140921-V1,robust/heterogeneity/by_age,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Main effect with age interaction; heterogeneity,0.7
-140921-V1,iv/first_stage/baseline,methods/instrumental_variables.md#first-stage,mourn,syntheticT,,,0,0,noncore_diagnostic,First stage regression; diagnostic not main claim,1.0
-140921-V1,iv/first_stage/reduced_form,methods/instrumental_variables.md#reduced-form,cOut,syntheticT,G1,baseline,0,1,core_method,Reduced form; identical to baseline OLS,0.7
-140921-V1,iv/method/ols,methods/instrumental_variables.md#ols-comparison,cOut,mourn,,,0,0,noncore_alt_treatment,OLS on mourn (not syntheticT); different treatment,0.8
-140921-V1,robust/placebo/early_cohort,robustness/placebo_tests.md#timing,cOut,syntheticT,,,0,0,noncore_placebo,Placebo on early cohorts (born 1825-1830),1.0
-140921-V1,robust/placebo/late_cohort,robustness/placebo_tests.md#timing,cOut,syntheticT,,,0,0,noncore_placebo,Placebo on late cohorts (born 1841-1846),1.0
-140921-V1,robust/placebo/predetermined_pr4,robustness/placebo_tests.md#predetermined,pr4,syntheticT,,,0,0,noncore_placebo,Placebo: predetermined outcome (father rank),1.0
-140921-V1,robust/placebo/predetermined_biorder,robustness/placebo_tests.md#predetermined,biorder,syntheticT,,,0,0,noncore_placebo,Placebo: predetermined outcome (birth order),1.0
-140921-V1,robust/extended/cOut,robustness/control_progression.md#extended,cOut,syntheticT,G1,baseline,0,1,core_controls,Duplicate of robust/control/extended; same coef/SE,0.6
-140921-V1,robust/extended/mheir,robustness/control_progression.md#extended,mheir,syntheticT,G2,baseline_mheir,0,1,core_controls,Extended controls on mheir outcome,1.0
-140921-V1,robust/extended/fmissmatch,robustness/control_progression.md#extended,fmissmatch,syntheticT,G3,baseline_fmissmatch,0,1,core_controls,Extended controls on fmissmatch outcome,1.0
-140921-V1,robust/extended/fmissmatch2,robustness/control_progression.md#extended,fmissmatch2,syntheticT,G3,baseline_fmissmatch2,0,1,core_controls,Extended controls on fmissmatch2 outcome,1.0
-140921-V1,robust/extended/fdown,robustness/control_progression.md#extended,fdown,syntheticT,G3,baseline_fdown,0,1,core_controls,Extended controls on fdown outcome,1.0
+140921-V1,baseline,methods/cross_sectional_ols.md#baseline,cOut,syntheticT,G1,baseline,1,1,core_controls,"Primary baseline: cOut on syntheticT with controls, clustered by byear",1.0
+140921-V1,baseline_mheir,methods/cross_sectional_ols.md#baseline,mheir,syntheticT,G2,baseline_mheir,1,1,core_controls,Baseline: married heir (mheir) on syntheticT,1.0
+140921-V1,baseline_fmissmatch,methods/cross_sectional_ols.md#baseline,fmissmatch,syntheticT,G3,baseline_fmissmatch,1,1,core_controls,Baseline: absolute mismatch in landholdings,1.0
+140921-V1,baseline_fmissmatch2,methods/cross_sectional_ols.md#baseline,fmissmatch2,syntheticT,G4,baseline_fmissmatch2,1,1,core_controls,Baseline: signed mismatch (husband-wife),1.0
+140921-V1,baseline_fdown,methods/cross_sectional_ols.md#baseline,fdown,syntheticT,G5,baseline_fdown,1,1,core_controls,Baseline: probability of marrying down,1.0
+140921-V1,robust/control/none,robustness/control_progression.md#no-controls,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: none,0.95
+140921-V1,robust/control/drop_pr4,robustness/leave_one_out.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: drop_pr4,0.95
+140921-V1,robust/control/drop_biorder,robustness/leave_one_out.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: drop_biorder,0.95
+140921-V1,robust/control/drop_hengpee,robustness/leave_one_out.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: drop_hengpee,0.95
+140921-V1,robust/control/add_pr4,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: add_pr4,0.95
+140921-V1,robust/control/add_biorder,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: add_biorder,0.95
+140921-V1,robust/control/add_hengpee,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: add_hengpee,0.95
+140921-V1,robust/control/extended,robustness/control_progression.md#extended,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: extended,0.95
+140921-V1,robust/control/with_age,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: with_age,0.95
+140921-V1,robust/control/with_landholdings,robustness/control_progression.md,cOut,syntheticT,G1,baseline,0,1,core_controls,Control variation: with_landholdings,0.95
+140921-V1,robust/sample/drop_byear_1825,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1825,0.95
+140921-V1,robust/sample/drop_byear_1826,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1826,0.95
+140921-V1,robust/sample/drop_byear_1827,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1827,0.95
+140921-V1,robust/sample/drop_byear_1828,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1828,0.95
+140921-V1,robust/sample/drop_byear_1829,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1829,0.95
+140921-V1,robust/sample/young,robustness/sample_restrictions.md#age-groups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Age 15-25 in 1861,0.95
+140921-V1,robust/sample/older,robustness/sample_restrictions.md#age-groups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Age 26-35 in 1861,0.95
+140921-V1,robust/sample/high_rank,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: High rank daughters only,0.95
+140921-V1,robust/sample/low_rank,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Low rank daughters only,0.95
+140921-V1,robust/sample/english_only,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: English peerage only,0.95
+140921-V1,robust/sample/trimmed_1pct,robustness/sample_restrictions.md#outliers,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Trim 1% tails of syntheticT,0.95
+140921-V1,robust/sample/firstborn,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: First-born daughters only,0.95
+140921-V1,robust/sample/later_born,robustness/sample_restrictions.md#subgroups,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Later-born daughters only,0.95
+140921-V1,robust/outcome/mheir,robustness/measurement.md#alternative-outcomes,mheir,syntheticT,G2,baseline_mheir,0,0,noncore_alt_outcome,Alternative outcome: mheir,0.95
+140921-V1,robust/outcome/fmissmatch,robustness/measurement.md#alternative-outcomes,fmissmatch,syntheticT,G3,baseline_fmissmatch,0,0,noncore_alt_outcome,Alternative outcome: fmissmatch,0.95
+140921-V1,robust/outcome/fmissmatch2,robustness/measurement.md#alternative-outcomes,fmissmatch2,syntheticT,G4,baseline_fmissmatch2,0,0,noncore_alt_outcome,Alternative outcome: fmissmatch2,0.95
+140921-V1,robust/outcome/fdown,robustness/measurement.md#alternative-outcomes,fdown,syntheticT,G5,baseline_fdown,0,0,noncore_alt_outcome,Alternative outcome: fdown,0.95
+140921-V1,robust/outcome/dist,robustness/measurement.md#alternative-outcomes,dist,syntheticT,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: geographic distance,0.9
+140921-V1,robust/outcome/dist_extended,robustness/measurement.md#alternative-outcomes,dist,syntheticT,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: geographic distance,0.9
+140921-V1,robust/inference/hc1,robustness/inference_alternatives.md#robust-se,cOut,syntheticT,G1,baseline,0,1,core_inference,SE variation: hc1,0.95
+140921-V1,robust/inference/hc3,robustness/inference_alternatives.md#robust-se,cOut,syntheticT,G1,baseline,0,1,core_inference,SE variation: hc3,0.95
+140921-V1,robust/inference/classical,robustness/inference_alternatives.md#classical,cOut,syntheticT,G1,baseline,0,1,core_inference,SE variation: classical,0.95
+140921-V1,robust/funcform/standardized,robustness/functional_form.md,cOut,syntheticT_std,G1,baseline,0,1,core_funcform,Functional form: standardized,0.9
+140921-V1,robust/funcform/quadratic,robustness/functional_form.md#polynomial,cOut,syntheticT,G1,baseline,0,1,core_funcform,Functional form: quadratic,0.9
+140921-V1,robust/funcform/log_treatment,robustness/functional_form.md#log,cOut,log_syntheticT,G1,baseline,0,1,core_funcform,Functional form: log_treatment,0.9
+140921-V1,robust/funcform/binary_treatment,robustness/functional_form.md#binary,cOut,syntheticT_high,G1,baseline,0,1,core_funcform,Functional form: binary_treatment,0.9
+140921-V1,robust/heterogeneity/by_rank,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_rank,0.95
+140921-V1,robust/heterogeneity/by_rank_interaction,robustness/heterogeneity.md#interactions,cOut,syntheticT_x_pr4,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_rank_interaction,0.95
+140921-V1,robust/heterogeneity/by_peerage,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_peerage,0.95
+140921-V1,robust/heterogeneity/by_birthorder,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_birthorder,0.95
+140921-V1,robust/heterogeneity/by_distlondon,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_distlondon,0.95
+140921-V1,robust/heterogeneity/by_age,robustness/heterogeneity.md#interactions,cOut,syntheticT,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_age,0.95
+140921-V1,iv/first_stage/baseline,methods/instrumental_variables.md#first-stage,mourn,syntheticT,G1,baseline,0,1,core_method,IV first stage / reduced form,0.95
+140921-V1,iv/first_stage/reduced_form,methods/instrumental_variables.md#reduced-form,cOut,syntheticT,G1,baseline,0,1,core_method,IV first stage / reduced form,0.95
+140921-V1,iv/method/ols,methods/instrumental_variables.md#ols-comparison,cOut,mourn,G1,baseline,0,1,core_method,IV specification: ols,0.95
+140921-V1,robust/placebo/early_cohort,robustness/placebo_tests.md#timing,cOut,syntheticT,G1,baseline,0,0,noncore_placebo,Placebo test: cOut on syntheticT,0.95
+140921-V1,robust/placebo/late_cohort,robustness/placebo_tests.md#timing,cOut,syntheticT,G1,baseline,0,0,noncore_placebo,Placebo test: cOut on syntheticT,0.95
+140921-V1,robust/placebo/predetermined_pr4,robustness/placebo_tests.md#predetermined,pr4,syntheticT,G1,baseline,0,0,noncore_placebo,Placebo test: pr4 on syntheticT,0.95
+140921-V1,robust/placebo/predetermined_biorder,robustness/placebo_tests.md#predetermined,biorder,syntheticT,G1,baseline,0,0,noncore_placebo,Placebo test: biorder on syntheticT,0.95
+140921-V1,robust/extended/cOut,robustness/control_progression.md#extended,cOut,syntheticT,G1,baseline,0,1,core_controls,Extended controls: cOut with distlondon,0.95
+140921-V1,robust/extended/mheir,robustness/control_progression.md#extended,mheir,syntheticT,G2,baseline_mheir,0,1,core_controls,Extended controls: mheir with distlondon,0.95
+140921-V1,robust/extended/fmissmatch,robustness/control_progression.md#extended,fmissmatch,syntheticT,G3,baseline_fmissmatch,0,1,core_controls,Extended controls: fmissmatch with distlondon,0.95
+140921-V1,robust/extended/fmissmatch2,robustness/control_progression.md#extended,fmissmatch2,syntheticT,G4,baseline_fmissmatch2,0,1,core_controls,Extended controls: fmissmatch2 with distlondon,0.95
+140921-V1,robust/extended/fdown,robustness/control_progression.md#extended,fdown,syntheticT,G5,baseline_fdown,0,1,core_controls,Extended controls: fdown with distlondon,0.95
+140921-V1,robust/sample/drop_byear_1830,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1830,0.95
+140921-V1,robust/sample/drop_byear_1831,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1831,0.95
+140921-V1,robust/sample/drop_byear_1832,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1832,0.95
+140921-V1,robust/sample/drop_byear_1833,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1833,0.95
+140921-V1,robust/sample/drop_byear_1834,robustness/sample_restrictions.md#drop-year,cOut,syntheticT,G1,baseline,0,1,core_sample,Sample restriction: Drop birth year 1834,0.95
+140921-V1,robust/outcome/celibacy,robustness/measurement.md#alternative-outcomes,celibacy,syntheticT,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: celibacy/never married,0.9
+140921-V1,robust/outcome/celibacy_extended,robustness/measurement.md#alternative-outcomes,celibacy,syntheticT,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: celibacy/never married,0.9

@@ -1,12 +1,12 @@
 {
   "paper_id": "171681-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/171681-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/171681-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "The Full educational intervention (Rule of 72 video) improves financial competence, measured as alignment between complex-framed and simple-framed financial valuations (negAbsDiff).",
+      "claim_summary": "Rule of 72 educational video improves financial competence (alignment between complex and simple financial valuations).",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline_expA",
@@ -18,8 +18,8 @@
       "baseline_treatment_vars": [
         "Full"
       ],
-      "notes": "Exp A is the primary experiment; Exp B is a pre-registered replication with a simpler design (no partial treatment arms). Both test the same Full treatment on the same outcome. Exp B has slightly lower power. Data is simulated (calibrated to match paper reported effects) per the SPECIFICATION_SEARCH.md caveat."
+      "notes": "Exp A: coef=3.82 (p=0.010). Exp B: coef=3.66 (p=0.013). Both positive and significant."
     }
   ],
-  "global_notes": "This paper uses simulated data calibrated to match reported treatment effects, so coefficients are approximate rather than exact replications. The specification search identified 69 total specs. Key issues: (1) some specs appear as duplicates across categories (e.g., robust/sample/expA_only duplicates the full-controls baseline, robust/outcome/discount_unframed duplicates the placebo/simple_frame spec, robust/outcome/score_indexing duplicates placebo/score_indexing); (2) heterogeneity specs report interaction coefficients rather than main effects, which is appropriate for testing heterogeneity but makes them non-core for the main claim; (3) functional form specs (log, IHS, sqrt) transform absDiff rather than negAbsDiff, so negative coefficients are expected and correct; (4) alternative treatment specs (Rule72, Rhetoric) test different causal objects than the baseline Full treatment."
+  "global_notes": "Two MTurk experiments testing Rule of 72 video on financial deliberative competence. 69 specs. Control variations all significant. Sample restrictions mostly robust (65% sig). Alternative treatment arms (Rule72 only, Rhetoric only) show weaker effects. Placebo (simple frame WTP) correctly null."
 }

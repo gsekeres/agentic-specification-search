@@ -1,27 +1,39 @@
 {
   "paper_id": "173341-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/173341-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/173341-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "The cisterns treatment (reducing household vulnerability) decreases private requests to politicians, indicating that vulnerability sustains clientelism.",
+      "claim_summary": "Cisterns (water infrastructure) reduce requests for private goods from politicians (clientelism).",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline"],
-      "baseline_outcome_vars": ["ask_private_stacked"],
-      "baseline_treatment_vars": ["treatment"],
-      "notes": "Corresponds to Table 3, Column 3 of the paper: OLS of ask_private_stacked on treatment and rainfall_std_stacked with municipality FE and year FE, clustered at neighborhood level. The 'baseline_rainfall' spec comes from the same regression but reports the rainfall_std_stacked coefficient, which is a separate estimand (the rainfall channel). The 'baseline_interaction' spec reports the interaction coefficient from Table 3 Col 4, which tests a distinct hypothesis (complementarity between treatment and rainfall)."
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "ask_private_stacked"
+      ],
+      "baseline_treatment_vars": [
+        "treatment"
+      ],
+      "notes": "Coef=-0.030 (p=0.018). Municipality + Year FE, clustered at neighborhood level. Stacked 2012+2013 data."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Rainfall shocks (increasing vulnerability) increase private requests to politicians.",
+      "claim_summary": "Positive rainfall shocks reduce private goods requests (complementary to cisterns).",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline_rainfall"],
-      "baseline_outcome_vars": ["ask_private_stacked"],
-      "baseline_treatment_vars": ["rainfall_std_stacked"],
-      "notes": "This is the rainfall coefficient from the same Table 3 Col 3 regression. Rainfall is standardized so a positive rainfall shock reduces vulnerability and thus reduces private requests (negative coefficient expected). This is a distinct causal channel from the cisterns treatment."
+      "baseline_spec_ids": [
+        "baseline_rainfall"
+      ],
+      "baseline_outcome_vars": [
+        "ask_private_stacked"
+      ],
+      "baseline_treatment_vars": [
+        "rainfall_std_stacked"
+      ],
+      "notes": "Coef=-0.023 (p=0.018). Same specification structure."
     }
   ],
-  "global_notes": "The paper has two main causal channels: (1) the experimental cisterns treatment and (2) rainfall shocks, both affecting vulnerability and consequently clientelistic behavior. Many specification rows use treatment variables that are interactions (treat_freq, treat_assoc, treat_high_rain, treat_2012, treat_2013, rain_2012, rain_2013, treat_rain_std) which test heterogeneity or related hypotheses rather than the core claim. The specification search also includes household-level vulnerability outcomes (Table 2) and individual-level outcomes (Table 1) that are mechanism checks, not the main clientelism claim. The duplicate spec 'robust/outcome/ask_private_stacked' is identical to the baseline and should be flagged. The spec 'robust/placebo/public_goods' duplicates 'robust/outcome/ask_public_stacked' (same regression, different labeling)."
+  "global_notes": "Paper studies how reducing vulnerability (via cisterns and rainfall) decreases clientelism in rural Brazil. 92 specs. Main cistern effect robust across municipality drops (jackknife), controls, clustering. Alternative outcomes mixed. Rainfall effect shows complementary channel. Frequent interactors show much larger effects (-0.118). Household wellbeing outcomes also support the mechanism."
 }

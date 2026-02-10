@@ -1,12 +1,12 @@
 {
   "paper_id": "113673-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113673-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/113673-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "The Juventud en Accion vocational training program increases formal sector income for disadvantaged youth in Colombia.",
+      "claim_summary": "The Juventud en Accion vocational training program increases formal sector income (contrib_inc_max) for disadvantaged youth, estimated via OLS with course-by-gender fixed effects using random lottery assignment as identification.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline/ec/formal_income",
@@ -19,11 +19,11 @@
         "select_h1",
         "TK"
       ],
-      "notes": "Two baselines for the same estimand on two independent samples: Entire Cohort (EC) and Evaluation Sample (ES)."
+      "notes": "EC (Entire Cohort): coef 26824.92 (SE 4267.12, t=6.29, p<0.001, N=372648). ES (Evaluation Sample): coef 35330.67 (SE 10766.22, t=3.28, p=0.001, N=306696). Two independent samples provide parallel estimates of the same treatment effect. EC uses admin records only; ES additionally conditions on baseline survey participation and uses sampling weights."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "The Juventud en Accion vocational training program increases formal sector employment for disadvantaged youth in Colombia.",
+      "claim_summary": "The program increases the probability of formal sector employment (pareado_max), measured as appearing in social security contribution records.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline/ec/formal_employment",
@@ -36,11 +36,11 @@
         "select_h1",
         "TK"
       ],
-      "notes": "Formal employment (binary indicator) is one of the paper primary outcomes. EC and ES samples both test the same claim."
+      "notes": "EC: coef 0.0383 (SE 0.0054, t=7.03, p<0.001, N=372648). ES: coef 0.0424 (SE 0.0121, t=3.50, p<0.001, N=306696). This is the primary extensive-margin employment outcome. Binary indicator for whether the individual appears in any formal sector employment record during the year."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "The Juventud en Accion vocational training program increases employment in large formal firms for disadvantaged youth in Colombia.",
+      "claim_summary": "The program increases employment in large formal firms (>200 employees), measured by indicator N200, suggesting the program helps youth access higher-quality formal sector jobs.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline/ec/large_firm",
@@ -53,8 +53,8 @@
         "select_h1",
         "TK"
       ],
-      "notes": "Large firm employment (N200) is a secondary primary outcome. EC and ES both test the same claim."
+      "notes": "EC: coef 0.0271 (SE 0.0046, t=5.91, p<0.001, N=372648). ES: coef 0.0323 (SE 0.0102, t=3.17, p=0.002, N=306696). This is a secondary outcome that captures job quality. Employment in firms with more than 200 employees serves as a proxy for more stable, higher-quality formal sector jobs."
     }
   ],
-  "global_notes": "6 baseline specs for 3 outcomes x 2 samples. Many robustness specs are exact duplicates of baselines re-labeled under different categories. Displacement interaction specs test a different causal object. Balance tests are diagnostic. Heterogeneity by gender are subgroup analyses. Data extracted from log files."
+  "global_notes": "Paper is 'Vocational Training for Disadvantaged Youth in Colombia: A Long Term Follow Up' by Attanasio, Guarin, Medina & Meghir (AEJ-Applied 2017). Randomized lottery assignment of training slots provides clean identification. Microdata not included in the replication package; all 50 specifications were extracted from Stata log files. Two independent samples are used throughout: (1) Entire Cohort (EC, N=372648 person-months, admin data only, treatment indicator select_h1, clustered by id_h), and (2) Evaluation Sample (ES, N=306696, conditions on baseline survey participation, uses sampling weights, treatment indicator TK, clustered by llave_pe). The EC and ES baselines for each outcome constitute a single baseline group because they estimate the same treatment effect using different samples from the same experiment. The displacement specs (8 total) test whether treatment intensity (proportion treated in local labor market) affects outcomes, addressing general equilibrium crowding-out concerns. Balance tests (11 specs) check covariate balance between treatment and control groups. Heterogeneity specs decompose effects by gender."
 }

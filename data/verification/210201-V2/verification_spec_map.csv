@@ -1,0 +1,86 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+210201-V2,1,baseline/divorce_full,divorce,female,G1,1,1,1,core_controls,Primary baseline: gender effect on divorce probability with full controls (age dummies + child94 + dep94). N=5994 married in 1994.,1.0
+210201-V2,2,baseline/marriage_formation_full,new_marriage,female,G2,2,1,1,core_controls,Primary baseline: gender effect on marriage formation with full controls. N=4080 single in 1994.,1.0
+210201-V2,3,baseline/widowhood_full,became_widow,female,G3,3,1,1,core_controls,Primary baseline: gender effect on widowhood with full controls + married94. N=10074 full sample.,1.0
+210201-V2,4,baseline/married99_full,married99,female,G4,4,1,1,core_controls,Primary baseline: gender effect on married status in 1999 with full controls + married94. N=10074.,1.0
+210201-V2,5,baseline/stay_married_full,stay_married,female,G1,1,1,1,core_controls,Algebraic complement of spec 1 (stay_married = 1-divorce). Coefficient is exactly negated. Grouped with G1.,1.0
+210201-V2,6,controls/no_controls,divorce,female,G1,1,0,1,core_controls,No controls -- female only. Same outcome/treatment/sample as G1. Tests sensitivity to control omission.,0.95
+210201-V2,7,controls/age_only,divorce,female,G1,1,0,1,core_controls,Age dummies only. Same outcome/treatment/sample as G1.,0.95
+210201-V2,8,controls/children_only,divorce,female,G1,1,0,1,core_controls,Child94 only. Same outcome/treatment/sample as G1.,0.95
+210201-V2,9,controls/dep_only,divorce,female,G1,1,0,1,core_controls,Dep94 only. Same outcome/treatment/sample as G1.,0.95
+210201-V2,10,controls/child_dep_no_age,divorce,female,G1,1,0,1,core_controls,Child94 + dep94 without age dummies. Same outcome/treatment/sample as G1.,0.95
+210201-V2,11,controls/age_child_no_dep,divorce,female,G1,1,0,1,core_controls,Age dummies + child94 without dep94. Same outcome/treatment/sample as G1.,0.95
+210201-V2,12,controls/age_dep_no_child,divorce,female,G1,1,0,1,core_controls,Age dummies + dep94 without child94. Same outcome/treatment/sample as G1.,0.95
+210201-V2,13,controls/has_child_indicator,divorce,female,G1,1,0,1,core_controls,Replace continuous child94 with binary has_child94 indicator. Same outcome/treatment/sample as G1.,0.95
+210201-V2,14,controls/add_spouse_age,divorce,female,G1,1,0,1,core_controls,Add spouse_age94 to baseline controls. Same outcome/treatment/sample as G1.,0.95
+210201-V2,15,controls/add_age_gap,divorce,female,G1,1,0,1,core_controls,Add age_gap94 to baseline controls. Same outcome/treatment/sample as G1. Identical coefficient to spec 14.,0.95
+210201-V2,16,controls/add_q_rate,divorce,female,G1,1,0,1,core_controls,Add q (spouse-change rate) to baseline controls. Same outcome/treatment/sample as G1.,0.95
+210201-V2,17,controls/marriage_no_controls,new_marriage,female,G2,2,0,1,core_controls,No controls -- female only. Same outcome/treatment/sample as G2.,0.95
+210201-V2,18,controls/marriage_age_only,new_marriage,female,G2,2,0,1,core_controls,Age dummies only. Same outcome/treatment/sample as G2.,0.95
+210201-V2,19,controls/marriage_child_only,new_marriage,female,G2,2,0,1,core_controls,Child94 only. Same outcome/treatment/sample as G2.,0.95
+210201-V2,20,controls/marriage_full_plus_col10,new_marriage,female,G2,2,0,1,core_controls,Add col10 (unrelated numeric variable) to baseline controls. Same outcome/treatment/sample as G2.,0.85
+210201-V2,21,sample/female_only_divorce,divorce,child94,G1,1,0,0,noncore_alt_treatment,Treatment changed from female to child94. Female-only subsample. Different causal object.,0.9
+210201-V2,22,sample/male_only_divorce,divorce,child94,G1,1,0,0,noncore_alt_treatment,Treatment changed from female to child94. Male-only subsample. Different causal object.,0.9
+210201-V2,23,sample/young_divorce,divorce,female,G1,1,0,1,core_sample,Young married subsample (age groups 1-4). Same outcome/treatment as G1 but age dummies dropped.,0.9
+210201-V2,24,sample/middle_divorce,divorce,female,G1,1,0,1,core_sample,Middle-aged married subsample (age groups 5-9). Same outcome/treatment as G1.,0.9
+210201-V2,25,sample/old_divorce,divorce,female,G1,1,0,1,core_sample,Old married subsample (age groups 10-13). Same outcome/treatment as G1.,0.9
+210201-V2,26,sample/with_children_divorce,divorce,female,G1,1,0,1,core_sample,Married with children subsample. Same outcome/treatment as G1.,0.9
+210201-V2,27,sample/no_children_divorce,divorce,female,G1,1,0,1,core_sample,Married without children subsample. Same outcome/treatment as G1.,0.9
+210201-V2,28,sample/female_marriage_formation,new_marriage,child94,G2,2,0,0,noncore_alt_treatment,Treatment changed from female to child94. Female-only subsample. Different causal object.,0.9
+210201-V2,29,sample/male_marriage_formation,new_marriage,child94,G2,2,0,0,noncore_alt_treatment,Treatment changed from female to child94. Male-only subsample. Different causal object.,0.9
+210201-V2,30,sample/widowed_marriage,new_marriage,female,G2,2,0,1,core_sample,Widowed-in-1994 subsample for marriage formation. Same treatment as G2 but different base population.,0.85
+210201-V2,31,sample/single_other_marriage,new_marriage,female,G2,2,0,1,core_sample,Single-other (never married/divorced) subsample. Same treatment as G2 different base population.,0.85
+210201-V2,32,sample/trim_age_extremes,divorce,female,G1,1,0,1,core_sample,Trim youngest and oldest age groups (2-12). Same outcome/treatment as G1.,0.9
+210201-V2,33,sample/low_dep_divorce,divorce,female,G1,1,0,1,core_sample,Low dependents subsample (dep94 <= 2). Same outcome/treatment as G1.,0.9
+210201-V2,34,sample/high_dep_divorce,divorce,female,G1,1,0,1,core_sample,High dependents subsample (dep94 > 2). Same outcome/treatment as G1.,0.9
+210201-V2,35,sample/female_married99,married99,married94,G4,4,0,0,noncore_alt_treatment,Treatment changed from female to married94. Female-only subsample. Different causal object.,0.9
+210201-V2,36,outcome/delta_dep,delta_dep,female,,,0,0,noncore_alt_outcome,Different outcome: change in dependents count. Not directly related to any baseline marital transition.,0.9
+210201-V2,37,outcome/delta_child,delta_child,female,,,0,0,noncore_alt_outcome,Different outcome: change in children count. Not directly related to any baseline marital transition.,0.9
+210201-V2,38,outcome/gained_child,gained_child,female,,,0,0,noncore_alt_outcome,Different outcome: indicator for gaining a child. Not a marital transition outcome.,0.9
+210201-V2,39,outcome/lost_child,lost_child,female,,,0,0,noncore_alt_outcome,Different outcome: indicator for losing a child. Not a marital transition outcome.,0.9
+210201-V2,40,outcome/has_child99,has_child99,female,,,0,0,noncore_alt_outcome,Different outcome: has child in 1999. Not a marital transition outcome.,0.9
+210201-V2,41,outcome/widowhood_married,became_widow,female,G3,3,0,1,core_sample,Widowhood outcome restricted to married-in-1994 subsample. Same outcome/treatment as G3 different sample.,0.85
+210201-V2,42,outcome/stay_single,stay_single,female,G2,2,0,1,core_controls,Algebraic complement of G2 baseline (stay_single = 1 - new_marriage). Coefficient is negated. Same sample.,0.9
+210201-V2,43,outcome/single_widow99,single_widow99,female,,,0,0,noncore_alt_outcome,Different outcome: being single-widowed in 1999. Combines marital status categories differently from baselines.,0.85
+210201-V2,44,outcome/dep99_level,dep99,female,,,0,0,noncore_alt_outcome,Different outcome: dependents count level in 1999. Not a marital transition variable.,0.9
+210201-V2,45,outcome/child99_level,child99,female,,,0,0,noncore_alt_outcome,Different outcome: children count level in 1999. Not a marital transition variable.,0.9
+210201-V2,46,treatment/age_continuous_divorce,divorce,age_94,G1,1,0,0,noncore_alt_treatment,Treatment changed to continuous age. Different causal object from gender effect.,0.95
+210201-V2,47,treatment/q_rate_divorce,divorce,q,G1,1,0,0,noncore_alt_treatment,Treatment changed to q (spouse-change rate). Different causal object from gender effect.,0.95
+210201-V2,48,treatment/children_divorce,divorce,child94,G1,1,0,0,noncore_alt_treatment,Treatment changed to child94. Different causal object from gender effect.,0.95
+210201-V2,49,treatment/dep_divorce,divorce,dep94,G1,1,0,0,noncore_alt_treatment,Treatment changed to dep94. Different causal object from gender effect.,0.95
+210201-V2,50,treatment/has_child_marriage,new_marriage,has_child94,G2,2,0,0,noncore_alt_treatment,Treatment changed to has_child94 indicator. Different causal object from gender effect.,0.95
+210201-V2,51,inference/HC0_divorce,divorce,female,G1,1,0,1,core_inference,HC0 robust SEs. Same point estimate as G1 baseline different SE calculation.,0.95
+210201-V2,52,inference/HC2_divorce,divorce,female,G1,1,0,1,core_inference,HC2 robust SEs. Same point estimate as G1 baseline different SE calculation.,0.95
+210201-V2,53,inference/HC3_divorce,divorce,female,G1,1,0,1,core_inference,HC3 robust SEs. Same point estimate as G1 baseline different SE calculation.,0.95
+210201-V2,54,inference/cluster_age,divorce,female,G1,1,0,1,core_inference,Clustered SEs by age group. Same point estimate as G1 baseline different SE calculation.,0.95
+210201-V2,55,inference/cluster_gender,divorce,child94,G1,1,0,0,noncore_alt_treatment,Treatment changed to child94 and clustered by gender. Different treatment variable from G1.,0.85
+210201-V2,56,inference/homoskedastic,divorce,female,G1,1,0,1,core_inference,Homoskedastic (classical) SEs. Same point estimate as G1 baseline different SE assumption.,0.95
+210201-V2,57,inference/bootstrap_200,divorce,female,G1,1,0,1,core_inference,Bootstrap SEs (200 replications). Same point estimate as G1 baseline. Note: p-value is 1.95 which appears anomalous.,0.85
+210201-V2,58,method/logit_divorce,divorce,female,G1,1,0,1,core_funcform,Logit model for divorce. Same outcome/treatment/sample as G1 different functional form.,0.9
+210201-V2,59,method/logit_marriage,new_marriage,female,G2,2,0,1,core_funcform,Logit model for marriage formation. Same outcome/treatment/sample as G2 different functional form.,0.9
+210201-V2,60,method/logit_widowhood,became_widow,female,G3,3,0,1,core_funcform,Logit model for widowhood. Same outcome/treatment/sample as G3 different functional form.,0.9
+210201-V2,61,method/probit_divorce,divorce,female,G1,1,0,1,core_funcform,Probit model for divorce. Same outcome/treatment/sample as G1 different functional form.,0.9
+210201-V2,62,method/logit_married99,married99,female,G4,4,0,1,core_funcform,Logit model for married in 1999. Same outcome/treatment/sample as G4 different functional form.,0.9
+210201-V2,63,functional/linear_age,divorce,female,G1,1,0,1,core_funcform,Linear age instead of age dummies. Same outcome/treatment/sample as G1 different age specification.,0.9
+210201-V2,64,functional/quadratic_age,divorce,female,G1,1,0,1,core_funcform,Quadratic age polynomial instead of age dummies. Same outcome/treatment/sample as G1.,0.9
+210201-V2,65,functional/cubic_age,divorce,female,G1,1,0,1,core_funcform,Cubic age polynomial instead of age dummies. Same outcome/treatment/sample as G1.,0.9
+210201-V2,66,functional/female_x_child,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction of female*child94. Reports main effect of female which is effect for childless only -- not comparable to baseline ATE.,0.85
+210201-V2,67,functional/log_controls,divorce,female,G1,1,0,1,core_funcform,Log-transformed controls (log(1+child94) and log(1+dep94)). Same outcome/treatment/sample as G1.,0.9
+210201-V2,68,weights/weight_by_q,divorce,female,G1,1,0,1,core_method,WLS weighted by q (spouse-change rate). Same outcome/treatment/sample as G1 different weighting.,0.85
+210201-V2,69,weights/weight_by_dep,married99,female,G4,4,0,1,core_method,WLS weighted by dep94+1. Same outcome/treatment as G4 different weighting.,0.85
+210201-V2,70,weights/weight_by_child,divorce,female,G1,1,0,1,core_method,WLS weighted by child94+1. Same outcome/treatment/sample as G1 different weighting.,0.85
+210201-V2,71,placebo/gender_col10,col10,female,,,0,0,noncore_placebo,Placebo test: predict unrelated variable col10 with female. Not a marital transition outcome.,0.95
+210201-V2,72,placebo/gender_col11,col11,female,,,0,0,noncore_placebo,Placebo test: predict unrelated variable col11 with female. Not a marital transition outcome.,0.95
+210201-V2,73,placebo/random_gender_divorce,divorce,fake_female,G1,1,0,0,noncore_placebo,Placebo test: randomized gender assignment predicting divorce. Treatment is permuted.,0.95
+210201-V2,74,placebo/random_gender_marriage,new_marriage,fake_female,G2,2,0,0,noncore_placebo,Placebo test: randomized gender assignment predicting marriage formation. Treatment is permuted.,0.95
+210201-V2,75,placebo/dep_changed_spouse,changed_spouse,dep94,,,0,0,noncore_diagnostic,Diagnostic: dep94 predicting changed_spouse indicator. Different outcome and treatment from all baselines.,0.9
+210201-V2,76,heterogeneity/female_x_young,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction female*young. Reports main effect of female (effect for non-young only). Not baseline ATE.,0.85
+210201-V2,77,heterogeneity/female_x_middle,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction female*middle. Reports main effect of female (effect for non-middle only). Not baseline ATE.,0.85
+210201-V2,78,heterogeneity/female_x_old,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction female*old. Reports main effect of female (effect for non-old only). Not baseline ATE.,0.85
+210201-V2,79,heterogeneity/female_x_dep,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction female*dep94. Reports main effect of female (effect at dep94=0). Not baseline ATE.,0.85
+210201-V2,80,heterogeneity/female_x_q,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction female*q. Reports main effect of female (effect at q=0). Not baseline ATE.,0.85
+210201-V2,81,heterogeneity/age_x_child_marriage,new_marriage,female,G2,2,0,0,noncore_heterogeneity,Interaction age*child in marriage formation model. Reports main effect of female. Different model structure.,0.85
+210201-V2,82,heterogeneity/female_x_haschild_widow,became_widow,female,G3,3,0,0,noncore_heterogeneity,Interaction female*has_child for widowhood. Reports main effect (childless females). Not baseline ATE.,0.85
+210201-V2,83,heterogeneity/female_x_married_deltadep,delta_dep,female,,,0,0,noncore_heterogeneity,Interaction female*married94 on delta_dep. Different outcome from all baselines. Reports main effect.,0.85
+210201-V2,84,heterogeneity/young_x_child_divorce,divorce,female,G1,1,0,0,noncore_heterogeneity,Interaction young*child94. Reports main effect of female. Collinearity issue: huge coefficients on age dummies.,0.8
+210201-V2,85,heterogeneity/dep_x_age_deltachild,delta_child,female,,,0,0,noncore_heterogeneity,Interaction dep*age on delta_child. Different outcome from all baselines. Reports main effect of female.,0.85

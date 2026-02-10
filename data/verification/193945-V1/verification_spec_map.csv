@@ -1,100 +1,100 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-193945-V1,baseline,methods/cross_sectional_ols.md#baseline,mean_log_earnings_cz,cz_place_effect,G1,baseline,1,1,core_method,Baseline variance decomposition of CZ earnings into place effects,1.0
-193945-V1,ols/earnings/on_log_size,methods/cross_sectional_ols.md#core-variations,mean_log_earnings,log_size,,,0,0,noncore_alt_outcome,Different outcome (mean_log_earnings); separate Table 3 row,0.9
-193945-V1,ols/earnings/on_college_share,methods/cross_sectional_ols.md#core-variations,mean_log_earnings,college_share,,,0,0,noncore_alt_outcome,Different outcome (mean_log_earnings); separate Table 3 row,0.9
-193945-V1,ols/person_effect/on_earnings,methods/cross_sectional_ols.md#core-variations,mean_person_effect,mean_earnings,,,0,0,noncore_alt_outcome,Different outcome (person_effect); skill sorting not place effects,0.9
-193945-V1,ols/person_effect/on_log_size,methods/cross_sectional_ols.md#core-variations,mean_person_effect,log_size,,,0,0,noncore_alt_outcome,Different outcome (person_effect); skill sorting not place effects,0.9
-193945-V1,ols/person_effect/on_college,methods/cross_sectional_ols.md#core-variations,mean_person_effect,college_share,,,0,0,noncore_alt_outcome,Different outcome (person_effect); skill sorting not place effects,0.9
-193945-V1,ols/firm_effect/on_earnings,methods/cross_sectional_ols.md#core-variations,mean_firm_effect,mean_earnings,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_treatment,Different treatment (mean_earnings vs log_size); separate Table 3 col,0.85
-193945-V1,ols/firm_effect/on_log_size,methods/cross_sectional_ols.md#core-variations,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,1,1,core_method,Baseline for size elasticity of firm effects (Table 3),1.0
-193945-V1,ols/firm_effect/on_college,methods/cross_sectional_ols.md#core-variations,mean_firm_effect,college_share,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_treatment,Different treatment (college_share vs log_size); separate Table 3 col,0.85
-193945-V1,ols/sd_person/on_earnings,methods/cross_sectional_ols.md#core-variations,sd_person_effects,mean_earnings,,,0,0,noncore_alt_outcome,Different outcome (sd_person_effects); dispersion not level,0.9
-193945-V1,ols/sd_person/on_log_size,methods/cross_sectional_ols.md#core-variations,sd_person_effects,log_size,,,0,0,noncore_alt_outcome,Different outcome (sd_person_effects); dispersion not level,0.9
-193945-V1,ols/sd_person/on_college,methods/cross_sectional_ols.md#core-variations,sd_person_effects,college_share,,,0,0,noncore_alt_outcome,Different outcome (sd_person_effects); dispersion not level,0.9
-193945-V1,ols/bottom_decile/on_earnings,methods/cross_sectional_ols.md#core-variations,share_bottom_decile,mean_earnings,,,0,0,noncore_alt_outcome,Different outcome (decile shares); distributional measure,0.9
-193945-V1,ols/bottom_decile/on_log_size,methods/cross_sectional_ols.md#core-variations,share_bottom_decile,log_size,,,0,0,noncore_alt_outcome,Different outcome (decile shares); distributional measure,0.9
-193945-V1,ols/bottom_decile/on_college,methods/cross_sectional_ols.md#core-variations,share_bottom_decile,college_share,,,0,0,noncore_alt_outcome,Different outcome (decile shares); distributional measure,0.9
-193945-V1,ols/top_decile/on_earnings,methods/cross_sectional_ols.md#core-variations,share_top_decile,mean_earnings,,,0,0,noncore_alt_outcome,Different outcome (decile shares); distributional measure,0.9
-193945-V1,ols/top_decile/on_log_size,methods/cross_sectional_ols.md#core-variations,share_top_decile,log_size,,,0,0,noncore_alt_outcome,Different outcome (decile shares); distributional measure,0.9
-193945-V1,ols/top_decile/on_college,methods/cross_sectional_ols.md#core-variations,share_top_decile,college_share,,,0,0,noncore_alt_outcome,Different outcome (decile shares); distributional measure,0.9
-193945-V1,ols/cz_premium/on_earnings,methods/cross_sectional_ols.md#core-variations,cz_premium,mean_earnings,,,0,0,noncore_alt_treatment,CZ premium on different treatment than G2 baseline,0.8
-193945-V1,ols/cz_premium/on_log_size,methods/cross_sectional_ols.md#core-variations,cz_premium,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,CZ premium on log_size; closely related to firm effect baseline,0.7
-193945-V1,ols/cz_premium/on_college,methods/cross_sectional_ols.md#core-variations,cz_premium,college_share,,,0,0,noncore_alt_treatment,CZ premium on different treatment than G2 baseline,0.8
-193945-V1,ols/industry_comp/on_earnings,methods/cross_sectional_ols.md#core-variations,industry_composition,mean_earnings,,,0,0,noncore_diagnostic,Industry composition; diagnostic decomposition component,0.9
-193945-V1,ols/industry_comp/on_log_size,methods/cross_sectional_ols.md#core-variations,industry_composition,log_size,,,0,0,noncore_diagnostic,Industry composition; diagnostic decomposition component,0.9
-193945-V1,ols/industry_comp/on_college,methods/cross_sectional_ols.md#core-variations,industry_composition,college_share,,,0,0,noncore_diagnostic,Industry composition; diagnostic decomposition component,0.9
-193945-V1,ols/cz_ind_interaction/on_earnings,methods/cross_sectional_ols.md#core-variations,cz_ind_interaction,mean_earnings,,,0,0,noncore_diagnostic,CZ-industry interaction; diagnostic decomposition component,0.9
-193945-V1,ols/cz_ind_interaction/on_log_size,methods/cross_sectional_ols.md#core-variations,cz_ind_interaction,log_size,,,0,0,noncore_diagnostic,CZ-industry interaction; diagnostic decomposition component,0.9
-193945-V1,ols/cz_ind_interaction/on_college,methods/cross_sectional_ols.md#core-variations,cz_ind_interaction,college_share,,,0,0,noncore_diagnostic,CZ-industry interaction; diagnostic decomposition component,0.9
-193945-V1,ols/skill_match/on_earnings,methods/cross_sectional_ols.md#core-variations,corr_person_firm,mean_earnings,,,0,0,noncore_alt_outcome,Sorting correlation; tests matching not place effect magnitude,0.9
-193945-V1,ols/skill_match/on_log_size,methods/cross_sectional_ols.md#core-variations,corr_person_firm,log_size,,,0,0,noncore_alt_outcome,Sorting correlation; tests matching not place effect magnitude,0.9
-193945-V1,ols/skill_match/on_college,methods/cross_sectional_ols.md#core-variations,corr_person_firm,college_share,,,0,0,noncore_alt_outcome,Sorting correlation; tests matching not place effect magnitude,0.9
-193945-V1,robust/model/cz_ind_fe,robustness/model_specification.md,cz_premium_cz_ind_fe,cz_premium_baseline,G1,baseline,0,1,core_method,Alt AKM model CZ premium on baseline; decomposition stability,0.75
-193945-V1,robust/model/cz_fe_only,robustness/model_specification.md,cz_premium_cz_fe_only,cz_premium_baseline,G1,baseline,0,1,core_method,Alt AKM model CZ premium on baseline; decomposition stability,0.75
-193945-V1,robust/model/young_baseline,robustness/model_specification.md,cz_premium_young_baseline,cz_premium_baseline,G1,baseline,0,1,core_method,Alt AKM model CZ premium on baseline; decomposition stability,0.75
-193945-V1,robust/model/young_dyn_top10,robustness/model_specification.md,cz_premium_young_dyn_top10,cz_premium_baseline,G1,baseline,0,1,core_method,Alt AKM model CZ premium on baseline; decomposition stability,0.75
-193945-V1,robust/model/young_dyn_top25,robustness/model_specification.md,cz_premium_young_dyn_top25,cz_premium_baseline,G1,baseline,0,1,core_method,Alt AKM model CZ premium on baseline; decomposition stability,0.75
-193945-V1,robust/external/acs_logwage,robustness/model_specification.md,acs_logwage,cz_premium_lehd,G1,baseline,0,0,noncore_alt_outcome,ACS outcome on LEHD premium; external validation diff data,0.7
-193945-V1,robust/external/acs_cz_m1,robustness/model_specification.md,acs_cz_m1,cz_premium_lehd,G1,baseline,0,0,noncore_alt_outcome,ACS outcome on LEHD premium; external validation diff data,0.7
-193945-V1,robust/external/acs_cz_m2,robustness/model_specification.md,acs_cz_m2,cz_premium_lehd,G1,baseline,0,0,noncore_alt_outcome,ACS outcome on LEHD premium; external validation diff data,0.7
-193945-V1,robust/external/acs_cz_m3,robustness/model_specification.md,acs_cz_m3,cz_premium_lehd,G1,baseline,0,0,noncore_alt_outcome,ACS outcome on LEHD premium; external validation diff data,0.7
-193945-V1,acs/size/logwage_m1,methods/cross_sectional_ols.md#core-variations,logwage,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_outcome,ACS raw wage on log_size; no person FE different estimand,0.75
-193945-V1,acs/size/cz_w_m2,methods/cross_sectional_ols.md#core-variations,cz_effects_w_m2,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/cz_w_m3,methods/cross_sectional_ols.md#core-variations,cz_effects_w_m3,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/logearn_m1,methods/cross_sectional_ols.md#core-variations,logearn,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_outcome,ACS raw wage on log_size; no person FE different estimand,0.75
-193945-V1,acs/size/cz_e_m2,methods/cross_sectional_ols.md#core-variations,cz_effects_e_m2,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/cz_e_m3,methods/cross_sectional_ols.md#core-variations,cz_effects_e_m3,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/logwage_hs,methods/cross_sectional_ols.md#core-variations,logwage_hs,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_outcome,ACS raw wage on log_size; no person FE different estimand,0.75
-193945-V1,acs/size/cz_hs_m2,methods/cross_sectional_ols.md#core-variations,cz_hs_w_m2,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/cz_hs_m3,methods/cross_sectional_ols.md#core-variations,cz_hs_w_m3,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/logearn_hs,methods/cross_sectional_ols.md#core-variations,logearn_hs,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_outcome,ACS raw wage on log_size; no person FE different estimand,0.75
-193945-V1,acs/size/cz_hs_e_m2,methods/cross_sectional_ols.md#core-variations,cz_hs_e_m2,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/cz_hs_e_m3,methods/cross_sectional_ols.md#core-variations,cz_hs_e_m3,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/logwage_13p,methods/cross_sectional_ols.md#core-variations,logwage_13p,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_outcome,ACS raw wage on log_size; no person FE different estimand,0.75
-193945-V1,acs/size/cz_13p_m2,methods/cross_sectional_ols.md#core-variations,cz_13p_w_m2,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/cz_13p_m3,methods/cross_sectional_ols.md#core-variations,cz_13p_w_m3,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/logearn_13p,methods/cross_sectional_ols.md#core-variations,logearn_13p,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_alt_outcome,ACS raw wage on log_size; no person FE different estimand,0.75
-193945-V1,acs/size/cz_13p_e_m2,methods/cross_sectional_ols.md#core-variations,cz_13p_e_m2,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/size/cz_13p_e_m3,methods/cross_sectional_ols.md#core-variations,cz_13p_e_m3,log_size,G2,ols/firm_effect/on_log_size,0,1,core_method,ACS CZ effect on log_size; analogous to LEHD firm effect,0.65
-193945-V1,acs/emp/logsize,methods/cross_sectional_ols.md#core-variations,employment,log_size,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/emp_m/logsize,methods/cross_sectional_ols.md#core-variations,employment_male,log_size,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/emp_f/logsize,methods/cross_sectional_ols.md#core-variations,employment_female,log_size,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/emp/logwage,methods/cross_sectional_ols.md#core-variations,employment,log_wage,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/emp_m/logwage,methods/cross_sectional_ols.md#core-variations,employment_male,log_wage,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/emp_f/logwage,methods/cross_sectional_ols.md#core-variations,employment_female,log_wage,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/hours/logsize,methods/cross_sectional_ols.md#core-variations,hours,log_size,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/hours_m/logsize,methods/cross_sectional_ols.md#core-variations,hours_male,log_size,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,acs/hours_f/logsize,methods/cross_sectional_ols.md#core-variations,hours_female,log_size,,,0,0,noncore_alt_outcome,Employment/hours outcome; different from wage place effects,0.95
-193945-V1,robust/sample/large_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/medium_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/small_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/top_10_metros,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/bottom_10_metros,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/high_skill_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/low_skill_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/coastal,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/sample/non_coastal,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sample restriction; SYNTHETIC,0.5
-193945-V1,robust/heterogeneity/hs_only,robustness/heterogeneity.md,firm_effect_hs_only,mean_earnings,,,0,0,noncore_heterogeneity,Education subgroup firm effect; heterogeneity not core test,0.85
-193945-V1,robust/heterogeneity/some_college,robustness/heterogeneity.md,firm_effect_some_college,mean_earnings,,,0,0,noncore_heterogeneity,Education subgroup firm effect; heterogeneity not core test,0.85
-193945-V1,robust/heterogeneity/ba_plus,robustness/heterogeneity.md,firm_effect_ba_plus,mean_earnings,,,0,0,noncore_heterogeneity,Education subgroup firm effect; heterogeneity not core test,0.85
-193945-V1,robust/heterogeneity/grad_school,robustness/heterogeneity.md,firm_effect_grad_school,mean_earnings,,,0,0,noncore_heterogeneity,Education subgroup firm effect; heterogeneity not core test,0.85
-193945-V1,robust/cluster/cz,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Same coef with different SE from alt clustering; SYNTHETIC,0.6
-193945-V1,robust/cluster/state,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Same coef with different SE from alt clustering; SYNTHETIC,0.6
-193945-V1,robust/cluster/region,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Same coef with different SE from alt clustering; SYNTHETIC,0.6
-193945-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Same coef with different SE from alt clustering; SYNTHETIC,0.6
-193945-V1,robust/funcform/levels,robustness/functional_form.md,log_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Alt functional form of firm effect on log_size; SYNTHETIC,0.5
-193945-V1,robust/funcform/ihs,robustness/functional_form.md,ihs_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Alt functional form of firm effect on log_size; SYNTHETIC,0.5
-193945-V1,robust/funcform/percentile,robustness/functional_form.md,firm_effect_pctl,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Alt functional form of firm effect on log_size; SYNTHETIC,0.5
-193945-V1,robust/funcform/rank,robustness/functional_form.md,firm_effect_rank,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Alt functional form of firm effect on log_size; SYNTHETIC,0.5
-193945-V1,robust/time/early_2010_2013,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sub-period; SYNTHETIC multiplier,0.5
-193945-V1,robust/time/late_2014_2018,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sub-period; SYNTHETIC multiplier,0.5
-193945-V1,robust/time/pre_recession,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sub-period; SYNTHETIC multiplier,0.5
-193945-V1,robust/time/post_recession,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Firm effect on log_size sub-period; SYNTHETIC multiplier,0.5
-193945-V1,robust/industry/manufacturing,robustness/heterogeneity.md,firm_effect_manufacturing,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry subgroup firm effect; heterogeneity SYNTHETIC,0.8
-193945-V1,robust/industry/services,robustness/heterogeneity.md,firm_effect_services,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry subgroup firm effect; heterogeneity SYNTHETIC,0.8
-193945-V1,robust/industry/retail,robustness/heterogeneity.md,firm_effect_retail,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry subgroup firm effect; heterogeneity SYNTHETIC,0.8
-193945-V1,robust/industry/finance,robustness/heterogeneity.md,firm_effect_finance,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry subgroup firm effect; heterogeneity SYNTHETIC,0.8
-193945-V1,robust/controls/no_controls,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Firm effect on log_size diff controls; SYNTHETIC multiplier,0.5
-193945-V1,robust/controls/minimal,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Firm effect on log_size diff controls; SYNTHETIC multiplier,0.5
-193945-V1,robust/controls/full,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Firm effect on log_size diff controls; SYNTHETIC multiplier,0.5
-193945-V1,robust/controls/extended,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Firm effect on log_size diff controls; SYNTHETIC multiplier,0.5
+193945-V1,baseline,methods/cross_sectional_ols.md#baseline,mean_log_earnings_cz,cz_place_effect,G1,baseline,1,1,core_controls,Baseline: AKM variance decomposition,1.0
+193945-V1,ols/earnings/on_log_size,methods/cross_sectional_ols.md#core-variations,mean_log_earnings,log_size,G1,baseline,0,1,core_controls,Earnings decomp: mean_log_earnings on log_size,0.95
+193945-V1,ols/earnings/on_college_share,methods/cross_sectional_ols.md#core-variations,mean_log_earnings,college_share,G1,baseline,0,1,core_controls,Earnings decomp: mean_log_earnings on college_share,0.95
+193945-V1,ols/person_effect/on_earnings,methods/cross_sectional_ols.md#core-variations,mean_person_effect,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Person effect: mean_person_effect on mean_earnings,0.9
+193945-V1,ols/person_effect/on_log_size,methods/cross_sectional_ols.md#core-variations,mean_person_effect,log_size,G1,baseline,0,0,noncore_alt_outcome,Person effect: mean_person_effect on log_size,0.9
+193945-V1,ols/person_effect/on_college,methods/cross_sectional_ols.md#core-variations,mean_person_effect,college_share,G1,baseline,0,0,noncore_alt_outcome,Person effect: mean_person_effect on college_share,0.9
+193945-V1,ols/firm_effect/on_earnings,methods/cross_sectional_ols.md#core-variations,mean_firm_effect,mean_earnings,G2,ols/firm_effect/on_log_size,0,1,core_controls,Firm effect: mean_firm_effect on mean_earnings,0.95
+193945-V1,ols/firm_effect/on_log_size,methods/cross_sectional_ols.md#core-variations,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,1,1,core_controls,Baseline: firm effect on CZ size,1.0
+193945-V1,ols/firm_effect/on_college,methods/cross_sectional_ols.md#core-variations,mean_firm_effect,college_share,G2,ols/firm_effect/on_log_size,0,1,core_controls,Firm effect: mean_firm_effect on college_share,0.95
+193945-V1,ols/sd_person/on_earnings,methods/cross_sectional_ols.md#core-variations,sd_person_effects,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Distributional: sd_person_effects on mean_earnings,0.9
+193945-V1,ols/sd_person/on_log_size,methods/cross_sectional_ols.md#core-variations,sd_person_effects,log_size,G1,baseline,0,0,noncore_alt_outcome,Distributional: sd_person_effects on log_size,0.9
+193945-V1,ols/sd_person/on_college,methods/cross_sectional_ols.md#core-variations,sd_person_effects,college_share,G1,baseline,0,0,noncore_alt_outcome,Distributional: sd_person_effects on college_share,0.9
+193945-V1,ols/bottom_decile/on_earnings,methods/cross_sectional_ols.md#core-variations,share_bottom_decile,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Distributional: share_bottom_decile on mean_earnings,0.9
+193945-V1,ols/bottom_decile/on_log_size,methods/cross_sectional_ols.md#core-variations,share_bottom_decile,log_size,G1,baseline,0,0,noncore_alt_outcome,Distributional: share_bottom_decile on log_size,0.9
+193945-V1,ols/bottom_decile/on_college,methods/cross_sectional_ols.md#core-variations,share_bottom_decile,college_share,G1,baseline,0,0,noncore_alt_outcome,Distributional: share_bottom_decile on college_share,0.9
+193945-V1,ols/top_decile/on_earnings,methods/cross_sectional_ols.md#core-variations,share_top_decile,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Distributional: share_top_decile on mean_earnings,0.9
+193945-V1,ols/top_decile/on_log_size,methods/cross_sectional_ols.md#core-variations,share_top_decile,log_size,G1,baseline,0,0,noncore_alt_outcome,Distributional: share_top_decile on log_size,0.9
+193945-V1,ols/top_decile/on_college,methods/cross_sectional_ols.md#core-variations,share_top_decile,college_share,G1,baseline,0,0,noncore_alt_outcome,Distributional: share_top_decile on college_share,0.9
+193945-V1,ols/cz_premium/on_earnings,methods/cross_sectional_ols.md#core-variations,cz_premium,mean_earnings,G2,ols/firm_effect/on_log_size,0,1,core_controls,CZ premium: cz_premium on mean_earnings,0.9
+193945-V1,ols/cz_premium/on_log_size,methods/cross_sectional_ols.md#core-variations,cz_premium,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,CZ premium: cz_premium on log_size,0.9
+193945-V1,ols/cz_premium/on_college,methods/cross_sectional_ols.md#core-variations,cz_premium,college_share,G2,ols/firm_effect/on_log_size,0,1,core_controls,CZ premium: cz_premium on college_share,0.9
+193945-V1,ols/industry_comp/on_earnings,methods/cross_sectional_ols.md#core-variations,industry_composition,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Industry/interaction: industry_composition on mean_earnings,0.9
+193945-V1,ols/industry_comp/on_log_size,methods/cross_sectional_ols.md#core-variations,industry_composition,log_size,G1,baseline,0,0,noncore_alt_outcome,Industry/interaction: industry_composition on log_size,0.9
+193945-V1,ols/industry_comp/on_college,methods/cross_sectional_ols.md#core-variations,industry_composition,college_share,G1,baseline,0,0,noncore_alt_outcome,Industry/interaction: industry_composition on college_share,0.9
+193945-V1,ols/cz_ind_interaction/on_earnings,methods/cross_sectional_ols.md#core-variations,cz_ind_interaction,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Industry/interaction: cz_ind_interaction on mean_earnings,0.9
+193945-V1,ols/cz_ind_interaction/on_log_size,methods/cross_sectional_ols.md#core-variations,cz_ind_interaction,log_size,G1,baseline,0,0,noncore_alt_outcome,Industry/interaction: cz_ind_interaction on log_size,0.9
+193945-V1,ols/cz_ind_interaction/on_college,methods/cross_sectional_ols.md#core-variations,cz_ind_interaction,college_share,G1,baseline,0,0,noncore_alt_outcome,Industry/interaction: cz_ind_interaction on college_share,0.9
+193945-V1,ols/skill_match/on_earnings,methods/cross_sectional_ols.md#core-variations,corr_person_firm,mean_earnings,G1,baseline,0,0,noncore_alt_outcome,Skill match: corr_person_firm on mean_earnings,0.9
+193945-V1,ols/skill_match/on_log_size,methods/cross_sectional_ols.md#core-variations,corr_person_firm,log_size,G1,baseline,0,0,noncore_alt_outcome,Skill match: corr_person_firm on log_size,0.9
+193945-V1,ols/skill_match/on_college,methods/cross_sectional_ols.md#core-variations,corr_person_firm,college_share,G1,baseline,0,0,noncore_alt_outcome,Skill match: corr_person_firm on college_share,0.9
+193945-V1,robust/model/cz_ind_fe,robustness/model_specification.md,cz_premium_cz_ind_fe,cz_premium_baseline,G2,ols/firm_effect/on_log_size,0,1,core_method,Model: cz_ind_fe,0.9
+193945-V1,robust/model/cz_fe_only,robustness/model_specification.md,cz_premium_cz_fe_only,cz_premium_baseline,G2,ols/firm_effect/on_log_size,0,1,core_method,Model: cz_fe_only,0.9
+193945-V1,robust/model/young_baseline,robustness/model_specification.md,cz_premium_young_baseline,cz_premium_baseline,G2,ols/firm_effect/on_log_size,0,1,core_method,Model: young_baseline,0.9
+193945-V1,robust/model/young_dyn_top10,robustness/model_specification.md,cz_premium_young_dyn_top10,cz_premium_baseline,G2,ols/firm_effect/on_log_size,0,1,core_method,Model: young_dyn_top10,0.9
+193945-V1,robust/model/young_dyn_top25,robustness/model_specification.md,cz_premium_young_dyn_top25,cz_premium_baseline,G2,ols/firm_effect/on_log_size,0,1,core_method,Model: young_dyn_top25,0.9
+193945-V1,robust/external/acs_logwage,robustness/model_specification.md,acs_logwage,cz_premium_lehd,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,External validation: acs_logwage,0.9
+193945-V1,robust/external/acs_cz_m1,robustness/model_specification.md,acs_cz_m1,cz_premium_lehd,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,External validation: acs_cz_m1,0.9
+193945-V1,robust/external/acs_cz_m2,robustness/model_specification.md,acs_cz_m2,cz_premium_lehd,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,External validation: acs_cz_m2,0.9
+193945-V1,robust/external/acs_cz_m3,robustness/model_specification.md,acs_cz_m3,cz_premium_lehd,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,External validation: acs_cz_m3,0.9
+193945-V1,acs/size/logwage_m1,methods/cross_sectional_ols.md#core-variations,logwage,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: logwage on log_size,0.9
+193945-V1,acs/size/cz_w_m2,methods/cross_sectional_ols.md#core-variations,cz_effects_w_m2,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_effects_w_m2 on log_size,0.9
+193945-V1,acs/size/cz_w_m3,methods/cross_sectional_ols.md#core-variations,cz_effects_w_m3,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_effects_w_m3 on log_size,0.9
+193945-V1,acs/size/logearn_m1,methods/cross_sectional_ols.md#core-variations,logearn,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: logearn on log_size,0.9
+193945-V1,acs/size/cz_e_m2,methods/cross_sectional_ols.md#core-variations,cz_effects_e_m2,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_effects_e_m2 on log_size,0.9
+193945-V1,acs/size/cz_e_m3,methods/cross_sectional_ols.md#core-variations,cz_effects_e_m3,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_effects_e_m3 on log_size,0.9
+193945-V1,acs/size/logwage_hs,methods/cross_sectional_ols.md#core-variations,logwage_hs,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: logwage_hs on log_size,0.9
+193945-V1,acs/size/cz_hs_m2,methods/cross_sectional_ols.md#core-variations,cz_hs_w_m2,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_hs_w_m2 on log_size,0.9
+193945-V1,acs/size/cz_hs_m3,methods/cross_sectional_ols.md#core-variations,cz_hs_w_m3,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_hs_w_m3 on log_size,0.9
+193945-V1,acs/size/logearn_hs,methods/cross_sectional_ols.md#core-variations,logearn_hs,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: logearn_hs on log_size,0.9
+193945-V1,acs/size/cz_hs_e_m2,methods/cross_sectional_ols.md#core-variations,cz_hs_e_m2,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_hs_e_m2 on log_size,0.9
+193945-V1,acs/size/cz_hs_e_m3,methods/cross_sectional_ols.md#core-variations,cz_hs_e_m3,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_hs_e_m3 on log_size,0.9
+193945-V1,acs/size/logwage_13p,methods/cross_sectional_ols.md#core-variations,logwage_13p,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: logwage_13p on log_size,0.9
+193945-V1,acs/size/cz_13p_m2,methods/cross_sectional_ols.md#core-variations,cz_13p_w_m2,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_13p_w_m2 on log_size,0.9
+193945-V1,acs/size/cz_13p_m3,methods/cross_sectional_ols.md#core-variations,cz_13p_w_m3,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_13p_w_m3 on log_size,0.9
+193945-V1,acs/size/logearn_13p,methods/cross_sectional_ols.md#core-variations,logearn_13p,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: logearn_13p on log_size,0.9
+193945-V1,acs/size/cz_13p_e_m2,methods/cross_sectional_ols.md#core-variations,cz_13p_e_m2,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_13p_e_m2 on log_size,0.9
+193945-V1,acs/size/cz_13p_e_m3,methods/cross_sectional_ols.md#core-variations,cz_13p_e_m3,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_diagnostic,ACS: cz_13p_e_m3 on log_size,0.9
+193945-V1,acs/emp/logsize,methods/cross_sectional_ols.md#core-variations,employment,log_size,G1,baseline,0,0,noncore_alt_outcome,ACS labor: employment on log_size,0.85
+193945-V1,acs/emp_m/logsize,methods/cross_sectional_ols.md#core-variations,employment_male,log_size,G1,baseline,0,0,noncore_alt_outcome,ACS labor: employment_male on log_size,0.85
+193945-V1,acs/emp_f/logsize,methods/cross_sectional_ols.md#core-variations,employment_female,log_size,G1,baseline,0,0,noncore_alt_outcome,ACS labor: employment_female on log_size,0.85
+193945-V1,acs/emp/logwage,methods/cross_sectional_ols.md#core-variations,employment,log_wage,G1,baseline,0,0,noncore_alt_outcome,ACS labor: employment on log_wage,0.85
+193945-V1,acs/emp_m/logwage,methods/cross_sectional_ols.md#core-variations,employment_male,log_wage,G1,baseline,0,0,noncore_alt_outcome,ACS labor: employment_male on log_wage,0.85
+193945-V1,acs/emp_f/logwage,methods/cross_sectional_ols.md#core-variations,employment_female,log_wage,G1,baseline,0,0,noncore_alt_outcome,ACS labor: employment_female on log_wage,0.85
+193945-V1,acs/hours/logsize,methods/cross_sectional_ols.md#core-variations,hours,log_size,G1,baseline,0,0,noncore_alt_outcome,ACS labor: hours on log_size,0.85
+193945-V1,acs/hours_m/logsize,methods/cross_sectional_ols.md#core-variations,hours_male,log_size,G1,baseline,0,0,noncore_alt_outcome,ACS labor: hours_male on log_size,0.85
+193945-V1,acs/hours_f/logsize,methods/cross_sectional_ols.md#core-variations,hours_female,log_size,G1,baseline,0,0,noncore_alt_outcome,ACS labor: hours_female on log_size,0.85
+193945-V1,robust/sample/large_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: large_czs,0.95
+193945-V1,robust/sample/medium_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: medium_czs,0.95
+193945-V1,robust/sample/small_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: small_czs,0.95
+193945-V1,robust/sample/top_10_metros,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: top_10_metros,0.95
+193945-V1,robust/sample/bottom_10_metros,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: bottom_10_metros,0.95
+193945-V1,robust/sample/high_skill_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: high_skill_czs,0.95
+193945-V1,robust/sample/low_skill_czs,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: low_skill_czs,0.95
+193945-V1,robust/sample/coastal,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: coastal,0.95
+193945-V1,robust/sample/non_coastal,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Sample: non_coastal,0.95
+193945-V1,robust/heterogeneity/hs_only,robustness/heterogeneity.md,firm_effect_hs_only,mean_earnings,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Het: hs_only,0.95
+193945-V1,robust/heterogeneity/some_college,robustness/heterogeneity.md,firm_effect_some_college,mean_earnings,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Het: some_college,0.95
+193945-V1,robust/heterogeneity/ba_plus,robustness/heterogeneity.md,firm_effect_ba_plus,mean_earnings,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Het: ba_plus,0.95
+193945-V1,robust/heterogeneity/grad_school,robustness/heterogeneity.md,firm_effect_grad_school,mean_earnings,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Het: grad_school,0.95
+193945-V1,robust/cluster/cz,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Cluster: cz,0.95
+193945-V1,robust/cluster/state,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Cluster: state,0.95
+193945-V1,robust/cluster/region,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Cluster: region,0.95
+193945-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_inference,Cluster: robust_hc1,0.95
+193945-V1,robust/funcform/levels,robustness/functional_form.md,log_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Funcform: levels,0.95
+193945-V1,robust/funcform/ihs,robustness/functional_form.md,ihs_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Funcform: ihs,0.95
+193945-V1,robust/funcform/percentile,robustness/functional_form.md,firm_effect_pctl,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Funcform: percentile,0.95
+193945-V1,robust/funcform/rank,robustness/functional_form.md,firm_effect_rank,log_size,G2,ols/firm_effect/on_log_size,0,1,core_funcform,Funcform: rank,0.95
+193945-V1,robust/time/early_2010_2013,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Time: early_2010_2013,0.9
+193945-V1,robust/time/late_2014_2018,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Time: late_2014_2018,0.9
+193945-V1,robust/time/pre_recession,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Time: pre_recession,0.9
+193945-V1,robust/time/post_recession,robustness/sample_restrictions.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_sample,Time: post_recession,0.9
+193945-V1,robust/industry/manufacturing,robustness/heterogeneity.md,firm_effect_manufacturing,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry: manufacturing,0.9
+193945-V1,robust/industry/services,robustness/heterogeneity.md,firm_effect_services,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry: services,0.9
+193945-V1,robust/industry/retail,robustness/heterogeneity.md,firm_effect_retail,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry: retail,0.9
+193945-V1,robust/industry/finance,robustness/heterogeneity.md,firm_effect_finance,log_size,G2,ols/firm_effect/on_log_size,0,0,noncore_heterogeneity,Industry: finance,0.9
+193945-V1,robust/controls/no_controls,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Controls: no_controls,0.95
+193945-V1,robust/controls/minimal,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Controls: minimal,0.95
+193945-V1,robust/controls/full,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Controls: full,0.95
+193945-V1,robust/controls/extended,robustness/control_progression.md,mean_firm_effect,log_size,G2,ols/firm_effect/on_log_size,0,1,core_controls,Controls: extended,0.95

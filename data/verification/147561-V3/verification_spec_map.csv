@@ -1,61 +1,61 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-147561-V3,baseline,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline,1,1,core_fe,"Baseline: stratum FE only, taxes_paid on t_l",1.0
-147561-V3,baseline_month_fe,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline_month_fe,1,1,core_fe,Baseline: adds month FE to stratum FE,1.0
-147561-V3,baseline_full_fe,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline_full_fe,1,1,core_fe,Baseline: full FE (stratum+month+house),1.0
-147561-V3,baseline_nonexempt,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline_nonexempt,1,1,core_sample,Baseline: full FE on non-exempt subsample,1.0
-147561-V3,robust/outcome/tax_amount,robustness/measurement.md,taxes_paid_amt,t_l,G1,baseline_full_fe,0,0,noncore_alt_outcome,Outcome is tax amount in levels not binary compliance,0.95
-147561-V3,robust/outcome/ihs_tax_amount,robustness/functional_form.md,ihs_tax_amt,t_l,G1,baseline_full_fe,0,0,noncore_alt_outcome,Outcome is IHS of tax amount not binary compliance,0.9
-147561-V3,robust/outcome/bribe,robustness/measurement.md,bribe_combined,t_l,,,0,0,noncore_alt_outcome,Outcome is bribery entirely different concept,1.0
-147561-V3,robust/outcome/visit_post_carto,robustness/measurement.md,visit_post_carto,t_l,,,0,0,noncore_alt_outcome,Outcome is collector visit a mechanism variable,1.0
-147561-V3,robust/outcome/nb_visits,robustness/measurement.md,nb_visit_post_carto,t_l,,,0,0,noncore_alt_outcome,Outcome is number of visits a mechanism variable,1.0
-147561-V3,robust/outcome/tax_amount_stratum_fe,robustness/measurement.md,taxes_paid_amt,t_l,G1,baseline,0,0,noncore_alt_outcome,Outcome is tax amount levels with stratum FE only,0.95
-147561-V3,robust/outcome/tax_amount_no_fe,robustness/measurement.md,taxes_paid_amt,t_l,G1,baseline,0,0,noncore_alt_outcome,Outcome is tax amount levels with no FE,0.95
-147561-V3,robust/estimation/no_fe,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,Drops all FE same outcome and treatment,0.95
-147561-V3,robust/estimation/stratum_fe_only,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,Stratum FE only with month-FE sample size,0.95
-147561-V3,robust/estimation/month_fe_only,robustness/model_specification.md,taxes_paid,t_l,G1,baseline_month_fe,0,1,core_fe,Month FE only drops stratum FE,0.95
-147561-V3,robust/estimation/house_fe_only,robustness/model_specification.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_fe,House FE only drops stratum and month FE,0.95
-147561-V3,robust/estimation/stratum_house_fe,robustness/model_specification.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_fe,Stratum + house FE drops month FE,0.95
-147561-V3,robust/cluster/robust_hc1,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_inference,HC1 robust SEs instead of cluster on a7,0.95
-147561-V3,robust/cluster/robust_hc2,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_inference,HC2 robust SEs instead of cluster on a7,0.95
-147561-V3,robust/cluster/robust_hc3,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_inference,HC3 robust SEs instead of cluster on a7,0.95
-147561-V3,robust/cluster/stratum,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_inference,Cluster on stratum; FE changes to month+house,0.85
-147561-V3,robust/sample/peripherie_only,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_month_fe,0,1,core_sample,Restricts to peripherie houses only,0.95
-147561-V3,robust/sample/maison_moyenne_only,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_month_fe,0,1,core_sample,Restricts to maison moyenne houses only,0.95
-147561-V3,robust/sample/low_rate_50,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Restricts to low rate 50pct properties,0.95
-147561-V3,robust/sample/high_rate_100,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Restricts to high rate 100pct properties,0.95
-147561-V3,robust/sample/medium_rate,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Restricts to medium rate 66/83pct properties,0.95
-147561-V3,robust/sample/drop_stratum_1,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 1 from sample,0.95
-147561-V3,robust/sample/drop_stratum_5,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 5 from sample,0.95
-147561-V3,robust/sample/drop_stratum_8,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 8 from sample,0.95
-147561-V3,robust/sample/drop_stratum_20,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 20 from sample,0.95
-147561-V3,robust/sample/drop_stratum_9,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 9 from sample,0.95
-147561-V3,robust/sample/drop_stratum_10,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 10 from sample,0.95
-147561-V3,robust/sample/drop_stratum_13,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 13 from sample,0.95
-147561-V3,robust/sample/drop_stratum_15,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 15 from sample,0.95
-147561-V3,robust/sample/drop_period_2,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops time period 2 from sample,0.95
-147561-V3,robust/sample/drop_period_1,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops time period 1 from sample,0.95
-147561-V3,robust/sample/drop_period_0,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops time period 0 from sample,0.95
-147561-V3,robust/sample/drop_stratum_16,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 16 from sample,0.95
-147561-V3,robust/sample/drop_stratum_19,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 19 from sample,0.95
-147561-V3,robust/sample/drop_stratum_49,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 49 from sample,0.95
-147561-V3,robust/sample/drop_stratum_21,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_sample,Drops stratum 21 from sample,0.95
-147561-V3,robust/heterogeneity/male_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: male owners only heterogeneity analysis,0.85
-147561-V3,robust/heterogeneity/female_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: female owners only heterogeneity analysis,0.85
-147561-V3,robust/heterogeneity/luluwa_tribe,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: Luluwa tribe only heterogeneity analysis,0.85
-147561-V3,robust/heterogeneity/other_tribes,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: non-Luluwa tribes only heterogeneity,0.85
-147561-V3,robust/heterogeneity/gov_workers,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: gov workers only heterogeneity analysis,0.85
-147561-V3,robust/heterogeneity/non_gov_workers,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: non-gov workers heterogeneity analysis,0.85
-147561-V3,robust/heterogeneity/treatment_x_house,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_month_fe,0,0,noncore_heterogeneity,Interaction t_l x house type heterogeneity test,0.9
-147561-V3,robust/heterogeneity/young_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: below median age heterogeneity analysis,0.85
-147561-V3,robust/heterogeneity/older_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline_full_fe,0,0,noncore_heterogeneity,Subgroup: above median age heterogeneity analysis,0.85
-147561-V3,robust/control/add_rate,robustness/control_progression.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_controls,Adds tax rate as control same outcome/treatment/FE,0.95
-147561-V3,robust/control/add_rate_dummies,robustness/control_progression.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_controls,Adds rate dummies as controls,0.95
-147561-V3,robust/control/add_exempt,robustness/control_progression.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_controls,Adds exempt status control,0.95
-147561-V3,robust/control/full,robustness/control_progression.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_controls,Adds rate + exempt controls together,0.95
-147561-V3,robust/treatment/include_cli,robustness/measurement.md,taxes_paid,t_l,G1,baseline_full_fe,0,1,core_controls,Adds CLI arm as control still estimates Local vs Central,0.8
-147561-V3,robust/treatment/cli_vs_central,robustness/measurement.md,taxes_paid,t_cli,,,0,0,noncore_alt_treatment,Treatment is CLI vs Central different comparison,0.95
-147561-V3,robust/treatment/local_vs_cli,robustness/measurement.md,taxes_paid,t_l_vs_cli,,,0,0,noncore_alt_treatment,Treatment is Local vs CLI different comparison,0.95
-147561-V3,robust/placebo/salongo_hours,robustness/placebo_tests.md,salongo_hours,t_l,,,0,0,noncore_placebo,Placebo outcome: salongo hours unrelated to taxes,1.0
-147561-V3,robust/placebo/exempt_status,robustness/placebo_tests.md,exempt,t_l,,,0,0,noncore_placebo,Placebo: exempt status should be unaffected by treatment,0.95
-147561-V3,robust/placebo/permuted_treatment,robustness/placebo_tests.md,taxes_paid,t_l_permuted,,,0,0,noncore_placebo,Placebo: permuted treatment should show null effect,1.0
-147561-V3,robust/funcform/lpm_no_fe,robustness/functional_form.md,taxes_paid,t_l,G1,baseline,0,1,core_funcform,LPM without FE same binary outcome and treatment,0.9
+147561-V3,baseline,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline,1,1,core_controls,Primary baseline: taxes_paid on t_l with stratum FE,1.0
+147561-V3,baseline_month_fe,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline,0,1,core_fe,Baseline with month FE added,0.95
+147561-V3,baseline_full_fe,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline,0,1,core_fe,Baseline with stratum+month+house FE,0.95
+147561-V3,baseline_nonexempt,methods/cross_sectional_ols.md#baseline,taxes_paid,t_l,G1,baseline,0,1,core_sample,Non-exempt properties only with full FE,0.95
+147561-V3,robust/outcome/tax_amount,robustness/measurement.md,taxes_paid_amt,t_l,G1,baseline,0,0,noncore_alt_outcome,Tax amount (levels): alternative outcome,0.95
+147561-V3,robust/outcome/ihs_tax_amount,robustness/functional_form.md,ihs_tax_amt,t_l,G1,baseline,0,0,noncore_alt_outcome,Tax amount (levels): alternative outcome,0.95
+147561-V3,robust/outcome/bribe,robustness/measurement.md,bribe_combined,t_l,G1,baseline,0,0,noncore_alt_outcome,Bribe outcome: corruption channel,0.95
+147561-V3,robust/outcome/visit_post_carto,robustness/measurement.md,visit_post_carto,t_l,G1,baseline,0,0,noncore_alt_outcome,Visit outcome: mechanism (visit_post_carto),0.95
+147561-V3,robust/outcome/nb_visits,robustness/measurement.md,nb_visit_post_carto,t_l,G1,baseline,0,0,noncore_alt_outcome,Visit outcome: mechanism (nb_visit_post_carto),0.95
+147561-V3,robust/estimation/no_fe,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,FE variation: None,0.95
+147561-V3,robust/estimation/stratum_fe_only,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,FE variation: stratum,0.95
+147561-V3,robust/estimation/month_fe_only,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,FE variation: month,0.95
+147561-V3,robust/estimation/house_fe_only,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,FE variation: house,0.95
+147561-V3,robust/estimation/stratum_house_fe,robustness/model_specification.md,taxes_paid,t_l,G1,baseline,0,1,core_fe,FE variation: stratum + house,0.95
+147561-V3,robust/cluster/robust_hc1,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline,0,1,core_inference,SE variation: robust_hc1,0.95
+147561-V3,robust/cluster/robust_hc2,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline,0,1,core_inference,SE variation: robust_hc2,0.95
+147561-V3,robust/cluster/robust_hc3,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline,0,1,core_inference,SE variation: robust_hc3,0.95
+147561-V3,robust/cluster/stratum,robustness/clustering_variations.md,taxes_paid,t_l,G1,baseline,0,1,core_inference,SE variation: stratum,0.95
+147561-V3,robust/sample/peripherie_only,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Peripherie houses only,0.95
+147561-V3,robust/sample/maison_moyenne_only,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Maison moyenne houses only,0.95
+147561-V3,robust/sample/low_rate_50,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Low rate (50%) properties,0.95
+147561-V3,robust/sample/high_rate_100,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: High rate (100%) properties,0.95
+147561-V3,robust/sample/medium_rate,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Medium rate (66%/83%) properties,0.95
+147561-V3,robust/sample/drop_stratum_1,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 1,0.95
+147561-V3,robust/sample/drop_stratum_5,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 5,0.95
+147561-V3,robust/sample/drop_stratum_8,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 8,0.95
+147561-V3,robust/sample/drop_stratum_20,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 20,0.95
+147561-V3,robust/sample/drop_stratum_9,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 9,0.95
+147561-V3,robust/sample/drop_stratum_10,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 10,0.95
+147561-V3,robust/sample/drop_stratum_13,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 13,0.95
+147561-V3,robust/sample/drop_stratum_15,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 15,0.95
+147561-V3,robust/sample/drop_period_2,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding time period 2,0.95
+147561-V3,robust/sample/drop_period_1,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding time period 1,0.95
+147561-V3,robust/sample/drop_period_0,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding time period 0,0.95
+147561-V3,robust/heterogeneity/male_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Male property owners only,0.95
+147561-V3,robust/heterogeneity/female_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Female property owners only,0.95
+147561-V3,robust/heterogeneity/luluwa_tribe,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Main tribe (Luluwa) only,0.95
+147561-V3,robust/heterogeneity/other_tribes,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Other tribes only,0.95
+147561-V3,robust/heterogeneity/gov_workers,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Government workers only,0.95
+147561-V3,robust/heterogeneity/non_gov_workers,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Non-government workers only,0.95
+147561-V3,robust/heterogeneity/treatment_x_house,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Central vs Local,0.95
+147561-V3,robust/control/add_rate,robustness/control_progression.md,taxes_paid,t_l,G1,baseline,0,1,core_controls,Control addition: add_rate,0.95
+147561-V3,robust/control/add_rate_dummies,robustness/control_progression.md,taxes_paid,t_l,G1,baseline,0,1,core_controls,Control addition: add_rate_dummies,0.95
+147561-V3,robust/control/add_exempt,robustness/control_progression.md,taxes_paid,t_l,G1,baseline,0,1,core_controls,Control addition: add_exempt,0.95
+147561-V3,robust/control/full,robustness/control_progression.md,taxes_paid,t_l,G1,baseline,0,1,core_controls,Control addition: full,0.95
+147561-V3,robust/treatment/include_cli,robustness/measurement.md,taxes_paid,t_l,G1,baseline,0,0,noncore_alt_treatment,Treatment variation: t_l,0.95
+147561-V3,robust/treatment/cli_vs_central,robustness/measurement.md,taxes_paid,t_cli,G1,baseline,0,0,noncore_alt_treatment,CLI vs Central comparison,0.95
+147561-V3,robust/treatment/local_vs_cli,robustness/measurement.md,taxes_paid,t_l_vs_cli,G1,baseline,0,0,noncore_alt_treatment,Local vs CLI comparison,0.95
+147561-V3,robust/placebo/salongo_hours,robustness/placebo_tests.md,salongo_hours,t_l,G1,baseline,0,0,noncore_placebo,Placebo test: salongo_hours on t_l,0.95
+147561-V3,robust/placebo/exempt_status,robustness/placebo_tests.md,exempt,t_l,G1,baseline,0,0,noncore_placebo,Placebo test: exempt on t_l,0.95
+147561-V3,robust/placebo/permuted_treatment,robustness/placebo_tests.md,taxes_paid,t_l_permuted,G1,baseline,0,0,noncore_placebo,Placebo test: taxes_paid on t_l_permuted,0.95
+147561-V3,robust/funcform/lpm_no_fe,robustness/functional_form.md,taxes_paid,t_l,G1,baseline,0,1,core_method,LPM without FE,0.95
+147561-V3,robust/sample/drop_stratum_16,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 16,0.95
+147561-V3,robust/sample/drop_stratum_19,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 19,0.95
+147561-V3,robust/sample/drop_stratum_49,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 49,0.95
+147561-V3,robust/sample/drop_stratum_21,robustness/sample_restrictions.md,taxes_paid,t_l,G1,baseline,0,1,core_sample,Sample restriction: Excluding stratum 21,0.95
+147561-V3,robust/heterogeneity/young_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Owners below median age,0.95
+147561-V3,robust/heterogeneity/older_owners,robustness/heterogeneity.md,taxes_paid,t_l,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Owners above median age,0.95
+147561-V3,robust/outcome/tax_amount_stratum_fe,robustness/measurement.md,taxes_paid_amt,t_l,G1,baseline,0,0,noncore_alt_outcome,Tax amount (levels): alternative outcome,0.95
+147561-V3,robust/outcome/tax_amount_no_fe,robustness/measurement.md,taxes_paid_amt,t_l,G1,baseline,0,0,noncore_alt_outcome,Tax amount (levels): alternative outcome,0.95

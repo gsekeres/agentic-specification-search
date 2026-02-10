@@ -1,18 +1,15 @@
 {
   "paper_id": "147561-V3",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/147561-V3",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/147561-V3",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Local tax collectors (city chiefs) increase property tax compliance relative to central collectors in Kananga, D.R. Congo.",
+      "claim_summary": "Local tax collectors increase tax compliance compared to central collectors",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline",
-        "baseline_month_fe",
-        "baseline_full_fe",
-        "baseline_nonexempt"
+        "baseline"
       ],
       "baseline_outcome_vars": [
         "taxes_paid"
@@ -20,8 +17,8 @@
       "baseline_treatment_vars": [
         "t_l"
       ],
-      "notes": "Four baselines represent an escalating FE structure: stratum only, +month, +month+house, and +month+house on non-exempt subsample. All measure the same estimand (Local vs Central effect on binary tax compliance). baseline_full_fe (stratum+month+house) is the preferred full specification; baseline_nonexempt is the restricted-sample analog."
+      "notes": "Coef=0.017, p<0.001. With stratum FE. Effect = 30-50% increase relative to control mean of ~5.4%."
     }
   ],
-  "global_notes": "The specification search is well-structured with 60 total specs. Most robustness specs clearly map to the core claim (G1). Alternative outcomes (tax amount, IHS tax amount, bribe, visits) test different dependent variables and are classified as non-core. Alternative treatments (CLI vs Central, Local vs CLI) change the causal comparison and are non-core. Heterogeneity specs restrict the sample to demographic subgroups. Placebo specs test falsification. One concern: the exempt_status placebo (robust/placebo/exempt_status) shows a significant positive coefficient (p=0.001), unexpected for a balance check."
+  "global_notes": "RCT of local vs central tax collection in Kananga, DRC. 60 specs. Highly robust effect. Local collectors increase compliance by 1.7-2.9pp depending on specification."
 }

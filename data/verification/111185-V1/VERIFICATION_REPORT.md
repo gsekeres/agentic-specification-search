@@ -1,80 +1,90 @@
 # Verification Report: 111185-V1
 
-## Paper
-**Title**: Optimal Climate Policy When Damages Are Unknown
-**Journal**: AEJ: Policy
-**Paper ID**: 111185-V1
+## Paper Information
+- **Title**: Optimal Climate Policy When Damages Are Unknown
+- **Journal**: AEJ: Policy
+- **Total Specifications**: 78
 
 ## Baseline Groups
 
-### G1: Damage exponent meta-regression
-- **Claim**: Climate damages follow a power law in temperature with exponent d2 approximately 2, estimated via log-log OLS meta-regression of damage estimates on temperature from the Howard and Sterner (2017) meta-analysis dataset.
-- **Baseline spec_ids**: baseline
-- **Outcome**: log_correct (log of corrected damage estimate)
-- **Treatment**: logt (log of temperature increase in degrees Celsius)
-- **Baseline coefficient**: 1.882 (SE = 0.451, p < 0.001, N = 43)
+### G1: Damage Exponent (d2)
+- **Claim**: Climate damages follow a power law in temperature, with exponent d2 approximately equal to 2, estimated via meta-regression of log(damages) on log(temperature).
+- **Baseline spec**: `baseline`
 - **Expected sign**: Positive
+- **Baseline coefficient**: 1.882 (SE: 0.451, p < 0.001)
+- **Outcome**: `log_correct`
+- **Treatment**: `logt`
+- **Table 1**
 
-## Summary Counts
-
-| Category | Count |
-|----------|-------|
-| **Total specifications** | **78** |
-| Core test specs | 64 |
-| Non-core specs | 13 |
-| Invalid specs | 1 |
-| Unclear specs | 0 |
-
-## Category Breakdown
+## Classification Summary
 
 | Category | Count | Description |
 |----------|-------|-------------|
-| core_sample | 31 | Sample restrictions + leave-one-out (15 LOO + 16 sample splits) |
-| core_funcform | 10 | Functional form variations (level-level, semi-log, quadratic, cubic, asinh, alt outcomes) |
-| core_controls | 9 | Control variable additions (year, grey, market, method indicators, kitchen sink) |
-| core_method | 7 | Method changes (WLS variants, quantile regressions) |
-| core_inference | 6 | Inference variations (HC1/HC2/HC3, cluster by method/author/model) |
+| **Core tests (incl. baseline)** | **48** | |
+| core_controls | 11 | 1 baseline + year, grey, market, year+grey, full, method indicators, kitchen sink, year trend, year quadratic controls |
 | core_fe | 1 | Method fixed effects |
-| noncore_heterogeneity | 10 | Interaction models (7) + year tercile splits (3) |
-| noncore_placebo | 3 | Shuffled temperature placebos (2) + year-only regression (1) |
-| invalid | 1 | Bootstrap with p > 1 |
+| core_sample | 24 | Trim/winsorize (4), time period splits (4), exclude grey, drop influential, leave-one-out (15), WLS weights (3) |
+| core_inference | 8 | HC1/HC2/HC3 robust SE, cluster by method/author/model, bootstrap |
+| core_funcform | 7 | Level-level, log-level, level-log, quadratic logt, quadratic t, asinh outcome, cubic |
+| core_method | 3 | Quantile regressions (25th, 50th, 75th percentile) |
+| **Non-core tests** | **30** | |
+| noncore_heterogeneity | 16 | Market/nonmarket/method/temp subsamples (6), interaction terms (7), year tercile subsamples (3) |
+| noncore_alt_outcome | 3 | D_new level, log D_new, original D measure |
+| noncore_placebo | 3 | Shuffled temperature (x2), year as predictor |
+| **Total** | **78** | |
 
-## Top 5 Most Suspicious Rows
+## Detailed Classification Notes
 
-1. **robust/se/bootstrap** (INVALID): The p-value is 1.012, which exceeds 1.0 and is therefore mathematically invalid. The coefficient (1.793) also differs slightly from the baseline (1.882), suggesting the bootstrap may have been computed on resampled data rather than just resampling residuals. This spec should be re-implemented or dropped.
+### Core Tests (48 specs including baseline)
 
-2. **robust/het/high_temp_interaction**: The reported coefficient on logt is -0.27, which is the main effect conditional on high_temp=0 (i.e., the effect for low-temperature observations only). This is not comparable to the unconditional baseline estimate of 1.88. The interaction term is 4.89 (p < 0.001), meaning the total effect for high-temp observations is approximately 4.62. The coefficient as recorded does not represent the average damage exponent.
+**Baseline (1 spec)**: The bivariate log-log OLS regression of corrected damage estimates on temperature from the Howard and Sterner (2017) meta-analysis dataset (n=43).
 
-3. **robust/form/quadratic_logt**: The linear coefficient on logt is -1.66 when a quadratic term (logt_sq) is included. This sign reversal is expected when including a squared term (the linear term captures the slope at logt=0), but it means this coefficient is not directly comparable to the baseline in terms of economic interpretation.
+**Control variations (10 non-baseline core_controls specs)**: These progressively add study-level controls:
+- Year of study, grey literature indicator, market/nonmarket indicator: individually and in combinations
+- Method indicator dummies (enumerative, statistical, survey): captures estimation approach heterogeneity
+- Kitchen sink with all controls
+- Year trend (centered) and quadratic year trend
 
-4. **robust/sample/market_only**: Coefficient is 0.010 (p = 0.99, N = 17), essentially zero. While correctly implemented as a sample restriction, this reveals that the pooled baseline result is driven entirely by non-market damage estimates. This extreme sensitivity (d2 going from 1.88 to 0.01) is noteworthy for understanding the robustness of the paper's claim.
+**Fixed effects (1 spec)**: Method FE absorbs unobserved differences across estimation approaches. Produces identical coefficient to method indicators (1.309).
 
-5. **robust/het/statistical_interaction**: The reported coefficient on logt is 3.87, which is the main effect conditional on is_statistical=0. The interaction term is -3.62, meaning statistical-method studies show essentially zero temperature sensitivity (3.87 - 3.62 = 0.25). Like other interaction specs, this conditional main effect is not directly comparable to the unconditional baseline.
+**Sample restrictions (24 specs)**: The largest core category:
+- Outlier treatment: 1% and 5% trimming, 1% and 5% winsorization
+- Time period splits: pre-2005, pre-2008, post-2008, post-2010 -- tests stability over evolving literature
+- Exclude grey literature: restricts to peer-reviewed only (n=34)
+- Drop influential observations: Cook's distance criterion (n=39)
+- Leave-one-out (15 specs): Drop each individual study to check no single study drives results. Coefficients range 1.86-2.26, confirming no single influential study.
+- Weighted least squares (3 specs): inverse temperature weight, year weight, inverse year weight
 
-## Classification Decisions and Rationale
+**Inference variations (8 specs)**: All maintain same point estimate (1.882), varying only SE computation:
+- HC1/HC2/HC3 heteroskedasticity-consistent SEs: SE increases from 0.45 (homoskedastic) to 0.92 (HC1), 1.01 (HC2), 1.14 (HC3)
+- Clustered by method, author, model: SE ranges 1.10-1.40
+- Bootstrap (1000 reps): SE = 0.87 (note: anomalous p-value of 1.012 suggests implementation issue)
 
-### Heterogeneity specs (classified as non-core)
-All 10 heterogeneity specifications were classified as non-core because they either:
-- Report a conditional main effect from an interaction model (7 specs), which changes the estimand relative to the baseline unconditional average effect.
-- Represent year-tercile subsample splits (3 specs), which are heterogeneity analyses designed to show variation rather than test the pooled relationship.
+**Functional form (7 specs)**: Systematic exploration of the functional form assumption:
+- Level-level, log-level, level-log: alternative transformations
+- Quadratic in logt and t: tests curvature
+- Asinh outcome transformation: robust to zero/negative values
+- Cubic polynomial: tests higher-order nonlinearity
 
-Note: The year-tercile and subsample splits are borderline. They use the same specification as baseline but on a subsample, which could be argued as core_sample. However, since they are explicitly filed under robustness/heterogeneity.md and their purpose is to show heterogeneity (not to test the overall claim), they are classified as non-core. This is a conservative choice.
+**Method (3 specs)**: Quantile regressions at 25th, 50th, and 75th percentiles test whether the central tendency is representative of the conditional distribution.
 
-### Placebo specs (classified as non-core)
-All 3 placebos appropriately use fake or irrelevant treatments. The shuffled temperature tests use randomly permuted temperature values. The year-only regression uses publication year as the treatment. All return insignificant results as expected, confirming the baseline relationship is not spurious. These are diagnostic tests, not tests of the core claim.
+### Non-Core Tests (30 specs)
 
-### Functional form specs
-These are classified as core tests despite changing outcome and/or treatment variable scales, because the underlying claim (damages are a power function of temperature) can be tested in level-level, log-level, level-log, or log-log forms. The polynomial extensions (quadratic, cubic) change the interpretation of the linear coefficient, so they are lower confidence (0.7).
+**Heterogeneity (16 specs)**: These decompose the effect by study characteristics rather than providing alternative implementations:
+- Subsample splits by market/nonmarket, method type, temperature range (6 specs): reveal strong heterogeneity (market-only d2 ~ 0.01 vs nonmarket d2 ~ 3.88)
+- Interaction terms with grey, market, year, method, pre-2008, high-temp indicators (7 specs)
+- Year tercile subsamples (3 specs): early/mid/late studies
 
-### Leave-one-out specs
-All 15 LOO specs drop individual studies and re-estimate. These are standard robustness checks classified as core_sample. Results are highly stable (range: 1.86 to 2.26).
+**Alternative outcomes (3 specs)**: Different damage variable definitions (D_new in levels, log D_new, original D).
 
-## Recommendations for Spec-Search Script
+**Placebo tests (3 specs)**: Two with randomly shuffled temperature (should yield null), one with year-only as predictor. All yield insignificant coefficients, validating the temperature-damage relationship.
 
-1. **Fix bootstrap implementation**: The bootstrap specification (robust/se/bootstrap) produces an invalid p-value > 1. The script should use scipy bootstrap confidence intervals or statsmodels bootstrap and correctly compute the p-value from the bootstrap distribution.
+## Robustness Assessment
 
-2. **Heterogeneity interaction coefficient reporting**: When interaction models are estimated, the script reports the main effect of logt, which is the conditional effect (logt when the interacted variable = 0). Consider also computing and reporting the average marginal effect of logt across the sample to make it more comparable to the baseline.
+The damage exponent estimate of approximately 2 is **moderately robust**:
 
-3. **Consider adding weighted meta-regression**: The specification search includes ad-hoc WLS weights (1/t, year, 1/year) but not precision-weighted meta-regression (e.g., weighting by inverse variance of original estimates), which is the standard approach in meta-analysis.
-
-4. **Baseline claim is well-identified**: The paper Table 1 regression is correctly captured by the baseline specification. No changes needed to the baseline definition.
+- **Stable across controls**: Adding year, grey, market, method controls changes coefficient from 1.88 to 1.31-1.88 range.
+- **Leave-one-out stable**: No single study drives the result (range 1.86-2.26).
+- **Sensitive to inference**: Robust/clustered SEs approximately double, making significance borderline (p = 0.04-0.18 depending on method).
+- **Sensitive to sample composition**: Market-only estimates yield d2 ~ 0 (insignificant), while non-market estimates yield d2 ~ 3.9 (highly significant). This stark heterogeneity is the key finding.
+- **Sensitive to outliers**: 5% trimming reduces coefficient to 0.37 (insignificant), suggesting a few extreme damage estimates drive much of the result.

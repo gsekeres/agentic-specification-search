@@ -1,0 +1,49 @@
+{
+  "paper_id": "116329-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116329-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Poorly matched couples (above-median absolute difference in discount factors) are significantly more likely to save in individually-held dominated bank accounts, consistent with strategic savings to prevent spousal access to funds.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "1"
+      ],
+      "baseline_outcome_vars": [
+        "savedI"
+      ],
+      "baseline_treatment_vars": [
+        "bad"
+      ],
+      "baseline_coefficient": 0.1064,
+      "baseline_se": 0.036,
+      "baseline_pvalue": 0.0031,
+      "baseline_n": 331,
+      "baseline_r_squared": 0.1212,
+      "notes": "Table 4, Column 1 (basic controls). OLS with HC1 standard errors. Outcome: binary indicator for whether couple saved in any individually-held account. Treatment: binary indicator for poorly matched couple (above-median |delta_H - delta_W| based on log discount factors). Controls: interest rate dummies (intrtIH, intrtIW, intrtJ), cash prize indicators, extra statement treatment, synthetic ATM indicators. Sample: non-polygamous couples eligible for follow-up where joint interest rate equals the maximum offered rate (N=331). Dependent variable mean for well-matched couples: 7.9%."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Poorly matched couples experience greater interest rate losses from using dominated individual accounts instead of the higher-rate joint account.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "80"
+      ],
+      "baseline_outcome_vars": [
+        "loss_i0"
+      ],
+      "baseline_treatment_vars": [
+        "bad"
+      ],
+      "baseline_coefficient": 0.4213,
+      "baseline_se": 0.168,
+      "baseline_pvalue": 0.0121,
+      "baseline_n": 544,
+      "baseline_r_squared": 0.1220,
+      "notes": "Table 6, Column 2 (interest rate controls). OLS with HC1 standard errors. Outcome: interest rate loss from using individual accounts instead of joint. Treatment: binary poorly matched indicator. This specification uses the full sample (N=544, no interest rate restriction) since the loss variable is defined conditional on account choice. The baseline is Column 2 (with interest rate controls) rather than Column 1 (no controls) because interest rate controls are essential to the experimental design. Coefficient 0.42 indicates poorly matched couples lose an additional 0.42 percentage points in interest."
+    }
+  ],
+  "global_notes": "This is Schaner (AEJ:Applied 2015), a field experiment in Kenya studying intrahousehold preference heterogeneity and strategic savings behavior. The 108 specifications systematically vary 8 dimensions: (1) outcome variable (savedI, saved_ncI, openI, ln_avg_balI, depI, savedJ, savedIH, savedIW, loss_i0, plus winsorized and account-level variants), (2) control set (C1 basic through C5 full, plus drop-one-group variants), (3) sample (all couples, savers only, no interest rate restriction, include polygamous), (4) heterogeneity measure (log discount factor at p50/p33/p67, probit-based at p50, continuous), (5) standard error type (HC1, cluster, probit robust, logit robust), (6) estimation method (OLS, probit marginal effects, logit marginal effects), (7) outcome winsorization (none, 95th, 99th percentile), and (8) unit of analysis (couple-level, account-level). The primary finding (savedI, binary bad treatment) is highly robust: 31 of 32 specifications are significant at 5%. The effect size ranges from 0.067 to 0.321 across all savedI specifications. Progressive addition of controls increases the point estimate from 0.106 to 0.146, suggesting omitted variable bias attenuates the unconditional relationship."
+}

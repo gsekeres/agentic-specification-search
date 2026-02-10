@@ -5,14 +5,13 @@
 
 Monte Carlo validation of the binomial approximation used in counterfactuals.
 
-Simulates 1000 papers, drawing types from the null-only FDR mixture
-(sigma_fixed_1) and drawing independent |Z| values from the truncated-normal
-components. Compares simulated null-only FDR at each threshold m with the
-analytical null-only FDR from the counterfactual operating points.
+Simulates 1000 papers, drawing types from the sigma=1 fixed mixture
+and drawing independent |Z| values from the truncated-normal components.
+Compares simulated null-only FDR at each threshold m with the analytical
+null-only FDR from the counterfactual operating points.
 
 Reads:
-  - estimation/results/dependence.json
-  - estimation/results/counterfactual_params.json
+  - estimation/results/counterfactual_params.json (flat structure)
 
 Output:
   - estimation/results/montecarlo_validation.json
@@ -34,7 +33,6 @@ from scipy import stats
 # Paths
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent.parent.parent
-DATA_DIR = BASE_DIR / "estimation" / "data"
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
 FIG_DIR = BASE_DIR / "estimation" / "figures"
 OL_FIG_DIR = Path(__file__).parent.parent.parent.parent / "overleaf" / "tex" / "v8_figures"
@@ -84,62 +82,50 @@ def main() -> None:
     print("=" * 60)
 
     # ------------------------------------------------------------------
-    # Load parameters
+    # Load parameters (flat structure)
     # ------------------------------------------------------------------
     print("\nLoading parameters...")
 
-    dependence_raw = load_json(RESULTS_DIR / "dependence.json")
     cf_params = load_json(RESULTS_DIR / "counterfactual_params.json")
-
-    if dependence_raw is None or cf_params is None:
-        print("ERROR: Required input files are missing. Exiting.")
+    if cf_params is None:
+        print("ERROR: counterfactual_params.json not found. Exiting.")
         return
 
-    # Mixture: use nullfdr_variant (sigma_fixed_1) to match the main counterfactual
-    nfv = cf_params.get("nullfdr_variant", {})
-    nfv_mix = nfv.get("mixture_params", {})
-    if not nfv_mix:
-        print("ERROR: nullfdr_variant.mixture_params not found in counterfactual_params.json")
+    # Mixture: read from top-level (flat structure)
+    mix = cf_params.get("mixture_params", {})
+    if not mix:
+        print("ERROR: mixture_params not found in counterfactual_params.json")
         return
 
-    pi = nfv_mix["pi"]       # dict with keys N, H, L
-    mu = nfv_mix["mu"]
-    sigma = nfv_mix["sigma"]
-    # sigma_fixed_1 mixture uses truncnorm with lo=0
-    trunc_lo = 0.0
+    pi = mix["pi"]       # dict with keys N, H, L
+    mu = mix["mu"]
+    sigma = mix["sigma"]
+    trunc_lo = float(mix.get("truncation_lo", 0.0))
 
-    mixture_source = nfv.get("mixture_source", "nullfdr_variant")
+    mixture_source = cf_params.get("mixture_source", "unknown")
     print(f"  Mixture ({mixture_source}):")
     for k in ["N", "H", "L"]:
         print(f"    {k}: pi={pi[k]:.4f}, mu={mu[k]:.4f}, sigma={sigma[k]:.4f}")
     print(f"    truncation_lo = {trunc_lo}")
 
-    # Dependence: preferred Delta (matching 06_counterfactual.py)
-    Delta = float(dependence_raw.get("preferred", {}).get("Delta",
-                  dependence_raw.get("distance_based", {}).get("Delta", 0.2)))
-    print(f"  Delta (preferred) = {Delta:.4f}")
-
-    # Cost / horizon
-    lam = float(cf_params.get("cost_parameters", {}).get("lambda_baseline", 1 / 14))
-    n_old = int(cf_params.get("horizon", {}).get("n_old_baseline", 33))
-    rho_plot = float(cf_params.get("horizon", {}).get("rho_plot", 0.10))
-
+    # Cost / horizon from flat structure
+    lam = float(cf_params.get("cost_parameters", {}).get("lambda_baseline", 1 / 170))
     print(f"  lambda_baseline = {lam:.6f}")
-    print(f"  n_old = {n_old}")
 
-    # Evidence window: use nullfdr_variant's fixed window B=[1.96, 10]
-    nfv_window = nfv.get("evidence_window", {})
-    z_lo = float(nfv_window.get("z_lo", cf_params.get("evidence_window", {}).get("z_lo", 1.96)))
-    z_hi_raw = nfv_window.get("z_hi", cf_params.get("evidence_window", {}).get("z_hi", None))
+    # Evidence window from flat structure
+    ew = cf_params.get("evidence_window", {})
+    z_lo = float(ew.get("z_lo", 1.96))
+    z_hi_raw = ew.get("z_hi", None)
     z_hi = float(z_hi_raw) if z_hi_raw is not None else np.inf
     print(f"  Evidence window B = [{z_lo:.4f}, {z_hi:.4f}]")
 
-    # Derived horizons
-    n_new = math.ceil(n_old / lam)
-    n_eff_old = math.ceil(Delta * n_old)
-    n_eff_new = math.ceil(Delta * n_new)
+    # Calibrated values from flat structure
+    cal = cf_params.get("calibration", {})
+    main_res = cf_params.get("main_result", {})
+    n_eff_old = int(main_res.get("n_eff_old", cal.get("calibrated_n_eff_old", 50)))
+    n_eff_new = int(main_res.get("n_eff_new", int(np.ceil(n_eff_old / lam))))
 
-    print(f"  n_new = {n_new}, n_eff_old = {n_eff_old}, n_eff_new = {n_eff_new}")
+    print(f"  n_eff_old = {n_eff_old}, n_eff_new = {n_eff_new}")
 
     # ------------------------------------------------------------------
     # Monte Carlo simulation
@@ -213,14 +199,14 @@ def main() -> None:
     # ------------------------------------------------------------------
     print("\nMerging simulated and analytical FDR (null-only)...")
 
-    # Use null-only FDR operating points from counterfactual_params.json
-    nullfdr_op = nfv.get("operating_points", [])
-    if nullfdr_op:
-        op_df = pd.DataFrame(nullfdr_op)
-        print(f"  Using null-only FDR operating points ({len(op_df)} rows)")
+    # Use operating points from flat structure
+    op_points = cf_params.get("operating_points", [])
+    if op_points:
+        op_df = pd.DataFrame(op_points)
+        print(f"  Using operating points ({len(op_df)} rows)")
     else:
-        # Fallback: load operating_points.csv (total FDR)
-        print("  WARNING: null-only operating points not found, falling back to operating_points.csv")
+        # Fallback: load operating_points.csv
+        print("  WARNING: operating_points not found in JSON, falling back to operating_points.csv")
         op_path = RESULTS_DIR / "operating_points.csv"
         if not op_path.exists():
             print(f"ERROR: {op_path} not found. Exiting.")
@@ -275,10 +261,7 @@ def main() -> None:
         "n_papers": N_PAPERS,
         "rng_seed": RNG_SEED,
         "mixture_source": mixture_source,
-        "Delta": Delta,
         "lambda": lam,
-        "n_old": n_old,
-        "n_new": n_new,
         "n_eff_old": n_eff_old,
         "n_eff_new": n_eff_new,
         "evidence_window": {"z_lo": z_lo, "z_hi": z_hi if np.isfinite(z_hi) else None},

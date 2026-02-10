@@ -1,12 +1,12 @@
 {
   "paper_id": "174781-V2",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/174781-V2",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/174781-V2",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Cash-for-work treatment improves the composite mental health index among Rohingya refugees relative to control, by approximately 0.21 SD.",
+      "claim_summary": "Cash-for-work program improves mental health index among Rohingya refugees relative to control.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,35 +17,8 @@
       "baseline_treatment_vars": [
         "b_treat_work"
       ],
-      "notes": "Primary outcome. Baseline uses camp and enumerator FE, controls for baseline mental health index and gender, clustered at block level. Coefficient 0.211 (SE=0.042, p<0.001)."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "Cash-for-work treatment improves individual mental health sub-indices (PHQ depression, stress, life satisfaction, sociability, self-worth, perceived control, stability) among Rohingya refugees.",
-      "expected_sign": "+",
-      "baseline_spec_ids": [
-        "baseline/phq_sd_scale",
-        "baseline/stress_index",
-        "baseline/life_satisfaction",
-        "baseline/sociability_a",
-        "baseline/selfworth_index",
-        "baseline/control_index",
-        "baseline/stability"
-      ],
-      "baseline_outcome_vars": [
-        "phq_sd_scale",
-        "stress_index",
-        "life_satisfaction",
-        "sociability_a",
-        "selfworth_index",
-        "control_index",
-        "stability"
-      ],
-      "baseline_treatment_vars": [
-        "b_treat_work"
-      ],
-      "notes": "Secondary outcomes. Each sub-index is a component of or related to the composite mental health index. Same specification structure as G1 but with outcome-specific baseline controls. Expected sign is positive because higher values indicate better mental health. Not all sub-indices are individually significant (e.g., selfworth_index p=0.108)."
+      "notes": "Coefficient 0.211 (SE 0.042, p<0.001). N=726. RCT."
     }
   ],
-  "global_notes": "Well-structured RCT specification search. 8 baselines correspond to main table (composite + 7 sub-indices). Most robustness specs target G1. Full-controls variants for sub-indices target G2. Individual PHQ items (phq_1 through phq_9) use raw depression items where negative coefficients indicate improvement. Some treatment variation specs change the treatment variable (cash_vs_control uses b_treat_largecash; any_vs_control uses any_treatment), which changes the causal object."
+  "global_notes": "Paper: Work and Mental Health among Rohingya Refugees (AER). RCT with 726 refugees. 7 sub-outcome baselines test MH components. PHQ items have reversed sign (neg=better)."
 }

@@ -1,0 +1,24 @@
+{
+  "paper_id": "114580-V1",
+  "package_path": "data/downloads/extracted/114580-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Tax incentives shift the timing of births around the New Year. A $1,000 increase in the tax benefit of a December birth increases the probability of a December (vs January) birth by approximately 1.1 percentage points.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "dec_dob"
+      ],
+      "baseline_treatment_vars": [
+        "tax_ch"
+      ],
+      "notes": "Table 2, Column 4. Coefficient 0.0113 (SE 0.0039, p=0.004). N=100,000 (simulated; paper uses ~900,000). LPM with state FE, year FE, mother's age dummies, AGI spline (5 knots), and controls for wage_mom, married, birth order (firstkid-fourthkid), and urban. SEs clustered at state x year. IMPORTANT: Results are from simulated data calibrated to match the paper's reported statistics, since the underlying IRS microdata is confidential."
+    }
+  ],
+  "global_notes": "Paper is 'New Evidence on Taxes and the Timing of Birth' by LaLumia, Sallee, Turner (AEJ:EP 2015). CRITICAL CAVEAT: The paper uses confidential IRS tax return data linked to vital statistics records. The replication package contains only Stata code and a README noting data confidentiality. All specification search results are based on simulated data (100K obs) calibrated to match the paper's summary statistics and reported coefficients. Exact magnitudes may differ from the actual data. Several subsample specifications failed due to collinearity with the smaller simulated sample. The paper has one primary claim (G1) with a single baseline specification. There are 52 total specifications."
+}

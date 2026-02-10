@@ -3,12 +3,12 @@
 24_summary_statistics.py
 ========================
 
-Produce a descriptive-statistics table for Sample A (claim level) and
-Sample B (spec level, all and verified core).
+Produce a descriptive-statistics table for Sample A (all specs for the
+40 I4R papers) and Sample B (spec level, all and verified core).
 
 Reads:
-  - estimation/data/claim_level.csv          (Sample A, 40 claim-level rows)
-  - estimation/data/spec_level.csv           (Sample B, all specifications)
+  - estimation/data/claim_level.csv          (Sample A, 40 claim-level rows — for paper IDs)
+  - estimation/data/spec_level.csv           (all specifications, including Sample A papers)
   - estimation/data/spec_level_verified_core.csv  (Sample B, verified-core subset)
   - estimation/data/i4r_comparison.csv       (40-paper I4R comparison)
 
@@ -151,7 +151,6 @@ def build_latex_table(
     rows.append(r"\addlinespace")
     rows.append(r"\multicolumn{4}{l}{\emph{Specifications per paper}} \\")
     rows.append(r"\midrule")
-    # For Sample A each paper has 1 claim-level row, so specs_per_paper == 1
     rows.append(_row(
         "Mean",
         _fmt(stats_a["specs_per_paper_mean"], 1),
@@ -171,9 +170,9 @@ def build_latex_table(
         f"[{_fmt(stats_b_vc['specs_per_paper_q1'], 1)}, {_fmt(stats_b_vc['specs_per_paper_q3'], 1)}]",
     ))
 
-    # --- Panel: |Z| distribution ---
+    # --- Panel: |t| distribution ---
     rows.append(r"\addlinespace")
-    rows.append(r"\multicolumn{4}{l}{\emph{$|Z|$ distribution}} \\")
+    rows.append(r"\multicolumn{4}{l}{\emph{$|t|$ distribution}} \\")
     rows.append(r"\midrule")
     rows.append(_row(
         "Mean",
@@ -233,7 +232,7 @@ def build_latex_table(
     tab = rf"""\begin{{tabular}}{{lccc}}
 \toprule
  & Sample A & Sample B & Sample B \\
- & (claim level) & (all specs) & (verified core) \\
+ & (all specs) & (all specs) & (verified core) \\
 \midrule
 {body}
 \bottomrule
@@ -291,12 +290,26 @@ def main() -> None:
         print(f"  Loaded i4r_comparison.csv: {len(df_i4r)} rows")
 
     # ------------------------------------------------------------------
+    # Build Sample A: all specs for the 40 I4R papers
+    # ------------------------------------------------------------------
+    if len(df_claim) > 0 and len(df_spec) > 0:
+        sample_a_ids = set(df_claim["paper_id"].unique())
+        df_spec_a = df_spec[df_spec["paper_id"].isin(sample_a_ids)].copy()
+        # Fill missing journal data from claim_level.csv
+        journal_map = df_claim.set_index("paper_id")["journal"].to_dict()
+        mask = df_spec_a["journal"].isna()
+        df_spec_a.loc[mask, "journal"] = df_spec_a.loc[mask, "paper_id"].map(journal_map)
+        print(f"  Sample A all specs: {len(df_spec_a)} rows, {df_spec_a['paper_id'].nunique()} papers")
+    else:
+        df_spec_a = pd.DataFrame()
+
+    # ------------------------------------------------------------------
     # Compute statistics
     # ------------------------------------------------------------------
     print("\nComputing summary statistics...")
 
-    # Sample A uses t_AI_abs as the |Z| measure
-    stats_a = compute_stats(df_claim, z_col="t_AI_abs", label="Sample A (claim level)") if len(df_claim) > 0 else {}
+    # Sample A: all specs for the 40 I4R papers, using Z_abs as |t|
+    stats_a = compute_stats(df_spec_a, z_col="Z_abs", label="Sample A (all specs)") if len(df_spec_a) > 0 else {}
 
     # Sample B uses Z_abs
     stats_b_all = compute_stats(df_spec, z_col="Z_abs", label="Sample B (all specs)") if len(df_spec) > 0 else {}
@@ -306,7 +319,7 @@ def main() -> None:
     # Write JSON
     # ------------------------------------------------------------------
     out = {
-        "sample_a_claim_level": stats_a,
+        "sample_a_all_specs": stats_a,
         "sample_b_all_specs": stats_b_all,
         "sample_b_verified_core": stats_b_vc,
     }

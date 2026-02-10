@@ -1,67 +1,67 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-116136-V2,baseline,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline,1,1,core_controls,"Baseline spec: Individual FE, Age+Year dummies, state cluster",1.0
-116136-V2,baseline/children,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/children,1,1,core_controls,Baseline with added children dummies,1.0
-116136-V2,baseline/state_controls,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/state_controls,1,1,core_controls,Baseline with added state controls,1.0
-116136-V2,baseline/full,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/full,1,1,core_controls,Preferred baseline: full controls including marriage duration,1.0
-116136-V2,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,assets,uni_comprop,G1,baseline/full,0,1,core_fe,Drops individual FE (pooled OLS); same outcome/treatment,0.95
-116136-V2,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,assets,uni_comprop,G1,baseline/full,0,1,core_fe,Adds year FE to individual FE; same outcome/treatment,0.95
-116136-V2,panel/fe/id_state,methods/panel_fixed_effects.md#fixed-effects-structure,assets,uni_comprop,G1,baseline/full,0,1,core_fe,Adds state FE to individual FE; same outcome/treatment,0.95
-116136-V2,panel/controls/none,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline,0,1,core_controls,No controls beyond treatment; tests sensitivity to controls,0.9
-116136-V2,panel/controls/age_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline,0,1,core_controls,Age dummies only; progressive control build-up,0.9
-116136-V2,panel/controls/year_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline,0,1,core_controls,Year dummies only; progressive control build-up,0.9
-116136-V2,panel/controls/children_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline,0,1,core_controls,Children dummies only; progressive control build-up,0.9
-116136-V2,panel/controls/marriage_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Marriage duration only; progressive control build-up,0.9
-116136-V2,robust/loo/drop_age,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Full controls minus age dummies; leave-one-out robustness,0.95
-116136-V2,robust/loo/drop_year,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Full controls minus year dummies; leave-one-out robustness,0.95
-116136-V2,robust/loo/drop_children,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Full controls minus children dummies; leave-one-out robustness,0.95
-116136-V2,robust/loo/drop_marriage,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Full controls minus marriage duration; leave-one-out robustness,0.95
-116136-V2,robust/cluster/robust_hc,robustness/clustering_variations.md,assets,uni_comprop,G1,baseline/full,0,1,core_inference,Robust HC SE instead of state cluster; same point estimate,0.95
-116136-V2,robust/cluster/individual,robustness/clustering_variations.md,assets,uni_comprop,G1,baseline/full,0,1,core_inference,Cluster by individual instead of state; same point estimate,0.95
-116136-V2,robust/cluster/year,robustness/clustering_variations.md,assets,uni_comprop,G1,baseline/full,0,1,core_inference,Cluster by year instead of state; same point estimate,0.95
-116136-V2,robust/sample/early_period,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Restrict to years before 1982.5; same treatment/outcome,0.9
-116136-V2,robust/sample/late_period,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,0,invalid,Null coefficient; treatment dropped due to collinearity in late sample,0.95
-116136-V2,robust/sample/drop_first_year,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Exclude year 1967; same treatment/outcome/controls,0.95
-116136-V2,robust/sample/drop_last_year,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Exclude year 1999; same treatment/outcome/controls,0.95
-116136-V2,robust/sample/comprop_only,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Community property states only; same treatment/outcome,0.85
-116136-V2,robust/sample/eqdistr_only,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,0,invalid,Null coefficient; uni_comprop dropped in eq distrib states,0.95
-116136-V2,robust/sample/title_only,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,0,invalid,Null coefficient; uni_comprop dropped in title-only states,0.95
-116136-V2,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Winsorize assets at 1%; same treatment/controls,0.95
-116136-V2,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Winsorize assets at 5%; same treatment/controls,0.95
-116136-V2,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Winsorize assets at 10%; same treatment/controls,0.95
-116136-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Trim top/bottom 1% of assets; same treatment/controls,0.95
-116136-V2,robust/sample/positive_assets,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Restrict to positive assets; same treatment/controls,0.9
-116136-V2,robust/funcform/log_outcome,robustness/functional_form.md,log_assets,uni_comprop,G1,baseline/full,0,1,core_funcform,Log transform of assets; preserves claim interpretation,0.85
-116136-V2,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_assets,uni_comprop,G1,baseline/full,0,1,core_funcform,IHS transform of assets; preserves claim interpretation,0.85
-116136-V2,robust/funcform/age_polynomial,robustness/functional_form.md,assets,uni_comprop,G1,baseline/full,0,1,core_funcform,Age polynomial instead of dummies; same outcome/treatment,0.95
-116136-V2,robust/treatment/uni_any,robustness/measurement.md,assets,uni_any,G1,baseline/full,0,0,noncore_alt_treatment,Different treatment (any unilateral); changes causal object,0.85
-116136-V2,robust/treatment/uni_comprop_only,robustness/measurement.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Same treatment but no other property regime interactions,0.9
-116136-V2,robust/treatment/uni_title_only,robustness/measurement.md,assets,uni_title,G1,baseline/full,0,0,noncore_alt_treatment,Different treatment (uni_title); different causal object,0.9
-116136-V2,robust/treatment/uni_eqdistr_only,robustness/measurement.md,assets,uni_eqdistr,G1,baseline/full,0,0,noncore_alt_treatment,Different treatment (uni_eqdistr); different causal object,0.9
-116136-V2,robust/treatment/no_property_controls,robustness/measurement.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Drops property regime level controls; same treatment/outcome,0.9
-116136-V2,robust/heterogeneity/age_young,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Subsample by age (young); heterogeneity not main claim,0.85
-116136-V2,robust/heterogeneity/age_middle,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Subsample by age (middle); heterogeneity not main claim,0.85
-116136-V2,robust/heterogeneity/age_older,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,invalid,Null coefficient; treatment dropped in older subsample,0.95
-116136-V2,robust/heterogeneity/early_marriage,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Subsample by marriage dur (early); heterogeneity not main claim,0.85
-116136-V2,robust/heterogeneity/mid_marriage,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Subsample by marriage dur (mid); heterogeneity not main claim,0.85
-116136-V2,robust/heterogeneity/late_marriage,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Subsample by marriage dur (late); heterogeneity not main claim,0.85
-116136-V2,robust/heterogeneity/age_interaction,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Adds age interaction; main effect changes meaning,0.8
-116136-V2,robust/placebo/fake_timing_minus5,robustness/placebo_tests.md,assets,uni_comprop_fake,G1,baseline/full,0,0,noncore_placebo,Fake treatment 5 years earlier; placebo test not core claim,0.95
-116136-V2,robust/placebo/fake_timing_plus5,robustness/placebo_tests.md,assets,uni_comprop_fake,G1,baseline/full,0,0,noncore_placebo,Fake treatment 5 years later; placebo test not core claim,0.95
-116136-V2,did/dynamic/event_study_comprop,methods/difference_in_differences.md#dynamic-effects,assets,tduni1,G1,baseline/full,0,0,noncore_diagnostic,Event study with dynamic leads; diagnostic not same estimand,0.85
-116136-V2,robust/sample/drop_state_4,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Drop state 4; leave-one-out state robustness,0.95
-116136-V2,robust/sample/drop_state_37,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Drop state 37; leave-one-out state robustness,0.95
-116136-V2,robust/sample/drop_state_32,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Drop state 32; leave-one-out state robustness,0.95
-116136-V2,robust/sample/drop_state_34,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Drop state 34; leave-one-out state robustness,0.95
-116136-V2,robust/sample/drop_state_12,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Drop state 12; leave-one-out state robustness,0.95
-116136-V2,robust/sample/drop_year_1971,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Exclude year 1971; leave-one-out year robustness,0.95
-116136-V2,robust/sample/drop_year_1967,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Exclude year 1967; leave-one-out year robustness,0.95
-116136-V2,robust/sample/drop_year_1982,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Exclude year 1982; leave-one-out year robustness,0.95
-116136-V2,panel/sample/balanced,methods/panel_fixed_effects.md#sample-restrictions,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Balanced panel only; same treatment/outcome/controls,0.9
-116136-V2,panel/sample/continuous,methods/panel_fixed_effects.md#sample-restrictions,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Units with 5+ observations; same treatment/outcome/controls,0.9
-116136-V2,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,assets,uni_comprop,G1,baseline/full,0,1,core_method,First differences instead of FE; alternative estimator,0.85
-116136-V2,robust/outcome/positive_indicator,robustness/measurement.md,has_positive_assets,uni_comprop,G1,baseline/full,0,0,noncore_alt_outcome,Binary outcome (has positive assets); different estimand,0.85
-116136-V2,robust/outcome/quintile,robustness/measurement.md,assets_quintile,uni_comprop,G1,baseline/full,0,0,noncore_alt_outcome,Quintile-rank outcome; different estimand from level effect,0.85
-116136-V2,robust/heterogeneity/marriage_interaction,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Adds marriage duration interaction; main effect changes meaning,0.8
-116136-V2,robust/sample/1970s,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,1970s subsample only; same treatment/outcome/controls,0.9
-116136-V2,robust/sample/1980s,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,0,invalid,Null coefficient; treatment dropped in 1980s subsample,0.95
-116136-V2,robust/sample/1990s,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,0,invalid,Null coefficient; treatment dropped in 1990s subsample,0.95
+116136-V2,baseline,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/full,1,1,core_controls,Baseline variant with partial controls,0.95
+116136-V2,baseline/children,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/full,1,1,core_controls,Baseline variant with partial controls,0.95
+116136-V2,baseline/state_controls,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/full,1,1,core_controls,Baseline variant with partial controls,0.95
+116136-V2,baseline/full,methods/panel_fixed_effects.md#baseline,assets,uni_comprop,G1,baseline/full,1,1,core_controls,"Primary baseline: full controls (age+year+children+marriage duration), individual FE, state clustering",1.0
+116136-V2,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,assets,uni_comprop,G1,baseline/full,0,1,core_fe,Fixed effects variation: none,0.95
+116136-V2,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects-structure,assets,uni_comprop,G1,baseline/full,0,1,core_fe,Fixed effects variation: twoway,0.95
+116136-V2,panel/fe/id_state,methods/panel_fixed_effects.md#fixed-effects-structure,assets,uni_comprop,G1,baseline/full,0,1,core_fe,Fixed effects variation: id_state,0.95
+116136-V2,panel/controls/none,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Single control only: tests control sensitivity,0.95
+116136-V2,panel/controls/age_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Single control only: tests control sensitivity,0.95
+116136-V2,panel/controls/year_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Single control only: tests control sensitivity,0.95
+116136-V2,panel/controls/children_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Single control only: tests control sensitivity,0.95
+116136-V2,panel/controls/marriage_only,methods/panel_fixed_effects.md#control-sets,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Single control only: tests control sensitivity,0.95
+116136-V2,robust/loo/drop_age,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Leave-one-out: drop age,0.95
+116136-V2,robust/loo/drop_year,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Leave-one-out: drop year,0.95
+116136-V2,robust/loo/drop_children,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Leave-one-out: drop children,0.95
+116136-V2,robust/loo/drop_marriage,robustness/leave_one_out.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Leave-one-out: drop marriage,0.95
+116136-V2,robust/cluster/robust_hc,robustness/clustering_variations.md,assets,uni_comprop,G1,baseline/full,0,1,core_inference,Inference variation: robust_hc SE,0.95
+116136-V2,robust/cluster/individual,robustness/clustering_variations.md,assets,uni_comprop,G1,baseline/full,0,1,core_inference,Inference variation: individual SE,0.95
+116136-V2,robust/cluster/year,robustness/clustering_variations.md,assets,uni_comprop,G1,baseline/full,0,1,core_inference,Inference variation: year SE,0.95
+116136-V2,robust/sample/early_period,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Years < 1982.5,0.95
+116136-V2,robust/sample/late_period,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Years >= 1982.5,0.95
+116136-V2,robust/sample/drop_first_year,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude year 1967,0.95
+116136-V2,robust/sample/drop_last_year,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude year 1999,0.95
+116136-V2,robust/sample/comprop_only,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Community property states only,0.95
+116136-V2,robust/sample/eqdistr_only,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Equitable distribution states only,0.95
+116136-V2,robust/sample/title_only,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Title states only,0.95
+116136-V2,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Assets winsorized at 1%,0.95
+116136-V2,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Assets winsorized at 5%,0.95
+116136-V2,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Assets winsorized at 10%,0.95
+116136-V2,robust/sample/trim_1pct,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Trim top and bottom 1%,0.95
+116136-V2,robust/sample/positive_assets,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Positive assets only,0.95
+116136-V2,robust/funcform/log_outcome,robustness/functional_form.md,log_assets,uni_comprop,G1,baseline/full,0,0,noncore_alt_outcome,Transformed outcome (log_outcome): changes interpretation,0.9
+116136-V2,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_assets,uni_comprop,G1,baseline/full,0,0,noncore_alt_outcome,Transformed outcome (ihs_outcome): changes interpretation,0.9
+116136-V2,robust/funcform/age_polynomial,robustness/functional_form.md,assets,uni_comprop,G1,baseline/full,0,1,core_funcform,Functional form: age_polynomial,0.9
+116136-V2,robust/treatment/uni_any,robustness/measurement.md,assets,uni_any,G1,baseline/full,0,0,noncore_alt_treatment,Alternative treatment: uni_any,0.9
+116136-V2,robust/treatment/uni_comprop_only,robustness/measurement.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Only uni_comprop treatment (drops other property regime interactions),0.9
+116136-V2,robust/treatment/uni_title_only,robustness/measurement.md,assets,uni_title,G1,baseline/full,0,0,noncore_alt_treatment,Alternative treatment: uni_title,0.9
+116136-V2,robust/treatment/uni_eqdistr_only,robustness/measurement.md,assets,uni_eqdistr,G1,baseline/full,0,0,noncore_alt_treatment,Alternative treatment: uni_eqdistr,0.9
+116136-V2,robust/treatment/no_property_controls,robustness/measurement.md,assets,uni_comprop,G1,baseline/full,0,1,core_controls,Drops property regime controls,0.9
+116136-V2,robust/heterogeneity/age_young,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: age_young,0.9
+116136-V2,robust/heterogeneity/age_middle,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: age_middle,0.9
+116136-V2,robust/heterogeneity/age_older,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: age_older,0.9
+116136-V2,robust/heterogeneity/early_marriage,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: early_marriage,0.9
+116136-V2,robust/heterogeneity/mid_marriage,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: mid_marriage,0.9
+116136-V2,robust/heterogeneity/late_marriage,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: late_marriage,0.9
+116136-V2,robust/heterogeneity/age_interaction,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: age_interaction,0.9
+116136-V2,robust/placebo/fake_timing_minus5,robustness/placebo_tests.md,assets,uni_comprop_fake,G1,baseline/full,0,0,noncore_placebo,Placebo test: fake_timing_minus5,0.95
+116136-V2,robust/placebo/fake_timing_plus5,robustness/placebo_tests.md,assets,uni_comprop_fake,G1,baseline/full,0,0,noncore_placebo,Placebo test: fake_timing_plus5,0.95
+116136-V2,did/dynamic/event_study_comprop,methods/difference_in_differences.md#dynamic-effects,assets,tduni1,G1,baseline/full,0,0,noncore_diagnostic,Event study / dynamic effects specification,0.9
+116136-V2,robust/sample/drop_state_4,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude state 4,0.95
+116136-V2,robust/sample/drop_state_37,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude state 37,0.95
+116136-V2,robust/sample/drop_state_32,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude state 32,0.95
+116136-V2,robust/sample/drop_state_34,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude state 34,0.95
+116136-V2,robust/sample/drop_state_12,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude state 12,0.95
+116136-V2,robust/sample/drop_year_1971,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude year 1971,0.95
+116136-V2,robust/sample/drop_year_1967,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude year 1967,0.95
+116136-V2,robust/sample/drop_year_1982,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Exclude year 1982,0.95
+116136-V2,panel/sample/balanced,methods/panel_fixed_effects.md#sample-restrictions,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Balanced panel only,0.95
+116136-V2,panel/sample/continuous,methods/panel_fixed_effects.md#sample-restrictions,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: Units with 5+ observations,0.95
+116136-V2,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,assets,uni_comprop,G1,baseline/full,0,1,core_method,First differences estimation method,0.9
+116136-V2,robust/outcome/positive_indicator,robustness/measurement.md,has_positive_assets,uni_comprop,G1,baseline/full,0,0,noncore_alt_outcome,Alternative outcome: has_positive_assets,0.9
+116136-V2,robust/outcome/quintile,robustness/measurement.md,assets_quintile,uni_comprop,G1,baseline/full,0,0,noncore_alt_outcome,Alternative outcome: assets_quintile,0.9
+116136-V2,robust/heterogeneity/marriage_interaction,robustness/heterogeneity.md,assets,uni_comprop,G1,baseline/full,0,0,noncore_heterogeneity,Heterogeneity: marriage_interaction,0.9
+116136-V2,robust/sample/1970s,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: 1970s only,0.95
+116136-V2,robust/sample/1980s,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: 1980s only,0.95
+116136-V2,robust/sample/1990s,robustness/sample_restrictions.md,assets,uni_comprop,G1,baseline/full,0,1,core_sample,Sample restriction: 1990s only,0.95

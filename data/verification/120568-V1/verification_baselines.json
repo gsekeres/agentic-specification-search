@@ -1,12 +1,12 @@
 {
   "paper_id": "120568-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120568-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/120568-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "The one-quarter hazard rate (fraction of new hires separating within one quarter) declined significantly over the 1999-2018 period in the US.",
+      "claim_summary": "The one-quarter hazard rate (fraction of new hires separating within one quarter) has declined significantly over time, accounting for much of the overall decline in worker turnover.",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "time_trend"
       ],
-      "notes": "Descriptive trend claim, not causal. Treatment is a linear time trend measuring avg quarterly decline. Baseline uses national quarterly aggregates with HAC(4 lags) SE, N=76."
+      "notes": "Baseline coefficient -0.0745 (p<0.0001). This is a DESCRIPTIVE finding: the one-quarter hazard rate declined by ~7.5pp per unit of time trend over 1999-2018. Not a causal study. 93% of specs negative, 88% significant at 5%. All alternative outcome measures show similar declining trends."
     }
   ],
-  "global_notes": "Pries and Rogerson (2021, AEJ: Macro). 74 specs total. Data issue: robust/sample/drop_year_2018 has identical coef and N to baseline (year-drop not implemented). Many heterogeneity specs (demographics, industry, state) are non-core. 11 alternative outcome specs measure different turnover concepts, non-core since baseline claim is specifically about oneqhazrate."
+  "global_notes": "Descriptive/accounting paper documenting declining worker turnover. NOT a causal study -- no treatment or policy intervention. The time_trend coefficient captures the secular decline in short-duration employment spells. The decline is pervasive across demographics, industries, and geographies. Post-2010 the trend appears to have flattened. 5 permutation placebo tests all show non-significant coefficients, confirming the real trend."
 }

@@ -1,0 +1,55 @@
+{
+  "paper_id": "112785-V1",
+  "package_path": "data/downloads/extracted/112785-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "The tradable sector had higher value-added percent growth than the nontradable sector during the post-crisis recovery (2009-2012), reflecting its disproportionate contribution to recovery. OLS regression of industry VA percent change on a tradable sector indicator yields a positive coefficient of 16.3pp, though not statistically significant (p=0.29) due to small cross-section (N=34).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        1,
+        4
+      ],
+      "baseline_outcome_vars": [
+        "va_pct_change"
+      ],
+      "baseline_treatment_vars": [
+        "tradable_indicator"
+      ],
+      "notes": "Spec 1 is OLS regression (coef=16.34, SE=15.38, p=0.288, N=34, R2=0.027). Spec 4 is a Welch t-test on the same data (coef=16.34, p=0.300). These test the paper's headline claim that tradable industries grew faster post-crisis. The original paper is purely descriptive (no regressions); the spec search agent constructed formal statistical tests. The positive direction is confirmed but the small cross-section of 34 industries provides insufficient power for significance."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "The tradable sector had higher absolute value-added change during the 2009-2012 recovery.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        2
+      ],
+      "baseline_outcome_vars": [
+        "va_abs_change"
+      ],
+      "baseline_treatment_vars": [
+        "tradable_indicator"
+      ],
+      "notes": "Spec 2 uses absolute VA change as the outcome (coef=-7.22, SE=11.76, p=0.539, N=34). The negative coefficient contradicts the expected sign because nontradable industries, while having lower percentage growth, include very large sectors (e.g., real estate, government) whose absolute growth dominates. This highlights that the paper's claim is better stated in percentage or share terms, not absolute levels."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "The tradable sector had higher log value-added change during the 2009-2012 recovery.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        3
+      ],
+      "baseline_outcome_vars": [
+        "va_log_change"
+      ],
+      "baseline_treatment_vars": [
+        "tradable_indicator"
+      ],
+      "notes": "Spec 3 uses log VA change as the outcome (coef=7.45, SE=7.55, p=0.323, N=34). Positive and directionally consistent with G1 but statistically insignificant. Log change is less sensitive to outliers than percent change."
+    }
+  ],
+  "global_notes": "Paper is 'Demand and Defective Growth Patterns' by Hlatshwayo & Spence (AER P&P, 2014). This is a short 6-page descriptive paper that classifies US industries as tradable or nontradable and computes growth accounting statistics (no formal econometric analysis). The spec search agent constructed formal statistical tests of the paper's claims. G1 is the primary baseline group; G2 and G3 are alternative outcome measures of the same hypothesis. All baselines are insignificant due to small cross-sections (N=34). The paper's main claim -- that the tradable sector accounted for >50% of gross VA gains post-crisis (confirmed: 51.5%) -- is a statement about aggregates (totals across sectors), not about cross-industry variation, so cross-sectional regressions inherently have low power for this claim. There are 111 total specifications. The spec search covers 16 distinct categories. Note that spec 15 (alternative_periods, Recovery 2009-2012) is an exact duplicate of spec 1 (baseline): identical coefficient, SE, p-value, N, and R2. Spec 87 (relative_growth, Recovery) is also numerically identical. Three productivity specs (95-97) lack p-values and are descriptive comparisons only."
+}

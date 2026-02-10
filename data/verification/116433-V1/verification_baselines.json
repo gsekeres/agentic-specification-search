@@ -1,129 +1,51 @@
 {
   "paper_id": "116433-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116433-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/116433-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Enforcement reduces loan default rates.",
+      "claim_summary": "Enforcement treatment (conditioning referrer reward on borrower repayment) reduces loan defaults and improves loan performance.",
       "expected_sign": "-",
       "baseline_spec_ids": [
-        "baseline_charged_off_enforcement"
-      ],
-      "baseline_outcome_vars": [
-        "charged_off"
-      ],
-      "baseline_treatment_vars": [
-        "enforcement"
-      ],
-      "notes": "Primary result."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "Enforcement increases repayment.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "baseline_repaid_enforcement"
-      ],
-      "baseline_outcome_vars": [
-        "repaid"
-      ],
-      "baseline_treatment_vars": [
-        "enforcement"
-      ],
-      "notes": "coef=-0.094, p=0.056."
-    },
-    {
-      "baseline_group_id": "G3",
-      "claim_summary": "Enforcement reduces interest owed.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "baseline_interest_enforcement"
-      ],
-      "baseline_outcome_vars": [
-        "interest"
-      ],
-      "baseline_treatment_vars": [
-        "enforcement"
-      ],
-      "notes": "coef=-0.188, p=0.002."
-    },
-    {
-      "baseline_group_id": "G4",
-      "claim_summary": "Enforcement reduces portion unpaid.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
+        "baseline_repaid_enforcement",
+        "baseline_charged_off_enforcement",
+        "baseline_interest_enforcement",
         "baseline_portion_enforcement"
       ],
       "baseline_outcome_vars": [
+        "repaid",
+        "charged_off",
+        "interest",
         "portion"
       ],
       "baseline_treatment_vars": [
         "enforcement"
       ],
-      "notes": "coef=-0.129, p=0.017."
+      "notes": "Enforcement effect is robust: 99% of specs show negative coefficients, 59% significant at 5%. Strongest effects on charged_off (default) outcome. Baseline charged_off coefficient: -0.102 (p=0.016)."
     },
     {
-      "baseline_group_id": "G5",
-      "claim_summary": "Selection reduces default rates.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "baseline_charged_off_selection"
-      ],
-      "baseline_outcome_vars": [
-        "charged_off"
-      ],
-      "baseline_treatment_vars": [
-        "selection"
-      ],
-      "notes": "Insignificant."
-    },
-    {
-      "baseline_group_id": "G6",
-      "claim_summary": "Selection increases repayment.",
+      "baseline_group_id": "G2",
+      "claim_summary": "Selection treatment (asking referrers to screen borrowers) improves loan performance through peer screening.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline_repaid_selection"
-      ],
-      "baseline_outcome_vars": [
-        "repaid"
-      ],
-      "baseline_treatment_vars": [
-        "selection"
-      ],
-      "notes": "Insignificant."
-    },
-    {
-      "baseline_group_id": "G7",
-      "claim_summary": "Selection reduces interest owed.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "baseline_interest_selection"
-      ],
-      "baseline_outcome_vars": [
-        "interest"
-      ],
-      "baseline_treatment_vars": [
-        "selection"
-      ],
-      "notes": "Insignificant."
-    },
-    {
-      "baseline_group_id": "G8",
-      "claim_summary": "Selection reduces portion unpaid.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
+        "baseline_repaid_selection",
+        "baseline_charged_off_selection",
+        "baseline_interest_selection",
         "baseline_portion_selection"
       ],
       "baseline_outcome_vars": [
+        "repaid",
+        "charged_off",
+        "interest",
         "portion"
       ],
       "baseline_treatment_vars": [
         "selection"
       ],
-      "notes": "Insignificant."
+      "notes": "Selection effect is weak: 94% positive but 0% significant at 5%. Baseline repaid coefficient: 0.039 (p=0.41). Point estimates are consistently positive but never achieve significance."
     }
   ],
-  "global_notes": "2x2 factorial RCT. Many binary-outcome sample restrictions identical to baseline. low_income_repaid specs show identical coefs for enforcement and selection suggesting extraction bug. Heterogeneity/interaction specs change treatment variable."
+  "global_notes": "2x2 factorial RCT of peer referral mechanisms in consumer credit (South Africa). Small sample: only 243 loans with outcome data from 4,454 referrals. 236 total specs, with each outcome x treatment combination tested separately. Enforcement effect is the main robust finding; selection effect is consistently null. Specs come in pairs (enforcement/selection) for each outcome."
 }

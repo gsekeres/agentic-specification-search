@@ -1,69 +1,69 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-195142-V1,baseline,methods/difference_in_differences.md#baseline,D_ln_grw_total,D_ref_weighted,G1,baseline,1,1,core_method,Baseline: FD log GRW total with state-year FE.,1.0
-195142-V1,baseline_grw_vol,methods/difference_in_differences.md#baseline,D_ln_grw_vol,D_ref_weighted,G2,baseline_grw_vol,1,1,core_method,Baseline: FD log GRW investment volume with state-year FE.,1.0
-195142-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,No fixed effects; tests FE sensitivity on G1.,0.95
-195142-V1,did/fe/county_only,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,County FE only; tests FE structure sensitivity.,0.95
-195142-V1,did/fe/year_only,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,Year FE only; tests FE structure sensitivity.,0.95
-195142-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,County + Year two-way FE; standard TWFE structure.,0.95
-195142-V1,did/fe/state_year,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,invalid,Exact duplicate of baseline (identical coeff/SE/p-value).,1.0
-195142-V1,did/fe/amr_year,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,Labor market region + Year FE; alternative geographic FE.,0.95
-195142-V1,robust/outcome/grw_total,robustness/measurement.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,invalid,Exact duplicate of baseline (identical coeff/SE/p-value).,1.0
-195142-V1,robust/outcome/grw_vol,robustness/measurement.md,D_ln_grw_vol,D_ref_weighted,G2,baseline_grw_vol,0,0,invalid,Exact duplicate of baseline_grw_vol (identical coeff/SE/p).,1.0
-195142-V1,robust/outcome/unemp,robustness/measurement.md,D_ln_unemp,D_ref_weighted,,,0,0,noncore_alt_outcome,Different outcome (unemployment); not GRW subsidy claim.,0.9
-195142-V1,robust/outcome/gdp_pc,robustness/measurement.md,D_ln_gdp_pc,D_ref_weighted,,,0,0,noncore_alt_outcome,Different outcome (GDP per capita); not GRW subsidy claim.,0.9
-195142-V1,robust/outcome/busitaxm,robustness/measurement.md,D_ln_busitaxm,D_ref_weighted,,,0,0,noncore_alt_outcome,Different outcome (business tax multiplier); different claim.,0.9
-195142-V1,robust/outcome/proptaxm,robustness/measurement.md,D_ln_proptaxm,D_ref_weighted,,,0,0,noncore_alt_outcome,Different outcome (property tax multiplier); different claim.,0.9
-195142-V1,robust/outcome/population,robustness/measurement.md,D_ln_population,D_ref_weighted,,,0,0,noncore_alt_outcome,Different outcome (population); different claim entirely.,0.9
-195142-V1,robust/treatment/binary,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_binary,G1,baseline,0,1,core_method,Binary reform indicator; alternative treatment definition.,0.85
-195142-V1,robust/treatment/small,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_small,G1,baseline,0,0,invalid,Identical coeff/SE to baseline; coding error in treatment.,0.95
-195142-V1,robust/treatment/medium,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_medium,G1,baseline,0,0,invalid,Identical coeff/SE to baseline; coding error in treatment.,0.95
-195142-V1,robust/treatment/large,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_large,G1,baseline,0,0,invalid,Identical coeff/SE to baseline; coding error in treatment.,0.95
-195142-V1,robust/cluster/robust,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,HC robust SEs; same point estimate different inference.,1.0
-195142-V1,robust/cluster/county,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,County-level clustering; same point estimate different SE.,1.0
-195142-V1,robust/cluster/amr,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,invalid,Exact duplicate of baseline (AMR clustering is the baseline).,1.0
-195142-V1,robust/cluster/state,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,State-level clustering; same point estimate different SE.,1.0
-195142-V1,robust/sample/early_period,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Early period 1996-2006 subsample; time stability check.,0.95
-195142-V1,robust/sample/late_period,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Late period 2007-2017 subsample; time stability check.,0.95
-195142-V1,robust/sample/drop_year_1996,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop 1996; leave-one-year-out sensitivity.,0.95
-195142-V1,robust/sample/drop_year_1997,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop 1997; leave-one-year-out sensitivity.,0.95
-195142-V1,robust/sample/drop_year_2007,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop 2007; leave-one-year-out sensitivity.,0.95
-195142-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop 2010; leave-one-year-out sensitivity.,0.95
-195142-V1,robust/sample/drop_year_2011,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop 2011; leave-one-year-out sensitivity.,0.95
-195142-V1,robust/sample/drop_year_2014,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop 2014; leave-one-year-out sensitivity.,0.95
-195142-V1,robust/sample/drop_year_2017,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,invalid,Identical to baseline; 2017 apparently not in FD sample.,1.0
-195142-V1,robust/sample/drop_state_12,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop Brandenburg; geographic leave-one-out.,0.95
-195142-V1,robust/sample/drop_state_13,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop Mecklenburg-Vorpommern; geographic leave-one-out.,0.95
-195142-V1,robust/sample/drop_state_14,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop Saxony; geographic leave-one-out.,0.95
-195142-V1,robust/sample/drop_state_15,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop Saxony-Anhalt; geographic leave-one-out.,0.95
-195142-V1,robust/sample/drop_state_16,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Drop Thuringia; geographic leave-one-out.,0.95
-195142-V1,robust/sample/full,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Full East Germany sample (not just m30 bandwidth).,0.95
-195142-V1,robust/sample/m20,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,m20 bandwidth (narrower); RD-style bandwidth sensitivity.,0.95
-195142-V1,robust/sample/m40,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,m40 bandwidth (wider); RD-style bandwidth sensitivity.,0.95
-195142-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Winsorized at 1 pct; outlier robustness.,0.95
-195142-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Winsorized at 5 pct; outlier robustness.,0.95
-195142-V1,robust/sample/winsor_10pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Winsorized at 10 pct; outlier robustness.,0.95
-195142-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Trim top/bottom 1 pct outliers.,0.95
-195142-V1,robust/funcform/levels,robustness/functional_form.md,ln_grw_total,ref_weighted,G1,baseline,0,1,core_funcform,Levels with county+year FE instead of first-differenced.,0.85
-195142-V1,robust/funcform/cumulative,robustness/functional_form.md,ln_grw_total,ref_weighted_cum,G1,baseline,0,1,core_funcform,Cumulative reform exposure; different timing aggregation.,0.7
-195142-V1,robust/funcform/raw_levels,robustness/functional_form.md,grw_total,ref_weighted,G1,baseline,0,1,core_funcform,Raw levels (no log); functional form sensitivity.,0.8
-195142-V1,robust/funcform/ihs,robustness/functional_form.md,D_ihs_grw_total,D_ref_weighted,G1,baseline,0,1,core_funcform,IHS instead of log; handles zeros differently.,0.95
-195142-V1,robust/heterogeneity/high_unemp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,High initial unemployment subsample; heterogeneity only.,0.9
-195142-V1,robust/heterogeneity/low_unemp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Low initial unemployment subsample; heterogeneity only.,0.9
-195142-V1,robust/heterogeneity/high_pop,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,High initial population subsample; heterogeneity only.,0.9
-195142-V1,robust/heterogeneity/low_pop,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Low initial population subsample; heterogeneity only.,0.9
-195142-V1,robust/heterogeneity/high_gdp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,High initial GDP per capita subsample; heterogeneity only.,0.9
-195142-V1,robust/heterogeneity/low_gdp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Low initial GDP per capita subsample; heterogeneity only.,0.9
-195142-V1,robust/heterogeneity/state_12,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,State 12 (Brandenburg) only; state heterogeneity.,0.9
-195142-V1,robust/heterogeneity/state_13,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,State 13 (Meckl.-Vorp.) only; state heterogeneity.,0.9
-195142-V1,robust/heterogeneity/state_14,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,State 14 (Saxony) only; state heterogeneity.,0.9
-195142-V1,robust/heterogeneity/state_15,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,State 15 (Saxony-Anhalt) only; state heterogeneity.,0.9
-195142-V1,robust/heterogeneity/state_16,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,State 16 (Thuringia) only; state heterogeneity.,0.9
-195142-V1,robust/placebo/pre_2000,robustness/placebo_tests.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_placebo,Pre-2000 only; pre-treatment placebo test.,1.0
-195142-V1,robust/placebo/infrastructure_grants,robustness/placebo_tests.md,D_ln_grw_infra,D_ref_weighted,G1,baseline,0,0,noncore_placebo,Placebo outcome: infrastructure grants unaffected by reform.,1.0
-195142-V1,robust/placebo/permuted_treatment,robustness/placebo_tests.md,D_ln_grw_total,D_ref_weighted_perm,G1,baseline,0,0,noncore_placebo,Permuted treatment timing; falsification test.,1.0
-195142-V1,robust/control/none,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,invalid,Exact duplicate of baseline (no controls is baseline spec).,1.0
-195142-V1,robust/control/add_lag_unempr,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Add lagged unemployment rate as control variable.,1.0
-195142-V1,robust/control/add_lag_gdp_pc,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Add lagged GDP per capita as control variable.,1.0
-195142-V1,robust/control/full,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Full controls: lag unemployment + lag GDP per capita.,1.0
-195142-V1,robust/estimation/ols_no_fe,robustness/model_specification.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_method,OLS without any fixed effects; tests FE necessity.,0.85
-195142-V1,robust/estimation/twfe,robustness/model_specification.md,ln_grw_total,ref_weighted,G1,baseline,0,1,core_method,TWFE in levels rather than first-differenced model.,0.85
+195142-V1,baseline,methods/difference_in_differences.md#baseline,D_ln_grw_total,D_ref_weighted,G1,baseline,1,1,core_controls,Primary baseline: DiD-FD of D_ln_grw_total on D_ref_weighted with state-year FE,1.0
+195142-V1,baseline_grw_vol,methods/difference_in_differences.md#baseline,D_ln_grw_vol,D_ref_weighted,G2,baseline_grw_vol,1,1,core_controls,Secondary baseline: GRW volume outcome,1.0
+195142-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,FE variation: none,0.95
+195142-V1,did/fe/county_only,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,FE variation: county_only,0.95
+195142-V1,did/fe/year_only,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,FE variation: year_only,0.95
+195142-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,FE variation: twoway,0.95
+195142-V1,did/fe/state_year,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,FE variation: state_year,0.95
+195142-V1,did/fe/amr_year,methods/difference_in_differences.md#fixed-effects,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_fe,FE variation: amr_year,0.95
+195142-V1,robust/outcome/grw_total,robustness/measurement.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_diagnostic,Duplicate of baseline (identical coef),0.95
+195142-V1,robust/outcome/grw_vol,robustness/measurement.md,D_ln_grw_vol,D_ref_weighted,G2,baseline_grw_vol,0,0,noncore_diagnostic,Duplicate of baseline_grw_vol,0.95
+195142-V1,robust/outcome/unemp,robustness/measurement.md,D_ln_unemp,D_ref_weighted,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: D_ln_unemp,0.95
+195142-V1,robust/outcome/gdp_pc,robustness/measurement.md,D_ln_gdp_pc,D_ref_weighted,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: D_ln_gdp_pc,0.95
+195142-V1,robust/outcome/busitaxm,robustness/measurement.md,D_ln_busitaxm,D_ref_weighted,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: D_ln_busitaxm,0.95
+195142-V1,robust/outcome/proptaxm,robustness/measurement.md,D_ln_proptaxm,D_ref_weighted,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: D_ln_proptaxm,0.95
+195142-V1,robust/outcome/population,robustness/measurement.md,D_ln_population,D_ref_weighted,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: D_ln_population,0.95
+195142-V1,robust/treatment/binary,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_binary,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: D_ref_binary,0.95
+195142-V1,robust/treatment/small,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_small,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: D_ref_small,0.95
+195142-V1,robust/treatment/medium,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_medium,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: D_ref_medium,0.95
+195142-V1,robust/treatment/large,methods/difference_in_differences.md#treatment-definition,D_ln_grw_total,D_ref_large,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: D_ref_large,0.95
+195142-V1,robust/cluster/robust,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,Clustering: robust,0.95
+195142-V1,robust/cluster/county,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,Clustering: county,0.95
+195142-V1,robust/cluster/amr,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,Clustering: amr,0.95
+195142-V1,robust/cluster/state,robustness/clustering_variations.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_inference,Clustering: state,0.95
+195142-V1,robust/sample/early_period,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: early_period,0.95
+195142-V1,robust/sample/late_period,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: late_period,0.95
+195142-V1,robust/sample/drop_year_1996,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_1996,0.95
+195142-V1,robust/sample/drop_year_1997,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_1997,0.95
+195142-V1,robust/sample/drop_year_2007,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_2007,0.95
+195142-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_2010,0.95
+195142-V1,robust/sample/drop_year_2011,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_2011,0.95
+195142-V1,robust/sample/drop_year_2014,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_2014,0.95
+195142-V1,robust/sample/drop_year_2017,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_year_2017,0.95
+195142-V1,robust/sample/drop_state_12,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_state_12,0.95
+195142-V1,robust/sample/drop_state_13,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_state_13,0.95
+195142-V1,robust/sample/drop_state_14,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_state_14,0.95
+195142-V1,robust/sample/drop_state_15,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_state_15,0.95
+195142-V1,robust/sample/drop_state_16,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: drop_state_16,0.95
+195142-V1,robust/sample/full,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: full,0.95
+195142-V1,robust/sample/m20,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: m20,0.95
+195142-V1,robust/sample/m40,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: m40,0.95
+195142-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: winsor_1pct,0.95
+195142-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: winsor_5pct,0.95
+195142-V1,robust/sample/winsor_10pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: winsor_10pct,0.95
+195142-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_sample,Sample restriction: trim_1pct,0.95
+195142-V1,robust/funcform/levels,robustness/functional_form.md,ln_grw_total,ref_weighted,G1,baseline,0,1,core_funcform,Functional form: levels,0.95
+195142-V1,robust/funcform/cumulative,robustness/functional_form.md,ln_grw_total,ref_weighted_cum,G1,baseline,0,0,noncore_alt_treatment,Cumulative reform measure (different quantity),0.9
+195142-V1,robust/funcform/raw_levels,robustness/functional_form.md,grw_total,ref_weighted,G1,baseline,0,1,core_funcform,Functional form: raw_levels,0.95
+195142-V1,robust/funcform/ihs,robustness/functional_form.md,D_ihs_grw_total,D_ref_weighted,G1,baseline,0,1,core_funcform,Functional form: ihs,0.95
+195142-V1,robust/heterogeneity/high_unemp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: high_unemp,0.95
+195142-V1,robust/heterogeneity/low_unemp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: low_unemp,0.95
+195142-V1,robust/heterogeneity/high_pop,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: high_pop,0.95
+195142-V1,robust/heterogeneity/low_pop,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: low_pop,0.95
+195142-V1,robust/heterogeneity/high_gdp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: high_gdp,0.95
+195142-V1,robust/heterogeneity/low_gdp,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: low_gdp,0.95
+195142-V1,robust/heterogeneity/state_12,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: state_12,0.95
+195142-V1,robust/heterogeneity/state_13,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: state_13,0.95
+195142-V1,robust/heterogeneity/state_14,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: state_14,0.95
+195142-V1,robust/heterogeneity/state_15,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: state_15,0.95
+195142-V1,robust/heterogeneity/state_16,robustness/heterogeneity.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: state_16,0.95
+195142-V1,robust/placebo/pre_2000,robustness/placebo_tests.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,0,noncore_placebo,Placebo: pre_2000,0.95
+195142-V1,robust/placebo/infrastructure_grants,robustness/placebo_tests.md,D_ln_grw_infra,D_ref_weighted,G1,baseline,0,0,noncore_placebo,Placebo: infrastructure_grants,0.95
+195142-V1,robust/placebo/permuted_treatment,robustness/placebo_tests.md,D_ln_grw_total,D_ref_weighted_perm,G1,baseline,0,0,noncore_placebo,Placebo: permuted_treatment,0.95
+195142-V1,robust/control/none,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Control variation: none,0.95
+195142-V1,robust/control/add_lag_unempr,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Control variation: add_lag_unempr,0.95
+195142-V1,robust/control/add_lag_gdp_pc,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Control variation: add_lag_gdp_pc,0.95
+195142-V1,robust/control/full,robustness/control_progression.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_controls,Control variation: full,0.95
+195142-V1,robust/estimation/ols_no_fe,robustness/model_specification.md,D_ln_grw_total,D_ref_weighted,G1,baseline,0,1,core_method,Estimation method: ols_no_fe,0.95
+195142-V1,robust/estimation/twfe,robustness/model_specification.md,ln_grw_total,ref_weighted,G1,baseline,0,1,core_method,Estimation method: twfe,0.95

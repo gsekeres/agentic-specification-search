@@ -1,12 +1,12 @@
 {
   "paper_id": "151261-V2",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/151261-V2",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/151261-V2",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "YET program participation increases employment status (s_emp) among applicants, estimated via 2SLS with lottery as instrument.",
+      "claim_summary": "The YET program increases employment (LATE via lottery IV).",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,11 +17,11 @@
       "baseline_treatment_vars": [
         "treatment"
       ],
-      "notes": "Primary baseline. LATE of treatment on employment using lottery (offered) as instrument. Coef ~0.47, p=0.0."
+      "notes": "IV-2SLS, coef=0.472 (p<0.001). First-stage F>1000."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "YET program participation increases educational enrollment (s_enrolled_edu) among applicants.",
+      "claim_summary": "The YET program increases education enrollment.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline_enrollment"
@@ -32,11 +32,11 @@
       "baseline_treatment_vars": [
         "treatment"
       ],
-      "notes": "Secondary baseline. LATE of treatment on education enrollment. Coef ~0.084, p=0.004."
+      "notes": "IV-2SLS, coef=0.084 (p=0.004)."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "YET program participation increases total income (s_tot_income) among applicants.",
+      "claim_summary": "The YET program increases total income.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline_income"
@@ -47,38 +47,8 @@
       "baseline_treatment_vars": [
         "treatment"
       ],
-      "notes": "Secondary baseline. LATE of treatment on total income. Coef ~140.5, p=0.0."
-    },
-    {
-      "baseline_group_id": "G4",
-      "claim_summary": "YET program participation increases the probability of working and studying simultaneously (s_wstudy).",
-      "expected_sign": "+",
-      "baseline_spec_ids": [
-        "baseline_wstudy"
-      ],
-      "baseline_outcome_vars": [
-        "s_wstudy"
-      ],
-      "baseline_treatment_vars": [
-        "treatment"
-      ],
-      "notes": "Secondary baseline. LATE of treatment on working-while-studying. Coef ~0.435, p=0.0."
-    },
-    {
-      "baseline_group_id": "G5",
-      "claim_summary": "YET program participation decreases the probability of neither working nor studying (s_nwnstudy).",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "baseline_nwnstudy"
-      ],
-      "baseline_outcome_vars": [
-        "s_nwnstudy"
-      ],
-      "baseline_treatment_vars": [
-        "treatment"
-      ],
-      "notes": "Secondary baseline. LATE of treatment on NEET status. Coef ~-0.121, p<0.001."
+      "notes": "IV-2SLS, coef=140.5 (p<0.001)."
     }
   ],
-  "global_notes": "The paper has one primary claim (employment effect, G1) and four secondary outcome claims (G2-G5). The specification search covers robustness checks (control variations, sample restrictions, estimation methods) plus alternative outcomes (soft skills, education metrics, industry composition), heterogeneity analyses, and placebo/balance tests. Many leave-one-out control specs produce identical coefficients to the baseline, suggesting the dropped variables were not in the baseline control set. The first-stage and reduced-form specs are diagnostics, not core tests."
+  "global_notes": "Paper studies effects of Youth Employment Training in Uruguay using lottery-based IV. Employment effects are highly robust (100% positive, 100% significant at 1%). Many alternative outcomes tested (soft skills, study habits) with mixed significance. Leave-one-out control specs show identical coefficients suggesting controls have minimal impact with strong instrument."
 }

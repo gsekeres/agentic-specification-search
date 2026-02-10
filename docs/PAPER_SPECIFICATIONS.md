@@ -4,6 +4,41 @@ This file contains descriptions and justifications for the specification searche
 
 ---
 
+## 114705-V1: The Role of Information in Disability Insurance Application
+
+### Paper Summary
+Studies the effect of the Social Security Statement -- which provides personalized SSDI benefit information -- on disability insurance application rates. Exploits the phased rollout of the Statement (1995-2000) as a natural experiment, using restricted-use HRS data merged with SSA administrative records.
+
+### Baseline Specification
+Linear probability model: `disability_applied ~ first_receipt + married + C(DEGREE) + C(GENDER) + C(age) + C(year) + ssa_redux [aw=fweight], cluster(BIRTHYR)`
+- disability_applied = binary SSDI application indicator
+- first_receipt = binary treatment (received SS Statement)
+- Sample: alive, fully insured, cumulative applications <= 1, age 50-64
+
+### Covariates
+- **Treatment**: first_receipt (SS Statement receipt)
+- **Controls**: married, DEGREE (education), GENDER, ssa_redux (benefit reduction factor)
+- **Fixed effects**: age, year
+- **Interactions**: any_hlthlm*Stat, working_lag*Stat, replacement_rate*Stat
+
+### Specification Variations Justification
+- **Core variations**: No FE, year-only FE, age-specific trends, 5yr-age x year FE, birth-year FE, health controls, working status, replacement rate, benefit expectations
+- **Sample restrictions**: Work-limited, gender, age subgroups, time periods, working status, education, marital status
+- **Estimation**: OLS, WLS, logit (MFX), probit, alternative clustering
+- **Leave-one-out**: Drop married, DEGREE, GENDER, ssa_redux
+- **Placebo**: 5 random permutations + pre-treatment placebo
+
+### Results
+- **Total specifications**: 69 (63 main + 6 placebo)
+- **Significance rate**: 58.7% at 5% (main specs)
+- **Sign consistency**: 98.4% positive (main specs)
+- **Key finding**: Effect concentrated among work-limited individuals (coef ~0.036 vs ~0.011 full sample)
+
+### Data Note
+Restricted-use data not available; specification search uses synthetic data matching the paper's variable structure.
+
+---
+
 ## 239292-V1: Jargon and Shared Language in Team Communication Networks
 
 ### Paper Summary
@@ -276,6 +311,43 @@ Studies the effect of household debt on safety-net participation, examining how 
 - **Baseline coefficient**: 0.082 (SE: 0.067, p=0.226) - positive but not significant
 - **Significance rate**: 0% at 5%, 27% at 10%
 - **Sensitivity**: Pre-2010 shows negative effect, post-2010 near-zero; excluding AFS-illegal states increases coefficient to 0.127 (p=0.076)
+
+---
+
+## 114843-V1: On the Empirics of the EU Regional Policy
+
+### Paper Summary
+Studies the causal effect of EU Objective 1 structural funds on regional economic growth and investment. Regions with GDP per capita below 75% of the EU average are eligible for Objective 1 transfers. Uses a Fuzzy Regression Discontinuity Design with polynomial control functions (Wooldridge 2002, Procedure 18.1) on a panel of 257 EU regions across 3 programming periods (1989, 1994, 2000).
+
+### Baseline Specification
+Fuzzy RDD with probit first stage + 2SLS second stage:
+- **First stage**: Period-by-period probit of `object1` on `elig_object1` + polynomial in `gdpcap` + `gdpcap_i` (interactions) + `hc_i`
+- **Second stage**: IV regression of `growth` on `object1` + `hc_object1` (instrumented), polynomial controls, clustered by region
+- Also: Panel-IV with Chamberlainian correlated random effects (Mundlak group means)
+
+### Covariates
+- **Treatment**: object1 (received Objective 1 funds)
+- **Running variable**: gdpcap (GDP per capita relative to EU avg), elig_object1 (eligibility indicator)
+- **Heterogeneity**: hc (human capital), hc_var, qog (quality of government), qog_var
+- **Controls**: Polynomial in gdpcap (order 3-5), gdpcap*eligibility interactions, Mundlak terms
+
+### Specification Variations Justification
+- **Core variations**: Polynomial orders 3-5, investment vs growth outcome, different heterogeneity variables (hc, hc_var, qog, qog_var), pooled IV vs panel IV
+- **Estimation method**: Naive OLS, LPM first stage, region FE, manual 2SLS
+- **Reduced form**: Direct eligibility-to-outcome regressions
+- **Sample restrictions**: Single periods, drop periods, bandwidth around threshold, donut hole, eligible only
+- **Functional form**: Linear, quadratic, log outcome
+- **Inference**: Robust vs clustered SE, year dummies
+- **Excluded instruments**: literacy1870, protestant, capital_labor_85 (Table 8 approach)
+- **Placebo**: Random treatment, first-period only
+
+### Results
+- **Total specifications**: 131
+- **Baseline (Pooled IV, poly3)**: coef=0.0076, SE=0.004, p=0.061
+- **Baseline (Panel IV, poly3)**: coef=0.0073, SE=0.005, p=0.111
+- **Significance rate**: 64.9% at 5% overall; interaction term (hc*object1=0.053, p<0.001) is highly robust
+- **Key finding**: Main treatment effect is positive but marginally significant; the interaction with human capital is the strongest result
+- **Sensitivity**: Higher polynomial orders (4-5) produce numerically unstable estimates due to extreme variable magnitudes
 
 ---
 

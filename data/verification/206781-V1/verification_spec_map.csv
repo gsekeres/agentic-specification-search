@@ -1,72 +1,72 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-206781-V1,baseline/el_cons_T_hh,methods/cross_sectional_ols.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,1,1,core_controls,"Baseline consumption spec with full PMT controls, village clustering, WLS.",1.0
-206781-V1,baseline/el_assets_T_hh,methods/cross_sectional_ols.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,1,1,core_controls,"Baseline assets spec with full PMT controls, village clustering, WLS.",1.0
-206781-V1,baseline/el_income_T_hh,methods/cross_sectional_ols.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,1,1,core_controls,"Baseline income spec with full PMT controls, village clustering, WLS.",1.0
-206781-V1,ols/controls/none,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,No controls; tests sensitivity of G1 to control inclusion.,0.95
-206781-V1,ols/controls/demographics,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Demographic controls only subset for G1.,0.95
-206781-V1,ols/controls/economic,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Economic controls only subset for G1.,0.95
-206781-V1,ols/controls/employment,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Employment controls only subset for G1.,0.95
-206781-V1,ols/controls/food,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Food security controls only subset for G1.,0.95
-206781-V1,ols/controls/demo_econ,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Demographics+economic controls for G1.,0.95
-206781-V1,ols/controls/full,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Full controls identical to baseline; redundant but valid.,0.9
-206781-V1,robust/loo/drop_bl_hhsize,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_hhsize from controls; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_widow,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_widow from controls; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_female_fr,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_female_fr from controls; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_hh_has_children,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_hh_has_children; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_children_school,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_children_school; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_child_3,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_child_3; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_child_6,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_child_6; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_has_elder,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_has_elder; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_any_livestock,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_any_livestock; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_own_land,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_own_land; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_own_quarter_acre,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_own_quarter_acre; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_own_TV_radio,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_own_TV_radio; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_meals_eaten,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_meals_eaten; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_meals_protein,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_meals_protein; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_selfemp,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_selfemp; LOO robustness for G1.,0.95
-206781-V1,robust/loo/drop_bl_emp,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Drop bl_emp; LOO robustness for G1.,0.95
-206781-V1,robust/cluster/none,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Robust SE without clustering; inference variation for G1.,0.95
-206781-V1,robust/cluster/village_code,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Village-clustered SE identical to baseline; redundant.,0.85
-206781-V1,robust/cluster/sublocation,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Sublocation clustering; coarser cluster level for G1.,0.95
-206781-V1,robust/weights/unweighted,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Unweighted OLS instead of WLS; inference variation for G1.,0.95
-206781-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Trim 1% tails of consumption; sample robustness for G1.,0.95
-206781-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Trim 5% tails of consumption; sample robustness for G1.,0.95
-206781-V1,robust/sample/trim_10pct,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Trim 10% tails of consumption; sample robustness for G1.,0.9
-206781-V1,robust/sample/small_hh,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup by HH size (small); heterogeneity not robustness.,0.8
-206781-V1,robust/sample/large_hh,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup by HH size (large); heterogeneity not robustness.,0.8
-206781-V1,robust/sample/owns_land,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup by land ownership; heterogeneity not robustness.,0.8
-206781-V1,robust/sample/no_land,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup by no land; heterogeneity not robustness.,0.8
-206781-V1,robust/sample/widow,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup by widow status; heterogeneity not robustness.,0.8
-206781-V1,robust/sample/not_widow,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup by non-widow; heterogeneity not robustness.,0.8
-206781-V1,robust/outcome/el_consumption_hh,robustness/measurement.md,el_consumption_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,Non-demeaned consumption; measurement variation of G1.,0.9
-206781-V1,robust/outcome/el_assets_hh,robustness/measurement.md,el_assets_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_funcform,Non-demeaned assets; measurement variation of G2.,0.9
-206781-V1,robust/outcome/el_income_hh,robustness/measurement.md,el_income_hh,treat,G3,baseline/el_income_T_hh,0,1,core_funcform,Non-demeaned income; measurement variation of G3.,0.9
-206781-V1,robust/outcome/food_consumption,robustness/measurement.md,el_food_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,Food consumption subcategory; narrower measure of G1 concept.,0.75
-206781-V1,robust/outcome/el_cons_T_pc,robustness/measurement.md,el_cons_T_pc,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,Per-capita consumption; measurement variation of G1.,0.85
-206781-V1,robust/outcome/el_assets_T_pc,robustness/measurement.md,el_assets_T_pc,treat,G2,baseline/el_assets_T_hh,0,1,core_funcform,Per-capita assets; measurement variation of G2.,0.85
-206781-V1,robust/outcome/el_income_T_pc,robustness/measurement.md,el_income_T_pc,treat,G3,baseline/el_income_T_hh,0,1,core_funcform,Per-capita income; measurement variation of G3.,0.85
-206781-V1,robust/funcform/log_consumption,robustness/functional_form.md,log_el_consumption_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,Log consumption; functional form variation of G1.,0.9
-206781-V1,robust/funcform/ihs_consumption,robustness/functional_form.md,ihs_el_consumption_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,IHS consumption; functional form variation of G1.,0.9
-206781-V1,robust/funcform/log_assets,robustness/functional_form.md,log_el_assets_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_funcform,Log assets; functional form variation of G2.,0.9
-206781-V1,robust/funcform/log_income,robustness/functional_form.md,log_el_income_hh,treat,G3,baseline/el_income_T_hh,0,1,core_funcform,Log income; functional form variation of G3.,0.9
-206781-V1,robust/het/interaction_large_hh,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Interaction treat*large_hh; reports main effect for small HH only.,0.85
-206781-V1,robust/het/interaction_has_children,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Interaction treat*has_children; reports main for no-children group.,0.85
-206781-V1,robust/het/interaction_owns_land,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Interaction treat*owns_land; reports main for no-land group.,0.85
-206781-V1,robust/het/interaction_widow,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Interaction treat*widow; reports main for non-widow group.,0.85
-206781-V1,robust/het/interaction_female_resp,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Interaction treat*female_resp; reports main for male resp.,0.85
-206781-V1,robust/het/interaction_employed,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Interaction treat*employed; reports main for not-employed.,0.85
-206781-V1,robust/het/has_children,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup: HH with children; heterogeneity not robustness.,0.85
-206781-V1,robust/het/no_children,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup: HH without children; heterogeneity not robustness.,0.85
-206781-V1,robust/het/employed,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup: employed HH; heterogeneity not robustness.,0.85
-206781-V1,robust/het/not_employed,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup: not employed HH; heterogeneity not robustness.,0.85
-206781-V1,robust/het/female_respondent,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup: female respondent; heterogeneity not robustness.,0.85
-206781-V1,robust/het/male_respondent,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Subgroup: male respondent; heterogeneity not robustness.,0.85
-206781-V1,robust/placebo/random_treatment,robustness/placebo_tests.md,el_cons_T_hh,placebo_treat,G1,baseline/el_cons_T_hh,0,0,noncore_placebo,Random placebo treatment; not a test of the actual claim.,0.95
-206781-V1,robust/placebo/balance_bl_hhsize,robustness/placebo_tests.md,bl_hhsize,treat,,,0,0,noncore_placebo,Balance check: treatment on baseline HH size; diagnostic.,0.95
-206781-V1,robust/placebo/balance_bl_meals_eaten,robustness/placebo_tests.md,bl_meals_eaten,treat,,,0,0,noncore_placebo,Balance check: treatment on baseline meals; diagnostic.,0.95
-206781-V1,robust/outcome/el_assets_T_hh_no_controls,robustness/control_progression.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_controls,No controls for assets outcome; control variation of G2.,0.95
-206781-V1,robust/sample/el_assets_T_hh_trim_1pct,robustness/sample_restrictions.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_sample,Trim 1% tails for assets; sample robustness for G2.,0.95
-206781-V1,robust/weights/el_assets_T_hh_unweighted,robustness/clustering_variations.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_inference,Unweighted OLS for assets; inference variation for G2.,0.95
-206781-V1,robust/outcome/el_income_T_hh_no_controls,robustness/control_progression.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,0,1,core_controls,No controls for income outcome; control variation of G3.,0.95
-206781-V1,robust/sample/el_income_T_hh_trim_1pct,robustness/sample_restrictions.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,0,1,core_sample,Trim 1% tails for income; sample robustness for G3.,0.95
-206781-V1,robust/weights/el_income_T_hh_unweighted,robustness/clustering_variations.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,0,1,core_inference,Unweighted OLS for income; inference variation for G3.,0.95
+206781-V1,baseline/el_cons_T_hh,methods/cross_sectional_ols.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,1,1,core_controls,Primary baseline: treatment on consumption,1.0
+206781-V1,baseline/el_assets_T_hh,methods/cross_sectional_ols.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,1,1,core_controls,Baseline: treatment on assets,1.0
+206781-V1,baseline/el_income_T_hh,methods/cross_sectional_ols.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,1,1,core_controls,Baseline: treatment on income,1.0
+206781-V1,ols/controls/none,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: none,0.95
+206781-V1,ols/controls/demographics,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: demographics,0.95
+206781-V1,ols/controls/economic,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: economic,0.95
+206781-V1,ols/controls/employment,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: employment,0.95
+206781-V1,ols/controls/food,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: food,0.95
+206781-V1,ols/controls/demo_econ,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: demo_econ,0.95
+206781-V1,ols/controls/full,robustness/control_progression.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Control progression: full,0.95
+206781-V1,robust/loo/drop_bl_hhsize,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_hhsize,0.95
+206781-V1,robust/loo/drop_bl_widow,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_widow,0.95
+206781-V1,robust/loo/drop_bl_female_fr,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_female_fr,0.95
+206781-V1,robust/loo/drop_bl_hh_has_children,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_hh_has_children,0.95
+206781-V1,robust/loo/drop_bl_children_school,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_children_school,0.95
+206781-V1,robust/loo/drop_bl_child_3,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_child_3,0.95
+206781-V1,robust/loo/drop_bl_child_6,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_child_6,0.95
+206781-V1,robust/loo/drop_bl_has_elder,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_has_elder,0.95
+206781-V1,robust/loo/drop_bl_any_livestock,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_any_livestock,0.95
+206781-V1,robust/loo/drop_bl_own_land,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_own_land,0.95
+206781-V1,robust/loo/drop_bl_own_quarter_acre,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_own_quarter_acre,0.95
+206781-V1,robust/loo/drop_bl_own_TV_radio,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_own_TV_radio,0.95
+206781-V1,robust/loo/drop_bl_meals_eaten,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_meals_eaten,0.95
+206781-V1,robust/loo/drop_bl_meals_protein,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_meals_protein,0.95
+206781-V1,robust/loo/drop_bl_selfemp,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_selfemp,0.95
+206781-V1,robust/loo/drop_bl_emp,robustness/leave_one_out.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_controls,Leave-one-out: drop_bl_emp,0.95
+206781-V1,robust/cluster/none,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Inference/weighting: none,0.95
+206781-V1,robust/cluster/village_code,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Inference/weighting: village_code,0.95
+206781-V1,robust/cluster/sublocation,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Inference/weighting: sublocation,0.95
+206781-V1,robust/weights/unweighted,robustness/clustering_variations.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_inference,Inference/weighting: unweighted,0.95
+206781-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: trim_1pct,0.95
+206781-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: trim_5pct,0.95
+206781-V1,robust/sample/trim_10pct,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: trim_10pct,0.95
+206781-V1,robust/sample/small_hh,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: small_hh,0.95
+206781-V1,robust/sample/large_hh,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: large_hh,0.95
+206781-V1,robust/sample/owns_land,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: owns_land,0.95
+206781-V1,robust/sample/no_land,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: no_land,0.95
+206781-V1,robust/sample/widow,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: widow,0.95
+206781-V1,robust/sample/not_widow,robustness/sample_restrictions.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_sample,Sample restriction: not_widow,0.95
+206781-V1,robust/outcome/el_consumption_hh,robustness/measurement.md,el_consumption_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_consumption_hh,0.95
+206781-V1,robust/outcome/el_assets_hh,robustness/measurement.md,el_assets_hh,treat,G2,baseline/el_assets_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_assets_hh,0.95
+206781-V1,robust/outcome/el_income_hh,robustness/measurement.md,el_income_hh,treat,G3,baseline/el_income_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_income_hh,0.95
+206781-V1,robust/outcome/food_consumption,robustness/measurement.md,el_food_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_food_cons_T_hh,0.95
+206781-V1,robust/outcome/el_cons_T_pc,robustness/measurement.md,el_cons_T_pc,treat,G1,baseline/el_cons_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_cons_T_pc,0.95
+206781-V1,robust/outcome/el_assets_T_pc,robustness/measurement.md,el_assets_T_pc,treat,G2,baseline/el_assets_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_assets_T_pc,0.95
+206781-V1,robust/outcome/el_income_T_pc,robustness/measurement.md,el_income_T_pc,treat,G3,baseline/el_income_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_income_T_pc,0.95
+206781-V1,robust/funcform/log_consumption,robustness/functional_form.md,log_el_consumption_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,Functional form: log_consumption,0.95
+206781-V1,robust/funcform/ihs_consumption,robustness/functional_form.md,ihs_el_consumption_hh,treat,G1,baseline/el_cons_T_hh,0,1,core_funcform,Functional form: ihs_consumption,0.95
+206781-V1,robust/funcform/log_assets,robustness/functional_form.md,log_el_assets_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_funcform,Functional form: log_assets,0.95
+206781-V1,robust/funcform/log_income,robustness/functional_form.md,log_el_income_hh,treat,G3,baseline/el_income_T_hh,0,1,core_funcform,Functional form: log_income,0.95
+206781-V1,robust/het/interaction_large_hh,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: interaction_large_hh,0.95
+206781-V1,robust/het/interaction_has_children,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: interaction_has_children,0.95
+206781-V1,robust/het/interaction_owns_land,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: interaction_owns_land,0.95
+206781-V1,robust/het/interaction_widow,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: interaction_widow,0.95
+206781-V1,robust/het/interaction_female_resp,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: interaction_female_resp,0.95
+206781-V1,robust/het/interaction_employed,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: interaction_employed,0.95
+206781-V1,robust/het/has_children,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: has_children,0.95
+206781-V1,robust/het/no_children,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: no_children,0.95
+206781-V1,robust/het/employed,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: employed,0.95
+206781-V1,robust/het/not_employed,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: not_employed,0.95
+206781-V1,robust/het/female_respondent,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: female_respondent,0.95
+206781-V1,robust/het/male_respondent,robustness/heterogeneity.md,el_cons_T_hh,treat,G1,baseline/el_cons_T_hh,0,0,noncore_heterogeneity,Heterogeneity: male_respondent,0.95
+206781-V1,robust/placebo/random_treatment,robustness/placebo_tests.md,el_cons_T_hh,placebo_treat,G1,baseline/el_cons_T_hh,0,0,noncore_placebo,Placebo: random_treatment,0.95
+206781-V1,robust/placebo/balance_bl_hhsize,robustness/placebo_tests.md,bl_hhsize,treat,G1,baseline/el_cons_T_hh,0,0,noncore_placebo,Placebo: balance_bl_hhsize,0.95
+206781-V1,robust/placebo/balance_bl_meals_eaten,robustness/placebo_tests.md,bl_meals_eaten,treat,G1,baseline/el_cons_T_hh,0,0,noncore_placebo,Placebo: balance_bl_meals_eaten,0.95
+206781-V1,robust/outcome/el_assets_T_hh_no_controls,robustness/control_progression.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_assets_T_hh,0.95
+206781-V1,robust/sample/el_assets_T_hh_trim_1pct,robustness/sample_restrictions.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_sample,Sample restriction: el_assets_T_hh_trim_1pct,0.95
+206781-V1,robust/weights/el_assets_T_hh_unweighted,robustness/clustering_variations.md,el_assets_T_hh,treat,G2,baseline/el_assets_T_hh,0,1,core_inference,Inference/weighting: el_assets_T_hh_unweighted,0.95
+206781-V1,robust/outcome/el_income_T_hh_no_controls,robustness/control_progression.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,0,0,noncore_alt_outcome,Alternative outcome: el_income_T_hh,0.95
+206781-V1,robust/sample/el_income_T_hh_trim_1pct,robustness/sample_restrictions.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,0,1,core_sample,Sample restriction: el_income_T_hh_trim_1pct,0.95
+206781-V1,robust/weights/el_income_T_hh_unweighted,robustness/clustering_variations.md,el_income_T_hh,treat,G3,baseline/el_income_T_hh,0,1,core_inference,Inference/weighting: el_income_T_hh_unweighted,0.95

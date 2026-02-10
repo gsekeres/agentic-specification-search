@@ -1,0 +1,24 @@
+{
+  "paper_id": "113694-V1",
+  "package_path": "data/downloads/extracted/113694-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Diabetes diagnosis reduces household per-capita calorie purchases in the early post-diagnosis period. A unit increase in predicted diabetes probability is associated with approximately 282 fewer calories purchased per month in the early post-diagnosis period (months 19-21).",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "calories"
+      ],
+      "baseline_treatment_vars": [
+        "inter_2"
+      ],
+      "notes": "Replicates Table 3, Column 1 of Oster (2018, AEJ-Applied). Panel FE with household (absorbed) and year-month group FE. Treatment is inter_2 = predict_diab x I(time==2), where predict_diab is a continuous diabetes probability from a Random Forest classifier and time==2 is the early post-diagnosis period. Coefficient -282.21 (SE 48.84, p<0.001). N=26,400. Clustered at household level. At mean predict_diab ~ 0.5, this implies ~141 fewer calories/month (~6.4% of mean). Uses simulated data because original Nielsen HomeScan data is proprietary and not included in the replication package. The simulated DGP embeds the paper's reported effect sizes."
+    }
+  ],
+  "global_notes": "Single baseline group corresponding to Table 3 Column 1. All 61 specifications use simulated data mimicking the Nielsen HomeScan panel structure because the original data is proprietary. The specification search varies treatment definitions (continuous predict_diab interaction vs binary time dummies), outcome variables (per-capita calories, household calories, detrended calories, log calories, winsorized calories, total price paid), fixed effects structures, sample restrictions (income, age, race, education, food desert status, calorie quartiles, household size, time windows), functional form (quadratic, trend interactions, binary post), and inference (clustering). Sign consistency is perfect: all 57 calorie-outcome specifications with the main treatment produce negative coefficients. The binary time dummy (dumtime_2) specifications uniformly suffer from near-collinearity with group FE, producing massive standard errors -- this is a genuine feature of the model, not an error. Five pairs of specifications are exact duplicates: table4_no_group/fe_hh_only, table4_detrend/outcome_detrend, table3_col4/outcome_price, table4_hh_cal/outcome_hh_cal, threshold_0.5/table3_col3."
+}

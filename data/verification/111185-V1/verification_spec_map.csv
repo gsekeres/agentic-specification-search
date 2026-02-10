@@ -1,79 +1,79 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-111185-V1,baseline,methods/cross_sectional_ols.md,log_correct,logt,G1,baseline,1,1,core_method,Baseline: log-log OLS meta-regression.,1.0
-111185-V1,robust/se/hc1,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,"Same coeff, HC1 robust SEs.",1.0
-111185-V1,robust/se/hc2,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,"Same coeff, HC2 robust SEs.",1.0
-111185-V1,robust/se/hc3,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,"Same coeff, HC3 robust SEs.",1.0
-111185-V1,robust/cluster/method,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,"Same coeff, SEs clustered by method.",1.0
-111185-V1,robust/cluster/author,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,"Same coeff, SEs clustered by author.",1.0
-111185-V1,robust/cluster/model,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,"Same coeff, SEs clustered by model.",1.0
-111185-V1,robust/form/level_level,robustness/functional_form.md,correct_d,t,G1,baseline,0,1,core_funcform,Level-level form: damages on temp.,0.9
-111185-V1,robust/form/log_level,robustness/functional_form.md,log_correct,t,G1,baseline,0,1,core_funcform,Semi-log: log(damages) on temp level.,0.9
-111185-V1,robust/form/level_log,robustness/functional_form.md,correct_d,logt,G1,baseline,0,1,core_funcform,Level-log form: damages on log(temp).,0.9
-111185-V1,robust/form/quadratic_logt,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_funcform,Quadratic logt added; linear term changes.,0.7
-111185-V1,robust/form/quadratic_t,robustness/functional_form.md,log_correct,t,G1,baseline,0,1,core_funcform,Quadratic in t; tests nonlinearity.,0.7
-111185-V1,robust/form/y_asinh,robustness/functional_form.md,asinh_correct,logt,G1,baseline,0,1,core_funcform,"Asinh outcome; handles zeros, similar interpretation.",0.95
-111185-V1,robust/form/quantile_50,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_method,"Median regression; same vars, robust to outliers.",0.9
-111185-V1,robust/form/quantile_25,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_method,25th pct quantile regression.,0.8
-111185-V1,robust/form/quantile_75,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_method,75th pct quantile regression.,0.8
-111185-V1,robust/form/cubic,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_funcform,Cubic polynomial in logt.,0.7
-111185-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Trim 1pct outliers.,1.0
-111185-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Trim 5pct outliers.,1.0
-111185-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Winsorize 1pct.,1.0
-111185-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Winsorize 5pct.,1.0
-111185-V1,robust/sample/early_period,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Pre-2008 studies subsample.,0.85
-111185-V1,robust/sample/late_period,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Post-2008 studies subsample.,0.85
-111185-V1,robust/sample/pre_2005,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Pre-2005 subsample.,0.85
-111185-V1,robust/sample/post_2010,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Post-2010 subsample.,0.85
-111185-V1,robust/sample/exclude_grey,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Exclude grey literature.,0.95
-111185-V1,robust/sample/market_only,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Market damage estimates only.,0.85
-111185-V1,robust/sample/nonmarket,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Non-market estimates only.,0.85
-111185-V1,robust/sample/method_enumerative,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Enumerative method only.,0.85
-111185-V1,robust/sample/method_statistical,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Statistical method only.,0.85
-111185-V1,robust/sample/high_temp,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,High temp scenarios only.,0.85
-111185-V1,robust/sample/low_temp,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Low temp scenarios only.,0.85
-111185-V1,robust/sample/drop_influential,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop influential observations.,0.95
-111185-V1,robust/control/year,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add year control.,1.0
-111185-V1,robust/control/grey,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add grey literature indicator.,1.0
-111185-V1,robust/control/market,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add market/nonmarket indicator.,1.0
-111185-V1,robust/control/year_grey,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Year + grey controls.,1.0
-111185-V1,robust/control/full,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Full controls: year + grey + market.,1.0
-111185-V1,robust/control/method_indicators,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Method type indicators.,1.0
-111185-V1,robust/control/kitchen_sink,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Kitchen sink: all controls.,1.0
-111185-V1,robust/control/method_fe,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_fe,Method fixed effects.,1.0
-111185-V1,robust/control/year_trend,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Centered year trend.,1.0
-111185-V1,robust/control/year_quadratic,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Quadratic year trend.,1.0
-111185-V1,robust/het/grey_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x Grey; conditional main effect.,0.85
-111185-V1,robust/het/market_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x Market; conditional main effect.,0.85
-111185-V1,robust/het/year_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x Year; conditional at Year=0.,0.85
-111185-V1,robust/het/enumerative_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x Enumerative; conditional.,0.85
-111185-V1,robust/het/statistical_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x Statistical; conditional.,0.85
-111185-V1,robust/het/pre2008_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x Pre2008; conditional.,0.85
-111185-V1,robust/het/high_temp_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Interaction logt x High_temp; conditional.,0.85
-111185-V1,robust/het/year_tercile_early,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Year tercile (early); heterogeneity analysis.,0.7
-111185-V1,robust/het/year_tercile_mid,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Year tercile (mid); heterogeneity analysis.,0.7
-111185-V1,robust/het/year_tercile_late,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Year tercile (late); heterogeneity analysis.,0.7
-111185-V1,robust/loo/drop_study_1,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Nordhaus (1994a); LOO.,0.95
-111185-V1,robust/loo/drop_study_2,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Nordhaus (1994b); LOO.,0.95
-111185-V1,robust/loo/drop_study_3,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Meyer/Cooper; LOO.,0.95
-111185-V1,robust/loo/drop_study_4,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Fankhauser (1995); LOO.,0.95
-111185-V1,robust/loo/drop_study_5,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Manne/Mendelsohn/Richels; LOO.,0.95
-111185-V1,robust/loo/drop_study_6,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Schauer (1995); LOO.,0.95
-111185-V1,robust/loo/drop_study_7,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Tol (1995); LOO.,0.95
-111185-V1,robust/loo/drop_study_8,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Nordhaus/Yang (1996); LOO.,0.95
-111185-V1,robust/loo/drop_study_9,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Plambeck/Hope (1996); LOO.,0.95
-111185-V1,robust/loo/drop_study_10,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Berz (2000); LOO.,0.95
-111185-V1,robust/loo/drop_study_11,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Nordhaus/Boyer (2000); LOO.,0.95
-111185-V1,robust/loo/drop_study_12,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Maddison (2003); LOO.,0.95
-111185-V1,robust/loo/drop_study_13,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Manne/Richels (2005); LOO.,0.95
-111185-V1,robust/loo/drop_study_14,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Rehdanz/Maddison (2005); LOO.,0.95
-111185-V1,robust/loo/drop_study_15,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop Choiniere/Horowitz (2006); LOO.,0.95
-111185-V1,robust/weights/inverse_temp,robustness/measurement.md,log_correct,logt,G1,baseline,0,1,core_method,WLS weight=1/t.,0.9
-111185-V1,robust/weights/year_weight,robustness/measurement.md,log_correct,logt,G1,baseline,0,1,core_method,WLS weight=year.,0.9
-111185-V1,robust/weights/inverse_year,robustness/measurement.md,log_correct,logt,G1,baseline,0,1,core_method,WLS weight=1/year.,0.9
-111185-V1,robust/outcome/dnew_level,robustness/measurement.md,D_new,logt,G1,baseline,0,1,core_funcform,Level D_new on log(temp); different scale.,0.8
-111185-V1,robust/outcome/dnew_log,robustness/measurement.md,log_dnew,logt,G1,baseline,0,1,core_funcform,Log D_new on log(temp); alt damage measure.,0.85
-111185-V1,robust/outcome/original_d,robustness/measurement.md,log_D,logt,G1,baseline,0,1,core_funcform,Original D (uncorrected); sensitivity to correction.,0.85
-111185-V1,robust/placebo/shuffled_temp,robustness/placebo_tests.md,log_correct,logt_shuffled,G1,baseline,0,0,noncore_placebo,Shuffled temp placebo; fake treatment.,1.0
-111185-V1,robust/placebo/shuffled_temp_2,robustness/placebo_tests.md,log_correct,logt_shuffled2,G1,baseline,0,0,noncore_placebo,Shuffled temp placebo seed 2; fake treatment.,1.0
-111185-V1,robust/placebo/year_only,robustness/placebo_tests.md,log_correct,Year_num,G1,baseline,0,0,noncore_placebo,Year as treatment; confounding diagnostic.,0.95
-111185-V1,robust/se/bootstrap,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,0,invalid,Bootstrap p_value=1.012 invalid (>1); coeff also differs.,0.95
+111185-V1,baseline,methods/cross_sectional_ols.md,log_correct,logt,G1,baseline,1,1,core_controls,Primary baseline: Table 1 bivariate log-log regression of damages on temperature,1.0
+111185-V1,robust/se/hc1,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,HC1 robust standard errors -- same point estimate different SE,0.95
+111185-V1,robust/se/hc2,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,HC2 robust standard errors,0.95
+111185-V1,robust/se/hc3,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,HC3 robust standard errors,0.95
+111185-V1,robust/cluster/method,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,Clustered by estimation method,0.95
+111185-V1,robust/cluster/author,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,Clustered by primary author,0.95
+111185-V1,robust/cluster/model,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,Clustered by climate model,0.95
+111185-V1,robust/se/bootstrap,robustness/clustering_variations.md,log_correct,logt,G1,baseline,0,1,core_inference,Bootstrap standard errors (1000 reps) -- anomalous p-value of 1.012,0.85
+111185-V1,robust/form/level_level,robustness/functional_form.md,correct_d,t,G1,baseline,0,1,core_funcform,Level-level functional form instead of log-log,0.95
+111185-V1,robust/form/log_level,robustness/functional_form.md,log_correct,t,G1,baseline,0,1,core_funcform,Semi-log: log outcome on level temperature,0.95
+111185-V1,robust/form/level_log,robustness/functional_form.md,correct_d,logt,G1,baseline,0,1,core_funcform,Level outcome on log temperature,0.95
+111185-V1,robust/form/quadratic_logt,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_funcform,Quadratic in log(temperature) -- tests nonlinearity,0.95
+111185-V1,robust/form/quadratic_t,robustness/functional_form.md,log_correct,t,G1,baseline,0,1,core_funcform,Quadratic in level temperature,0.95
+111185-V1,robust/form/y_asinh,robustness/functional_form.md,asinh_correct,logt,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine outcome transformation,0.95
+111185-V1,robust/form/quantile_50,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_method,Median (quantile 50) regression,0.95
+111185-V1,robust/form/quantile_25,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_method,25th percentile quantile regression,0.95
+111185-V1,robust/form/quantile_75,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_method,75th percentile quantile regression,0.95
+111185-V1,robust/form/cubic,robustness/functional_form.md,log_correct,logt,G1,baseline,0,1,core_funcform,Cubic polynomial in log(temperature),0.95
+111185-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Trimmed 1% outliers,0.95
+111185-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Trimmed 5% outliers,0.95
+111185-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Winsorized at 1st/99th percentile,0.95
+111185-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Winsorized at 5th/95th percentile,0.95
+111185-V1,robust/sample/early_period,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Pre-2008 studies only,0.95
+111185-V1,robust/sample/late_period,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Post-2008 studies only,0.95
+111185-V1,robust/sample/pre_2005,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Pre-2005 studies only,0.95
+111185-V1,robust/sample/post_2010,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Post-2010 studies only,0.95
+111185-V1,robust/sample/exclude_grey,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Exclude grey (non-peer-reviewed) literature,0.95
+111185-V1,robust/sample/drop_influential,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,1,core_sample,Drop influential observations (high leverage/residual),0.95
+111185-V1,robust/sample/market_only,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Market damage estimates only -- tests subsample heterogeneity,0.9
+111185-V1,robust/sample/nonmarket,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Non-market damage estimates only,0.9
+111185-V1,robust/sample/method_enumerative,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Enumerative method studies only,0.9
+111185-V1,robust/sample/method_statistical,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Statistical method studies only,0.9
+111185-V1,robust/sample/high_temp,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,High temperature scenarios only,0.9
+111185-V1,robust/sample/low_temp,robustness/sample_restrictions.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Low temperature scenarios only,0.9
+111185-V1,robust/control/year,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add year of study as control,0.95
+111185-V1,robust/control/grey,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add grey literature indicator as control,0.95
+111185-V1,robust/control/market,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add market/nonmarket indicator as control,0.95
+111185-V1,robust/control/year_grey,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Add year + grey literature controls,0.95
+111185-V1,robust/control/full,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Full controls: year + grey + market,0.95
+111185-V1,robust/control/method_indicators,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Method indicator dummies as controls,0.95
+111185-V1,robust/control/kitchen_sink,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Kitchen sink: all available controls,0.95
+111185-V1,robust/control/method_fe,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_fe,Method fixed effects,0.95
+111185-V1,robust/control/year_trend,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Year trend (centered) as control,0.95
+111185-V1,robust/control/year_quadratic,robustness/control_progression.md,log_correct,logt,G1,baseline,0,1,core_controls,Quadratic year trend as control,0.95
+111185-V1,robust/het/grey_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x Grey literature interaction,0.95
+111185-V1,robust/het/market_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x Market indicator interaction,0.95
+111185-V1,robust/het/year_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x Year interaction,0.95
+111185-V1,robust/het/enumerative_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x Enumerative method interaction,0.95
+111185-V1,robust/het/statistical_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x Statistical method interaction,0.95
+111185-V1,robust/het/pre2008_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x Pre-2008 indicator interaction,0.95
+111185-V1,robust/het/high_temp_interaction,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,logt x High temperature scenario interaction,0.95
+111185-V1,robust/het/year_tercile_early,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Year tercile subsample: early studies,0.95
+111185-V1,robust/het/year_tercile_mid,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Year tercile subsample: mid-period studies,0.95
+111185-V1,robust/het/year_tercile_late,robustness/heterogeneity.md,log_correct,logt,G1,baseline,0,0,noncore_heterogeneity,Year tercile subsample: late studies,0.95
+111185-V1,robust/loo/drop_study_1,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Nordhaus (1994a),0.95
+111185-V1,robust/loo/drop_study_2,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Nordhaus (1994b),0.95
+111185-V1,robust/loo/drop_study_3,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Aubrey Meyer and Tony Cooper,0.95
+111185-V1,robust/loo/drop_study_4,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Fankhauser (1995),0.95
+111185-V1,robust/loo/drop_study_5,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Manne Mendelsohn and Richels,0.95
+111185-V1,robust/loo/drop_study_6,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Schauer (1995),0.95
+111185-V1,robust/loo/drop_study_7,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Tol (1995),0.95
+111185-V1,robust/loo/drop_study_8,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Nordhaus and Yang (1996),0.95
+111185-V1,robust/loo/drop_study_9,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Plambeck and Hope (1996),0.95
+111185-V1,robust/loo/drop_study_10,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Berz (2000),0.95
+111185-V1,robust/loo/drop_study_11,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Nordhaus and Boyer (2000),0.95
+111185-V1,robust/loo/drop_study_12,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Maddison (2003),0.95
+111185-V1,robust/loo/drop_study_13,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Manne and Richels (2005),0.95
+111185-V1,robust/loo/drop_study_14,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Rehdanz and Maddison (2005),0.95
+111185-V1,robust/loo/drop_study_15,robustness/leave_one_out.md,log_correct,logt,G1,baseline,0,1,core_sample,Leave-one-out: drop Choiniere and Horowitz (2006),0.95
+111185-V1,robust/weights/inverse_temp,robustness/measurement.md,log_correct,logt,G1,baseline,0,1,core_sample,WLS weighted by inverse temperature,0.95
+111185-V1,robust/weights/year_weight,robustness/measurement.md,log_correct,logt,G1,baseline,0,1,core_sample,WLS weighted by year of study,0.95
+111185-V1,robust/weights/inverse_year,robustness/measurement.md,log_correct,logt,G1,baseline,0,1,core_sample,WLS weighted by inverse year,0.95
+111185-V1,robust/outcome/dnew_level,robustness/measurement.md,D_new,logt,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: D_new in levels on log temperature,0.95
+111185-V1,robust/outcome/dnew_log,robustness/measurement.md,log_dnew,logt,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: log(D_new) on log temperature,0.95
+111185-V1,robust/outcome/original_d,robustness/measurement.md,log_D,logt,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: original D measure (smaller sample),0.9
+111185-V1,robust/placebo/shuffled_temp,robustness/placebo_tests.md,log_correct,logt_shuffled,G1,baseline,0,0,noncore_placebo,Placebo: randomly shuffled temperature,0.95
+111185-V1,robust/placebo/shuffled_temp_2,robustness/placebo_tests.md,log_correct,logt_shuffled2,G1,baseline,0,0,noncore_placebo,Placebo: shuffled temperature (seed 2),0.95
+111185-V1,robust/placebo/year_only,robustness/placebo_tests.md,log_correct,Year_num,G1,baseline,0,0,noncore_placebo,Placebo: year as sole predictor (no temperature),0.95

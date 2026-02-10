@@ -1,55 +1,55 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-158401-V1,baseline_yield,methods/panel_fixed_effects.md#baseline,yield_ha_ton,buy_treatment,G1,baseline_yield,1,1,core_controls,Baseline ANCOVA spec for yield outcome,1.0
-158401-V1,baseline_harvest_ton,methods/panel_fixed_effects.md#baseline,harvest_ton,buy_treatment,G3,baseline_harvest_ton,1,1,core_controls,Baseline spec for harvest outcome,1.0
-158401-V1,baseline_price_ugx,methods/panel_fixed_effects.md#baseline,price_ugx,buy_treatment,G2,baseline_price_ugx,1,1,core_controls,Baseline spec for price outcome,1.0
-158401-V1,baseline_harvest_value_ugx,methods/panel_fixed_effects.md#baseline,harvest_value_ugx,buy_treatment,G4,baseline_harvest_value_ugx,1,1,core_controls,Baseline spec for harvest value outcome,1.0
-158401-V1,baseline_share_sold,methods/panel_fixed_effects.md#baseline,share_sold,buy_treatment,G5,baseline_share_sold,1,1,core_controls,Baseline spec for share sold outcome,1.0
-158401-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Drops season FE from baseline yield spec,0.95
-158401-V1,panel/fe/season,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,0,invalid,Exact duplicate of baseline_yield (same coef/SE/p),0.99
-158401-V1,panel/fe/village,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Replaces season FE with village FE on yield,0.95
-158401-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Adds both season and village FE on yield,0.95
-158401-V1,did/controls/none,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Drops all controls from yield spec,0.95
-158401-V1,did/controls/hhr_n,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Adds HH size control to yield spec,0.95
-158401-V1,did/controls/distance,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Adds distance control to yield spec,0.95
-158401-V1,did/controls/full,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Full HH characteristics controls on yield,0.95
-158401-V1,robust/loo/drop_ancova,robustness/leave_one_out.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Drops ANCOVA baseline yield control,0.95
-158401-V1,robust/loo/drop_hhr_n,robustness/leave_one_out.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Drops HH size from controls on yield,0.9
-158401-V1,robust/loo/drop_distance,robustness/leave_one_out.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Drops distance from controls on yield,0.9
-158401-V1,robust/sample/drop_season_4,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops season 4 from yield sample,0.95
-158401-V1,robust/sample/drop_season_5,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops season 5 from yield sample,0.95
-158401-V1,robust/sample/drop_season_6,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops season 6 from yield sample,0.95
-158401-V1,robust/sample/drop_season_7,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops season 7 from yield sample,0.95
-158401-V1,robust/sample/early_period,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Restricts yield to early period (seasons 4-5),0.95
-158401-V1,robust/sample/late_period,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Restricts yield to late period (seasons 6-7),0.95
-158401-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,yield_ha_ton_wins,buy_treatment,G1,baseline_yield,0,1,core_sample,Winsorizes yield at 1% tails,0.9
-158401-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,yield_ha_ton_wins,buy_treatment,G1,baseline_yield,0,1,core_sample,Winsorizes yield at 5% tails,0.9
-158401-V1,robust/sample/winsor_10pct,robustness/sample_restrictions.md,yield_ha_ton_wins,buy_treatment,G1,baseline_yield,0,1,core_sample,Winsorizes yield at 10% tails,0.9
-158401-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Trims yield at 1% tails,0.95
-158401-V1,robust/sample/balanced,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Restricts yield to balanced panel,0.95
-158401-V1,robust/outcome/harvest_ton,robustness/measurement.md,harvest_ton,buy_treatment,G3,baseline_harvest_ton,0,0,invalid,Exact duplicate of baseline_harvest_ton,0.99
-158401-V1,robust/outcome/price_ugx,robustness/measurement.md,price_ugx,buy_treatment,G2,baseline_price_ugx,0,0,invalid,Exact duplicate of baseline_price_ugx,0.99
-158401-V1,robust/outcome/harvest_value_ugx,robustness/measurement.md,harvest_value_ugx,buy_treatment,G4,baseline_harvest_value_ugx,0,0,invalid,Exact duplicate of baseline_harvest_value_ugx,0.99
-158401-V1,robust/outcome/share_sold,robustness/measurement.md,share_sold,buy_treatment,G5,baseline_share_sold,0,0,invalid,Exact duplicate of baseline_share_sold,0.99
-158401-V1,robust/outcome/acreage,robustness/measurement.md,acreage,buy_treatment,,,0,0,noncore_alt_outcome,Acreage is a different outcome not in any baseline,0.9
-158401-V1,robust/funcform/log_harvest,robustness/functional_form.md,log_harvest_ton,buy_treatment,G3,baseline_harvest_ton,0,1,core_funcform,Log transform of harvest outcome,0.85
-158401-V1,robust/funcform/log_price,robustness/functional_form.md,log_price,buy_treatment,G2,baseline_price_ugx,0,1,core_funcform,Log transform of price outcome,0.85
-158401-V1,robust/funcform/ihs_yield,robustness/functional_form.md,ihs_yield,buy_treatment,G1,baseline_yield,0,1,core_funcform,IHS transform of yield outcome,0.9
-158401-V1,robust/cluster/none,robustness/clustering_variations.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_inference,Robust HC SE instead of village clustering on yield,0.95
-158401-V1,robust/cluster/unit,robustness/clustering_variations.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_inference,Clusters at household level instead of village on yield,0.95
-158401-V1,robust/placebo/pre_treatment,robustness/placebo_tests.md,yield_ha_ton,buy_treatment,,,0,0,noncore_placebo,Pre-treatment placebo test; different sample period,0.95
-158401-V1,robust/heterogeneity/hh_size,robustness/heterogeneity.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,HH size interaction changes estimand to subgroup effect,0.9
-158401-V1,robust/sample/small_hh,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,Small HH subsample is heterogeneity not core robustness,0.85
-158401-V1,robust/sample/large_hh,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,Large HH subsample is heterogeneity not core robustness,0.85
-158401-V1,robust/heterogeneity/distance,robustness/heterogeneity.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,Distance interaction changes estimand to subgroup effect,0.9
-158401-V1,robust/sample/close_to_road,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,Close-to-road subsample is heterogeneity,0.85
-158401-V1,robust/sample/far_from_road,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,Far-from-road subsample is heterogeneity,0.85
-158401-V1,robust/heterogeneity/baseline_yield,robustness/heterogeneity.md,yield_ha_ton,buy_treatment,,,0,0,noncore_heterogeneity,Baseline yield interaction is heterogeneity analysis,0.9
-158401-V1,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,yield_fd,buy_treatment,G1,baseline_yield,0,1,core_method,First differences estimator for yield,0.8
-158401-V1,panel/method/pooled_ols,methods/panel_fixed_effects.md#estimation-method,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_method,Pooled OLS without panel structure for yield,0.9
-158401-V1,robust/jackknife/drop_EA10078,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops village EA10078 from yield sample,0.95
-158401-V1,robust/jackknife/drop_EA10099,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops village EA10099 from yield sample,0.95
-158401-V1,robust/jackknife/drop_EA10136,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops village EA10136 from yield sample,0.95
-158401-V1,robust/jackknife/drop_EA10165,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops village EA10165 from yield sample,0.95
-158401-V1,robust/jackknife/drop_EA10181,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Drops village EA10181 from yield sample,0.95
-158401-V1,custom/treatment_x_time,custom,yield_ha_ton,buy_treatment,G1,baseline_yield,0,0,noncore_heterogeneity,Time interaction changes estimand to dynamic effect,0.8
-158401-V1,robust/funcform/standardized,robustness/functional_form.md,yield_std,buy_treatment,G1,baseline_yield,0,1,core_funcform,Standardized yield is a rescaling preserving estimand,0.9
+158401-V1,baseline_yield,methods/panel_fixed_effects.md#baseline,yield_ha_ton,buy_treatment,G1,baseline_yield,1,1,core_controls,Baseline specification,1.0
+158401-V1,baseline_harvest_ton,methods/panel_fixed_effects.md#baseline,harvest_ton,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Baseline for alternative outcome: harvest_ton,0.95
+158401-V1,baseline_price_ugx,methods/panel_fixed_effects.md#baseline,price_ugx,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Baseline for alternative outcome: price_ugx,0.95
+158401-V1,baseline_harvest_value_ugx,methods/panel_fixed_effects.md#baseline,harvest_value_ugx,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Baseline for alternative outcome: harvest_value_ugx,0.95
+158401-V1,baseline_share_sold,methods/panel_fixed_effects.md#baseline,share_sold,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Baseline for alternative outcome: share_sold,0.95
+158401-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Estimation/FE variation: None,0.95
+158401-V1,panel/fe/season,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Estimation/FE variation: Season FE,0.95
+158401-V1,panel/fe/village,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Estimation/FE variation: Village FE,0.95
+158401-V1,panel/fe/twoway,methods/panel_fixed_effects.md#fixed-effects,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Estimation/FE variation: Season + Village FE,0.95
+158401-V1,did/controls/none,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: None,0.95
+158401-V1,did/controls/hhr_n,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: Baseline + HH size,0.95
+158401-V1,did/controls/distance,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: Baseline + distance,0.95
+158401-V1,did/controls/full,methods/difference_in_differences.md#control-sets,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: Baseline + HH chars,0.95
+158401-V1,robust/loo/drop_ancova,robustness/leave_one_out.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: No ANCOVA,0.95
+158401-V1,robust/loo/drop_hhr_n,robustness/leave_one_out.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: Dropped hhr_n,0.95
+158401-V1,robust/loo/drop_distance,robustness/leave_one_out.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_controls,Control variation: Dropped distance,0.95
+158401-V1,robust/sample/drop_season_4,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped season 4,0.95
+158401-V1,robust/sample/drop_season_5,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped season 5,0.95
+158401-V1,robust/sample/drop_season_6,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped season 6,0.95
+158401-V1,robust/sample/drop_season_7,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped season 7,0.95
+158401-V1,robust/sample/early_period,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Early period (4-5),0.95
+158401-V1,robust/sample/late_period,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Late period (6-7),0.95
+158401-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md,yield_ha_ton_wins,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Winsorized 1%,0.95
+158401-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md,yield_ha_ton_wins,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Winsorized 5%,0.95
+158401-V1,robust/sample/winsor_10pct,robustness/sample_restrictions.md,yield_ha_ton_wins,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Winsorized 10%,0.95
+158401-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Trimmed 1%,0.95
+158401-V1,robust/sample/balanced,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Balanced panel sample restriction,0.95
+158401-V1,robust/outcome/harvest_ton,robustness/measurement.md,harvest_ton,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Alternative outcome: harvest_ton,0.95
+158401-V1,robust/outcome/price_ugx,robustness/measurement.md,price_ugx,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Alternative outcome: price_ugx,0.95
+158401-V1,robust/outcome/harvest_value_ugx,robustness/measurement.md,harvest_value_ugx,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Alternative outcome: harvest_value_ugx,0.95
+158401-V1,robust/outcome/share_sold,robustness/measurement.md,share_sold,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Alternative outcome: share_sold,0.95
+158401-V1,robust/outcome/acreage,robustness/measurement.md,acreage,buy_treatment,G1,baseline_yield,0,0,noncore_alt_outcome,Alternative outcome: acreage,0.95
+158401-V1,robust/funcform/log_harvest,robustness/functional_form.md,log_harvest_ton,buy_treatment,G1,baseline_yield,0,1,core_funcform,Functional form: Log transform,0.95
+158401-V1,robust/funcform/log_price,robustness/functional_form.md,log_price,buy_treatment,G1,baseline_yield,0,1,core_funcform,Functional form: Log transform,0.95
+158401-V1,robust/funcform/ihs_yield,robustness/functional_form.md,ihs_yield,buy_treatment,G1,baseline_yield,0,1,core_funcform,Functional form: IHS transform,0.95
+158401-V1,robust/cluster/none,robustness/clustering_variations.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_inference,Inference variation: None (robust HC),0.95
+158401-V1,robust/cluster/unit,robustness/clustering_variations.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_inference,Inference variation: hhh_id (household),0.95
+158401-V1,robust/placebo/pre_treatment,robustness/placebo_tests.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,0,noncore_placebo,Placebo/balance test: robust/placebo/pre_treatment,0.95
+158401-V1,robust/heterogeneity/hh_size,robustness/heterogeneity.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/hh_size,0.9
+158401-V1,robust/sample/small_hh,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Small HH only,0.95
+158401-V1,robust/sample/large_hh,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Large HH only,0.95
+158401-V1,robust/heterogeneity/distance,robustness/heterogeneity.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/distance,0.9
+158401-V1,robust/sample/close_to_road,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Close to road,0.95
+158401-V1,robust/sample/far_from_road,robustness/sample_restrictions.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Far from road,0.95
+158401-V1,robust/heterogeneity/baseline_yield,robustness/heterogeneity.md,yield_ha_ton,buy_treatment,G1,baseline_yield,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/baseline_yield,0.9
+158401-V1,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,yield_fd,buy_treatment,G1,baseline_yield,0,1,core_fe,Estimation/FE variation: None,0.95
+158401-V1,panel/method/pooled_ols,methods/panel_fixed_effects.md#estimation-method,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_fe,Estimation/FE variation: None,0.95
+158401-V1,robust/jackknife/drop_EA10078,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped EA10078,0.95
+158401-V1,robust/jackknife/drop_EA10099,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped EA10099,0.95
+158401-V1,robust/jackknife/drop_EA10136,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped EA10136,0.95
+158401-V1,robust/jackknife/drop_EA10165,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped EA10165,0.95
+158401-V1,robust/jackknife/drop_EA10181,robustness/sample_restrictions.md#influential-observations,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_sample,Sample restriction: Dropped EA10181,0.95
+158401-V1,custom/treatment_x_time,custom,yield_ha_ton,buy_treatment,G1,baseline_yield,0,1,core_funcform,Treatment effect over time interaction,0.9
+158401-V1,robust/funcform/standardized,robustness/functional_form.md,yield_std,buy_treatment,G1,baseline_yield,0,1,core_funcform,Functional form: Standardized outcome,0.95

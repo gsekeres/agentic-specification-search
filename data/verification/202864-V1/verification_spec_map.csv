@@ -1,65 +1,65 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-202864-V1,baseline/topic,methods/cross_sectional_ols.md,mixing_intensity_std,topic,,,0,0,invalid,Tests mixing_intensity_std not multiple_mixing; coef~0; not a real baseline,0.95
-202864-V1,baseline/multiple_mixing,methods/cross_sectional_ols.md,multiple_mixing,topic,G2,baseline/multiple_mixing,1,1,core_method,Baseline for G2: domain-level multiple mixing differences across topics,1.0
-202864-V1,baseline/table1_ambiguous,methods/cross_sectional_ols.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,1,1,core_method,Baseline for G1: att_std predicts multiple mixing in ambiguous domain,1.0
-202864-V1,baseline/table1/risk,methods/cross_sectional_ols.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Same G1 regression in risk domain; sample restriction to different domain,0.7
-202864-V1,baseline/table1/ambiguous,methods/cross_sectional_ols.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,1,1,core_method,Duplicate of baseline/table1_ambiguous; identical regression,1.0
-202864-V1,baseline/table1/stock,methods/cross_sectional_ols.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Same G1 regression in stock domain; sample restriction to different domain,0.7
-202864-V1,baseline/table1/social,methods/cross_sectional_ols.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Same G1 regression in social domain; sample restriction to different domain,0.7
-202864-V1,robust/control/drop_att_std,robustness/leave_one_out.md,multiple_mixing,risk_std,G1,baseline/table1_ambiguous,0,0,invalid,Drops att_std (the treatment); treatment changes to risk_std; not testing G1,0.95
-202864-V1,robust/control/drop_risk_std,robustness/leave_one_out.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Drops risk_std control; same treatment att_std and outcome,0.95
-202864-V1,robust/control/drop_female,robustness/leave_one_out.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Drops female control; same treatment and outcome in ambiguous domain,0.95
-202864-V1,robust/control/drop_exp_std,robustness/leave_one_out.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Drops exp_std control; same treatment and outcome in ambiguous domain,0.95
-202864-V1,robust/control/none,robustness/control_progression.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,No controls; bivariate regression of att_std on multiple_mixing,0.95
-202864-V1,robust/control/add_1,robustness/control_progression.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Incremental control addition (1 control); same treatment and outcome,0.9
-202864-V1,robust/control/add_2,robustness/control_progression.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Incremental control addition (2 controls); same treatment and outcome,0.9
-202864-V1,robust/control/add_3,robustness/control_progression.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Incremental control addition (3 controls); same treatment and outcome,0.9
-202864-V1,robust/control/add_4,robustness/control_progression.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Full controls (4); identical to baseline/table1_ambiguous,0.9
-202864-V1,robust/control/add_age,robustness/control_progression.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_controls,Adds age control to baseline; same treatment and outcome,0.95
-202864-V1,robust/sample/risk_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Risk domain subsample; same regression as G1 but different domain,0.7
-202864-V1,robust/sample/ambiguous_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Ambiguous domain subsample; identical to baseline/table1_ambiguous,0.9
-202864-V1,robust/sample/stock_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Stock domain subsample; same regression as G1 but different domain,0.7
-202864-V1,robust/sample/social_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Social domain subsample; same regression as G1 but different domain,0.7
-202864-V1,robust/sample/male_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Male participants only; same treatment and outcome gender subsample,0.85
-202864-V1,robust/sample/female_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Female participants only; same treatment and outcome gender subsample,0.85
-202864-V1,robust/sample/understood_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Only participants who understood instructions; ambiguous domain restriction,0.9
-202864-V1,robust/sample/risk_averse,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Risk averse participants; ambiguous domain sample restriction,0.85
-202864-V1,robust/sample/risk_seeking,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Risk seeking participants; ambiguous domain sample restriction,0.85
-202864-V1,robust/sample/artificial_events,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Artificial events (risk+ambiguous); pools domains with topic control,0.8
-202864-V1,robust/sample/natural_events,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Natural events (stock+social); pools domains with topic control,0.8
-202864-V1,robust/sample/consistent_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_sample,Consistent participants only; ambiguous domain sample restriction,0.9
-202864-V1,robust/outcome/probability,robustness/measurement.md,probability,att_std,G1,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Different outcome (probability belief vs multiple_mixing); not same estimand,0.9
-202864-V1,robust/outcome/interval_length,robustness/measurement.md,interval_length,att_std,G1,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Different outcome (interval length vs multiple_mixing); not same estimand,0.9
-202864-V1,robust/outcome/num_mix,robustness/measurement.md,num_mix,att_std,G1,baseline/table1_ambiguous,0,1,core_funcform,Continuous version of multiple_mixing; measures same concept differently,0.75
-202864-V1,robust/outcome/cooperation,robustness/measurement.md,cooperate,att_std,,,0,0,noncore_alt_outcome,Entirely different outcome (cooperation); different claim from G1 or G2,0.95
-202864-V1,robust/se/hc1,robustness/clustering_variations.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_inference,HC1 robust SE; same point estimates only SE changes,0.95
-202864-V1,robust/se/hc2,robustness/clustering_variations.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_inference,HC2 robust SE; same point estimates only SE changes,0.95
-202864-V1,robust/se/hc3,robustness/clustering_variations.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_inference,HC3 robust SE; same point estimates only SE changes,0.95
-202864-V1,robust/cluster/participant,robustness/clustering_variations.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_inference,Clustered by participant; pooled all domains with cluster adjustment,0.8
-202864-V1,robust/cluster/topic,robustness/clustering_variations.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_inference,Clustered by topic; pooled all domains with cluster adjustment,0.8
-202864-V1,discrete/binary/logit,methods/discrete_choice.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_method,Logit model for binary outcome; same treatment and outcome ambiguous domain,0.9
-202864-V1,discrete/binary/probit,methods/discrete_choice.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_method,Probit model for binary outcome; same treatment and outcome ambiguous domain,0.9
-202864-V1,robust/estimation/topic_fe,robustness/model_specification.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_fe,Topic FE added to pooled regression; absorbs domain-level variation,0.85
-202864-V1,robust/estimation/pooled_interactions,robustness/model_specification.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_method,Attitude x topic interactions; tests if att_std effect varies by domain,0.75
-202864-V1,robust/funcform/logit_transform,robustness/functional_form.md,p_logit,att_std,G1,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Log-odds transformed probability as outcome; different outcome variable,0.85
-202864-V1,robust/funcform/quadratic_att,robustness/functional_form.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_funcform,Quadratic in att_std; same outcome and treatment nonlinear specification,0.9
-202864-V1,robust/funcform/categorical_risk,robustness/functional_form.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,1,core_funcform,Categorical risk aversion instead of continuous; control form change only,0.9
-202864-V1,robust/het/interaction_gender,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Interaction att_std*female; tests heterogeneity not main effect,0.85
-202864-V1,robust/het/interaction_risk,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Interaction att_std*risk_std; tests heterogeneity not main effect,0.85
-202864-V1,robust/het/interaction_experience,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Interaction att_std*exp_std; tests heterogeneity not main effect,0.85
-202864-V1,robust/het/triple_diff,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Triple interaction att*topic*gender; complex heterogeneity test,0.9
-202864-V1,robust/het/by_fecon,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Economics students subsample; heterogeneity by field of study,0.85
-202864-V1,robust/het/by_fmint,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,MINT students subsample (N=13); heterogeneity by field of study,0.85
-202864-V1,robust/het/by_fsocial,robustness/heterogeneity.md,multiple_mixing,att_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Social science students subsample (N=12); heterogeneity by field,0.85
-202864-V1,robust/het/high_mixing_attitude,robustness/heterogeneity.md,multiple_mixing,risk_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,High att subsample; treatment changes to risk_std not testing G1,0.9
-202864-V1,robust/het/low_mixing_attitude,robustness/heterogeneity.md,multiple_mixing,risk_std,G1,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Low att subsample; treatment changes to risk_std not testing G1,0.9
-202864-V1,robust/placebo/risk_vs_ambiguous,robustness/placebo_tests.md,multiple_mixing,is_ambiguous,G2,baseline/multiple_mixing,0,1,core_method,Risk vs ambiguous OLS with controls; directly tests G2 domain difference,0.9
-202864-V1,ttest/risk_vs_ambiguous,robustness/placebo_tests.md,multiple_mixing,risk_vs_ambiguous,G2,baseline/multiple_mixing,0,1,core_method,t-test risk vs ambiguous; simple version of G2 domain comparison,0.85
-202864-V1,ttest/risk_vs_stock,robustness/placebo_tests.md,multiple_mixing,risk_vs_stock,G2,baseline/multiple_mixing,0,0,noncore_diagnostic,t-test risk vs stock; different domain pair not core G2 comparison,0.7
-202864-V1,ttest/risk_vs_social,robustness/placebo_tests.md,multiple_mixing,risk_vs_social,G2,baseline/multiple_mixing,0,0,noncore_diagnostic,t-test risk vs social; different domain pair not core G2 comparison,0.7
-202864-V1,ttest/ambiguous_vs_stock,robustness/placebo_tests.md,multiple_mixing,ambiguous_vs_stock,G2,baseline/multiple_mixing,0,0,noncore_diagnostic,t-test ambiguous vs stock; supplementary domain comparison,0.7
-202864-V1,ttest/ambiguous_vs_social,robustness/placebo_tests.md,multiple_mixing,ambiguous_vs_social,G2,baseline/multiple_mixing,0,0,noncore_diagnostic,t-test ambiguous vs social; supplementary domain comparison,0.7
-202864-V1,ttest/stock_vs_social,robustness/placebo_tests.md,multiple_mixing,stock_vs_social,,,0,0,noncore_diagnostic,t-test stock vs social; neither domain is risk/ambiguous core comparison,0.8
-202864-V1,table2/cooperation_full,methods/cross_sectional_ols.md,cooperate,att_std,,,0,0,noncore_alt_outcome,Cooperation outcome with multiple predictors; separate claim from G1/G2,0.95
-202864-V1,table2/cooperation_att_only,methods/cross_sectional_ols.md,cooperate,att_std,,,0,0,noncore_alt_outcome,Cooperation with att_std only; different outcome and claim,0.95
-202864-V1,table2/cooperation_att_risk,methods/cross_sectional_ols.md,cooperate,att_std,,,0,0,noncore_alt_outcome,Cooperation with att_std and risk_std; different outcome and claim,0.95
+202864-V1,baseline/topic,methods/cross_sectional_ols.md,mixing_intensity_std,topic,G1,baseline/multiple_mixing,0,0,noncore_alt_outcome,Mixing intensity (continuous) by topic,0.95
+202864-V1,baseline/multiple_mixing,methods/cross_sectional_ols.md,multiple_mixing,topic,G1,baseline/multiple_mixing,1,1,core_controls,Primary baseline: domain effect on multiple mixing,1.0
+202864-V1,baseline/table1_ambiguous,methods/cross_sectional_ols.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,1,1,core_controls,Individual predictor baseline: att_std on multiple_mixing,1.0
+202864-V1,baseline/table1/risk,methods/cross_sectional_ols.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Domain-specific: risk,0.95
+202864-V1,baseline/table1/ambiguous,methods/cross_sectional_ols.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Domain-specific: ambiguous,0.95
+202864-V1,baseline/table1/stock,methods/cross_sectional_ols.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Domain-specific: stock,0.95
+202864-V1,baseline/table1/social,methods/cross_sectional_ols.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Domain-specific: social,0.95
+202864-V1,robust/control/drop_att_std,robustness/leave_one_out.md,multiple_mixing,risk_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: drop_att_std,0.95
+202864-V1,robust/control/drop_risk_std,robustness/leave_one_out.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: drop_risk_std,0.95
+202864-V1,robust/control/drop_female,robustness/leave_one_out.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: drop_female,0.95
+202864-V1,robust/control/drop_exp_std,robustness/leave_one_out.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: drop_exp_std,0.95
+202864-V1,robust/control/none,robustness/control_progression.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: none,0.95
+202864-V1,robust/control/add_1,robustness/control_progression.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: add_1,0.95
+202864-V1,robust/control/add_2,robustness/control_progression.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: add_2,0.95
+202864-V1,robust/control/add_3,robustness/control_progression.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: add_3,0.95
+202864-V1,robust/control/add_4,robustness/control_progression.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: add_4,0.95
+202864-V1,robust/control/add_age,robustness/control_progression.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: add_age,0.95
+202864-V1,robust/sample/risk_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: risk_only,0.95
+202864-V1,robust/sample/ambiguous_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: ambiguous_only,0.95
+202864-V1,robust/sample/stock_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: stock_only,0.95
+202864-V1,robust/sample/social_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: social_only,0.95
+202864-V1,robust/sample/male_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: male_only,0.95
+202864-V1,robust/sample/female_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: female_only,0.95
+202864-V1,robust/sample/understood_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: understood_only,0.95
+202864-V1,robust/sample/risk_averse,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: risk_averse,0.95
+202864-V1,robust/sample/risk_seeking,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: risk_seeking,0.95
+202864-V1,robust/sample/artificial_events,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: artificial_events,0.95
+202864-V1,robust/sample/natural_events,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: natural_events,0.95
+202864-V1,robust/sample/consistent_only,robustness/sample_restrictions.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_sample,Sample restriction: consistent_only,0.95
+202864-V1,robust/outcome/probability,robustness/measurement.md,probability,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Alternative outcome: probability,0.95
+202864-V1,robust/outcome/interval_length,robustness/measurement.md,interval_length,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Alternative outcome: interval_length,0.95
+202864-V1,robust/outcome/num_mix,robustness/measurement.md,num_mix,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Alternative outcome: num_mix,0.95
+202864-V1,robust/outcome/cooperation,robustness/measurement.md,cooperate,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Alternative outcome: cooperate,0.95
+202864-V1,robust/se/hc1,robustness/clustering_variations.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_inference,Inference: hc1,0.95
+202864-V1,robust/se/hc2,robustness/clustering_variations.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_inference,Inference: hc2,0.95
+202864-V1,robust/se/hc3,robustness/clustering_variations.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_inference,Inference: hc3,0.95
+202864-V1,robust/cluster/participant,robustness/clustering_variations.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_inference,Inference: participant,0.95
+202864-V1,robust/cluster/topic,robustness/clustering_variations.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_inference,Inference: topic,0.95
+202864-V1,discrete/binary/logit,methods/discrete_choice.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_method,Discrete choice: logit,0.95
+202864-V1,discrete/binary/probit,methods/discrete_choice.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_method,Discrete choice: probit,0.95
+202864-V1,robust/estimation/topic_fe,robustness/model_specification.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: topic_fe,0.95
+202864-V1,robust/estimation/pooled_interactions,robustness/model_specification.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_controls,Control/estimation: pooled_interactions,0.95
+202864-V1,robust/funcform/logit_transform,robustness/functional_form.md,p_logit,att_std,G2,baseline/table1_ambiguous,0,1,core_funcform,Functional form: logit_transform,0.95
+202864-V1,robust/funcform/quadratic_att,robustness/functional_form.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_funcform,Functional form: quadratic_att,0.95
+202864-V1,robust/funcform/categorical_risk,robustness/functional_form.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,1,core_funcform,Functional form: categorical_risk,0.95
+202864-V1,robust/het/interaction_gender,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: interaction_gender,0.95
+202864-V1,robust/het/interaction_risk,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: interaction_risk,0.95
+202864-V1,robust/het/interaction_experience,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: interaction_experience,0.95
+202864-V1,robust/het/triple_diff,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: triple_diff,0.95
+202864-V1,robust/het/by_fecon,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: by_fecon,0.95
+202864-V1,robust/het/by_fmint,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: by_fmint,0.95
+202864-V1,robust/het/by_fsocial,robustness/heterogeneity.md,multiple_mixing,att_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: by_fsocial,0.95
+202864-V1,robust/het/high_mixing_attitude,robustness/heterogeneity.md,multiple_mixing,risk_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: high_mixing_attitude,0.95
+202864-V1,robust/het/low_mixing_attitude,robustness/heterogeneity.md,multiple_mixing,risk_std,G2,baseline/table1_ambiguous,0,0,noncore_heterogeneity,Heterogeneity: low_mixing_attitude,0.95
+202864-V1,robust/placebo/risk_vs_ambiguous,robustness/placebo_tests.md,multiple_mixing,is_ambiguous,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: risk_vs_ambiguous,0.95
+202864-V1,ttest/risk_vs_ambiguous,robustness/placebo_tests.md,multiple_mixing,risk_vs_ambiguous,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: risk_vs_ambiguous,0.95
+202864-V1,ttest/risk_vs_stock,robustness/placebo_tests.md,multiple_mixing,risk_vs_stock,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: risk_vs_stock,0.95
+202864-V1,ttest/risk_vs_social,robustness/placebo_tests.md,multiple_mixing,risk_vs_social,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: risk_vs_social,0.95
+202864-V1,ttest/ambiguous_vs_stock,robustness/placebo_tests.md,multiple_mixing,ambiguous_vs_stock,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: ambiguous_vs_stock,0.95
+202864-V1,ttest/ambiguous_vs_social,robustness/placebo_tests.md,multiple_mixing,ambiguous_vs_social,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: ambiguous_vs_social,0.95
+202864-V1,ttest/stock_vs_social,robustness/placebo_tests.md,multiple_mixing,stock_vs_social,G1,baseline/multiple_mixing,0,0,noncore_placebo,Domain comparison test: stock_vs_social,0.95
+202864-V1,table2/cooperation_full,methods/cross_sectional_ols.md,cooperate,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Cooperation outcome: cooperation_full,0.95
+202864-V1,table2/cooperation_att_only,methods/cross_sectional_ols.md,cooperate,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Cooperation outcome: cooperation_att_only,0.95
+202864-V1,table2/cooperation_att_risk,methods/cross_sectional_ols.md,cooperate,att_std,G2,baseline/table1_ambiguous,0,0,noncore_alt_outcome,Cooperation outcome: cooperation_att_risk,0.95

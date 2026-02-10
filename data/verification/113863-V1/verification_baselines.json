@@ -1,0 +1,39 @@
+{
+  "paper_id": "113863-V1",
+  "package_path": "data/downloads/extracted/113863-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Death of a father-in-law (FIL) reduces men's labor market earnings in urban China, consistent with the severing of a nepotistic employment network connection. Panel FE on CHNS data with individual + year*province FE, clustered at individual level.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "loghrindinc_real"
+      ],
+      "baseline_treatment_vars": [
+        "post_FILdie"
+      ],
+      "notes": "CHNS Table 2, Column 1. Coefficient -0.119 (SE 0.067, p=0.075). N=2,023, R2=0.762. Marginally significant at 10% level. Urban married males aged 22-45, post-1989 waves. Controls: age polynomials, education level dummies, divorced/separated, household head, spouse present."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Replication of the FIL death effect on men's income using the independent SLCC retrospective panel dataset, confirming the negative earnings impact of losing a father-in-law.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "slcc/baseline"
+      ],
+      "baseline_outcome_vars": [
+        "logincom_male"
+      ],
+      "baseline_treatment_vars": [
+        "post_fILdie_male"
+      ],
+      "notes": "SLCC Table 2, Column 1. Coefficient -0.069 (SE 0.034, p=0.041). N=13,012, R2=0.737. Significant at 5% level. Married males aged 22-45, year>=1980. Individual + Year*Province FE with robust SE. Controls: age polynomials."
+    }
+  ],
+  "global_notes": "Paper is 'Marriage Networks, Nepotism and Labor Market Outcomes in China' (AEJ: Applied Economics). The identification strategy exploits the timing of father-in-law (FIL) death as a shock that severs nepotistic employment connections. Two independent datasets are used: CHNS (panel, 1989-2006, N~2000) and SLCC (retrospective panel, 1950s-1999, N~13000). The CHNS baseline is only marginally significant (p=0.075) but the direction is robust (96% of core CHNS specs yield negative coefficients). The SLCC replication provides stronger statistical significance (p=0.041). Key design validation: mother-in-law (MIL) death has no effect (positive and insignificant), female placebo tests show no effect, and the effect is concentrated in state/collective sectors (where nepotism is predicted to matter). There are 79 total specifications across both datasets. The 'baseline_extended' spec adds marriage duration and health controls to the baseline and is classified as a core control variation rather than a separate baseline. The spec 'panel/sample/include_1989' and 'panel/sample/no_singletons' are exact duplicates of the baseline (identical coefficients), likely because the baseline sample already excludes 1989 and singletons. The 'panel/fe/unit_only' and 'panel/fe/twoway_id_prov' specs also have identical coefficients (-0.0948), indicating that Province FE is collinear with individual FE (province does not vary within individual)."
+}

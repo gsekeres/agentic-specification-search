@@ -1,61 +1,61 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-230401-V1,baseline,methods/cross_sectional_ols.md#baseline,loanrate_w2,hisp_50,G2,baseline,1,1,core_method,Baseline spec for Hispanic discrimination claim (G2).,1.0
-230401-V1,baseline,methods/cross_sectional_ols.md#baseline,loanrate_w2,black_50,G1,baseline,1,1,core_method,Baseline spec for Black discrimination claim (G1).,1.0
-230401-V1,baseline,methods/cross_sectional_ols.md#baseline,loanrate_w2,asian_50,G3,baseline,1,1,core_method,Baseline spec for Asian discrimination claim (G3).,1.0
-230401-V1,baseline,methods/cross_sectional_ols.md#baseline,loanrate_w2,native_50,G4,baseline,1,1,core_method,Baseline spec for Native American discrimination claim (G4).,1.0
-230401-V1,ols/controls/none,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline,0,1,core_controls,No controls or FE; tests sensitivity to control inclusion.,0.95
-230401-V1,ols/controls/fe_only,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline,0,1,core_controls,FE only no controls; tests sensitivity to control inclusion.,0.95
-230401-V1,ols/controls/firm_only,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Firm controls only; progressive control addition.,0.95
-230401-V1,ols/controls/firm_loan,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Firm + loan controls; progressive control addition.,0.95
-230401-V1,robust/control/drop_ceoown_num,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Leave-one-out: drop ceoown_num control variable.,0.95
-230401-V1,robust/control/drop_sales_val,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Leave-one-out: drop sales_val control variable.,0.95
-230401-V1,robust/control/drop_assets_val,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Leave-one-out: drop assets_val control variable.,0.95
-230401-V1,robust/control/drop_creditscore_int,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Leave-one-out: drop creditscore_int control.,0.95
-230401-V1,robust/control/drop_relength_yr,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Leave-one-out: drop relength_yr control variable.,0.95
-230401-V1,robust/control/drop_hhi_c,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,Leave-one-out: drop hhi_c control variable.,0.95
-230401-V1,robust/sample/loans_only,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to loans only; same estimand on subset.,0.9
-230401-V1,robust/sample/lines_only,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to lines of credit only; same estimand.,0.9
-230401-V1,robust/sample/new_credit,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to new credit only; same estimand on subset.,0.9
-230401-V1,robust/sample/renewal,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to renewals only; same estimand on subset.,0.9
-230401-V1,robust/sample/large_loans,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to large loans; same estimand on subset.,0.9
-230401-V1,robust/sample/small_loans,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to small loans; same estimand on subset.,0.9
-230401-V1,robust/sample/high_assets,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to high-asset firms; same estimand on subset.,0.9
-230401-V1,robust/sample/low_assets,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Restrict to low-asset firms; same estimand on subset.,0.9
-230401-V1,robust/sample/nonbank_lenders,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Include nonbank lenders; broader sample definition.,0.9
-230401-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Trim 1pct tails; alternative winsorization rule.,0.95
-230401-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline,0,1,core_sample,Trim 5pct tails; alternative winsorization rule.,0.95
-230401-V1,robust/outcome/loanspread_w2,robustness/measurement.md,loanspread_w2,black_50,G1,baseline,0,1,core_funcform,Loan spread closely related to interest rate cost.,0.85
-230401-V1,robust/outcome/coll,robustness/measurement.md,coll,black_50,,,0,0,noncore_alt_outcome,Collateral requirement is different outcome not interest rate.,0.9
-230401-V1,robust/outcome/collval_num,robustness/measurement.md,collval_num,black_50,,,0,0,invalid,Missing p-value near-zero coef N=376. Different outcome.,0.95
-230401-V1,robust/outcome/collmore,robustness/measurement.md,collmore,black_50,,,0,0,noncore_alt_outcome,Additional collateral requirement; different outcome concept.,0.9
-230401-V1,robust/outcome/blien,robustness/measurement.md,blien,black_50,,,0,0,noncore_alt_outcome,Blanket lien indicator; different outcome concept.,0.9
-230401-V1,robust/outcome/bcoll,robustness/measurement.md,bcoll,black_50,,,0,0,noncore_alt_outcome,Business collateral indicator; different outcome concept.,0.9
-230401-V1,robust/outcome/pcoll,robustness/measurement.md,pcoll,black_50,,,0,0,noncore_alt_outcome,Personal collateral indicator; different outcome concept.,0.9
-230401-V1,robust/outcome/bpcoll,robustness/measurement.md,bpcoll,black_50,,,0,0,noncore_alt_outcome,Both business+personal collateral; different outcome.,0.9
-230401-V1,robust/outcome/signature,robustness/measurement.md,signature,black_50,,,0,0,noncore_alt_outcome,Signature/unsecured loan indicator; different outcome.,0.9
-230401-V1,robust/treatment/hisp_50,robustness/measurement.md,loanrate_w2,hisp_50,G2,baseline,0,1,core_method,Near-duplicate of G2 baseline; slightly different N.,0.85
-230401-V1,robust/treatment/asian_50,robustness/measurement.md,loanrate_w2,asian_50,G3,baseline,0,1,core_method,Near-duplicate of G3 baseline; slightly different N.,0.85
-230401-V1,robust/treatment/native_50,robustness/measurement.md,loanrate_w2,native_50,G4,baseline,0,1,core_method,Near-duplicate of G4 baseline; slightly different N.,0.85
-230401-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,loanrate_w2,black_50,G1,baseline,0,1,core_inference,HC1 robust SEs instead of state clustering.,0.95
-230401-V1,robust/cluster/time,robustness/clustering_variations.md,loanrate_w2,black_50,G1,baseline,0,1,core_inference,Cluster by time instead of state.,0.95
-230401-V1,robust/cluster/industry,robustness/clustering_variations.md,loanrate_w2,black_50,G1,baseline,0,1,core_inference,Cluster by industry instead of state.,0.95
-230401-V1,robust/estimation/no_fe,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline,0,1,core_fe,No fixed effects; tests sensitivity to FE structure.,0.95
-230401-V1,robust/estimation/state_fe_only,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline,0,1,core_fe,State FE only; tests sensitivity to time FE.,0.95
-230401-V1,robust/estimation/time_fe_only,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline,0,1,core_fe,Time FE only; tests sensitivity to state FE.,0.95
-230401-V1,robust/estimation/industry_fe,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline,0,1,core_fe,Add industry FE; tests whether industry absorbs effect.,0.95
-230401-V1,robust/funcform/log_outcome,robustness/functional_form.md,log(loanrate_w2),black_50,G1,baseline,0,1,core_funcform,Log transformation; preserves estimand interpretation.,0.95
-230401-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,arcsinh(loanrate_w2),black_50,G1,baseline,0,1,core_funcform,IHS transformation; preserves estimand interpretation.,0.95
-230401-V1,robust/funcform/quadratic_controls,robustness/functional_form.md,loanrate_w2,black_50,G1,baseline,0,1,core_funcform,Add squared control terms; flexible functional form.,0.95
-230401-V1,robust/heterogeneity/woman_owned,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Interaction with woman_owned; heterogeneity analysis.,0.85
-230401-V1,robust/heterogeneity/family,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Interaction with family ownership; heterogeneity.,0.85
-230401-V1,robust/heterogeneity/conditiongood,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Interaction with business condition; heterogeneity.,0.85
-230401-V1,robust/heterogeneity/loss21,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Interaction with loss indicator; heterogeneity.,0.85
-230401-V1,robust/heterogeneity/loan,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Interaction with loan type; heterogeneity analysis.,0.85
-230401-V1,robust/heterogeneity/newcredit,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Interaction with new credit; heterogeneity analysis.,0.85
-230401-V1,robust/heterogeneity/creditscore_low_credit,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Subsample by credit score (low); heterogeneity split.,0.8
-230401-V1,robust/heterogeneity/creditscore_medium_credit,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Subsample by credit score (medium); heterogeneity split.,0.8
-230401-V1,robust/heterogeneity/creditscore_high_credit,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline,0,0,noncore_heterogeneity,Subsample by credit score (high); N=46 unreliable.,0.8
-230401-V1,robust/placebo/term,robustness/placebo_tests.md,term,black_50,,,0,0,noncore_placebo,Placebo test: predetermined outcome (loan term).,0.95
-230401-V1,robust/placebo/busage,robustness/placebo_tests.md,busage,black_50,,,0,0,noncore_placebo,Placebo test: predetermined outcome (business age).,0.95
-230401-V1,robust/placebo/ceoexp,robustness/placebo_tests.md,ceoexp,black_50,,,0,0,noncore_placebo,Placebo test: predetermined outcome (CEO experience).,0.95
-230401-V1,robust/control/dnb_credit,robustness/measurement.md,loanrate_w2,black_50,G1,baseline,0,1,core_controls,D&B credit rating instead of self-reported; alt control.,0.9
+230401-V1,baseline__hisp_50,methods/cross_sectional_ols.md#baseline,loanrate_w2,hisp_50,G2,baseline__hisp_50,1,1,core_method,Baseline: hisp_50 on loanrate_w2,1.0
+230401-V1,baseline__black_50,methods/cross_sectional_ols.md#baseline,loanrate_w2,black_50,G1,baseline__black_50,1,1,core_method,Baseline: black_50 on loanrate_w2,1.0
+230401-V1,baseline__asian_50,methods/cross_sectional_ols.md#baseline,loanrate_w2,asian_50,G3,baseline__asian_50,1,1,core_method,Baseline: asian_50 on loanrate_w2,1.0
+230401-V1,baseline__native_50,methods/cross_sectional_ols.md#baseline,loanrate_w2,native_50,G4,baseline__native_50,1,1,core_method,Baseline: native_50 on loanrate_w2,1.0
+230401-V1,ols/controls/none__black_50,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Control set variation: none,0.9
+230401-V1,ols/controls/fe_only__black_50,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Control set variation: fe_only,0.9
+230401-V1,ols/controls/firm_only__black_50,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Control set variation: firm_only,0.9
+230401-V1,ols/controls/firm_loan__black_50,methods/cross_sectional_ols.md#control-sets,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Control set variation: firm_loan,0.9
+230401-V1,robust/control/drop_ceoown_num__black_50,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Leave-one-out control: drop_ceoown_num,0.9
+230401-V1,robust/control/drop_sales_val__black_50,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Leave-one-out control: drop_sales_val,0.9
+230401-V1,robust/control/drop_assets_val__black_50,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Leave-one-out control: drop_assets_val,0.9
+230401-V1,robust/control/drop_creditscore_int__black_50,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Leave-one-out control: drop_creditscore_int,0.9
+230401-V1,robust/control/drop_relength_yr__black_50,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Leave-one-out control: drop_relength_yr,0.9
+230401-V1,robust/control/drop_hhi_c__black_50,robustness/leave_one_out.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Leave-one-out control: drop_hhi_c,0.9
+230401-V1,robust/sample/loans_only__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Loan type restriction: loans_only,0.9
+230401-V1,robust/sample/lines_only__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Loan type restriction: lines_only,0.9
+230401-V1,robust/sample/new_credit__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Credit type: new_credit,0.9
+230401-V1,robust/sample/renewal__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Credit type: renewal,0.9
+230401-V1,robust/sample/large_loans__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Loan size split: large_loans,0.9
+230401-V1,robust/sample/small_loans__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Loan size split: small_loans,0.9
+230401-V1,robust/sample/high_assets__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Asset size split: high_assets,0.9
+230401-V1,robust/sample/low_assets__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Asset size split: low_assets,0.9
+230401-V1,robust/sample/nonbank_lenders__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Non-bank lenders sample,0.9
+230401-V1,robust/sample/trim_1pct__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Trimmed sample: trim_1pct,0.9
+230401-V1,robust/sample/trim_5pct__black_50,robustness/sample_restrictions.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_sample,Trimmed sample: trim_5pct,0.9
+230401-V1,robust/outcome/loanspread_w2__black_50,robustness/measurement.md,loanspread_w2,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: loanspread_w2,0.9
+230401-V1,robust/outcome/coll__black_50,robustness/measurement.md,coll,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: coll,0.9
+230401-V1,robust/outcome/collval_num__black_50,robustness/measurement.md,collval_num,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: collval_num,0.9
+230401-V1,robust/outcome/collmore__black_50,robustness/measurement.md,collmore,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: collmore,0.9
+230401-V1,robust/outcome/blien__black_50,robustness/measurement.md,blien,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: blien,0.9
+230401-V1,robust/outcome/bcoll__black_50,robustness/measurement.md,bcoll,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: bcoll,0.9
+230401-V1,robust/outcome/pcoll__black_50,robustness/measurement.md,pcoll,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: pcoll,0.9
+230401-V1,robust/outcome/bpcoll__black_50,robustness/measurement.md,bpcoll,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: bpcoll,0.9
+230401-V1,robust/outcome/signature__black_50,robustness/measurement.md,signature,black_50,G1,baseline__black_50,0,0,noncore_alt_outcome,Alternative outcome: signature,0.9
+230401-V1,robust/treatment/hisp_50__hisp_50,robustness/measurement.md,loanrate_w2,hisp_50,G2,baseline__hisp_50,0,0,noncore_alt_treatment,Alternative minority group: hisp_50,0.9
+230401-V1,robust/treatment/asian_50__asian_50,robustness/measurement.md,loanrate_w2,asian_50,G3,baseline__asian_50,0,0,noncore_alt_treatment,Alternative minority group: asian_50,0.9
+230401-V1,robust/treatment/native_50__native_50,robustness/measurement.md,loanrate_w2,native_50,G4,baseline__native_50,0,0,noncore_alt_treatment,Alternative minority group: native_50,0.9
+230401-V1,robust/cluster/robust_hc1__black_50,robustness/clustering_variations.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_inference,Clustering variation: robust_hc1,0.9
+230401-V1,robust/cluster/time__black_50,robustness/clustering_variations.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_inference,Clustering variation: time,0.9
+230401-V1,robust/cluster/industry__black_50,robustness/clustering_variations.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_inference,Clustering variation: industry,0.9
+230401-V1,robust/estimation/no_fe__black_50,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_fe,FE variation: no_fe,0.9
+230401-V1,robust/estimation/state_fe_only__black_50,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_fe,FE variation: state_fe_only,0.9
+230401-V1,robust/estimation/time_fe_only__black_50,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_fe,FE variation: time_fe_only,0.9
+230401-V1,robust/estimation/industry_fe__black_50,methods/cross_sectional_ols.md#fixed-effects,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_fe,FE variation: industry_fe,0.9
+230401-V1,robust/funcform/log_outcome__black_50,robustness/functional_form.md,log(loanrate_w2),black_50,G1,baseline__black_50,0,1,core_funcform,Functional form: log_outcome,0.9
+230401-V1,robust/funcform/ihs_outcome__black_50,robustness/functional_form.md,arcsinh(loanrate_w2),black_50,G1,baseline__black_50,0,1,core_funcform,Functional form: ihs_outcome,0.9
+230401-V1,robust/funcform/quadratic_controls__black_50,robustness/functional_form.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_funcform,Functional form: quadratic_controls,0.9
+230401-V1,robust/heterogeneity/woman_owned__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: woman_owned,0.9
+230401-V1,robust/heterogeneity/family__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: family,0.9
+230401-V1,robust/heterogeneity/conditiongood__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: conditiongood,0.9
+230401-V1,robust/heterogeneity/loss21__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: loss21,0.9
+230401-V1,robust/heterogeneity/loan__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: loan,0.9
+230401-V1,robust/heterogeneity/newcredit__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: newcredit,0.9
+230401-V1,robust/heterogeneity/creditscore_low_credit__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: creditscore_low_credit,0.9
+230401-V1,robust/heterogeneity/creditscore_medium_credit__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: creditscore_medium_credit,0.9
+230401-V1,robust/heterogeneity/creditscore_high_credit__black_50,robustness/heterogeneity.md,loanrate_w2,black_50,G1,baseline__black_50,0,0,noncore_heterogeneity,Heterogeneity: creditscore_high_credit,0.9
+230401-V1,robust/placebo/term__black_50,robustness/placebo_tests.md,term,black_50,G1,baseline__black_50,0,0,noncore_placebo,Placebo: term on black_50,0.9
+230401-V1,robust/placebo/busage__black_50,robustness/placebo_tests.md,busage,black_50,G1,baseline__black_50,0,0,noncore_placebo,Placebo: busage on black_50,0.9
+230401-V1,robust/placebo/ceoexp__black_50,robustness/placebo_tests.md,ceoexp,black_50,G1,baseline__black_50,0,0,noncore_placebo,Placebo: ceoexp on black_50,0.9
+230401-V1,robust/control/dnb_credit__black_50,robustness/measurement.md,loanrate_w2,black_50,G1,baseline__black_50,0,1,core_controls,Add D&B credit rating control (smaller sample),0.9

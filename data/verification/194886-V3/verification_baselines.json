@@ -1,60 +1,69 @@
 {
   "paper_id": "194886-V3",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/194886-V3",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/194886-V3",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Mobile Disburse (MD) and Mobile Account (MA) treatments increase monthly business profits (earn_business) relative to cash control.",
+      "claim_summary": "Mobile Account (MA) treatment increases business profits.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline_earn_business_MA",
+        "baseline_earn_business_MA"
+      ],
+      "baseline_outcome_vars": [
+        "earn_business"
+      ],
+      "baseline_treatment_vars": [
+        "treatment2"
+      ],
+      "notes": "Coef = 2.88 (SE = 3.59, p = 0.42). Not significant."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Mobile Disburse (MD) treatment increases business profits (primary finding).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
         "baseline_earn_business_MD"
       ],
       "baseline_outcome_vars": [
         "earn_business"
       ],
       "baseline_treatment_vars": [
-        "treatment2",
         "treatment3"
       ],
-      "notes": "treatment2=MA, treatment3=MD. Primary claim is about MD. Both arms in same regression with strata FE and baseline outcome control."
+      "notes": "Coef = 17.61 (SE = 3.52, p < 0.001). Highly significant. N=2610."
     },
     {
-      "baseline_group_id": "G2",
-      "claim_summary": "MD and MA treatments increase total savings (much_saved) relative to cash control.",
+      "baseline_group_id": "G3",
+      "claim_summary": "MD treatment increases total savings.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline_much_saved_MA",
         "baseline_much_saved_MD"
       ],
       "baseline_outcome_vars": [
         "much_saved"
       ],
       "baseline_treatment_vars": [
-        "treatment2",
         "treatment3"
       ],
-      "notes": "Savings is a primary outcome. Neither MA nor MD significant in baseline."
+      "notes": "Coef = 8.46 (SE = 10.17, p = 0.41). Not significant."
     },
     {
-      "baseline_group_id": "G3",
-      "claim_summary": "MD and MA treatments increase business capital relative to cash control.",
+      "baseline_group_id": "G4",
+      "claim_summary": "MD treatment increases business capital.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline_capital_MA",
         "baseline_capital_MD"
       ],
       "baseline_outcome_vars": [
         "capital"
       ],
       "baseline_treatment_vars": [
-        "treatment2",
         "treatment3"
       ],
-      "notes": "Capital is a primary outcome. MD significant (p=0.004), MA not."
+      "notes": "Coef = 69.21 (SE = 23.74, p = 0.004). Significant."
     }
   ],
-  "global_notes": "3-arm RCT. robust/se/hc1 and robust/control/baseline_only duplicate baselines. primary/* specs for much_saved and capital also duplicate baselines. Heterogeneity specs classified as non-core."
+  "global_notes": "RCT with 3 arms (Cash, Mobile Account MA, Mobile Disburse MD) among BRAC Uganda microfinance clients. Each spec comes in MA/MD pairs. The primary finding is the MD effect on earn_business (G2). Heterogeneity specs include both main effects and interaction terms."
 }

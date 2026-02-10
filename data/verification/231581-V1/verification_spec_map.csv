@@ -1,0 +1,90 @@
+spec_id,baseline_id,classification,category,notes
+baseline,baseline,baseline,baseline,Original paper specification
+table8/no_tva,baseline,core,controls,Without TVA control
+table8/school_fe,baseline,core,fe,Table 8 FE variant
+table8/school_fe_knowledge,baseline,core,fe,Table 8 FE variant
+table8/private_district_fe,baseline,non_core,alt_outcome,Private school salary result
+table8/private_school_fe,baseline,non_core,alt_outcome,Private school salary result
+table3/district_fe,baseline,non_core,alt_outcome,Table 3 (TVA prediction) specification
+table3/school_fe,baseline,non_core,alt_outcome,Table 3 (TVA prediction) specification
+table3/district_fe_knowledge,baseline,non_core,alt_outcome,Table 3 (TVA prediction) specification
+table3/school_fe_knowledge,baseline,non_core,alt_outcome,Table 3 (TVA prediction) specification
+robust/control/drop_female,baseline,core,controls,Control variable variation
+robust/control/drop_local,baseline,core,controls,Control variable variation
+robust/control/drop_some_training,baseline,core,controls,Control variable variation
+robust/control/drop_BA_plus,baseline,core,controls,Control variable variation
+robust/control/drop_lessthan4,baseline,core,controls,Control variable variation
+robust/control/drop_temp_contract,baseline,core,controls,Control variable variation
+robust/control/drop_age_ex,baseline,core,controls,Control variable variation
+robust/control/drop_age_ex_2,baseline,core,controls,Control variable variation
+robust/control/none,baseline,core,controls,Control variable variation
+robust/control/add_female,baseline,core,controls,Control variable variation
+robust/control/add_local,baseline,core,controls,Control variable variation
+robust/control/add_some_training,baseline,core,controls,Control variable variation
+robust/control/add_BA_plus,baseline,core,controls,Control variable variation
+robust/control/add_lessthan4,baseline,core,controls,Control variable variation
+robust/control/add_temp_contract,baseline,core,controls,Control variable variation
+robust/control/add_age_ex,baseline,core,controls,Control variable variation
+robust/control/add_age_ex_2,baseline,core,controls,Control variable variation
+robust/sample/drop_attock,baseline,core,sample,Sample restriction
+robust/sample/drop_faisalabad,baseline,core,sample,Sample restriction
+robust/sample/drop_rahim_yar_khan,baseline,core,sample,Sample restriction
+robust/sample/female_only,baseline,core,sample,Sample restriction
+robust/sample/male_only,baseline,core,sample,Sample restriction
+robust/sample/temp_contract_only,baseline,core,sample,Sample restriction
+robust/sample/permanent_only,baseline,core,sample,Sample restriction
+robust/sample/local_only,baseline,core,sample,Sample restriction
+robust/sample/nonlocal_only,baseline,core,sample,Sample restriction
+robust/sample/BA_plus_only,baseline,core,sample,Sample restriction
+robust/sample/below_BA_only,baseline,core,sample,Sample restriction
+robust/sample/winsorize_salary_1pct,baseline,core,sample,Sample restriction
+robust/sample/winsorize_salary_5pct,baseline,core,sample,Sample restriction
+robust/sample/trim_tva_5pct,baseline,core,sample,Sample restriction
+robust/sample/trim_tva_10pct,baseline,core,sample,Sample restriction
+robust/sample/younger_half,baseline,core,sample,Sample restriction
+robust/sample/older_half,baseline,core,sample,Sample restriction
+robust/outcome/log_salary_fe,baseline,non_core,alt_outcome,Alternative outcome variable
+robust/outcome/mean_salary_levels,baseline,non_core,alt_outcome,Alternative outcome variable
+robust/outcome/usd_salary,baseline,non_core,alt_outcome,Alternative outcome variable
+robust/treatment/math_tva,baseline,core,treatment,Alternative TVA measure
+robust/treatment/eng_tva,baseline,core,treatment,Alternative TVA measure
+robust/treatment/urdu_tva,baseline,core,treatment,Alternative TVA measure
+robust/treatment/raw_tva,baseline,core,treatment,Alternative TVA measure
+robust/cluster/robust_hc1,baseline,core,inference,Inference/clustering variation
+robust/cluster/district,baseline,core,inference,Inference/clustering variation
+robust/cluster/teacher,baseline,core,inference,Inference/clustering variation
+robust/cluster/iid,baseline,core,inference,Inference/clustering variation
+robust/cluster/twoway_group_district,baseline,core,inference,Inference/clustering variation
+robust/estimation/no_fe,baseline,core,method,Estimation method variation
+robust/funcform/salary_levels,baseline,core,funcform,Functional form variation
+robust/funcform/ihs_salary,baseline,core,funcform,Functional form variation
+robust/funcform/age_squared_only,baseline,core,funcform,Functional form variation
+robust/funcform/no_age,baseline,core,funcform,Functional form variation
+robust/funcform/age_cubic,baseline,core,funcform,Functional form variation
+robust/heterogeneity/female,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/temp_contract,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/BA_plus,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/local,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/experience,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/training,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/placebo/school_facilities_basic,baseline,non_core,placebo,Placebo/falsification test
+robust/placebo/school_facilities_extra,baseline,non_core,placebo,Placebo/falsification test
+robust/placebo/household_assets,baseline,non_core,placebo,Placebo/falsification test
+robust/placebo/mother_education,baseline,non_core,placebo,Placebo/falsification test
+robust/placebo/father_education,baseline,non_core,placebo,Placebo/falsification test
+robust/treatment/tva_y2,baseline,core,treatment,Alternative TVA measure
+robust/treatment/tva_y3,baseline,core,treatment,Alternative TVA measure
+robust/treatment/tva_y4,baseline,core,treatment,Alternative TVA measure
+robust/treatment/tva_y23,baseline,core,treatment,Alternative TVA measure
+robust/treatment/tva_y34,baseline,core,treatment,Alternative TVA measure
+robust/treatment/tva_y24,baseline,core,treatment,Alternative TVA measure
+robust/treatment/tva_all3years,baseline,core,treatment,Alternative TVA measure
+robust/t3_control/drop_female,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_control/drop_local,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_control/drop_some_training,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_control/drop_BA_plus,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_control/drop_lessthan4,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_control/drop_temp_contract,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_outcome/math_tva,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_outcome/eng_tva,baseline,non_core,alt_outcome,Table 3 variant
+robust/t3_outcome/urdu_tva,baseline,non_core,alt_outcome,Table 3 variant

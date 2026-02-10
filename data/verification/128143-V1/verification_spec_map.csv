@@ -1,78 +1,78 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-128143-V1,baseline,methods/cross_sectional_ols.md,tax_acceptance,believes_not_lose,G1,baseline,1,1,core_controls,Baseline for G1: OLS with full controls,1.0
-128143-V1,baseline_ee,methods/cross_sectional_ols.md,tax_approval,believes_effective,G2,baseline_ee,1,1,core_controls,Baseline for G2: environmental effectiveness,1.0
-128143-V1,robust/control/none,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Drops all controls; same outcome/treatment,1.0
-128143-V1,robust/control/basic_demo,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Basic demographics only,1.0
-128143-V1,robust/control/demo_income,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Demographics + income controls,1.0
-128143-V1,robust/control/drop_female,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop female,1.0
-128143-V1,robust/control/drop_age_25_34,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop age 25 34,1.0
-128143-V1,robust/control/drop_age_35_49,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop age 35 49,1.0
-128143-V1,robust/control/drop_age_50_64,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop age 50 64,1.0
-128143-V1,robust/control/drop_age_65_plus,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop age 65 plus,1.0
-128143-V1,robust/control/drop_income_q1,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop income q1,1.0
-128143-V1,robust/control/drop_income_q2,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop income q2,1.0
-128143-V1,robust/control/drop_income_q3,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop income q3,1.0
-128143-V1,robust/control/drop_income_q4,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop income q4,1.0
-128143-V1,robust/control/drop_income_q5,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop income q5,1.0
-128143-V1,robust/control/drop_high_education,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop high education,1.0
-128143-V1,robust/control/drop_urban,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop urban,1.0
-128143-V1,robust/control/drop_single,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop single,1.0
-128143-V1,robust/control/drop_yellow_vests_support,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop yellow vests support,1.0
-128143-V1,robust/control/drop_ecologist,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop ecologist,1.0
-128143-V1,robust/control/drop_left,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop_left (zero coef identical),0.8
-128143-V1,robust/control/drop_right,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop_right (zero coef identical),0.8
-128143-V1,robust/control/drop_extreme_right,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: drop_extreme_right (zero coef identical),0.8
-128143-V1,robust/control/add_simgain,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Adds simulated gain control,1.0
-128143-V1,robust/control/add_heating,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Adds heating controls,1.0
-128143-V1,robust/sample/male,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,male subsample,1.0
-128143-V1,robust/sample/female,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,female subsample,1.0
-128143-V1,robust/sample/young,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,young subsample,1.0
-128143-V1,robust/sample/old,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,old subsample,1.0
-128143-V1,robust/sample/urban,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,urban subsample,1.0
-128143-V1,robust/sample/rural,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,rural subsample,1.0
-128143-V1,robust/sample/yellow_vests,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,yellow vests subsample,1.0
-128143-V1,robust/sample/no_yellow_vests,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,no yellow vests subsample,1.0
-128143-V1,robust/sample/low_income,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,low income subsample,1.0
-128143-V1,robust/sample/high_income,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,high income subsample,1.0
-128143-V1,robust/sample/ecologist,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,ecologist subsample,1.0
-128143-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Winsorizes controls at 1pct,1.0
-128143-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Winsorizes controls at 5pct,1.0
-128143-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Winsorizes controls at 10pct,1.0
-128143-V1,robust/inference/classical_se,robustness/clustering_variations.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Classical SEs; same point estimate,1.0
-128143-V1,robust/inference/unweighted,robustness/clustering_variations.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Unweighted estimation,1.0
-128143-V1,robust/inference/cluster_region,robustness/clustering_variations.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Clustered SEs by region,1.0
-128143-V1,robust/fe/region,methods/cross_sectional_ols.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_fe,Adds region FE,1.0
-128143-V1,robust/funcform/quadratic_gain,robustness/functional_form.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_funcform,Adds quadratic gain term,0.9
-128143-V1,robust/funcform/interact_yv,robustness/functional_form.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_funcform,Adds YV interaction; reports main effect,0.85
-128143-V1,robust/funcform/interact_income,robustness/functional_form.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_funcform,Adds income interaction; reports main effect,0.85
-128143-V1,robust/outcome/approval,robustness/alternative_outcomes.md,tax_approval,believes_not_lose,G1,baseline,0,0,noncore_alt_outcome,Different outcome (tax_approval vs tax_acceptance),0.8
-128143-V1,robust/outcome/targeted_acceptance,robustness/alternative_outcomes.md,tax_cible_acceptance,believes_not_lose_cible,G1,baseline,0,0,noncore_alt_outcome,Different outcome AND treatment (targeted dividend),0.9
-128143-V1,robust/outcome/targeted_approval,robustness/alternative_outcomes.md,tax_cible_approval,believes_not_lose_cible,G1,baseline,0,0,noncore_alt_outcome,Different outcome AND treatment (targeted approval),0.9
-128143-V1,robust/outcome/feedback_acceptance,robustness/alternative_outcomes.md,tax_feedback_acceptance,believes_not_lose_feedback,G1,baseline,0,0,noncore_alt_outcome,Different outcome AND treatment (feedback variants),0.9
-128143-V1,robust/treatment/believes_wins,robustness/alternative_treatments.md,tax_acceptance,believes_wins,G1,baseline,0,0,noncore_alt_treatment,Different treatment (believes_wins),0.7
-128143-V1,robust/treatment/simulated_winner,robustness/alternative_treatments.md,tax_acceptance,simule_gagnant,G1,baseline,0,0,noncore_alt_treatment,Different treatment (simulated winner),0.9
-128143-V1,robust/treatment/continuous_gain,robustness/alternative_treatments.md,tax_acceptance,simule_gain,G1,baseline,0,0,noncore_alt_treatment,Different treatment (continuous gain); different scale,0.9
-128143-V1,robust/heterogeneity/interact_female,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:female,G1,baseline,0,0,noncore_heterogeneity,Interaction (female); heterogeneity not main effect,0.95
-128143-V1,robust/heterogeneity/interact_urban,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:urban,G1,baseline,0,0,noncore_heterogeneity,Interaction (urban); heterogeneity not main effect,0.95
-128143-V1,robust/heterogeneity/interact_high_education,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:high_education,G1,baseline,0,0,noncore_heterogeneity,Interaction (education); heterogeneity not main effect,0.95
-128143-V1,robust/heterogeneity/interact_ecologist,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:ecologist,G1,baseline,0,0,noncore_heterogeneity,Interaction (ecologist); heterogeneity not main effect,0.95
-128143-V1,robust/heterogeneity/interact_age_young,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:age_young,G1,baseline,0,0,noncore_heterogeneity,Interaction (age_young); heterogeneity not main effect,0.95
-128143-V1,robust/heterogeneity/interact_age_old,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:age_old,G1,baseline,0,0,noncore_heterogeneity,Interaction (age_old); heterogeneity not main effect,0.95
-128143-V1,robust/placebo/first_stage_check,robustness/placebo_tests.md,believes_not_lose,simule_gagnant,,,0,0,noncore_diagnostic,First-stage diagnostic,0.95
-128143-V1,robust/placebo/reduced_form_info,robustness/placebo_tests.md,tax_acceptance,info_CC,,,0,0,noncore_placebo,Reduced-form: info treatment not main estimand,0.9
-128143-V1,robust/placebo/ecologist,robustness/placebo_tests.md,ecologist,believes_not_lose,,,0,0,noncore_placebo,Placebo outcome: ecologist,0.95
-128143-V1,ee/outcome/acceptance,methods/cross_sectional_ols.md,tax_acceptance,believes_effective_notno,G2,baseline_ee,0,0,noncore_alt_outcome,Different outcome AND treatment coding from G2,0.8
-128143-V1,ee/sample/male,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,male subsample of G2,1.0
-128143-V1,ee/sample/female,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,female subsample of G2,1.0
-128143-V1,ee/sample/urban,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,urban subsample of G2,1.0
-128143-V1,ee/sample/rural,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,rural subsample of G2,1.0
-128143-V1,ee/sample/yellow_vests,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,yellow vests subsample of G2,1.0
-128143-V1,ee/sample/no_yellow_vests,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,no yellow vests subsample of G2,1.0
-128143-V1,iv/ee/2sls_main,methods/instrumental_variables.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_method,2SLS of G2 baseline,0.95
-128143-V1,iv/ee/reduced_form,methods/instrumental_variables.md,tax_approval,apres_modifs,,,0,0,noncore_diagnostic,IV reduced form diagnostic,0.9
-128143-V1,iv/ee/first_stage,methods/instrumental_variables.md,believes_effective,apres_modifs,,,0,0,noncore_diagnostic,IV first stage diagnostic,0.95
-128143-V1,iv/si/2sls_main,methods/instrumental_variables.md,tax_cible_acceptance,believes_not_lose_cible,G1,baseline,0,0,noncore_alt_outcome,IV targeted dividend; different estimand,0.8
-128143-V1,iv/si/first_stage,methods/instrumental_variables.md,believes_not_lose_cible,traite_cible,,,0,0,noncore_diagnostic,IV first stage targeted dividend,0.95
-128143-V1,iv/si/reduced_form,methods/instrumental_variables.md,tax_cible_acceptance,traite_cible,,,0,0,noncore_diagnostic,IV reduced form targeted dividend,0.9
-128143-V1,custom/cross_outcome/believes_effective,custom/cross_outcome.md,believes_effective,believes_not_lose,,,0,0,noncore_diagnostic,Cross-outcome: belief correlation not main claim,0.95
-128143-V1,custom/cross_outcome/yellow_vests_support,custom/cross_outcome.md,yellow_vests_support,believes_not_lose,,,0,0,noncore_diagnostic,Cross-outcome: YV support not main claim,0.95
+128143-V1,baseline,methods/cross_sectional_ols.md,tax_acceptance,believes_not_lose,G1,baseline,1,1,core_controls,"Primary baseline: believes_not_lose on tax_acceptance with full controls, weighted",1.0
+128143-V1,robust/control/none,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,No controls (bivariate),0.95
+128143-V1,robust/control/basic_demo,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Basic demographics only,0.95
+128143-V1,robust/control/demo_income,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Demographics + income controls,0.95
+128143-V1,robust/control/drop_female,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_age_25_34,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_age_35_49,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_age_50_64,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_age_65_plus,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_income_q1,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_income_q2,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_income_q3,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_income_q4,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_income_q5,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_high_education,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_urban,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_single,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_yellow_vests_support,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_ecologist,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_left,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_right,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/drop_extreme_right,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Leave-one-out: Full sample,0.95
+128143-V1,robust/control/add_simgain,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Additional control: Full sample,0.95
+128143-V1,robust/control/add_heating,robustness/leave_one_out.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_controls,Additional control: Full sample,0.95
+128143-V1,robust/sample/male,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Male only,0.95
+128143-V1,robust/sample/female,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Female only,0.95
+128143-V1,robust/sample/young,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Under 50,0.95
+128143-V1,robust/sample/old,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: 50 and older,0.95
+128143-V1,robust/sample/urban,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Urban only,0.95
+128143-V1,robust/sample/rural,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Rural only,0.95
+128143-V1,robust/sample/yellow_vests,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Yellow Vests supporters,0.95
+128143-V1,robust/sample/no_yellow_vests,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Non-Yellow Vests,0.95
+128143-V1,robust/sample/low_income,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Low income (Q1-Q2),0.95
+128143-V1,robust/sample/high_income,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: High income (Q4-Q5),0.95
+128143-V1,robust/sample/ecologist,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Ecologists,0.95
+128143-V1,robust/outcome/approval,robustness/alternative_outcomes.md,tax_approval,believes_not_lose,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: tax_approval,0.95
+128143-V1,robust/outcome/targeted_acceptance,robustness/alternative_outcomes.md,tax_cible_acceptance,believes_not_lose_cible,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: tax_cible_acceptance,0.95
+128143-V1,robust/outcome/targeted_approval,robustness/alternative_outcomes.md,tax_cible_approval,believes_not_lose_cible,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: tax_cible_approval,0.95
+128143-V1,robust/outcome/feedback_acceptance,robustness/alternative_outcomes.md,tax_feedback_acceptance,believes_not_lose_feedback,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: tax_feedback_acceptance,0.95
+128143-V1,robust/treatment/believes_wins,robustness/alternative_treatments.md,tax_acceptance,believes_wins,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: believes_wins,0.95
+128143-V1,robust/treatment/simulated_winner,robustness/alternative_treatments.md,tax_acceptance,simule_gagnant,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: simule_gagnant,0.95
+128143-V1,robust/treatment/continuous_gain,robustness/alternative_treatments.md,tax_acceptance,simule_gain,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: simule_gain,0.95
+128143-V1,robust/inference/classical_se,robustness/clustering_variations.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Inference/FE variation: Full sample,0.95
+128143-V1,robust/inference/unweighted,robustness/clustering_variations.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Inference/FE variation: Full sample (unweighted),0.95
+128143-V1,robust/inference/cluster_region,robustness/clustering_variations.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Inference/FE variation: Full sample,0.95
+128143-V1,robust/funcform/quadratic_gain,robustness/functional_form.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_funcform,Functional form: Full sample,0.95
+128143-V1,robust/funcform/interact_yv,robustness/functional_form.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_funcform,Functional form: Full sample,0.95
+128143-V1,robust/funcform/interact_income,robustness/functional_form.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_funcform,Functional form: Full sample,0.95
+128143-V1,robust/heterogeneity/interact_female,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:female,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Full sample,0.95
+128143-V1,robust/heterogeneity/interact_urban,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:urban,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Full sample,0.95
+128143-V1,robust/heterogeneity/interact_high_education,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:high_education,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Full sample,0.95
+128143-V1,robust/heterogeneity/interact_ecologist,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:ecologist,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Full sample,0.95
+128143-V1,robust/heterogeneity/interact_age_young,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:age_young,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Full sample,0.95
+128143-V1,robust/heterogeneity/interact_age_old,robustness/heterogeneity.md,tax_acceptance,believes_not_lose:age_old,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Full sample,0.95
+128143-V1,robust/placebo/first_stage_check,robustness/placebo_tests.md,believes_not_lose,simule_gagnant,G1,baseline,0,0,noncore_placebo,Placebo/validity: Full sample,0.95
+128143-V1,robust/placebo/reduced_form_info,robustness/placebo_tests.md,tax_acceptance,info_CC,G1,baseline,0,0,noncore_placebo,Placebo/validity: Full sample,0.95
+128143-V1,robust/placebo/ecologist,robustness/placebo_tests.md,ecologist,believes_not_lose,G1,baseline,0,0,noncore_placebo,Placebo/validity: Full sample,0.95
+128143-V1,baseline_ee,methods/cross_sectional_ols.md,tax_approval,believes_effective,G2,baseline_ee,1,1,core_controls,Environmental effectiveness baseline: believes_effective on tax_approval,1.0
+128143-V1,ee/outcome/acceptance,methods/cross_sectional_ols.md,tax_acceptance,believes_effective_notno,G2,baseline_ee,0,0,noncore_alt_outcome,EE channel alternative outcome: tax_acceptance,0.95
+128143-V1,ee/sample/male,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,EE channel sample restriction: male,0.95
+128143-V1,ee/sample/female,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,EE channel sample restriction: female,0.95
+128143-V1,ee/sample/urban,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,EE channel sample restriction: urban,0.95
+128143-V1,ee/sample/rural,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,EE channel sample restriction: rural,0.95
+128143-V1,ee/sample/yellow_vests,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,EE channel sample restriction: yellow_vests,0.95
+128143-V1,ee/sample/no_yellow_vests,robustness/sample_restrictions.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_sample,EE channel sample restriction: no_yellow_vests,0.95
+128143-V1,iv/ee/2sls_main,methods/instrumental_variables.md,tax_approval,believes_effective,G2,baseline_ee,0,1,core_method,IV specification: Full sample,0.95
+128143-V1,iv/ee/reduced_form,methods/instrumental_variables.md,tax_approval,apres_modifs,G2,baseline_ee,0,1,core_method,IV specification: Full sample,0.95
+128143-V1,iv/ee/first_stage,methods/instrumental_variables.md,believes_effective,apres_modifs,G2,baseline_ee,0,1,core_method,IV specification: Full sample,0.95
+128143-V1,iv/si/2sls_main,methods/instrumental_variables.md,tax_cible_acceptance,believes_not_lose_cible,G1,baseline,0,1,core_method,IV specification: Targeted dividend sample,0.95
+128143-V1,iv/si/first_stage,methods/instrumental_variables.md,believes_not_lose_cible,traite_cible,G1,baseline,0,1,core_method,IV specification: Targeted dividend sample,0.95
+128143-V1,iv/si/reduced_form,methods/instrumental_variables.md,tax_cible_acceptance,traite_cible,G1,baseline,0,1,core_method,IV specification: Targeted dividend sample,0.95
+128143-V1,robust/fe/region,methods/cross_sectional_ols.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_inference,Inference/FE variation: Full sample,0.95
+128143-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Full sample,0.95
+128143-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Full sample,0.95
+128143-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,tax_acceptance,believes_not_lose,G1,baseline,0,1,core_sample,Sample restriction: Full sample,0.95
+128143-V1,custom/cross_outcome/believes_effective,custom/cross_outcome.md,believes_effective,believes_not_lose,G1,baseline,0,0,noncore_diagnostic,Cross-outcome/diagnostic: Full sample,0.9
+128143-V1,custom/cross_outcome/yellow_vests_support,custom/cross_outcome.md,yellow_vests_support,believes_not_lose,G1,baseline,0,0,noncore_diagnostic,Cross-outcome/diagnostic: Full sample,0.9

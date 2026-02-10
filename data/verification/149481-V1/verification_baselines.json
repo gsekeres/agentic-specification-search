@@ -1,13 +1,13 @@
 {
   "paper_id": "149481-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/149481-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/149481-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Thank-you calls increase donation probability (binary) among existing donors at public TV stations (Experiment 1).",
-      "expected_sign": "unknown",
+      "claim_summary": "Thank-you calls affect donation probability (Experiment 1)",
+      "expected_sign": "+",
       "baseline_spec_ids": [
         "exp1/donated/baseline"
       ],
@@ -17,12 +17,12 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Experiment 1 is the largest sample (N=462K). Baseline includes station x execution-date FE and full demographic controls. Paper finds null effect."
+      "notes": "Coef=0.0002, p=0.908. Null result. N=494,646."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Thank-you calls increase conditional gift amount among existing donors at public TV stations (Experiment 1).",
-      "expected_sign": "unknown",
+      "claim_summary": "Thank-you calls affect gift amount conditional on donating (Experiment 1)",
+      "expected_sign": "+",
       "baseline_spec_ids": [
         "exp1/gift_cond/baseline"
       ],
@@ -32,12 +32,12 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Conditional on donating. Same experiment as G1 but different outcome. Paper finds null effect."
+      "notes": "Coef=0.192, p=0.858. Null result."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "Thank-you calls increase donation probability (binary) among existing donors at a national non-profit (Experiment 2).",
-      "expected_sign": "unknown",
+      "claim_summary": "Thank-you calls affect donation probability (Experiment 2)",
+      "expected_sign": "+",
       "baseline_spec_ids": [
         "exp2/donated/baseline"
       ],
@@ -47,12 +47,12 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Experiment 2 has no FE in baseline (no station x date groups). Fewer controls available (no demographics). Paper finds null effect."
+      "notes": "Coef=-0.0001, p=0.968. Null result. N=57,643."
     },
     {
       "baseline_group_id": "G4",
-      "claim_summary": "Thank-you calls increase conditional gift amount among existing donors at a national non-profit (Experiment 2).",
-      "expected_sign": "unknown",
+      "claim_summary": "Thank-you calls affect gift amount conditional on donating (Experiment 2)",
+      "expected_sign": "+",
       "baseline_spec_ids": [
         "exp2/gift_cond/baseline"
       ],
@@ -62,12 +62,12 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Conditional on donating. Same experiment as G3 but different outcome. Paper finds null effect."
+      "notes": "Coef=-0.261, p=0.888. Null result."
     },
     {
       "baseline_group_id": "G5",
-      "claim_summary": "Thank-you calls (new script) increase donation probability among existing donors at public TV stations (Experiment 3).",
-      "expected_sign": "unknown",
+      "claim_summary": "Thank-you calls affect donation probability (Experiment 3)",
+      "expected_sign": "+",
       "baseline_spec_ids": [
         "exp3/donated/baseline"
       ],
@@ -77,12 +77,12 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Experiment 3 uses a new call script. Paper finds null effect (p=0.134)."
+      "notes": "Coef=0.013, p=0.134. Null result (marginal). N=24,348."
     },
     {
       "baseline_group_id": "G6",
-      "claim_summary": "Thank-you calls (new script) increase conditional gift amount among existing donors at public TV stations (Experiment 3).",
-      "expected_sign": "unknown",
+      "claim_summary": "Thank-you calls affect gift amount conditional on donating (Experiment 3)",
+      "expected_sign": "+",
       "baseline_spec_ids": [
         "exp3/gift_cond/baseline"
       ],
@@ -92,8 +92,8 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Conditional on donating. Same experiment as G5 but different outcome. Paper finds null effect."
+      "notes": "Coef=2.760, p=0.466. Null result."
     }
   ],
-  "global_notes": "This paper reports null findings across all three experiments and both outcomes. The six baselines correspond to 3 experiments x 2 outcomes. Expected sign is marked unknown because the paper tests whether the effect is positive but ultimately finds null effects. All specifications use treat (thank-you call assignment) as treatment. Experiments 1 and 3 include station x execution-date FE; Experiment 2 has no FE. Heterogeneity and interaction specs are classified as non-core since they test conditional effects rather than the main average treatment effect."
+  "global_notes": "Three RCTs testing thank-you calls on charitable giving. Paper finds robust null result (no significant effect). 147 specs across 3 experiments x 2 outcomes. Only 1.4% significant at 5%. The null finding is itself the key result and is highly robust."
 }

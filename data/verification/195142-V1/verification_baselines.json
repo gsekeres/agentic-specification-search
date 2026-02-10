@@ -1,12 +1,12 @@
 {
   "paper_id": "195142-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/195142-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/195142-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "GRW subsidy rate reforms reduce total GRW subsidy receipts at the county level in East Germany.",
+      "claim_summary": "GRW subsidy rate reforms reduce total GRW subsidies received.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,11 +17,11 @@
       "baseline_treatment_vars": [
         "D_ref_weighted"
       ],
-      "notes": "Baseline uses first-differenced log total GRW subsidies as outcome with state-year FE and AMR clustering. Coefficient 0.029 (p=0.226). Positive sign expected since higher reform values correspond to subsidy rate cuts reducing receipts. Paper main claim uses confidential BHP data for manufacturing employment; this is a secondary public-data outcome."
+      "notes": "Coef = 0.029 (SE = 0.023, p = 0.23). Positive but not significant. N=1141."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "GRW subsidy rate reforms reduce subsidized investment volume at the county level in East Germany.",
+      "claim_summary": "GRW reforms reduce subsidy volume.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline_grw_vol"
@@ -32,8 +32,8 @@
       "baseline_treatment_vars": [
         "D_ref_weighted"
       ],
-      "notes": "Alternative baseline outcome measuring subsidized investment volume rather than total subsidies. Same specification structure as G1. Coefficient 0.037 (p=0.194). Closely related but distinct outcome measure."
+      "notes": "Coef = 0.037 (SE = 0.028, p = 0.19). Positive but not significant."
     }
   ],
-  "global_notes": "Critical limitation: Paper primary finding concerns manufacturing employment effects using confidential BHP data not in replication package. All 68 specs use county-level aggregates only. Several specs are exact duplicates of baseline (did/fe/state_year, robust/cluster/amr, robust/control/none, robust/outcome/grw_total all reproduce identical results). Treatment variables robust/treatment/small, medium, and large produce identical coefficients suggesting a coding issue where size-specific treatments were not properly constructed."
+  "global_notes": "Paper uses confidential BHP data not in replication package. All specs use county-level aggregates. Limited variation explains low significance."
 }

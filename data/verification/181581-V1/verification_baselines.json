@@ -1,27 +1,26 @@
 {
   "paper_id": "181581-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/181581-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/181581-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Adding doctors to primary health centers reduces 7-day infant mortality in Nigeria (RCT).",
+      "claim_summary": "Adding doctors to health centers reduces 7-day infant mortality.",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline", "baseline_basic_controls", "baseline_extended_controls"],
-      "baseline_outcome_vars": ["mort7"],
-      "baseline_treatment_vars": ["doctor"],
-      "notes": "Three baseline columns from Table 4 of the paper: Col 1 (no controls, strata FE), Col 2 (basic controls, strata+time FE), Col 3 (extended controls, strata+time FE). Col 3 is the preferred specification per the paper. All use mort7 as outcome and doctor as treatment."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "Adding mid-level providers (MLPs) to health centers has a smaller and insignificant effect on 7-day infant mortality.",
-      "expected_sign": "-",
-      "baseline_spec_ids": ["baseline_mlp"],
-      "baseline_outcome_vars": ["mort7"],
-      "baseline_treatment_vars": ["mlp"],
-      "notes": "MLP treatment arm reported alongside doctor arm. The paper treats this as a secondary finding (smaller, insignificant effect). baseline_mlp is from the same regression as baseline (both arms included simultaneously)."
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline_basic_controls",
+        "baseline_extended_controls"
+      ],
+      "baseline_outcome_vars": [
+        "mort7"
+      ],
+      "baseline_treatment_vars": [
+        "doctor"
+      ],
+      "notes": "Extended controls: coef -0.0078 (SE 0.0035, p=0.027). N=9125. RCT Nigeria."
     }
   ],
-  "global_notes": "93 total specifications. 5 LOO/sample specs are exact duplicates of baseline_extended_controls (drop_magedum_5, drop_mschool_4, drop_hc_clean_4, drop_qtr_-1187, drop_qtr_190) indicating the dropped variable/quarter did not exist. Heterogeneity specs report the main effect of doctor (not interaction term), which is appropriate for assessing robustness of the main effect but note these include an interaction term in the model. The paper's core claim is about the doctor arm (G1); the MLP arm (G2) is secondary."
+  "global_notes": "Paper: When a Doctor Falls from the Sky (AER: Insights). RCT in Nigeria. MLP arm is secondary."
 }

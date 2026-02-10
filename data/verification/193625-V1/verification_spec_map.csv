@@ -1,87 +1,87 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-193625-V1,baseline,methods/difference_in_differences.md#baseline,lnk_medpos,treat,G1,baseline,1,1,core_controls,Canonical baseline specification for the DiD claim.,1.0
-193625-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; drops cohort FE keeping only university FE.,0.9
-193625-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; drops university FE keeping only cohort FE.,0.9
-193625-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,Numerically identical to baseline (two-way FE is baseline FE structure).,1.0
-193625-V1,did/fe/cz_x_cohort,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,0,invalid,Missing coefficient due to collinearity with cz*cohort FE.,1.0
-193625-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; no fixed effects at all.,0.85
-193625-V1,did/fe/tier_x_cohort,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; adds tier x cohort FE instead of cohort FE.,0.95
-193625-V1,did/controls/none,methods/difference_in_differences.md#controls,lnk_medpos,treat,G1,baseline,0,1,core_controls,Same outcome/treatment/FE; no controls.,0.95
-193625-V1,did/controls/minimal,methods/difference_in_differences.md#controls,lnk_medpos,treat,G1,baseline,0,1,core_controls,Same outcome/treatment/FE; minimal controls (female and lncount).,0.95
-193625-V1,did/controls/parental_only,methods/difference_in_differences.md#controls,lnk_medpos,treat,G1,baseline,0,1,core_controls,Same outcome/treatment/FE; parental income controls only.,0.95
-193625-V1,robust/control/drop_par_q1,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_q1 from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_q2,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_q2 from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_q3,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_q3 from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_q4,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_q4 from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_q5,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_q5 from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_lncount,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops lncount from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_top10pc,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_top10pc from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_top5pc,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_top5pc from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_top1pc,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_top1pc from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_par_toppt1pc,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops par_toppt1pc from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/drop_female,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,LOO: drops female from full controls; same outcome/treatment/FE.,0.95
-193625-V1,robust/outcome/lnk_median,methods/difference_in_differences.md#robustness,lnk_median,treat,G1,baseline,0,1,core_funcform,Alternative log income measure (median incl. zeros) same treatment/FE.,0.85
-193625-V1,robust/outcome/lnk_mean,methods/difference_in_differences.md#robustness,lnk_mean,treat,G1,baseline,0,1,core_funcform,Alternative log income measure (mean) same treatment/FE.,0.85
-193625-V1,robust/outcome/k_q5,methods/difference_in_differences.md#robustness,k_q5,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in top quintile not log median income.,0.85
-193625-V1,robust/outcome/k_q4,methods/difference_in_differences.md#robustness,k_q4,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in 4th quintile not log median income.,0.9
-193625-V1,robust/outcome/k_q3,methods/difference_in_differences.md#robustness,k_q3,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in 3rd quintile not log median income.,0.9
-193625-V1,robust/outcome/k_q2,methods/difference_in_differences.md#robustness,k_q2,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in 2nd quintile not log median income.,0.9
-193625-V1,robust/outcome/k_q1,methods/difference_in_differences.md#robustness,k_q1,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in bottom quintile not log median income.,0.9
-193625-V1,robust/outcome/k_top10pc,methods/difference_in_differences.md#robustness,k_top10pc,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in top 10% not log median income.,0.9
-193625-V1,robust/outcome/k_top5pc,methods/difference_in_differences.md#robustness,k_top5pc,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in top 5% not log median income.,0.9
-193625-V1,robust/outcome/k_top1pc,methods/difference_in_differences.md#robustness,k_top1pc,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction in top 1% not log median income.,0.9
-193625-V1,robust/outcome/k_0inc,methods/difference_in_differences.md#robustness,k_0inc,treat,G1,baseline,0,0,noncore_alt_outcome,Different outcome: fraction with zero earnings not log median income.,0.9
-193625-V1,robust/sample/tier1_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to Tier 1 universities.,0.9
-193625-V1,robust/sample/tier2_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to Tier 2 universities.,0.9
-193625-V1,robust/sample/tier3_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to Tier 3 universities.,0.9
-193625-V1,robust/sample/tier4_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to Tier 4 universities.,0.9
-193625-V1,robust/sample/tier5_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to Tier 5 universities.,0.9
-193625-V1,robust/sample/tier6_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to Tier 6 universities.,0.9
-193625-V1,robust/sample/elite_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to elite (Tier 1-2).,0.9
-193625-V1,robust/sample/non_elite_only,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Same outcome/treatment/FE; sample restricted to non-elite (Tier 3-6).,0.9
-193625-V1,robust/sample/drop_cohort1980,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1980 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1981,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1981 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1982,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1982 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1983,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1983 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1984,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1984 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1985,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1985 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1986,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1986 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1987,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1987 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1988,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1988 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1989,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1989 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1990,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1990 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/drop_cohort1991,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,LOO cohort: drops 1991 cohort; same outcome/treatment/FE/controls.,0.95
-193625-V1,robust/sample/pre_recession_cohorts,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,0,invalid,Missing coefficient; pre-only sample makes treat collinear (all 0).,1.0
-193625-V1,robust/sample/post_recession_cohorts,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,0,invalid,Missing coefficient; post-only sample makes treat equal badreccz.,1.0
-193625-V1,robust/sample/severe_cz_only,methods/difference_in_differences.md#robustness,lnk_medpos,post,G1,baseline,0,0,noncore_alt_treatment,Treatment changed to post (not treat); single-arm CZ sample; empty coef.,0.95
-193625-V1,robust/sample/mild_cz_only,methods/difference_in_differences.md#robustness,lnk_medpos,post,G1,baseline,0,0,noncore_alt_treatment,Treatment changed to post (not treat); single-arm CZ sample; empty coef.,0.95
-193625-V1,robust/cluster/cz,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_inference,Same point estimate; clusters at CZ level instead of university.,0.95
-193625-V1,robust/cluster/robust_hc,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_inference,Same point estimate; heteroskedasticity-robust SEs instead of clustered.,0.95
-193625-V1,robust/funcform/levels_outcome,methods/difference_in_differences.md#robustness,k_median_levels,treat,G1,baseline,0,1,core_funcform,Income in dollar levels instead of log; same treatment/FE/controls.,0.85
-193625-V1,robust/funcform/ihs_outcome,methods/difference_in_differences.md#robustness,ihs_median,treat,G1,baseline,0,1,core_funcform,IHS transformation of income instead of log; same treatment/FE.,0.9
-193625-V1,robust/treatment/continuous_shock,methods/difference_in_differences.md#robustness,lnk_medpos,treat_continuous,G1,baseline,0,1,core_method,Continuous recession shock measure instead of binary; same outcome/FE.,0.85
-193625-V1,robust/treatment/median_threshold,methods/difference_in_differences.md#robustness,lnk_medpos,treat_median,G1,baseline,0,1,core_method,Alternative binary threshold (median) for recession severity; same outcome.,0.85
-193625-V1,robust/treatment/q75_threshold,methods/difference_in_differences.md#robustness,lnk_medpos,treat_q75,G1,baseline,0,1,core_method,Alternative binary threshold (75th pctile) for severity; same outcome.,0.85
-193625-V1,robust/placebo/fake_treatment_1981,methods/difference_in_differences.md#robustness,lnk_medpos,treat_fake1981,G1,baseline,0,0,noncore_placebo,Placebo test: fake treatment year 1981 in pre-period sample.,1.0
-193625-V1,robust/placebo/fake_treatment_1982,methods/difference_in_differences.md#robustness,lnk_medpos,treat_fake1982,G1,baseline,0,0,noncore_placebo,Placebo test: fake treatment year 1982 in pre-period sample.,1.0
-193625-V1,robust/heterogeneity/by_female,methods/difference_in_differences.md#robustness,lnk_medpos,treat_x_high_female,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x female share); heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/by_parental_income,methods/difference_in_differences.md#robustness,lnk_medpos,treat_x_high_par,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x parental income); heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/by_univ_size,methods/difference_in_differences.md#robustness,lnk_medpos,treat_x_large,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x large univ); heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_tier1,methods/difference_in_differences.md#robustness,lnk_medpos,treat_tier1,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x tier1 dummy); tier heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_tier2,methods/difference_in_differences.md#robustness,lnk_medpos,treat_tier2,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x tier2 dummy); tier heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_tier3,methods/difference_in_differences.md#robustness,lnk_medpos,treat_tier3,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x tier3 dummy); tier heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_tier4,methods/difference_in_differences.md#robustness,lnk_medpos,treat_tier4,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x tier4 dummy); tier heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_tier5,methods/difference_in_differences.md#robustness,lnk_medpos,treat_tier5,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x tier5 dummy); tier heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_tier6,methods/difference_in_differences.md#robustness,lnk_medpos,treat_tier6,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x tier6 dummy); tier heterogeneity not main effect.,0.95
-193625-V1,robust/heterogeneity/treat_x_elite,methods/difference_in_differences.md#robustness,lnk_medpos,treat_x_elite,G1,baseline,0,0,noncore_heterogeneity,Interaction term (treat x elite dummy); heterogeneity not main effect.,0.95
-193625-V1,robust/control/progressive_1,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 1 (female only); same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_2,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 2 (female + lncount); same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_3,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 3; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_4,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 4; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_5,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 5; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_6,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 6; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_7,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 7; same outcome/treatment/FE.,0.95
-193625-V1,robust/control/progressive_8,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_controls,Progressive controls step 8; same outcome/treatment/FE.,0.95
-193625-V1,robust/sample/winsorize_1pct,methods/difference_in_differences.md#robustness,lnk_medpos_wins1,treat,G1,baseline,0,1,core_sample,Outcome winsorized at 1%; same treatment/FE/controls.,0.9
-193625-V1,robust/sample/winsorize_5pct,methods/difference_in_differences.md#robustness,lnk_medpos_wins5,treat,G1,baseline,0,1,core_sample,Outcome winsorized at 5%; same treatment/FE/controls.,0.9
-193625-V1,robust/sample/trim_1pct,methods/difference_in_differences.md#robustness,lnk_medpos,treat,G1,baseline,0,1,core_sample,Trim top/bottom 1% of sample; same outcome/treatment/FE/controls.,0.95
+193625-V1,baseline,methods/difference_in_differences.md#baseline,lnk_medpos,treat,G1,baseline,1,1,core_controls,Primary baseline,1.0
+193625-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,FE: unit_only,0.95
+193625-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,FE: time_only,0.95
+193625-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,FE: twoway,0.95
+193625-V1,did/fe/cz_x_cohort,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,FE: cz_x_cohort,0.95
+193625-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,FE: none,0.95
+193625-V1,did/fe/tier_x_cohort,methods/difference_in_differences.md#fixed-effects,lnk_medpos,treat,G1,baseline,0,1,core_fe,FE: tier_x_cohort,0.95
+193625-V1,did/controls/none,methods/difference_in_differences.md#control-sets,lnk_medpos,treat,G1,baseline,0,1,core_controls,Controls: none,0.95
+193625-V1,did/controls/minimal,methods/difference_in_differences.md#control-sets,lnk_medpos,treat,G1,baseline,0,1,core_controls,Controls: minimal,0.95
+193625-V1,did/controls/parental_only,methods/difference_in_differences.md#control-sets,lnk_medpos,treat,G1,baseline,0,1,core_controls,Controls: parental_only,0.95
+193625-V1,robust/control/drop_par_q1,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_q1,0.95
+193625-V1,robust/control/drop_par_q2,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_q2,0.95
+193625-V1,robust/control/drop_par_q3,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_q3,0.95
+193625-V1,robust/control/drop_par_q4,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_q4,0.95
+193625-V1,robust/control/drop_par_q5,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_q5,0.95
+193625-V1,robust/control/drop_lncount,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_lncount,0.95
+193625-V1,robust/control/drop_par_top10pc,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_top10pc,0.95
+193625-V1,robust/control/drop_par_top5pc,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_top5pc,0.95
+193625-V1,robust/control/drop_par_top1pc,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_top1pc,0.95
+193625-V1,robust/control/drop_par_toppt1pc,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_par_toppt1pc,0.95
+193625-V1,robust/control/drop_female,robustness/leave_one_out.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: drop_female,0.95
+193625-V1,robust/outcome/lnk_median,robustness/measurement.md,lnk_median,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: lnk_median,0.95
+193625-V1,robust/outcome/lnk_mean,robustness/measurement.md,lnk_mean,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: lnk_mean,0.95
+193625-V1,robust/outcome/k_q5,robustness/measurement.md,k_q5,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_q5,0.95
+193625-V1,robust/outcome/k_q4,robustness/measurement.md,k_q4,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_q4,0.95
+193625-V1,robust/outcome/k_q3,robustness/measurement.md,k_q3,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_q3,0.95
+193625-V1,robust/outcome/k_q2,robustness/measurement.md,k_q2,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_q2,0.95
+193625-V1,robust/outcome/k_q1,robustness/measurement.md,k_q1,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_q1,0.95
+193625-V1,robust/outcome/k_top10pc,robustness/measurement.md,k_top10pc,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_top10pc,0.95
+193625-V1,robust/outcome/k_top5pc,robustness/measurement.md,k_top5pc,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_top5pc,0.95
+193625-V1,robust/outcome/k_top1pc,robustness/measurement.md,k_top1pc,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_top1pc,0.95
+193625-V1,robust/outcome/k_0inc,robustness/measurement.md,k_0inc,treat,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: k_0inc,0.95
+193625-V1,robust/sample/tier1_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: tier1_only,0.95
+193625-V1,robust/sample/tier2_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: tier2_only,0.95
+193625-V1,robust/sample/tier3_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: tier3_only,0.95
+193625-V1,robust/sample/tier4_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: tier4_only,0.95
+193625-V1,robust/sample/tier5_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: tier5_only,0.95
+193625-V1,robust/sample/tier6_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: tier6_only,0.95
+193625-V1,robust/sample/elite_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: elite_only,0.95
+193625-V1,robust/sample/non_elite_only,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: non_elite_only,0.95
+193625-V1,robust/sample/drop_cohort1980,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1980,0.95
+193625-V1,robust/sample/drop_cohort1981,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1981,0.95
+193625-V1,robust/sample/drop_cohort1982,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1982,0.95
+193625-V1,robust/sample/drop_cohort1983,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1983,0.95
+193625-V1,robust/sample/drop_cohort1984,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1984,0.95
+193625-V1,robust/sample/drop_cohort1985,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1985,0.95
+193625-V1,robust/sample/drop_cohort1986,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1986,0.95
+193625-V1,robust/sample/drop_cohort1987,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1987,0.95
+193625-V1,robust/sample/drop_cohort1988,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1988,0.95
+193625-V1,robust/sample/drop_cohort1989,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1989,0.95
+193625-V1,robust/sample/drop_cohort1990,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1990,0.95
+193625-V1,robust/sample/drop_cohort1991,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: drop_cohort1991,0.95
+193625-V1,robust/sample/pre_recession_cohorts,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: pre_recession_cohorts,0.95
+193625-V1,robust/sample/post_recession_cohorts,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: post_recession_cohorts,0.95
+193625-V1,robust/sample/severe_cz_only,robustness/sample_restrictions.md,lnk_medpos,post,G1,baseline,0,0,noncore_heterogeneity,CZ severity: severe_cz_only,0.9
+193625-V1,robust/sample/mild_cz_only,robustness/sample_restrictions.md,lnk_medpos,post,G1,baseline,0,0,noncore_heterogeneity,CZ severity: mild_cz_only,0.9
+193625-V1,robust/cluster/cz,robustness/clustering_variations.md,lnk_medpos,treat,G1,baseline,0,1,core_inference,Cluster: cz,0.95
+193625-V1,robust/cluster/robust_hc,robustness/clustering_variations.md,lnk_medpos,treat,G1,baseline,0,1,core_inference,Cluster: robust_hc,0.95
+193625-V1,robust/funcform/levels_outcome,robustness/functional_form.md,k_median_levels,treat,G1,baseline,0,1,core_funcform,Funcform: levels_outcome,0.95
+193625-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_median,treat,G1,baseline,0,1,core_funcform,Funcform: ihs_outcome,0.95
+193625-V1,robust/treatment/continuous_shock,methods/difference_in_differences.md#treatment-definition,lnk_medpos,treat_continuous,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: treat_continuous,0.9
+193625-V1,robust/treatment/median_threshold,methods/difference_in_differences.md#treatment-definition,lnk_medpos,treat_median,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: treat_median,0.9
+193625-V1,robust/treatment/q75_threshold,methods/difference_in_differences.md#treatment-definition,lnk_medpos,treat_q75,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: treat_q75,0.9
+193625-V1,robust/placebo/fake_treatment_1981,robustness/placebo_tests.md,lnk_medpos,treat_fake1981,G1,baseline,0,0,noncore_placebo,Placebo: fake_treatment_1981,0.95
+193625-V1,robust/placebo/fake_treatment_1982,robustness/placebo_tests.md,lnk_medpos,treat_fake1982,G1,baseline,0,0,noncore_placebo,Placebo: fake_treatment_1982,0.95
+193625-V1,robust/heterogeneity/by_female,robustness/heterogeneity.md,lnk_medpos,treat_x_high_female,G1,baseline,0,0,noncore_heterogeneity,Het: by_female,0.95
+193625-V1,robust/heterogeneity/by_parental_income,robustness/heterogeneity.md,lnk_medpos,treat_x_high_par,G1,baseline,0,0,noncore_heterogeneity,Het: by_parental_income,0.95
+193625-V1,robust/heterogeneity/by_univ_size,robustness/heterogeneity.md,lnk_medpos,treat_x_large,G1,baseline,0,0,noncore_heterogeneity,Het: by_univ_size,0.95
+193625-V1,robust/heterogeneity/treat_x_tier1,robustness/heterogeneity.md,lnk_medpos,treat_tier1,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_tier1,0.95
+193625-V1,robust/heterogeneity/treat_x_tier2,robustness/heterogeneity.md,lnk_medpos,treat_tier2,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_tier2,0.95
+193625-V1,robust/heterogeneity/treat_x_tier3,robustness/heterogeneity.md,lnk_medpos,treat_tier3,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_tier3,0.95
+193625-V1,robust/heterogeneity/treat_x_tier4,robustness/heterogeneity.md,lnk_medpos,treat_tier4,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_tier4,0.95
+193625-V1,robust/heterogeneity/treat_x_tier5,robustness/heterogeneity.md,lnk_medpos,treat_tier5,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_tier5,0.95
+193625-V1,robust/heterogeneity/treat_x_tier6,robustness/heterogeneity.md,lnk_medpos,treat_tier6,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_tier6,0.95
+193625-V1,robust/heterogeneity/treat_x_elite,robustness/heterogeneity.md,lnk_medpos,treat_x_elite,G1,baseline,0,0,noncore_heterogeneity,Tier/elite subsample: treat_x_elite,0.95
+193625-V1,robust/control/progressive_1,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_1,0.95
+193625-V1,robust/control/progressive_2,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_2,0.95
+193625-V1,robust/control/progressive_3,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_3,0.95
+193625-V1,robust/control/progressive_4,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_4,0.95
+193625-V1,robust/control/progressive_5,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_5,0.95
+193625-V1,robust/control/progressive_6,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_6,0.95
+193625-V1,robust/control/progressive_7,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_7,0.95
+193625-V1,robust/control/progressive_8,robustness/control_progression.md,lnk_medpos,treat,G1,baseline,0,1,core_controls,Control: progressive_8,0.95
+193625-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,lnk_medpos_wins1,treat,G1,baseline,0,1,core_sample,Sample: winsorize_1pct,0.95
+193625-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,lnk_medpos_wins5,treat,G1,baseline,0,1,core_sample,Sample: winsorize_5pct,0.95
+193625-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,lnk_medpos,treat,G1,baseline,0,1,core_sample,Sample: trim_1pct,0.95

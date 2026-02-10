@@ -1,0 +1,39 @@
+{
+  "paper_id": "114708-V1",
+  "package_path": "data/downloads/extracted/114708-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "More generous health insurance plans (higher CSR level) have systematically lower drug copays, with the effect increasing sharply by drug tier -- consistent with strategic formulary design / screening. Silver94 plans have copays $19.64 lower than standard Silver, pooled across tiers.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "copay_amount"
+      ],
+      "baseline_treatment_vars": [
+        "Silver94_vs_Silver"
+      ],
+      "notes": "Baseline regression: copay_amount on Silver94_vs_Silver indicator with Tier FE, restricted to Silver plans (Standard, 87%, 94% CSR) excluding coinsurance observations. Coefficient -19.64 (SE 0.66, p~0). N=18,389, R2=0.36. This captures the publicly-observable manifestation of the paper's main claim about screening through formulary design. The paper's proprietary Table 3 regressions use therapeutic-class-level selection incentive measures that are not available in the replication data."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "The generosity-copay gradient is dramatically heterogeneous by drug tier: more generous plans reduce copays for all tiers, but the reduction is much larger for expensive/specialty drugs, confirming the screening mechanism.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "ols/interact/generosity_x_hightier"
+      ],
+      "baseline_outcome_vars": [
+        "copay_amount"
+      ],
+      "baseline_treatment_vars": [
+        "generosity_x_high_tier"
+      ],
+      "notes": "Interaction regression: copay_amount on generosity_score x high_tier with Tier FE. Coefficient 10.44 (SE 0.29, p~0). N=33,885, R2=0.29. The positive interaction means that more generous plans have disproportionately different copay structures for high-cost drug tiers, consistent with the paper's screening interpretation."
+    }
+  ],
+  "global_notes": "Paper is 'Screening in Contract Design: Evidence from the ACA Health Insurance Exchanges' by Geruso, Layton, Prinz (AER). The paper's main Table 3 regressions use proprietary Marketscan claims + MMIT formulary data to measure selection incentives at the therapeutic class level. The specification search uses only publicly available CCIIO Plan Attributes and Benefits Cost Sharing PUFs (2015), capturing the cost-sharing patterns that are the observable consequence of screening. The analysis has two natural baseline groups: (G1) the CSR comparison within Silver plans (baseline spec), and (G2) the generosity x tier interaction across all metals (ols/interact/generosity_x_hightier). Several specs are duplicates across categories: panel/fe/none = robust/controls/none, panel/fe/issuer = robust/controls/tier_issuer, robust/sample/drop_platinum = robust/leave_one_out/drop_platinum, robust/form/binary_subj_ded = robust/outcome/subj_ded, robust/sample/drop_catastrophic = robust/leave_one_out/drop_catastrophic. Sign interpretation varies: for CSR/deductible/coinsurance outcomes, negative means more generous plans have lower cost-sharing (expected). For the generosity_score treatment with copay outcome, positive reflects composition (higher-metal plans cover more expensive drugs). There are 90 total specifications."
+}

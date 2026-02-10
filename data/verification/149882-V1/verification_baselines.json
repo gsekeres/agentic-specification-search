@@ -1,12 +1,12 @@
 {
   "paper_id": "149882-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/149882-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/149882-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "The Breakthrough school-based gender-sensitization program improves adolescents gender-egalitarian attitudes (standardized gender index) at Endline 1.",
+      "claim_summary": "The Breakthrough school-based gender-sensitization program improves students' gender-egalitarian attitudes (standardized gender index).",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "B_treat"
       ],
-      "notes": "Single baseline: cross-sectional OLS with baseline gender index, grade FE, district FE, school clustering. Coefficient 0.014 SD, p=0.42. Index simplified vs paper."
+      "notes": "Coefficient 0.014 SD (SE 0.018, p=0.42). Effect positive but not significant. School-level RCT in Haryana, India with ~14,000 students. Clustered at school level."
     }
   ],
-  "global_notes": "54 rows total. Winsorized/trimmed specs likely have coding errors (scale change). Some control progression specs are duplicates. Heterogeneity specs report main effects not interactions."
+  "global_notes": "Paper is 'Reshaping Adolescents' Gender Attitudes' (AER). The specification search uses a simplified gender index rather than the paper's Anderson inverse-covariance-weighted index. The baseline effect is positive but insignificant (p=0.42); however, significant heterogeneity by gender exists: boys show 0.062 SD (p=0.02) while girls show -0.025 SD (p=0.29). All 53 specs use the same outcome (E_Sgender_index2_std) and treatment (B_treat) except for 3 alternative outcome specs and 3 placebo specs."
 }

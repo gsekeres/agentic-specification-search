@@ -1,65 +1,65 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-125201-V1,baseline,methods/panel_fixed_effects.md,death_rate_scaled,hot_days,G1,baseline,1,1,core_controls,Baseline specification for hot days on mortality,1.0
-125201-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,"Same outcome/treatment, no FE; tests FE importance",0.95
-125201-V1,panel/fe/unit,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,"Same outcome/treatment, unit FE only; FE structure test",0.95
-125201-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,"Same outcome/treatment, time FE only; FE structure test",0.95
-125201-V1,panel/fe/state_year,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,"Same outcome/treatment, muni + state*year FE variation",0.95
-125201-V1,panel/fe/year_month_separate,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,"Same outcome/treatment, separate year and month FE",0.95
-125201-V1,robust/control/none,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,"Same outcome/treatment/FE, no controls added",0.95
-125201-V1,robust/control/add_cold_days,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,"Same outcome/treatment/FE, only cold_days control",0.95
-125201-V1,robust/control/add_precip,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,"Same outcome/treatment/FE, only precipitation control",0.95
-125201-V1,robust/control/full,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,"Same outcome/treatment/FE, adds precipitation squared",0.95
-125201-V1,robust/control/all_temp_bins,robustness/control_progression.md,death_rate_scaled,scale_32_p_m,G1,baseline,0,1,core_controls,Treatment renamed to scale_32_p_m but same heat concept with temp bins,0.80
-125201-V1,robust/control/drop_cold,robustness/leave_one_out.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,"Same outcome/treatment/FE, drops cold_days control",0.95
-125201-V1,robust/control/drop_precip,robustness/leave_one_out.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,"Same outcome/treatment/FE, drops precipitation control",0.95
-125201-V1,robust/cluster/none,robustness/clustering_variations.md#single-level-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,"Same point estimate, robust HC1 SEs instead of clustered",0.95
-125201-V1,robust/cluster/state,robustness/clustering_variations.md#single-level-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,"Same point estimate, clustered at state level",0.95
-125201-V1,robust/cluster/time,robustness/clustering_variations.md#single-level-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,"Same point estimate, clustered by year",0.95
-125201-V1,robust/cluster/unit_time,robustness/clustering_variations.md#two-way-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,"Same point estimate, two-way clustered muni*year",0.95
-125201-V1,robust/sample/early_period,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec on 1998-2007 subsample,0.95
-125201-V1,robust/sample/late_period,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec on 2008-2017 subsample,0.95
-125201-V1,robust/sample/exclude_first_year,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding first year 1998,0.95
-125201-V1,robust/sample/exclude_last_year,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding last year 2017,0.95
-125201-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md#outlier-handling,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec with outcome winsorized at 1%/99%,0.95
-125201-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md#outlier-handling,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec with outcome winsorized at 5%/95%,0.95
-125201-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outlier-handling,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec with outcome trimmed at 1%/99%,0.95
-125201-V1,robust/sample/hot_days_only,robustness/sample_restrictions.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec restricted to obs with hot_days > 0,0.90
-125201-V1,robust/sample/drop_large_states,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding 5 largest states,0.95
-125201-V1,robust/sample/summer_only,robustness/sample_restrictions.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec restricted to summer months May-Sep,0.90
-125201-V1,robust/sample/winter_only,robustness/sample_restrictions.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec restricted to winter months Nov-Feb,0.90
-125201-V1,robust/sample/drop_state_1,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding state 1,0.95
-125201-V1,robust/sample/drop_state_2,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding state 2,0.95
-125201-V1,robust/sample/drop_state_3,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding state 3,0.95
-125201-V1,robust/sample/drop_state_4,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding state 4,0.95
-125201-V1,robust/sample/drop_state_5,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding state 5,0.95
-125201-V1,robust/outcome/log,robustness/functional_form.md,log_death_rate,hot_days,G1,baseline,0,1,core_funcform,Log transform of same outcome; functional form variation,0.90
-125201-V1,robust/outcome/male,robustness/heterogeneity.md,death_rate_male_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: male-only death rate is subgroup analysis,0.90
-125201-V1,robust/outcome/female,robustness/heterogeneity.md,death_rate_female_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: female-only death rate is subgroup analysis,0.90
-125201-V1,robust/outcome/elderly,robustness/heterogeneity.md,death_rate_elderly_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: elderly death rate is subgroup analysis,0.90
-125201-V1,robust/outcome/children,robustness/heterogeneity.md,death_rate_children_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: children death rate is subgroup analysis,0.90
-125201-V1,robust/outcome/working_age,robustness/heterogeneity.md,death_rate_working_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: working-age death rate is subgroup analysis,0.90
-125201-V1,robust/outcome/circulatory,robustness/heterogeneity.md,death_rate_circ_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Different outcome: circulatory deaths only; mechanism test,0.90
-125201-V1,robust/outcome/respiratory,robustness/heterogeneity.md,death_rate_resp_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Different outcome: respiratory deaths only; mechanism test,0.90
-125201-V1,robust/treatment/cold_days,robustness/measurement.md,death_rate_scaled,cold_days,G1,baseline,0,0,noncore_alt_treatment,Treatment is cold_days; different causal object than hot days,0.95
-125201-V1,robust/treatment/mean_temp,robustness/measurement.md,death_rate_scaled,MEAN_TEMP_m,G1,baseline,0,0,noncore_alt_treatment,Treatment is mean temperature; different causal object,0.90
-125201-V1,robust/treatment/extreme_heat_binary,robustness/measurement.md,death_rate_scaled,extreme_heat_binary,G1,baseline,0,1,core_method,Binary heat indicator; alternative measurement of same heat concept,0.85
-125201-V1,robust/treatment/intensity_squared,robustness/measurement.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Adds hot_days_squared as control; still reports hot_days coef,0.90
-125201-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_death_rate,hot_days,G1,baseline,0,1,core_funcform,IHS transform of same outcome; functional form variation,0.90
-125201-V1,robust/funcform/quadratic_temp,robustness/functional_form.md,death_rate_scaled,MEAN_TEMP_m,G1,baseline,0,0,noncore_alt_treatment,Treatment is MEAN_TEMP_m not hot_days; changes causal object,0.85
-125201-V1,robust/funcform/log_precip,robustness/functional_form.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_funcform,Log precipitation control; functional form of control variable,0.90
-125201-V1,robust/het/hot_states,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Subsample to hot states only; geographic heterogeneity,0.90
-125201-V1,robust/het/cold_states,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Subsample to cold states only; geographic heterogeneity,0.90
-125201-V1,robust/het/large_muni,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Subsample to large municipalities; population heterogeneity,0.90
-125201-V1,robust/het/small_muni,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Subsample to small municipalities; population heterogeneity,0.90
-125201-V1,robust/het/interaction_population,robustness/heterogeneity.md#interaction-specifications,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Interaction hot_days*population; main effect with het interaction,0.80
-125201-V1,robust/placebo/accidents,robustness/placebo_tests.md,death_rate_accident_scaled,hot_days,G1,baseline,0,0,noncore_placebo,Placebo outcome: accident deaths should not respond to heat,0.95
-125201-V1,robust/placebo/lead_temp,robustness/placebo_tests.md,death_rate_scaled,hot_days_lead1,G1,baseline,0,0,noncore_placebo,Placebo treatment: future hot days should not affect current death,0.95
-125201-V1,robust/het/age_35_44,robustness/heterogeneity.md#demographic-subgroups,death_rate_midage_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: age 35-44 death rate is subgroup analysis,0.90
-125201-V1,robust/het/age_45_54,robustness/heterogeneity.md#demographic-subgroups,death_rate_4554_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: age 45-54 death rate is subgroup analysis,0.90
-125201-V1,robust/het/age_55_64,robustness/heterogeneity.md#demographic-subgroups,death_rate_5564_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: age 55-64 death rate is subgroup analysis,0.90
-125201-V1,robust/het/age_65_74,robustness/heterogeneity.md#demographic-subgroups,death_rate_6574_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Different outcome: age 65-74 death rate is subgroup analysis,0.90
-125201-V1,robust/sample/drop_year_2000,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding year 2000,0.95
-125201-V1,robust/sample/drop_year_2005,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding year 2005,0.95
-125201-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding year 2010,0.95
-125201-V1,robust/sample/drop_year_2015,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Same spec excluding year 2015,0.95
-125201-V1,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,d_death_rate,d_hot_days,G1,baseline,0,1,core_method,First differences estimator; alternative method for same claim,0.85
+125201-V1,baseline,methods/panel_fixed_effects.md,death_rate_scaled,hot_days,G1,baseline,1,1,core_fe,"Baseline: municipality + year-month FE, death_rate on hot_days with cold_days and precipitation controls",1.0
+125201-V1,panel/fe/none,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,FE variation: none,0.95
+125201-V1,panel/fe/unit,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,FE variation: unit,0.95
+125201-V1,panel/fe/time,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,FE variation: time,0.95
+125201-V1,panel/fe/state_year,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,FE variation: state_year,0.95
+125201-V1,panel/fe/year_month_separate,methods/panel_fixed_effects.md#fixed-effects-structure,death_rate_scaled,hot_days,G1,baseline,0,1,core_fe,FE variation: year_month_separate,0.95
+125201-V1,robust/control/none,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Control variation: none,0.95
+125201-V1,robust/control/add_cold_days,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Control variation: add_cold_days,0.95
+125201-V1,robust/control/add_precip,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Control variation: add_precip,0.95
+125201-V1,robust/control/full,robustness/control_progression.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Control variation: full,0.95
+125201-V1,robust/control/all_temp_bins,robustness/control_progression.md,death_rate_scaled,scale_32_p_m,G1,baseline,0,1,core_funcform,All temperature bins specification,0.9
+125201-V1,robust/control/drop_cold,robustness/leave_one_out.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Control variation: drop_cold,0.95
+125201-V1,robust/control/drop_precip,robustness/leave_one_out.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_controls,Control variation: drop_precip,0.95
+125201-V1,robust/cluster/none,robustness/clustering_variations.md#single-level-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,Clustering: none,0.95
+125201-V1,robust/cluster/state,robustness/clustering_variations.md#single-level-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,Clustering: state,0.95
+125201-V1,robust/cluster/time,robustness/clustering_variations.md#single-level-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,Clustering: time,0.95
+125201-V1,robust/cluster/unit_time,robustness/clustering_variations.md#two-way-clustering,death_rate_scaled,hot_days,G1,baseline,0,1,core_inference,Clustering: unit_time,0.95
+125201-V1,robust/sample/early_period,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: 1998-2007,0.9
+125201-V1,robust/sample/late_period,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: 2008-2017,0.9
+125201-V1,robust/sample/exclude_first_year,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding 1998,0.9
+125201-V1,robust/sample/exclude_last_year,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding 2017,0.9
+125201-V1,robust/sample/winsor_1pct,robustness/sample_restrictions.md#outlier-handling,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Winsorized 1%/99%,0.9
+125201-V1,robust/sample/winsor_5pct,robustness/sample_restrictions.md#outlier-handling,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Winsorized 5%/95%,0.9
+125201-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outlier-handling,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Trimmed 1%/99%,0.9
+125201-V1,robust/sample/hot_days_only,robustness/sample_restrictions.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Obs with hot_days > 0,0.9
+125201-V1,robust/sample/drop_large_states,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding 5 largest states,0.9
+125201-V1,robust/sample/summer_only,robustness/sample_restrictions.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Summer months only (May-Sep),0.9
+125201-V1,robust/sample/winter_only,robustness/sample_restrictions.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Winter months only (Nov-Feb),0.9
+125201-V1,robust/sample/drop_state_1,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding state 1,0.9
+125201-V1,robust/sample/drop_state_2,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding state 2,0.9
+125201-V1,robust/sample/drop_state_3,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding state 3,0.9
+125201-V1,robust/sample/drop_state_4,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding state 4,0.9
+125201-V1,robust/sample/drop_state_5,robustness/sample_restrictions.md#geographic-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding state 5,0.9
+125201-V1,robust/outcome/log,robustness/functional_form.md,log_death_rate,hot_days,G1,baseline,0,1,core_funcform,Log outcome transformation,0.9
+125201-V1,robust/outcome/male,robustness/heterogeneity.md,death_rate_male_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_male_scaled (male),0.9
+125201-V1,robust/outcome/female,robustness/heterogeneity.md,death_rate_female_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_female_scaled (female),0.9
+125201-V1,robust/outcome/elderly,robustness/heterogeneity.md,death_rate_elderly_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_elderly_scaled (elderly),0.9
+125201-V1,robust/outcome/children,robustness/heterogeneity.md,death_rate_children_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_children_scaled (children),0.9
+125201-V1,robust/outcome/working_age,robustness/heterogeneity.md,death_rate_working_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_working_scaled (working_age),0.9
+125201-V1,robust/outcome/circulatory,robustness/heterogeneity.md,death_rate_circ_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_circ_scaled (circulatory),0.9
+125201-V1,robust/outcome/respiratory,robustness/heterogeneity.md,death_rate_resp_scaled,hot_days,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: death_rate_resp_scaled (respiratory),0.9
+125201-V1,robust/treatment/cold_days,robustness/measurement.md,death_rate_scaled,cold_days,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: cold_days,0.9
+125201-V1,robust/treatment/mean_temp,robustness/measurement.md,death_rate_scaled,MEAN_TEMP_m,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: MEAN_TEMP_m,0.9
+125201-V1,robust/treatment/extreme_heat_binary,robustness/measurement.md,death_rate_scaled,extreme_heat_binary,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: extreme_heat_binary,0.9
+125201-V1,robust/treatment/intensity_squared,robustness/measurement.md,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: hot_days,0.9
+125201-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_death_rate,hot_days,G1,baseline,0,1,core_funcform,Functional form: ihs_outcome,0.9
+125201-V1,robust/funcform/quadratic_temp,robustness/functional_form.md,death_rate_scaled,MEAN_TEMP_m,G1,baseline,0,1,core_funcform,Functional form: quadratic_temp,0.9
+125201-V1,robust/funcform/log_precip,robustness/functional_form.md,death_rate_scaled,hot_days,G1,baseline,0,1,core_funcform,Functional form: log_precip,0.9
+125201-V1,robust/het/hot_states,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: hot_states,0.9
+125201-V1,robust/het/cold_states,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: cold_states,0.9
+125201-V1,robust/het/large_muni,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: large_muni,0.9
+125201-V1,robust/het/small_muni,robustness/heterogeneity.md#geographic-subgroups,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: small_muni,0.9
+125201-V1,robust/het/interaction_population,robustness/heterogeneity.md#interaction-specifications,death_rate_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: interaction_population,0.9
+125201-V1,robust/placebo/accidents,robustness/placebo_tests.md,death_rate_accident_scaled,hot_days,G1,baseline,0,0,noncore_placebo,Placebo: accidents,0.95
+125201-V1,robust/placebo/lead_temp,robustness/placebo_tests.md,death_rate_scaled,hot_days_lead1,G1,baseline,0,0,noncore_placebo,Placebo: lead_temp,0.95
+125201-V1,robust/het/age_35_44,robustness/heterogeneity.md#demographic-subgroups,death_rate_midage_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: age_35_44,0.9
+125201-V1,robust/het/age_45_54,robustness/heterogeneity.md#demographic-subgroups,death_rate_4554_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: age_45_54,0.9
+125201-V1,robust/het/age_55_64,robustness/heterogeneity.md#demographic-subgroups,death_rate_5564_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: age_55_64,0.9
+125201-V1,robust/het/age_65_74,robustness/heterogeneity.md#demographic-subgroups,death_rate_6574_scaled,hot_days,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: age_65_74,0.9
+125201-V1,robust/sample/drop_year_2000,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding year 2000,0.9
+125201-V1,robust/sample/drop_year_2005,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding year 2005,0.9
+125201-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding year 2010,0.9
+125201-V1,robust/sample/drop_year_2015,robustness/sample_restrictions.md#time-based-restrictions,death_rate_scaled,hot_days,G1,baseline,0,1,core_sample,Sample: Excluding year 2015,0.9
+125201-V1,panel/method/first_diff,methods/panel_fixed_effects.md#estimation-method,d_death_rate,d_hot_days,G1,baseline,0,1,core_method,First differences estimation,0.9

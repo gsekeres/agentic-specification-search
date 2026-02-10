@@ -1,52 +1,52 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-205541-V1,baseline,methods/discrete_choice.md#baseline,coop,beliefon,G1,baseline,1,1,core_controls,Baseline spec for finite game beliefon effect on coop,1.0
-205541-V1,baseline_indefinite,methods/discrete_choice.md#baseline,coop,beliefon,G2,baseline_indefinite,1,1,core_controls,Baseline spec for indefinite game beliefon effect on coop,1.0
-205541-V1,discrete/binary/logit_finite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G1,baseline,0,1,core_method,"Logit instead of probit, same outcome/treatment/sample/controls as G1 baseline",0.95
-205541-V1,discrete/binary/logit_indefinite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G2,baseline_indefinite,0,1,core_method,"Logit instead of probit, same outcome/treatment/sample/controls as G2 baseline",0.95
-205541-V1,discrete/binary/lpm_finite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G1,baseline,0,1,core_method,"LPM instead of probit, same outcome/treatment/sample/controls as G1 baseline",0.95
-205541-V1,discrete/binary/lpm_indefinite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G2,baseline_indefinite,0,1,core_method,"LPM instead of probit, same outcome/treatment/sample/controls as G2 baseline",0.95
-205541-V1,discrete/controls/none_finite,methods/discrete_choice.md#control-sets,coop,beliefon,G1,baseline,0,1,core_controls,"No controls, same outcome/treatment/sample as G1 baseline",0.9
-205541-V1,discrete/controls/minimal_finite,methods/discrete_choice.md#control-sets,coop,beliefon,G1,baseline,0,1,core_controls,"Minimal controls (supergame only), same outcome/treatment/sample as G1",0.9
-205541-V1,discrete/controls/none_indefinite,methods/discrete_choice.md#control-sets,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,"No controls, same outcome/treatment/sample as G2; sign flips due to OVB",0.85
-205541-V1,discrete/controls/minimal_indefinite,methods/discrete_choice.md#control-sets,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,"Minimal controls (supergame only), same outcome/treatment/sample as G2",0.9
-205541-V1,robust/control/drop_supergame_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Drop supergame control from G1 baseline,0.95
-205541-V1,robust/control/drop_focoop_m1_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Drop focoop_m1 control from G1 baseline,0.95
-205541-V1,robust/control/drop_fcoop_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Drop fcoop control from G1 baseline,0.95
-205541-V1,robust/control/drop_risk_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Drop risk control from G1 baseline,0.95
-205541-V1,robust/control/drop_supergame_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Drop supergame control from G2 baseline,0.95
-205541-V1,robust/control/drop_focoop_m1_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Drop focoop_m1 control from G2 baseline,0.95
-205541-V1,robust/control/drop_fcoop_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Drop fcoop control from G2 baseline,0.95
-205541-V1,robust/control/drop_risk_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Drop risk control from G2 baseline,0.95
-205541-V1,robust/control/drop_length_m1_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Drop length_m1 control from G2 baseline,0.95
-205541-V1,robust/sample/drop_first_supergame_finite,robustness/sample_restrictions.md#time-based-restrictions,coop,beliefon,G1,baseline,0,0,invalid,"Identical coef/SE to baseline; filter had no effect, not a real robustness check",0.95
-205541-V1,robust/sample/drop_first_supergame_indefinite,robustness/sample_restrictions.md#time-based-restrictions,coop,beliefon,G2,baseline_indefinite,0,0,invalid,"Identical coef/SE to baseline; filter had no effect, not a real robustness check",0.95
-205541-V1,robust/sample/drop_late_supergames_finite,robustness/sample_restrictions.md#time-based-restrictions,coop,beliefon,G1,baseline,0,1,core_sample,Excludes late supergames from G1 finite sample; valid sample restriction,0.9
-205541-V1,robust/cluster/none_finite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G1,baseline,0,1,core_inference,"Robust SE instead of session clustering, same model as G1 baseline",0.95
-205541-V1,robust/cluster/none_indefinite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G2,baseline_indefinite,0,1,core_inference,"Robust SE instead of session clustering, same model as G2 baseline",0.95
-205541-V1,robust/cluster/unit_finite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G1,baseline,0,1,core_inference,"Cluster by subject instead of session, same model as G1 baseline",0.95
-205541-V1,robust/cluster/unit_indefinite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G2,baseline_indefinite,0,1,core_inference,"Cluster by subject instead of session, same model as G2 baseline",0.95
-205541-V1,robust/het/by_risk_low_finite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,"Subsample by risk level; heterogeneity split, not test of main claim",0.85
-205541-V1,robust/het/by_risk_high_finite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,"Subsample by risk level; heterogeneity split, not test of main claim",0.85
-205541-V1,robust/het/by_fcoop_cooperators_finite,robustness/heterogeneity.md#baseline-characteristics,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,First-supergame cooperators only; heterogeneity split changes estimand,0.85
-205541-V1,robust/het/by_fcoop_defectors_finite,robustness/heterogeneity.md#baseline-characteristics,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,First-supergame defectors only; heterogeneity split changes estimand,0.85
-205541-V1,robust/het/interaction_supergame_finite,robustness/heterogeneity.md#interaction-specifications,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Interaction beliefon x supergame; tests heterogeneous effect not main claim,0.8
-205541-V1,robust/het/interaction_fcoop_finite,robustness/heterogeneity.md#interaction-specifications,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Interaction beliefon x fcoop; tests heterogeneous effect not main claim,0.8
-205541-V1,robust/het/by_risk_low_indefinite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G2,baseline_indefinite,0,0,noncore_heterogeneity,"Subsample by risk level; heterogeneity split, not test of main claim",0.85
-205541-V1,robust/het/by_risk_high_indefinite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G2,baseline_indefinite,0,0,noncore_heterogeneity,"Subsample by risk level; heterogeneity split, not test of main claim",0.85
-205541-V1,custom/treatment_finite_pooled,custom,coop,finite,,,0,0,noncore_alt_treatment,"Treatment is finite (game type), not beliefon; different causal object",0.95
-205541-V1,custom/treatment_lowr,custom,coop,lowr,,,0,0,noncore_alt_treatment,"Treatment is lowr (low continuation prob), not beliefon; different causal object",0.95
-205541-V1,custom/treatment_hight,custom,coop,hight,,,0,0,noncore_alt_treatment,"Treatment is hight (high temptation), not beliefon; different causal object",0.95
-205541-V1,custom/all_rounds_finite,custom,coop,belief,,,0,0,noncore_alt_treatment,Treatment is continuous belief not beliefon; all rounds not round 1; different estimand,0.95
-205541-V1,custom/all_rounds_indefinite,custom,coop,belief,,,0,0,noncore_alt_treatment,Treatment is continuous belief not beliefon; all rounds not round 1; different estimand,0.95
-205541-V1,robust/control/add_supergame_finite,robustness/control_progression.md,coop,beliefon,G1,baseline,0,1,core_controls,"Supergame only control; same as minimal_finite, valid controls variation",0.9
-205541-V1,robust/control/add_focoop_m1_finite,robustness/control_progression.md,coop,beliefon,G1,baseline,0,1,core_controls,"Supergame+focoop_m1 controls; builds toward baseline, valid controls variation",0.9
-205541-V1,robust/control/add_fcoop_finite,robustness/control_progression.md,coop,beliefon,G1,baseline,0,1,core_controls,Supergame+focoop_m1+fcoop controls; one fewer control than baseline,0.9
-205541-V1,robust/sample/drop_session_5_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Drop session 5 from finite sample; valid influential-obs robustness check,0.9
-205541-V1,robust/sample/drop_session_6_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Drop session 6 from finite sample; valid influential-obs robustness check,0.9
-205541-V1,robust/sample/drop_session_7_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Drop session 7 from finite sample; valid influential-obs robustness check,0.9
-205541-V1,robust/sample/drop_session_8_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Drop session 8 from finite sample; valid influential-obs robustness check,0.9
-205541-V1,robust/sample/drop_session_9_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Drop session 9 from finite sample; valid influential-obs robustness check,0.9
-205541-V1,custom/belief_error_finite,custom,belief_error,round,,,0,0,noncore_alt_outcome,"Outcome is belief_error, treatment is round; entirely different estimand",0.95
-205541-V1,custom/belief_error_indefinite,custom,belief_error,round,,,0,0,noncore_alt_outcome,"Outcome is belief_error, treatment is round; entirely different estimand",0.95
-205541-V1,robust/se/hc3_finite,robustness/clustering_variations.md#alternative-se-methods,coop,beliefon,G1,baseline,0,1,core_inference,"HC3 robust SE instead of session clustering, same model as G1 baseline",0.95
-205541-V1,robust/se/hc3_indefinite,robustness/clustering_variations.md#alternative-se-methods,coop,beliefon,G2,baseline_indefinite,0,1,core_inference,"HC3 robust SE instead of session clustering, same model as G2 baseline",0.95
+205541-V1,baseline,methods/discrete_choice.md#baseline,coop,beliefon,G1,baseline,1,1,core_controls,Primary baseline: beliefon on coop in finite PD,1.0
+205541-V1,baseline_indefinite,methods/discrete_choice.md#baseline,coop,beliefon,G2,baseline_indefinite,1,1,core_controls,Baseline: beliefon on coop in indefinite PD,1.0
+205541-V1,discrete/binary/logit_finite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G1,baseline,0,1,core_method,Model type: logit_finite,0.95
+205541-V1,discrete/binary/logit_indefinite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G2,baseline_indefinite,0,1,core_method,Model type: logit_indefinite,0.95
+205541-V1,discrete/binary/lpm_finite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G1,baseline,0,1,core_method,Model type: lpm_finite,0.95
+205541-V1,discrete/binary/lpm_indefinite,methods/discrete_choice.md#model-type-binary-outcome,coop,beliefon,G2,baseline_indefinite,0,1,core_method,Model type: lpm_indefinite,0.95
+205541-V1,discrete/controls/none_finite,methods/discrete_choice.md#control-sets,coop,beliefon,G1,baseline,0,1,core_controls,Control set: none_finite,0.95
+205541-V1,discrete/controls/minimal_finite,methods/discrete_choice.md#control-sets,coop,beliefon,G1,baseline,0,1,core_controls,Control set: minimal_finite,0.95
+205541-V1,discrete/controls/none_indefinite,methods/discrete_choice.md#control-sets,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control set: none_indefinite,0.95
+205541-V1,discrete/controls/minimal_indefinite,methods/discrete_choice.md#control-sets,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control set: minimal_indefinite,0.95
+205541-V1,robust/control/drop_supergame_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: drop_supergame_finite,0.95
+205541-V1,robust/control/drop_focoop_m1_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: drop_focoop_m1_finite,0.95
+205541-V1,robust/control/drop_fcoop_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: drop_fcoop_finite,0.95
+205541-V1,robust/control/drop_risk_finite,robustness/leave_one_out.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: drop_risk_finite,0.95
+205541-V1,robust/control/drop_supergame_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control variation: drop_supergame_indefinite,0.95
+205541-V1,robust/control/drop_focoop_m1_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control variation: drop_focoop_m1_indefinite,0.95
+205541-V1,robust/control/drop_fcoop_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control variation: drop_fcoop_indefinite,0.95
+205541-V1,robust/control/drop_risk_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control variation: drop_risk_indefinite,0.95
+205541-V1,robust/control/drop_length_m1_indefinite,robustness/leave_one_out.md,coop,beliefon,G2,baseline_indefinite,0,1,core_controls,Control variation: drop_length_m1_indefinite,0.95
+205541-V1,robust/sample/drop_first_supergame_finite,robustness/sample_restrictions.md#time-based-restrictions,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_first_supergame_finite,0.95
+205541-V1,robust/sample/drop_first_supergame_indefinite,robustness/sample_restrictions.md#time-based-restrictions,coop,beliefon,G2,baseline_indefinite,0,1,core_sample,Sample restriction: drop_first_supergame_indefinite,0.95
+205541-V1,robust/sample/drop_late_supergames_finite,robustness/sample_restrictions.md#time-based-restrictions,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_late_supergames_finite,0.95
+205541-V1,robust/cluster/none_finite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G1,baseline,0,1,core_inference,Inference: none_finite,0.95
+205541-V1,robust/cluster/none_indefinite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G2,baseline_indefinite,0,1,core_inference,Inference: none_indefinite,0.95
+205541-V1,robust/cluster/unit_finite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G1,baseline,0,1,core_inference,Inference: unit_finite,0.95
+205541-V1,robust/cluster/unit_indefinite,robustness/clustering_variations.md#single-level-clustering,coop,beliefon,G2,baseline_indefinite,0,1,core_inference,Inference: unit_indefinite,0.95
+205541-V1,robust/het/by_risk_low_finite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_risk_low_finite,0.95
+205541-V1,robust/het/by_risk_high_finite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_risk_high_finite,0.95
+205541-V1,robust/het/by_fcoop_cooperators_finite,robustness/heterogeneity.md#baseline-characteristics,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_fcoop_cooperators_finite,0.95
+205541-V1,robust/het/by_fcoop_defectors_finite,robustness/heterogeneity.md#baseline-characteristics,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_fcoop_defectors_finite,0.95
+205541-V1,robust/het/interaction_supergame_finite,robustness/heterogeneity.md#interaction-specifications,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: interaction_supergame_finite,0.95
+205541-V1,robust/het/interaction_fcoop_finite,robustness/heterogeneity.md#interaction-specifications,coop,beliefon,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: interaction_fcoop_finite,0.95
+205541-V1,robust/het/by_risk_low_indefinite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G2,baseline_indefinite,0,0,noncore_heterogeneity,Heterogeneity: by_risk_low_indefinite,0.95
+205541-V1,robust/het/by_risk_high_indefinite,robustness/heterogeneity.md#socioeconomic-subgroups,coop,beliefon,G2,baseline_indefinite,0,0,noncore_heterogeneity,Heterogeneity: by_risk_high_indefinite,0.95
+205541-V1,custom/treatment_finite_pooled,custom,coop,finite,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: treatment_finite_pooled,0.9
+205541-V1,custom/treatment_lowr,custom,coop,lowr,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: treatment_lowr,0.9
+205541-V1,custom/treatment_hight,custom,coop,hight,G1,baseline,0,0,noncore_alt_treatment,Custom treatment: treatment_hight,0.9
+205541-V1,custom/all_rounds_finite,custom,coop,belief,G1,baseline,0,0,noncore_alt_outcome,Round-level belief analysis: all_rounds_finite,0.9
+205541-V1,custom/all_rounds_indefinite,custom,coop,belief,G2,baseline_indefinite,0,0,noncore_alt_outcome,Round-level belief analysis: all_rounds_indefinite,0.9
+205541-V1,robust/control/add_supergame_finite,robustness/control_progression.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: add_supergame_finite,0.95
+205541-V1,robust/control/add_focoop_m1_finite,robustness/control_progression.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: add_focoop_m1_finite,0.95
+205541-V1,robust/control/add_fcoop_finite,robustness/control_progression.md,coop,beliefon,G1,baseline,0,1,core_controls,Control variation: add_fcoop_finite,0.95
+205541-V1,robust/sample/drop_session_5_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_session_5_finite,0.95
+205541-V1,robust/sample/drop_session_6_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_session_6_finite,0.95
+205541-V1,robust/sample/drop_session_7_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_session_7_finite,0.95
+205541-V1,robust/sample/drop_session_8_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_session_8_finite,0.95
+205541-V1,robust/sample/drop_session_9_finite,robustness/sample_restrictions.md#influential-observations,coop,beliefon,G1,baseline,0,1,core_sample,Sample restriction: drop_session_9_finite,0.95
+205541-V1,custom/belief_error_finite,custom,belief_error,round,G1,baseline,0,0,noncore_alt_outcome,Belief error analysis: belief_error_finite,0.9
+205541-V1,custom/belief_error_indefinite,custom,belief_error,round,G2,baseline_indefinite,0,0,noncore_alt_outcome,Belief error analysis: belief_error_indefinite,0.9
+205541-V1,robust/se/hc3_finite,robustness/clustering_variations.md#alternative-se-methods,coop,beliefon,G1,baseline,0,1,core_inference,Inference: hc3_finite,0.95
+205541-V1,robust/se/hc3_indefinite,robustness/clustering_variations.md#alternative-se-methods,coop,beliefon,G2,baseline_indefinite,0,1,core_inference,Inference: hc3_indefinite,0.95

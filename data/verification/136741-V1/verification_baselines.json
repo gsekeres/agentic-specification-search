@@ -1,12 +1,12 @@
 {
   "paper_id": "136741-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/136741-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/136741-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Higher historical black lynching rates (per 10,000 black population using 1900 denominator) lead to lower contemporary black voter registration rates in Southern US counties.",
+      "claim_summary": "Higher historical black lynching rates are associated with lower contemporary black voter registration rates. A one-unit increase in lynching rate per 10,000 black population (1900 denominator) is associated with a 0.47 percentage point decrease in black voter registration.",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "lynchcapitamob"
       ],
-      "notes": "Single baseline: OLS with state FE, historical controls (illiteracy, county formation year, newspapers, farm value, small farms, land inequality, free blacks), robust SEs. Coef=-0.469, SE=0.156, p=0.003. N=267 counties in AL, FL, GA, LA, NC, SC."
+      "notes": "Cross-sectional OLS with state FE and historical controls. Coefficient -0.469 (SE 0.154, p=0.003). N=267 Southern US counties in 6 states. Controls: black illiteracy (1910), county formation year, newspaper rate (1840), farm value (1860), small farm proportion, land inequality, free black proportion."
     }
   ],
-  "global_notes": "Single clear baseline claim. 70 specs: 21 control variations, 11 sample restrictions, 13 functional form changes, 6 inference variations, 1 FE variation, 5 method variations, 3 placebos, 2 alt outcomes, 9 heterogeneity. Alt treatment denominators (1910/1920/1930 pop) and data sources (Stevenson) are core funcform tests. Heterogeneity (interactions + split samples) classified as non-core."
+  "global_notes": "Cross-sectional study of 267 counties in 6 Southern states. Identification relies on within-state variation controlling for historical observables. Main result is highly robust across control variations, sample restrictions, and estimation methods. Placebo tests pass: white lynching has no effect on black registration; black lynching has no effect on white registration. Sensitivity to population denominator: using 1920 or 1930 population attenuates effects substantially."
 }

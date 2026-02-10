@@ -1,68 +1,68 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-146041-V1,baseline,methods/cross_sectional_ols.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,1,1,core_method,"Baseline AQ-GDP specification (12 countries, sigma=1.5)",1.0
-146041-V1,ols/outcome/wage_ratio,methods/cross_sectional_ols.md#functional-form,l_wrat53_dum_skti_secall,l_y,,,0,0,noncore_alt_outcome,"Wage ratio is a decomposition component of AQ, different estimand",0.9
-146041-V1,ols/outcome/labor_supply,methods/cross_sectional_ols.md#functional-form,l_H5L3_dum_skti_hrs_secall,l_y,,,0,0,noncore_alt_outcome,"Labor supply ratio is a decomposition component of AQ, different estimand",0.9
-146041-V1,ols/param/sigma_low,robustness/model_specification.md,l_irAQ53rl_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,Same AQ concept with sigma=1.3 instead of 1.5; key parameter sensitivity,0.85
-146041-V1,ols/param/sigma_high,robustness/model_specification.md,l_irAQ53rh_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,Same AQ concept with sigma=2.0 instead of 1.5; key parameter sensitivity,0.85
-146041-V1,ols/measurement/bodies,robustness/measurement.md,l_irAQ53_dum_skti_bod_secall,l_y,G1,baseline,0,1,core_funcform,AQ with bodies instead of hours for labor aggregation,0.9
-146041-V1,ols/measurement/population,robustness/measurement.md,l_irAQ53_dum_skti_pop_secall,l_y,G1,baseline,0,1,core_funcform,AQ with population instead of employed for labor aggregation,0.9
-146041-V1,ols/measurement/mincerian,robustness/measurement.md,l_irAQ53_minc_skti_pop_secall,l_y,G1,baseline,0,1,core_funcform,AQ with Mincerian returns assumption instead of dummy grouping,0.85
-146041-V1,ols/controls/experience_gender,robustness/control_progression.md,l_irAQ53_dumx_skti_hrs_secall,l_y,G1,baseline,0,1,core_controls,AQ constructed with experience and gender controls in wage regression,0.9
-146041-V1,ols/controls/expgen_sigma_low,robustness/control_progression.md,l_irAQ53rl_dumx_skti_hrs_secall,l_y,G1,baseline,0,1,core_controls,Experience+gender controls combined with sigma=1.3,0.85
-146041-V1,ols/controls/expgen_sigma_high,robustness/control_progression.md,l_irAQ53rh_dumx_skti_hrs_secall,l_y,G1,baseline,0,1,core_controls,Experience+gender controls combined with sigma=2.0,0.85
-146041-V1,ols/sample/self_employed,robustness/sample_restrictions.md,l_irAQ53_dumse_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Self-employment sample (8 countries); alternative AQ construction,0.8
-146041-V1,ols/sample/selfemp_sigma_low,robustness/sample_restrictions.md,l_irAQ53rl_dumse_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Self-employment sample with sigma=1.3,0.75
-146041-V1,ols/sample/selfemp_sigma_high,robustness/sample_restrictions.md,l_irAQ53rh_dumse_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Self-employment sample with sigma=2.0,0.75
-146041-V1,ols/sector/Agriculture,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec1,l_y,G1,baseline,0,0,noncore_heterogeneity,Sector-specific AQ (Agriculture only); heterogeneity decomposition,0.85
-146041-V1,ols/sector/Agriculture/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec1,l_y,,,0,0,noncore_heterogeneity,Sector-specific wage ratio (Agriculture); heterogeneity + different outcome,0.9
-146041-V1,ols/sector/Manufacturing,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec2,l_y,G1,baseline,0,0,noncore_heterogeneity,Sector-specific AQ (Manufacturing only); heterogeneity decomposition,0.85
-146041-V1,ols/sector/Manufacturing/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec2,l_y,,,0,0,noncore_heterogeneity,Sector-specific wage ratio (Manufacturing); heterogeneity + different outcome,0.9
-146041-V1,ols/sector/LowSkillServices,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec3,l_y,G1,baseline,0,0,noncore_heterogeneity,Sector-specific AQ (LowSkillServices); heterogeneity decomposition,0.85
-146041-V1,ols/sector/LowSkillServices/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec3,l_y,,,0,0,noncore_heterogeneity,Sector-specific wage ratio (LowSkillServices); heterogeneity + different outcome,0.9
-146041-V1,ols/sector/HighSkillServices,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec4,l_y,G1,baseline,0,0,noncore_heterogeneity,Sector-specific AQ (HighSkillServices); heterogeneity decomposition,0.85
-146041-V1,ols/sector/HighSkillServices/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec4,l_y,,,0,0,noncore_heterogeneity,Sector-specific wage ratio (HighSkillServices); heterogeneity + different outcome,0.9
-146041-V1,ols/sample/barro_lee_broad,robustness/sample_restrictions.md,l_irAQ53_blee_skti,l_y,G1,baseline,0,1,core_sample,Barro-Lee broad sample (139 countries) instead of 12-country micro sample,0.85
-146041-V1,ols/sample/blee_sigma_low,robustness/sample_restrictions.md,l_irAQ53rl_blee_skti,l_y,G1,baseline,0,1,core_sample,Barro-Lee broad sample with sigma=1.3,0.8
-146041-V1,ols/sample/blee_sigma_high,robustness/sample_restrictions.md,l_irAQ53rh_blee_skti,l_y,G1,baseline,0,1,core_sample,Barro-Lee broad sample with sigma=2.0,0.8
-146041-V1,ols/Q/baseline_us,methods/cross_sectional_ols.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,1,1,core_method,Baseline Q-GDP specification (101 US immigrant origin countries),1.0
-146041-V1,ols/Q/us_micro,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,"Q-GDP restricted to 12 micro-data countries; same outcome, smaller sample",0.9
-146041-V1,ols/Q/pooled,methods/cross_sectional_ols.md,l_irQ53_pool_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,Pooled Q across multiple host countries instead of US-only,0.85
-146041-V1,ols/Q/pooled_micro,robustness/sample_restrictions.md,l_irQ53_pool_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Pooled Q restricted to micro-data countries,0.8
-146041-V1,ols/Q/selection_adjusted,robustness/measurement.md,l_irQ53sel_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,"Q adjusted for immigrant selection bias; same concept, corrected measure",0.9
-146041-V1,ols/Q/long_term,robustness/sample_restrictions.md,l_irQ53yh_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q using 10+ year immigrants only; addresses assimilation concerns,0.9
-146041-V1,ols/Q/good_english,robustness/sample_restrictions.md,l_irQ53goodeng_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q restricted to good-English-speaking immigrants,0.9
-146041-V1,ols/Q/no_downgrading,robustness/measurement.md,l_irQ53nodown_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,Q corrected for skill downgrading of immigrants,0.9
-146041-V1,ols/Q/no_mismatch,robustness/measurement.md,l_irQ53nomism_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,Q corrected for occupation-education mismatch,0.9
-146041-V1,ols/Q/sorting_sectors,robustness/measurement.md,l_irQ53sorts_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,Q corrected for sector-based sorting of immigrants,0.9
-146041-V1,ols/Q/sorting_geographic,robustness/measurement.md,l_irQ53sortr_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,Q corrected for geographic sorting of immigrants,0.9
-146041-V1,ols/se/classical,robustness/clustering_variations.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_inference,"Same point estimate, classical (non-robust) SEs instead of HC1",0.95
-146041-V1,ols/se/bootstrap,robustness/clustering_variations.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_inference,"Same point estimate, bootstrap SEs instead of HC1",0.95
-146041-V1,robust/loo/drop_Brazil,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Brazil from 12-country sample,0.95
-146041-V1,robust/loo/drop_Canada,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Canada from 12-country sample,0.95
-146041-V1,robust/loo/drop_India,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop India from 12-country sample,0.95
-146041-V1,robust/loo/drop_Indonesia,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Indonesia from 12-country sample,0.95
-146041-V1,robust/loo/drop_Israel,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Israel from 12-country sample,0.95
-146041-V1,robust/loo/drop_Jamaica,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Jamaica from 12-country sample,0.95
-146041-V1,robust/loo/drop_Mexico,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Mexico from 12-country sample,0.95
-146041-V1,robust/loo/drop_Panama,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Panama from 12-country sample,0.95
-146041-V1,robust/loo/drop_Trinidad_and_Tobago,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Trinidad and Tobago from 12-country sample,0.95
-146041-V1,robust/loo/drop_United_States,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop United States from 12-country sample,0.95
-146041-V1,robust/loo/drop_Uruguay,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Uruguay from 12-country sample,0.95
-146041-V1,robust/loo/drop_Venezuela,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out: drop Venezuela from 12-country sample,0.95
-146041-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q-GDP with outcome winsorized at 5th/95th percentile,0.9
-146041-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q-GDP with outcome winsorized at 10th/90th percentile,0.9
-146041-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q-GDP with extreme 5% trimmed (89 obs),0.9
-146041-V1,robust/sample/high_income,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q-GDP restricted to above-median income origin countries,0.8
-146041-V1,robust/sample/low_income,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q-GDP restricted to below-median income origin countries,0.8
-146041-V1,ols/Q/distance_control,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Q-GDP with geographic distance control added,0.95
-146041-V1,ols/Q/bilateral_full,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,"Q-GDP with full bilateral controls (distance, contiguity, language)",0.95
-146041-V1,ols/Q/contig_control,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Q-GDP with contiguity control added,0.95
-146041-V1,ols/Q/language_control,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Q-GDP with common language control added,0.95
-146041-V1,ols/form/levels_AQ,robustness/functional_form.md,irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,AQ in levels (not logs) regressed on log GDP,0.85
-146041-V1,ols/form/levels_Q,robustness/functional_form.md,irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,Q in levels (not logs) regressed on log GDP,0.85
-146041-V1,ols/form/quadratic_gdp,robustness/functional_form.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,AQ-GDP with quadratic GDP term; tests nonlinearity,0.8
-146041-V1,ols/method/quantile_25pct,methods/cross_sectional_ols.md#estimation-method,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,25th percentile quantile regression instead of OLS mean,0.9
-146041-V1,ols/method/quantile_median,methods/cross_sectional_ols.md#estimation-method,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,Median quantile regression instead of OLS mean,0.9
-146041-V1,ols/method/quantile_75pct,methods/cross_sectional_ols.md#estimation-method,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,75th percentile quantile regression instead of OLS mean,0.9
-146041-V1,ols/compare/baseline_aq,robustness/model_specification.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,0,noncore_diagnostic,Baseline AQ outcome run on US immigrant sample (different sample than G1 baseline),0.7
-146041-V1,ols/compare/barro-lee_aq,robustness/model_specification.md,l_irAQ53_blee_skti,l_y,G1,baseline,0,0,noncore_diagnostic,Barro-Lee AQ run on US immigrant sample; cross-method comparison diagnostic,0.7
+146041-V1,baseline,methods/cross_sectional_ols.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,1,1,core_controls,"Primary baseline: log AQ on log GDP, micro sample (12 countries)",1.0
+146041-V1,ols/outcome/wage_ratio,methods/cross_sectional_ols.md#functional-form,l_wrat53_dum_skti_secall,l_y,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: l_wrat53_dum_skti_secall,0.95
+146041-V1,ols/outcome/labor_supply,methods/cross_sectional_ols.md#functional-form,l_H5L3_dum_skti_hrs_secall,l_y,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: l_H5L3_dum_skti_hrs_secall,0.95
+146041-V1,ols/param/sigma_low,robustness/model_specification.md,l_irAQ53rl_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,"Elasticity of substitution variation: Micro sample, sigma_low",0.95
+146041-V1,ols/param/sigma_high,robustness/model_specification.md,l_irAQ53rh_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,"Elasticity of substitution variation: Micro sample, sigma_high",0.95
+146041-V1,ols/measurement/bodies,robustness/measurement.md,l_irAQ53_dum_skti_bod_secall,l_y,G1,baseline,0,1,core_funcform,Labor aggregation: bodies,0.95
+146041-V1,ols/measurement/population,robustness/measurement.md,l_irAQ53_dum_skti_pop_secall,l_y,G1,baseline,0,1,core_funcform,Labor aggregation: population,0.95
+146041-V1,ols/measurement/mincerian,robustness/measurement.md,l_irAQ53_minc_skti_pop_secall,l_y,G1,baseline,0,1,core_funcform,Labor aggregation: mincerian,0.95
+146041-V1,ols/controls/experience_gender,robustness/control_progression.md,l_irAQ53_dumx_skti_hrs_secall,l_y,G1,baseline,0,1,core_controls,Control variation: experience_gender,0.95
+146041-V1,ols/controls/expgen_sigma_low,robustness/control_progression.md,l_irAQ53rl_dumx_skti_hrs_secall,l_y,G1,baseline,0,1,core_controls,Control variation: expgen_sigma_low,0.95
+146041-V1,ols/controls/expgen_sigma_high,robustness/control_progression.md,l_irAQ53rh_dumx_skti_hrs_secall,l_y,G1,baseline,0,1,core_controls,Control variation: expgen_sigma_high,0.95
+146041-V1,ols/sample/self_employed,robustness/sample_restrictions.md,l_irAQ53_dumse_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Self-employment sample: Self-employment sample,0.95
+146041-V1,ols/sample/selfemp_sigma_low,robustness/sample_restrictions.md,l_irAQ53rl_dumse_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,"Self-employment sample: Self-employment, sigma_low",0.95
+146041-V1,ols/sample/selfemp_sigma_high,robustness/sample_restrictions.md,l_irAQ53rh_dumse_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,"Self-employment sample: Self-employment, sigma_high",0.95
+146041-V1,ols/sector/Agriculture,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec1,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, sector Agriculture",0.95
+146041-V1,ols/sector/Agriculture/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec1,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, Agriculture, wage_ratio",0.95
+146041-V1,ols/sector/Manufacturing,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec2,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, sector Manufacturing",0.95
+146041-V1,ols/sector/Manufacturing/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec2,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, Manufacturing, wage_ratio",0.95
+146041-V1,ols/sector/LowSkillServices,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec3,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, sector LowSkillServices",0.95
+146041-V1,ols/sector/LowSkillServices/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec3,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, LowSkillServices, wage_ratio",0.95
+146041-V1,ols/sector/HighSkillServices,robustness/heterogeneity.md,l_irAQ53_dum_skti_hrs_sec4,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, sector HighSkillServices",0.95
+146041-V1,ols/sector/HighSkillServices/wage_ratio,robustness/heterogeneity.md,l_wrat53_dum_skti_sec4,l_y,G1,baseline,0,0,noncore_heterogeneity,"Sector: Micro sample, HighSkillServices, wage_ratio",0.95
+146041-V1,ols/sample/barro_lee_broad,robustness/sample_restrictions.md,l_irAQ53_blee_skti,l_y,G1,baseline,0,1,core_sample,Barro-Lee broad sample: Barro-Lee broad sample,0.95
+146041-V1,ols/sample/blee_sigma_low,robustness/sample_restrictions.md,l_irAQ53rl_blee_skti,l_y,G1,baseline,0,1,core_sample,"Barro-Lee broad sample: Barro-Lee broad, sigma_low",0.95
+146041-V1,ols/sample/blee_sigma_high,robustness/sample_restrictions.md,l_irAQ53rh_blee_skti,l_y,G1,baseline,0,1,core_sample,"Barro-Lee broad sample: Barro-Lee broad, sigma_high",0.95
+146041-V1,ols/Q/baseline_us,methods/cross_sectional_ols.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,1,1,core_controls,"Q baseline: log Q on log GDP, US immigrants",1.0
+146041-V1,ols/Q/us_micro,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,"US immigrants, micro sample only",0.95
+146041-V1,ols/Q/pooled,methods/cross_sectional_ols.md,l_irQ53_pool_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Pooled across host countries,0.95
+146041-V1,ols/Q/pooled_micro,robustness/sample_restrictions.md,l_irQ53_pool_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Pooled across host countries,0.95
+146041-V1,ols/Q/selection_adjusted,robustness/measurement.md,l_irQ53sel_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Selection-adjusted Q,0.95
+146041-V1,ols/Q/long_term,robustness/sample_restrictions.md,l_irQ53yh_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Long-term immigrants (10+ years),0.95
+146041-V1,ols/Q/good_english,robustness/sample_restrictions.md,l_irQ53goodeng_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Good English speakers only,0.95
+146041-V1,ols/Q/no_downgrading,robustness/measurement.md,l_irQ53nodown_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q adjustment: no_downgrading,0.95
+146041-V1,ols/Q/no_mismatch,robustness/measurement.md,l_irQ53nomism_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Q adjustment: no_mismatch,0.95
+146041-V1,ols/Q/sorting_sectors,robustness/measurement.md,l_irQ53sorts_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Sorting control: sorting_sectors,0.95
+146041-V1,ols/Q/sorting_geographic,robustness/measurement.md,l_irQ53sortr_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Sorting control: sorting_geographic,0.95
+146041-V1,ols/se/classical,robustness/clustering_variations.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_inference,SE variation: classical,0.95
+146041-V1,ols/se/bootstrap,robustness/clustering_variations.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_inference,SE variation: bootstrap,0.95
+146041-V1,robust/loo/drop_Brazil,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Brazil,0.95
+146041-V1,robust/loo/drop_Canada,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Canada,0.95
+146041-V1,robust/loo/drop_India,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: India,0.95
+146041-V1,robust/loo/drop_Indonesia,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Indonesia,0.95
+146041-V1,robust/loo/drop_Israel,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Israel,0.95
+146041-V1,robust/loo/drop_Jamaica,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Jamaica,0.95
+146041-V1,robust/loo/drop_Mexico,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Mexico,0.95
+146041-V1,robust/loo/drop_Panama,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Panama,0.95
+146041-V1,robust/loo/drop_Trinidad_and_Tobago,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Trinidad_and_Tobago,0.95
+146041-V1,robust/loo/drop_United_States,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: United_States,0.95
+146041-V1,robust/loo/drop_Uruguay,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Uruguay,0.95
+146041-V1,robust/loo/drop_Venezuela,robustness/leave_one_out.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,Leave-one-out country: Venezuela,0.95
+146041-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Outlier handling: winsorize_5pct,0.95
+146041-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Outlier handling: winsorize_10pct,0.95
+146041-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_sample,Outlier handling: trim_5pct,0.95
+146041-V1,robust/sample/high_income,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,0,noncore_heterogeneity,"Income subsample: US immigrants, high income",0.95
+146041-V1,robust/sample/low_income,robustness/sample_restrictions.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,0,noncore_heterogeneity,"Income subsample: US immigrants, low income",0.95
+146041-V1,ols/Q/distance_control,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Bilateral control: distance_control,0.95
+146041-V1,ols/Q/bilateral_full,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Bilateral control: bilateral_full,0.95
+146041-V1,ols/Q/contig_control,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Bilateral control: contig_control,0.95
+146041-V1,ols/Q/language_control,robustness/control_progression.md,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_controls,Bilateral control: language_control,0.95
+146041-V1,ols/form/levels_AQ,robustness/functional_form.md,irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,Functional form: levels_AQ,0.9
+146041-V1,ols/form/levels_Q,robustness/functional_form.md,irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_funcform,Functional form: levels_Q,0.9
+146041-V1,ols/form/quadratic_gdp,robustness/functional_form.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_funcform,Functional form: quadratic_gdp,0.9
+146041-V1,ols/method/quantile_25pct,methods/cross_sectional_ols.md#estimation-method,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,Quantile regression: quantile_25pct,0.9
+146041-V1,ols/method/quantile_median,methods/cross_sectional_ols.md#estimation-method,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,Quantile regression: quantile_median,0.9
+146041-V1,ols/method/quantile_75pct,methods/cross_sectional_ols.md#estimation-method,l_irQ53_dum,l_y,G2,ols/Q/baseline_us,0,1,core_method,Quantile regression: quantile_75pct,0.9
+146041-V1,ols/compare/baseline_aq,robustness/model_specification.md,l_irAQ53_dum_skti_hrs_secall,l_y,G1,baseline,0,1,core_sample,"Comparison: US sample, Baseline AQ",0.9
+146041-V1,ols/compare/barro-lee_aq,robustness/model_specification.md,l_irAQ53_blee_skti,l_y,G1,baseline,0,1,core_sample,"Comparison: US sample, Barro-Lee AQ",0.9

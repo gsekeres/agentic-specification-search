@@ -1,0 +1,71 @@
+{
+  "paper_id": "210201-V2",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/210201-V2",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Gender (female) has essentially zero effect on divorce probability among married couples, controlling for age group, children, and dependents.",
+      "expected_sign": "null",
+      "baseline_spec_ids": [
+        "baseline/divorce_full",
+        "baseline/stay_married_full"
+      ],
+      "baseline_outcome_vars": [
+        "divorce",
+        "stay_married"
+      ],
+      "baseline_treatment_vars": [
+        "female"
+      ],
+      "notes": "Spec 1 (divorce) and spec 5 (stay_married) are algebraic complements: stay_married = 1 - divorce, so their coefficients are equal in magnitude but opposite in sign (-0.000274 vs +0.000274, p=0.971). Both are included as baselines in this group. Sample restricted to married in 1994 (N=5994). Controls: female + age dummies + child94 + dep94."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Females are marginally less likely to transition from single to married, controlling for age group, children, and dependents.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline/marriage_formation_full"
+      ],
+      "baseline_outcome_vars": [
+        "new_marriage"
+      ],
+      "baseline_treatment_vars": [
+        "female"
+      ],
+      "notes": "Coefficient -0.0266, p=0.059. Sample restricted to single in 1994 (N=4080). Controls: female + age dummies + child94 + dep94."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Females are significantly more likely to become widowed, controlling for age group, children, dependents, and marital status.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/widowhood_full"
+      ],
+      "baseline_outcome_vars": [
+        "became_widow"
+      ],
+      "baseline_treatment_vars": [
+        "female"
+      ],
+      "notes": "Coefficient +0.0237, p<0.001. Full sample (N=10074). Controls: female + age dummies + child94 + dep94 + married94. Strongest and most robust result."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Females are significantly less likely to be married in 1999, controlling for age group, children, dependents, and marital status.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline/married99_full"
+      ],
+      "baseline_outcome_vars": [
+        "married99"
+      ],
+      "baseline_treatment_vars": [
+        "female"
+      ],
+      "notes": "Coefficient -0.0203, p=0.003. Full sample (N=10074). Controls: female + age dummies + child94 + dep94 + married94."
+    }
+  ],
+  "global_notes": "This is a structural calibration paper (Hong and Rios-Rull, AER 2012). The specification search constructs reduced-form regressions of PSID microdata examining gender-specific marital transition probabilities. The paper's primary contribution is a life-cycle model, not reduced-form estimation. The 'treatment' variable (female) is demographic rather than a policy intervention. Specs 1 and 5 are algebraic complements (divorce = 1 - stay_married), so they are grouped together in G1. Many specifications change the treatment variable (e.g., child94, dep94, age_94, q) or the outcome variable (delta_dep, delta_child, etc.), which fundamentally change the estimand. The divorce result (G1) is extremely robust but near-zero; the widowhood result (G3) is strongly significant across all specifications."
+}

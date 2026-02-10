@@ -1,0 +1,39 @@
+{
+  "paper_id": "114675-V1",
+  "package_path": "data/downloads/extracted/114675-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Mafia presence increases Christian Democrat (DC) vote share in Sicilian municipalities. A unit increase in Mafia1987_diff is associated with a 0.81pp increase in DC vote share, instrumented by historical Mafia presence (circa 1900).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/iv/DC_VV/full"
+      ],
+      "baseline_outcome_vars": [
+        "DC_VV"
+      ],
+      "baseline_treatment_vars": [
+        "Mafia1987_diff"
+      ],
+      "notes": "Table 4, Column 6 (Full IV). Coefficient 0.809 (SE 0.269, p=0.003). N=3696, First-stage F=61.9. Municipality + Year FE with full controls (investment, socio-demographic, economic, geographic trends, church trends). Instrument: Mafia1900_diff."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Mafia presence increases construction employment share (bui_labf) in Sicilian municipalities, consistent with patronage through public works allocation.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/iv/bui_labf/full"
+      ],
+      "baseline_outcome_vars": [
+        "bui_labf"
+      ],
+      "baseline_treatment_vars": [
+        "Mafia1987_diff"
+      ],
+      "notes": "Table 5, Column 6 (Full IV). Coefficient 0.231 (SE 0.111, p=0.037). N=3696, First-stage F=61.9. Same specification as G1 but with construction employment share as outcome."
+    }
+  ],
+  "global_notes": "Paper is 'Mafia in the Ballot Box' by De Feo and De Luca (AEJ: Economic Policy). Uses 370 Sicilian municipalities over 12 parliamentary elections (1946-1992). The identification strategy exploits historical Mafia presence (1900 parliamentary inquiry) as an instrument for contemporary Mafia activity (1987 measure) interacted with a time trend. Both IV and OLS results are reported; OLS serves as a lower bound due to likely attenuation bias. The OLS baseline with investment controls (baseline/ols/DC_VV/invest) shows a negative R2 (-1.0), indicating a problematic specification -- this OLS variant is treated cautiously. The paper also tests Mafia1994 as an alternative treatment measure, decade-specific effects, and Mafia x communism interactions. Falsification tests using MSI-PRI (right-wing) vote differentials show no significant Mafia effect. There are 139 total specifications across both outcomes."
+}

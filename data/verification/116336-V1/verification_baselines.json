@@ -1,0 +1,75 @@
+{
+  "paper_id": "116336-V1",
+  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116336-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Mean APR for top MFI lenders across the six study countries is approximately 60%, showing that microcredit interest rates are substantially above zero and vary dramatically by country. This is the primary descriptive finding from Table 1.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "313"
+      ],
+      "baseline_outcome_vars": [
+        "annual_apr_mean"
+      ],
+      "baseline_treatment_vars": [],
+      "baseline_coefficient": 0.603243,
+      "baseline_se": 0.138643,
+      "baseline_pvalue": null,
+      "baseline_n": 54,
+      "baseline_r_squared": null,
+      "notes": "Descriptive statistics paper -- no regression or causal identification. The 'coefficient' is the mean APR computed via the Roodman formula for the top 10 MFI lenders by gross loan portfolio across all 6 countries. Baseline uses: non_missing_3vars sample, top 10 lenders, all countries, country-specific compounding (weekly for Ethiopia/India/Mexico/Morocco, monthly for Bosnia/Mongolia), loan loss rate, Roodman formula. The estimate 0.603 (60.3%) closely matches the paper's Table 1 value of ~60%."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Cross-country APR differences are large and statistically significant, with Mexico having the highest APR premium relative to India. OLS regressions of APR on country dummies (India as reference) formalize the cross-country comparisons.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "1597",
+        "1598",
+        "1599",
+        "1600",
+        "1601",
+        "1602"
+      ],
+      "baseline_outcome_vars": [
+        "apr_country_coef_Bosnia and Herzegovina",
+        "apr_country_coef_Ethiopia",
+        "apr_country_coef_Mexico",
+        "apr_country_coef_Mongolia",
+        "apr_country_coef_Morocco",
+        "apr_India_mean"
+      ],
+      "baseline_treatment_vars": [
+        "country_dummies"
+      ],
+      "baseline_coefficient": 1.699819,
+      "baseline_se": null,
+      "baseline_pvalue": 0.006155,
+      "baseline_n": 54,
+      "baseline_r_squared": null,
+      "notes": "The primary coefficient of interest is the Mexico dummy (spec 1599): estimate=1.700, p=0.006, indicating Mexico's mean APR is 170 percentage points higher than India's. All 5 country coefficients are positive (all countries have higher APR than India). India intercept (spec 1602): 0.177 (p<0.001). Bosnia (0.136, p<0.001), Ethiopia (0.125, p=0.051), Mongolia (0.233, p<0.001), Morocco (0.250, p<0.001). The Mexico premium is significant at 1% in the baseline and across all 18 Mexico-specific OLS specs."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Gross loan portfolio sizes for top MFI lenders characterize the scale of microfinance markets across the six study countries.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "1699"
+      ],
+      "baseline_outcome_vars": [
+        "gross_loan_portfolio_mean"
+      ],
+      "baseline_treatment_vars": [],
+      "baseline_coefficient": 77874928.53,
+      "baseline_se": null,
+      "baseline_pvalue": null,
+      "baseline_n": null,
+      "baseline_r_squared": null,
+      "notes": "Mean gross loan portfolio for top 10 lenders across all countries: $77.9M. This is a secondary descriptive statistic complementing the APR analysis. The portfolio size varies substantially by country and top-N cutoff."
+    }
+  ],
+  "global_notes": "This is a descriptive statistics paper (Banerjee, Karlan, Zinman, AEJ:Applied 2015) introducing the microcredit special issue. The replication package computes summary statistics from MIX Market data. There are no causal claims or regression-based identification. The 1,736 specifications systematically vary 7 analytical dimensions: sample restriction, number of top lenders, country subset, compounding method, loss variable, APR formula, and summary statistic. The 108 OLS specifications regress APR on country dummies with HC1 standard errors. Key findings: (1) Mean APR is robust at >20% across all 780 APR mean specs; (2) Mexico's APR premium is significant (p<0.05) in all 18 OLS Mexico specs; (3) Compounding method and Mexico inclusion are the largest sources of variation; (4) Loss variable choice has minimal impact."
+}

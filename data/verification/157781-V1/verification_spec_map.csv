@@ -1,66 +1,66 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-157781-V1,baseline,methods/difference_in_differences.md#baseline,ashonset_km2,interaction1,G1,baseline,1,1,core_controls,"Baseline DiD with unit+year FE, no controls, county clustering",1.0
-157781-V1,baseline_with_controls,methods/difference_in_differences.md#baseline,ashonset_km2,interaction1,G1,baseline,1,1,core_controls,Baseline DiD adding larea_after and rug_after controls,1.0
-157781-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_fe,"Unit FE only (drops year FE), same outcome and treatment",0.95
-157781-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_fe,"Year FE only (drops unit FE), adds alongcanal control",0.9
-157781-V1,did/fe/province_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_fe,"Province FE instead of unit FE, adds alongcanal and reform",0.9
-157781-V1,did/fe/prefecture_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_fe,"Prefecture FE instead of unit FE, adds alongcanal and reform",0.9
-157781-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_fe,"No FE, adds alongcanal and reform controls",0.9
-157781-V1,did/controls/none,methods/difference_in_differences.md#control-sets,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,No controls with unit+year FE; identical to baseline,0.95
-157781-V1,did/controls/full,methods/difference_in_differences.md#control-sets,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,Full controls adding distcoast_after and distyellow_after,0.95
-157781-V1,robust/loo/drop_larea,robustness/leave_one_out.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,"Drop larea_after from controls, keep rug_after",0.95
-157781-V1,robust/loo/drop_rug,robustness/leave_one_out.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,"Drop rug_after from controls, keep larea_after",0.95
-157781-V1,robust/control/add_larea,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,Add only larea_after as control,0.95
-157781-V1,robust/control/add_rug,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,Same as baseline_with_controls (larea+rug),0.95
-157781-V1,robust/control/add_distcoast,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,Add distcoast_after to baseline controls,0.95
-157781-V1,robust/control/add_distyellow,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_controls,Add distyellow_after to baseline controls,0.95
-157781-V1,did/sample/pre_treatment,methods/difference_in_differences.md#sample-restrictions,ashonset_km2,pretrend,G1,baseline_with_controls,0,0,noncore_diagnostic,Pre-treatment trend test uses different treatment var and sample,0.9
-157781-V1,robust/sample/early_period,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,0,invalid,Coef=0 and SE=0; estimation failed on early subsample,0.95
-157781-V1,robust/sample/late_period,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,0,invalid,Coef~0 (1e-21) and SE~0; estimation failed on late subsample,0.95
-157781-V1,robust/sample/exclude_taiping,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,Exclude Taiping Rebellion period; same outcome and treatment,0.95
-157781-V1,robust/sample/drop_year_1826,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1826; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1830,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1830; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1840,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1840; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1850,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1850; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1860,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1860; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1870,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1870; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1880,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1880; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1890,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1890; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_year_1900,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop year 1900; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_Jiangsu,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop Jiangsu province; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_Anhui,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop Anhui province; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_Zhejiang,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop Zhejiang province; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_Zhili,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop Zhili province; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_Henan,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop Henan province; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/drop_Shangdong,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,"Drop Shandong province; same outcome, treatment, FE, controls",0.95
-157781-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,ashonset_km2_winsorized_1pct,interaction1,G1,baseline_with_controls,0,0,invalid,Coef=0 SE=0; winsorization estimation failed,0.95
-157781-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,ashonset_km2_winsorized_5pct,interaction1,G1,baseline_with_controls,0,0,invalid,Coef=0 SE=0; winsorization estimation failed,0.95
-157781-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,ashonset_km2_winsorized_10pct,interaction1,G1,baseline_with_controls,0,0,invalid,Coef=0 SE=0; winsorization estimation failed,0.95
-157781-V1,robust/sample/window_10yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,10-year window around treatment; same outcome and treatment,0.9
-157781-V1,robust/sample/window_20yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,20-year window around treatment; same outcome and treatment,0.9
-157781-V1,robust/sample/window_30yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,30-year window around treatment; same outcome and treatment,0.9
-157781-V1,robust/sample/window_50yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_sample,50-year window around treatment; same outcome and treatment,0.9
-157781-V1,robust/outcome/log,robustness/functional_form.md,lonset_km2,interaction1,G1,baseline_with_controls,0,1,core_funcform,Log instead of asinh transformation of same rebellion outcome,0.9
-157781-V1,robust/outcome/binary,robustness/measurement.md,onset_any,interaction1,G1,baseline_with_controls,0,1,core_funcform,"Binary rebellion indicator; same treatment, tests same claim",0.85
-157781-V1,robust/outcome/count,robustness/functional_form.md,onset_all,interaction1,G1,baseline_with_controls,0,1,core_funcform,"Count of all rebellions; same treatment, tests same claim",0.85
-157781-V1,robust/outcome/per_km2,robustness/functional_form.md,onset_km2,interaction1,G1,baseline_with_controls,0,1,core_funcform,Rebellion per km2 without asinh; same treatment and claim,0.9
-157781-V1,robust/outcome/attacks,robustness/measurement.md,ashattack,interaction1,G1,baseline_with_controls,0,0,noncore_alt_outcome,Attacks is a different outcome concept (offensive vs all rebellions),0.8
-157781-V1,robust/outcome/defend,robustness/measurement.md,ashdefend,interaction1,G1,baseline_with_controls,0,0,noncore_alt_outcome,Defense events is a different outcome concept from rebellion onset,0.8
-157781-V1,robust/treatment/distance_canal,methods/difference_in_differences.md#treatment-definition,ashonset_km2,distcanal_after,G1,baseline_with_controls,0,0,noncore_alt_treatment,Changes treatment from binary along-canal to continuous distance,0.85
-157781-V1,robust/placebo/yangtze,robustness/placebo_tests.md,ashonset_km2,yangtze_after,,,0,0,noncore_placebo,"Placebo: tests effect of being along Yangtze, not canal",0.95
-157781-V1,robust/placebo/huang,robustness/placebo_tests.md,ashonset_km2,huang_after,,,0,0,noncore_placebo,Placebo: tests effect of being along Yellow River,0.95
-157781-V1,robust/placebo/coast,robustness/placebo_tests.md,ashonset_km2,coast_after,,,0,0,noncore_placebo,Placebo: tests effect of being along coast,0.95
-157781-V1,robust/placebo/oldhuang,robustness/placebo_tests.md,ashonset_km2,oldhuang_after,,,0,0,noncore_placebo,Placebo: tests effect of being along old Yellow River course,0.95
-157781-V1,robust/placebo/fake_timing_1800,robustness/placebo_tests.md,ashonset_km2,fake_interact_1800,,,0,0,noncore_placebo,Placebo: fake treatment timing at 1800 instead of 1825,0.95
-157781-V1,robust/placebo/fake_timing_1810,robustness/placebo_tests.md,ashonset_km2,fake_interact_1810,,,0,0,noncore_placebo,Placebo: fake treatment timing at 1810 instead of 1825,0.95
-157781-V1,robust/placebo/fake_timing_1815,robustness/placebo_tests.md,ashonset_km2,fake_interact_1815,,,0,0,noncore_placebo,Placebo: fake treatment timing at 1815 instead of 1825,0.95
-157781-V1,robust/cluster/prefecture,robustness/clustering_variations.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_inference,Cluster at prefecture level instead of county,0.95
-157781-V1,robust/cluster/province,robustness/clustering_variations.md,ashonset_km2,interaction1,G1,baseline_with_controls,0,1,core_inference,Cluster at province level instead of county,0.95
-157781-V1,robust/heterogeneity/north_south,robustness/heterogeneity.md,ashonset_km2,triple (Along Canal x Post x North),G1,baseline_with_controls,0,0,noncore_heterogeneity,Triple interaction tests differential effect by North/South,0.9
-157781-V1,robust/heterogeneity/pref_capital,robustness/heterogeneity.md,ashonset_km2,treat_x_capital,G1,baseline_with_controls,0,0,noncore_heterogeneity,Interaction with prefecture capital; different estimand,0.9
-157781-V1,robust/heterogeneity/soldier,robustness/heterogeneity.md,ashonset_km2,treat_x_soldier,G1,baseline_with_controls,0,0,noncore_heterogeneity,Interaction with soldier presence; different estimand,0.9
-157781-V1,robust/heterogeneity/county_size,robustness/heterogeneity.md,ashonset_km2,treat_x_large,G1,baseline_with_controls,0,0,noncore_heterogeneity,Interaction with county size; different estimand,0.9
-157781-V1,robust/heterogeneity/green_gang,robustness/heterogeneity.md,ashonset_km2,treat_x_green,G1,baseline_with_controls,0,0,noncore_heterogeneity,Interaction with Green Gang presence; different estimand,0.9
-157781-V1,robust/heterogeneity/coast_distance,robustness/heterogeneity.md,ashonset_km2,treat_x_farcoast,G1,baseline_with_controls,0,0,noncore_heterogeneity,Interaction with coast distance; different estimand,0.9
-157781-V1,robust/sample/canal_counties_only,robustness/sample_restrictions.md,ashonset_km2,reform,G1,baseline_with_controls,0,0,invalid,Coef~1e-17; uses reform as treatment not interaction1; estimation failed,0.9
-157781-V1,robust/sample/non_canal_counties,robustness/sample_restrictions.md,ashonset_km2,reform,G1,baseline_with_controls,0,0,invalid,Coef~1e-19; uses reform as treatment not interaction1; estimation failed,0.9
+157781-V1,baseline,methods/difference_in_differences.md#baseline,ashonset_km2,interaction1,G1,baseline,1,1,core_controls,Primary baseline DiD specification,1.0
+157781-V1,baseline_with_controls,methods/difference_in_differences.md#baseline,ashonset_km2,interaction1,G1,baseline,1,1,core_controls,Primary baseline DiD specification,1.0
+157781-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline,0,1,core_fe,FE variation: did/fe/unit_only,0.95
+157781-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline,0,1,core_fe,FE variation: did/fe/time_only,0.95
+157781-V1,did/fe/province_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline,0,1,core_fe,FE variation: did/fe/province_only,0.95
+157781-V1,did/fe/prefecture_only,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline,0,1,core_fe,FE variation: did/fe/prefecture_only,0.95
+157781-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,ashonset_km2,interaction1,G1,baseline,0,1,core_fe,FE variation: did/fe/none,0.95
+157781-V1,did/controls/none,methods/difference_in_differences.md#control-sets,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,Control set: None,0.95
+157781-V1,did/controls/full,methods/difference_in_differences.md#control-sets,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,"Control set: larea_after, rug_after, distcoast_after, distyellow_after",0.95
+157781-V1,robust/loo/drop_larea,robustness/leave_one_out.md,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,Leave-one-out control: rug_after,0.95
+157781-V1,robust/loo/drop_rug,robustness/leave_one_out.md,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,Leave-one-out control: larea_after,0.95
+157781-V1,robust/control/add_larea,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,Control progression: larea_after,0.95
+157781-V1,robust/control/add_rug,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,"Control progression: larea_after, rug_after",0.95
+157781-V1,robust/control/add_distcoast,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,"Control progression: larea_after, rug_after, distcoast_after",0.95
+157781-V1,robust/control/add_distyellow,robustness/control_progression.md,ashonset_km2,interaction1,G1,baseline,0,1,core_controls,"Control progression: larea_after, rug_after, distyellow_after",0.95
+157781-V1,did/sample/pre_treatment,methods/difference_in_differences.md#sample-restrictions,ashonset_km2,pretrend,G1,baseline,0,0,noncore_diagnostic,Pre-treatment trend test,0.95
+157781-V1,robust/sample/early_period,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample: N=86250,0.9
+157781-V1,robust/sample/late_period,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample: N=35075,0.9
+157781-V1,robust/sample/exclude_taiping,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=142025,0.95
+157781-V1,robust/sample/drop_year_1826,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1830,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1840,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1850,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1860,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1870,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1880,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1890,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_year_1900,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=150075,0.95
+157781-V1,robust/sample/drop_Jiangsu,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=131786,0.95
+157781-V1,robust/sample/drop_Anhui,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=134930,0.95
+157781-V1,robust/sample/drop_Zhejiang,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=130214,0.95
+157781-V1,robust/sample/drop_Zhili,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=110826,0.95
+157781-V1,robust/sample/drop_Henan,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=122878,0.95
+157781-V1,robust/sample/drop_Shangdong,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Sample restriction: N=122616,0.95
+157781-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,ashonset_km2_winsorized_1pct,interaction1,G1,baseline,0,1,core_sample,Winsorization: N=150650,0.95
+157781-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,ashonset_km2_winsorized_5pct,interaction1,G1,baseline,0,1,core_sample,Winsorization: N=150650,0.95
+157781-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,ashonset_km2_winsorized_10pct,interaction1,G1,baseline,0,1,core_sample,Winsorization: N=150650,0.95
+157781-V1,robust/sample/window_10yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Time window: N=12075,0.95
+157781-V1,robust/sample/window_20yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Time window: N=23575,0.95
+157781-V1,robust/sample/window_30yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Time window: N=35075,0.95
+157781-V1,robust/sample/window_50yr,robustness/sample_restrictions.md,ashonset_km2,interaction1,G1,baseline,0,1,core_sample,Time window: N=58075,0.95
+157781-V1,robust/outcome/log,robustness/functional_form.md,lonset_km2,interaction1,G1,baseline,0,1,core_funcform,Outcome transformation: lonset_km2,0.95
+157781-V1,robust/outcome/binary,robustness/measurement.md,onset_any,interaction1,G1,baseline,0,1,core_funcform,Outcome transformation: onset_any,0.95
+157781-V1,robust/outcome/count,robustness/functional_form.md,onset_all,interaction1,G1,baseline,0,1,core_funcform,Outcome transformation: onset_all,0.95
+157781-V1,robust/outcome/per_km2,robustness/functional_form.md,onset_km2,interaction1,G1,baseline,0,1,core_funcform,Outcome transformation: onset_km2,0.95
+157781-V1,robust/outcome/attacks,robustness/measurement.md,ashattack,interaction1,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: ashattack,0.95
+157781-V1,robust/outcome/defend,robustness/measurement.md,ashdefend,interaction1,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: ashdefend,0.95
+157781-V1,robust/treatment/distance_canal,methods/difference_in_differences.md#treatment-definition,ashonset_km2,distcanal_after,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: distcanal_after,0.95
+157781-V1,robust/placebo/yangtze,robustness/placebo_tests.md,ashonset_km2,yangtze_after,G1,baseline,0,0,noncore_placebo,Placebo: yangtze_after,0.95
+157781-V1,robust/placebo/huang,robustness/placebo_tests.md,ashonset_km2,huang_after,G1,baseline,0,0,noncore_placebo,Placebo: huang_after,0.95
+157781-V1,robust/placebo/coast,robustness/placebo_tests.md,ashonset_km2,coast_after,G1,baseline,0,0,noncore_placebo,Placebo: coast_after,0.95
+157781-V1,robust/placebo/oldhuang,robustness/placebo_tests.md,ashonset_km2,oldhuang_after,G1,baseline,0,0,noncore_placebo,Placebo: oldhuang_after,0.95
+157781-V1,robust/placebo/fake_timing_1800,robustness/placebo_tests.md,ashonset_km2,fake_interact_1800,G1,baseline,0,0,noncore_placebo,Placebo: fake_interact_1800,0.95
+157781-V1,robust/placebo/fake_timing_1810,robustness/placebo_tests.md,ashonset_km2,fake_interact_1810,G1,baseline,0,0,noncore_placebo,Placebo: fake_interact_1810,0.95
+157781-V1,robust/placebo/fake_timing_1815,robustness/placebo_tests.md,ashonset_km2,fake_interact_1815,G1,baseline,0,0,noncore_placebo,Placebo: fake_interact_1815,0.95
+157781-V1,robust/cluster/prefecture,robustness/clustering_variations.md,ashonset_km2,interaction1,G1,baseline,0,1,core_inference,Clustering: prefid,0.95
+157781-V1,robust/cluster/province,robustness/clustering_variations.md,ashonset_km2,interaction1,G1,baseline,0,1,core_inference,Clustering: provid,0.95
+157781-V1,robust/heterogeneity/north_south,robustness/heterogeneity.md,ashonset_km2,triple (Along Canal x Post x North),G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: triple (Along Canal x Post x North),0.9
+157781-V1,robust/heterogeneity/pref_capital,robustness/heterogeneity.md,ashonset_km2,treat_x_capital,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treat_x_capital,0.9
+157781-V1,robust/heterogeneity/soldier,robustness/heterogeneity.md,ashonset_km2,treat_x_soldier,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treat_x_soldier,0.9
+157781-V1,robust/heterogeneity/county_size,robustness/heterogeneity.md,ashonset_km2,treat_x_large,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treat_x_large,0.9
+157781-V1,robust/heterogeneity/green_gang,robustness/heterogeneity.md,ashonset_km2,treat_x_green,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treat_x_green,0.9
+157781-V1,robust/heterogeneity/coast_distance,robustness/heterogeneity.md,ashonset_km2,treat_x_farcoast,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: treat_x_farcoast,0.9
+157781-V1,robust/sample/canal_counties_only,robustness/sample_restrictions.md,ashonset_km2,reform,G1,baseline,0,1,core_sample,Sample: N=19126,0.95
+157781-V1,robust/sample/non_canal_counties,robustness/sample_restrictions.md,ashonset_km2,reform,G1,baseline,0,1,core_sample,Sample: N=131524,0.95

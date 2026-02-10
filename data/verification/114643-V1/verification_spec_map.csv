@@ -1,0 +1,120 @@
+spec_id,baseline_id,classification,category,notes
+baseline,baseline,baseline,baseline,Original paper specification
+baseline/exLAW,baseline/exLAW,baseline,baseline,Original paper specification
+baseline/exSAW,baseline/exSAW,baseline,baseline,Original paper specification
+did/outcome/ln_nonincome_hf_enacted,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_nonincome_hf_exLAW,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_nonincome_hf_exSAW,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_crimes_hf_enacted,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_crimes_hf_exLAW,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_crimes_hf_exSAW,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_drugs_hf_enacted,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_drugs_hf_exLAW,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/ln_drugs_hf_exSAW,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/subgroup/hisp_ln_income_hf_enacted,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_income_hf_exLAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_income_hf_exSAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_nonincome_hf_enacted,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_nonincome_hf_exLAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_nonincome_hf_exSAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_drugs_hf_enacted,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_drugs_hf_exLAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/hisp_ln_drugs_hf_exSAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_income_hf_enacted,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_income_hf_exLAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_income_hf_exSAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_nonincome_hf_enacted,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_nonincome_hf_exLAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_nonincome_hf_exSAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_drugs_hf_enacted,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_drugs_hf_exLAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/subgroup/nonhisp_ln_drugs_hf_exSAW,baseline,non_core,heterogeneity,Subgroup analysis (Hispanic/non-Hispanic)
+did/sample/extreme_pop_ln_income_hf,baseline,core,sample,Sample restriction
+did/sample/extreme_pop_ln_nonincome_hf,baseline,core,sample,Sample restriction
+did/sample/extreme_pop_ln_crimes_hf,baseline,core,sample,Sample restriction
+did/sample/extreme_pop_ln_drugs_hf,baseline,core,sample,Sample restriction
+did/sample/ex_whites_ln_income_hf,baseline,core,sample,Sample restriction
+did/sample/ex_whites_ln_nonincome_hf,baseline,core,sample,Sample restriction
+did/sample/ex_whites_ln_crimes_hf,baseline,core,sample,Sample restriction
+did/sample/ex_whites_ln_drugs_hf,baseline,core,sample,Sample restriction
+robust/functional_form/lpm_income,baseline,core,funcform,Functional form variation
+robust/functional_form/lpm_nonincome,baseline,core,funcform,Functional form variation
+robust/functional_form/lpm_crimes,baseline,core,funcform,Functional form variation
+robust/functional_form/lpm_drugs,baseline,core,funcform,Functional form variation
+robust/functional_form/ln_count_income,baseline,core,funcform,Functional form variation
+robust/functional_form/ln_count_nonincome,baseline,core,funcform,Functional form variation
+robust/functional_form/ln_count_crimes,baseline,core,funcform,Functional form variation
+robust/functional_form/ln_count_drugs,baseline,core,funcform,Functional form variation
+robust/functional_form/ihs_income,baseline,core,funcform,Functional form variation
+robust/functional_form/ihs_nonincome,baseline,core,funcform,Functional form variation
+robust/functional_form/ihs_crimes,baseline,core,funcform,Functional form variation
+robust/functional_form/ihs_drugs,baseline,core,funcform,Functional form variation
+robust/functional_form/level_income,baseline,core,funcform,Functional form variation
+robust/functional_form/level_nonincome,baseline,core,funcform,Functional form variation
+robust/functional_form/level_crimes,baseline,core,funcform,Functional form variation
+robust/functional_form/level_drugs,baseline,core,funcform,Functional form variation
+robust/cluster/robust_hc1,baseline,core,inference,Inference/clustering variation
+robust/cluster/ols_default,baseline,core,inference,Inference/clustering variation
+robust/cluster/bg_x_group,baseline,core,inference,Inference/clustering variation
+did/sample/trim_endpoints,baseline,core,sample,Sample restriction
+did/sample/pre_saw_period,baseline,core,sample,Sample restriction
+did/sample/donut_irca,baseline,core,sample,Sample restriction
+did/sample/donut_law,baseline,core,sample,Sample restriction
+robust/heterogeneity/high_imm_index,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/low_imm_index,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/top_quartile_imm,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/bottom_quartile_imm,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/large_pop,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/small_pop,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/high_poverty,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/low_poverty,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/leave_one_out/drop_SAW_interactions,baseline,core,controls,Leave-one-out or single control variation
+robust/leave_one_out/drop_LAW_interactions,baseline,core,controls,Leave-one-out or single control variation
+did/treatment/binary_imm_index,baseline,non_core,alt_treatment,Alternative treatment definition
+did/outcome/conviction_rate_incomeCR,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/conviction_rate_nonincomeCR,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/conviction_rate_drugsCR,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/conviction_rate_drugs_exwhites,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/sample/quarterly_no_lags,baseline,core,sample,Sample restriction
+did/sample/quarterly_with_trends,baseline,core,sample,Sample restriction
+did/dynamic/lagged_effects,baseline,non_core,diagnostics,Dynamic/lagged effects
+did/weight/population,baseline,core,weights,Weighting variation
+did/weight/hispanic_population,baseline,core,weights,Weighting variation
+did/outcome/crime_type_burglary,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_robbery,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_larceny,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_fraud,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_assault,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_weapons,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_car_theft,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+did/outcome/crime_type_property,baseline,non_core,alt_outcome,Alternative outcome (crime type)
+robust/control_progression/minimal_did,baseline,core,controls,Control variable variation
+robust/control_progression/did_plus_imm_index,baseline,core,controls,Control variable variation
+robust/sample/winsorize_1pct,baseline,core,sample,Sample restriction
+robust/sample/winsorize_5pct,baseline,core,sample,Sample restriction
+robust/sample/drop_extreme_imm_index,baseline,core,sample,Sample restriction
+robust/measurement/index_mex_spanish_only,baseline,core,other,Spec: robust/measurement/index_mex_spanish_only
+robust/measurement/index_foreign_only,baseline,core,other,Spec: robust/measurement/index_foreign_only
+robust/measurement/index_socioeconomic_only,baseline,core,other,Spec: robust/measurement/index_socioeconomic_only
+robust/placebo/nonhisp_treatment,baseline,non_core,placebo,Placebo test
+did/sample/year_1986,baseline,core,sample,Sample restriction
+robust/heterogeneity/high_hisp_share,baseline,non_core,heterogeneity,Heterogeneity analysis
+robust/heterogeneity/low_hisp_share,baseline,non_core,heterogeneity,Heterogeneity analysis
+did/treatment_phase/exLAW_ln_income_hf_main,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_income_hf_extremepop,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_income_hf_exwhites,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_nonincome_hf_main,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_nonincome_hf_extremepop,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_nonincome_hf_exwhites,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_drugs_hf_main,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_drugs_hf_extremepop,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exLAW_ln_drugs_hf_exwhites,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_income_hf_main,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_income_hf_extremepop,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_income_hf_exwhites,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_nonincome_hf_main,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_nonincome_hf_extremepop,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_nonincome_hf_exwhites,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_drugs_hf_main,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_drugs_hf_extremepop,baseline,core,treatment,Treatment phase x sample combination
+did/treatment_phase/exSAW_ln_drugs_hf_exwhites,baseline,core,treatment,Treatment phase x sample combination

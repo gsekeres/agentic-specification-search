@@ -1,12 +1,12 @@
 {
   "paper_id": "206781-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/206781-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/206781-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Cash transfers increase household consumption (time-demeaned) in the GiveDirectly Kenya RCT.",
+      "claim_summary": "Cash transfers increase household consumption.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline/el_cons_T_hh"
@@ -17,11 +17,11 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Primary consumption outcome. Coefficient ~286 PPP USD, p<0.001."
+      "notes": "Time-demeaned consumption. Primary outcome."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Cash transfers increase household assets (time-demeaned) in the GiveDirectly Kenya RCT.",
+      "claim_summary": "Cash transfers increase household assets.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline/el_assets_T_hh"
@@ -32,11 +32,11 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Primary assets outcome. Coefficient ~189 PPP USD, p<1e-11."
+      "notes": "Time-demeaned assets."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "Cash transfers increase household income (time-demeaned) in the GiveDirectly Kenya RCT.",
+      "claim_summary": "Cash transfers increase household income.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline/el_income_T_hh"
@@ -47,8 +47,8 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Primary income outcome. Coefficient ~75 PPP USD, p=0.086. Weakest baseline."
+      "notes": "Time-demeaned income."
     }
   ],
-  "global_notes": "Three baseline outcomes. Most robustness specs focus on G1 (consumption). Heterogeneity interaction specs report main coefficient for omitted subgroup."
+  "global_notes": "GiveDirectly Kenya RCT (n=4749). All 71 specs show positive coefficients (100%). Paper's main contribution is ML-based targeting; spec search focuses on average treatment effects."
 }

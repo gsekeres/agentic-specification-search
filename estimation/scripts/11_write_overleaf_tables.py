@@ -6,15 +6,14 @@
 Write manuscript-ready LaTeX tabulars used in Appendix~G.
 
 Reads:
-  - estimation/results/mixture_params.json
   - estimation/results/mixture_params_abs_t.json
   - estimation/results/dependence.json
   - estimation/results/counterfactual.csv
   - estimation/results/counterfactual_dependence_sensitivity.csv
+  - estimation/results/counterfactual_params.json
   - estimation/results/inference_audit_i4r.csv
 
 Writes:
-  - overleaf/tex/v8_tables/tab_mixture_params_z.tex
   - overleaf/tex/v8_tables/tab_mixture_params_abs_t.tex
   - overleaf/tex/v8_tables/tab_dependence_summary.tex
   - overleaf/tex/v8_tables/tab_counterfactual_sensitivity.tex
@@ -82,46 +81,46 @@ $n$ & $\hat\pi_N$ & $\hat\pi_M$ & $\hat\pi_E$ & $\hat\mu_N$ & $\hat\mu_M$ & $\ha
 
 
 def write_dependence_table(dep: dict, out_path: Path) -> None:
-    dist = dep.get("distance_based", {})
-    decay = dist.get("decay_fit", {})
-    ar1 = dep.get("ar1", {}).get("pooled", {})
+    ar1_ords = dep.get("ar1_orderings", {})
+    pref_ordering = dep.get("preferred", {}).get("ordering", "")
 
-    rows: list[tuple[str, float, float, float | None, float | None]] = []
-    if decay:
-        phi = float(decay.get("phi", np.nan))
-        Delta = float(dist.get("Delta", dep.get("preferred", {}).get("Delta", np.nan)))
-        rows.append(
-            (
-                "Distance-based",
-                phi,
-                Delta,
-                decay.get("phi_ci_lower", None),
-                decay.get("phi_ci_upper", None),
-            )
-        )
-    if ar1:
-        phi = float(ar1.get("phi", np.nan))
-        Delta = float(ar1.get("Delta", np.nan))
-        rows.append(
-            (
-                "AR(1) traversal",
-                phi,
-                Delta,
-                ar1.get("phi_ci_lower", None),
-                ar1.get("phi_ci_upper", None),
-            )
-        )
+    label_map = {
+        "spec_order": "Document order",
+        "lex_path": "Lexicographic path",
+        "bfs": "Breadth-first",
+        "dfs": "Depth-first",
+        "by_category": "By category",
+        "random": "Random (null)",
+    }
+    # Display order: preferred first, then remaining (excl. random), then random
+    display_order = []
+    if pref_ordering in ar1_ords:
+        display_order.append(pref_ordering)
+    for k in ["spec_order", "lex_path", "bfs", "dfs", "by_category"]:
+        if k in ar1_ords and k != pref_ordering:
+            display_order.append(k)
+    if "random" in ar1_ords:
+        display_order.append("random")
 
     body = []
-    for name, phi, Delta, lo, hi in rows:
+    for k in display_order:
+        v = ar1_ords[k]
+        phi = float(v.get("phi", np.nan))
+        Delta = float(v.get("Delta", np.nan))
+        lo = v.get("phi_ci_lower", None)
+        hi = v.get("phi_ci_upper", None)
+        r2 = float(v.get("r_squared", np.nan))
         ci = ""
         if lo is not None and hi is not None and np.isfinite(float(lo)) and np.isfinite(float(hi)):
             ci = rf"[{_fmt(float(lo), 3)}, {_fmt(float(hi), 3)}]"
-        body.append(" & ".join([name, _fmt(phi, 3), _fmt(Delta, 3), ci]) + r" \\")
+        label = label_map.get(k, k)
+        if k == pref_ordering:
+            label = rf"\textbf{{{label}}}"
+        body.append(" & ".join([label, _fmt(phi, 3), _fmt(Delta, 3), ci, _fmt(r2, 3)]) + r" \\")
 
-    tab = rf"""\begin{{tabular}}{{lccc}}
+    tab = rf"""\begin{{tabular}}{{lcccc}}
 \toprule
-Method & $\hat\phi$ & $\widehat\Delta=1-\hat\phi$ & 95\% CI for $\hat\phi$ \\
+Ordering & $\hat\phi$ & $\widehat\Delta=1-\hat\phi$ & 95\% CI for $\hat\phi$ & $R^2$ \\
 \midrule
 {chr(10).join(body)}
 \bottomrule
@@ -130,96 +129,80 @@ Method & $\hat\phi$ & $\widehat\Delta=1-\hat\phi$ & 95\% CI for $\hat\phi$ \\
 
 
 def write_counterfactual_table(
-    cf_path: Path, cf_dep_sens_path: Path, out_path: Path, *, lambda_mid: float = 1 / 14
+    cf_path: Path, cf_dep_sens_path: Path, out_path: Path, *,
+    params_path: Path | None = None,
 ) -> None:
+    # Read lambda from counterfactual_params.json (flat structure)
+    lambda_mid = None
+    if params_path is not None and params_path.exists():
+        _par = json.loads(params_path.read_text())
+        lambda_mid = _par.get("cost_parameters", {}).get("lambda_baseline")
+    if lambda_mid is None:
+        lambda_mid = 1 / 170
+
     cf = pd.read_csv(cf_path)
     dep = pd.read_csv(cf_dep_sens_path)
 
-    # Panel A: lambda sensitivity (preferred dependence; rho=0.10, FDR=0.10)
-    panelA = cf[(cf["rho_target"] == 0.10) & (cf["FDR_target"] == 0.10)].copy()
+    # Panel A: lambda sensitivity at FDR=0.05
+    panelA = cf[cf["FDR_target"] == 0.05].copy() if "FDR_target" in cf.columns else cf.copy()
     panelA = panelA.sort_values("lambda")
 
-    # Panel B: dependence sensitivity at lambda=1/14 (rho=0.10, FDR=0.10)
-    panelB = dep[(dep["rho_target"] == 0.10) & (dep["FDR_target"] == 0.10)].copy()
-    panelB = panelB[np.isclose(panelB["lambda"], float(lambda_mid))]
-    # Drop redundant duplicate rows (preferred and distance_based are identical in the current build)
-    panelB = panelB.drop_duplicates(subset=["Delta", "m_old", "m_new", "m_ratio"])
+    # Panel B: dependence sensitivity — all 5 non-random orderings
+    panelB = dep.copy()
+    if "lambda" in panelB.columns:
+        panelB = panelB[np.isclose(panelB["lambda"], float(lambda_mid))]
+    # Keep only actual orderings (not CI bounds)
+    ordering_labels = ["spec_order", "lex_path", "bfs", "dfs", "by_category"]
+    if "dependence_label" in panelB.columns:
+        panelB = panelB[panelB["dependence_label"].isin(ordering_labels)]
+    panelB = panelB.drop_duplicates(subset=["dependence_label"])
     panelB = panelB.sort_values("Delta")
-
-    # Panel C: target sensitivity at lambda=1/14, preferred dependence (distance_based == preferred here)
-    panelC = cf[np.isclose(cf["lambda"], float(lambda_mid))].copy()
-    panelC = panelC.sort_values(["FDR_target", "rho_target"])
 
     def _row_A(r: pd.Series) -> str:
         lam = float(r["lambda"])
         inv = 1.0 / lam if lam > 0 else np.nan
+        m_ratio = float(r.get("m_ratio", np.nan))
         return " & ".join(
             [
-                _fmt(lam, 3),
-                _fmt(inv, 1),
+                _fmt(lam, 4),
+                _fmt(inv, 0),
                 _fmt_int(r["m_old"]),
                 _fmt_int(r["m_new"]),
-                _fmt(r.get("m_ratio", np.nan), 2),
+                _fmt(m_ratio, 2),
             ]
         )
 
+    # Prettier labels for orderings
+    label_map = {
+        "spec_order": "Document order",
+        "lex_path": "Lexicographic path",
+        "bfs": "Breadth-first",
+        "dfs": "Depth-first",
+        "by_category": r"\textbf{By category}",
+    }
+
     def _row_B(r: pd.Series) -> str:
         lab = str(r["dependence_label"])
-        # prettier labels
-        lab_map = {
-            "preferred": "Preferred (distance-based)",
-            "distance_based": "Distance-based",
-            "ar1_ci_low_Delta": "AR(1) CI (low $\\Delta$)",
-            "ar1_ci_high_Delta": "AR(1) CI (high $\\Delta$)",
-        }
-        lab = lab_map.get(lab, lab)
-        return " & ".join([lab, _fmt(r["Delta"], 3), _fmt_int(r["m_old"]), _fmt_int(r["m_new"]), _fmt(r["m_ratio"], 2)])
-
-    def _m_new(rho: float, fdr: float) -> str:
-        sub = panelC[(panelC["rho_target"] == rho) & (panelC["FDR_target"] == fdr)]
-        if len(sub) != 1:
-            return ""
-        return _fmt_int(sub["m_new"].iloc[0])
-
-    def _m_old(rho: float, fdr: float) -> str:
-        sub = panelC[(panelC["rho_target"] == rho) & (panelC["FDR_target"] == fdr)]
-        if len(sub) != 1:
-            return ""
-        return _fmt_int(sub["m_old"].iloc[0])
+        lab = label_map.get(lab, lab)
+        Delta = float(r.get("Delta", np.nan))
+        n_old = r.get("n_old_implied", np.nan)
+        n_old_str = _fmt(float(n_old), 1) if np.isfinite(float(n_old)) else ""
+        return " & ".join([lab, _fmt(Delta, 3), n_old_str, _fmt_int(r["m_old"]), _fmt_int(r["m_new"])])
 
     panelA_lines = [(_row_A(r) + r" \\") for _, r in panelA.iterrows()]
     panelB_lines = [(_row_B(r) + r" \\") for _, r in panelB.iterrows()]
 
-    # Build panel C matrix (report m_new at each rho; include m_old in last col for reference)
-    rhos = [0.05, 0.10, 0.20]
-    fdrs = [0.05, 0.10, 0.20]
-    panelC_lines = []
-    for fdr in fdrs:
-        row = [
-            _fmt(fdr, 2),
-            _m_new(rhos[0], fdr),
-            _m_new(rhos[1], fdr),
-            _m_new(rhos[2], fdr),
-            _m_old(rhos[1], fdr),
-        ]
-        panelC_lines.append(" & ".join(row) + r" \\")
-
     tab = rf"""\begin{{tabular}}{{lcccc}}
 \toprule
-\multicolumn{{5}}{{l}}{{\emph{{A. Cost ratio sensitivity (preferred dependence; $\bar\rho=0.10$, FDR target $=0.10$)}}}} \\
+\multicolumn{{5}}{{l}}{{\emph{{A. Cost ratio sensitivity (FDR target $=0.05$, $m^{{\mathrm{{old}}}}=50$)}}}} \\
 \midrule
 $\lambda$ & $1/\lambda$ & $m^{{\mathrm{{old}}}}$ & $m^{{\mathrm{{new}}}}$ & $m^{{\mathrm{{new}}}}/m^{{\mathrm{{old}}}}$ \\
 {chr(10).join(panelA_lines)}
 \midrule
-\multicolumn{{5}}{{l}}{{\emph{{B. Dependence sensitivity ($\lambda=1/14$; $\bar\rho=0.10$, FDR target $=0.10$)}}}} \\
+\multicolumn{{5}}{{l}}{{\emph{{B. Dependence sensitivity (interpretation: implied $n^{{\mathrm{{old}}}}$)}}}} \\
 \midrule
-Dependence estimate & $\widehat\Delta$ & $m^{{\mathrm{{old}}}}$ & $m^{{\mathrm{{new}}}}$ & $m^{{\mathrm{{new}}}}/m^{{\mathrm{{old}}}}$ \\
+Ordering & $\widehat\Delta$ & $n^{{\mathrm{{old}}}}_{{implied}}$ & $m^{{\mathrm{{old}}}}$ & $m^{{\mathrm{{new}}}}$ \\
 {chr(10).join(panelB_lines)}
-\midrule
-\multicolumn{{5}}{{l}}{{\emph{{C. Target sensitivity ($\lambda=1/14$; preferred dependence)}}}} \\
-\midrule
-FDR target & $m^{{\mathrm{{new}}}}(\bar\rho=0.05)$ & $m^{{\mathrm{{new}}}}(\bar\rho=0.10)$ & $m^{{\mathrm{{new}}}}(\bar\rho=0.20)$ & $m^{{\mathrm{{old}}}}$ \\
-{chr(10).join(panelC_lines)}
 \bottomrule
 \end{{tabular}}"""
     _write(out_path, tab)
@@ -268,24 +251,16 @@ def main() -> None:
     overleaf_tables = base_dir.parent / "overleaf" / "tex" / "v8_tables"
     overleaf_tables.mkdir(parents=True, exist_ok=True)
 
-    mix = json.loads((results_dir / "mixture_params.json").read_text())
     mix_abs = json.loads((results_dir / "mixture_params_abs_t.json").read_text())
     dep = json.loads((results_dir / "dependence.json").read_text())
 
-    # Prefer sigma=1 fixed gamma fit; fall back to sigma-free baseline.
-    mix_params = mix.get("spec_level", {}).get("baseline_only_sigma_fixed_1", None)
-    if mix_params is None:
-        mix_params = mix.get("spec_level", {}).get("baseline_only", None)
-    if mix_params is None:
-        raise RuntimeError("mixture_params.json missing sigma-fixed or baseline gamma mixture results.")
-    # Prefer sigma=1 fixed (trimmed |Z|<=10) as baseline; fall back to sigma-free.
+    # Prefer sigma=1 fixed (trimmed |t|<=10) as baseline; fall back to sigma-free.
     mix_abs_params = mix_abs.get("spec_level", {}).get("trim_sensitivity", {}).get("trim_abs_le_10_sigma_fixed_1", None)
     if mix_abs_params is None:
         mix_abs_params = mix_abs.get("spec_level", {}).get("baseline_only", None)
     if mix_abs_params is None:
         raise RuntimeError("mixture_params_abs_t.json missing sigma-fixed or baseline mixture results.")
 
-    write_mixture_table(mix_params, overleaf_tables / "tab_mixture_params_z.tex")
     write_mixture_table(mix_abs_params, overleaf_tables / "tab_mixture_params_abs_t.tex")
     write_dependence_table(dep, overleaf_tables / "tab_dependence_summary.tex")
 
@@ -293,6 +268,7 @@ def main() -> None:
         results_dir / "counterfactual.csv",
         results_dir / "counterfactual_dependence_sensitivity.csv",
         overleaf_tables / "tab_counterfactual_sensitivity.tex",
+        params_path=results_dir / "counterfactual_params.json",
     )
 
     write_inference_audit_table(results_dir / "inference_audit_i4r.csv", overleaf_tables / "tab_inference_audit_i4r.tex")

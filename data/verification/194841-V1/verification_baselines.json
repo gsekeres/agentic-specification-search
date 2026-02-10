@@ -1,12 +1,12 @@
 {
   "paper_id": "194841-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/194841-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/194841-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Forecast revisions positively predict forecast errors (beta > 0), indicating forecasters under-react to news consistent with rational inattention (Coibion-Gorodnichenko regression).",
+      "claim_summary": "Forecasters exhibit under-reaction to news consistent with rational inattention: forecast revisions predict forecast errors (beta > 0) in the Coibion-Gorodnichenko regression.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "forecast_revision"
       ],
-      "notes": "Single baseline specification: bivariate OLS of log forecast error on forecast revision using SPF GDP data (157 obs after 99th percentile outlier removal). Beta = 0.757, SE = 0.299, p = 0.012."
+      "notes": "Beta = 0.757 (SE = 0.299, p = 0.012). N=157 quarterly SPF GDP forecast observations after outlier removal. Bivariate OLS with no controls or fixed effects."
     }
   ],
-  "global_notes": "This paper has a single core empirical claim tested via the CG regression. The specification search produced 70 specifications total. Several rows duplicate earlier rows (early_period = subsample1_early; late_period = subsample2_late). Some alternative outcome specifications (absolute, squared, sign, large_error) change the estimand substantially and are classified as non-core. Heterogeneity interaction terms test moderation rather than the main claim and are classified as non-core. Placebo tests are correctly identified. Growth rate functional form reverses sign. First differences and GLS AR(1) reverse sign."
+  "global_notes": "Paper is 'Rational Inattention and the Business Cycle Effects of Productivity and News Shocks' by Mackowiak and Wiederholt (AER). The key empirical test is the Coibion-Gorodnichenko regression of forecast errors on forecast revisions using Survey of Professional Forecasters GDP data (1969-2019). This is a pure time-series regression (no panel structure). The finding of beta > 0 indicates under-reaction consistent with information rigidities. The result is robust to inference variations (HC1-HC3, HAC, bootstrap) but sensitive to dynamic specifications (controlling for lagged forecast errors reverses the sign) and to time period (stronger in later sample, weaker in early sample). Some specifications (robust/sample/subsample1_early and robust/sample/early_period) appear to be duplicates with identical coefficients."
 }

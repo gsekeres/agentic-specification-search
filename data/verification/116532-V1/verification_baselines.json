@@ -1,0 +1,16 @@
+{
+  "paper_id": "116532-V1",
+  "title": "Are Tax Incentives for Charitable Giving Efficient?",
+  "journal": "AEJ: Policy",
+  "method": "Difference-in-Differences (OLS)",
+  "baseline_description": "DiD: Tax reform impact on log donations, groupe + year FE, clustered at groupe",
+  "baseline_spec_ids": [
+    "baseline"
+  ],
+  "total_specifications": 92,
+  "classification_summary": {
+    "baseline": 1,
+    "core": 66,
+    "non_core": 25
+  }
+}

@@ -1,0 +1,71 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+113176-V1,baseline,methods/panel_fixed_effects.md#baseline,marg,post_coord,G1,baseline,1,1,core_controls,Primary baseline: station FE only; marg on post_coord; coef=5.31; major brands; trimmed 1%,1.0
+113176-V1,baseline_dow,methods/panel_fixed_effects.md#baseline,marg,post_coord,G1,baseline,1,1,core_controls,Baseline + DOW dummies; coef=5.35,1.0
+113176-V1,baseline_cost,methods/panel_fixed_effects.md#baseline,marg,post_coord,G1,baseline,1,1,core_controls,Baseline + wholesale cost change control; coef=5.31,1.0
+113176-V1,baseline_full,methods/panel_fixed_effects.md#baseline,marg,post_coord,G1,baseline,1,1,core_controls,Baseline + DOW + cost controls; coef=5.35,1.0
+113176-V1,robust/estimation/no_fe,robustness/model_specification.md#pooled_ols,marg,post_coord,G1,baseline,0,1,core_fe,Pooled OLS without station FE; coef=5.45; tests importance of within-station variation,0.95
+113176-V1,robust/estimation/station_year_fe,robustness/model_specification.md#fe_twoway,marg,post_coord,G1,baseline,0,1,core_fe,Station + year FE; coef=4.66; absorbs year-level trends; still strongly significant,0.95
+113176-V1,robust/estimation/station_dow_fe,robustness/model_specification.md#fe_twoway,marg,post_coord,G1,baseline,0,1,core_fe,Station + DOW FE; coef=5.35; absorbs day-of-week effects,0.95
+113176-V1,robust/estimation/brand_fe,robustness/model_specification.md#fe_unit,marg,post_coord,G1,baseline,0,1,core_fe,Brand FE only (no station FE); coef=5.54; coarser unit of observation,0.95
+113176-V1,robust/estimation/brand_year_fe,robustness/model_specification.md#fe_twoway,marg,post_coord,G1,baseline,0,1,core_fe,Brand + year FE; coef=4.65; year FE reduce estimate similar to station+year,0.95
+113176-V1,robust/cluster/hetero,robustness/clustering_variations.md,marg,post_coord,G1,baseline,0,1,core_inference,Heteroskedasticity-robust SE (0.011 vs baseline 0.076); same point estimate,0.95
+113176-V1,robust/cluster/brand,robustness/clustering_variations.md,marg,post_coord,G1,baseline,0,1,core_inference,SE clustered by brand (0.351); same point estimate; p=0.0006 with only 4 clusters,0.95
+113176-V1,robust/cluster/year,robustness/clustering_variations.md,marg,post_coord,G1,baseline,0,1,core_inference,SE clustered by year (0.610); same point estimate; still significant p<0.001,0.95
+113176-V1,robust/cluster/iid,robustness/clustering_variations.md,marg,post_coord,G1,baseline,0,1,core_inference,IID standard errors (0.010); same point estimate; most optimistic inference,0.95
+113176-V1,robust/sample/bp_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,BP stations only; coef=4.75; price leader has smaller margin gain,0.95
+113176-V1,robust/sample/caltex_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Caltex stations only; coef=4.83,0.95
+113176-V1,robust/sample/woolworths_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Woolworths stations only; coef=6.08; supermarket chains gained more,0.95
+113176-V1,robust/sample/coles_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Coles stations only; coef=5.87; supermarket chains gained more,0.95
+113176-V1,robust/sample/cycling_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Cycling stations only; coef=5.12; core coordination participants,0.95
+113176-V1,robust/sample/non_cycling,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Non-cycling stations; coef=3.68; spillover or confounding; smaller effect,0.95
+113176-V1,robust/sample/drop_year_2003,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Drop year 2003; coef=5.36; sensitivity to early sample years,0.95
+113176-V1,robust/sample/drop_year_2004,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Drop year 2004; coef=5.04,0.95
+113176-V1,robust/sample/drop_year_2013,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Drop year 2013; coef=5.16,0.95
+113176-V1,robust/sample/drop_year_2014,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Drop year 2014; coef=5.05,0.95
+113176-V1,robust/sample/window_2008_2012,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Narrow 2008-2012 window; coef=3.90; reduces confounding from long-run trends,0.95
+113176-V1,robust/sample/window_2009_2011,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Very narrow 2009-2011 window; coef=3.73; most conservative time comparison,0.95
+113176-V1,robust/sample/post_2005,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,2005-2015 only; coef=5.07; drops earliest pre-period years,0.95
+113176-V1,robust/sample/no_oil_shock,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Exclude 2008-2009 oil shock; coef=5.76; removing volatile period slightly increases estimate,0.95
+113176-V1,robust/sample/weekdays,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Weekdays only; coef=4.78,0.95
+113176-V1,robust/sample/monday_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Monday only; coef=4.33; single-day subsample,0.95
+113176-V1,robust/sample/wednesday_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Wednesday only; coef=0.50; smallest effect consistent with pre-coordination Wednesday jumps,0.95
+113176-V1,robust/sample/thursday_only,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Thursday only; coef=9.19; largest effect consistent with post-coordination Thursday jumps,0.95
+113176-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Trimmed 5% (stricter); coef=4.40,0.95
+113176-V1,robust/sample/no_trim,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,No trimming; coef=5.59,0.95
+113176-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,Winsorized 1%; coef=5.55,0.95
+113176-V1,robust/sample/all_brands,robustness/sample_restrictions.md,marg,post_coord,G1,baseline,0,1,core_sample,All brands including independents; coef=5.08,0.95
+113176-V1,robust/outcome/price_level,robustness/model_specification.md,p,post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: price level (controlling for wholesale cost); coef=4.86; tests whether prices rose not just margins,0.95
+113176-V1,robust/funcform/log_margin,robustness/functional_form.md,log_marg,post_coord,G1,baseline,0,1,core_funcform,Log margin (positive only); coef=0.87; confirms proportional increase,0.95
+113176-V1,robust/funcform/ihs_margin,robustness/functional_form.md,ihs_marg,post_coord,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine margin; coef=1.07; handles zeros,0.95
+113176-V1,robust/funcform/pct_margin,robustness/functional_form.md,pct_marg,post_coord,G1,baseline,0,1,core_funcform,Margin as % of cost; coef=3.45pp; percentage rather than level,0.95
+113176-V1,robust/outcome/price_change,robustness/model_specification.md,dp,post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: daily price change dp; coef=-0.18; coordination reduced price change magnitude (negative sign expected),0.95
+113176-V1,robust/outcome/thu_jump_prob,robustness/model_specification.md#lpm,thu_jump,post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: Thursday jump probability (LPM); coef=0.083; coordination increased Thu jump frequency,0.95
+113176-V1,robust/outcome/wed_jump_prob,robustness/model_specification.md#lpm,wed_jump,post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: Wednesday jump probability (LPM); coef=-0.009; coordination decreased Wed jump frequency,0.95
+113176-V1,robust/outcome/margin_cycle_bottom,robustness/model_specification.md,marg (bottom),post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: margin at cycle bottom only; coef=3.29; even trough margins increased,0.95
+113176-V1,robust/outcome/margin_jump_day,robustness/model_specification.md,marg (jump day),post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: margin on jump day only; coef=4.70; jump-day margins increased more,0.95
+113176-V1,robust/outcome/jump_size,robustness/model_specification.md,dp (jump day),post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: price change on jump day; coef=1.48; jump sizes increased post-coordination,0.95
+113176-V1,robust/funcform/margin_sq,robustness/functional_form.md,marg^2,post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: squared margin; coef=81.6; tests variance not level,0.95
+113176-V1,robust/funcform/log_price,robustness/functional_form.md,log(p),post_coord,G1,baseline,0,0,noncore_alt_outcome,Different outcome: log(price) controlling for cost; coef=0.036; log price level outcome,0.95
+113176-V1,robust/treatment/post_bp_end,robustness/model_specification.md,marg,post_bp_end,G1,baseline,0,0,noncore_alt_treatment,Different treatment: post-Aug 2012 BP leadership end; coef=4.43; tests second transition; distinct event from March 2010,0.95
+113176-V1,robust/treatment/post_jan2010,robustness/model_specification.md,marg,post_jan2010,G1,baseline,0,1,core_treatment,Alternative treatment date: Jan 2010; coef=5.05; slightly earlier transition definition,0.95
+113176-V1,robust/treatment/post_jun2010,robustness/model_specification.md,marg,post_jun2010,G1,baseline,0,1,core_treatment,Alternative treatment date: Jun 2010; coef=5.27; slightly later transition definition,0.95
+113176-V1,robust/treatment/both_transitions,robustness/model_specification.md,marg,post_coord,G1,baseline,0,1,core_treatment,Both post_coord and post_bp_end dummies; post_coord coef=4.76; post_bp_end=1.29; separates two coordination transitions,0.95
+113176-V1,robust/treatment/three_periods,robustness/model_specification.md,marg,period_bp_led,G1,baseline,0,1,core_treatment,Three periods: pre/BP-led/post-BP; BP-led coef=4.76; post-BP=6.05; finer temporal structure,0.95
+113176-V1,robust/treatment/trend_post,robustness/model_specification.md,marg,post_coord,G1,baseline,0,1,core_treatment,Post-coord dummy + post trend; coef=3.85; accounts for growing effect over time,0.95
+113176-V1,robust/control/add_brand,robustness/leave_one_out.md,marg,post_coord,G1,baseline,0,1,core_controls,Adds brand dummies to station FE; coef=5.31; brand dummies absorbed by station FE (nearly identical),0.95
+113176-V1,robust/control/cycling_interaction,robustness/leave_one_out.md,marg,post_coord,G1,baseline,0,1,core_controls,Cycling station interaction; post_coord coef=4.82; interaction=0.30 (p=0.23); cycling vs non-cycling,0.95
+113176-V1,robust/heterogeneity/bp_interaction,robustness/model_specification.md,marg,post_coord,G1,baseline,0,0,noncore_heterogeneity,BP brand interaction; base coef=5.63; BP differential=-0.87; BP gained less from coordination,0.95
+113176-V1,robust/heterogeneity/caltex_interaction,robustness/model_specification.md,marg,post_coord,G1,baseline,0,0,noncore_heterogeneity,Caltex brand interaction; base coef=5.42; Caltex differential=-0.60,0.95
+113176-V1,robust/heterogeneity/woolworths_interaction,robustness/model_specification.md,marg,post_coord,G1,baseline,0,0,noncore_heterogeneity,Woolworths interaction; base coef=5.11; Woolworths differential=+0.97; supermarkets gained more,0.95
+113176-V1,robust/heterogeneity/coles_interaction,robustness/model_specification.md,marg,post_coord,G1,baseline,0,0,noncore_heterogeneity,Coles interaction; base coef=5.12; Coles differential=+0.75,0.95
+113176-V1,robust/heterogeneity/thursday_effect,robustness/model_specification.md,marg,post_coord,G1,baseline,0,0,noncore_heterogeneity,Thursday-specific interaction; base coef=4.74; Thu differential=+4.40; coordination effect concentrated on Thursdays,0.95
+113176-V1,robust/heterogeneity/early_vs_late,robustness/model_specification.md,marg,late_coord,G1,baseline,0,0,noncore_heterogeneity,Post-coord subsample: early vs late (late_coord coef=1.24); tests whether margins grew further after Aug 2012,0.95
+113176-V1,robust/placebo/fake_2005,robustness/model_specification.md,marg,placebo_2005,G1,baseline,0,0,noncore_placebo,Placebo: fake treatment Mar 2005 in pre-period only; coef=1.27; positive and significant; reveals pre-existing upward margin trend,0.95
+113176-V1,robust/placebo/fake_2006,robustness/model_specification.md,marg,placebo_2006,G1,baseline,0,0,noncore_placebo,Placebo: fake treatment Mar 2006; coef=2.08; largest pre-period placebo,0.95
+113176-V1,robust/placebo/fake_2007,robustness/model_specification.md,marg,placebo_2007,G1,baseline,0,0,noncore_placebo,Placebo: fake treatment Mar 2007; coef=1.81,0.95
+113176-V1,robust/placebo/fake_2008,robustness/model_specification.md,marg,placebo_2008,G1,baseline,0,0,noncore_placebo,Placebo: fake treatment Mar 2008; coef=1.19,0.95
+113176-V1,robust/model/quantile_10,robustness/model_specification.md#quantile,marg,post_coord,G1,baseline,0,0,noncore_alt_estimation,Unconditional quantile regression (10th pctile) without station FE; coef=4.00; different estimator,0.95
+113176-V1,robust/model/quantile_25,robustness/model_specification.md#quantile,marg,post_coord,G1,baseline,0,0,noncore_alt_estimation,Unconditional quantile regression (25th pctile); coef=5.50,0.95
+113176-V1,robust/model/quantile_50,robustness/model_specification.md#quantile,marg,post_coord,G1,baseline,0,0,noncore_alt_estimation,Unconditional quantile regression (50th pctile); coef=6.30,0.95
+113176-V1,robust/model/quantile_75,robustness/model_specification.md#quantile,marg,post_coord,G1,baseline,0,0,noncore_alt_estimation,Unconditional quantile regression (75th pctile); coef=6.10,0.95
+113176-V1,robust/model/quantile_90,robustness/model_specification.md#quantile,marg,post_coord,G1,baseline,0,0,noncore_alt_estimation,Unconditional quantile regression (90th pctile); coef=5.60,0.95

@@ -1,0 +1,24 @@
+{
+  "paper_id": "113430-V1",
+  "package_path": "data/downloads/extracted/113430-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "U.S. real interest rates have been declining over time (1980-2015), suggesting a lower long-run equilibrium real rate (r*). Regressing the survey-based real interest rate on a linear time trend yields a significantly negative coefficient.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "USING_SURVEY"
+      ],
+      "baseline_treatment_vars": [
+        "time_index_annual"
+      ],
+      "notes": "Coefficient -0.1528 (SE 0.0069, p < 0.0001). N=143 quarterly observations, R2=0.78. The paper does not explicitly run regressions; this is the natural formalization of the paper's Figure 1 showing declining real rates. Approximately 0.15pp decline per year, or 5.4pp over 35 years. This is the only baseline group because the paper has a single core empirical claim tested on one dataset."
+    }
+  ],
+  "global_notes": "Paper is 'Monetary Policy, Financial Stability, and the Zero Lower Bound' by Stanley Fischer (AER P&P 2016). This is a short policy piece (4 pages) whose main empirical content is a figure showing the decline in U.S. real interest rates from 1980 to 2015. The specification search formalizes this as a time-trend regression (USING_SURVEY on time). There is only one baseline group because the paper makes a single empirical claim about declining real rates, tested on a single dataset (143 quarterly observations of real interest rates). The 71 specifications systematically vary standard errors (7), outcome variable (9), sample period (18), functional form (10), estimation method (7), controls (3), and structural breaks (6). Four specs are non-significant, but these test different questions (whether the rate of decline is changing, whether two measures diverge, and whether within-decade variation shows residual trend). The TIPS-based real rate (available only from 1999) is treated as an alternative outcome variable for the same claim, not a separate baseline group, since the paper presents both measures as capturing the same underlying decline. The spec ols/treatment/year_frac is numerically identical to baseline (same coefficient, same model, rescaled time variable)."
+}

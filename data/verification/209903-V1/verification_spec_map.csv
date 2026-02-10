@@ -1,0 +1,66 @@
+paper_id,spec_id,baseline_group_id,classification,category,notes,confidence
+209903-V1,1,G1,baseline,baseline,"Baseline: PPML with full FE (cntry*sect*year + cntry*prod + prod*year), cluster(country+product). Table 2 Col 2. Coef=-3.617, SE=0.692, p<0.001, N=95905.",1.0
+209903-V1,2,G1,core,core_inference,"SE: cluster country only. Same point estimate as baseline (-3.617), SE changes to 0.693. Tests sensitivity of inference to clustering dimension.",0.95
+209903-V1,3,G1,core,core_inference,"SE: cluster product only. Same point estimate (-3.617), SE=0.505 (smaller). Product clustering yields tighter inference.",0.95
+209903-V1,4,G1,core,core_inference,"SE: cluster year only. Same point estimate (-3.617), SE=0.406. Very few clusters (13 years), inference may be unreliable.",0.95
+209903-V1,5,G1,core,core_inference,"SE: heteroskedasticity-robust (no clustering). Same point estimate (-3.617), SE=0.296. Most aggressive inference assumption.",0.95
+209903-V1,6,G1,core,core_inference,"SE: cluster country*year. Same point estimate (-3.617), SE=0.343. Alternative two-way dimension for clustering.",0.95
+209903-V1,7,G1,core,core_fe,"FE: country + product + year (separate, not interacted). Table A3 Panel A Col 1. Coef=-3.384, larger sample (N=114135). Less restrictive FE structure.",0.95
+209903-V1,8,G1,core,core_fe,"FE: country*year + product. Table A3 Panel A Col 2. Coef=-3.285, N=114011. Controls for country-specific time trends.",0.95
+209903-V1,9,G1,core,core_fe,"FE: country*year + product*year. Table A3 Panel A Col 3. Coef=-4.366, N=110910. Both time-varying country and product effects.",0.95
+209903-V1,10,G1,core,core_fe,"FE: country*year + country*product + product*year. Table A3 Panel A Col 4. Coef=-2.924, N=105479. Full bilateral FE without sector.",0.95
+209903-V1,11,G1,core,core_fe,"FE: country + year only (minimal). Coef=-0.986, p=0.273, NOT significant. Omitted variable bias without product FE -- demonstrates importance of product controls.",0.95
+209903-V1,12,G1,core,core_fe,"FE: country*product + year. Coef=-2.712, significant. Missing product*year and country*sector*year FE.",0.95
+209903-V1,13,G1,core,core_fe,"FE: product*year only. Coef=-1.871, p=0.074, marginally significant. No country-level controls; captures only cross-product variation.",0.95
+209903-V1,14,G1,core,core_fe,"FE: country*product only (no time dimension). Coef=-4.887, highly significant. All variation comes from within-pair changes over time.",0.95
+209903-V1,15,G1,core,core_estimator,"OLS: ln(imports) with full FE, cluster(country+product). Table 2 Col 3 analog. Coef=-1.576. OLS drops zero trade flows and estimates a different parameter (semi-elasticity).",0.95
+209903-V1,16,G1,core,core_estimator,"OLS: separate country + product + year FE. Coef=-2.843. OLS with simpler FE structure.",0.95
+209903-V1,17,G1,core,core_estimator,"OLS: country*year + product*year FE. Coef=-2.837. OLS with bilateral time-varying FE.",0.95
+209903-V1,18,G1,core,core_estimator,"OLS: country*year + country*product + product*year FE. Coef=-1.761. OLS with full bilateral FE.",0.95
+209903-V1,19,G1,core,core_estimator,"OLS: arcsinh(imports) as DV. Coef=-1.569. Santos-Silva & Tenreyro alternative that handles zeros in OLS framework.",0.95
+209903-V1,20,G1,core,core_treatment,"Treatment: LN_TARIFF_NZ (no zero-import imputations). Table 3 Col 2. Coef=-3.617, identical to baseline because same underlying data when tariff is defined. Tests sensitivity to tariff construction.",0.95
+209903-V1,21,G1,core,core_treatment,"Treatment: tariff rate in levels (not log-transformed). Coef=-2.317. Tests functional form of tariff measure.",0.95
+209903-V1,22,G1,core,core_sample,"Sample: non-specific duties only. Table 3 Col 3. Coef=-5.211, larger magnitude. Ad valorem tariffs are better measured.",0.95
+209903-V1,23,G1,core,core_sample,"Sample: specific duties only. Table 3 Col 4. Coef=-2.046, p=0.026. Specific duties harder to measure as ad valorem equivalent.",0.95
+209903-V1,24,G1,core,core_sample,"Sample: biennial intervals. Table 2 Col 4. Coef=-3.653. Using every-other-year to reduce serial correlation in panel.",0.95
+209903-V1,25,G1,core,core_sample,"Sample: pre-Ottawa period (1924-1931). Coef=-2.135, p=0.002. Tests whether effect is present before Ottawa Conference.",0.95
+209903-V1,26,G1,core,core_sample,"Sample: post-Ottawa period (1932-1936). Coef=-2.839, p<0.001. Tests effect during imperial preference era.",0.95
+209903-V1,27,G1,core,core_sample,"Sample: Empire countries only. Coef=-4.525, p=0.050, marginally significant. Within-Empire tariff effects; small sample (N=14011).",0.95
+209903-V1,28,G1,core,core_sample,"Sample: non-Empire countries only. Coef=-1.005, p=0.016. Tariff effect on non-Empire trade partners is smaller.",0.95
+209903-V1,29,G1,core,core_sample,"Sample: exclude United States. FAILED (demeaning did not converge). Cannot evaluate.",0.5
+209903-V1,30,G1,core,core_sample,"Sample: exclude United Kingdom. Coef=-1.300, p<0.001. UK is the largest Empire trading partner; dropping it reduces the coefficient substantially.",0.95
+209903-V1,31,G1,core,core_sample,"Sample: top 10 trading partners only. Coef=-4.201, p<0.001. Restricting to major partners increases magnitude.",0.95
+209903-V1,32,G1,core,core_sample,"Sample: trim top 1% import values. Coef=-3.304, p<0.001. Robust to trimming outlier trade values.",0.95
+209903-V1,33,G1,core,core_sample,"Sample: trim top 5% tariff values. Coef=-5.096, p<0.001. Removing extreme tariffs increases magnitude.",0.95
+209903-V1,34,G1,core,core_sample,"Sample: drop 1924 (first year). Coef=-3.649, p<0.001. Nearly identical to baseline -- no first-year sensitivity.",0.95
+209903-V1,35,G1,core,core_sample,"Sample: drop 1936 (last year). Coef=-3.396, p<0.001. Slightly smaller without last year.",0.95
+209903-V1,36,G1,core,core_sample,"Sample: middle period (1927-1933). Coef=-2.388, p<0.001. Core years around Great Depression and Ottawa Conference.",0.95
+209903-V1,37,G1,core,core_sample,"Sample: only positive tariff observations. Coef=-4.032, p<0.001. Excludes duty-free products (LN_TARIFF=0).",0.95
+209903-V1,38,G1,non_core,noncore_heterogeneity,"Sector: Agricultural and Vegetable Products - Mainly Food. Coef=-4.771. Sector subsample with reduced FE (cntry*prod + prod*year).",0.95
+209903-V1,39,G1,non_core,noncore_heterogeneity,"Sector: Agricultural and Vegetable Products - Other. Coef=-1.541, p=0.051, marginally significant. Small sector subsample.",0.95
+209903-V1,40,G1,non_core,noncore_heterogeneity,"Sector: Animals and Animal Products. Coef=-4.428, p=0.009. Sector subsample.",0.95
+209903-V1,41,G1,non_core,noncore_heterogeneity,"Sector: Chemicals and Allied Products. Coef=-8.019, p<0.001. Very large tariff effect in chemicals.",0.95
+209903-V1,42,G1,non_core,noncore_heterogeneity,"Sector: Fibres, Textiles and Textile Products. Coef=-5.818, p=0.018. Sector subsample.",0.95
+209903-V1,43,G1,non_core,noncore_heterogeneity,"Sector: Iron and Its Products. Coef=-10.574, p<0.001. Largest sector-specific effect.",0.95
+209903-V1,44,G1,non_core,noncore_heterogeneity,"Sector: Miscellaneous Commodities. Coef=-6.227, p=0.001. Sector subsample.",0.95
+209903-V1,45,G1,non_core,noncore_heterogeneity,"Sector: Non-Ferrous Metals and Their Products. Coef=-4.606, p<0.001. Sector subsample.",0.95
+209903-V1,46,G1,non_core,noncore_heterogeneity,"Sector: Non-Metallic Minerals and Their Products. Coef=-6.604, p=0.017. Sector subsample.",0.95
+209903-V1,47,G1,non_core,noncore_heterogeneity,"Sector: Wood, Wood Products and Paper. Coef=-4.952, p=0.001. Sector subsample.",0.95
+209903-V1,48,G1,non_core,noncore_heterogeneity,"Interaction: Empire vs non-Empire tariff effect. Reports LN_TARIFF_EMPIRE coef=-4.293. Tests whether tariff effect differs by Empire membership.",0.95
+209903-V1,49,G1,non_core,noncore_heterogeneity,"Interaction: Ottawa vs non-Ottawa tariff effect. Reports ottawa_TARIFF coef=-5.247. Tests whether Ottawa agreement tariffs have different trade effects.",0.95
+209903-V1,50,G1,core,core_controls,"Controls: add tariff risk. Coef=-3.986, p<0.001, N=74008. Table 6 Col 3 style -- controlling for tariff uncertainty measure.",0.95
+209903-V1,51,G1,core,core_controls,"Controls: GDP + exchange rate. Table A4 style. Coef=-4.119. Reduced FE (cntry*prod + prod*year) to avoid collinearity with macro controls.",0.95
+209903-V1,52,G1,core,core_controls,"Controls: GDP + ER + treaty dummies. Coef=-3.708. Adding macro and institutional controls reduces magnitude slightly.",0.95
+209903-V1,53,G1,non_core,noncore_heterogeneity,"Cross-section: year 1924. FAILED (collinearity). Single-year cross-section with country*product FE is not identified.",0.5
+209903-V1,54,G1,non_core,noncore_heterogeneity,"Cross-section: year 1928. FAILED (collinearity). Same identification problem.",0.5
+209903-V1,55,G1,non_core,noncore_heterogeneity,"Cross-section: year 1932. FAILED (collinearity). Same identification problem.",0.5
+209903-V1,56,G1,non_core,noncore_heterogeneity,"Cross-section: year 1936. FAILED (collinearity). Same identification problem.",0.5
+209903-V1,57,G1,non_core,noncore_heterogeneity,"Country: United States. FAILED (collinearity). Single-country estimate with product*year FE not identified.",0.5
+209903-V1,58,G1,non_core,noncore_heterogeneity,"Country: United Kingdom. FAILED (collinearity). Same identification problem.",0.5
+209903-V1,59,G1,non_core,noncore_heterogeneity,"Country: Germany. FAILED (collinearity). Same identification problem.",0.5
+209903-V1,60,G1,non_core,noncore_heterogeneity,"Country: France. FAILED (collinearity). Same identification problem.",0.5
+209903-V1,61,G1,core,core_outcome,"Outcome: winsorized imports (1st/99th percentile). Coef=-3.015, p<0.001. Tests sensitivity to extreme trade values in PPML.",0.95
+209903-V1,62,G1,core,core_estimator_inference,"OLS: cluster country only. Same OLS point estimate (-1.576) as spec 15, SE=0.245. Tests OLS inference sensitivity.",0.95
+209903-V1,63,G1,core,core_estimator_sample,"OLS: Empire subsample. Coef=-2.331, p<0.001. OLS on Empire countries only.",0.95
+209903-V1,64,G1,core,core_estimator_sample,"OLS: non-specific duties. Coef=-2.603, p<0.001. OLS on ad valorem duties subsample.",0.95
+209903-V1,65,G1,core,core_estimator_sample,"OLS: pre-Ottawa period. Coef=-1.120, p<0.001. OLS on pre-1932 subsample.",0.95

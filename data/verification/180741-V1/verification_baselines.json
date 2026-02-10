@@ -1,16 +1,15 @@
 {
   "paper_id": "180741-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/180741-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/180741-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Advisors who prefer to see the incentive first are more likely to recommend the incentivized product when assigned their preferred information order.",
+      "claim_summary": "Advisors preferring to see incentives first are more likely to recommend incentivized product.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline",
-        "baseline_combined"
+        "baseline"
       ],
       "baseline_outcome_vars": [
         "recommendincentive"
@@ -18,15 +17,14 @@
       "baseline_treatment_vars": [
         "choicebefore"
       ],
-      "notes": "baseline uses assigned-preferences subsample (N=4448, coef=0.195); baseline_combined pools all (N=5908, coef=0.181). baseline_not_assigned is diagnostic."
+      "notes": "ChoiceFree conflict subsample."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "In the NoChoice experiment, seeing the incentive first increases recommending the incentivized product.",
+      "claim_summary": "Random assignment to see incentives first increases incentivized recommendations (NoChoice).",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "nochoice/baseline_conflict",
-        "nochoice/baseline_combined"
+        "nochoice/baseline_conflict"
       ],
       "baseline_outcome_vars": [
         "recommendincentive"
@@ -34,23 +32,8 @@
       "baseline_treatment_vars": [
         "seeincentivefirst"
       ],
-      "notes": "Separate experiment. nochoice/baseline_conflict N=213 coef=0.142; nochoice/baseline_combined N=299 coef=0.148."
-    },
-    {
-      "baseline_group_id": "G3",
-      "claim_summary": "Demand for moral commitment predicted by costly treatment (seeincentivecostly negatively predicts choicebefore).",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "demand/baseline"
-      ],
-      "baseline_outcome_vars": [
-        "choicebefore"
-      ],
-      "baseline_treatment_vars": [
-        "seeincentivecostly"
-      ],
-      "notes": "Demand-side claim. N=5908, coef=-0.139."
+      "notes": "NoChoice experiment, conflict scenario."
     }
   ],
-  "global_notes": "Three claims. Duplicates: mturk_only=choicefree_only, placebo/noconflict=sample/noconflict. demand/with_selfishness changes treatment. not_assigned are diagnostics. getbefore is tautological."
+  "global_notes": "Paper: Enabling or Limiting Cognitive Flexibility (AER: Insights). Lab experiment with financial advisors."
 }

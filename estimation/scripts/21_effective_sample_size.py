@@ -4,7 +4,7 @@
 ===========================
 
 Plot effective independent sample size n_eff = Delta * n as a function of
-total specifications n, for the estimated Delta and robustness variants.
+total specifications n, for all 5 non-random AR(1) orderings plus independence.
 
 Reads:
   - estimation/results/dependence.json
@@ -17,7 +17,6 @@ Output:
 from __future__ import annotations
 
 import json
-import sys
 import warnings
 from pathlib import Path
 
@@ -27,7 +26,6 @@ import numpy as np
 # Paths
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent.parent.parent
-DATA_DIR = BASE_DIR / "estimation" / "data"
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
 FIG_DIR = BASE_DIR / "estimation" / "figures"
 OL_FIG_DIR = Path(__file__).parent.parent.parent.parent / "overleaf" / "tex" / "v8_figures"
@@ -36,6 +34,23 @@ DEPENDENCE_FILE = RESULTS_DIR / "dependence.json"
 OUTPUT_NAME = "fig_effective_sample_size.pdf"
 
 N_MAX = 500
+
+# Non-random orderings to display
+ORDERING_KEYS = ["spec_order", "lex_path", "bfs", "dfs", "by_category"]
+ORDERING_LABELS = {
+    "spec_order": "Document order",
+    "lex_path": "Lexicographic path",
+    "bfs": "Breadth-first",
+    "dfs": "Depth-first",
+    "by_category": "By category",
+}
+ORDERING_COLORS = {
+    "spec_order": "tab:orange",
+    "lex_path": "tab:green",
+    "bfs": "tab:purple",
+    "dfs": "tab:red",
+    "by_category": "black",
+}
 
 
 def load_dependence() -> dict:
@@ -59,34 +74,16 @@ def main() -> None:
     print("Effective Sample Size: n_eff = Delta * n")
     print("=" * 60)
 
-    # ------------------------------------------------------------------
-    # Load dependence parameters
-    # ------------------------------------------------------------------
     dep = load_dependence()
 
-    # Extract preferred (distance-based) Delta
-    Delta_preferred = dep.get("distance_based", {}).get("Delta", None)
-    if Delta_preferred is None:
-        Delta_preferred = dep.get("preferred", {}).get("Delta", 0.21)
-        print(f"  Using preferred Delta = {Delta_preferred:.4f}")
-    else:
-        print(f"  Distance-based Delta = {Delta_preferred:.4f}")
+    # Extract preferred ordering
+    preferred_ordering = dep.get("preferred", {}).get("ordering", "by_category")
+    print(f"  Preferred ordering: {preferred_ordering}")
 
-    # Extract AR(1) Delta
-    Delta_ar1 = dep.get("ar1", {}).get("pooled", {}).get("Delta", None)
-    if Delta_ar1 is not None:
-        print(f"  AR(1) Delta = {Delta_ar1:.4f}")
-    else:
-        print("  AR(1) Delta not available; will omit from plot.")
+    # Extract AR(1) orderings
+    ar1_ords = dep.get("ar1_orderings", {})
 
-    # ------------------------------------------------------------------
-    # Build curves
-    # ------------------------------------------------------------------
     n = np.arange(1, N_MAX + 1)
-
-    n_eff_preferred = Delta_preferred * n
-    n_eff_independence = n.astype(float)  # benchmark: Delta = 1
-    n_eff_ar1 = Delta_ar1 * n if Delta_ar1 is not None else None
 
     # ------------------------------------------------------------------
     # Plot
@@ -106,35 +103,38 @@ def main() -> None:
 
     # Independence benchmark
     ax.plot(
-        n, n_eff_independence,
+        n, n.astype(float),
         linestyle=":",
         color="gray",
         linewidth=1.5,
         label=r"Independence ($\Delta = 1$)",
     )
 
-    # Preferred (distance-based) estimate
-    ax.plot(
-        n, n_eff_preferred,
-        linestyle="-",
-        color="black",
-        linewidth=2.5,
-        label=rf"Distance-based ($\hat{{\Delta}} = {Delta_preferred:.3f}$)",
-    )
+    # Plot each non-random ordering
+    for key in ORDERING_KEYS:
+        if key not in ar1_ords:
+            print(f"  Skipping {key}: not in dependence.json")
+            continue
+        Delta_val = float(ar1_ords[key].get("Delta", np.nan))
+        if not np.isfinite(Delta_val):
+            continue
 
-    # AR(1) robustness
-    if n_eff_ar1 is not None:
+        is_preferred = (key == preferred_ordering)
+        label = ORDERING_LABELS.get(key, key)
+        color = ORDERING_COLORS.get(key, "tab:blue")
+
         ax.plot(
-            n, n_eff_ar1,
-            linestyle="--",
-            color="tab:blue",
-            linewidth=1.8,
-            label=rf"AR(1) ($\hat{{\Delta}} = {Delta_ar1:.3f}$)",
+            n, Delta_val * n,
+            linestyle="-" if is_preferred else "--",
+            color=color,
+            linewidth=2.5 if is_preferred else 1.5,
+            label=rf"{label} ($\widehat{{\Delta}} = {Delta_val:.3f}$)",
         )
+        print(f"  {label}: Delta = {Delta_val:.4f}" + (" [preferred]" if is_preferred else ""))
 
     ax.set_xlabel(r"Total specifications $n$", fontsize=12)
     ax.set_ylabel(r"Effective independent tests $n_{\mathrm{eff}}$", fontsize=12)
-    ax.legend(frameon=False, fontsize=9, loc="upper left")
+    ax.legend(frameon=False, fontsize=8, loc="upper left")
 
     ax.set_xlim(0, N_MAX)
     ax.set_ylim(0, N_MAX)

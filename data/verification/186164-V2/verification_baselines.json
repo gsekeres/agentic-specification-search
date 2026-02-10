@@ -1,12 +1,12 @@
 {
   "paper_id": "186164-V2",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/186164-V2",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/186164-V2",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "School finance reforms (SFR) increase per-pupil school expenditure, as measured in a district-level panel with state FE -- this is the first-stage relationship for the paper's IV strategy.",
+      "claim_summary": "School finance reforms increase per-pupil expenditure (first stage of IV).",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "post_sfr"
       ],
-      "notes": "The outcome outcome1 is log per-pupil expenditure. The treatment post_sfr is a post-school-finance-reform indicator. The paper's main results use individual-level PSID data (unavailable), so this specification search tests only the first-stage relationship using district-level panel data. The baseline coefficient is 0.021 (p=0.51), not statistically significant with state-level clustering. Spec did/fe/state is numerically identical to baseline (exact duplicate)."
+      "notes": "Coef ~0.021. DiD with state FE. Not significant at conventional levels with state clustering."
     }
   ],
-  "global_notes": "This paper's main hypothesis concerns dynamic complementarity between Head Start and K12 spending on children's outcomes, but the replication data only supports the first-stage analysis (SFR -> spending). The specification search therefore tests a subsidiary claim. The baseline is not statistically significant (p=0.51). did/fe/state and robust/cluster/state are exact duplicates of baseline. Treatment variations (rows 1-5) change the causal object to different reform types/intensities. Heterogeneity interaction specs (rows 46-49) report the interaction coefficient, not the main effect. Regional and income subsample specs represent heterogeneity splits rather than robustness of the average effect."
+  "global_notes": "Paper: Reducing Inequality Through Dynamic Complementarity (AEJ: Policy). Main PSID results unavailable. This tests the first stage only."
 }

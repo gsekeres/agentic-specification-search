@@ -17,13 +17,8 @@ Model family (main):
   |Z| | k ~ TruncNormal(mu_k, sigma_k; lo=0),   k in {N, H, L}.
 We estimate a 3-component truncated-Gaussian mixture by maximum likelihood with multiple restarts.
 
-Appendix robustness:
-  Z_p := -log10(p), where p is a two-sided p-value computed from |t|.
-  Fit a 3-component gamma mixture on Z_p as a robustness check.
-
 Outputs:
-  - estimation/results/mixture_params_abs_t.json      (main; |Z| = |t|, truncated-normal mixture)
-  - estimation/results/mixture_params.json            (appendix robustness; Z_p = -log10(p), gamma mixture)
+  - estimation/results/mixture_params_abs_t.json      (main; |t|, truncated-normal mixture)
 """
 
 from __future__ import annotations
@@ -35,7 +30,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 from scipy.special import logsumexp
-from scipy.stats import foldnorm, gamma, norm
+from scipy.stats import foldnorm, norm
 
 # Paths
 BASE_DIR = Path(__file__).parent.parent.parent
@@ -47,13 +42,9 @@ SPEC_LEVEL_FILE = DATA_DIR / "spec_level.csv"
 SPEC_LEVEL_VERIFIED_CORE_FILE = DATA_DIR / "spec_level_verified_core.csv"
 I4R_COMPARISON_FILE = DATA_DIR / "i4r_comparison.csv"
 
-OUTPUT_MAIN = RESULTS_DIR / "mixture_params.json"
 OUTPUT_ABS_T = RESULTS_DIR / "mixture_params_abs_t.json"
 
 # Winsorization thresholds (estimation only)
-WINSORIZE_Z_THRESHOLD = 20.0
-WINSORIZE_Z_SENSITIVITY = [15.0, 10.0]
-
 WINSORIZE_T_THRESHOLD = 20.0
 WINSORIZE_T_SENSITIVITY = [15.0, 10.0]
 TRIM_ABS_T_CUTOFFS = [10.0]
@@ -97,135 +88,6 @@ def _component_labels(n_components: int) -> list[str]:
         return ["N", "H1", "H2", "L"]
     else:
         return [f"C{i}" for i in range(n_components)]
-
-
-def _gamma_shape_scale(mu: float, sigma: float) -> tuple[float, float]:
-    """
-    Convert (mean, sd) to (shape, scale) for a Gamma distribution.
-
-    mean = a*scale
-    var  = a*scale^2
-    => a = (mu/sigma)^2, scale = sigma^2/mu
-    """
-    mu = float(max(mu, 1e-8))
-    sigma = float(max(sigma, 1e-8))
-    shape = (mu / sigma) ** 2
-    scale = (sigma**2) / mu
-    return float(max(shape, 1e-8)), float(max(scale, 1e-8))
-
-
-def fit_gamma_mixture(
-    data: np.ndarray,
-    n_components: int = 3,
-    n_init: int = 40,
-    random_state: int = 42,
-    max_iter: int = 800,
-    sigma_constraint: str | None = None,
-) -> dict:
-    """
-    Fit a gamma mixture on nonnegative data by direct MLE with multiple restarts.
-
-    Parameters are stored in (pi, mu, sigma), where (mu,sigma) are the mean and sd of each component.
-
-    sigma_constraint:
-        None       — default, sigma free
-        "fixed_1"  — fix sigma_k = 1.0 for all k; only optimize pi and mu
-    """
-    x = np.asarray(data, dtype=float)
-    x = x[np.isfinite(x)]
-    x = np.clip(x, 0.0, None)
-    if x.size < max(10, n_components * 3):
-        raise ValueError("Not enough observations to fit mixture")
-
-    fix_sigma = sigma_constraint == "fixed_1"
-
-    qs = np.linspace(0.15, 0.85, n_components)
-    mu0 = np.quantile(x, qs)
-    sd = float(np.std(x, ddof=1)) if x.size > 1 else 1.0
-    sig0 = np.clip(sd * np.ones(n_components), 0.25, None)
-
-    def unpack(theta: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-        K = n_components
-        w = theta[:K]
-        mu_raw = theta[K : 2 * K]
-        pi = _softmax(w)
-        mu = _softplus(mu_raw) + 1e-8
-        if fix_sigma:
-            sigma = np.ones(K)
-        else:
-            sig_raw = theta[2 * K : 3 * K]
-            sigma = _softplus(sig_raw) + 1e-6
-        return pi, mu, sigma
-
-    def nll(theta: np.ndarray) -> float:
-        pi, mu, sigma = unpack(theta)
-        log_pi = np.log(np.clip(pi, 1e-12, 1.0))
-        logpdf = []
-        for k in range(n_components):
-            a, sc = _gamma_shape_scale(float(mu[k]), float(sigma[k]))
-            logpdf.append(gamma.logpdf(x, a=a, scale=sc))
-        logpdf = np.stack(logpdf, axis=1)
-        ll = logsumexp(logpdf + log_pi[None, :], axis=1).sum()
-        if not np.isfinite(ll):
-            return 1e18
-        return float(-ll)
-
-    rng = np.random.default_rng(int(random_state))
-
-    if fix_sigma:
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0)])
-    else:
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0), _inv_softplus(sig0)])
-
-    best_res = None
-    best_val = None
-    for _ in range(int(n_init)):
-        jitter = rng.normal(0, 0.6, size=theta0.size)
-        theta_init = theta0 + jitter
-        res = minimize(nll, theta_init, method="L-BFGS-B", options={"maxiter": int(max_iter)})
-        if not res.success:
-            continue
-        val = float(res.fun)
-        if best_val is None or val < best_val:
-            best_val = val
-            best_res = res
-
-    if best_res is None:
-        best_res = minimize(nll, theta0, method="L-BFGS-B", options={"maxiter": int(max_iter)})
-
-    pi_hat, mu_hat, sig_hat = unpack(best_res.x)
-
-    # Sort by component mean (N < H < L)
-    order = np.argsort(mu_hat)
-    pi_hat = pi_hat[order]
-    mu_hat = mu_hat[order]
-    sig_hat = sig_hat[order]
-
-    labels = _component_labels(n_components)
-    log_like = float(-nll(best_res.x))
-    n = int(x.size)
-    if fix_sigma:
-        p = (n_components - 1) + n_components  # weights + mu per component
-    else:
-        p = (n_components - 1) + 2 * n_components  # weights + (mu,sigma) per component
-    aic = 2 * p - 2 * log_like
-    bic = p * np.log(n) - 2 * log_like
-
-    return {
-        "distribution": "gamma",
-        "sigma_constraint": sigma_constraint,
-        "pi": {labels[i]: float(pi_hat[i]) for i in range(n_components)},
-        "mu": {labels[i]: float(mu_hat[i]) for i in range(n_components)},
-        "sigma": {labels[i]: float(sig_hat[i]) for i in range(n_components)},
-        "log_likelihood": float(log_like),
-        "aic": float(aic),
-        "bic": float(bic),
-        "n_obs": int(n),
-        "n_params": int(p),
-        "converged": bool(getattr(best_res, "success", False)),
-        "n_iter": int(getattr(best_res, "nit", -1)),
-        "optimizer_message": str(getattr(best_res, "message", "")),
-    }
 
 
 def _foldnorm_logpdf(x: np.ndarray, mu: float, sigma: float) -> np.ndarray:
@@ -508,115 +370,11 @@ def fit_foldnorm_mixture(
     }
 
 
-def _z_from_t_and_p(t: np.ndarray, p: np.ndarray | None = None) -> np.ndarray:
-    """
-    Build Z_p=-log10(p) with a stable fallback p computed from |t| (normal approximation).
-    """
-    t = np.asarray(t, dtype=float)
-    p_norm = 2.0 * norm.sf(np.abs(t))
-    p_eff = p_norm.copy()
-    if p is not None:
-        p = np.asarray(p, dtype=float)
-        ok = np.isfinite(p) & (p > 0.0) & (p <= 1.0)
-        p_eff[ok] = p[ok]
-    p_eff = np.clip(p_eff, 1e-300, 1.0)
-    return -np.log10(p_eff)
-
-
 def main() -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     # =========================================================================
-    # ROBUSTNESS (Z_p = -log10(p)): gamma mixture
-    # =========================================================================
-    main_results: dict = {"index": "neglog10p_two_sided", "winsorize_threshold": WINSORIZE_Z_THRESHOLD}
-
-    # i4r benchmark (Sample A): convert from t_i4r via normal approximation
-    if I4R_COMPARISON_FILE.exists():
-        cmp = pd.read_csv(I4R_COMPARISON_FILE)
-        t_i4r = pd.to_numeric(cmp.get("t_i4r"), errors="coerce").to_numpy(dtype=float)
-        z_i4r = _z_from_t_and_p(t_i4r)
-        z_i4r = _winsorize_pos(z_i4r, WINSORIZE_Z_THRESHOLD)
-        if np.isfinite(z_i4r).sum() >= 10:
-            main_results["i4r_benchmark"] = {"primary": fit_gamma_mixture(z_i4r, n_init=30, random_state=42)}
-
-    # Spec-level fits (preferred for power)
-    if SPEC_LEVEL_FILE.exists():
-        spec_df = pd.read_csv(SPEC_LEVEL_FILE)
-        z_col = "Z_logp" if "Z_logp" in spec_df.columns else None
-        if z_col is None:
-            raise RuntimeError("spec_level.csv missing Z_logp. Re-run 02_build_spec_level.py.")
-
-        z_all = pd.to_numeric(spec_df[z_col], errors="coerce").to_numpy(dtype=float)
-        z_all = _winsorize_pos(z_all, WINSORIZE_Z_THRESHOLD)
-
-        # Baseline-only subset (paper-weighted analog)
-        baseline_specs = spec_df[spec_df["spec_tree_path"].astype(str).str.contains("#baseline", na=False)]
-        if len(baseline_specs) == 0 and "spec_id" in spec_df.columns:
-            baseline_specs = spec_df[spec_df["spec_id"].astype(str) == "baseline"]
-        z_base = pd.to_numeric(baseline_specs[z_col], errors="coerce").to_numpy(dtype=float)
-        z_base = _winsorize_pos(z_base, WINSORIZE_Z_THRESHOLD)
-
-        spec_out: dict = {
-            "equal_weight": fit_gamma_mixture(z_all, n_init=25, random_state=42),
-            "baseline_only": fit_gamma_mixture(z_base, n_init=25, random_state=42) if np.isfinite(z_base).sum() >= 10 else None,
-        }
-
-        # σ=1 fixed fit on baseline-only
-        if np.isfinite(z_base).sum() >= 10:
-            spec_out["baseline_only_sigma_fixed_1"] = fit_gamma_mixture(
-                z_base, n_init=25, random_state=42, sigma_constraint="fixed_1"
-            )
-
-        # Winsorization sensitivity on baseline-only
-        winsor_sens: dict = {}
-        for thr in WINSORIZE_Z_SENSITIVITY:
-            zb = _winsorize_pos(z_base, float(thr))
-            if np.isfinite(zb).sum() >= 10:
-                winsor_sens[f"winsor_{int(thr)}"] = fit_gamma_mixture(zb, n_init=20, random_state=42)
-        spec_out["winsor_sensitivity"] = winsor_sens
-
-        main_results["spec_level"] = spec_out
-
-    # Verified-core spec-level fits (appendix/main robustness)
-    if SPEC_LEVEL_VERIFIED_CORE_FILE.exists():
-        vdf = pd.read_csv(SPEC_LEVEL_VERIFIED_CORE_FILE)
-        z_col = "Z_logp" if "Z_logp" in vdf.columns else None
-        if z_col is None:
-            raise RuntimeError("spec_level_verified_core.csv missing Z_logp. Re-run 02_build_spec_level.py.")
-
-        z_core = pd.to_numeric(vdf[z_col], errors="coerce").to_numpy(dtype=float)
-        z_core = _winsorize_pos(z_core, WINSORIZE_Z_THRESHOLD)
-
-        out_v: dict = {"z_column": z_col}
-        out_v["all_core"] = fit_gamma_mixture(z_core, n_init=25, random_state=42)
-
-        params_baseline = None
-        if "v_is_baseline" in vdf.columns:
-            base = vdf[pd.to_numeric(vdf["v_is_baseline"], errors="coerce").fillna(0).astype(int) == 1]
-            if len(base) > 0:
-                zb = pd.to_numeric(base[z_col], errors="coerce").to_numpy(dtype=float)
-                zb = _winsorize_pos(zb, WINSORIZE_Z_THRESHOLD)
-                if np.isfinite(zb).sum() >= 10:
-                    params_baseline = fit_gamma_mixture(zb, n_init=25, random_state=42)
-        out_v["baseline_only"] = params_baseline
-        main_results["spec_level_verified_core"] = out_v
-
-    # Claim-level (agentic baseline only): optional
-    if CLAIM_LEVEL_FILE.exists():
-        claim_df = pd.read_csv(CLAIM_LEVEL_FILE)
-        t = pd.to_numeric(claim_df.get("t_AI"), errors="coerce").to_numpy(dtype=float)
-        p = pd.to_numeric(claim_df.get("p_value"), errors="coerce").to_numpy(dtype=float) if "p_value" in claim_df.columns else None
-        z = _z_from_t_and_p(t, p=p)
-        z = _winsorize_pos(z, WINSORIZE_Z_THRESHOLD)
-        if np.isfinite(z).sum() >= 10:
-            main_results["claim_level"] = {"primary": fit_gamma_mixture(z, n_init=25, random_state=42)}
-
-    OUTPUT_MAIN.write_text(json.dumps(main_results, indent=2) + "\n")
-    print(f"Wrote {OUTPUT_MAIN}")
-
-    # =========================================================================
-    # MAIN (|Z| = |t|): truncated-Gaussian mixture on nonnegative support
+    # MAIN (|t|): truncated-Gaussian mixture on nonnegative support
     # =========================================================================
     abs_t_results: dict = {"index": "abs_t", "winsorize_threshold": WINSORIZE_T_THRESHOLD}
 
@@ -698,24 +456,18 @@ def main() -> None:
         abs_t_results["spec_level_verified_core"] = out_vc
 
     # =========================================================================
-    # K-SENSITIVITY (K=2,3,4): truncated-normal + gamma on verified-core all specs
+    # K-SENSITIVITY (K=2,3,4): truncated-normal on verified-core all specs
     # =========================================================================
     print("\n--- K-sensitivity analysis ---")
     k_sensitivity: dict = {}
 
     # Data source: verified-core all specs (largest clean sample)
     vc_data_t = None
-    vc_data_z = None
     if SPEC_LEVEL_VERIFIED_CORE_FILE.exists():
         vdf = pd.read_csv(SPEC_LEVEL_VERIFIED_CORE_FILE)
         t_col_vc = "Z_abs" if "Z_abs" in vdf.columns else ("Z" if "Z" in vdf.columns else "t_stat")
         vc_data_t = pd.to_numeric(vdf[t_col_vc], errors="coerce").to_numpy(dtype=float)
         vc_data_t = _winsorize_pos(np.abs(vc_data_t), WINSORIZE_T_THRESHOLD)
-
-        z_col_vc = "Z_logp" if "Z_logp" in vdf.columns else None
-        if z_col_vc is not None:
-            vc_data_z = pd.to_numeric(vdf[z_col_vc], errors="coerce").to_numpy(dtype=float)
-            vc_data_z = _winsorize_pos(vc_data_z, WINSORIZE_Z_THRESHOLD)
 
     for K in [2, 3, 4]:
         k_key = f"K={K}"
@@ -727,24 +479,12 @@ def main() -> None:
                 vc_data_t, n_components=K, n_init=30, random_state=42, lo=0.0
             )
 
-        if vc_data_z is not None and np.isfinite(vc_data_z).sum() >= max(10, K * 3):
-            print(f"  Fitting gamma K={K} on verified-core Z_logp (n={np.isfinite(vc_data_z).sum()})...")
-            k_sensitivity[k_key]["gamma"] = fit_gamma_mixture(
-                vc_data_z, n_components=K, n_init=30, random_state=42
-            )
-
     # Print AIC/BIC comparison
     print("\n  K-sensitivity AIC/BIC comparison (truncnorm on |t|):")
     for k_key in sorted(k_sensitivity.keys()):
         tn = k_sensitivity[k_key].get("truncnorm", {})
         if tn:
             print(f"    {k_key}: AIC={tn['aic']:.1f}, BIC={tn['bic']:.1f}, logL={tn['log_likelihood']:.1f}")
-
-    print("\n  K-sensitivity AIC/BIC comparison (gamma on Z_logp):")
-    for k_key in sorted(k_sensitivity.keys()):
-        gm = k_sensitivity[k_key].get("gamma", {})
-        if gm:
-            print(f"    {k_key}: AIC={gm['aic']:.1f}, BIC={gm['bic']:.1f}, logL={gm['log_likelihood']:.1f}")
 
     abs_t_results["k_sensitivity"] = k_sensitivity
 
@@ -772,6 +512,98 @@ def main() -> None:
                 print(f"    AIC={res['aic']:.1f}, BIC={res['bic']:.1f}, logL={res['log_likelihood']:.1f}")
 
     abs_t_results["folded_normal_robustness"] = folded_robustness
+
+    # =========================================================================
+    # MU_FREE SIGMA=1 COMPARISON: both families, K=2,3,4, full + |t|≤10
+    # =========================================================================
+    print("\n--- mu_free sigma=1 comparison (truncnorm + foldnorm, K=2,3,4) ---")
+    mu_free_comparison: dict = {}
+
+    if SPEC_LEVEL_VERIFIED_CORE_FILE.exists():
+        vdf_mf = pd.read_csv(SPEC_LEVEL_VERIFIED_CORE_FILE)
+        t_col_mf = "Z_abs" if "Z_abs" in vdf_mf.columns else ("Z" if "Z" in vdf_mf.columns else "t_stat")
+        t_mf_raw = pd.to_numeric(vdf_mf[t_col_mf], errors="coerce").to_numpy(dtype=float)
+        t_mf_full = _winsorize_pos(np.abs(t_mf_raw), WINSORIZE_T_THRESHOLD)
+        t_mf_trim = np.abs(t_mf_raw)
+        t_mf_trim = t_mf_trim[np.isfinite(t_mf_trim) & (t_mf_trim <= 10.0)]
+
+        samples = [("full", t_mf_full), ("trim10", t_mf_trim)]
+
+        for K in [2, 3, 4]:
+            for sample_name, sample_data in samples:
+                if len(sample_data) < max(10, K * 3):
+                    continue
+
+                # Truncated normal: sigma=1 fixed, mu free (default behavior)
+                key_tn = f"truncnorm_K={K}_{sample_name}"
+                print(f"  Fitting {key_tn} (n={len(sample_data)})...")
+                mu_free_comparison[key_tn] = fit_truncnorm_mixture(
+                    sample_data, n_components=K, n_init=50, random_state=42,
+                    lo=0.0, sigma_constraint="fixed_1",
+                )
+                res_tn = mu_free_comparison[key_tn]
+                print(f"    AIC={res_tn['aic']:.1f}, BIC={res_tn['bic']:.1f}, logL={res_tn['log_likelihood']:.1f}")
+
+                # Folded normal: sigma=1 fixed, mu_N FREE (fix_null_mean_zero=False)
+                key_fn = f"foldnorm_K={K}_{sample_name}"
+                print(f"  Fitting {key_fn} (n={len(sample_data)})...")
+                mu_free_comparison[key_fn] = fit_foldnorm_mixture(
+                    sample_data, n_components=K, n_init=50, random_state=42,
+                    sigma_constraint="fixed_1", fix_null_mean_zero=False,
+                )
+                res_fn = mu_free_comparison[key_fn]
+                print(f"    AIC={res_fn['aic']:.1f}, BIC={res_fn['bic']:.1f}, logL={res_fn['log_likelihood']:.1f}")
+
+        # Print comparison table
+        print("\n  mu_free sigma=1 comparison AIC/BIC:")
+        print(f"  {'Model':<30s} {'n':>5s} {'AIC':>10s} {'BIC':>10s} {'logL':>10s}")
+        for key in sorted(mu_free_comparison.keys()):
+            r = mu_free_comparison[key]
+            print(f"  {key:<30s} {r['n_obs']:>5d} {r['aic']:>10.1f} {r['bic']:>10.1f} {r['log_likelihood']:>10.1f}")
+
+    abs_t_results["mu_free_sigma1_comparison"] = mu_free_comparison
+
+    # =========================================================================
+    # SYSTEMATIC GRID: K x sigma_constraint x sample (truncated-normal)
+    # 3 sigma specs (free, fixed_1, geq_1) x 3 K (2,3,4) x 2 samples (full, trim10)
+    # All on verified-core data for consistency.
+    # =========================================================================
+    print("\n--- Systematic grid: K x sigma x sample ---")
+    systematic_grid: dict = {}
+
+    if SPEC_LEVEL_VERIFIED_CORE_FILE.exists():
+        vdf_sg = pd.read_csv(SPEC_LEVEL_VERIFIED_CORE_FILE)
+        t_col_sg = "Z_abs" if "Z_abs" in vdf_sg.columns else ("Z" if "Z" in vdf_sg.columns else "t_stat")
+        t_sg_raw = pd.to_numeric(vdf_sg[t_col_sg], errors="coerce").to_numpy(dtype=float)
+        t_sg_full = _winsorize_pos(np.abs(t_sg_raw), WINSORIZE_T_THRESHOLD)
+        t_sg_trim = np.abs(t_sg_raw)
+        t_sg_trim = t_sg_trim[np.isfinite(t_sg_trim) & (t_sg_trim <= 10.0)]
+
+        samples_sg = [("full", t_sg_full), ("trim10", t_sg_trim)]
+        sigma_specs = [("free", None), ("fixed_1", "fixed_1"), ("geq_1", "geq_1")]
+
+        for K in [2, 3, 4]:
+            for sigma_name, sigma_arg in sigma_specs:
+                for sample_name, sample_data in samples_sg:
+                    if len(sample_data) < max(10, K * 3):
+                        continue
+                    key = f"K={K}_sigma={sigma_name}_{sample_name}"
+                    print(f"  Fitting {key} (n={len(sample_data)})...")
+                    systematic_grid[key] = fit_truncnorm_mixture(
+                        sample_data, n_components=K, n_init=40, random_state=42,
+                        lo=0.0, sigma_constraint=sigma_arg,
+                    )
+                    res = systematic_grid[key]
+                    print(f"    AIC={res['aic']:.1f}, BIC={res['bic']:.1f}, logL={res['log_likelihood']:.1f}")
+
+        # Print summary table
+        print("\n  Systematic grid AIC/BIC summary:")
+        print(f"  {'Key':<35s} {'n':>5s} {'AIC':>10s} {'BIC':>10s} {'logL':>10s}")
+        for key in sorted(systematic_grid.keys()):
+            r = systematic_grid[key]
+            print(f"  {key:<35s} {r['n_obs']:>5d} {r['aic']:>10.1f} {r['bic']:>10.1f} {r['log_likelihood']:>10.1f}")
+
+    abs_t_results["systematic_grid"] = systematic_grid
 
     OUTPUT_ABS_T.write_text(json.dumps(abs_t_results, indent=2) + "\n")
     print(f"Wrote {OUTPUT_ABS_T}")

@@ -1,68 +1,68 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-186164-V2,baseline,methods/difference_in_differences.md#baseline,outcome1,post_sfr,G1,baseline,1,1,core_controls,Baseline specification: SFR effect on log PPE with state FE and 18 controls,1.0
-186164-V2,robust/treatment/intensity,methods/difference_in_differences.md#treatment-definition,outcome1,post_sfr_intensity,G1,baseline,0,0,noncore_alt_treatment,Changes treatment from binary SFR to intensity measure; different causal object,0.85
-186164-V2,robust/treatment/court_order,methods/difference_in_differences.md#treatment-definition,outcome1,post_case,G1,baseline,0,0,noncore_alt_treatment,Changes treatment to court-ordered reform; different causal object,0.85
-186164-V2,robust/treatment/eq_spend,methods/difference_in_differences.md#treatment-definition,outcome1,post_eq_spend,G1,baseline,0,0,noncore_alt_treatment,Changes treatment to equalization spending reform; different causal object,0.85
-186164-V2,robust/treatment/tax_limit,methods/difference_in_differences.md#treatment-definition,outcome1,post_taxlimit,G1,baseline,0,0,noncore_alt_treatment,Changes treatment to tax limit reform; different causal object,0.85
-186164-V2,robust/treatment/spend_limit,methods/difference_in_differences.md#treatment-definition,outcome1,post_spend_limit,G1,baseline,0,0,noncore_alt_treatment,Changes treatment to spending limit reform; different causal object,0.85
-186164-V2,did/fe/state,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,0,invalid,"Exact duplicate of baseline (identical coefficient, SE, p-value, all fields)",1.0
-186164-V2,did/fe/time,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,Replaces state FE with year FE; same outcome and treatment,0.9
-186164-V2,did/fe/region,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,Replaces state FE with region FE; same outcome and treatment,0.9
-186164-V2,did/fe/division,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,Replaces state FE with division FE; same outcome and treatment,0.9
-186164-V2,did/fe/none,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,Removes all FE; same outcome and treatment,0.9
-186164-V2,did/controls/none,methods/difference_in_differences.md#control-sets,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops all controls (0 controls); same FE, outcome, treatment",0.95
-186164-V2,did/controls/minimal,methods/difference_in_differences.md#control-sets,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Uses minimal controls (2 controls); same FE, outcome, treatment",0.95
-186164-V2,robust/control/drop_poverty,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops poverty controls; same FE, outcome, treatment",0.95
-186164-V2,robust/control/drop_race,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops race controls; same FE, outcome, treatment",0.95
-186164-V2,robust/control/drop_urban,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops urban controls; same FE, outcome, treatment",0.95
-186164-V2,robust/control/drop_pop,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops population controls; same FE, outcome, treatment",0.95
-186164-V2,robust/control/drop_govt,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops government controls; same FE, outcome, treatment",0.95
-186164-V2,robust/control/drop_division,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Drops division controls (10 controls remain); same FE, outcome, treatment",0.95
-186164-V2,robust/control/add_poverty,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Control progression: adds poverty (2 controls); same FE, outcome, treatment",0.95
-186164-V2,robust/control/add_race,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Control progression: adds race (4 controls); same FE, outcome, treatment",0.95
-186164-V2,robust/control/add_urban,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Control progression: adds urban (6 controls); same FE, outcome, treatment",0.95
-186164-V2,robust/control/add_pop,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,"Control progression: adds pop (8 controls); same FE, outcome, treatment",0.95
-186164-V2,robust/cluster/district,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,District-level clustering instead of state; identical point estimate,0.95
-186164-V2,robust/cluster/state,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,0,invalid,Exact duplicate of baseline (same state clustering); identical coefficient and p-value,1.0
-186164-V2,robust/cluster/division,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,Division-level clustering instead of state; identical point estimate,0.95
-186164-V2,robust/cluster/region,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,Region-level clustering instead of state; identical point estimate,0.95
-186164-V2,robust/sample/early_period,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Restricts to early period (pre-1985); same treatment and outcome,0.85
-186164-V2,robust/sample/late_period,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Restricts to late period (1985+); same treatment and outcome,0.85
-186164-V2,robust/sample/northeast,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Regional subsample (Northeast only); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/midwest,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Regional subsample (Midwest only); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/south,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Regional subsample (South only); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/west,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Regional subsample (West only); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/income_low,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Income quartile subsample (low); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/income_mid,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Income quartile subsample (mid); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/income_mid_high,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Income quartile subsample (mid-high); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/income_high,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Income quartile subsample (high); tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/winsorize,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Winsorizes outcome; same treatment, FE, controls, full sample",0.95
-186164-V2,robust/sample/trim,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Trims extreme values; same treatment, FE, controls",0.95
-186164-V2,robust/outcome/levels,robustness/functional_form.md,outcome2,post_sfr,G1,baseline,0,1,core_funcform,PPE in levels instead of logs; same treatment and sample,0.85
-186164-V2,robust/outcome/ihs,robustness/functional_form.md,outcome_ihs,post_sfr,G1,baseline,0,1,core_funcform,IHS transformation instead of log; same treatment and sample,0.95
-186164-V2,robust/outcome/std,robustness/functional_form.md,outcome_std,post_sfr,G1,baseline,0,1,core_funcform,Standardized outcome instead of log; same treatment and sample,0.9
-186164-V2,robust/outcome/ppe2012,robustness/functional_form.md,ln_ppe2012,post_sfr,G1,baseline,0,1,core_funcform,Log PPE in 2012 dollars; same treatment and sample,0.9
-186164-V2,robust/weights/unweighted,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Unweighted regression; same treatment, FE, controls",0.9
-186164-V2,robust/weights/population,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Population weights; same treatment, FE, controls",0.9
-186164-V2,robust/weights/enrollment,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Enrollment weights; same treatment, FE, controls",0.9
-186164-V2,robust/heterogeneity/poverty_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_poverty,G1,baseline,0,0,noncore_heterogeneity,Interaction term coefficient (SFR x poverty); different estimand,0.9
-186164-V2,robust/heterogeneity/black_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_black,G1,baseline,0,0,noncore_heterogeneity,Interaction term coefficient (SFR x Black pct); different estimand,0.9
-186164-V2,robust/heterogeneity/urban_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_urban,G1,baseline,0,0,noncore_heterogeneity,Interaction term coefficient (SFR x urban); different estimand,0.9
-186164-V2,robust/heterogeneity/size_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_size,G1,baseline,0,0,noncore_heterogeneity,Interaction term coefficient (SFR x size); different estimand,0.9
-186164-V2,robust/heterogeneity/high_poverty,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,High-poverty subsample; tests heterogeneity not average effect,0.75
-186164-V2,robust/heterogeneity/low_poverty,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Low-poverty subsample; tests heterogeneity not average effect,0.75
-186164-V2,robust/heterogeneity/urban,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Urban subsample; tests heterogeneity not average effect,0.75
-186164-V2,robust/heterogeneity/rural,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Rural subsample; tests heterogeneity not average effect,0.75
-186164-V2,robust/placebo/pre_treatment,robustness/placebo_tests.md,outcome1,fake_treat,G1,baseline,0,0,noncore_placebo,Pre-treatment placebo with fake treatment; tests identification validity,0.95
-186164-V2,robust/placebo/permutation_1,robustness/placebo_tests.md,outcome1,post_sfr_perm,G1,baseline,0,0,noncore_placebo,Permutation test (random treatment assignment 1); placebo,0.95
-186164-V2,robust/placebo/permutation_2,robustness/placebo_tests.md,outcome1,post_sfr_perm,G1,baseline,0,0,noncore_placebo,Permutation test (random treatment assignment 2); placebo,0.95
-186164-V2,robust/placebo/permutation_3,robustness/placebo_tests.md,outcome1,post_sfr_perm,G1,baseline,0,0,noncore_placebo,Permutation test (random treatment assignment 3); placebo,0.95
-186164-V2,robust/placebo/lead,robustness/placebo_tests.md,outcome1,lead_post_sfr,G1,baseline,0,0,noncore_placebo,Lead of treatment (pre-trend test); tests identification validity,0.95
-186164-V2,robust/sample/drop_1967,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Drops year 1967 from sample; same treatment, FE, controls",0.95
-186164-V2,robust/sample/drop_1985,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Drops year 1985 from sample; same treatment, FE, controls",0.95
-186164-V2,robust/sample/drop_1999,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,"Drops year 1999 from sample; same treatment, FE, controls",0.95
-186164-V2,did/sample/reform_states,methods/difference_in_differences.md#sample-restrictions,outcome1,post_sfr,G1,baseline,0,1,core_sample,Restricts to states with reforms only; same treatment and outcome,0.9
-186164-V2,robust/sample/low_spend72,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Low-spending-1972 subsample; tests heterogeneity not average effect,0.7
-186164-V2,robust/sample/high_spend72,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,High-spending-1972 subsample; tests heterogeneity not average effect,0.7
-186164-V2,did/method/first_diff,methods/difference_in_differences.md#estimation-method,d_outcome,d_post_sfr,G1,baseline,0,1,core_method,"First-differenced estimation; same claim, different estimation approach",0.85
-186164-V2,did/method/long_diff,methods/difference_in_differences.md#estimation-method,d_out_long,d_post_long,G1,baseline,0,1,core_method,"Long-difference estimation; same claim, different estimation approach",0.85
+186164-V2,baseline,methods/difference_in_differences.md#baseline,outcome1,post_sfr,G1,baseline,1,1,core_controls,Baseline: post_sfr on log ppe,1.0
+186164-V2,robust/treatment/intensity,methods/difference_in_differences.md#treatment-definition,outcome1,post_sfr_intensity,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: post_sfr_intensity,0.9
+186164-V2,robust/treatment/court_order,methods/difference_in_differences.md#treatment-definition,outcome1,post_case,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: post_case,0.9
+186164-V2,robust/treatment/eq_spend,methods/difference_in_differences.md#treatment-definition,outcome1,post_eq_spend,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: post_eq_spend,0.9
+186164-V2,robust/treatment/tax_limit,methods/difference_in_differences.md#treatment-definition,outcome1,post_taxlimit,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: post_taxlimit,0.9
+186164-V2,robust/treatment/spend_limit,methods/difference_in_differences.md#treatment-definition,outcome1,post_spend_limit,G1,baseline,0,0,noncore_alt_treatment,Alt treatment: post_spend_limit,0.9
+186164-V2,did/fe/state,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,FE: state,0.95
+186164-V2,did/fe/time,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,FE: time,0.95
+186164-V2,did/fe/region,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,FE: region,0.95
+186164-V2,did/fe/division,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,FE: division,0.95
+186164-V2,did/fe/none,methods/difference_in_differences.md#fixed-effects,outcome1,post_sfr,G1,baseline,0,1,core_fe,FE: none,0.95
+186164-V2,did/controls/none,methods/difference_in_differences.md#control-sets,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: none,0.95
+186164-V2,did/controls/minimal,methods/difference_in_differences.md#control-sets,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: minimal,0.95
+186164-V2,robust/control/drop_poverty,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: drop_poverty,0.95
+186164-V2,robust/control/drop_race,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: drop_race,0.95
+186164-V2,robust/control/drop_urban,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: drop_urban,0.95
+186164-V2,robust/control/drop_pop,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: drop_pop,0.95
+186164-V2,robust/control/drop_govt,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: drop_govt,0.95
+186164-V2,robust/control/drop_division,robustness/leave_one_out.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: drop_division,0.95
+186164-V2,robust/control/add_poverty,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: add_poverty,0.95
+186164-V2,robust/control/add_race,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: add_race,0.95
+186164-V2,robust/control/add_urban,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: add_urban,0.95
+186164-V2,robust/control/add_pop,robustness/control_progression.md,outcome1,post_sfr,G1,baseline,0,1,core_controls,Control: add_pop,0.95
+186164-V2,robust/cluster/district,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,Cluster: district,0.95
+186164-V2,robust/cluster/state,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,Cluster: state,0.95
+186164-V2,robust/cluster/division,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,Cluster: division,0.95
+186164-V2,robust/cluster/region,robustness/clustering_variations.md,outcome1,post_sfr,G1,baseline,0,1,core_inference,Cluster: region,0.95
+186164-V2,robust/sample/early_period,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: early_period,0.95
+186164-V2,robust/sample/late_period,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: late_period,0.95
+186164-V2,robust/sample/northeast,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: northeast,0.95
+186164-V2,robust/sample/midwest,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: midwest,0.95
+186164-V2,robust/sample/south,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: south,0.95
+186164-V2,robust/sample/west,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: west,0.95
+186164-V2,robust/sample/income_low,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: income_low,0.95
+186164-V2,robust/sample/income_mid,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: income_mid,0.95
+186164-V2,robust/sample/income_mid_high,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: income_mid_high,0.95
+186164-V2,robust/sample/income_high,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: income_high,0.95
+186164-V2,robust/sample/winsorize,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: winsorize,0.95
+186164-V2,robust/sample/trim,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: trim,0.95
+186164-V2,robust/outcome/levels,robustness/functional_form.md,outcome2,post_sfr,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: outcome2,0.95
+186164-V2,robust/outcome/ihs,robustness/functional_form.md,outcome_ihs,post_sfr,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: outcome_ihs,0.95
+186164-V2,robust/outcome/std,robustness/functional_form.md,outcome_std,post_sfr,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: outcome_std,0.95
+186164-V2,robust/outcome/ppe2012,robustness/functional_form.md,ln_ppe2012,post_sfr,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: ln_ppe2012,0.95
+186164-V2,robust/weights/unweighted,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Weights: unweighted,0.95
+186164-V2,robust/weights/population,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Weights: population,0.95
+186164-V2,robust/weights/enrollment,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Weights: enrollment,0.95
+186164-V2,robust/heterogeneity/poverty_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_poverty,G1,baseline,0,0,noncore_heterogeneity,Het: poverty_interact,0.95
+186164-V2,robust/heterogeneity/black_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_black,G1,baseline,0,0,noncore_heterogeneity,Het: black_interact,0.95
+186164-V2,robust/heterogeneity/urban_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_urban,G1,baseline,0,0,noncore_heterogeneity,Het: urban_interact,0.95
+186164-V2,robust/heterogeneity/size_interact,robustness/heterogeneity.md,outcome1,post_sfr_x_size,G1,baseline,0,0,noncore_heterogeneity,Het: size_interact,0.95
+186164-V2,robust/heterogeneity/high_poverty,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Het: high_poverty,0.95
+186164-V2,robust/heterogeneity/low_poverty,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Het: low_poverty,0.95
+186164-V2,robust/heterogeneity/urban,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Het: urban,0.95
+186164-V2,robust/heterogeneity/rural,robustness/heterogeneity.md,outcome1,post_sfr,G1,baseline,0,0,noncore_heterogeneity,Het: rural,0.95
+186164-V2,robust/placebo/pre_treatment,robustness/placebo_tests.md,outcome1,fake_treat,G1,baseline,0,0,noncore_placebo,Placebo: pre_treatment,0.95
+186164-V2,robust/placebo/permutation_1,robustness/placebo_tests.md,outcome1,post_sfr_perm,G1,baseline,0,0,noncore_placebo,Placebo: permutation_1,0.95
+186164-V2,robust/placebo/permutation_2,robustness/placebo_tests.md,outcome1,post_sfr_perm,G1,baseline,0,0,noncore_placebo,Placebo: permutation_2,0.95
+186164-V2,robust/placebo/permutation_3,robustness/placebo_tests.md,outcome1,post_sfr_perm,G1,baseline,0,0,noncore_placebo,Placebo: permutation_3,0.95
+186164-V2,robust/placebo/lead,robustness/placebo_tests.md,outcome1,lead_post_sfr,G1,baseline,0,0,noncore_placebo,Placebo: lead,0.95
+186164-V2,robust/sample/drop_1967,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: drop_1967,0.95
+186164-V2,robust/sample/drop_1985,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: drop_1985,0.95
+186164-V2,robust/sample/drop_1999,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: drop_1999,0.95
+186164-V2,did/sample/reform_states,methods/difference_in_differences.md#sample-restrictions,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: reform_states,0.95
+186164-V2,robust/sample/low_spend72,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: low_spend72,0.95
+186164-V2,robust/sample/high_spend72,robustness/sample_restrictions.md,outcome1,post_sfr,G1,baseline,0,1,core_sample,Sample: high_spend72,0.95
+186164-V2,did/method/first_diff,methods/difference_in_differences.md#estimation-method,d_outcome,d_post_sfr,G1,baseline,0,1,core_method,Method: first_diff,0.9
+186164-V2,did/method/long_diff,methods/difference_in_differences.md#estimation-method,d_out_long,d_post_long,G1,baseline,0,1,core_method,Method: long_diff,0.9

@@ -1,12 +1,12 @@
 {
   "paper_id": "148301-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/148301-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/148301-V1",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Higher corp tax rate reduces foreign sales ratio of US MNE affiliates by ~0.57pp.",
+      "claim_summary": "Higher corporate tax rates reduce foreign sales ratios (sales shifting to low-tax jurisdictions)",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "corp_tax_rate"
       ],
-      "notes": "Single baseline specification from Table 2 of Laffitte and Toubal (2022). Panel FE with country + industry + year FE, controls for log GDP per capita, log distance, and common language, clustered at country level. Analysis uses simulated data calibrated to match the paper findings."
+      "notes": "Coef=-0.0054, p<0.001. Panel FE (country+industry+year). 96.6% of specs show negative coefficient."
     }
   ],
-  "global_notes": "This specification search uses SIMULATED data (not original BEA data), so coefficient magnitudes are calibrated approximations rather than true replications. 64 total specifications. Some leave-one-out control specs produce coefficients identical to baseline, suggesting orthogonal simulated controls. Alternative treatment specs (tax_haven, low_tax_15, low_tax_20, low_tax_25) use different treatment definitions with positive expected signs and different FE structures (no country FE)."
+  "global_notes": "Panel study of US multinational affiliates 1999-2013. Uses simulated data (original BEA data restricted). 64 specs. Very robust negative relationship between tax rates and foreign sales ratios. Alternative treatments (tax haven dummy, low tax thresholds) show expected positive signs."
 }

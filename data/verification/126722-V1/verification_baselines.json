@@ -1,12 +1,12 @@
 {
   "paper_id": "126722-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/126722-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/126722-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Patient vouchers for antimalarial drugs increase the probability that patients purchase any malaria treatment (simple or severe).",
+      "claim_summary": "Patient vouchers for antimalarial drugs increase the probability of purchasing malaria treatment by approximately 15.3 percentage points.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "patient_voucher"
       ],
-      "notes": "Single baseline from RCT in Mali. Coef 0.153 (SE=0.038, p<0.001). Includes 35 date dummies as controls, clustered at clinic-day level."
+      "notes": "Cross-sectional OLS with date FE, clustered by clinic-day. Coefficient 0.153 (p<0.001). N=2,055. Randomized experiment."
     }
   ],
-  "global_notes": "92 total specs. One primary claim (patient voucher increases treatment purchase). Alternative outcomes, heterogeneity interactions, placebos are non-core. Two het specs report interaction coefficient (treatment_var=patient_voucher_high). doctor_voucher_only and any_voucher change the treatment variable."
+  "global_notes": "RCT of malaria treatment vouchers in Mali. Three arms: patient voucher, doctor voucher, control. Patient voucher effect is highly robust (100% positive, 94.5% significant at 5%). Doctor voucher shows minimal effect. Alternative outcomes (severe malaria, prescribed treatment) show weaker effects. Treatment-illness match quality decreases slightly, suggesting some overtreatment."
 }

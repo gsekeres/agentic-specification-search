@@ -1,36 +1,54 @@
 {
   "paper_id": "150323-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/150323-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/150323-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Political turnover (party change in close elections) negatively affects 4th grade standardized test scores in municipal schools.",
+      "claim_summary": "Political party turnover at close elections reduces 4th-grade test scores in municipal schools.",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline", "rd/bandwidth/optimal_both_score", "robust/outcome/both_score_4_std"],
-      "baseline_outcome_vars": ["both_score_4_std"],
-      "baseline_treatment_vars": ["pX_dummy"],
-      "notes": "The three baseline-tagged specs for this outcome are identical (same coefficient, same sample). The 'baseline' row, 'rd/bandwidth/optimal_both_score', and 'robust/outcome/both_score_4_std' all report the exact same estimate. Only 'baseline' is treated as the canonical baseline; the other two are duplicates."
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "both_score_4_std"
+      ],
+      "baseline_treatment_vars": [
+        "pX_dummy"
+      ],
+      "notes": "Coefficient -0.042 (p=0.10). RD design with incumbent vote margin as running variable. Bandwidth 0.09."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Political turnover increases the share of new teachers in municipal schools, indicating patronage-driven bureaucratic turnover.",
+      "claim_summary": "Political turnover increases teacher turnover (new teacher share).",
       "expected_sign": "+",
-      "baseline_spec_ids": ["rd/bandwidth/optimal_newtchr", "robust/outcome/newtchr"],
-      "baseline_outcome_vars": ["newtchr"],
-      "baseline_treatment_vars": ["pX_dummy"],
-      "notes": "No spec is explicitly tagged 'baseline' for newtchr. The optimal bandwidth spec and the robust/outcome spec are identical estimates. Using rd/bandwidth/optimal_newtchr as the canonical baseline for this group."
+      "baseline_spec_ids": [
+        "rd/bandwidth/optimal_newtchr"
+      ],
+      "baseline_outcome_vars": [
+        "newtchr"
+      ],
+      "baseline_treatment_vars": [
+        "pX_dummy"
+      ],
+      "notes": "Coefficient 0.128 (p<0.001). Highly robust across all specifications."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "Political turnover increases headmaster replacement (probability headmaster has less than 2 years at school) in municipal schools.",
+      "claim_summary": "Political turnover increases headmaster replacement.",
       "expected_sign": "+",
-      "baseline_spec_ids": ["rd/bandwidth/optimal_expthissch", "robust/outcome/expthisschl_lessthan2_DPB"],
-      "baseline_outcome_vars": ["expthisschl_lessthan2_DPB"],
-      "baseline_treatment_vars": ["pX_dummy"],
-      "notes": "No spec is explicitly tagged 'baseline' for headmaster replacement. The optimal bandwidth spec and the robust/outcome spec are identical estimates. Using rd/bandwidth/optimal_expthissch as the canonical baseline."
+      "baseline_spec_ids": [
+        "rd/bandwidth/optimal_expthissch"
+      ],
+      "baseline_outcome_vars": [
+        "expthisschl_lessthan2_DPB"
+      ],
+      "baseline_treatment_vars": [
+        "pX_dummy"
+      ],
+      "notes": "Coefficient 0.274 (p<0.001). Very robust."
     }
   ],
-  "global_notes": "This paper has three main claims corresponding to three outcome families: test scores (G1), teacher turnover (G2), and headmaster replacement (G3). The single 'baseline' spec in the CSV only covers test scores, but the paper treats teacher and headmaster turnover as equally important findings. No fixed effects are used (RD design). All specifications use the same treatment variable (pX_dummy = party turnover at RD cutoff). Some specs are exact duplicates of each other (e.g., baseline = rd/bandwidth/optimal_both_score = robust/outcome/both_score_4_std). Additional outcomes (dropout rate, 8th grade scores, lefttchr) appear as alternative outcome checks. Placebo tests use either non-municipal schools or fake RD cutoffs. All coefficients and SEs are present and finite."
+  "global_notes": "Paper studies effects of political party turnover in Brazilian municipal elections on education via an RD design. Bureaucratic turnover (teacher/headmaster replacement) is highly robust; test score effects are consistently negative but often marginally significant. Multiple outcomes tested across bandwidth variations."
 }

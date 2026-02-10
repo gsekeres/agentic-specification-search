@@ -1,17 +1,15 @@
 {
   "paper_id": "215802-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/215802-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/215802-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Current food stamp receipt is associated with self-reported good health status in cross-sectional OLS.",
+      "claim_summary": "Current food stamp receipt is associated with health status (cross-sectional). NOTE: This is NOT the original paper's identification strategy (which uses county-level rollout timing and requires restricted data).",
       "expected_sign": "-",
       "baseline_spec_ids": [
-        "baseline",
-        "baseline_year_fe",
-        "baseline_cohort_fe"
+        "baseline"
       ],
       "baseline_outcome_vars": [
         "good_health"
@@ -19,68 +17,8 @@
       "baseline_treatment_vars": [
         "fs_receipt"
       ],
-      "notes": "Original paper uses childhood FSP exposure. Three baselines differ only in FE."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "Current food stamp receipt is associated with log income in panel FE.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "panel/income/baseline"
-      ],
-      "baseline_outcome_vars": [
-        "log_income"
-      ],
-      "baseline_treatment_vars": [
-        "fs_receipt"
-      ],
-      "notes": "Panel FE with individual+year FE."
-    },
-    {
-      "baseline_group_id": "G3",
-      "claim_summary": "Current food stamp receipt is associated with employment in panel FE.",
-      "expected_sign": "-",
-      "baseline_spec_ids": [
-        "panel/employed/baseline"
-      ],
-      "baseline_outcome_vars": [
-        "employed"
-      ],
-      "baseline_treatment_vars": [
-        "fs_receipt"
-      ],
-      "notes": "Panel FE."
-    },
-    {
-      "baseline_group_id": "G4",
-      "claim_summary": "Current food stamp receipt is associated with work limitation in panel FE.",
-      "expected_sign": "+",
-      "baseline_spec_ids": [
-        "panel/worklimit/baseline"
-      ],
-      "baseline_outcome_vars": [
-        "work_limited"
-      ],
-      "baseline_treatment_vars": [
-        "fs_receipt"
-      ],
-      "notes": "Panel FE. Positive=selection."
-    },
-    {
-      "baseline_group_id": "G5",
-      "claim_summary": "Current food stamp receipt is associated with hospitalization in panel FE.",
-      "expected_sign": "+",
-      "baseline_spec_ids": [
-        "panel/hospital/any"
-      ],
-      "baseline_outcome_vars": [
-        "any_hospital"
-      ],
-      "baseline_treatment_vars": [
-        "fs_receipt"
-      ],
-      "notes": "Panel FE."
+      "notes": "Coefficient: -0.018 (SE~0.013, p=0.18). Negative association reflects selection, not causation. The original paper's childhood exposure design cannot be replicated with public data."
     }
   ],
-  "global_notes": "CRITICAL: Cannot replicate original ID strategy without restricted PSID data."
+  "global_notes": "Paper: 'Long-Run Impacts of Childhood Access to the Safety Net' by Hoynes, Schanzenbach & Almond (AER). CRITICAL: The public replication package lacks county identifiers needed for the original identification strategy. This spec search uses current FS receipt (not childhood exposure) as treatment, yielding fundamentally different estimates driven by selection. Panel FE specs for income/employment show strong negative associations (FS recipients are poorer), confirming selection. Cross-sectional health results are not significant. 80 total specs."
 }

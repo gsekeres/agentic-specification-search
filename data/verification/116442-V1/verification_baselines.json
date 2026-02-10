@@ -1,12 +1,12 @@
 {
   "paper_id": "116442-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116442-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/116442-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Duopoly entry in US cellular markets increases the number of foggy (dominated) tariff plans offered by wireline carriers.",
+      "claim_summary": "Competition (duopoly entry) leads to increased use of foggy (complex/dominated) pricing plans in US cellular markets.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "DUOPOLY"
       ],
-      "notes": "Two-way FE (market + time), controls AP_PEAK + AP_OFFP, clustered at market level. Coef=0.314, p=0.125. The spec did/fe/twoway is an exact duplicate. Several control-addition specs produce identical estimates because added variables are collinear with market FE."
+      "notes": "Baseline coefficient 0.314 (p=0.125), NOT significant with market clustering. All 56 specs show positive coefficients (100%), but only 10.7% achieve significance. The effect is significant without market clustering (p=0.004) or without market FE (p<0.001), but proper two-way FE + clustering renders it insignificant."
     }
   ],
-  "global_notes": "56 total specs. Baseline result is not statistically significant (p=0.125). Significance is highly sensitive to FE structure and clustering. Multiple specs are exact duplicates of baseline due to collinearity with market FE. Dynamic effects use different treatment variables (event-time indicators). Two alternative outcomes (log_PLANS_i, log_EFFPLi) measure different quantities than foggy plans."
+  "global_notes": "Paper studies competition and tariff complexity in US cellular markets 1984-1989. The baseline result is consistently positive but NOT statistically significant with proper inference. All 56 specifications show positive coefficients. Significance depends heavily on FE structure and clustering choice. did/fe/twoway is a duplicate of baseline (identical coefficients)."
 }

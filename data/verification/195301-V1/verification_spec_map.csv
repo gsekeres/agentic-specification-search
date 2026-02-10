@@ -1,65 +1,65 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-195301-V1,baseline,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_controls,Canonical baseline: treatment only with Oblast FE,1.0
-195301-V1,baseline_w_controls_1,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_controls,Baseline with partial controls: ln prisoners lat lon,1.0
-195301-V1,baseline_full_controls,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_controls,Baseline with full controls: adds pop 1926 railway dist,1.0
-195301-V1,baseline_no_moscow,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_sample,Baseline excluding Moscow with partial controls,1.0
-195301-V1,baseline_no_moscow_full,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_sample,Baseline excluding Moscow with full controls,1.0
-195301-V1,robust/outcome/profits,robustness/alternative_outcomes.md,lnnetprofitpc_rawemp,share_enemies_1952_100,G1,baseline_w_controls_1,0,0,noncore_alt_outcome,Outcome is net profits not wages,0.95
-195301-V1,robust/outcome/profits_full,robustness/alternative_outcomes.md,lnnetprofitpc_rawemp,share_enemies_1952_100,G1,baseline_full_controls,0,0,noncore_alt_outcome,Outcome is net profits with full controls,0.95
-195301-V1,robust/outcome/value_added,robustness/alternative_outcomes.md,lnvalueaddedpc_rawemp,share_enemies_1952_100,G1,baseline_w_controls_1,0,0,noncore_alt_outcome,Outcome is value added not wages,0.95
-195301-V1,robust/outcome/value_added_full,robustness/alternative_outcomes.md,lnvalueaddedpc_rawemp,share_enemies_1952_100,G1,baseline_full_controls,0,0,noncore_alt_outcome,Outcome is value added with full controls,0.95
-195301-V1,robust/outcome/revenue,robustness/alternative_outcomes.md,lnrevenuepc_rawemp,share_enemies_1952_100,G1,baseline_w_controls_1,0,0,noncore_alt_outcome,Outcome is revenue not wages,0.95
-195301-V1,robust/treatment/ln_enemies,robustness/alternative_treatment.md,lnwage,lnenemies100Gulag1952,G1,baseline_w_controls_1,0,1,core_funcform,Log transform of enemy count same concept different scale,0.85
-195301-V1,robust/treatment/ln_enemies_full,robustness/alternative_treatment.md,lnwage,lnenemies100Gulag1952,G1,baseline_full_controls,0,1,core_funcform,Log enemy count with full controls functional form change,0.85
-195301-V1,robust/treatment/pop1926_denom,robustness/alternative_treatment.md,lnwage,enemy_share_pop1926_100,G1,baseline_w_controls_1,0,1,core_method,Enemy share with 1926 pop denominator same concept,0.85
-195301-V1,robust/treatment/1939_camps,robustness/alternative_treatment.md,lnwage,share_enemies_1939_100,G1,baseline_w_controls_1,0,1,core_method,Uses 1939 camp data same mechanism different time point,0.7
-195301-V1,robust/spatial/radius_10km,robustness/spatial_variations.md,lnwage,share_enemies_1952_10,G1,baseline,0,1,core_method,Treatment radius 10km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_20km,robustness/spatial_variations.md,lnwage,share_enemies_1952_20,G1,baseline,0,1,core_method,Treatment radius 20km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_30km,robustness/spatial_variations.md,lnwage,share_enemies_1952_30,G1,baseline,0,1,core_method,Treatment radius 30km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_40km,robustness/spatial_variations.md,lnwage,share_enemies_1952_40,G1,baseline,0,1,core_method,Treatment radius 40km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_50km,robustness/spatial_variations.md,lnwage,share_enemies_1952_50,G1,baseline,0,1,core_method,Treatment radius 50km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_60km,robustness/spatial_variations.md,lnwage,share_enemies_1952_60,G1,baseline,0,1,core_method,Treatment radius 60km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_70km,robustness/spatial_variations.md,lnwage,share_enemies_1952_70,G1,baseline,0,1,core_method,Treatment radius 70km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_80km,robustness/spatial_variations.md,lnwage,share_enemies_1952_80,G1,baseline,0,1,core_method,Treatment radius 80km vs baseline 100km same concept,0.9
-195301-V1,robust/spatial/radius_90km,robustness/spatial_variations.md,lnwage,share_enemies_1952_90,G1,baseline,0,1,core_method,Treatment radius 90km vs baseline 100km same concept,0.9
-195301-V1,robust/control/none,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Exact duplicate of baseline no controls beyond FE,1.0
-195301-V1,robust/control/prisoners_only,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_controls,Only ln prisoners control subset of baseline controls,0.95
-195301-V1,robust/control/geography_only,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_controls,Only lat/lon controls no prisoners control,0.95
-195301-V1,robust/control/drop_geography,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline_full_controls,0,1,core_controls,Full controls without lat/lon,0.95
-195301-V1,robust/control/drop_pop1926,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline_full_controls,0,1,core_controls,Full controls without 1926 population,0.95
-195301-V1,robust/control/drop_railway,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline_full_controls,0,1,core_controls,Full controls without railway distance,0.95
-195301-V1,robust/sample/no_mining,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Excludes mining firms from sample,0.95
-195301-V1,robust/sample/min_10_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Restricts to firms with >= 10 employees,0.95
-195301-V1,robust/sample/min_50_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Restricts to firms with >= 50 employees,0.95
-195301-V1,robust/sample/min_100_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Restricts to firms with >= 100 employees,0.95
-195301-V1,robust/sample/min_200_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Restricts to firms with >= 200 employees,0.95
-195301-V1,robust/sample/no_high_enemy,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Excludes camps with >90 pct enemy share,0.95
-195301-V1,robust/sample/positive_enemy,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Restricts to camps with enemies >0 pct,0.95
-195301-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,lnwage_wins1,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Winsorized wages 1pct/99pct same concept as lnwage,0.9
-195301-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,lnwage_wins5,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Winsorized wages 5pct/95pct same concept as lnwage,0.9
-195301-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Trimmed 1pct/99pct of wages from sample,0.95
-195301-V1,robust/sample/no_mining_towns,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_sample,Excludes mining towns less than 2pct mining,0.95
-195301-V1,robust/sample/no_moscow_no_mining,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline_no_moscow_full,0,1,core_sample,Excludes Moscow and mining with full controls,0.9
-195301-V1,robust/cluster/robust_se,robustness/clustering_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_inference,HC robust SEs instead of Gulag cluster SEs,0.95
-195301-V1,robust/cluster/region,robustness/clustering_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_inference,Cluster at Oblast level instead of Gulag cluster,0.95
-195301-V1,robust/cluster/camp_region,robustness/clustering_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_inference,Cluster at camp-region level,0.95
-195301-V1,robust/estimation/no_fe,robustness/estimation_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_fe,Drops Oblast FE entirely; sign flips as expected,0.9
-195301-V1,robust/weights/unweighted,robustness/weight_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_method,Unweighted OLS instead of employee-weighted; near-zero coef,0.9
-195301-V1,robust/estimation/sector_fe,robustness/estimation_variations.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_fe,Adds sector FE to Oblast FE,0.95
-195301-V1,robust/heterogeneity/gulag_categories,robustness/heterogeneity.md,lnwage,gulag_high,G1,baseline,0,0,noncore_heterogeneity,Categorical treatment high/med/low different estimand,0.85
-195301-V1,robust/heterogeneity/gulag_categories_full,robustness/heterogeneity.md,lnwage,gulag_high,G1,baseline_full_controls,0,0,noncore_heterogeneity,Categorical treatment with full controls different estimand,0.85
-195301-V1,robust/heterogeneity/sector_WHOLESALE_AND_RETAIL_TRADE_REP,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: wholesale/retail only,0.95
-195301-V1,robust/heterogeneity/sector_CONSTRUCTION,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: construction only,0.95
-195301-V1,robust/heterogeneity/sector_PROFESSIONAL_SCIENTIFIC_AND_TE,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: professional/scientific only,0.95
-195301-V1,robust/heterogeneity/sector_MANUFACTURING,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: manufacturing only,0.95
-195301-V1,robust/heterogeneity/sector_REAL_ESTATE_ACTIVITIES,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: real estate only,0.95
-195301-V1,robust/heterogeneity/sector_TRANSPORTATION_AND_STORAGE,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: transportation/storage only,0.95
-195301-V1,robust/heterogeneity/sector_ADMINISTRATIVE_AND_SUPPORT_SER,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: admin/support services only,0.95
-195301-V1,robust/heterogeneity/sector_INFORMATION_AND_COMMUNICATION,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: information/communication only,0.95
-195301-V1,robust/heterogeneity/sector_ACCOMMODATION_AND_FOOD_SERVICE,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: accommodation/food service only,0.95
-195301-V1,robust/heterogeneity/sector_OTHER_SERVICE_ACTIVITIES,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Sector subsample: other services only,0.95
-195301-V1,robust/heterogeneity/large_firm_interact,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,0,noncore_heterogeneity,Interaction with large firm dummy reports main effect only,0.9
-195301-V1,robust/heterogeneity/moscow_distance_interact,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,0,noncore_heterogeneity,Interaction with far-from-Moscow dummy reports main effect,0.9
-195301-V1,robust/placebo/1939_controlling_1952,robustness/placebo_tests.md,lnwage,share_enemies_1939_100,G1,baseline_w_controls_1,0,0,noncore_placebo,1939 enemy share controlling for 1952 tests temporal mechanism,0.9
-195301-V1,robust/funcform/quadratic_treatment,robustness/functional_form.md,lnwage,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_funcform,Adds squared treatment term linear coef reported,0.9
-195301-V1,robust/funcform/wage_level,robustness/functional_form.md,wage_level,share_enemies_1952_100,G1,baseline_w_controls_1,0,1,core_funcform,Wage in levels not logs same claim different scale,0.85
+195301-V1,baseline,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_controls,Baseline with progressive controls,1.0
+195301-V1,baseline_w_controls_1,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_controls,Baseline with progressive controls,1.0
+195301-V1,baseline_full_controls,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,1,1,core_controls,Baseline with progressive controls,1.0
+195301-V1,baseline_no_moscow,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Excluding Moscow sample restriction,0.95
+195301-V1,baseline_no_moscow_full,methods/cross_sectional_ols.md#baseline,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Excluding Moscow sample restriction,0.95
+195301-V1,robust/outcome/profits,robustness/alternative_outcomes.md,lnnetprofitpc_rawemp,share_enemies_1952_100,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: lnnetprofitpc_rawemp,0.95
+195301-V1,robust/outcome/profits_full,robustness/alternative_outcomes.md,lnnetprofitpc_rawemp,share_enemies_1952_100,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: lnnetprofitpc_rawemp,0.95
+195301-V1,robust/outcome/value_added,robustness/alternative_outcomes.md,lnvalueaddedpc_rawemp,share_enemies_1952_100,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: lnvalueaddedpc_rawemp,0.95
+195301-V1,robust/outcome/value_added_full,robustness/alternative_outcomes.md,lnvalueaddedpc_rawemp,share_enemies_1952_100,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: lnvalueaddedpc_rawemp,0.95
+195301-V1,robust/outcome/revenue,robustness/alternative_outcomes.md,lnrevenuepc_rawemp,share_enemies_1952_100,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: lnrevenuepc_rawemp,0.95
+195301-V1,robust/treatment/ln_enemies,robustness/alternative_treatment.md,lnwage,lnenemies100Gulag1952,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: lnenemies100Gulag1952,0.95
+195301-V1,robust/treatment/ln_enemies_full,robustness/alternative_treatment.md,lnwage,lnenemies100Gulag1952,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: lnenemies100Gulag1952,0.95
+195301-V1,robust/treatment/pop1926_denom,robustness/alternative_treatment.md,lnwage,enemy_share_pop1926_100,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: enemy_share_pop1926_100,0.95
+195301-V1,robust/treatment/1939_camps,robustness/alternative_treatment.md,lnwage,share_enemies_1939_100,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: share_enemies_1939_100,0.95
+195301-V1,robust/spatial/radius_10km,robustness/spatial_variations.md,lnwage,share_enemies_1952_10,G1,baseline,0,1,core_sample,Spatial radius variation: radius_10km,0.95
+195301-V1,robust/spatial/radius_20km,robustness/spatial_variations.md,lnwage,share_enemies_1952_20,G1,baseline,0,1,core_sample,Spatial radius variation: radius_20km,0.95
+195301-V1,robust/spatial/radius_30km,robustness/spatial_variations.md,lnwage,share_enemies_1952_30,G1,baseline,0,1,core_sample,Spatial radius variation: radius_30km,0.95
+195301-V1,robust/spatial/radius_40km,robustness/spatial_variations.md,lnwage,share_enemies_1952_40,G1,baseline,0,1,core_sample,Spatial radius variation: radius_40km,0.95
+195301-V1,robust/spatial/radius_50km,robustness/spatial_variations.md,lnwage,share_enemies_1952_50,G1,baseline,0,1,core_sample,Spatial radius variation: radius_50km,0.95
+195301-V1,robust/spatial/radius_60km,robustness/spatial_variations.md,lnwage,share_enemies_1952_60,G1,baseline,0,1,core_sample,Spatial radius variation: radius_60km,0.95
+195301-V1,robust/spatial/radius_70km,robustness/spatial_variations.md,lnwage,share_enemies_1952_70,G1,baseline,0,1,core_sample,Spatial radius variation: radius_70km,0.95
+195301-V1,robust/spatial/radius_80km,robustness/spatial_variations.md,lnwage,share_enemies_1952_80,G1,baseline,0,1,core_sample,Spatial radius variation: radius_80km,0.95
+195301-V1,robust/spatial/radius_90km,robustness/spatial_variations.md,lnwage,share_enemies_1952_90,G1,baseline,0,1,core_sample,Spatial radius variation: radius_90km,0.95
+195301-V1,robust/control/none,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Control variation: none,0.95
+195301-V1,robust/control/prisoners_only,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Control variation: prisoners_only,0.95
+195301-V1,robust/control/geography_only,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Control variation: geography_only,0.95
+195301-V1,robust/control/drop_geography,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Control variation: drop_geography,0.95
+195301-V1,robust/control/drop_pop1926,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Control variation: drop_pop1926,0.95
+195301-V1,robust/control/drop_railway,robustness/control_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_controls,Control variation: drop_railway,0.95
+195301-V1,robust/sample/no_mining,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: no_mining,0.95
+195301-V1,robust/sample/min_10_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: min_10_employees,0.95
+195301-V1,robust/sample/min_50_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: min_50_employees,0.95
+195301-V1,robust/sample/min_100_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: min_100_employees,0.95
+195301-V1,robust/sample/min_200_employees,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: min_200_employees,0.95
+195301-V1,robust/sample/no_high_enemy,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: no_high_enemy,0.95
+195301-V1,robust/sample/positive_enemy,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: positive_enemy,0.95
+195301-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,lnwage_wins1,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: winsorize_1pct,0.95
+195301-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,lnwage_wins5,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: winsorize_5pct,0.95
+195301-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: trim_1pct,0.95
+195301-V1,robust/cluster/robust_se,robustness/clustering_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_inference,Clustering: robust_se,0.95
+195301-V1,robust/cluster/region,robustness/clustering_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_inference,Clustering: region,0.95
+195301-V1,robust/cluster/camp_region,robustness/clustering_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_inference,Clustering: camp_region,0.95
+195301-V1,robust/estimation/no_fe,robustness/estimation_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_fe,Estimation: no_fe,0.95
+195301-V1,robust/weights/unweighted,robustness/weight_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_method,Unweighted OLS (vs WLS baseline),0.95
+195301-V1,robust/estimation/sector_fe,robustness/estimation_variations.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_fe,Estimation: sector_fe,0.95
+195301-V1,robust/heterogeneity/gulag_categories,robustness/heterogeneity.md,lnwage,gulag_high,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: gulag_categories,0.95
+195301-V1,robust/heterogeneity/gulag_categories_full,robustness/heterogeneity.md,lnwage,gulag_high,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: gulag_categories_full,0.95
+195301-V1,robust/heterogeneity/sector_WHOLESALE_AND_RETAIL_TRADE_REP,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_WHOLESALE_AND_RETAIL_TRADE_REP,0.95
+195301-V1,robust/heterogeneity/sector_CONSTRUCTION,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_CONSTRUCTION,0.95
+195301-V1,robust/heterogeneity/sector_PROFESSIONAL_SCIENTIFIC_AND_TE,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_PROFESSIONAL_SCIENTIFIC_AND_TE,0.95
+195301-V1,robust/heterogeneity/sector_MANUFACTURING,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_MANUFACTURING,0.95
+195301-V1,robust/heterogeneity/sector_REAL_ESTATE_ACTIVITIES,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_REAL_ESTATE_ACTIVITIES,0.95
+195301-V1,robust/heterogeneity/sector_TRANSPORTATION_AND_STORAGE,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_TRANSPORTATION_AND_STORAGE,0.95
+195301-V1,robust/heterogeneity/sector_ADMINISTRATIVE_AND_SUPPORT_SER,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_ADMINISTRATIVE_AND_SUPPORT_SER,0.95
+195301-V1,robust/heterogeneity/sector_INFORMATION_AND_COMMUNICATION,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_INFORMATION_AND_COMMUNICATION,0.95
+195301-V1,robust/heterogeneity/sector_ACCOMMODATION_AND_FOOD_SERVICE,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_ACCOMMODATION_AND_FOOD_SERVICE,0.95
+195301-V1,robust/heterogeneity/sector_OTHER_SERVICE_ACTIVITIES,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sector_OTHER_SERVICE_ACTIVITIES,0.95
+195301-V1,robust/placebo/1939_controlling_1952,robustness/placebo_tests.md,lnwage,share_enemies_1939_100,G1,baseline,0,0,noncore_placebo,Placebo: 1939_controlling_1952,0.95
+195301-V1,robust/sample/no_mining_towns,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: no_mining_towns,0.95
+195301-V1,robust/sample/no_moscow_no_mining,robustness/sample_restrictions.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_sample,Sample restriction: no_moscow_no_mining,0.95
+195301-V1,robust/heterogeneity/large_firm_interact,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: large_firm_interact,0.95
+195301-V1,robust/heterogeneity/moscow_distance_interact,robustness/heterogeneity.md,lnwage,share_enemies_1952_100,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: moscow_distance_interact,0.95
+195301-V1,robust/funcform/quadratic_treatment,robustness/functional_form.md,lnwage,share_enemies_1952_100,G1,baseline,0,1,core_funcform,Functional form: quadratic_treatment,0.95
+195301-V1,robust/funcform/wage_level,robustness/functional_form.md,wage_level,share_enemies_1952_100,G1,baseline,0,1,core_funcform,Functional form: wage_level,0.95

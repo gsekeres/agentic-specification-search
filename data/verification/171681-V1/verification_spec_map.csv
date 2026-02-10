@@ -1,70 +1,70 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-171681-V1,baseline_expA,methods/cross_sectional_ols.md#baseline,negAbsDiff,Full,G1,baseline_expA,1,1,core_controls,Baseline: Exp A no controls Full on negAbsDiff,1.0
-171681-V1,baseline_expB,methods/cross_sectional_ols.md#baseline,negAbsDiff,Full,G1,baseline_expB,1,1,core_controls,Baseline: Exp B no controls Full on negAbsDiff,1.0
-171681-V1,robust/control/none,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,No controls duplicate of baseline_expA,1.0
-171681-V1,robust/control/add_age,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Add age control to Exp A baseline,1.0
-171681-V1,robust/control/add_male,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Add age+male controls to Exp A,1.0
-171681-V1,robust/control/add_income,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Progressive controls: add income,1.0
-171681-V1,robust/control/add_college,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Progressive controls: add college,1.0
-171681-V1,robust/control/add_caucasian,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Progressive controls: add caucasian,1.0
-171681-V1,robust/control/add_rural,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Progressive controls: add rural,1.0
-171681-V1,robust/control/add_employed_full,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Progressive controls: add employed_full,1.0
-171681-V1,robust/control/add_fl_high,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Full control set progressive build,1.0
-171681-V1,robust/control/drop_age,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop age from full controls,1.0
-171681-V1,robust/control/drop_male,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop male from full controls,1.0
-171681-V1,robust/control/drop_income,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop income from full controls,1.0
-171681-V1,robust/control/drop_college,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop college from full controls,1.0
-171681-V1,robust/control/drop_caucasian,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop caucasian from full controls,1.0
-171681-V1,robust/control/drop_rural,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop rural from full controls,1.0
-171681-V1,robust/control/drop_employed_full,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop employed_full from full controls,1.0
-171681-V1,robust/control/drop_fl_high,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Drop fl_high from full controls,1.0
-171681-V1,robust/sample/expA_only,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Exp A with full controls same sample as baseline,0.9
-171681-V1,robust/sample/expB_only,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expB,0,1,core_sample,Exp B with full controls replication sample,0.95
-171681-V1,robust/sample/delay_36,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to 36-month delay questions,0.95
-171681-V1,robust/sample/delay_72,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to 72-month delay questions,0.95
-171681-V1,robust/sample/male,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to male subsample in Exp A,0.9
-171681-V1,robust/sample/female,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to female subsample in Exp A,0.9
-171681-V1,robust/sample/young,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to young subsample in Exp A,0.9
-171681-V1,robust/sample/old,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to old subsample in Exp A,0.9
-171681-V1,robust/sample/high_income,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to high income subsample,0.9
-171681-V1,robust/sample/low_income,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to low income subsample,0.9
-171681-V1,robust/sample/college,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to college subsample,0.9
-171681-V1,robust/sample/no_college,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to no-college subsample,0.9
-171681-V1,robust/sample/fl_high,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to high financial literacy,0.9
-171681-V1,robust/sample/fl_low,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Restrict to low financial literacy,0.9
-171681-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Winsorize at 1pct on Exp A,0.95
-171681-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Winsorize at 5pct on Exp A,0.95
-171681-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Winsorize at 10pct on Exp A,0.95
-171681-V1,robust/outcome/sq_diff,robustness/measurement.md,negSqDiff,Full,G1,baseline_expA,0,1,core_funcform,Squared diff measure of competence Exp A,0.9
-171681-V1,robust/outcome/abs_diff,robustness/measurement.md,absDiff,Full,G1,baseline_expA,0,1,core_funcform,Unsigned absDiff sign flipped vs negAbsDiff,0.9
-171681-V1,robust/outcome/raw_diff,robustness/measurement.md,diff,Full,,,0,0,noncore_alt_outcome,Raw signed diff is not competence measure,0.85
-171681-V1,robust/outcome/discount_framed,robustness/measurement.md,discount_framed,Full,,,0,0,noncore_alt_outcome,Complex-frame WTP alone not the competence estimand,0.9
-171681-V1,robust/outcome/discount_unframed,robustness/measurement.md,discount_unframed,Full,,,0,0,noncore_placebo,Simple-frame WTP is placebo; no framing expected,0.95
-171681-V1,robust/outcome/score_compounding,robustness/measurement.md,score_compounding,Full,,,0,0,noncore_alt_outcome,Manipulation check compounding score different estimand,0.9
-171681-V1,robust/outcome/score_indexing,robustness/measurement.md,score_indexing,Full,,,0,0,noncore_placebo,Placebo: indexing score unrelated to Rule of 72,0.9
-171681-V1,robust/outcome/score_total,robustness/measurement.md,score_total,Full,,,0,0,noncore_alt_outcome,Total test score is different estimand than competence,0.85
-171681-V1,robust/treatment/rule72_only,robustness/model_specification.md,negAbsDiff,Rule72,,,0,0,noncore_alt_treatment,Different treatment substance only different causal object,0.95
-171681-V1,robust/treatment/rhetoric_only,robustness/model_specification.md,negAbsDiff,Rhetoric,,,0,0,noncore_alt_treatment,Different treatment framing only different causal object,0.95
-171681-V1,robust/treatment/all_treatments,robustness/model_specification.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Full effect with Rule72 and Rhetoric as controls,0.85
-171681-V1,robust/treatment/pooled,robustness/model_specification.md,negAbsDiff,Full_pooled,G1,baseline_expA,0,1,core_sample,Pooled both experiments tests same claim,0.85
-171681-V1,robust/cluster/classical,robustness/clustering_variations.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_inference,Classical non-robust SEs on Exp A baseline,1.0
-171681-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_inference,HC1 robust SEs on Exp A baseline,1.0
-171681-V1,robust/cluster/hc3,robustness/clustering_variations.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_inference,HC3 robust SEs on Exp A baseline,1.0
-171681-V1,robust/funcform/log_outcome,robustness/functional_form.md,log_absDiff,Full,G1,baseline_expA,0,1,core_funcform,Log transform of absDiff negative sign expected,0.9
-171681-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_absDiff,Full,G1,baseline_expA,0,1,core_funcform,IHS transform of absDiff negative sign expected,0.9
-171681-V1,robust/funcform/sqrt_outcome,robustness/functional_form.md,sqrt_absDiff,Full,G1,baseline_expA,0,1,core_funcform,Sqrt transform of absDiff negative sign expected,0.9
-171681-V1,robust/heterogeneity/male,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x male not baseline claim,0.95
-171681-V1,robust/heterogeneity/young,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x young not baseline claim,0.95
-171681-V1,robust/heterogeneity/high_income,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x high_income not baseline claim,0.95
-171681-V1,robust/heterogeneity/college,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x college not baseline claim,0.95
-171681-V1,robust/heterogeneity/fl_high,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x fl_high not baseline claim,0.95
-171681-V1,robust/heterogeneity/caucasian,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x caucasian not baseline claim,0.95
-171681-V1,robust/heterogeneity/rural,robustness/heterogeneity.md,negAbsDiff,Full,,,0,0,noncore_heterogeneity,Interaction Full x rural not baseline claim,0.95
-171681-V1,robust/placebo/simple_frame,robustness/placebo_tests.md,discount_unframed,Full,,,0,0,noncore_placebo,Placebo: simple-frame WTP should not respond,1.0
-171681-V1,robust/placebo/score_indexing,robustness/placebo_tests.md,score_indexing,Full,,,0,0,noncore_placebo,Placebo: indexing score unrelated to treatment,1.0
-171681-V1,robust/expB/full_controls,methods/cross_sectional_ols.md,negAbsDiff,Full,G1,baseline_expB,0,1,core_controls,Exp B with full controls core replication test,0.95
-171681-V1,robust/expB/sq_diff,robustness/measurement.md,negSqDiff,Full,G1,baseline_expB,0,1,core_funcform,Exp B squared difference measure of competence,0.9
-171681-V1,robust/expB/sample_male,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expB,0,1,core_sample,Exp B male subsample restriction,0.9
-171681-V1,robust/expB/sample_female,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expB,0,1,core_sample,Exp B female subsample restriction,0.9
-171681-V1,robust/expB/sample_young,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expB,0,1,core_sample,Exp B young subsample restriction,0.9
-171681-V1,robust/expB/sample_college,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expB,0,1,core_sample,Exp B college subsample restriction,0.9
+171681-V1,baseline_expA,methods/cross_sectional_ols.md#baseline,negAbsDiff,Full,G1,baseline_expA,1,1,core_controls,Primary baseline: Exp A: Control vs Full Treatment,1.0
+171681-V1,baseline_expB,methods/cross_sectional_ols.md#baseline,negAbsDiff,Full,G1,baseline_expA,1,1,core_controls,Primary baseline: Exp B: Control vs Full Treatment,1.0
+171681-V1,robust/control/none,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full,0.95
+171681-V1,robust/control/add_age,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age,0.95
+171681-V1,robust/control/add_male,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male,0.95
+171681-V1,robust/control/add_income,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income,0.95
+171681-V1,robust/control/add_college,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college,0.95
+171681-V1,robust/control/add_caucasian,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian,0.95
+171681-V1,robust/control/add_rural,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian + rural,0.95
+171681-V1,robust/control/add_employed_full,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian + rural + employed_full,0.95
+171681-V1,robust/control/add_fl_high,robustness/control_progression.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian + rural + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_age,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + male + income + college + caucasian + rural + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_male,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + income + college + caucasian + rural + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_income,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + college + caucasian + rural + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_college,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + caucasian + rural + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_caucasian,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + rural + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_rural,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian + employed_full + fl_high,0.95
+171681-V1,robust/control/drop_employed_full,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian + rural + fl_high,0.95
+171681-V1,robust/control/drop_fl_high,robustness/leave_one_out.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Control variation: Full + age + male + income + college + caucasian + rural + employed_full,0.95
+171681-V1,robust/sample/expA_only,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Experiment subsample: Exp A only (with controls),0.95
+171681-V1,robust/sample/expB_only,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Experiment subsample: Exp B only (with controls),0.95
+171681-V1,robust/sample/delay_36,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Delay 36 months,0.95
+171681-V1,robust/sample/delay_72,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Delay 72 months,0.95
+171681-V1,robust/sample/male,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Male only,0.95
+171681-V1,robust/sample/female,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Female only,0.95
+171681-V1,robust/sample/young,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Young (<40),0.95
+171681-V1,robust/sample/old,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Old (>=40),0.95
+171681-V1,robust/sample/high_income,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: High income,0.95
+171681-V1,robust/sample/low_income,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Low income,0.95
+171681-V1,robust/sample/college,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: College educated,0.95
+171681-V1,robust/sample/no_college,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: No college,0.95
+171681-V1,robust/sample/fl_high,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: High financial literacy,0.95
+171681-V1,robust/sample/fl_low,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Low financial literacy,0.95
+171681-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Winsorize 1%,0.95
+171681-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Winsorize 5%,0.95
+171681-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Sample restriction: Exp A: Winsorize 10%,0.95
+171681-V1,robust/outcome/sq_diff,robustness/measurement.md,negSqDiff,Full,G1,baseline_expA,0,1,core_funcform,Alternative competence measure: negSqDiff,0.95
+171681-V1,robust/outcome/abs_diff,robustness/measurement.md,absDiff,Full,G1,baseline_expA,0,1,core_funcform,Alternative competence measure: absDiff,0.95
+171681-V1,robust/outcome/raw_diff,robustness/measurement.md,diff,Full,G1,baseline_expA,0,0,noncore_alt_outcome,Alternative outcome: diff,0.9
+171681-V1,robust/outcome/discount_framed,robustness/measurement.md,discount_framed,Full,G1,baseline_expA,0,0,noncore_alt_outcome,Alternative outcome: discount_framed,0.95
+171681-V1,robust/outcome/discount_unframed,robustness/measurement.md,discount_unframed,Full,G1,baseline_expA,0,0,noncore_alt_outcome,Alternative outcome: discount_unframed,0.95
+171681-V1,robust/outcome/score_compounding,robustness/measurement.md,score_compounding,Full,G1,baseline_expA,0,0,noncore_diagnostic,Manipulation check: score_compounding,0.95
+171681-V1,robust/outcome/score_indexing,robustness/measurement.md,score_indexing,Full,G1,baseline_expA,0,0,noncore_diagnostic,Manipulation check: score_indexing,0.95
+171681-V1,robust/outcome/score_total,robustness/measurement.md,score_total,Full,G1,baseline_expA,0,0,noncore_diagnostic,Manipulation check: score_total,0.95
+171681-V1,robust/treatment/rule72_only,robustness/model_specification.md,negAbsDiff,Rule72,G1,baseline_expA,0,0,noncore_alt_treatment,Alternative treatment arm: Rule72,0.95
+171681-V1,robust/treatment/rhetoric_only,robustness/model_specification.md,negAbsDiff,Rhetoric,G1,baseline_expA,0,0,noncore_alt_treatment,Alternative treatment arm: Rhetoric,0.95
+171681-V1,robust/treatment/all_treatments,robustness/model_specification.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,All treatments specification: robust/treatment/all_treatments,0.95
+171681-V1,robust/treatment/pooled,robustness/model_specification.md,negAbsDiff,Full_pooled,G1,baseline_expA,0,1,core_sample,Pooled experiments,0.95
+171681-V1,robust/cluster/classical,robustness/clustering_variations.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_inference,Inference: robust/cluster/classical,0.95
+171681-V1,robust/cluster/robust_hc1,robustness/clustering_variations.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_inference,Inference: robust/cluster/robust_hc1,0.95
+171681-V1,robust/cluster/hc3,robustness/clustering_variations.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_inference,Inference: robust/cluster/hc3,0.95
+171681-V1,robust/funcform/log_outcome,robustness/functional_form.md,log_absDiff,Full,G1,baseline_expA,0,1,core_funcform,Functional form: log_absDiff,0.95
+171681-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_absDiff,Full,G1,baseline_expA,0,1,core_funcform,Functional form: ihs_absDiff,0.95
+171681-V1,robust/funcform/sqrt_outcome,robustness/functional_form.md,sqrt_absDiff,Full,G1,baseline_expA,0,1,core_funcform,Functional form: sqrt_absDiff,0.95
+171681-V1,robust/heterogeneity/male,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/male,0.9
+171681-V1,robust/heterogeneity/young,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/young,0.9
+171681-V1,robust/heterogeneity/high_income,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/high_income,0.9
+171681-V1,robust/heterogeneity/college,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/college,0.9
+171681-V1,robust/heterogeneity/fl_high,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/fl_high,0.9
+171681-V1,robust/heterogeneity/caucasian,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/caucasian,0.9
+171681-V1,robust/heterogeneity/rural,robustness/heterogeneity.md,negAbsDiff,Full,G1,baseline_expA,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/rural,0.9
+171681-V1,robust/placebo/simple_frame,robustness/placebo_tests.md,discount_unframed,Full,G1,baseline_expA,0,0,noncore_placebo,Placebo: discount_unframed,0.95
+171681-V1,robust/placebo/score_indexing,robustness/placebo_tests.md,score_indexing,Full,G1,baseline_expA,0,0,noncore_placebo,Placebo: score_indexing,0.95
+171681-V1,robust/expB/full_controls,methods/cross_sectional_ols.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_controls,Exp B robustness: robust/expB/full_controls,0.9
+171681-V1,robust/expB/sq_diff,robustness/measurement.md,negSqDiff,Full,G1,baseline_expA,0,1,core_controls,Exp B robustness: robust/expB/sq_diff,0.9
+171681-V1,robust/expB/sample_male,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Exp B subsample: Exp B: male,0.9
+171681-V1,robust/expB/sample_female,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Exp B subsample: Exp B: female,0.9
+171681-V1,robust/expB/sample_young,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Exp B subsample: Exp B: young,0.9
+171681-V1,robust/expB/sample_college,robustness/sample_restrictions.md,negAbsDiff,Full,G1,baseline_expA,0,1,core_sample,Exp B subsample: Exp B: college,0.9

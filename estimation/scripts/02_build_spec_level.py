@@ -267,6 +267,13 @@ def main():
             if k not in df.columns:
                 raise ValueError(f"unified_results missing merge key: {k}")
 
+        # Deduplicate verification map on merge keys (keep first)
+        n_before_dedup = len(vmap)
+        vmap = vmap.drop_duplicates(subset=merge_keys, keep="first")
+        n_after_dedup = len(vmap)
+        if n_before_dedup != n_after_dedup:
+            print(f"  Deduplicated verification map: {n_before_dedup} → {n_after_dedup} rows")
+
         before = len(df)
         df = df.merge(vmap, how="left", on=merge_keys, validate="m:1", indicator=True)
         after = len(df)

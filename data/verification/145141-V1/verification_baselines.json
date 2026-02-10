@@ -1,12 +1,12 @@
 {
   "paper_id": "145141-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/145141-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/145141-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "WTP for public recognition of gym attendance increases with the number of gym visits (YMCA experiment).",
+      "claim_summary": "WTP for public recognition increases with gym visits (YMCA experiment)",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,15 +17,14 @@
       "baseline_treatment_vars": [
         "visits"
       ],
-      "notes": "Linear OLS of WTP on visits using the YMCA coherent sample. The quadratic version is a functional form variant, not a separate baseline."
+      "notes": "Coef=0.103, p<0.001. Linear coefficient in YMCA coherent sample."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "WTP for public recognition of charitable giving increases with the giving interval (charity experiments).",
+      "claim_summary": "WTP for public recognition increases with charity contribution interval (Charity experiments)",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "charity/baseline/linear",
-        "charity/baseline/quadratic"
+        "charity/baseline/linear"
       ],
       "baseline_outcome_vars": [
         "wtp"
@@ -33,8 +32,8 @@
       "baseline_treatment_vars": [
         "interval"
       ],
-      "notes": "Two baselines (linear and quadratic) on the pooled charity sample. Subsample specs are sample restriction robustness checks."
+      "notes": "Coef=0.175, p<0.001. Pooled across Prolific, Berkeley, BU samples."
     }
   ],
-  "global_notes": "Two distinct experimental contexts (YMCA and charity) testing image concerns. Three specs flagged as potentially invalid due to duplicate results. OLS only; original paper also uses Tobit."
+  "global_notes": "Two experiments on image concerns. YMCA gym attendance (WTP for public recognition of visits) and charity contributions (WTP for public recognition of donation amount). 100% positive coefficients, 93% significant at 5%. Very robust finding. 74 specs total."
 }

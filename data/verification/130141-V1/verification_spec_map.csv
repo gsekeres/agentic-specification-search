@@ -1,59 +1,59 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-130141-V1,baseline,methods/structural_var.md#baseline,GDP (FEVD share),TFP_shock,G1,baseline,1,1,core_method,Baseline 7-var SVAR Cholesky ID 5 lags full sample,1.0
-130141-V1,svar/lags/p1,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=1 instead of p=5,0.95
-130141-V1,svar/lags/p2,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=2 instead of p=5,0.95
-130141-V1,svar/lags/p3,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=3 instead of p=5,0.95
-130141-V1,svar/lags/p4,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=4 instead of p=5,0.95
-130141-V1,svar/lags/p6,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=6 instead of p=5,0.95
-130141-V1,svar/lags/p7,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=7 instead of p=5,0.95
-130141-V1,svar/lags/p8,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Lag length p=8 instead of p=5,0.95
-130141-V1,svar/vars/ebp_spread,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,EBP replaces GZ spread in VAR system,0.9
-130141-V1,svar/vars/default_risk,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Default risk replaces GZ spread in VAR,0.9
-130141-V1,svar/vars/baa_spread,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,BAA spread replaces GZ spread in VAR,0.9
-130141-V1,svar/vars/no_financial,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops GZ spread entirely 6-variable VAR,0.9
-130141-V1,svar/vars/no_sp500,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops SP500 from VAR 6-variable system,0.9
-130141-V1,svar/vars/investment,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Investment replaces Consumption in VAR,0.85
-130141-V1,svar/vars/small_var4,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Minimal 4-var VAR TFP GDP Consumption Hours,0.85
-130141-V1,svar/vars/large_var8,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Extended 8-var VAR adds Investment uses p=4,0.8
-130141-V1,svar/vars/both_spreads,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,8-var VAR with both GZ and EBP spreads p=4,0.8
-130141-V1,svar/vars/spread_defaultrisk,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,8-var VAR with GZ spread and default risk p=4,0.8
-130141-V1,svar/sample/pre_crisis,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Pre-crisis sample 1984Q2-2007Q4,0.9
-130141-V1,svar/sample/pre_2000,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Pre-2000 sample 1984Q2-1999Q4,0.85
-130141-V1,svar/sample/post_2000,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Post-2000 sample 2000Q1-2017Q1,0.85
-130141-V1,svar/sample/post_1990,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Post-1990 sample 1990Q1-2017Q1,0.9
-130141-V1,svar/sample/exclude_2008_2009,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Full sample excluding 2008Q1-2009Q2 crisis,0.9
-130141-V1,svar/order/gdp_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Cholesky ordering GDP first instead of TFP,0.9
-130141-V1,svar/order/spread_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Cholesky ordering GZ spread first,0.9
-130141-V1,svar/order/sp500_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Cholesky ordering SP500 first,0.9
-130141-V1,svar/order/reversed,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Completely reversed Cholesky ordering,0.9
-130141-V1,svar/order/inflation_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Cholesky ordering Inflation first,0.9
-130141-V1,svar/order/hours_last,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,Hours moved to last in Cholesky ordering,0.9
-130141-V1,robust/loo/drop_gdp,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,invalid,Drops GDP but reports GDP FEVD; outcome undefined,0.9
-130141-V1,robust/loo/drop_consumption,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops Consumption from VAR 6-var system,0.85
-130141-V1,robust/loo/drop_hours,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops Hours from VAR 6-var system,0.85
-130141-V1,robust/loo/drop_gzspr,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops GZ spread; duplicate of no_financial spec,0.85
-130141-V1,robust/loo/drop_sp500,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops SP500; duplicate of no_sp500 spec,0.85
-130141-V1,robust/loo/drop_inflation,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Drops Inflation from VAR 6-var system,0.85
-130141-V1,svar/control/bivariate,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,Bivariate VAR TFP and GDP only,0.85
-130141-V1,svar/control/add_hours,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,3-variable VAR TFP GDP Hours,0.85
-130141-V1,svar/control/add_consumption,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,4-variable VAR adds Consumption,0.85
-130141-V1,svar/control/add_inflation,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,5-variable VAR adds Inflation,0.85
-130141-V1,svar/control/add_sp500,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,6-variable VAR adds SP500,0.85
-130141-V1,svar/lags/aic_optimal,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,AIC-optimal lag p=1 duplicate of p1,0.9
-130141-V1,svar/lags/bic_optimal,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,BIC-optimal lag p=1 duplicate of p1,0.9
-130141-V1,svar/lags/hq_optimal,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,HQ-optimal lag p=1 duplicate of p1,0.9
-130141-V1,robust/heterogeneity/first_half,robustness/heterogeneity.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,First-half subsample split tests time heterogeneity,0.85
-130141-V1,robust/heterogeneity/second_half,robustness/heterogeneity.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,Second-half subsample split tests time heterogeneity,0.85
-130141-V1,robust/placebo/shuffled_tfp,robustness/placebo_tests.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_placebo,Shuffled TFP destroys temporal structure placebo,0.95
-130141-V1,robust/placebo/lagged_tfp_8q,robustness/placebo_tests.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_placebo,TFP lagged 8 quarters as fake treatment placebo,0.95
-130141-V1,robust/sample/drop_first_4years,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Drops first 4 years 1988Q1-2017Q1,0.9
-130141-V1,robust/sample/drop_last_year,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Drops last year 1984Q2-2016Q1,0.9
-130141-V1,robust/sample/exclude_dotcom,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Excludes dot-com bubble 2000-2002,0.9
-130141-V1,robust/rolling/window_early,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,60q rolling window early uses p=4 due to size,0.75
-130141-V1,robust/rolling/window_mid1,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,60q rolling window mid1 uses p=4 due to size,0.75
-130141-V1,robust/rolling/window_mid2,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,60q rolling window mid2 uses p=4 due to size,0.75
-130141-V1,robust/rolling/window_late,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,60q rolling window late uses p=4 due to size,0.75
-130141-V1,robust/outcome/investment,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_alt_outcome,Investment replaces GDP as FEVD target different estimand,0.9
-130141-V1,robust/outcome/hours,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,invalid,Claims Hours outcome but FEVD identical to baseline reorder only,0.95
-130141-V1,robust/outcome/consumption,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,invalid,Claims Consumption outcome but FEVD identical to baseline reorder only,0.95
-130141-V1,robust/outcome/sp500,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,invalid,Claims SP500 outcome but FEVD identical to baseline reorder only,0.95
+130141-V1,baseline,methods/structural_var.md#baseline,GDP (FEVD share),TFP_shock,G1,baseline,1,1,core_controls,"Primary baseline: 7-variable VAR, 5 lags, Cholesky, 1984-2017",1.0
+130141-V1,svar/lags/p1,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=1 lags",0.95
+130141-V1,svar/lags/p2,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=2 lags",0.95
+130141-V1,svar/lags/p3,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=3 lags",0.95
+130141-V1,svar/lags/p4,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=4 lags",0.95
+130141-V1,svar/lags/p6,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=6 lags",0.95
+130141-V1,svar/lags/p7,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=7 lags",0.95
+130141-V1,svar/lags/p8,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Lag length variation: 1984Q2-2017Q1, p=8 lags",0.95
+130141-V1,svar/vars/ebp_spread,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, EBP instead of GZ spread",0.95
+130141-V1,svar/vars/default_risk,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, Default Risk instead of GZ spread",0.95
+130141-V1,svar/vars/baa_spread,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, BAA spread instead of GZ spread",0.95
+130141-V1,svar/vars/no_financial,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, no financial spread",0.95
+130141-V1,svar/vars/no_sp500,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, no S&P500",0.95
+130141-V1,svar/vars/investment,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, Investment instead of Consumption",0.95
+130141-V1,svar/vars/small_var4,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, 4-variable VAR",0.95
+130141-V1,svar/vars/large_var8,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, 8-variable VAR",0.95
+130141-V1,svar/sample/pre_crisis,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,"Sample period: 1984Q2-2007Q4, pre-financial crisis",0.95
+130141-V1,svar/sample/pre_2000,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,"Sample period: 1984Q2-1999Q4, pre-2000",0.95
+130141-V1,svar/sample/post_2000,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,"Sample period: 2000Q1-2017Q1, post-2000",0.95
+130141-V1,svar/sample/post_1990,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,"Sample period: 1990Q1-2017Q1, post-1990",0.95
+130141-V1,svar/sample/exclude_2008_2009,methods/structural_var.md#sample-period,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Sample period: 1984Q2-2017Q1 excluding 2008Q1-2009Q2,0.95
+130141-V1,svar/order/gdp_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,"Cholesky ordering: 1984Q2-2017Q1, GDP ordered first",0.95
+130141-V1,svar/order/spread_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,"Cholesky ordering: 1984Q2-2017Q1, GZ spread ordered first",0.95
+130141-V1,svar/order/sp500_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,"Cholesky ordering: 1984Q2-2017Q1, SP500 ordered first",0.95
+130141-V1,svar/order/reversed,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,"Cholesky ordering: 1984Q2-2017Q1, reversed variable ordering",0.95
+130141-V1,svar/order/inflation_first,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,"Cholesky ordering: 1984Q2-2017Q1, inflation ordered first",0.95
+130141-V1,svar/order/hours_last,methods/structural_var.md#variable-ordering,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_method,"Cholesky ordering: 1984Q2-2017Q1, hours ordered last",0.95
+130141-V1,robust/loo/drop_gdp,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Leave-one-out variable: 1984Q2-2017Q1, dropped GDP",0.95
+130141-V1,robust/loo/drop_consumption,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Leave-one-out variable: 1984Q2-2017Q1, dropped Consumption",0.95
+130141-V1,robust/loo/drop_hours,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Leave-one-out variable: 1984Q2-2017Q1, dropped Hours",0.95
+130141-V1,robust/loo/drop_gzspr,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Leave-one-out variable: 1984Q2-2017Q1, dropped gzspr",0.95
+130141-V1,robust/loo/drop_sp500,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Leave-one-out variable: 1984Q2-2017Q1, dropped SP500",0.95
+130141-V1,robust/loo/drop_inflation,robustness/leave_one_out.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Leave-one-out variable: 1984Q2-2017Q1, dropped Inflation",0.95
+130141-V1,svar/control/bivariate,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable progression: 1984Q2-2017Q1, 2-variable VAR",0.95
+130141-V1,svar/control/add_hours,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable progression: 1984Q2-2017Q1, 3-variable VAR",0.95
+130141-V1,svar/control/add_consumption,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable progression: 1984Q2-2017Q1, 4-variable VAR",0.95
+130141-V1,svar/control/add_inflation,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable progression: 1984Q2-2017Q1, 5-variable VAR",0.95
+130141-V1,svar/control/add_sp500,robustness/control_progression.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable progression: 1984Q2-2017Q1, 6-variable VAR",0.95
+130141-V1,svar/lags/aic_optimal,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Information criterion optimal lag: 1984Q2-2017Q1, AIC-optimal p=1",0.95
+130141-V1,svar/lags/bic_optimal,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Information criterion optimal lag: 1984Q2-2017Q1, BIC-optimal p=1",0.95
+130141-V1,svar/lags/hq_optimal,methods/structural_var.md#lag-length,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_funcform,"Information criterion optimal lag: 1984Q2-2017Q1, HQ-optimal p=1",0.95
+130141-V1,robust/heterogeneity/first_half,robustness/heterogeneity.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,"Subsample heterogeneity: 1984Q2-2000Q10, first half",0.95
+130141-V1,robust/heterogeneity/second_half,robustness/heterogeneity.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,"Subsample heterogeneity: 2000Q10-2017Q1, second half",0.95
+130141-V1,robust/placebo/shuffled_tfp,robustness/placebo_tests.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_placebo,"Placebo: 1984Q2-2017Q1, shuffled TFP series",0.95
+130141-V1,robust/placebo/lagged_tfp_8q,robustness/placebo_tests.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_placebo,"Placebo: 1984Q2-2017Q1, TFP lagged 8 quarters",0.95
+130141-V1,svar/vars/both_spreads,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, both GZ and EBP spreads",0.95
+130141-V1,svar/vars/spread_defaultrisk,methods/structural_var.md#variable-measurement,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_controls,"Variable set variation: 1984Q2-2017Q1, GZ spread + default risk",0.95
+130141-V1,robust/sample/drop_first_4years,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,"Sample restriction: 1988Q1-2017Q1, dropped first 4 years",0.95
+130141-V1,robust/sample/drop_last_year,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,"Sample restriction: 1984Q2-2016Q1, dropped last year",0.95
+130141-V1,robust/sample/exclude_dotcom,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,1,core_sample,Sample restriction: 1984Q2-2017Q1 excl. 2000-2002 dot-com,0.95
+130141-V1,robust/rolling/window_early,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,Rolling window: 60-quarter rolling window (early),0.9
+130141-V1,robust/rolling/window_mid1,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,Rolling window: 60-quarter rolling window (mid1),0.9
+130141-V1,robust/rolling/window_mid2,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,Rolling window: 60-quarter rolling window (mid2),0.9
+130141-V1,robust/rolling/window_late,robustness/sample_restrictions.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_heterogeneity,Rolling window: 60-quarter rolling window (late),0.9
+130141-V1,robust/outcome/investment,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_alt_outcome,"Alternative outcome variable in FEVD: 1984Q2-2017Q1, Investment as main outcome",0.95
+130141-V1,robust/outcome/hours,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_alt_outcome,"Alternative outcome variable in FEVD: 1984Q2-2017Q1, Hours as main outcome",0.95
+130141-V1,robust/outcome/consumption,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_alt_outcome,"Alternative outcome variable in FEVD: 1984Q2-2017Q1, Consumption as main outcome",0.95
+130141-V1,robust/outcome/sp500,robustness/measurement.md,GDP (FEVD share),TFP_shock,G1,baseline,0,0,noncore_alt_outcome,"Alternative outcome variable in FEVD: 1984Q2-2017Q1, SP500 as main outcome",0.95

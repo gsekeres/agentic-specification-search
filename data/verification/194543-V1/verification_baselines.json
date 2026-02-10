@@ -1,0 +1,24 @@
+{
+  "paper_id": "194543-V1",
+  "package_path": "data/downloads/extracted/194543-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Holding debt causes suboptimal financial decision-making: subjects randomized into the Low Debt treatment are approximately 25.6 percentage points less likely to maximize returns across all initial allocation decisions (days 1-4) compared to the No Debt control group.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "ind_optimal_ia_all"
+      ],
+      "baseline_treatment_vars": [
+        "treat (Low Debt=1)"
+      ],
+      "notes": "Matches stat1403 in original code: reg ind_optimal_ia_all i.treatment if day == 4 & treatment <= 1, r. Coefficient -0.2558 (SE 0.0640, p < 0.001). N=172 (86 per group). R-squared 0.086. This is a cross-sectional OLS with HC1 robust SE on an experimental (randomized) sample. The outcome is binary (1 if optimal across ALL initial allocation days 1-4). The paper's central finding: the mere presence of debt (even with identical interest rates) leads to systematically worse allocation decisions."
+    }
+  ],
+  "global_notes": "Paper is 'The Burden of Debt' by Martinez-Marquina and Shi (AER 2024). This is a randomized online experiment via MTurk where participants allocate points across savings/debt accounts over 4 days. There is a single baseline group since the paper has one primary treatment comparison (Low Debt vs No Debt). The spec search produced 82 specifications total across 11 categories: control variations (12), sample restrictions (18), alternative outcomes (14), alternative treatment definitions (5), inference variations (6), estimation methods (6), functional form (3), panel/repeated measures (7), external datasets (6), heterogeneity interactions (embedded in controls), and placebo/balance tests (4). Some specs use different datasets (redistribution and borrowing treatments) which are separate experimental conditions from the same study. The day-by-day panel analysis reveals the treatment effect is strongest on Day 1 and fades by Day 4, an important finding for interpreting the main result. Two specs are near-duplicates: outcome/share_a1_day1 appears identical to outcome/share_optimal_day1 (same coefficient), and outcome/no_points_debt1 is identical to baseline (same coefficient and SE). The quantile regression at the median shows zero effect (median is 1.0 in both groups), confirming the effect is on the extensive margin. The dose-response specification (continuous debt amount) is insignificant, showing the effect is not proportional to debt level."
+}

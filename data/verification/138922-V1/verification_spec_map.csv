@@ -1,85 +1,85 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-138922-V1,baseline,methods/difference_in_differences.md#baseline,sportsclub,treat,G1,baseline,1,1,core_controls,Baseline spec: treat->sportsclub TWFE no controls,1.0
-138922-V1,robust/outcome/kommheard,robustness/measurement.md#alternative-outcomes,kommheard,treat,,,0,0,noncore_alt_outcome,Different outcome: program awareness not membership,0.95
-138922-V1,robust/outcome/kommgotten,robustness/measurement.md#alternative-outcomes,kommgotten,treat,,,0,0,noncore_alt_outcome,Different outcome: voucher receipt not membership,0.95
-138922-V1,robust/outcome/kommused,robustness/measurement.md#alternative-outcomes,kommused,treat,,,0,0,noncore_alt_outcome,Different outcome: voucher redemption not membership,0.95
-138922-V1,robust/outcome/sport_hrs,robustness/measurement.md#alternative-outcomes,sport_hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: sport hours not club membership,0.85
-138922-V1,robust/outcome/oweight,robustness/measurement.md#alternative-outcomes,oweight,treat,,,0,0,noncore_alt_outcome,Different outcome: overweight status not membership,0.95
-138922-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; no fixed effects variant,0.9
-138922-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; year FE only,0.9
-138922-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; state FE only,0.9
-138922-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; year+state FE no city,0.9
-138922-V1,did/fe/city_only,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,Same outcome/treatment; city FE only,0.9
-138922-V1,did/controls/full,methods/difference_in_differences.md#control-sets,sportsclub,treat,G1,baseline,0,1,core_controls,Same outcome/treatment; full demographic controls,0.95
-138922-V1,did/controls/minimal,methods/difference_in_differences.md#control-sets,sportsclub,treat,G1,baseline,0,1,core_controls,Same outcome/treatment; minimal controls added,0.95
-138922-V1,robust/control/drop_female,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop female from full controls,0.9
-138922-V1,robust/control/drop_siblings,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop siblings from full controls,0.9
-138922-V1,robust/control/drop_born_germany,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop born_germany from controls,0.9
-138922-V1,robust/control/drop_parent_nongermany,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop parent_nongermany,0.9
-138922-V1,robust/control/drop_newspaper,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop newspaper from full controls,0.9
-138922-V1,robust/control/drop_art_at_home,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop art_at_home from controls,0.9
-138922-V1,robust/control/drop_academictrack,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop academictrack from controls,0.9
-138922-V1,robust/control/drop_sportsclub_4_7,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop sportsclub_4_7 from controls,0.9
-138922-V1,robust/control/drop_music_4_7,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop music_4_7 from full controls,0.9
-138922-V1,robust/control/add_female,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative control addition: add female,0.9
-138922-V1,robust/control/add_siblings,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative control addition: add siblings,0.9
-138922-V1,robust/control/add_born_germany,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative control addition: add born_germany,0.9
-138922-V1,robust/control/add_parent_nongermany,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative: add parent_nongermany,0.9
-138922-V1,robust/control/add_newspaper,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative control addition: add newspaper,0.9
-138922-V1,robust/control/add_art_at_home,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative control addition: add art_at_home,0.9
-138922-V1,robust/control/add_academictrack,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative control addition: add academictrack,0.9
-138922-V1,robust/control/add_sportsclub_4_7,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative: add sportsclub_4_7,0.9
-138922-V1,robust/control/add_music_4_7,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Cumulative: add music_4_7 equals full controls,0.9
-138922-V1,robust/sample/drop_year_2006,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: drop year 2006,0.9
-138922-V1,robust/sample/extended_2000_2010,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: extend pre-period to 2000,0.9
-138922-V1,robust/sample/include_2011,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: include 2011,0.9
-138922-V1,robust/sample/drop_year_2009,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: exclude 2009,0.9
-138922-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: exclude 2010,0.9
-138922-V1,robust/sample/drop_brandenburg,robustness/sample_restrictions.md#geography,sportsclub,treat,G1,baseline,0,1,core_sample,Geographic restriction: drop Brandenburg state,0.9
-138922-V1,robust/sample/drop_thuringia,robustness/sample_restrictions.md#geography,sportsclub,treat,G1,baseline,0,1,core_sample,Geographic restriction: drop Thuringia state,0.9
-138922-V1,robust/cluster/robust_hc,robustness/inference_alternatives.md#robust-se,sportsclub,treat,G1,baseline,0,1,core_inference,Same point estimate; heteroskedasticity-robust SE,0.95
-138922-V1,robust/cluster/state,robustness/clustering_variations.md,sportsclub,treat,G1,baseline,0,1,core_inference,Same point estimate; cluster at state level,0.95
-138922-V1,robust/cluster/cohort,robustness/clustering_variations.md,sportsclub,treat,G1,baseline,0,1,core_inference,Same point estimate; cluster at cohort/year level,0.95
-138922-V1,robust/treatment/treat_v2,methods/difference_in_differences.md#treatment-definition,sportsclub,treat_v2,G1,baseline,0,0,noncore_alt_treatment,Different treatment var: treat_v2 changes causal object,0.8
-138922-V1,robust/treatment/current_location,methods/difference_in_differences.md#treatment-definition,sportsclub,t_tcoh_bula,G1,baseline,0,0,noncore_alt_treatment,Different treatment: by current location changes object,0.8
-138922-V1,robust/heterogeneity/female_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: males-only subsample,0.9
-138922-V1,robust/heterogeneity/female_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: females-only subsample,0.9
-138922-V1,robust/heterogeneity/urban_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: rural subsample,0.9
-138922-V1,robust/heterogeneity/urban_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: urban subsample,0.9
-138922-V1,robust/heterogeneity/newspaper_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: no-newspaper subsample,0.9
-138922-V1,robust/heterogeneity/newspaper_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: newspaper subsample,0.9
-138922-V1,robust/heterogeneity/art_at_home_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: no art_at_home subsample,0.9
-138922-V1,robust/heterogeneity/art_at_home_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: art_at_home subsample,0.9
-138922-V1,robust/heterogeneity/academictrack_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: non-academic-track subsample,0.9
-138922-V1,robust/heterogeneity/academictrack_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: academic-track subsample,0.9
-138922-V1,robust/heterogeneity/sportsclub_4_7_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: no prior sports club subsample,0.9
-138922-V1,robust/heterogeneity/sportsclub_4_7_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: prior sports club subsample,0.9
-138922-V1,robust/placebo/health1,robustness/placebo_tests.md,health1,treat,,,0,0,noncore_placebo,Placebo outcome: health status unrelated to treatment,0.95
-138922-V1,robust/placebo/eversmoked,robustness/placebo_tests.md,eversmoked,treat,,,0,0,noncore_placebo,Placebo outcome: smoking unrelated to treatment,0.95
-138922-V1,robust/placebo/everalc,robustness/placebo_tests.md,everalc,treat,,,0,0,noncore_placebo,Placebo outcome: alcohol use unrelated to treatment,0.95
-138922-V1,robust/funcform/log_sport_hrs,robustness/functional_form.md#log-transform,log_sport_hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: log sport hours not membership,0.85
-138922-V1,robust/funcform/ihs_sport_hrs,robustness/functional_form.md#ihs-transform,ihs_sport_hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: IHS sport hours not membership,0.85
-138922-V1,robust/sample/high_quality,robustness/sample_restrictions.md#data-quality,sportsclub,treat,G1,baseline,0,1,core_sample,Data quality restriction: duration>10 verified demos,0.9
-138922-V1,robust/sample/no_sibling_participation,robustness/sample_restrictions.md,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: exclude sibling participation,0.9
-138922-V1,robust/sample/no_older_siblings,robustness/sample_restrictions.md,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: children with no older siblings,0.9
-138922-V1,robust/outcome/membership_age_6,robustness/measurement.md#alternative-outcomes,ll6,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at age 6 pre-treatment,0.9
-138922-V1,robust/outcome/membership_age_7,robustness/measurement.md#alternative-outcomes,ll7,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at specific age 7,0.9
-138922-V1,robust/outcome/membership_age_8,robustness/measurement.md#alternative-outcomes,ll8,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at specific age 8,0.9
-138922-V1,robust/outcome/membership_age_9,robustness/measurement.md#alternative-outcomes,ll9,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at specific age 9,0.9
-138922-V1,robust/outcome/membership_age_10,robustness/measurement.md#alternative-outcomes,ll10,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at specific age 10,0.9
-138922-V1,robust/outcome/membership_age_11,robustness/measurement.md#alternative-outcomes,ll11,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at specific age 11,0.9
-138922-V1,robust/outcome/membership_age_12,robustness/measurement.md#alternative-outcomes,ll12,treat,,,0,0,noncore_alt_outcome,Different outcome: membership at specific age 12,0.9
-138922-V1,robust/outcome/kommheard_p,robustness/measurement.md#alternative-reporters,kommheard_p,treat,,,0,0,noncore_alt_outcome,Different outcome: parent-reported program awareness,0.95
-138922-V1,robust/outcome/kommgotten_p,robustness/measurement.md#alternative-reporters,kommgotten_p,treat,,,0,0,noncore_alt_outcome,Different outcome: parent-reported voucher receipt,0.95
-138922-V1,robust/outcome/kommused_p,robustness/measurement.md#alternative-reporters,kommused_p,treat,,,0,0,noncore_alt_outcome,Different outcome: parent-reported voucher use,0.95
-138922-V1,robust/outcome/sport1hrs,robustness/measurement.md#alternative-outcomes,sport1hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: sport1 hours not club membership,0.9
-138922-V1,robust/outcome/sport2hrs,robustness/measurement.md#alternative-outcomes,sport2hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: sport2 hours not club membership,0.9
-138922-V1,robust/outcome/sport3hrs,robustness/measurement.md#alternative-outcomes,sport3hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: sport3 hours not club membership,0.9
-138922-V1,robust/outcome/sport_alt2,robustness/measurement.md#alternative-outcomes,sport_alt2,treat,,,0,0,noncore_alt_outcome,Different outcome: alternative sport measure,0.9
-138922-V1,robust/outcome/obese,robustness/measurement.md#alternative-outcomes,obese,treat,,,0,0,noncore_alt_outcome,Different outcome: obesity not club membership,0.95
-138922-V1,robust/outcome/currentsmoking,robustness/measurement.md#alternative-outcomes,currentsmoking,treat,,,0,0,noncore_alt_outcome,Different outcome: current smoking not membership,0.9
-138922-V1,robust/outcome/alclast7,robustness/measurement.md#alternative-outcomes,alclast7,treat,,,0,0,noncore_alt_outcome,Different outcome: recent alcohol not membership,0.9
-138922-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md#outliers,sport_hrs_wins_1pct,treat,,,0,0,noncore_alt_outcome,Different outcome: winsorized sport hrs not membership,0.85
-138922-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md#outliers,sport_hrs_wins_5pct,treat,,,0,0,noncore_alt_outcome,Different outcome: winsorized sport hrs not membership,0.85
-138922-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outliers,sport_hrs,treat,,,0,0,noncore_alt_outcome,Different outcome: trimmed sport hours not membership,0.85
-138922-V1,did/method/simple_did,methods/difference_in_differences.md#estimation-method,sportsclub,treat,G1,baseline,0,1,core_method,Same outcome/treatment; simple DiD with dummies not FE,0.85
+138922-V1,baseline,methods/difference_in_differences.md#baseline,sportsclub,treat,G1,baseline,1,1,core_controls,Primary baseline: DID of sportsclub on treat with year+state+city FE,1.0
+138922-V1,robust/outcome/kommheard,robustness/measurement.md#alternative-outcomes,kommheard,treat,G1,baseline,0,0,noncore_alt_outcome,"First-stage outcome (kommheard): program awareness, not behavioral",0.95
+138922-V1,robust/outcome/kommgotten,robustness/measurement.md#alternative-outcomes,kommgotten,treat,G1,baseline,0,0,noncore_alt_outcome,"First-stage outcome (kommgotten): program awareness, not behavioral",0.95
+138922-V1,robust/outcome/kommused,robustness/measurement.md#alternative-outcomes,kommused,treat,G1,baseline,0,0,noncore_alt_outcome,"First-stage outcome (kommused): program awareness, not behavioral",0.95
+138922-V1,robust/outcome/sport_hrs,robustness/measurement.md#alternative-outcomes,sport_hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (sport_hrs): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/oweight,robustness/measurement.md#alternative-outcomes,oweight,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (oweight): different measure of behavioral effect,0.95
+138922-V1,did/fe/none,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,FE variation: None,0.95
+138922-V1,did/fe/time_only,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,FE variation: year_fe,0.95
+138922-V1,did/fe/unit_only,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,FE variation: bula_fe,0.95
+138922-V1,did/fe/twoway,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,FE variation: year_fe + bula_fe,0.95
+138922-V1,did/fe/city_only,methods/difference_in_differences.md#fixed-effects,sportsclub,treat,G1,baseline,0,1,core_fe,FE variation: city_fe,0.95
+138922-V1,did/controls/full,methods/difference_in_differences.md#control-sets,sportsclub,treat,G1,baseline,0,1,core_controls,Control set variation: full,0.95
+138922-V1,did/controls/minimal,methods/difference_in_differences.md#control-sets,sportsclub,treat,G1,baseline,0,1,core_controls,Control set variation: minimal,0.95
+138922-V1,robust/control/drop_female,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop female from controls,0.95
+138922-V1,robust/control/drop_siblings,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop siblings from controls,0.95
+138922-V1,robust/control/drop_born_germany,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop born_germany from controls,0.95
+138922-V1,robust/control/drop_parent_nongermany,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop parent_nongermany from controls,0.95
+138922-V1,robust/control/drop_newspaper,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop newspaper from controls,0.95
+138922-V1,robust/control/drop_art_at_home,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop art_at_home from controls,0.95
+138922-V1,robust/control/drop_academictrack,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop academictrack from controls,0.95
+138922-V1,robust/control/drop_sportsclub_4_7,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop sportsclub_4_7 from controls,0.95
+138922-V1,robust/control/drop_music_4_7,robustness/leave_one_out.md,sportsclub,treat,G1,baseline,0,1,core_controls,Leave-one-out: drop music_4_7 from controls,0.95
+138922-V1,robust/control/add_female,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add female,0.95
+138922-V1,robust/control/add_siblings,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add siblings,0.95
+138922-V1,robust/control/add_born_germany,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add born_germany,0.95
+138922-V1,robust/control/add_parent_nongermany,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add parent_nongermany,0.95
+138922-V1,robust/control/add_newspaper,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add newspaper,0.95
+138922-V1,robust/control/add_art_at_home,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add art_at_home,0.95
+138922-V1,robust/control/add_academictrack,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add academictrack,0.95
+138922-V1,robust/control/add_sportsclub_4_7,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add sportsclub_4_7,0.95
+138922-V1,robust/control/add_music_4_7,robustness/control_progression.md,sportsclub,treat,G1,baseline,0,1,core_controls,Control build-up: add music_4_7,0.95
+138922-V1,robust/sample/drop_year_2006,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: 2007-2010 (drop 2006),0.95
+138922-V1,robust/sample/extended_2000_2010,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: 2000-2010 (extended pre-period),0.95
+138922-V1,robust/sample/include_2011,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: 2006-2011 (include 2011),0.95
+138922-V1,robust/sample/drop_year_2009,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: Exclude 2009,0.95
+138922-V1,robust/sample/drop_year_2010,robustness/sample_restrictions.md#time-periods,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: Exclude 2010,0.95
+138922-V1,robust/sample/drop_brandenburg,robustness/sample_restrictions.md#geography,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: Drop Brandenburg (Saxony vs Thuringia only),0.95
+138922-V1,robust/sample/drop_thuringia,robustness/sample_restrictions.md#geography,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: Drop Thuringia (Saxony vs Brandenburg only),0.95
+138922-V1,robust/cluster/robust_hc,robustness/inference_alternatives.md#robust-se,sportsclub,treat,G1,baseline,0,1,core_inference,Clustering variation: robust_hc,0.95
+138922-V1,robust/cluster/state,robustness/clustering_variations.md,sportsclub,treat,G1,baseline,0,1,core_inference,Clustering variation: state,0.95
+138922-V1,robust/cluster/cohort,robustness/clustering_variations.md,sportsclub,treat,G1,baseline,0,1,core_inference,Clustering variation: cohort,0.95
+138922-V1,robust/treatment/treat_v2,methods/difference_in_differences.md#treatment-definition,sportsclub,treat_v2,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment definition: treat_v2,0.95
+138922-V1,robust/treatment/current_location,methods/difference_in_differences.md#treatment-definition,sportsclub,t_tcoh_bula,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment definition: t_tcoh_bula,0.95
+138922-V1,robust/heterogeneity/female_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: female_0 subsample,0.95
+138922-V1,robust/heterogeneity/female_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: female_1 subsample,0.95
+138922-V1,robust/heterogeneity/urban_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: urban_0 subsample,0.95
+138922-V1,robust/heterogeneity/urban_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: urban_1 subsample,0.95
+138922-V1,robust/heterogeneity/newspaper_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: newspaper_0 subsample,0.95
+138922-V1,robust/heterogeneity/newspaper_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: newspaper_1 subsample,0.95
+138922-V1,robust/heterogeneity/art_at_home_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: art_at_home_0 subsample,0.95
+138922-V1,robust/heterogeneity/art_at_home_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: art_at_home_1 subsample,0.95
+138922-V1,robust/heterogeneity/academictrack_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: academictrack_0 subsample,0.95
+138922-V1,robust/heterogeneity/academictrack_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: academictrack_1 subsample,0.95
+138922-V1,robust/heterogeneity/sportsclub_4_7_0,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sportsclub_4_7_0 subsample,0.95
+138922-V1,robust/heterogeneity/sportsclub_4_7_1,robustness/heterogeneity.md,sportsclub,treat,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: sportsclub_4_7_1 subsample,0.95
+138922-V1,robust/placebo/health1,robustness/placebo_tests.md,health1,treat,G1,baseline,0,0,noncore_placebo,Placebo test: health1 should not be affected by treatment,0.95
+138922-V1,robust/placebo/eversmoked,robustness/placebo_tests.md,eversmoked,treat,G1,baseline,0,0,noncore_placebo,Placebo test: eversmoked should not be affected by treatment,0.95
+138922-V1,robust/placebo/everalc,robustness/placebo_tests.md,everalc,treat,G1,baseline,0,0,noncore_placebo,Placebo test: everalc should not be affected by treatment,0.95
+138922-V1,robust/funcform/log_sport_hrs,robustness/functional_form.md#log-transform,log_sport_hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (log_sport_hrs): different measure of behavioral effect,0.95
+138922-V1,robust/funcform/ihs_sport_hrs,robustness/functional_form.md#ihs-transform,ihs_sport_hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (ihs_sport_hrs): different measure of behavioral effect,0.95
+138922-V1,robust/sample/high_quality,robustness/sample_restrictions.md#data-quality,sportsclub,treat,G1,baseline,0,1,core_sample,"Sample restriction: High data quality: duration>10, verified demographics",0.95
+138922-V1,robust/sample/no_sibling_participation,robustness/sample_restrictions.md,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: No sibling participation or years 2009-2010,0.95
+138922-V1,robust/sample/no_older_siblings,robustness/sample_restrictions.md,sportsclub,treat,G1,baseline,0,1,core_sample,Sample restriction: Children with no older siblings,0.95
+138922-V1,robust/outcome/membership_age_6,robustness/measurement.md#alternative-outcomes,ll6,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 6: alternative timing of outcome,0.95
+138922-V1,robust/outcome/membership_age_7,robustness/measurement.md#alternative-outcomes,ll7,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 7: alternative timing of outcome,0.95
+138922-V1,robust/outcome/membership_age_8,robustness/measurement.md#alternative-outcomes,ll8,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 8: alternative timing of outcome,0.95
+138922-V1,robust/outcome/membership_age_9,robustness/measurement.md#alternative-outcomes,ll9,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 9: alternative timing of outcome,0.95
+138922-V1,robust/outcome/membership_age_10,robustness/measurement.md#alternative-outcomes,ll10,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 10: alternative timing of outcome,0.95
+138922-V1,robust/outcome/membership_age_11,robustness/measurement.md#alternative-outcomes,ll11,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 11: alternative timing of outcome,0.95
+138922-V1,robust/outcome/membership_age_12,robustness/measurement.md#alternative-outcomes,ll12,treat,G1,baseline,0,0,noncore_alt_outcome,Membership at age 12: alternative timing of outcome,0.95
+138922-V1,robust/outcome/kommheard_p,robustness/measurement.md#alternative-reporters,kommheard_p,treat,G1,baseline,0,0,noncore_alt_outcome,"First-stage outcome (kommheard_p): program awareness, not behavioral",0.95
+138922-V1,robust/outcome/kommgotten_p,robustness/measurement.md#alternative-reporters,kommgotten_p,treat,G1,baseline,0,0,noncore_alt_outcome,"First-stage outcome (kommgotten_p): program awareness, not behavioral",0.95
+138922-V1,robust/outcome/kommused_p,robustness/measurement.md#alternative-reporters,kommused_p,treat,G1,baseline,0,0,noncore_alt_outcome,"First-stage outcome (kommused_p): program awareness, not behavioral",0.95
+138922-V1,robust/outcome/sport1hrs,robustness/measurement.md#alternative-outcomes,sport1hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (sport1hrs): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/sport2hrs,robustness/measurement.md#alternative-outcomes,sport2hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (sport2hrs): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/sport3hrs,robustness/measurement.md#alternative-outcomes,sport3hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (sport3hrs): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/sport_alt2,robustness/measurement.md#alternative-outcomes,sport_alt2,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (sport_alt2): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/obese,robustness/measurement.md#alternative-outcomes,obese,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (obese): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/currentsmoking,robustness/measurement.md#alternative-outcomes,currentsmoking,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (currentsmoking): different measure of behavioral effect,0.95
+138922-V1,robust/outcome/alclast7,robustness/measurement.md#alternative-outcomes,alclast7,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (alclast7): different measure of behavioral effect,0.95
+138922-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md#outliers,sport_hrs_wins_1pct,treat,G1,baseline,0,0,noncore_alt_outcome,Winsorized sport hours: alternative outcome measure,0.9
+138922-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md#outliers,sport_hrs_wins_5pct,treat,G1,baseline,0,0,noncore_alt_outcome,Winsorized sport hours: alternative outcome measure,0.9
+138922-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md#outliers,sport_hrs,treat,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome (sport_hrs): different measure of behavioral effect,0.95
+138922-V1,did/method/simple_did,methods/difference_in_differences.md#estimation-method,sportsclub,treat,G1,baseline,0,1,core_method,Estimation method: simple DID without absorbing FE,0.95

@@ -106,7 +106,6 @@ def main():
 
         # Mixture extensions
         run_python("12_bootstrap_mixture_ci.py")
-        run_python("13_bootstrap_lrt.py")
         run_python("14_leave_one_out_cv.py")
         run_python("15_journal_subgroup.py")
         run_python("16_posterior_assignment.py")
@@ -120,10 +119,13 @@ def main():
         run_python("20_counterfactual_montecarlo.py")
         run_python("21_effective_sample_size.py")
         run_python("22_window_surface.py")
+        run_python("23_within_paper_dispersion.py")
 
         # Summary tables
         run_python("24_summary_statistics.py")
         run_python("25_variance_decomposition.py")
+        run_python("26_build_paper_catalog.py")
+        run_python("27_mixture_comparison_table.py")
         run_python("27_sensitivity_tables.py")
 
     print("\n" + "=" * 60)

@@ -1,12 +1,12 @@
 {
   "paper_id": "140921-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/140921-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/140921-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Interruption of London Season increased probability aristocratic daughters married commoner.",
+      "claim_summary": "Season interruption (syntheticT) increases probability of marrying commoner (cOut)",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,11 +17,11 @@
       "baseline_treatment_vars": [
         "syntheticT"
       ],
-      "notes": "Primary outcome. Coef 0.0043, p=0.052."
+      "notes": "Coef=0.0043, p=0.052. Borderline significant. N varies by specification."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Interruption decreased probability of marrying an heir.",
+      "claim_summary": "Season interruption reduces probability of marrying an heir",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline_mheir"
@@ -32,27 +32,53 @@
       "baseline_treatment_vars": [
         "syntheticT"
       ],
-      "notes": "Flip side of G1."
+      "notes": "Coef=-0.0034, p=0.057. Borderline significant."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "Interruption increased landholding mismatch between spouses.",
+      "claim_summary": "Season interruption increases absolute mismatch in landholdings",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline_fmissmatch",
-        "baseline_fmissmatch2",
+        "baseline_fmissmatch"
+      ],
+      "baseline_outcome_vars": [
+        "fmissmatch"
+      ],
+      "baseline_treatment_vars": [
+        "syntheticT"
+      ],
+      "notes": "Coef=0.524, p=0.014. Significant."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Season interruption reduces signed mismatch (husband lower landholdings)",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_fmissmatch2"
+      ],
+      "baseline_outcome_vars": [
+        "fmissmatch2"
+      ],
+      "baseline_treatment_vars": [
+        "syntheticT"
+      ],
+      "notes": "Coef=-0.516, p=0.032. Significant."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Season interruption increases probability of marrying down",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
         "baseline_fdown"
       ],
       "baseline_outcome_vars": [
-        "fmissmatch",
-        "fmissmatch2",
         "fdown"
       ],
       "baseline_treatment_vars": [
         "syntheticT"
       ],
-      "notes": "Signs: fmissmatch +, fmissmatch2 -, fdown +."
+      "notes": "Coef=0.009, p=0.004. Significant."
     }
   ],
-  "global_notes": "Primary cOut borderline (p=0.052). Reduced form=baseline. Placebo biorder sig at 5%. Multiple duplicates."
+  "global_notes": "Historical study of the London Season (elite marriage market) disruption 1861-63. Primary outcome (married commoner) is borderline significant at 5%. Sorting outcomes (landholding mismatch, marrying down) are more clearly significant. 66 specs total. IV first-stage F=8.4 (weak instrument concern)."
 }

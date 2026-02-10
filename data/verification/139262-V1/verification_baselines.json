@@ -1,36 +1,129 @@
 {
   "paper_id": "139262-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/139262-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/139262-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Belief adjustments track Bayesian benchmarks but show asymmetric updating (stronger response to good vs bad news) that is attenuated by the Resolution treatment.",
+      "claim_summary": "Belief adjustments track Bayesian benchmark for good news in No-Resolution treatment",
       "expected_sign": "+",
-      "baseline_spec_ids": ["baseline", "baseline_nores_bad", "baseline_nores_did", "baseline_res_good", "baseline_res_bad", "baseline_res_did"],
-      "baseline_outcome_vars": ["belief_adjustment"],
-      "baseline_treatment_vars": ["bayes_belief_adjustment"],
-      "notes": "Six baseline specs correspond to Table 2 of the paper. They share the same outcome/treatment but differ by treatment-signal subsample. baseline = No-Resolution/Good Signal; baseline_nores_bad = No-Resolution/Bad Signal; baseline_nores_did and baseline_res_did pool both signals with signal and signal*bayes interaction; baseline_res_good and baseline_res_bad are Resolution subsamples. All represent facets of the same core claim about asymmetric belief updating."
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "belief_adjustment"
+      ],
+      "baseline_treatment_vars": [
+        "bayes_belief_adjustment"
+      ],
+      "notes": "Coef=0.665, p<0.001. Subjects respond strongly to good news."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Good news (positive signal) increases perceived importance of IQ for study performance in the No-Resolution treatment but not in the Resolution treatment (ex-post rationalization).",
+      "claim_summary": "Belief adjustments weakly track Bayesian benchmark for bad news in No-Resolution (motivated reasoning)",
       "expected_sign": "+",
-      "baseline_spec_ids": ["baseline_studyperformance_no-resolution", "baseline_studyperformance_resolution"],
-      "baseline_outcome_vars": ["studyperformance"],
-      "baseline_treatment_vars": ["signal"],
-      "notes": "Table 3 results. The paper's claim is that signal has a positive effect on study performance ratings in No-Resolution (significant) but not Resolution (insignificant), as an ex-post rationalization mechanism."
+      "baseline_spec_ids": [
+        "baseline_nores_bad"
+      ],
+      "baseline_outcome_vars": [
+        "belief_adjustment"
+      ],
+      "baseline_treatment_vars": [
+        "bayes_belief_adjustment"
+      ],
+      "notes": "Coef=0.076, p=0.672. Subjects largely ignore bad news -- evidence of motivated beliefs."
     },
     {
       "baseline_group_id": "G3",
-      "claim_summary": "Good news (positive signal) increases perceived importance of IQ for job performance in the No-Resolution treatment but not in the Resolution treatment (ex-post rationalization).",
+      "claim_summary": "Resolution treatment restores responsiveness to good news",
       "expected_sign": "+",
-      "baseline_spec_ids": ["baseline_jobperformance_no-resolution", "baseline_jobperformance_resolution"],
-      "baseline_outcome_vars": ["jobperformance"],
-      "baseline_treatment_vars": ["signal"],
-      "notes": "Table 3 results, job performance variant. Same logic as G2 but different outcome measure."
+      "baseline_spec_ids": [
+        "baseline_res_good"
+      ],
+      "baseline_outcome_vars": [
+        "belief_adjustment"
+      ],
+      "baseline_treatment_vars": [
+        "bayes_belief_adjustment"
+      ],
+      "notes": "Coef=0.530, p=0.015."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "Resolution treatment restores responsiveness to bad news",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_res_bad"
+      ],
+      "baseline_outcome_vars": [
+        "belief_adjustment"
+      ],
+      "baseline_treatment_vars": [
+        "bayes_belief_adjustment"
+      ],
+      "notes": "Coef=0.645, p=0.010. Key finding: anticipation of resolution eliminates the good/bad news asymmetry."
+    },
+    {
+      "baseline_group_id": "G5",
+      "claim_summary": "Signal affects perceived study performance importance (No-Resolution)",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_studyperformance_no-resolution"
+      ],
+      "baseline_outcome_vars": [
+        "studyperformance"
+      ],
+      "baseline_treatment_vars": [
+        "signal"
+      ],
+      "notes": "Coef=0.795, p=0.021."
+    },
+    {
+      "baseline_group_id": "G6",
+      "claim_summary": "Signal affects perceived study performance importance (Resolution)",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_studyperformance_resolution"
+      ],
+      "baseline_outcome_vars": [
+        "studyperformance"
+      ],
+      "baseline_treatment_vars": [
+        "signal"
+      ],
+      "notes": "Coef=0.150, p=0.687. Not significant in Resolution."
+    },
+    {
+      "baseline_group_id": "G7",
+      "claim_summary": "Signal affects perceived job performance importance (No-Resolution)",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_jobperformance_no-resolution"
+      ],
+      "baseline_outcome_vars": [
+        "jobperformance"
+      ],
+      "baseline_treatment_vars": [
+        "signal"
+      ],
+      "notes": "Coef=1.054, p=0.007."
+    },
+    {
+      "baseline_group_id": "G8",
+      "claim_summary": "Signal affects perceived job performance importance (Resolution)",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_jobperformance_resolution"
+      ],
+      "baseline_outcome_vars": [
+        "jobperformance"
+      ],
+      "baseline_treatment_vars": [
+        "signal"
+      ],
+      "notes": "Coef=0.231, p=0.512. Not significant in Resolution."
     }
   ],
-  "global_notes": "The paper tests motivated beliefs via a lab experiment with 200 subjects. The primary hypothesis (G1) concerns asymmetric belief updating: subjects respond more to good news in No-Resolution but symmetrically in Resolution. The secondary hypotheses (G2, G3) concern ex-post rationalization of performance relevance. Some spec-search specs with outcome rang1-4posteriorbelief use rank-specific probability beliefs rather than the expected-rank summary measure (belief_adjustment) -- these are alternative measurements of the same underlying belief-updating concept. The heterogeneity splits (by age, IQ, prior, rank) run the same estimating equation on subsamples but are not separate baseline claims. The DID specifications (baseline_nores_did, baseline_res_did) pool good and bad signals with interaction terms, effectively nesting the separate good/bad signal regressions."
+  "global_notes": "Lab experiment on motivated beliefs with 200 subjects. The 2x2 design (Resolution/No-Resolution x Good/Bad signal) creates 4 cells for belief updating and 4 for secondary outcomes (study/job performance). Many specs split by treatment-signal cell. The key finding is the asymmetry in No-Resolution (strong good, weak bad) that disappears in Resolution."
 }

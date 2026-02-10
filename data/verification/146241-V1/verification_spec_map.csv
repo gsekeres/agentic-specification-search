@@ -1,70 +1,70 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-146241-V1,baseline,methods/discrete_choice.md#baseline,withdraw,large,G1,baseline,1,1,core_controls,"Baseline spec: logit withdraw on large, full controls, period 8",1.0
-146241-V1,robust/control/none,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,No controls variant of baseline logit,0.95
-146241-V1,robust/control/treatment_only,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Treatment vars only controls variant,0.95
-146241-V1,robust/control/add_pastDecision,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Adding pastDecision stepwise,0.95
-146241-V1,robust/control/add_pastGroupRunning,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Adding pastGroupRunning stepwise,0.95
-146241-V1,robust/control/add_rValue,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Adding rValue stepwise,0.95
-146241-V1,robust/control/add_age,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Adding age stepwise,0.95
-146241-V1,robust/control/add_gender,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Adding gender stepwise; identical to baseline,0.95
-146241-V1,robust/control/drop_pastDecision,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Drop pastDecision from full controls,0.95
-146241-V1,robust/control/drop_pastGroupRunning,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Drop pastGroupRunning from full controls,0.95
-146241-V1,robust/control/drop_rValueF,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Drop rValueF from full controls,0.95
-146241-V1,robust/control/drop_leeftijd,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Drop age from full controls,0.95
-146241-V1,robust/control/drop_female,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Drop gender from full controls,0.95
-146241-V1,robust/control/drop_rhoValue_high,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Drop rho indicator from full controls,0.95
-146241-V1,robust/sample/period_9,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Period 9 instead of period 8; same estimand,0.9
-146241-V1,robust/sample/period_10,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Period 10 instead of period 8; same estimand,0.9
-146241-V1,robust/sample/period_11,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Period 11 instead of period 8; same estimand,0.9
-146241-V1,robust/sample/period_12,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Period 12 instead of period 8; same estimand,0.9
-146241-V1,robust/sample/period_13,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Period 13 instead of period 8; same estimand,0.9
-146241-V1,robust/sample/r154_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Restrict to r=1.54 treatments only,0.9
-146241-V1,robust/sample/r133_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Restrict to r=1.33 treatments only,0.9
-146241-V1,robust/sample/low_persistence,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Low persistence (rho=0.5) subsample only,0.9
-146241-V1,robust/sample/location_1,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Location 1 subsample only,0.85
-146241-V1,robust/sample/location_0,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Location 0 subsample only,0.85
-146241-V1,robust/sample/early_periods,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Periods 7-10 pooled; same treatment/outcome,0.85
-146241-V1,robust/sample/late_periods,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Periods 11+ pooled; same treatment/outcome,0.85
-146241-V1,robust/sample/first_period_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Period 7 only (first paid); same treatment/outcome,0.9
-146241-V1,robust/sample/male_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Males only subsample,0.85
-146241-V1,robust/sample/female_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Females only subsample,0.85
-146241-V1,robust/outcome/group_running_rate,robustness/measurement.md,running_rate,large,G1,baseline,0,1,core_funcform,Group-level running rate as outcome; tests same claim,0.75
-146241-V1,robust/outcome/pooled_all_periods,robustness/measurement.md,withdraw,large,G1,baseline,0,1,core_sample,All paid periods pooled; same treatment/outcome,0.8
-146241-V1,robust/treatment/log_groupsize,robustness/measurement.md,withdraw,log_groupSize,G1,baseline,0,1,core_funcform,Log group size instead of binary; same hypothesis,0.85
-146241-V1,robust/treatment/continuous_groupsize,robustness/measurement.md,withdraw,groupSize,G1,baseline,0,1,core_funcform,Continuous group size; same hypothesis direction,0.85
-146241-V1,robust/cluster/none_mle,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,MLE SEs instead of clustered; same model,0.95
-146241-V1,robust/cluster/lpm_group,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,LPM with group-clustered SEs,0.9
-146241-V1,robust/cluster/lpm_session,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,LPM with session-clustered SEs,0.9
-146241-V1,robust/cluster/lpm_treatment,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,LPM with treatment-clustered SEs,0.9
-146241-V1,robust/cluster/lpm_robust,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,LPM with HC1 robust SEs,0.9
-146241-V1,robust/estimation/lpm,methods/discrete_choice.md#lpm,withdraw,large,G1,baseline,0,1,core_method,LPM instead of logit; same hypothesis,0.9
-146241-V1,robust/estimation/probit,methods/discrete_choice.md#probit,withdraw,large,G1,baseline,0,1,core_method,Probit instead of logit; same hypothesis,0.95
-146241-V1,robust/estimation/lpm_session_fe,methods/panel_fixed_effects.md,withdraw,large,G1,baseline,0,1,core_fe,LPM with session FE; same hypothesis,0.9
-146241-V1,robust/funcform/quadratic_pastgroup,robustness/functional_form.md,withdraw,large,G1,baseline,0,1,core_funcform,Quadratic in pastGroupRunning control,0.9
-146241-V1,robust/funcform/quadratic_age,robustness/functional_form.md,withdraw,large,G1,baseline,0,1,core_funcform,Quadratic in age control,0.9
-146241-V1,robust/funcform/log_pastgroup,robustness/functional_form.md,withdraw,large,G1,baseline,0,1,core_funcform,Log transform of pastGroupRunning control,0.9
-146241-V1,robust/placebo/training_periods,robustness/placebo_tests.md,withdraw,large,,,0,0,noncore_placebo,"Placebo: training periods, no real incentives",0.95
-146241-V1,robust/placebo/permuted_treatment,robustness/placebo_tests.md,withdraw,large_permuted,,,0,0,noncore_placebo,Placebo: randomly permuted treatment assignment,0.95
-146241-V1,robust/placebo/permuted_seed123,robustness/placebo_tests.md,withdraw,large_permuted,,,0,0,noncore_placebo,Placebo: permuted treatment seed=123,0.95
-146241-V1,robust/placebo/permuted_seed456,robustness/placebo_tests.md,withdraw,large_permuted,,,0,0,noncore_placebo,Placebo: permuted treatment seed=456,0.95
-146241-V1,robust/placebo/permuted_seed789,robustness/placebo_tests.md,withdraw,large_permuted,,,0,0,noncore_placebo,Placebo: permuted treatment seed=789,0.95
-146241-V1,robust/heterogeneity/by_persistence_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Main effect with persistence interaction; conditional,0.8
-146241-V1,robust/heterogeneity/by_persistence_interaction,robustness/heterogeneity.md,withdraw,large:rhoValue_high,,,0,0,noncore_heterogeneity,Interaction term: different estimand,0.95
-146241-V1,robust/heterogeneity/by_rvalue_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Main effect with rValue interaction; conditional,0.8
-146241-V1,robust/heterogeneity/by_rvalue_interaction,robustness/heterogeneity.md,withdraw,large:rValueF,,,0,0,noncore_heterogeneity,Interaction term: different estimand,0.95
-146241-V1,robust/heterogeneity/by_gender_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Main effect with gender interaction; conditional,0.8
-146241-V1,robust/heterogeneity/by_gender_interaction,robustness/heterogeneity.md,withdraw,large:female,,,0,0,noncore_heterogeneity,Interaction term: different estimand,0.95
-146241-V1,robust/heterogeneity/by_pastdecision_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Main effect with pastDecision interaction; conditional,0.8
-146241-V1,robust/heterogeneity/by_pastdecision_interaction,robustness/heterogeneity.md,withdraw,large:pastDecision,,,0,0,noncore_heterogeneity,Interaction term: different estimand,0.95
-146241-V1,robust/heterogeneity/by_pastgroup_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Main effect with pastGroupRunning interaction; conditional,0.8
-146241-V1,robust/heterogeneity/by_pastgroup_interaction,robustness/heterogeneity.md,withdraw,large:pastGroupRunning,,,0,0,noncore_heterogeneity,Interaction term: different estimand,0.95
-146241-V1,paper/table4_col1,methods/discrete_choice.md,withdraw,large,G1,baseline,0,1,core_sample,Table 4 col1: r=1.54 subsample; same treatment,0.85
-146241-V1,paper/table4_col2_waiters,methods/discrete_choice.md,withdraw,large,,,0,0,noncore_heterogeneity,Waiters subgroup with interaction; different estimand,0.8
-146241-V1,paper/table4_col3_withdrawers,methods/discrete_choice.md,withdraw,large,,,0,0,noncore_heterogeneity,Withdrawers subgroup with interaction; different estimand,0.8
-146241-V1,paper/table4_col5_period9,methods/discrete_choice.md,withdraw,large,,,0,0,noncore_heterogeneity,Period 9 with interaction; conditional main effect,0.8
-146241-V1,paper/treatment_1_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,,,0,0,noncore_alt_treatment,Treatment=pastDecision in treatment 1; different claim,0.95
-146241-V1,paper/treatment_2_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,,,0,0,noncore_alt_treatment,Treatment=pastDecision in treatment 2; different claim,0.95
-146241-V1,paper/treatment_3_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,,,0,0,noncore_alt_treatment,Treatment=pastDecision in treatment 3; different claim,0.95
-146241-V1,paper/treatment_4_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,,,0,0,noncore_alt_treatment,Treatment=pastDecision in treatment 4; different claim,0.95
-146241-V1,paper/treatment_5_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,,,0,0,noncore_alt_treatment,Treatment=pastDecision in treatment 5; different claim,0.95
-146241-V1,paper/treatment_6_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,,,0,0,noncore_alt_treatment,Treatment=pastDecision in treatment 6; different claim,0.95
+146241-V1,baseline,methods/discrete_choice.md#baseline,withdraw,large,G1,baseline,1,1,core_controls,"Primary baseline: withdraw on large, period 8, logit with controls",1.0
+146241-V1,robust/control/none,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: none,0.95
+146241-V1,robust/control/treatment_only,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: treatment_only,0.95
+146241-V1,robust/control/add_pastDecision,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: add_pastDecision,0.95
+146241-V1,robust/control/add_pastGroupRunning,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: add_pastGroupRunning,0.95
+146241-V1,robust/control/add_rValue,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: add_rValue,0.95
+146241-V1,robust/control/add_age,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: add_age,0.95
+146241-V1,robust/control/add_gender,robustness/control_progression.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: add_gender,0.95
+146241-V1,robust/control/drop_pastDecision,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: drop_pastDecision,0.95
+146241-V1,robust/control/drop_pastGroupRunning,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: drop_pastGroupRunning,0.95
+146241-V1,robust/control/drop_rValueF,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: drop_rValueF,0.95
+146241-V1,robust/control/drop_leeftijd,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: drop_leeftijd,0.95
+146241-V1,robust/control/drop_female,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: drop_female,0.95
+146241-V1,robust/control/drop_rhoValue_high,robustness/leave_one_out.md,withdraw,large,G1,baseline,0,1,core_controls,Control variation: drop_rhoValue_high,0.95
+146241-V1,robust/sample/period_9,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 9, all treatments except 7",0.95
+146241-V1,robust/sample/period_10,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 10, all treatments except 7",0.95
+146241-V1,robust/sample/period_11,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 11, all treatments except 7",0.95
+146241-V1,robust/sample/period_12,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 12, all treatments except 7",0.95
+146241-V1,robust/sample/period_13,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 13, all treatments except 7",0.95
+146241-V1,robust/sample/r154_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, r=1.54 only (treatments 1-4)",0.95
+146241-V1,robust/sample/r133_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, r=1.33 only (treatments 5-6)",0.95
+146241-V1,robust/sample/low_persistence,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, low persistence (rho=0.5) only",0.95
+146241-V1,robust/sample/location_1,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, location 1 only",0.95
+146241-V1,robust/sample/location_0,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, location 0 only",0.95
+146241-V1,robust/sample/early_periods,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Periods 7-10, all treatments except 7",0.95
+146241-V1,robust/sample/late_periods,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Periods 11+, all treatments except 7",0.95
+146241-V1,robust/sample/first_period_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,Sample restriction: Period 7 only (no lagged vars),0.95
+146241-V1,robust/sample/male_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, males only",0.95
+146241-V1,robust/sample/female_only,robustness/sample_restrictions.md,withdraw,large,G1,baseline,0,1,core_sample,"Sample restriction: Period 8, females only",0.95
+146241-V1,robust/outcome/group_running_rate,robustness/measurement.md,running_rate,large,G1,baseline,0,0,noncore_alt_outcome,Group-level running rate (OLS),0.95
+146241-V1,robust/outcome/pooled_all_periods,robustness/measurement.md,withdraw,large,G1,baseline,0,1,core_sample,All paid periods pooled,0.95
+146241-V1,robust/treatment/log_groupsize,robustness/measurement.md,withdraw,log_groupSize,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: log_groupSize,0.95
+146241-V1,robust/treatment/continuous_groupsize,robustness/measurement.md,withdraw,groupSize,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: groupSize,0.95
+146241-V1,robust/cluster/none_mle,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,Inference variation: none_mle,0.95
+146241-V1,robust/cluster/lpm_group,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,Inference variation: lpm_group,0.95
+146241-V1,robust/cluster/lpm_session,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,Inference variation: lpm_session,0.95
+146241-V1,robust/cluster/lpm_treatment,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,Inference variation: lpm_treatment,0.95
+146241-V1,robust/cluster/lpm_robust,robustness/clustering_variations.md,withdraw,large,G1,baseline,0,1,core_inference,Inference variation: lpm_robust,0.95
+146241-V1,robust/estimation/lpm,methods/discrete_choice.md#lpm,withdraw,large,G1,baseline,0,1,core_method,Estimation method: lpm,0.95
+146241-V1,robust/estimation/probit,methods/discrete_choice.md#probit,withdraw,large,G1,baseline,0,1,core_method,Estimation method: probit,0.95
+146241-V1,robust/estimation/lpm_session_fe,methods/panel_fixed_effects.md,withdraw,large,G1,baseline,0,1,core_method,Estimation method: lpm_session_fe,0.95
+146241-V1,robust/funcform/quadratic_pastgroup,robustness/functional_form.md,withdraw,large,G1,baseline,0,1,core_funcform,Functional form: quadratic_pastgroup,0.95
+146241-V1,robust/funcform/quadratic_age,robustness/functional_form.md,withdraw,large,G1,baseline,0,1,core_funcform,Functional form: quadratic_age,0.95
+146241-V1,robust/funcform/log_pastgroup,robustness/functional_form.md,withdraw,large,G1,baseline,0,1,core_funcform,Functional form: log_pastgroup,0.95
+146241-V1,robust/placebo/training_periods,robustness/placebo_tests.md,withdraw,large,G1,baseline,0,0,noncore_placebo,Placebo test: Training periods (rounds 2-6),0.95
+146241-V1,robust/placebo/permuted_treatment,robustness/placebo_tests.md,withdraw,large_permuted,G1,baseline,0,0,noncore_placebo,"Placebo test: Period 8, permuted treatment",0.95
+146241-V1,robust/placebo/permuted_seed123,robustness/placebo_tests.md,withdraw,large_permuted,G1,baseline,0,0,noncore_placebo,"Placebo test: Period 8, permuted treatment (seed=123)",0.95
+146241-V1,robust/placebo/permuted_seed456,robustness/placebo_tests.md,withdraw,large_permuted,G1,baseline,0,0,noncore_placebo,"Placebo test: Period 8, permuted treatment (seed=456)",0.95
+146241-V1,robust/placebo/permuted_seed789,robustness/placebo_tests.md,withdraw,large_permuted,G1,baseline,0,0,noncore_placebo,"Placebo test: Period 8, permuted treatment (seed=789)",0.95
+146241-V1,robust/heterogeneity/by_persistence_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_persistence_main,0.95
+146241-V1,robust/heterogeneity/by_persistence_interaction,robustness/heterogeneity.md,withdraw,large:rhoValue_high,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_persistence_interaction,0.95
+146241-V1,robust/heterogeneity/by_rvalue_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_rvalue_main,0.95
+146241-V1,robust/heterogeneity/by_rvalue_interaction,robustness/heterogeneity.md,withdraw,large:rValueF,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_rvalue_interaction,0.95
+146241-V1,robust/heterogeneity/by_gender_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_gender_main,0.95
+146241-V1,robust/heterogeneity/by_gender_interaction,robustness/heterogeneity.md,withdraw,large:female,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_gender_interaction,0.95
+146241-V1,robust/heterogeneity/by_pastdecision_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_pastdecision_main,0.95
+146241-V1,robust/heterogeneity/by_pastdecision_interaction,robustness/heterogeneity.md,withdraw,large:pastDecision,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_pastdecision_interaction,0.95
+146241-V1,robust/heterogeneity/by_pastgroup_main,robustness/heterogeneity.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_pastgroup_main,0.95
+146241-V1,robust/heterogeneity/by_pastgroup_interaction,robustness/heterogeneity.md,withdraw,large:pastGroupRunning,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: by_pastgroup_interaction,0.95
+146241-V1,paper/table4_col1,methods/discrete_choice.md,withdraw,large,G1,baseline,0,1,core_sample,"Table 4 replication: Period 8, r=1.54 only (treatments 1-4)",0.95
+146241-V1,paper/table4_col2_waiters,methods/discrete_choice.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,"Table 4 subsample: Period 8, r=1.54, waiters only",0.95
+146241-V1,paper/table4_col3_withdrawers,methods/discrete_choice.md,withdraw,large,G1,baseline,0,0,noncore_heterogeneity,"Table 4 subsample: Period 8, r=1.54, withdrawers only",0.95
+146241-V1,paper/table4_col5_period9,methods/discrete_choice.md,withdraw,large,G1,baseline,0,1,core_sample,Table 4: period 9 instead of 8,0.95
+146241-V1,paper/treatment_1_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,G1,baseline,0,0,noncore_alt_treatment,Past decision as treatment in treatment-specific subsample,0.9
+146241-V1,paper/treatment_2_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,G1,baseline,0,0,noncore_alt_treatment,Past decision as treatment in treatment-specific subsample,0.9
+146241-V1,paper/treatment_3_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,G1,baseline,0,0,noncore_alt_treatment,Past decision as treatment in treatment-specific subsample,0.9
+146241-V1,paper/treatment_4_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,G1,baseline,0,0,noncore_alt_treatment,Past decision as treatment in treatment-specific subsample,0.9
+146241-V1,paper/treatment_5_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,G1,baseline,0,0,noncore_alt_treatment,Past decision as treatment in treatment-specific subsample,0.9
+146241-V1,paper/treatment_6_pastDecision,methods/discrete_choice.md,withdraw,pastDecision,G1,baseline,0,0,noncore_alt_treatment,Past decision as treatment in treatment-specific subsample,0.9

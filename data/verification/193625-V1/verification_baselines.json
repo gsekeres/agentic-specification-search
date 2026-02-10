@@ -1,18 +1,24 @@
 {
   "paper_id": "193625-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/193625-V1",
-  "verified_at": "2026-02-04",
+  "package_path": "data/downloads/extracted/193625-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Graduates from universities in severely recession-affected commuting zones experience lower median income post-recession (DiD: treat = post x badreccz is negative).",
+      "claim_summary": "Great Recession reduced incomes for graduates from severely affected CZs.",
       "expected_sign": "-",
-      "baseline_spec_ids": ["baseline"],
-      "baseline_outcome_vars": ["lnk_medpos"],
-      "baseline_treatment_vars": ["treat"],
-      "notes": "The baseline uses log median positive income (lnk_medpos), university + cohort FE, full controls, clustered at university level. The spec 'did/fe/twoway' is numerically identical to 'baseline' and is flagged as a duplicate. The paper also examines tier-level heterogeneity, but the primary estimand is the overall average DiD effect."
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "lnk_medpos"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "notes": "Coef -0.035. DiD with university+cohort FE. Treat = post x badreccz."
     }
   ],
-  "global_notes": "86 total specifications. 5 have missing/NaN coefficients due to collinearity or ill-defined single-arm samples (cz_x_cohort, pre_recession_cohorts, post_recession_cohorts, severe_cz_only, mild_cz_only). 10 heterogeneity interaction specifications change the treatment variable to an interaction term and are not direct tests of the core claim. 2 placebo specifications use fake treatment timing. 11 alternative outcome specifications use different income distribution measures. The core claim is well-supported with many valid robustness checks across controls, samples, FE structures, inference methods, and functional forms."
+  "global_notes": "Paper: Differential Effects of Recessions on Graduate Income by College Tier (AEJ: Policy)."
 }

@@ -1,0 +1,48 @@
+{
+  "paper_id": "113348-V1",
+  "package_path": "data/downloads/extracted/113348-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "The technique effect (cleaner production within industries) accounts for approximately 78% of the total reduction in pollution from U.S. manufacturing between 1987 and 2001, as estimated by a decomposition of pollution changes into scale, composition, and technique components (Table 2, average across four pollutants).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/all_four"
+      ],
+      "baseline_outcome_vars": [
+        "technique_fraction_all_four"
+      ],
+      "baseline_treatment_vars": [
+        "decomposition"
+      ],
+      "notes": "Table 2 decomposition, averaging across all four pollutants (SO2, NOx, CO, VOC). The technique fraction is 0.7795, meaning ~78% of pollution reduction is attributed to technique effect. This is a deterministic accounting decomposition -- there are no standard errors or p-values because the identity holds exactly. The coefficient_vector_json includes scale (0.2386), actual_nei (-0.2501), scale_comp (0.1309), technique_frac (0.7795), and composition_frac (0.2205). N=450 reflects the number of 4-digit SIC industries."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "The technique effect dominates for each individual pollutant: SO2 (77%), NOx (60%), CO (76%), VOC (95%) -- decomposition of pollution changes by pollutant type (Table 2).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline/SO2",
+        "baseline/NOx",
+        "baseline/CO",
+        "baseline/VOC"
+      ],
+      "baseline_outcome_vars": [
+        "technique_fraction_SO2",
+        "technique_fraction_NOx",
+        "technique_fraction_CO",
+        "technique_fraction_VOC"
+      ],
+      "baseline_treatment_vars": [
+        "decomposition",
+        "decomposition",
+        "decomposition",
+        "decomposition"
+      ],
+      "notes": "Table 2, pollutant-specific decompositions. SO2 technique_frac=0.773, NOx=0.598, CO=0.758, VOC=0.948. All show technique effect accounting for the majority of pollution reduction, though the magnitude varies across pollutants. These are the per-pollutant components underlying the G1 average."
+    }
+  ],
+  "global_notes": "Paper is 'Technology, International Trade, and Pollution from U.S. Manufacturing' by Arik Levinson (AER 2009). The main methodology is an accounting decomposition of manufacturing pollution changes into scale, composition, and technique effects -- this is a deterministic identity, not a statistical estimation, so most specifications lack standard errors, t-statistics, or p-values. The key finding is that technique effects (within-industry production changes) dominate composition effects (shifts across industries) in explaining U.S. manufacturing pollution reductions. The specification search produces 101 total specifications. Several regression-based specifications (OLS trends, panel FE, cross-section) supplement the core decomposition analysis and do have standard errors. The data come from the EPA's National Emissions Inventory (NEI), the NBER-CES Manufacturing Industry Database, and trade data. Some specs (robust/sample/subperiod_1987_1991, robust/sample/rolling_1987_1991, robust/sample/rolling_1988_1992) produce technique fractions >1 or <0 because the underlying pollution changes in these short windows have different signs, making the fraction interpretation unstable. The spec robust/deflator/industry_specific_ppi shows the largest sensitivity: using industry-specific PPI instead of GDP deflator reduces the technique fraction from 0.78 to 0.39, because much of what appears as technique change is actually relative price effects."
+}

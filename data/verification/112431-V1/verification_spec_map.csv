@@ -1,97 +1,97 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-112431-V1,baseline,methods/cross_sectional_ols.md#baseline,pcorrupt,first,G1,baseline,1,1,core_controls,Baseline: no controls robust SE pcorrupt on first,1.0
-112431-V1,ols/controls/prefchar,methods/cross_sectional_ols.md#control-sets,pcorrupt,first,G1,baseline,0,1,core_controls,Adds mayor chars + party dummies same outcome/treatment,0.95
-112431-V1,ols/controls/full_no_fe,methods/cross_sectional_ols.md#control-sets,pcorrupt,first,G1,baseline,0,1,core_controls,Full controls without FE same outcome/treatment,0.95
-112431-V1,baseline_fe,methods/cross_sectional_ols.md#fixed-effects,pcorrupt,first,G1,baseline_fe,1,1,core_fe,Baseline with state FE: main spec Table 4 Col 6,1.0
-112431-V1,robust/loo/drop_pref_masc,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped pref_masc same outcome,0.95
-112431-V1,robust/loo/drop_pref_idade_tse,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped pref_idade_tse same outcome,0.95
-112431-V1,robust/loo/drop_pref_escola,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped pref_escola same outcome,0.95
-112431-V1,robust/loo/drop_lpop,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped lpop same outcome,0.95
-112431-V1,robust/loo/drop_purb,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped purb same outcome,0.95
-112431-V1,robust/loo/drop_p_secundario,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped p_secundario same outcome,0.95
-112431-V1,robust/loo/drop_mun_novo,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped mun_novo same outcome,0.95
-112431-V1,robust/loo/drop_lpib02,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped lpib02 same outcome,0.95
-112431-V1,robust/loo/drop_gini_ipea,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped gini_ipea same outcome,0.95
-112431-V1,robust/loo/drop_lrec_trans,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped lrec_trans same outcome,0.95
-112431-V1,robust/loo/drop_p_cad_pref,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped p_cad_pref same outcome,0.95
-112431-V1,robust/loo/drop_vereador_eleit,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped vereador_eleit same outcome,0.95
-112431-V1,robust/loo/drop_ENLP2000,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped ENLP2000 same outcome,0.95
-112431-V1,robust/loo/drop_comarca,robustness/leave_one_out.md,pcorrupt,first,G1,baseline,0,1,core_controls,Leave-one-out dropped comarca same outcome,0.95
-112431-V1,robust/control/add_none,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,Control progression (add_none) same outcome/treatment,0.95
-112431-V1,robust/control/add_prefchar_basic,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,Control progression (add_prefchar_basic) same outcome/treatment,0.95
-112431-V1,robust/control/add_munichar,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,Control progression (add_munichar) same outcome/treatment,0.95
-112431-V1,robust/control/add_political,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,Control progression (add_political) same outcome/treatment,0.95
-112431-V1,robust/control/add_transfers,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,Control progression (add_transfers) same outcome/treatment,0.95
-112431-V1,robust/outcome/ncorrupt,robustness/measurement.md,ncorrupt,first,G1,baseline,0,1,core_funcform,Count corruption violations same construct diff measure,0.7
-112431-V1,robust/outcome/ncorrupt_os,robustness/measurement.md,ncorrupt_os,first,G1,baseline,0,1,core_funcform,Corruption per service order same construct normalized,0.65
-112431-V1,robust/outcome/pmismanagement,robustness/measurement.md,pmismanagement,first,G1,,0,0,noncore_alt_outcome,Mismanagement distinct from corruption different construct,0.9
-112431-V1,robust/outcome/dcorrupt,robustness/measurement.md,dcorrupt,first,G1,baseline,0,1,core_funcform,Binary any-corruption same construct binary measure,0.65
-112431-V1,robust/outcome/dcorrupt_desvio,robustness/measurement.md,dcorrupt_desvio,first,G1,,0,0,noncore_alt_outcome,Embezzlement dummy narrower than aggregate corruption,0.7
-112431-V1,robust/outcome/dcorrupt_licitacao,robustness/measurement.md,dcorrupt_licitacao,first,G1,,0,0,noncore_alt_outcome,Procurement fraud dummy narrower than aggregate corruption,0.7
-112431-V1,robust/outcome/dcorrupt_superfat,robustness/measurement.md,dcorrupt_superfat,first,G1,,0,0,noncore_alt_outcome,Overbilling dummy narrower than aggregate corruption,0.7
-112431-V1,robust/sample/drop_lottery_2,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 2) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_3,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 3) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_4,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 4) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_5,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 5) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_6,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 6) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_7,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 7) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_8,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 8) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_9,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 9) same outcome,0.9
-112431-V1,robust/sample/drop_lottery_10,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding lottery 10) same outcome,0.9
-112431-V1,robust/sample/drop_state_MG,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state MG) same outcome,0.9
-112431-V1,robust/sample/drop_state_SP,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state SP) same outcome,0.9
-112431-V1,robust/sample/drop_state_RS,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state RS) same outcome,0.9
-112431-V1,robust/sample/drop_state_BA,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state BA) same outcome,0.9
-112431-V1,robust/sample/drop_state_CE,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state CE) same outcome,0.9
-112431-V1,robust/sample/drop_state_RJ,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state RJ) same outcome,0.9
-112431-V1,robust/sample/drop_state_PR,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state PR) same outcome,0.9
-112431-V1,robust/sample/drop_state_GO,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state GO) same outcome,0.9
-112431-V1,robust/sample/drop_state_PA,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state PA) same outcome,0.9
-112431-V1,robust/sample/drop_state_PI,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Excluding state PI) same outcome,0.9
-112431-V1,robust/sample/small_pop,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (small_pop municipalities) same outcome,0.9
-112431-V1,robust/sample/large_pop,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (large_pop municipalities) same outcome,0.9
-112431-V1,robust/sample/rural,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (rural municipalities) same outcome,0.9
-112431-V1,robust/sample/urban,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (urban municipalities) same outcome,0.9
-112431-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Winsorized 1%) same outcome,0.9
-112431-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Winsorized 5%) same outcome,0.9
-112431-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Winsorized 10%) same outcome,0.9
-112431-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Trimmed 1%) same outcome,0.9
-112431-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Trimmed 5%) same outcome,0.9
-112431-V1,robust/cluster/none_classical,robustness/clustering_variations.md,pcorrupt,first,G1,baseline,0,1,core_inference,Inference variation cluster=none same outcome,0.95
-112431-V1,robust/se/hc1,robustness/clustering_variations.md,pcorrupt,first,G1,baseline,0,1,core_inference,Inference variation cluster=HC1 same outcome,0.95
-112431-V1,robust/se/hc2,robustness/clustering_variations.md,pcorrupt,first,G1,baseline,0,1,core_inference,Inference variation cluster=HC2 same outcome,0.95
-112431-V1,robust/se/hc3,robustness/clustering_variations.md,pcorrupt,first,G1,baseline,0,1,core_inference,Inference variation cluster=HC3 same outcome,0.95
-112431-V1,robust/cluster/state,robustness/clustering_variations.md,pcorrupt,first,G1,baseline,0,1,core_inference,Inference variation cluster=state (uf) same outcome,0.95
-112431-V1,robust/cluster/lottery,robustness/clustering_variations.md,pcorrupt,first,G1,baseline,0,1,core_inference,Inference variation cluster=lottery (nsorteio) same outcome,0.95
-112431-V1,robust/funcform/log_outcome,robustness/functional_form.md,log_pcorrupt,first,G1,baseline,0,1,core_funcform,Functional form log_pcorrupt same construct transformed,0.9
-112431-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_pcorrupt,first,G1,baseline,0,1,core_funcform,Functional form ihs_pcorrupt same construct transformed,0.9
-112431-V1,robust/funcform/binary_outcome,robustness/functional_form.md,dcorrupt,first,G1,baseline,0,1,core_funcform,LPM for binary corruption same construct binary,0.7
-112431-V1,robust/funcform/logit,robustness/functional_form.md,dcorrupt,first,G1,baseline,0,1,core_method,Logit for binary corruption alternative estimation,0.7
-112431-V1,robust/heterogeneity/political_competition,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with political_competition tests conditional not main,0.85
-112431-V1,robust/heterogeneity/media,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with media tests conditional not main,0.85
-112431-V1,robust/heterogeneity/judiciary,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with judiciary tests conditional not main,0.85
-112431-V1,robust/heterogeneity/population,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with population tests conditional not main,0.85
-112431-V1,robust/heterogeneity/urbanization,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with urbanization tests conditional not main,0.85
-112431-V1,robust/heterogeneity/income,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with income tests conditional not main,0.85
-112431-V1,robust/heterogeneity/male_mayors,robustness/heterogeneity.md,pcorrupt,first,G1,baseline,0,1,core_sample,Subsample male mayors only same outcome/treatment,0.85
-112431-V1,robust/placebo/resources_audited,robustness/placebo_tests.md,lrecursos_fisc,first,G1,,0,0,noncore_placebo,Placebo outcome=lrecursos_fisc predetermined tests identification,0.95
-112431-V1,robust/placebo/population,robustness/placebo_tests.md,lpop,first,G1,,0,0,noncore_placebo,Placebo outcome=lpop predetermined tests identification,0.95
-112431-V1,robust/placebo/income,robustness/placebo_tests.md,lpib02,first,G1,,0,0,noncore_placebo,Placebo outcome=lpib02 predetermined tests identification,0.95
-112431-V1,robust/placebo/urbanization,robustness/placebo_tests.md,purb,first,G1,,0,0,noncore_placebo,Placebo outcome=purb predetermined tests identification,0.95
-112431-V1,rd/poly/linear,methods/regression_discontinuity.md#polynomial-order,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,rd/poly/quadratic,methods/regression_discontinuity.md#polynomial-order,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,rd/poly/cubic,methods/regression_discontinuity.md#polynomial-order,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,rd/bandwidth/bw_30pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,rd/bandwidth/bw_40pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,rd/bandwidth/bw_50pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,rd/bandwidth/bw_60pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline,0,1,core_method,RDD specification different method same claim outcome,0.8
-112431-V1,robust/control/experience,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,Control progression (experience) same outcome/treatment,0.95
-112431-V1,robust/sample/experienced_only,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Experienced politicians) same outcome,0.9
-112431-V1,robust/sample/likely_reelect,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline,0,1,core_sample,Sample restriction (Predicted to be reelected) same outcome,0.9
-112431-V1,robust/heterogeneity/pt_party,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with pt_party tests conditional not main,0.85
-112431-V1,robust/heterogeneity/same_party_gov,robustness/heterogeneity.md,pcorrupt,first,G1,,0,0,noncore_heterogeneity,Interaction with same_party_gov tests conditional not main,0.85
-112431-V1,robust/estimation/probit,methods/discrete_choice.md,any_corrupt,first,G1,baseline,0,1,core_method,probit model for any_corrupt alternative estimation,0.7
-112431-V1,robust/estimation/negbin,methods/discrete_choice.md,ncorrupt,first,G1,baseline,0,1,core_method,negbin model for ncorrupt alternative estimation,0.7
-112431-V1,robust/estimation/poisson,methods/discrete_choice.md,ncorrupt,first,G1,baseline,0,1,core_method,poisson model for ncorrupt alternative estimation,0.7
-112431-V1,robust/weights/population,robustness/model_specification.md,pcorrupt,first,G1,baseline,0,1,core_method,population-weighted regression same outcome/treatment,0.9
-112431-V1,robust/weights/transfers,robustness/model_specification.md,pcorrupt,first,G1,baseline,0,1,core_method,transfers-weighted regression same outcome/treatment,0.9
+112431-V1,baseline,methods/cross_sectional_ols.md#baseline,pcorrupt,first,G1,baseline,1,1,core_controls,Primary baseline: bivariate OLS of pcorrupt on first-term indicator with robust SE,1.0
+112431-V1,ols/controls/prefchar,methods/cross_sectional_ols.md#control-sets,pcorrupt,first,G1,baseline,0,1,core_controls,Add mayor characteristics and party dummies,0.95
+112431-V1,ols/controls/full_no_fe,methods/cross_sectional_ols.md#control-sets,pcorrupt,first,G1,baseline,0,1,core_controls,Full control set without state FE,0.95
+112431-V1,baseline_fe,methods/cross_sectional_ols.md#fixed-effects,pcorrupt,first,G1,baseline_fe,1,1,core_fe,Baseline with state FE -- main specification from Table 4 Col 6,1.0
+112431-V1,robust/loo/drop_pref_masc,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop male mayor indicator,0.95
+112431-V1,robust/loo/drop_pref_idade_tse,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop mayor age,0.95
+112431-V1,robust/loo/drop_pref_escola,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop mayor education,0.95
+112431-V1,robust/loo/drop_lpop,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop log population,0.95
+112431-V1,robust/loo/drop_purb,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop urbanization rate,0.95
+112431-V1,robust/loo/drop_p_secundario,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop secondary sector share,0.95
+112431-V1,robust/loo/drop_mun_novo,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop new municipality indicator,0.95
+112431-V1,robust/loo/drop_lpib02,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop log GDP 2002,0.95
+112431-V1,robust/loo/drop_gini_ipea,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop Gini coefficient,0.95
+112431-V1,robust/loo/drop_lrec_trans,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop log transfers,0.95
+112431-V1,robust/loo/drop_p_cad_pref,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop registered voters share,0.95
+112431-V1,robust/loo/drop_vereador_eleit,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop council election variable,0.95
+112431-V1,robust/loo/drop_ENLP2000,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop effective number of parties,0.95
+112431-V1,robust/loo/drop_comarca,robustness/leave_one_out.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Leave-one-out: drop comarca (judicial district) indicator,0.95
+112431-V1,robust/control/add_none,robustness/control_progression.md,pcorrupt,first,G1,baseline,0,1,core_controls,No controls (same as baseline),0.95
+112431-V1,robust/control/add_prefchar_basic,robustness/control_progression.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Add basic mayor characteristics,0.95
+112431-V1,robust/control/add_munichar,robustness/control_progression.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Add municipality characteristics,0.95
+112431-V1,robust/control/add_political,robustness/control_progression.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Add political variables,0.95
+112431-V1,robust/control/add_transfers,robustness/control_progression.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Add transfers variable,0.95
+112431-V1,robust/control/experience,robustness/control_progression.md,pcorrupt,first,G1,baseline_fe,0,1,core_controls,Control for political experience,0.95
+112431-V1,robust/outcome/ncorrupt,robustness/measurement.md,ncorrupt,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: number of corruption violations,0.95
+112431-V1,robust/outcome/ncorrupt_os,robustness/measurement.md,ncorrupt_os,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: corruption per service order,0.95
+112431-V1,robust/outcome/pmismanagement,robustness/measurement.md,pmismanagement,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: proportion mismanagement (not corruption),0.95
+112431-V1,robust/outcome/dcorrupt,robustness/measurement.md,dcorrupt,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: any corruption binary,0.95
+112431-V1,robust/outcome/dcorrupt_desvio,robustness/measurement.md,dcorrupt_desvio,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: any diversion corruption,0.95
+112431-V1,robust/outcome/dcorrupt_licitacao,robustness/measurement.md,dcorrupt_licitacao,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: any procurement corruption,0.95
+112431-V1,robust/outcome/dcorrupt_superfat,robustness/measurement.md,dcorrupt_superfat,first,G1,baseline_fe,0,0,noncore_alt_outcome,Alternative outcome: any overbilling corruption,0.95
+112431-V1,robust/sample/drop_lottery_2,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 2,0.95
+112431-V1,robust/sample/drop_lottery_3,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 3,0.95
+112431-V1,robust/sample/drop_lottery_4,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 4,0.95
+112431-V1,robust/sample/drop_lottery_5,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 5,0.95
+112431-V1,robust/sample/drop_lottery_6,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 6,0.95
+112431-V1,robust/sample/drop_lottery_7,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 7,0.95
+112431-V1,robust/sample/drop_lottery_8,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 8,0.95
+112431-V1,robust/sample/drop_lottery_9,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 9,0.95
+112431-V1,robust/sample/drop_lottery_10,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop lottery round 10,0.95
+112431-V1,robust/sample/drop_state_MG,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Minas Gerais state,0.95
+112431-V1,robust/sample/drop_state_SP,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Sao Paulo state,0.95
+112431-V1,robust/sample/drop_state_RS,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Rio Grande do Sul state,0.95
+112431-V1,robust/sample/drop_state_BA,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Bahia state,0.95
+112431-V1,robust/sample/drop_state_CE,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Ceara state,0.95
+112431-V1,robust/sample/drop_state_RJ,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Rio de Janeiro state,0.95
+112431-V1,robust/sample/drop_state_PR,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Parana state,0.95
+112431-V1,robust/sample/drop_state_GO,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Goias state,0.95
+112431-V1,robust/sample/drop_state_PA,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Para state,0.95
+112431-V1,robust/sample/drop_state_PI,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Drop Piaui state,0.95
+112431-V1,robust/sample/small_pop,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Small population municipalities only,0.95
+112431-V1,robust/sample/large_pop,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Large population municipalities only,0.95
+112431-V1,robust/sample/rural,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Rural municipalities only,0.95
+112431-V1,robust/sample/urban,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Urban municipalities only,0.95
+112431-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Winsorize outcome at 1%,0.95
+112431-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Winsorize outcome at 5%,0.95
+112431-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Winsorize outcome at 10%,0.95
+112431-V1,robust/sample/trim_1pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Trim 1% tails of outcome,0.95
+112431-V1,robust/sample/trim_5pct,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Trim 5% tails of outcome,0.95
+112431-V1,robust/sample/experienced_only,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Experienced mayors only subsample,0.95
+112431-V1,robust/sample/likely_reelect,robustness/sample_restrictions.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Likely reelection candidates only,0.95
+112431-V1,robust/cluster/none_classical,robustness/clustering_variations.md,pcorrupt,first,G1,baseline_fe,0,1,core_inference,Classical (homoskedastic) standard errors,0.95
+112431-V1,robust/se/hc1,robustness/clustering_variations.md,pcorrupt,first,G1,baseline_fe,0,1,core_inference,HC1 robust standard errors,0.95
+112431-V1,robust/se/hc2,robustness/clustering_variations.md,pcorrupt,first,G1,baseline_fe,0,1,core_inference,HC2 robust standard errors,0.95
+112431-V1,robust/se/hc3,robustness/clustering_variations.md,pcorrupt,first,G1,baseline_fe,0,1,core_inference,HC3 robust standard errors,0.95
+112431-V1,robust/cluster/state,robustness/clustering_variations.md,pcorrupt,first,G1,baseline_fe,0,1,core_inference,Clustered by state (26 clusters),0.95
+112431-V1,robust/cluster/lottery,robustness/clustering_variations.md,pcorrupt,first,G1,baseline_fe,0,1,core_inference,Clustered by lottery round,0.95
+112431-V1,robust/funcform/log_outcome,robustness/functional_form.md,log_pcorrupt,first,G1,baseline_fe,0,1,core_funcform,Log outcome transformation,0.95
+112431-V1,robust/funcform/ihs_outcome,robustness/functional_form.md,ihs_pcorrupt,first,G1,baseline_fe,0,1,core_funcform,Inverse hyperbolic sine outcome,0.95
+112431-V1,robust/funcform/binary_outcome,robustness/functional_form.md,dcorrupt,first,G1,baseline_fe,0,1,core_funcform,Binary corruption indicator (LPM),0.95
+112431-V1,robust/funcform/logit,robustness/functional_form.md,dcorrupt,first,G1,baseline_fe,0,1,core_method,Logit model for binary corruption,0.95
+112431-V1,robust/heterogeneity/political_competition,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with political competition,0.95
+112431-V1,robust/heterogeneity/media,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with media presence,0.95
+112431-V1,robust/heterogeneity/judiciary,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with judiciary presence,0.95
+112431-V1,robust/heterogeneity/population,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with population size,0.95
+112431-V1,robust/heterogeneity/urbanization,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with urbanization rate,0.95
+112431-V1,robust/heterogeneity/income,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with income level,0.95
+112431-V1,robust/heterogeneity/male_mayors,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with male mayor indicator,0.95
+112431-V1,robust/heterogeneity/pt_party,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with PT party membership,0.95
+112431-V1,robust/heterogeneity/same_party_gov,robustness/heterogeneity.md,pcorrupt,first,G1,baseline_fe,0,0,noncore_heterogeneity,Interaction with same party as governor,0.95
+112431-V1,robust/placebo/resources_audited,robustness/placebo_tests.md,lrecursos_fisc,first,G1,baseline_fe,0,0,noncore_placebo,Placebo: audited resources (should be null),0.95
+112431-V1,robust/placebo/population,robustness/placebo_tests.md,lpop,first,G1,baseline_fe,0,0,noncore_placebo,Placebo: log population (predetermined),0.95
+112431-V1,robust/placebo/income,robustness/placebo_tests.md,lpib02,first,G1,baseline_fe,0,0,noncore_placebo,Placebo: log income (predetermined),0.95
+112431-V1,robust/placebo/urbanization,robustness/placebo_tests.md,purb,first,G1,baseline_fe,0,0,noncore_placebo,Placebo: urbanization rate (predetermined),0.95
+112431-V1,rd/poly/linear,methods/regression_discontinuity.md#polynomial-order,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: linear polynomial in election margin,0.95
+112431-V1,rd/poly/quadratic,methods/regression_discontinuity.md#polynomial-order,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: quadratic polynomial in election margin,0.95
+112431-V1,rd/poly/cubic,methods/regression_discontinuity.md#polynomial-order,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: cubic polynomial in election margin,0.95
+112431-V1,rd/bandwidth/bw_30pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: 30% bandwidth,0.95
+112431-V1,rd/bandwidth/bw_40pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: 40% bandwidth,0.95
+112431-V1,rd/bandwidth/bw_50pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: 50% bandwidth,0.95
+112431-V1,rd/bandwidth/bw_60pct,methods/regression_discontinuity.md#bandwidth-selection,pcorrupt,first,G1,baseline_fe,0,1,core_method,RDD: 60% bandwidth,0.95
+112431-V1,robust/estimation/probit,methods/discrete_choice.md,any_corrupt,first,G1,baseline_fe,0,1,core_method,Probit model for binary corruption,0.95
+112431-V1,robust/estimation/negbin,methods/discrete_choice.md,ncorrupt,first,G1,baseline_fe,0,1,core_method,Negative binomial for count of violations,0.95
+112431-V1,robust/estimation/poisson,methods/discrete_choice.md,ncorrupt,first,G1,baseline_fe,0,1,core_method,Poisson for count of violations,0.95
+112431-V1,robust/weights/population,robustness/model_specification.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Population-weighted regression,0.95
+112431-V1,robust/weights/transfers,robustness/model_specification.md,pcorrupt,first,G1,baseline_fe,0,1,core_sample,Transfers-weighted regression,0.95

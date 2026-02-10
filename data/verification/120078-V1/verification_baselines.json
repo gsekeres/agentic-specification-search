@@ -1,12 +1,12 @@
 {
   "paper_id": "120078-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/120078-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/120078-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Ethnic minority hosts on Airbnb charge lower prices (ethnic price gap), measured by minodummy coefficient in log_price regression with city-wave and/or neighborhood fixed effects.",
+      "claim_summary": "Minority-name hosts face a price penalty on Airbnb, indicating ethnic discrimination in peer-to-peer rental markets.",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline_table2_col1",
@@ -20,8 +20,8 @@
       "baseline_treatment_vars": [
         "minodummy"
       ],
-      "notes": "Table 2 columns 1-4. Col4 with block+city-wave FE + controls is preferred. All measure same estimand under different conditioning sets."
+      "notes": "Table 2 has 4 columns with increasing controls/FE. Col 1: citywave FE only (coef=-0.169, p<0.001). Col 2: + property controls (coef=-0.111). Col 3: + block FE (coef=-0.068). Col 4: + block FE + controls (coef=-0.034). All highly significant. The discrimination effect ranges from 3.4% to 16.9% depending on controls."
     }
   ],
-  "global_notes": "77 valid specifications with no missing/invalid data. Main claim: ethnic minority hosts receive lower Airbnb prices. Heterogeneity specs report main effect of minodummy from interaction models (reference group effect). robust/control/none is numerically identical to baseline_table2_col1."
+  "global_notes": "Paper studies ethnic discrimination on Airbnb using host name ethnicity. 77 total specs. 97% significant at 5%. The negative coefficient (minority price penalty) is extremely robust across all specification choices. Only 1 out of 77 specs shows a positive coefficient. City-level clustering weakens but does not eliminate significance."
 }

@@ -132,7 +132,7 @@ end
 # ══════════════════════════════════════════════════════════════════════════════
 
 function fig1_z_threeway()
-    println("Fig 1: Z distributions threeway")
+    println("Fig 1: Z distributions threeway (1×3 panels)")
     f = joinpath(DATA_DIR, "i4r_comparison.csv")
     isfile(f) || return @warn "SKIP: i4r_comparison.csv missing"
     df = CSV.read(f, DataFrame)
@@ -144,8 +144,6 @@ function fig1_z_threeway()
     ai_col = findcol(df, "t_AI_abs", "t_AI")
     t_ai   = ai_col !== nothing ? finite(abs.(numcol(df, ai_col))) : Float64[]
 
-    xm = 12.0; xg = collect(range(0, xm, length=500))
-
     # Load oracle series
     oracle_f = joinpath(DATA_DIR, "i4r_oracle_claim_map.csv")
     t_oracle = Float64[]
@@ -154,22 +152,38 @@ function fig1_z_threeway()
         t_oracle = finite(abs.(numcol(odf, "oracle_abs_t_stat")))
     end
 
-    fig, ax = PyPlot.subplots(figsize=(10, 5))
-    ax.hist(t_orig[t_orig .< xm], bins=collect(0:0.5:xm), density=true,
-        color="#bdbdbd", alpha=0.55, edgecolor="white", linewidth=0.5,
-        label="Original studies")
-    length(t_i4r) > 2 && ax.plot(xg, kde(t_i4r, xg), color="#2563eb", lw=3,
-        ls="--", label="Independent reanalyses")
-    length(t_ai) > 2 && ax.plot(xg, kde(t_ai, xg), color="#B31B1B", lw=3,
-        ls=":", label="Automated reproductions")
-    length(t_oracle) > 2 && ax.plot(xg, kde(t_oracle, xg), color="#009E73", lw=3,
-        ls="-", label="Matched reproductions")
+    xm = 8.0; bins = collect(0:0.5:xm)
 
-    ax.set_xlabel(L"Evidence index $|Z|$ (absolute $t$-statistic)", fontsize=14)
-    ax.set_ylabel("Density", fontsize=14)
-    ax.set_xlim(0, xm)
-    nospines!(ax)
-    ax.legend(fontsize=12, frameon=false, loc="upper right")
+    # Define the three comparison series
+    series = [
+        ("I4R Benchmark",              t_i4r,   "#2563eb"),
+        ("Automated Matched Subset",   t_oracle, "#009E73"),
+        ("Full Automated Sample",      t_ai,    "#B31B1B"),
+    ]
+
+    fig, axes = PyPlot.subplots(1, 3, figsize=(10, 5), sharey=true)
+    ym_global = 0.0
+
+    for (i, (label, t_series, color)) in enumerate(series)
+        ax = axes[i]
+        # Gray background: original studies
+        ax.hist(t_orig[t_orig .< xm], bins=bins, density=true,
+            color="#bdbdbd", alpha=0.45, edgecolor="white", linewidth=0.5)
+        # Colored overlay
+        if length(t_series) > 2
+            ax.hist(t_series[t_series .< xm], bins=bins, density=true,
+                color=color, alpha=0.55, edgecolor="white", linewidth=0.5)
+        end
+        ax.axvline(1.96, color="#737373", lw=1.0, alpha=0.6)
+        ax.set_title("$label", fontsize=11)
+        ax.set_xlim(0, xm)
+        nospines!(ax)
+        ym_global = max(ym_global, ax.get_ylim()[2])
+    end
+
+    for ax in axes; ax.set_ylim(0, ym_global * 1.05) end
+    axes[1].set_ylabel("Density", fontsize=13)
+    fig.text(0.5, -0.02, L"Evidence index $|t|$ (absolute $t$-statistic)", ha="center", fontsize=13)
     fig.tight_layout()
     save_both(fig, "fig_z_distributions_threeway.pdf")
 end
@@ -231,7 +245,7 @@ function fig1b_tstat_filters()
         matplotlib.lines.Line2D([0],[0], color="#2563eb", lw=2.6, ls="--", label="Independent"),
         matplotlib.lines.Line2D([0],[0], color="#B31B1B", lw=2.6, ls=":", label="Automated"),
     ]
-    axes[3].legend(handles=h, fontsize=11, frameon=false, loc="upper right")
+    axes[end].legend(handles=h, fontsize=11, frameon=false, loc="upper right")
     fig.tight_layout()
     save_both(fig, "fig_tstat_distributions_threeway_filters.pdf")
 end
@@ -247,7 +261,7 @@ function fig2_mixture_fit()
     isfile(mf) || return @warn "SKIP: mixture_params_abs_t.json missing"
     mix = JSON.parsefile(mf)
 
-    # Locate K=3 params: prefer trimmed (|Z|<=10) fit used by counterfactual,
+    # Locate K=3 params: prefer trimmed (|t|<=10) fit used by counterfactual,
     # then spec_level baseline, then k_sensitivity K=3
     params = get(get(get(mix, "spec_level", Dict()), "trim_sensitivity", Dict()), "trim_abs_le_10", nothing)
     if params === nothing
@@ -265,7 +279,7 @@ function fig2_mixture_fit()
     σv = [params["sigma"][k] for k in keys3]
     lo = get(params, "truncation_lo", 0.0)
 
-    # Histogram data: verified-core replications, trimmed to |Z| <= 10
+    # Histogram data: verified-core replications, trimmed to |t| <= 10
     t_data = load_verified_core_abs_t()
     t_data === nothing && return @warn "SKIP: no verified-core data"
     t_data = t_data[t_data .<= 10.0]
@@ -297,7 +311,7 @@ function fig2_mixture_fit()
             color=cc[k], ha="center")
     end
 
-    ax.set_xlabel(L"Evidence index $|Z|$ (absolute $t$-statistic)", fontsize=13)
+    ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
     ax.set_ylabel("Density", fontsize=13)
     ax.set_xlim(0, xmax)
     nospines!(ax)
@@ -386,7 +400,7 @@ function fig_mixture_k(K::Int)
             fontweight="bold", color=colors_k[k], ha="center")
     end
 
-    ax.set_xlabel(L"Evidence index $|Z|$ (absolute $t$-statistic)", fontsize=13)
+    ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
     ax.set_ylabel("Density", fontsize=13)
     ax.set_xlim(0, xmax)
     nospines!(ax)
@@ -471,7 +485,7 @@ function fig_folded_k(K::Int)
         end
     end
 
-    ax.set_xlabel(L"Evidence index $|Z|$ (absolute $t$-statistic)", fontsize=13)
+    ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
     ax.set_ylabel("Density", fontsize=13)
     ax.set_xlim(0, xmax)
     nospines!(ax)
@@ -486,6 +500,107 @@ fig_folded_k4() = fig_folded_k(4)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# FIGURE: mu_free sigma=1 comparison (truncnorm vs foldnorm, K=2,3,4)
+# ══════════════════════════════════════════════════════════════════════════════
+
+"""
+    fig_mu_free_comparison()
+
+Visualize all mu_free sigma=1 mixture fits overlaid on data histograms.
+Two panels: full sample and |t|≤10 trimmed sample.
+Each panel overlays best truncnorm and foldnorm fits for K=2,3,4.
+Prints AIC/BIC table to stdout.
+"""
+function fig_mu_free_comparison()
+    println("Fig mu_free: sigma=1, mu_N free comparison")
+    mf = joinpath(RESULTS_DIR, "mixture_params_abs_t.json")
+    isfile(mf) || return @warn "SKIP: mixture_params_abs_t.json missing"
+    mix = JSON.parsefile(mf)
+
+    comp = get(mix, "mu_free_sigma1_comparison", nothing)
+    comp === nothing && return @warn "SKIP: no mu_free_sigma1_comparison"
+
+    t_data = load_verified_core_abs_t()
+    t_data === nothing && return @warn "SKIP: no verified-core data"
+
+    # Print AIC/BIC table
+    println("\n  mu_free sigma=1 AIC/BIC comparison:")
+    println("  $(lpad("Model", 30))  $(lpad("n", 5))  $(lpad("AIC", 10))  $(lpad("BIC", 10))  $(lpad("logL", 10))")
+    for key in sort(collect(keys(comp)))
+        r = comp[key]
+        println("  $(lpad(key, 30))  $(lpad(Int(r["n_obs"]), 5))  $(lpad(round(r["aic"], digits=1), 10))  $(lpad(round(r["bic"], digits=1), 10))  $(lpad(round(r["log_likelihood"], digits=1), 10))")
+    end
+
+    # Styles: truncnorm solid, foldnorm dashed; K=2 thin, K=3 medium, K=4 thick
+    k_lw    = Dict(2 => 1.8, 3 => 2.5, 4 => 1.8)
+    k_ls_tn = Dict(2 => "-", 3 => "-", 4 => "-")
+    k_ls_fn = Dict(2 => "--", 3 => "--", 4 => "--")
+    k_colors = Dict(2 => "#0072B2", 3 => "#D55E00", 4 => "#009E73")
+
+    samples = [
+        ("Full sample", t_data, "full"),
+        (L"|t| \leq 10", t_data[t_data .<= 10.0], "trim10"),
+    ]
+
+    fig, axes = PyPlot.subplots(1, 2, figsize=(14, 5.5))
+
+    for (panel_idx, (panel_title, panel_data, sample_suffix)) in enumerate(samples)
+        ax = axes[panel_idx]
+        xmax = panel_idx == 1 ? 20.5 : 10.5
+        xg = collect(range(0, xmax, length=500))
+
+        ax.hist(panel_data[panel_data .< xmax], bins=collect(range(0, xmax, step=0.3)),
+            density=true, color="#cccccc", alpha=0.45, edgecolor="white", linewidth=0.2,
+            label="Replications")
+
+        for K in [2, 3, 4]
+            info = get(K_LABELS, K, nothing)
+            info === nothing && continue
+            keys_k = info[1]
+
+            # Truncated normal
+            tn_key = "truncnorm_K=$(K)_$(sample_suffix)"
+            tn_params = get(comp, tn_key, nothing)
+            if tn_params !== nothing
+                πv = [tn_params["pi"][k] for k in keys_k]
+                μv = [tn_params["mu"][k] for k in keys_k]
+                σv = [tn_params["sigma"][k] for k in keys_k]
+                lo = get(tn_params, "truncation_lo", 0.0)
+                aic_tn = round(tn_params["aic"], digits=1)
+                total = [mix_pdf(x, πv, μv, σv; lo=lo) for x in xg]
+                ax.plot(xg, total, color=k_colors[K], lw=k_lw[K], ls=k_ls_tn[K],
+                    label="TN K=$K (AIC=$aic_tn)")
+            end
+
+            # Folded normal
+            fn_key = "foldnorm_K=$(K)_$(sample_suffix)"
+            fn_params = get(comp, fn_key, nothing)
+            if fn_params !== nothing
+                πv = [fn_params["pi"][k] for k in keys_k]
+                μv = [fn_params["mu"][k] for k in keys_k]
+                σv = [fn_params["sigma"][k] for k in keys_k]
+                aic_fn = round(fn_params["aic"], digits=1)
+                total = [fn_mix_pdf(x, πv, μv, σv) for x in xg]
+                ax.plot(xg, total, color=k_colors[K], lw=k_lw[K], ls=k_ls_fn[K],
+                    label="FN K=$K (AIC=$aic_fn)")
+            end
+        end
+
+        ax.axvline(1.96, color="#737373", lw=1.0, alpha=0.6)
+        ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
+        ax.set_ylabel("Density", fontsize=13)
+        ax.set_title(panel_title, fontsize=13)
+        ax.set_xlim(0, xmax)
+        nospines!(ax)
+        ax.legend(fontsize=8, frameon=false, loc="upper right", ncol=2)
+    end
+
+    fig.tight_layout()
+    save_both(fig, "fig_mu_free_sigma1_comparison.pdf")
+end
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # FIGURE 2d/2e: Constrained-σ mixture fits
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -495,14 +610,19 @@ fig_folded_k4() = fig_folded_k(4)
 Generic constrained-σ mixture figure: loads params from trim_sensitivity[trim_key],
 overlays on histogram, similar to fig2_mixture_fit.
 """
-function fig_mixture_constrained(trim_key::String, constraint_label::AbstractString, filename::String)
+function fig_mixture_constrained(trim_key::String, constraint_label::AbstractString, filename::String;
+                                  source::String="spec_level")
     println("Fig: Constrained mixture ($constraint_label)")
     mf = joinpath(RESULTS_DIR, "mixture_params_abs_t.json")
     isfile(mf) || return @warn "SKIP: mixture_params_abs_t.json missing"
     mix = JSON.parsefile(mf)
 
-    params = get(get(get(mix, "spec_level", Dict()), "trim_sensitivity", Dict()), trim_key, nothing)
-    params === nothing && return @warn "SKIP: no params for $trim_key"
+    if source == "systematic_grid"
+        params = get(get(mix, "systematic_grid", Dict()), trim_key, nothing)
+    else
+        params = get(get(get(mix, "spec_level", Dict()), "trim_sensitivity", Dict()), trim_key, nothing)
+    end
+    params === nothing && return @warn "SKIP: no params for $trim_key (source=$source)"
 
     keys3 = haskey(params["pi"], "N") ? ["N","H","L"] : ["Low","High"]
     length(keys3) != 3 && return @warn "SKIP: mixture is not K=3"
@@ -545,7 +665,7 @@ function fig_mixture_constrained(trim_key::String, constraint_label::AbstractStr
             color=cc[k], ha="center")
     end
 
-    ax.set_xlabel(L"Evidence index $|Z|$ (absolute $t$-statistic)", fontsize=13)
+    ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
     ax.set_ylabel("Density", fontsize=13)
     ax.set_xlim(0, xmax)
     nospines!(ax)
@@ -555,15 +675,220 @@ function fig_mixture_constrained(trim_key::String, constraint_label::AbstractStr
 end
 
 fig2d_mixture_sigma_fixed_1() = fig_mixture_constrained(
-    "trim_abs_le_10_sigma_fixed_1",
+    "K=3_sigma=fixed_1_trim10",
     latexstring("\\sigma_k = 1\\;\\mathrm{(fixed)}"),
-    "fig_mixture_sigma_fixed_1.pdf"
+    "fig_mixture_sigma_fixed_1.pdf";
+    source="systematic_grid"
 )
 
 fig2e_mixture_sigma_geq_1() = fig_mixture_constrained(
-    "trim_abs_le_10_sigma_geq_1",
+    "K=3_sigma=geq_1_trim10",
     latexstring("\\sigma_k \\ge 1"),
-    "fig_mixture_sigma_geq_1.pdf"
+    "fig_mixture_sigma_geq_1.pdf";
+    source="systematic_grid"
+)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# SYSTEMATIC GRID: K × sigma × sample — one plot per combination
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Display labels for component peaks (paper convention: N, M, E)
+const PEAK_LABELS = Dict(
+    2 => ["N", "E"],
+    3 => ["N", "M", "E"],
+    4 => ["N", "M1", "M2", "E"],
+)
+
+const SIGMA_LABELS = Dict(
+    "free"    => L"\sigma\;\mathrm{free}",
+    "fixed_1" => L"\sigma = 1\;\mathrm{(fixed)}",
+    "geq_1"  => L"\sigma \ge 1",
+)
+
+const SAMPLE_LABELS = Dict(
+    "full"   => "Full sample",
+    "trim10" => L"|t| \le 10",
+)
+
+"""
+    fig_systematic_grid()
+
+Generate one histogram + mixture overlay figure for each of the 18 systematic
+grid fits (K ∈ {2,3,4} × sigma ∈ {free, fixed_1, geq_1} × sample ∈ {full, trim10}).
+"""
+function fig_systematic_grid()
+    println("\n=== Systematic grid figures ===")
+    mf = joinpath(RESULTS_DIR, "mixture_params_abs_t.json")
+    isfile(mf) || return @warn "SKIP: mixture_params_abs_t.json missing"
+    mix = JSON.parsefile(mf)
+
+    grid = get(mix, "systematic_grid", Dict())
+    isempty(grid) && return @warn "SKIP: systematic_grid not found in JSON"
+
+    t_data_all = load_verified_core_abs_t()
+    t_data_all === nothing && return @warn "SKIP: no verified-core data"
+    t_data_trim = t_data_all[t_data_all .<= 10.0]
+
+    for K in [2, 3, 4]
+        info = get(K_LABELS, K, nothing)
+        info === nothing && continue
+        keys_k, colors_k, labels_k = info
+
+        for sigma_name in ["free", "fixed_1", "geq_1"]
+            for sample_name in ["full", "trim10"]
+                grid_key = "K=$(K)_sigma=$(sigma_name)_$(sample_name)"
+                params = get(grid, grid_key, nothing)
+                params === nothing && (println("  SKIP: $grid_key not in grid"); continue)
+
+                println("  Plotting $grid_key ...")
+                πv = [params["pi"][k]    for k in keys_k]
+                μv = [params["mu"][k]    for k in keys_k]
+                σv = [params["sigma"][k] for k in keys_k]
+                lo = get(params, "truncation_lo", 0.0)
+                aic = round(params["aic"], digits=1)
+                bic = round(params["bic"], digits=1)
+                n_obs = Int(params["n_obs"])
+
+                t_data = sample_name == "trim10" ? t_data_trim : t_data_all
+                xmax_data = sample_name == "trim10" ? 10.5 : 20.5
+                xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, xmax_data)
+                bin_step = sample_name == "trim10" ? 0.3 : 0.5
+                xg = collect(range(0, xmax, length=600))
+                total = [mix_pdf(x, πv, μv, σv; lo=lo) for x in xg]
+                comps = [[πv[k] * tn_pdf(x, μv[k], σv[k]; lo=lo) for x in xg] for k in 1:K]
+
+                fig, ax = PyPlot.subplots(figsize=(9, 5))
+                ax.hist(t_data[t_data .< xmax], bins=collect(range(0, xmax, step=bin_step)),
+                    density=true, color="#cccccc", alpha=0.5, edgecolor="white", linewidth=0.3,
+                    label="Replications (n=$n_obs)")
+                for k in 1:K
+                    ax.fill_between(xg, 0, comps[k], color=colors_k[k], alpha=0.18)
+                    ax.plot(xg, comps[k], color=colors_k[k], lw=2.0, ls="--", label=labels_k[k])
+                end
+                ax.plot(xg, total, color="black", lw=2.8, label="Mixture total")
+                ax.axvline(1.96, color="#737373", lw=1.0, alpha=0.6)
+
+                peak_labs = get(PEAK_LABELS, K, keys_k)
+                for k in 1:K
+                    pk = maximum(comps[k])
+                    pk > 0.01 && ax.text(μv[k], pk * 1.08, peak_labs[k], fontsize=13,
+                        fontweight="bold", color=colors_k[k], ha="center")
+                end
+
+                sigma_lab_plain = Dict("free"=>"sigma free", "fixed_1"=>"sigma=1 (fixed)", "geq_1"=>"sigma>=1")[sigma_name]
+                sample_lab_plain = Dict("full"=>"Full sample", "trim10"=>"|t|<=10")[sample_name]
+                title_str = "K=$K, $sigma_lab_plain, $sample_lab_plain -- AIC=$aic, BIC=$bic"
+                ax.set_title(title_str, fontsize=12, usetex=false)
+                ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
+                ax.set_ylabel("Density", fontsize=13)
+                ax.set_xlim(0, xmax)
+                nospines!(ax)
+                ax.legend(fontsize=9, frameon=false, loc="upper right")
+
+                # Add parameter table (plain ASCII to avoid LaTeX issues)
+                param_lines = String[]
+                for k in 1:K
+                    push!(param_lines, "$(peak_labs[k]): pi=$(round(πv[k], digits=3)), mu=$(round(μv[k], digits=2)), sig=$(round(σv[k], digits=2))")
+                end
+                param_text = join(param_lines, "\n")
+                ax.text(0.98, 0.55, param_text, transform=ax.transAxes, fontsize=8,
+                    verticalalignment="top", horizontalalignment="right",
+                    fontfamily="monospace", alpha=0.7, usetex=false,
+                    bbox=Dict("boxstyle"=>"round,pad=0.3", "facecolor"=>"white", "alpha"=>0.8))
+
+                fig.tight_layout()
+                save_both(fig, "fig_grid_$(grid_key).pdf")
+            end
+        end
+    end
+end
+
+
+"""
+    fig_foldnorm_mufree(comp_key, K, filename)
+
+Folded-normal mixture figure with σ=1 and free μ_N.
+Reads from mu_free_sigma1_comparison[comp_key], overlays on |t|≤10 histogram.
+"""
+function fig_foldnorm_mufree(comp_key::String, K::Int, filename::String)
+    println("Fig: Folded-normal σ=1, μ_N free ($comp_key)")
+    mf = joinpath(RESULTS_DIR, "mixture_params_abs_t.json")
+    isfile(mf) || return @warn "SKIP: mixture_params_abs_t.json missing"
+    mix = JSON.parsefile(mf)
+
+    params = get(get(mix, "mu_free_sigma1_comparison", Dict()), comp_key, nothing)
+    params === nothing && return @warn "SKIP: no params for $comp_key"
+
+    info = get(K_LABELS, K, nothing)
+    info === nothing && return @warn "SKIP: no label info for K=$K"
+    keys_k, colors_k, labels_k = info
+
+    πv = [params["pi"][k]    for k in keys_k]
+    μv = [params["mu"][k]    for k in keys_k]
+    σv = [params["sigma"][k] for k in keys_k]
+    aic = round(params["aic"], digits=1)
+    bic = round(params["bic"], digits=1)
+    n_obs = Int(params["n_obs"])
+
+    t_data = load_verified_core_abs_t()
+    t_data === nothing && return @warn "SKIP: no verified-core data"
+    is_trimmed = occursin("trim", comp_key)
+    if is_trimmed
+        t_data = t_data[t_data .<= 10.0]
+    end
+
+    xmax_cap = is_trimmed ? 10.5 : 20.5
+    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, xmax_cap)
+    xg = collect(range(0, xmax, length=500))
+    total = [fn_mix_pdf(x, πv, μv, σv) for x in xg]
+    comps = [[πv[k] * fn_pdf(x, μv[k], σv[k]) for x in xg] for k in 1:K]
+
+    peak_labels = K == 2 ? ["L", "H"] : (K == 3 ? ["N", "M", "E"] : ["N", "M1", "M2", "E"])
+
+    fig, ax = PyPlot.subplots(figsize=(10, 5))
+    ax.hist(t_data[t_data .< xmax], bins=collect(range(0, xmax, step=0.3)),
+        density=true, color="#cccccc", alpha=0.5, edgecolor="white", linewidth=0.3,
+        label="Replications")
+    for k in 1:K
+        ax.fill_between(xg, 0, comps[k], color=colors_k[k], alpha=0.20)
+        ax.plot(xg, comps[k], color=colors_k[k], lw=2.0, ls="--", label=labels_k[k])
+    end
+    ax.plot(xg, total, color="black", lw=2.8, label="Mixture total")
+    ax.axvline(1.96, color="#737373", lw=1.0, alpha=0.6)
+
+    for k in 1:K
+        pk = maximum(comps[k])
+        if pk > 0.01
+            ix = argmax(comps[k])
+            ax.text(xg[ix], pk * 1.08, peak_labels[k], fontsize=13,
+                fontweight="bold", color=colors_k[k], ha="center")
+        end
+    end
+
+    ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
+    ax.set_ylabel("Density", fontsize=13)
+    ax.set_xlim(0, xmax)
+    nospines!(ax)
+    ax.legend(fontsize=10, frameon=false, loc="upper right")
+    fig.tight_layout()
+    save_both(fig, filename)
+end
+
+fig2f_foldnorm_mufree_k3() = fig_foldnorm_mufree(
+    "foldnorm_K=3_trim10", 3, "fig_foldnorm_mufree_sigma1_K3.pdf"
+)
+
+fig2f_foldnorm_mufree_k3_full() = fig_foldnorm_mufree(
+    "foldnorm_K=3_full", 3, "fig_foldnorm_mufree_sigma1_K3_full.pdf"
+)
+
+fig2g_foldnorm_mufree_k4() = fig_foldnorm_mufree(
+    "foldnorm_K=4_trim10", 4, "fig_foldnorm_mufree_sigma1_K4.pdf"
+)
+
+fig2g_foldnorm_mufree_k4_full() = fig_foldnorm_mufree(
+    "foldnorm_K=4_full", 4, "fig_foldnorm_mufree_sigma1_K4_full.pdf"
 )
 
 
@@ -572,31 +897,36 @@ fig2e_mixture_sigma_geq_1() = fig_mixture_constrained(
 # ══════════════════════════════════════════════════════════════════════════════
 
 function fig3_counterfactual()
-    println("Fig 3: Counterfactual screening")
+    println("Fig 3: Counterfactual screening (null-only FDR, flat JSON)")
     pf  = joinpath(RESULTS_DIR, "counterfactual_params.json")
     isfile(pf) || return @warn "SKIP: counterfactual_params.json missing"
     par = JSON.parsefile(pf)
 
     λ   = par["cost_parameters"]["lambda_baseline"]
-
-    n_old_base = par["horizon"]["n_old_baseline"]
-    Δ_base     = par["dependence"]["Delta"]
     πv_base    = [par["mixture_params"]["pi"][k]  for k in ["N","H","L"]]
     pp_base    = [par["pass_probabilities"][k]    for k in ["N","H","L"]]
 
+    # Read m_old and calibrated n_eff_old from JSON
+    cal = get(par, "calibration", Dict())
+    m_old = get(cal, "m_old_baseline", 50)
+
+    # Null-only FDR: only N-types in numerator
     function _fdr(m, n_eff)
         n_eff < m && return 1.0
         Qs = [1.0 - cdf(Binomial(n_eff, pp_base[k]), m - 1) for k in 1:3]
         Qb = sum(πv_base .* Qs)
-        Qb > 0 ? (πv_base[1]*Qs[1] + πv_base[3]*Qs[3]) / Qb : 1.0
+        Qb > 0 ? (πv_base[1]*Qs[1]) / Qb : 1.0
     end
 
     # Calibrate: find n_eff_old such that FDR(m_old, n_eff_old) ≈ 0.05
-    m_old = 3; fdr_target = 0.05
-    n_eff_old = m_old
-    for n in m_old:5000
-        if _fdr(m_old, n) > fdr_target
-            n_eff_old = n - 1; break
+    fdr_target = 0.05
+    n_eff_old = get(cal, "calibrated_n_eff_old", m_old)
+    if !haskey(cal, "calibrated_n_eff_old")
+        n_eff_old = m_old
+        for n in m_old:50000
+            if _fdr(m_old, n) > fdr_target
+                n_eff_old = n - 1; break
+            end
         end
     end
     n_eff_new = ceil(Int, n_eff_old / λ)
@@ -608,13 +938,12 @@ function fig3_counterfactual()
             m_new = mc; break
         end
     end
-    fdr_old_at_m = _fdr(m_old, n_eff_old)
 
     fig, axes = PyPlot.subplots(1, 2, figsize=(10, 5))
 
     # ── Panel A: FDR vs m (computed from calibrated primitives) ──
     ax = axes[1]
-    m_plot_max = min(m_new + 5, n_eff_new)
+    m_plot_max = min(m_new + 100, n_eff_new)
     m_range_old = collect(1:n_eff_old)
     m_range_new = collect(1:m_plot_max)
     fdr_old_curve = [_fdr(m, n_eff_old) for m in m_range_old]
@@ -625,7 +954,7 @@ function fig3_counterfactual()
     ax.axhline(fdr_target, color="black", lw=1.5, ls=":", alpha=0.7, label="FDR = 0.05")
 
     ax.set_xlabel(L"Required passes $m$", fontsize=13)
-    ax.set_ylabel("False discovery rate", fontsize=13)
+    ax.set_ylabel("False discovery rate (null-only)", fontsize=13)
     ax.set_xlim(0, m_plot_max)
     nospines!(ax)
     ax.legend(fontsize=11, frameon=false)
@@ -633,8 +962,10 @@ function fig3_counterfactual()
     # ── Panel B: FDR(m, λ) heatmap (calibrated: n_eff_old → n_eff_old/λ) ──
     ax2 = axes[2]
 
-    m_grid = collect(1:m_new+2)
-    λ_grid = collect(range(0.005, 0.15, length=50))
+    m_grid = collect(1:m_new+100)
+    λ_lo = max(0.001, λ / 3)
+    λ_hi = min(0.5, λ * 5)
+    λ_grid = collect(range(λ_lo, λ_hi, length=50))
     fdr_mat = zeros(length(λ_grid), length(m_grid))
 
     for (j, m_val) in enumerate(m_grid)
@@ -648,7 +979,7 @@ function fig3_counterfactual()
     fdr_max = maximum(fdr_mat)
     pcm = ax2.pcolormesh(m_grid .- 0.5, λ_grid, fdr_mat,
         cmap="RdYlGn_r", vmin=0.0, vmax=ceil(fdr_max * 20) / 20, shading="auto")
-    PyPlot.colorbar(pcm, ax=ax2, label="False discovery rate")
+    PyPlot.colorbar(pcm, ax=ax2, label="False discovery rate (null-only)")
 
     # Contour lines at key FDR thresholds
     m_centers = Float64.(m_grid)
@@ -662,8 +993,8 @@ function fig3_counterfactual()
 
     ax2.set_xlabel(L"Required passes $m$", fontsize=13)
     ax2.set_ylabel(L"Cost ratio $\lambda$", fontsize=13)
-    ax2.set_xlim(0.5, m_new + 2.5)
-    ax2.set_ylim(0.005, 0.15)
+    ax2.set_xlim(0.5, m_new + 100.5)
+    ax2.set_ylim(λ_lo, λ_hi)
 
     fig.tight_layout()
     save_both(fig, "fig_counterfactual_old_vs_new.pdf")
@@ -688,12 +1019,9 @@ function fig_counterfactual_nullfdr(m_old_target::Int)
     isfile(pf) || return @warn "SKIP: counterfactual_params.json missing"
     par = JSON.parsefile(pf)
 
-    nv = get(par, "nullfdr_variant", nothing)
-    nv === nothing && return @warn "SKIP: no nullfdr_variant in counterfactual_params.json"
-
     λ  = par["cost_parameters"]["lambda_baseline"]
-    πv = [nv["mixture_params"]["pi"][k]  for k in ["N","H","L"]]
-    pp = [nv["pass_probabilities"][k]    for k in ["N","H","L"]]
+    πv = [par["mixture_params"]["pi"][k]  for k in ["N","H","L"]]
+    pp = [par["pass_probabilities"][k]    for k in ["N","H","L"]]
 
     # Null-only FDR: only N-types in numerator
     function _fdr_null(m, n_eff)
@@ -705,10 +1033,17 @@ function fig_counterfactual_nullfdr(m_old_target::Int)
 
     # Calibrate: find n_eff_old such that FDR_null(m_old, n_eff_old) = 0.05
     fdr_target = 0.05
-    n_eff_old = m_old_target
-    for n in m_old_target:10000
-        if _fdr_null(m_old_target, n) > fdr_target
-            n_eff_old = n - 1; break
+    # Use pre-calibrated value from JSON if this is the baseline m_old
+    cal = get(par, "calibration", Dict())
+    m_old_baseline = get(cal, "m_old_baseline", 50)
+    if m_old_target == m_old_baseline && haskey(cal, "calibrated_n_eff_old")
+        n_eff_old = Int(cal["calibrated_n_eff_old"])
+    else
+        n_eff_old = m_old_target
+        for n in m_old_target:50000
+            if _fdr_null(m_old_target, n) > fdr_target
+                n_eff_old = n - 1; break
+            end
         end
     end
     n_eff_new = ceil(Int, n_eff_old / λ)
@@ -723,36 +1058,69 @@ function fig_counterfactual_nullfdr(m_old_target::Int)
 
     println("    n_eff_old=$n_eff_old → n_eff_new=$n_eff_new, m_old=$m_old_target → m_new=$m_new ($(round(m_new/m_old_target, digits=1))×)")
 
+    # ── Compute disclosure scaling for bar chart (Panel A) ──
+    m_olds_bar = sort(unique(vcat(collect(1:10), [20, 30, 40, 50, 60, 70, 80, 90, 100])))
+    m_news_bar = Int[]
+    ratios_bar = Float64[]
+    for mo in m_olds_bar
+        neo = mo
+        for n in mo:100000
+            if _fdr_null(mo, n) > fdr_target
+                neo = n - 1; break
+            end
+        end
+        nen = ceil(Int, neo / λ)
+        mn = 1
+        for mc in 1:nen
+            if _fdr_null(mc, nen) <= fdr_target
+                mn = mc; break
+            end
+        end
+        push!(m_news_bar, mn)
+        push!(ratios_bar, mn / mo)
+    end
+
     fig, axes = PyPlot.subplots(1, 2, figsize=(10, 5))
 
-    # ── Panel A: FDR_null vs m ──
+    # ── Panel A: Disclosure multiplier line + dot chart ──
     ax = axes[1]
-    m_plot_max = min(m_new + 5, n_eff_new)
-    m_range_old = collect(1:n_eff_old)
-    m_range_new = collect(1:m_plot_max)
-    fdr_old_curve = [_fdr_null(m, n_eff_old) for m in m_range_old]
-    fdr_new_curve = [_fdr_null(m, n_eff_new) for m in m_range_new]
+    ax.plot(m_olds_bar, ratios_bar, color="#2563eb", linewidth=1.5, zorder=2)
+    ax.scatter(m_olds_bar, ratios_bar, color="#2563eb", s=30, zorder=3)
 
-    ax.plot(m_range_old, fdr_old_curve, color="#2563eb", lw=2.8, label="Old regime")
-    ax.plot(m_range_new, fdr_new_curve, color="#B31B1B", lw=2.8, ls="--", label="New regime")
-    ax.axhline(fdr_target, color="black", lw=1.5, ls=":", alpha=0.7, label="FDR = 0.05")
+    # Highlight m_old=m_old_target dot in red with annotation
+    idx_t = findfirst(==(m_old_target), m_olds_bar)
+    if idx_t !== nothing
+        ax.scatter([m_old_target], [ratios_bar[idx_t]], color="#B31B1B", s=60, zorder=4)
+        ax.annotate(L"$m^{\rm old}=50$", xy=(m_old_target, ratios_bar[idx_t]),
+            xytext=(m_old_target + 8, ratios_bar[idx_t] - 15),
+            fontsize=11, color="#B31B1B",
+            arrowprops=Dict("arrowstyle"=>"->", "color"=>"#B31B1B", "lw"=>1.2))
+    end
 
-    ax.set_xlabel(L"Required passes $m$", fontsize=13)
-    ax.set_ylabel("False discovery rate", fontsize=13)
-    ax.set_xlim(0, m_plot_max)
-    ax.margins(x=0)
+    ax.set_xlabel(L"Current requirement $m^{\rm old}$", fontsize=13)
+    ax.set_ylabel(L"Disclosure multiplier $m^{\rm new}/m^{\rm old}$", fontsize=13)
+    ax.set_xlim(0.5, maximum(m_olds_bar) + 0.5)
+    ax.set_ylim(0, maximum(ratios_bar) + 1)
     nospines!(ax)
-    ax.legend(fontsize=11, frameon=false)
 
-    # ── Panel B: FDR_null(m, λ) heatmap ──
+    # ── Panel B: FDR_null(m, λ) heatmap — zoomed around calibration point ──
     ax2 = axes[2]
 
-    m_grid = collect(1:m_new+2)
-    λ_grid = collect(range(0.005, 0.15, length=50))
-    fdr_mat = zeros(length(λ_grid), length(m_grid))
+    # Zoom very tightly around the calibration point
+    m_zoom_lo = 7250
+    m_zoom_hi = 7350
+    n_m = 400
+    m_lin = collect(range(m_zoom_lo, m_zoom_hi, length=n_m))
+    m_grid = unique(round.(Int, m_lin))
+    sort!(m_grid)
+    λ_lo = 0.0057
+    λ_hi = 0.0059
+    n_lam = 200
+    λ_grid_hm = collect(range(λ_lo, λ_hi, length=n_lam))
+    fdr_mat = zeros(length(λ_grid_hm), length(m_grid))
 
     for (j, m_val) in enumerate(m_grid)
-        for (i, λ_val) in enumerate(λ_grid)
+        for (i, λ_val) in enumerate(λ_grid_hm)
             n_eff_i = ceil(Int, n_eff_old / λ_val)
             fdr_val = _fdr_null(m_val, n_eff_i)
             fdr_mat[i, j] = clamp(fdr_val, 0.0, 1.0)
@@ -760,38 +1128,25 @@ function fig_counterfactual_nullfdr(m_old_target::Int)
     end
 
     fdr_max = maximum(fdr_mat)
-    pcm = ax2.pcolormesh(m_grid .- 0.5, λ_grid, fdr_mat,
-        cmap="RdYlGn_r", vmin=0.0, vmax=ceil(fdr_max * 20) / 20, shading="auto")
+
+    pcm = ax2.pcolormesh(Float64.(m_grid), λ_grid_hm, fdr_mat,
+        cmap="RdYlGn_r", vmin=0.0, vmax=fdr_max, shading="auto")
     PyPlot.colorbar(pcm, ax=ax2, label="False discovery rate")
 
-    m_centers = Float64.(m_grid)
-    cs = ax2.contour(m_centers, λ_grid, fdr_mat,
-        levels=[0.05, 0.10], colors="black", linewidths=1.2)
-    ax2.clabel(cs, inline=true, fontsize=9, fmt="%1.2f")
-
-    ax2.scatter([m_new], [λ], color="white", s=90, zorder=5,
-        edgecolors="black", linewidths=1.5, marker="*")
+    # Mark calibration point
+    ax2.scatter([m_new], [λ], color="white", s=200, zorder=5,
+        edgecolors="black", linewidths=2.0, marker="*")
 
     ax2.set_xlabel(L"Required passes $m$", fontsize=13)
     ax2.set_ylabel(L"Cost ratio $\lambda$", fontsize=13)
-    ax2.set_xlim(0.5, m_new + 2)
-    ax2.set_ylim(0.005, 0.15)
+    ax2.set_ylim(λ_lo, λ_hi)
 
     fig.tight_layout()
     save_both(fig, "fig_counterfactual_nullfdr_m$(m_old_target).pdf")
 end
 
-# Wrappers for main() dispatch
-fig3b_nullfdr_m1()  = fig_counterfactual_nullfdr(1)
-fig3b_nullfdr_m2()  = fig_counterfactual_nullfdr(2)
-fig3b_nullfdr_m3()  = fig_counterfactual_nullfdr(3)
-fig3b_nullfdr_m4()  = fig_counterfactual_nullfdr(4)
-fig3b_nullfdr_m5()  = fig_counterfactual_nullfdr(5)
-fig3b_nullfdr_m6()  = fig_counterfactual_nullfdr(6)
-fig3b_nullfdr_m7()  = fig_counterfactual_nullfdr(7)
-fig3b_nullfdr_m8()  = fig_counterfactual_nullfdr(8)
-fig3b_nullfdr_m9()  = fig_counterfactual_nullfdr(9)
-fig3b_nullfdr_m10() = fig_counterfactual_nullfdr(10)
+# Headline figure: m_old=50 only
+fig3b_nullfdr_m50() = fig_counterfactual_nullfdr(50)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -885,41 +1240,87 @@ end
 # ══════════════════════════════════════════════════════════════════════════════
 
 function fig5_corr_distance()
-    println("Fig 5: Correlation by tree distance")
+    println("Fig 5: AR(1) dependence by ordering")
     f = joinpath(RESULTS_DIR, "dependence.json")
     isfile(f) || return @warn "SKIP"
     dep = JSON.parsefile(f)
 
-    db = dep["distance_based"]
-    corrs = db["correlation_by_distance"]
-    d_vals  = Float64[c["distance"]    for c in corrs]
-    ρ_vals  = Float64[c["correlation"] for c in corrs]
-    np_vals = Float64[get(c, "n_pairs", 100) for c in corrs]
+    ar1_ords = get(dep, "ar1_orderings", nothing)
+    ar1_ords === nothing && return @warn "SKIP: no ar1_orderings"
+    length(ar1_ords) == 0 && return @warn "SKIP: ar1_orderings empty"
 
-    φ    = db["decay_fit"]["phi"]
-    φ_lo = db["decay_fit"]["phi_ci_lower"]
-    φ_hi = db["decay_fit"]["phi_ci_upper"]
-    Δ    = get(db, "Delta", 1 - φ)
+    pref_ordering = get(get(dep, "preferred", Dict()), "ordering", "")
 
-    dg = collect(range(0, maximum(d_vals) + 0.5, length=200))
+    # Friendly labels for orderings
+    label_map = Dict(
+        "spec_order"  => "Document order",
+        "lex_path"    => "Lexicographic path",
+        "bfs"         => "Breadth-first",
+        "dfs"         => "Depth-first",
+        "by_category" => "By category",
+        "random"      => "Random (null)",
+    )
 
-    fig, ax = PyPlot.subplots(figsize=(7, 5))
-    sizes = 30 .+ 230 .* sqrt.(np_vals) ./ sqrt(maximum(np_vals))
-    ax.scatter(d_vals, ρ_vals, s=sizes, color="#0072B2", alpha=0.85, zorder=3, edgecolors="white")
-    ax.plot(dg, φ .^ dg, color="#D55E00", lw=2.8,
-        label=latexstring("\\mathrm{Fit:}\\;\\varphi^d\\;(\\varphi=$(round(φ, digits=3)))"))
-    ax.fill_between(dg, φ_lo .^ dg, φ_hi .^ dg, color="#D55E00", alpha=0.15)
-    ax.axhline(0, color="#737373", lw=1.2, alpha=0.7)
+    # Collect data sorted by phi descending
+    ord_names = String[]
+    phis = Float64[]
+    ci_lo = Float64[]
+    ci_hi = Float64[]
+    r2s = Float64[]
+    is_pref = Bool[]
 
-    ax.set_xlabel(L"Specification-tree distance $d$", fontsize=13)
-    ax.set_ylabel(L"Correlation $\rho(d)$ of $|Z|$", fontsize=13)
-    ax.set_xlim(-0.25, maximum(d_vals) + 0.25)
-    ax.set_ylim(-0.05, 1.05)
+    for (k, v) in ar1_ords
+        push!(ord_names, get(label_map, k, k))
+        push!(phis, Float64(v["phi"]))
+        push!(ci_lo, Float64(v["phi_ci_lower"]))
+        push!(ci_hi, Float64(v["phi_ci_upper"]))
+        push!(r2s, Float64(v["r_squared"]))
+        push!(is_pref, k == pref_ordering)
+    end
+
+    # Sort by phi descending for visual clarity
+    order = sortperm(phis, rev=true)
+    ord_names = ord_names[order]
+    phis = phis[order]
+    ci_lo = ci_lo[order]
+    ci_hi = ci_hi[order]
+    r2s = r2s[order]
+    is_pref = is_pref[order]
+
+    n = length(ord_names)
+    y = collect(1:n)
+
+    fig, ax = PyPlot.subplots(figsize=(7, 0.7 * n + 1.5))
+
+    # Horizontal lollipop: CI whiskers + dot
+    for i in 1:n
+        col = is_pref[i] ? "#D55E00" : "#0072B2"
+        ax.plot([ci_lo[i], ci_hi[i]], [y[i], y[i]], color=col, lw=2.2, solid_capstyle="round")
+        ms = is_pref[i] ? 11 : 8
+        ax.plot(phis[i], y[i], "o", color=col, markersize=ms, zorder=5,
+            markeredgecolor="white", markeredgewidth=1.0)
+        # R² annotation
+        ax.text(ci_hi[i] + 0.01, y[i], latexstring("R^2=$(round(r2s[i], digits=3))"),
+            fontsize=9, va="center", color="#555555")
+    end
+
+    ax.set_yticks(y)
+    ax.set_yticklabels(ord_names, fontsize=11)
+    ax.set_xlabel(latexstring("\\hat\\phi\\;\\mathrm{(AR(1)\\;persistence)}"), fontsize=13)
+    ax.set_ylim(0.3, n + 0.7)
+    ax.invert_yaxis()
     nospines!(ax)
-    ax.legend(fontsize=12, frameon=false, loc="upper right")
-    ax.text(0.05, 0.05, latexstring("\\Delta = 1-\\varphi = $(round(Δ, digits=3))"),
-        transform=ax.transAxes, fontsize=12,
-        bbox=Dict("boxstyle" => "round,pad=0.3", "facecolor" => "white", "alpha" => 0.8))
+
+    # Add preferred annotation
+    pref_idx = findfirst(is_pref)
+    if pref_idx !== nothing
+        Δ = round(1 - phis[pref_idx], digits=3)
+        ax.text(0.02, 0.02,
+            latexstring("\\mathrm{Preferred:}\\;\\hat\\Delta = $Δ"),
+            transform=ax.transAxes, fontsize=11,
+            bbox=Dict("boxstyle" => "round,pad=0.3", "facecolor" => "#FFF3E0", "alpha" => 0.9))
+    end
+
     fig.tight_layout()
     save_both(fig, "fig_corr_distance.pdf")
 end
@@ -1054,7 +1455,7 @@ function fig7_k_sensitivity()
     ax.axvline(1.96, color="#737373", lw=1.0, alpha=0.6)
     ym = ax.get_ylim()[2]
     ax.text(2.1, 0.92ym, L"$p=0.05$", fontsize=10, color="#737373")
-    ax.set_xlabel(L"Evidence index $|Z|$ (absolute $t$-statistic)", fontsize=13)
+    ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
     ax.set_ylabel("Density", fontsize=13)
     ax.set_xlim(0, xmax)
     nospines!(ax)
@@ -1069,66 +1470,7 @@ end
 # ══════════════════════════════════════════════════════════════════════════════
 
 function fig8_dependence_alternatives()
-    println("Fig 8: Alternative dependence models")
-    f = joinpath(RESULTS_DIR, "dependence.json")
-    isfile(f) || return @warn "SKIP"
-    dep = JSON.parsefile(f)
-
-    db = dep["distance_based"]
-    corrs = db["correlation_by_distance"]
-    alt = get(dep, "alternative_models", Dict())
-
-    d_vals  = Float64[c["distance"]    for c in corrs]
-    ρ_vals  = Float64[c["correlation"] for c in corrs]
-    np_vals = Float64[get(c, "n_pairs", 100) for c in corrs]
-    φ = db["decay_fit"]["phi"]
-    d_max = maximum(d_vals)
-    dg  = collect(range(0, d_max + 0.5, length=200))
-    dg1 = collect(range(0.05, d_max + 0.5, length=200))  # avoid d=0 for power law
-
-    fig, ax = PyPlot.subplots(figsize=(8, 5.5))
-    sizes = 30 .+ 230 .* sqrt.(np_vals) ./ sqrt(maximum(np_vals))
-    ax.scatter(d_vals, ρ_vals, s=sizes, color="#333333", alpha=0.8, zorder=5,
-        edgecolors="white", label="Empirical")
-
-    # 1. Exponential
-    ax.plot(dg, φ .^ dg, color="#D55E00", lw=2.5,
-        label=latexstring("\\mathrm{Exponential:}\\;\\varphi^d\\;(\\varphi=$(round(φ, digits=3)))"))
-
-    # 2. Equicorrelated
-    ρ_bar = get(get(alt, "equicorrelated", Dict()), "rho_bar", NaN)
-    isfinite(ρ_bar) && ax.axhline(ρ_bar, color="#0072B2", lw=2.2, ls="--",
-        label=latexstring("\\mathrm{Equicorrelated:}\\;\\bar\\rho=$(round(ρ_bar, digits=3))"))
-
-    # 3. Linear decay
-    lin = get(alt, "linear_decay", Dict())
-    a_l = get(lin, "a", NaN); b_l = get(lin, "b", NaN)
-    isfinite(a_l) && ax.plot(dg, max.(0, a_l .- b_l .* dg), color="#009E73", lw=2.2, ls="-.",
-        label=latexstring("\\mathrm{Linear:}\\;\\max(0,\\,$(round(a_l,digits=2))-$(round(b_l,digits=2))d)"))
-
-    # 4. Power-law
-    pw = get(alt, "power_law", Dict())
-    a_p = get(pw, "a", NaN); b_p = get(pw, "b", NaN)
-    isfinite(a_p) && ax.plot(dg1, a_p .* dg1 .^ (-b_p), color="#CC79A7", lw=2.2, ls=":",
-        label=latexstring("\\mathrm{Power\\;law:}\\;$(round(a_p,digits=2))\\,d^{-$(round(b_p,digits=2))}"))
-
-    # 5. Constant + exponential
-    ce = get(alt, "constant_plus_exponential", Dict())
-    c_ce = get(ce, "c", NaN); φ_ce = get(ce, "phi", NaN)
-    if isfinite(c_ce) && isfinite(φ_ce)
-        ax.plot(dg, c_ce .+ (1 - c_ce) .* φ_ce .^ dg, color="#E69F00", lw=2.2, ls=(0, (5, 2, 1, 2)),
-            label=latexstring("\\mathrm{Const+exp:}\\;$(round(c_ce,digits=3))+(1-$(round(c_ce,digits=3)))\\cdot $(round(φ_ce,digits=3))^d"))
-    end
-
-    ax.axhline(0, color="#737373", lw=1.0, alpha=0.5)
-    ax.set_xlabel(L"Specification-tree distance $d$", fontsize=13)
-    ax.set_ylabel(L"Correlation $\rho(d)$", fontsize=13)
-    ax.set_xlim(-0.25, d_max + 0.5)
-    ax.set_ylim(-0.05, 1.05)
-    nospines!(ax)
-    ax.legend(fontsize=9.5, frameon=false, loc="upper right")
-    fig.tight_layout()
-    save_both(fig, "fig_dependence_alternatives.pdf")
+    println("Fig 8: SKIP (replaced by multi-ordering AR(1) in fig5)")
 end
 
 
@@ -1258,7 +1600,7 @@ function fig9b_disclosure_scaling()
 
     # For each m_old, independently calibrate n_eff_old so that
     # FDR(m_old, n_eff_old) = 0.05, matching the main-text approach.
-    m_olds = collect(1:10)
+    m_olds = sort(unique(vcat(collect(1:10), [20, 30, 40, 50, 54, 60, 70, 80])))
     m_news     = Int[]
     ratios     = Float64[]
     n_eff_olds = Int[]
@@ -1266,7 +1608,7 @@ function fig9b_disclosure_scaling()
     for mo in m_olds
         # Calibrate: find n_eff_old such that FDR(mo, n_eff_old) ≈ 0.05
         neo = mo
-        for n in mo:10000
+        for n in mo:50000
             if _fdr(mo, n) > fdr_target
                 neo = n - 1; break
             end
@@ -1289,27 +1631,32 @@ function fig9b_disclosure_scaling()
 
     # Left: m_old vs m_new
     ax = axes[1]
-    ax.plot(m_olds, m_news, "o-", color="#0072B2", lw=2.2, markersize=7, zorder=3)
+    ax.plot(m_olds, m_news, "o-", color="#0072B2", lw=2.2, markersize=5, zorder=3)
     # 45-degree reference
-    ax.plot([0, 10], [0, 10], "k--", lw=1.0, alpha=0.4, label="No change")
+    m_max_plot = maximum(m_olds)
+    ax.plot([0, m_max_plot], [0, m_max_plot], "k--", lw=1.0, alpha=0.4, label="No change")
     ax.set_xlabel(L"Current requirement $m^{\rm old}$", fontsize=13)
     ax.set_ylabel(L"Required $m^{\rm new}$ (FDR-matched)", fontsize=13)
-    ax.set_xlim(0.5, 10.5)
+    ax.set_xlim(0.5, m_max_plot + 0.5)
     ax.set_ylim(0, maximum(m_news) + 2)
     nospines!(ax)
     ax.legend(fontsize=11, frameon=false, loc="upper left")
 
     # Right: ratio m_new/m_old
     ax2 = axes[2]
-    ax2.bar(m_olds, ratios, color="#56B4E9", edgecolor="white", width=0.6)
+    bar_width = length(m_olds) > 15 ? 1.5 : 0.6
+    ax2.bar(m_olds, ratios, color="#56B4E9", edgecolor="white", width=bar_width)
+    # Only label bars for small m_old values and specific highlights
     for (i, r) in enumerate(ratios)
-        ax2.text(m_olds[i], r + 0.12, string(round(r, digits=1)),
-            ha="center", fontsize=9, color="#333333")
+        if m_olds[i] <= 10 || m_olds[i] in [54, 80]
+            ax2.text(m_olds[i], r + 0.08, string(round(r, digits=1)),
+                ha="center", fontsize=7, color="#333333")
+        end
     end
     ax2.axhline(1, color="black", lw=1.0, ls=":", alpha=0.4)
     ax2.set_xlabel(L"Current requirement $m^{\rm old}$", fontsize=13)
     ax2.set_ylabel(L"Disclosure multiplier $m^{\rm new}/m^{\rm old}$", fontsize=13)
-    ax2.set_xlim(0.5, 10.5)
+    ax2.set_xlim(0.5, m_max_plot + 0.5)
     ax2.set_ylim(0, maximum(ratios) + 1)
     nospines!(ax2)
 
@@ -1328,12 +1675,9 @@ function fig9c_disclosure_scaling_nullfdr()
     isfile(pf) || return @warn "SKIP: counterfactual_params.json missing"
     par = JSON.parsefile(pf)
 
-    nv = get(par, "nullfdr_variant", nothing)
-    nv === nothing && return @warn "SKIP: no nullfdr_variant"
-
     λ      = par["cost_parameters"]["lambda_baseline"]
-    πv     = [nv["mixture_params"]["pi"][k]  for k in ["N","H","L"]]
-    p_pass = [nv["pass_probabilities"][k]    for k in ["N","H","L"]]
+    πv     = [par["mixture_params"]["pi"][k]  for k in ["N","H","L"]]
+    p_pass = [par["pass_probabilities"][k]    for k in ["N","H","L"]]
     fdr_target = 0.05
 
     # Null-only FDR: only N-types in numerator
@@ -1344,21 +1688,19 @@ function fig9c_disclosure_scaling_nullfdr()
         Qb > 0 ? (πv[1]*Qs[1]) / Qb : 1.0
     end
 
-    m_olds = collect(1:10)
+    m_olds = sort(unique(vcat(collect(1:10), [20, 30, 40, 50, 60, 70, 80, 90, 100])))
     m_news     = Int[]
     ratios     = Float64[]
     n_eff_olds = Int[]
     n_eff_news = Int[]
     for mo in m_olds
-        # Calibrate: find n_eff_old such that FDR_null(mo, n_eff_old) ≈ 0.05
         neo = mo
-        for n in mo:10000
+        for n in mo:100000
             if _fdr_null(mo, n) > fdr_target
                 neo = n - 1; break
             end
         end
         nen = ceil(Int, neo / λ)
-        # Find m_new such that FDR_null(m_new, nen) ≤ 0.05
         mn = 1
         for mc in 1:nen
             if _fdr_null(mc, nen) <= fdr_target
@@ -1369,33 +1711,47 @@ function fig9c_disclosure_scaling_nullfdr()
         push!(n_eff_news, nen)
         push!(m_news, mn)
         push!(ratios, mn / mo)
-        println("    m_old=$mo: n_eff_old=$neo → n_eff_new=$nen, m_new=$mn ($(round(mn/mo, digits=1))×)")
+        if mo in [1, 5, 10, 50, 100]
+            println("    m_old=$mo: n_eff_old=$neo → n_eff_new=$nen, m_new=$mn ($(round(mn/mo, digits=1))×)")
+        end
     end
 
+    m_max_plot = maximum(m_olds)
     fig, axes = PyPlot.subplots(1, 2, figsize=(10, 5))
 
     # Left: m_old vs m_new
     ax = axes[1]
-    ax.plot(m_olds, m_news, "o-", color="#0072B2", lw=2.2, markersize=7, zorder=3)
-    ax.plot([0, 10], [0, 10], "k--", lw=1.0, alpha=0.4, label="No change")
+    ax.plot(m_olds, m_news, "o-", color="#0072B2", lw=2.2, markersize=4, zorder=3)
+    ax.plot([0, m_max_plot], [0, m_max_plot], "k--", lw=1.0, alpha=0.4, label="No change")
+
+    # Highlight m_old=50
+    idx50 = findfirst(==(50), m_olds)
+    if idx50 !== nothing
+        ax.scatter([50], [m_news[idx50]], color="#B31B1B", s=80, zorder=5,
+            edgecolors="black", linewidths=1.2, marker="D")
+    end
+
     ax.set_xlabel(L"Current requirement $m^{\rm old}$", fontsize=13)
     ax.set_ylabel(L"Required $m^{\rm new}$ (null-FDR matched)", fontsize=13)
-    ax.set_xlim(0.5, 10.5)
-    ax.set_ylim(0, maximum(m_news) + 2)
+    ax.set_xlim(0.5, m_max_plot + 0.5)
+    ax.set_ylim(0, maximum(m_news) + 5)
     nospines!(ax)
     ax.legend(fontsize=11, frameon=false, loc="upper left")
 
     # Right: ratio m_new/m_old
     ax2 = axes[2]
-    ax2.bar(m_olds, ratios, color="#56B4E9", edgecolor="white", width=0.6)
-    for (i, r) in enumerate(ratios)
-        ax2.text(m_olds[i], r + 0.12, string(round(r, digits=1)),
-            ha="center", fontsize=9, color="#333333")
+    bar_width = 1.5
+    ax2.bar(m_olds, ratios, color="#56B4E9", edgecolor="white", width=bar_width)
+
+    # Highlight m_old=50 bar
+    if idx50 !== nothing
+        ax2.bar([50], [ratios[idx50]], color="#B31B1B", edgecolor="white", width=bar_width, alpha=0.8)
     end
+
     ax2.axhline(1, color="black", lw=1.0, ls=":", alpha=0.4)
     ax2.set_xlabel(L"Current requirement $m^{\rm old}$", fontsize=13)
     ax2.set_ylabel(L"Disclosure multiplier $m^{\rm new}/m^{\rm old}$", fontsize=13)
-    ax2.set_xlim(0.5, 10.5)
+    ax2.set_xlim(0.5, m_max_plot + 0.5)
     ax2.set_ylim(0, maximum(ratios) + 1)
     nospines!(ax2)
 
@@ -1415,32 +1771,34 @@ function fig10_bootstrap_ci()
     boot = JSON.parsefile(f)
 
     params = boot["parameters"]
-    param_names = [
+    # Determine which parameters are available (6 if sigma fixed, 9 if sigma free)
+    param_names_all = [
         "pi_N", "pi_H", "pi_L",
         "mu_N", "mu_H", "mu_L",
         "sigma_N", "sigma_H", "sigma_L",
     ]
+    param_names = [p for p in param_names_all if haskey(params, p)]
     nice = Dict(
         "pi_N" => L"$\pi_N$", "pi_H" => L"$\pi_M$", "pi_L" => L"$\pi_E$",
         "mu_N" => L"$\mu_N$", "mu_H" => L"$\mu_M$", "mu_L" => L"$\mu_E$",
         "sigma_N" => L"$\sigma_N$", "sigma_H" => L"$\sigma_M$", "sigma_L" => L"$\sigma_E$",
     )
 
-    # Reconstruct bootstrap samples from the JSON summary
-    # The JSON has point_estimate, bootstrap_se, ci_2_5, ci_97_5, bootstrap_mean
-    # We don't have raw samples; plot a schematic histogram from the summary stats
-    # Actually the JSON stores only summaries, not raw boot arrays.
-    # We'll approximate the bootstrap distribution with a Normal(bootstrap_mean, bootstrap_se)
-    # and draw a histogram from that.
-
     B = get(boot, "B", 200)
 
-    fig, axes = PyPlot.subplots(3, 3, figsize=(10, 8))
+    n_params = length(param_names)
+    ncols = 3
+    nrows = ceil(Int, n_params / ncols)
+    fig, axes = PyPlot.subplots(nrows, ncols, figsize=(10, 3 * nrows))
+    # Flatten axes to 1D array for indexing
+    if nrows == 1
+        axes_flat = [axes[j] for j in 1:ncols]
+    else
+        axes_flat = [axes[r, c] for r in 1:nrows for c in 1:ncols]
+    end
 
     for (i, name) in enumerate(param_names)
-        row = div(i - 1, 3) + 1
-        col = mod(i - 1, 3) + 1
-        ax = axes[row, col]
+        ax = axes_flat[i]
 
         s = params[name]
         pt = s["point_estimate"]
@@ -1458,10 +1816,15 @@ function fig10_bootstrap_ci()
         ax.axvline(hi_ci, color="firebrick", linewidth=1.2, linestyle="--")
 
         ax.set_xlabel(nice[name], fontsize=11)
-        col == 1 && ax.set_ylabel("Count", fontsize=10)
+        mod(i - 1, ncols) == 0 && ax.set_ylabel("Count", fontsize=10)
         nospines!(ax)
 
         i == 1 && ax.legend(frameon=false, fontsize=8)
+    end
+
+    # Hide unused subplots
+    for j in (n_params + 1):(nrows * ncols)
+        axes_flat[j].set_visible(false)
     end
 
     fig.tight_layout()
@@ -1653,29 +2016,28 @@ function fig14_posterior_heatmap()
     (isfile(mf) && isfile(sf)) || return @warn "SKIP: missing files"
 
     mix = JSON.parsefile(mf)
-    params = get(get(mix, "spec_level_verified_core", Dict()), "baseline_only", nothing)
-    if params === nothing
-        params = get(get(mix, "spec_level", Dict()), "baseline_only", nothing)
-    end
-    params === nothing && return @warn "SKIP: no baseline mixture params"
+    # Use the main specification: folded-normal K=3, sigma=1, |t|<=10
+    params = get(get(mix, "mu_free_sigma1_comparison", Dict()), "foldnorm_K=3_trim10", nothing)
+    params === nothing && return @warn "SKIP: no foldnorm_K=3_trim10 params"
 
     πv = [params["pi"][k] for k in ["N","H","L"]]
     μv = [params["mu"][k] for k in ["N","H","L"]]
     σv = [params["sigma"][k] for k in ["N","H","L"]]
-    lo = get(params, "truncation_lo", 0.0)
 
     spec = CSV.read(sf, DataFrame)
     t_col = findcol(spec, "Z_abs", "Z")
     t_col === nothing && return @warn "SKIP: no Z column"
     z_vals = finite(abs.(numcol(spec, t_col)))
+    # Trim to |t| <= 10 to match estimation window
+    z_vals = z_vals[z_vals .<= 10.0]
     length(z_vals) < 5 && return @warn "SKIP: too few obs"
 
-    # Compute posteriors for each z
+    # Compute posteriors for each z using folded-normal PDF
     n = length(z_vals)
     posteriors = zeros(n, 3)
     for i in 1:n
         for k in 1:3
-            posteriors[i, k] = πv[k] * tn_pdf(z_vals[i], μv[k], σv[k]; lo=lo)
+            posteriors[i, k] = πv[k] * fn_pdf(z_vals[i], μv[k], σv[k])
         end
         denom = sum(posteriors[i, :])
         denom > 0 && (posteriors[i, :] ./= denom)
@@ -1696,7 +2058,7 @@ function fig14_posterior_heatmap()
     ax.bar(x, p_l, width=1.0, bottom=p_n .+ p_h, color=cc[3], label="Extreme (E)", linewidth=0)
     ax.set_xlim(-0.5, n - 0.5)
     ax.set_ylim(0, 1)
-    ax.set_xlabel(L"Specifications (sorted by $|Z|$)", fontsize=12)
+    ax.set_xlabel(L"Specifications (sorted by $|t|$)", fontsize=12)
     ax.set_ylabel("Posterior probability", fontsize=12)
     ax.legend(loc="upper left", frameon=false, fontsize=10)
     nospines!(ax)
@@ -1827,9 +2189,9 @@ function fig17_funnel_plot()
 
     fig, ax = PyPlot.subplots(figsize=(5.5, 4.5))
     ax.scatter(precision, abs_z, s=8, alpha=0.3, linewidths=0, color="steelblue", rasterized=true)
-    ax.axhline(1.96, color="black", linestyle="--", linewidth=1.0, label=L"$|Z| = 1.96$")
+    ax.axhline(1.96, color="black", linestyle="--", linewidth=1.0, label=L"$|t| = 1.96$")
     ax.set_xlabel(precision_label, fontsize=12)
-    ax.set_ylabel(L"$|Z|$", fontsize=12)
+    ax.set_ylabel(L"$|t|$", fontsize=12)
     ax.set_xscale("log")
     ax.legend(frameon=false, fontsize=10)
 
@@ -1905,39 +2267,61 @@ end
 # ══════════════════════════════════════════════════════════════════════════════
 
 function fig19_effective_sample_size()
-    println("Fig 19: Effective sample size")
+    println("Fig 19: Effective sample size (5 orderings)")
     f = joinpath(RESULTS_DIR, "dependence.json")
     isfile(f) || return @warn "SKIP: dependence.json missing"
     dep = JSON.parsefile(f)
 
-    Δ_pref = get(get(dep, "distance_based", Dict()), "Delta", nothing)
-    if Δ_pref === nothing
-        Δ_pref = get(get(dep, "preferred", Dict()), "Delta", 0.21)
-    end
-
-    Δ_ar1 = get(get(get(dep, "ar1", Dict()), "pooled", Dict()), "Delta", nothing)
+    pref_ordering = get(get(dep, "preferred", Dict()), "ordering", "by_category")
 
     N_MAX = 500
     n = collect(1:N_MAX)
-    n_eff_pref = Float64(Δ_pref) .* n
-    n_eff_indep = Float64.(n)
+
+    # Ordering display config
+    ordering_keys = ["spec_order", "lex_path", "bfs", "dfs", "by_category"]
+    ordering_labels = Dict(
+        "spec_order" => "Document order",
+        "lex_path" => "Lexicographic path",
+        "bfs" => "Breadth-first",
+        "dfs" => "Depth-first",
+        "by_category" => "By category",
+    )
+    ordering_colors = Dict(
+        "spec_order" => "tab:orange",
+        "lex_path" => "tab:green",
+        "bfs" => "tab:purple",
+        "dfs" => "tab:red",
+        "by_category" => "black",
+    )
 
     fig, ax = PyPlot.subplots(figsize=(5.5, 4.0))
 
-    ax.plot(n, n_eff_indep, linestyle=":", color="gray", linewidth=1.5,
+    # Independence benchmark
+    ax.plot(n, Float64.(n), linestyle=":", color="gray", linewidth=1.5,
         label=L"Independence ($\Delta = 1$)")
-    ax.plot(n, n_eff_pref, linestyle="-", color="black", linewidth=2.5,
-        label=latexstring("\\mathrm{Distance{-}based}\\;(\\hat\\Delta = $(round(Float64(Δ_pref), digits=3)))"))
 
-    if Δ_ar1 !== nothing
-        n_eff_ar1 = Float64(Δ_ar1) .* n
-        ax.plot(n, n_eff_ar1, linestyle="--", color="tab:blue", linewidth=1.8,
-            label=latexstring("\\mathrm{AR(1)}\\;(\\hat\\Delta = $(round(Float64(Δ_ar1), digits=3)))"))
+    # Plot each non-random ordering
+    ar1_ords = get(dep, "ar1_orderings", Dict())
+    for key in ordering_keys
+        haskey(ar1_ords, key) || continue
+        Δ_val = get(ar1_ords[key], "Delta", nothing)
+        Δ_val === nothing && continue
+        Δ_val = Float64(Δ_val)
+
+        is_pref = (key == pref_ordering)
+        label = get(ordering_labels, key, key)
+        color = get(ordering_colors, key, "tab:blue")
+
+        ax.plot(n, Δ_val .* n,
+            linestyle = is_pref ? "-" : "--",
+            color = color,
+            linewidth = is_pref ? 2.5 : 1.5,
+            label = latexstring("\\mathrm{$(replace(label, " " => "\\;"))}\\;(\\hat\\Delta = $(round(Δ_val, digits=3)))"))
     end
 
     ax.set_xlabel(L"Total specifications $n$", fontsize=12)
     ax.set_ylabel(L"Effective independent tests $n_{\mathrm{eff}}$", fontsize=12)
-    ax.legend(frameon=false, fontsize=9, loc="upper left")
+    ax.legend(frameon=false, fontsize=8, loc="upper left")
     ax.set_xlim(0, N_MAX)
     ax.set_ylim(0, N_MAX)
     nospines!(ax)
@@ -2035,6 +2419,135 @@ end
 
 
 # ══════════════════════════════════════════════════════════════════════════════
+# TABLE: Baseline specification summary statistics
+# ══════════════════════════════════════════════════════════════════════════════
+
+function table_baseline_specs_summary()
+    println("Table: Baseline specification summary")
+
+    # ── Load verification summary ──
+    vf = joinpath(DATA_DIR, "verification_summary_by_paper.csv")
+    isfile(vf) || return @warn "SKIP: verification_summary_by_paper.csv missing"
+    vs = CSV.read(vf, DataFrame)
+
+    # ── Load paper metadata for journal info ──
+    sf = joinpath(dirname(dirname(@__DIR__)), "data", "tracking", "spec_search_status.json")
+    journal_map = Dict{String,String}()
+    method_map  = Dict{String,String}()
+    if isfile(sf)
+        tracking = JSON.parsefile(sf)
+        for p in get(tracking, "packages_with_data", [])
+            pid = p["id"]
+            journal_map[pid] = get(p, "journal", "Unknown")
+            method_map[pid]  = get(p, "method", "Unknown")
+        end
+    end
+
+    vs[!, :journal] = [get(journal_map, string(pid), "Unknown") for pid in vs.paper_id]
+
+    # Normalize journal names
+    function normalize_journal(j)
+        j = replace(j, "-" => ": ")
+        (occursin("P&P", j) || occursin("PP", j)) && return "AER: P\\&P"
+        occursin("Insights", j) && return "AER: Insights"
+        occursin("Applied", j) && return "AEJ: Applied"
+        occursin(r"Policy|Economic Policy", j) && return "AEJ: Policy"
+        occursin("Macro", j)  && return "AEJ: Macro"
+        occursin("Micro", j)  && return "AEJ: Micro"
+        occursin(r"AER|AEA", j) && return "AER"
+        return j
+    end
+    vs[!, :journal_clean] = normalize_journal.(vs.journal)
+
+    bl = vs.baseline_specs
+    bg = vs.baseline_groups
+    ts = vs.total_specs
+    cs = vs.core_specs
+    N  = nrow(vs)
+
+    # ── Compute overall summary stats ──
+    function sumstats(x)
+        v = Float64.(x)
+        (n    = length(v),
+         mean = round(mean(v), digits=1),
+         med  = round(median(v), digits=1),
+         sd   = round(std(v), digits=1),
+         min  = round(minimum(v), digits=0),
+         p25  = round(quantile(v, 0.25), digits=1),
+         p75  = round(quantile(v, 0.75), digits=1),
+         max  = round(maximum(v), digits=0))
+    end
+
+    overall_bl = sumstats(bl)
+    overall_bg = sumstats(bg)
+    overall_ts = sumstats(ts)
+    overall_cs = sumstats(cs)
+
+    # ── By-journal breakdown ──
+    journals_order = ["AER", "AER: Insights", "AER: P\\&P", "AEJ: Applied", "AEJ: Policy", "AEJ: Macro", "AEJ: Micro"]
+    journal_stats = []
+    for jname in journals_order
+        mask = vs.journal_clean .== jname
+        sum(mask) == 0 && continue
+        push!(journal_stats, (journal=jname, stats=sumstats(bl[mask]), n=sum(mask)))
+    end
+
+    # ── Write LaTeX table ──
+    tex = IOBuffer()
+
+    # Panel A: Overall summary
+    println(tex, raw"\begin{table}[htbp]")
+    println(tex, raw"\centering")
+    println(tex, raw"\caption{Summary Statistics: Author-Reported Specifications}")
+    println(tex, raw"\label{tab:baseline_specs_summary}")
+    println(tex, raw"\begin{tabular}{lcccccccc}")
+    println(tex, raw"\toprule")
+    println(tex, raw" & $N$ & Mean & Median & SD & Min & P25 & P75 & Max \\ ")
+    println(tex, raw"\midrule")
+    println(tex, raw"\multicolumn{9}{l}{\textit{Panel A: Full sample}} \\[3pt]")
+
+    function write_row(io, label, s)
+        println(io, "$label & $(s.n) & $(s.mean) & $(s.med) & $(s.sd) & $(Int(s.min)) & $(s.p25) & $(s.p75) & $(Int(s.max)) \\\\")
+    end
+
+    write_row(tex, "Baseline specs", overall_bl)
+    write_row(tex, "Baseline claims", overall_bg)
+    write_row(tex, "Total specs (incl.\\ automated)", overall_ts)
+    write_row(tex, "Core robustness specs", overall_cs)
+
+    println(tex, raw"\midrule")
+    println(tex, raw"\multicolumn{9}{l}{\textit{Panel B: Baseline specs by journal}} \\[3pt]")
+
+    for js in journal_stats
+        jlabel = replace(js.journal, "&" => "\\&")
+        write_row(tex, "$jlabel (\$N\$=$(js.n))", js.stats)
+    end
+
+    println(tex, raw"\bottomrule")
+    println(tex, raw"\end{tabular}")
+    println(tex, raw"\begin{minipage}{0.95\textwidth}")
+    println(tex, raw"\vspace{6pt}")
+    println(tex, raw"\footnotesize\textit{Notes:} ``Baseline specs'' counts the number of distinct regression specifications reported by the original authors (across tables and columns) that were replicated. ``Baseline claims'' counts distinct hypotheses tested. ``Total specs'' includes all programmatically generated robustness variations. ``Core robustness specs'' are automated variations that test the same estimand as the author's baseline (e.g., leave-one-out controls, clustering alternatives, sample restrictions).")
+    println(tex, raw"\end{minipage}")
+    println(tex, raw"\end{table}")
+
+    tex_str = String(take!(tex))
+
+    # Save to estimation/tables/ and overleaf
+    tables_dir = joinpath(dirname(dirname(@__DIR__)), "estimation", "tables")
+    mkpath(tables_dir)
+    write(joinpath(tables_dir, "tab_baseline_specs_summary.tex"), tex_str)
+    println("  Saved tab_baseline_specs_summary.tex")
+
+    ol_tables = joinpath(dirname(dirname(dirname(@__DIR__))), "overleaf", "tex", "v8_tables")
+    if isdir(ol_tables)
+        write(joinpath(ol_tables, "tab_baseline_specs_summary.tex"), tex_str)
+        println("  Saved to overleaf")
+    end
+end
+
+
+# ══════════════════════════════════════════════════════════════════════════════
 # MAIN
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -2054,24 +2567,20 @@ function main()
         fig_folded_k2,
         fig_folded_k3,
         fig_folded_k4,
+        fig_mu_free_comparison,
+        fig2f_foldnorm_mufree_k3,
+        fig2f_foldnorm_mufree_k3_full,
+        fig2g_foldnorm_mufree_k4,
+        fig2g_foldnorm_mufree_k4_full,
+        fig_systematic_grid,
         fig3_counterfactual,
-        fig3b_nullfdr_m1,
-        fig3b_nullfdr_m2,
-        fig3b_nullfdr_m3,
-        fig3b_nullfdr_m4,
-        fig3b_nullfdr_m5,
-        fig3b_nullfdr_m6,
-        fig3b_nullfdr_m7,
-        fig3b_nullfdr_m8,
-        fig3b_nullfdr_m9,
-        fig3b_nullfdr_m10,
+        fig3b_nullfdr_m50,
         fig4_i4r_agreement,
         fig5_corr_distance,
         fig6_mixture_diagnostics,
         fig7_k_sensitivity,
         fig8_dependence_alternatives,
-        fig9_counterfactual_sensitivity,
-        fig9b_disclosure_scaling,
+        fig9c_disclosure_scaling_nullfdr,
         fig10_bootstrap_ci,
         fig11_bootstrap_lrt,
         fig12_leave_one_out_cv,
@@ -2083,6 +2592,7 @@ function main()
         fig18_montecarlo,
         fig19_effective_sample_size,
         fig20_window_surface,
+        table_baseline_specs_summary,
     ]
         try
             f()

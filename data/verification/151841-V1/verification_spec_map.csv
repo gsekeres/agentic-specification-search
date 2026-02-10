@@ -1,52 +1,129 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-151841-V1,baseline,methods/panel_fixed_effects.md#baseline,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,1,1,core_controls,"Primary baseline: Winner*Rank on trimmed profits, minimal controls",1.0
-151841-V1,baseline_controls,methods/panel_fixed_effects.md#baseline,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline_controls,1,1,core_controls,Second baseline: same as baseline with demographic/sector controls added,1.0
-151841-V1,robust/outcome/Trim_Profits_30Days,robustness/measurement.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,invalid,Exact duplicate of baseline (identical coef/SE/p); no new information,1.0
-151841-V1,robust/outcome/log_Profits,robustness/measurement.md,log_Profits,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,Log transform of baseline outcome profits; preserves estimand direction,0.9
-151841-V1,robust/outcome/Trim_Income,robustness/measurement.md,Trim_Income,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,Income closely related to profits; tests same claim with broader outcome,0.7
-151841-V1,robust/outcome/log_Income,robustness/measurement.md,log_Income,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,Log income variant; tests same claim with broader outcome in logs,0.7
-151841-V1,robust/outcome/IHS_Profits,robustness/functional_form.md,IHS_Profits,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine of profits; standard functional form robustness,0.95
-151841-V1,robust/outcome/IHS_Income,robustness/functional_form.md,IHS_Income,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,IHS of income; functional form variant of income outcome,0.7
-151841-V1,robust/outcome/Trim_Capital,robustness/measurement.md,Trim_Capital,Winner_Quint_Rank_NS,,,0,0,noncore_alt_outcome,Capital is a different economic concept from profits; not the core claim,0.85
-151841-V1,robust/outcome/Trim_Owner_Hours_Week,robustness/measurement.md,Trim_Owner_Hours_Week,Winner_Quint_Rank_NS,,,0,0,noncore_alt_outcome,Hours worked is a different outcome; not profits or income,0.9
-151841-V1,robust/outcome/Trim_Inventory,robustness/measurement.md,Trim_Inventory,Winner_Quint_Rank_NS,,,0,0,noncore_alt_outcome,Inventory is a different economic concept from profits; not core claim,0.85
-151841-V1,robust/treatment/tercile_top,robustness/measurement.md,Trim_Profits_30Days,Winner_Quint_Rank_NS_Tercile_3,G1,baseline,0,1,core_method,Tercile-based rank treatment; alternative operationalization of same claim,0.8
-151841-V1,robust/treatment/relative_rank,robustness/measurement.md,Trim_Profits_30Days,Winner_Rel_Rank_NS,G1,baseline,0,1,core_method,Relative rank instead of quintile rank; alt measurement of same concept,0.85
-151841-V1,robust/treatment/with_self_rank,robustness/measurement.md,Trim_Profits_30Days,Winner_Quintile_Rank,G1,baseline,0,1,core_method,Rank includes self-report; alt measurement of peer ranking concept,0.85
-151841-V1,robust/control/none,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Drops all FE; no controls beyond treatment terms,0.9
-151841-V1,robust/control/drop_panel_a,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline_controls,0,1,core_controls,Alternative control set with sector/household controls,0.9
-151841-V1,robust/control/drop_panel_b,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline_controls,0,1,core_controls,Alternative control set with demographic controls,0.9
-151841-V1,robust/control/drop_panel_c,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline_controls,0,1,core_controls,Alternative control set dropping some controls from full set,0.9
-151841-V1,robust/control/drop_panel_d,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline_controls,0,0,invalid,Exact duplicate of drop_panel_c (identical coef/SE/p/controls),1.0
-151841-V1,robust/control/add_Gender_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds gender control and its interaction to baseline,0.95
-151841-V1,robust/control/add_Education_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds education control and its interaction to baseline,0.95
-151841-V1,robust/control/add_Married_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds marital status control and its interaction to baseline,0.95
-151841-V1,robust/control/add_Age_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds age control and its interaction to baseline,0.95
-151841-V1,robust/control/add_B_digitspan_1,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds digit span cognitive measure control to baseline,0.95
-151841-V1,robust/control/add_B_manufacturing,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds manufacturing sector indicator control to baseline,0.95
-151841-V1,robust/control/add_B_retail,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds retail sector indicator control to baseline,0.95
-151841-V1,robust/control/add_B_service,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,Adds service sector indicator control to baseline,0.95
-151841-V1,robust/sample/round_2,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Restricts to survey round 2 only; same estimand on subsample,0.85
-151841-V1,robust/sample/round_3,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Restricts to survey round 3 only; same estimand on subsample,0.85
-151841-V1,robust/sample/round_4,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Restricts to survey round 4 only; same estimand on subsample,0.85
-151841-V1,robust/sample/male,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Male subsample only; subgroup analysis not the core claim,0.75
-151841-V1,robust/sample/female,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Female subsample only; subgroup analysis not the core claim,0.75
-151841-V1,robust/sample/young,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Young entrepreneurs subsample; subgroup analysis not the core claim,0.75
-151841-V1,robust/sample/old,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Old entrepreneurs subsample; subgroup analysis not the core claim,0.75
-151841-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,Trim_Profits_wins,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Winsorize profits at 1% tails; standard outlier robustness,0.9
-151841-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,Trim_Profits_wins,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Winsorize profits at 5% tails; standard outlier robustness,0.9
-151841-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,Trim_Profits_wins,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Winsorize profits at 10% tails; standard outlier robustness,0.9
-151841-V1,robust/cluster/GroupNumber,robustness/clustering_variations.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,invalid,Exact duplicate of baseline (same clustering at group level),1.0
-151841-V1,robust/cluster/Id,robustness/clustering_variations.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_inference,Clusters at household level instead of group level,0.95
-151841-V1,robust/estimation/no_fe,robustness/model_specification.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_fe,Pooled OLS without fixed effects; adds demographic controls instead,0.85
-151841-V1,robust/estimation/strata_fe,robustness/model_specification.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_fe,Adds randomization strata (cluster) fixed effects to baseline FE,0.9
-151841-V1,robust/funcform/rank_squared,robustness/functional_form.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,Adds squared rank term; linear coef interpretation changes but tests non-linearity,0.6
-151841-V1,robust/placebo/baseline_only,robustness/placebo_tests.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,,,0,0,noncore_placebo,Pre-treatment (baseline survey) placebo test; expected null,0.95
-151841-V1,robust/placebo/hours_worked,robustness/placebo_tests.md,Trim_Owner_Hours_Week,Winner_Quint_Rank_NS,,,0,0,noncore_placebo,Hours worked as placebo outcome; not expected to respond to rank,0.9
-151841-V1,robust/heterogeneity/gender,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Adds Winner*Rank*Male interaction; heterogeneity analysis,0.9
-151841-V1,robust/heterogeneity/education,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Adds Winner*Rank*Education interaction; heterogeneity analysis,0.9
-151841-V1,robust/heterogeneity/B_manufacturing,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Manufacturing subsample only; sector-specific heterogeneity,0.85
-151841-V1,robust/heterogeneity/B_retail,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Retail subsample only; sector-specific heterogeneity,0.85
-151841-V1,robust/heterogeneity/B_service,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Service subsample only; sector-specific heterogeneity,0.85
-151841-V1,robust/heterogeneity/high_rank,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Above-median rank subsample; heterogeneity by rank level,0.85
-151841-V1,robust/heterogeneity/low_rank,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Below-median rank subsample; heterogeneity by rank level,0.85
+151841-V1,baseline,methods/panel_fixed_effects.md#baseline,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,1,1,core_controls,Baseline specification,1.0
+151841-V1,baseline_controls,methods/panel_fixed_effects.md#baseline,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,1,1,core_controls,Baseline specification,1.0
+151841-V1,robust/outcome/Trim_Profits_30Days,robustness/measurement.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Same baseline outcome with different spec: ['Winner', 'Quint_Rank_NS']",0.95
+151841-V1,robust/outcome/log_Profits,robustness/measurement.md,log_Profits,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: log_Profits,0.95
+151841-V1,robust/outcome/Trim_Income,robustness/measurement.md,Trim_Income,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: Trim_Income,0.95
+151841-V1,robust/outcome/log_Income,robustness/measurement.md,log_Income,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: log_Income,0.95
+151841-V1,robust/outcome/IHS_Profits,robustness/functional_form.md,IHS_Profits,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: IHS_Profits,0.95
+151841-V1,robust/outcome/IHS_Income,robustness/functional_form.md,IHS_Income,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: IHS_Income,0.95
+151841-V1,robust/outcome/Trim_Capital,robustness/measurement.md,Trim_Capital,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: Trim_Capital,0.95
+151841-V1,robust/outcome/Trim_Owner_Hours_Week,robustness/measurement.md,Trim_Owner_Hours_Week,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: Trim_Owner_Hours_Week,0.95
+151841-V1,robust/outcome/Trim_Inventory,robustness/measurement.md,Trim_Inventory,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: Trim_Inventory,0.95
+151841-V1,robust/treatment/tercile_top,robustness/measurement.md,Trim_Profits_30Days,Winner_Quint_Rank_NS_Tercile_3,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: Winner_Quint_Rank_NS_Tercile_3,0.95
+151841-V1,robust/treatment/relative_rank,robustness/measurement.md,Trim_Profits_30Days,Winner_Rel_Rank_NS,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: Winner_Rel_Rank_NS,0.95
+151841-V1,robust/treatment/with_self_rank,robustness/measurement.md,Trim_Profits_30Days,Winner_Quintile_Rank,G1,baseline,0,0,noncore_alt_treatment,Alternative treatment: Winner_Quintile_Rank,0.95
+151841-V1,robust/control/none,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS']",0.95
+151841-V1,robust/control/drop_panel_a,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Winner_B_manufacturing', 'Winner_B_retail', 'Winner_B_service', 'Winner_B_agriculture', 'Winner_HH_Size_Followup', 'Winner_B_child_0to5']",0.95
+151841-V1,robust/control/drop_panel_b,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Winner_Gender_Followup', 'Winner_Education_Followup', 'Winner_Married_Followup', 'Winner_Age_Followup', 'Winner_B_digitspan_1', 'Winner_HH_Size_Followup']",0.95
+151841-V1,robust/control/drop_panel_c,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Winner_Gender_Followup', 'Winner_Education_Followup', 'Winner_Married_Followup', 'Winner_Age_Followup', 'Winner_B_digitspan_1', 'Winner_B_manufacturing']",0.95
+151841-V1,robust/control/drop_panel_d,robustness/leave_one_out.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Winner_Gender_Followup', 'Winner_Education_Followup', 'Winner_Married_Followup', 'Winner_Age_Followup', 'Winner_B_digitspan_1', 'Winner_B_manufacturing']",0.95
+151841-V1,robust/control/add_Gender_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Gender_Followup', 'Winner_Gender_Followup']",0.95
+151841-V1,robust/control/add_Education_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Education_Followup', 'Winner_Education_Followup']",0.95
+151841-V1,robust/control/add_Married_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Married_Followup', 'Winner_Married_Followup']",0.95
+151841-V1,robust/control/add_Age_Followup,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'Age_Followup', 'Winner_Age_Followup']",0.95
+151841-V1,robust/control/add_B_digitspan_1,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'B_digitspan_1', 'Winner_B_digitspan_1']",0.95
+151841-V1,robust/control/add_B_manufacturing,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'B_manufacturing', 'Winner_B_manufacturing']",0.95
+151841-V1,robust/control/add_B_retail,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'B_retail', 'Winner_B_retail']",0.95
+151841-V1,robust/control/add_B_service,robustness/single_covariate.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_controls,"Control variation: ['Winner', 'Quint_Rank_NS', 'B_service', 'Winner_B_service']",0.95
+151841-V1,robust/sample/round_2,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 0       False
+1       False
+2       False
+3       False
+4       False
+        ...  
+5375    False
+5376    False
+5377    False
+5378    False
+5379    False
+Name: Survey_Version, Length: 5380, dtype: bool",0.95
+151841-V1,robust/sample/round_3,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 0       False
+1       False
+2       False
+3       False
+4       False
+        ...  
+5375    False
+5376    False
+5377    False
+5378    False
+5379    False
+Name: Survey_Version, Length: 5380, dtype: bool",0.95
+151841-V1,robust/sample/round_4,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 0       False
+1       False
+2       False
+3       False
+4       False
+        ...  
+5375     True
+5376     True
+5377     True
+5378     True
+5379     True
+Name: Survey_Version, Length: 5380, dtype: bool",0.95
+151841-V1,robust/sample/male,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 1345    False
+1346     True
+1347    False
+1348     True
+1349     True
+        ...  
+5375     True
+5376     True
+5377     True
+5378     True
+5379    False
+Name: Gender_Followup, Length: 4035, dtype: bool",0.95
+151841-V1,robust/sample/female,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 1345     True
+1346    False
+1347     True
+1348    False
+1349    False
+        ...  
+5375    False
+5376    False
+5377    False
+5378    False
+5379     True
+Name: Gender_Followup, Length: 4035, dtype: bool",0.95
+151841-V1,robust/sample/young,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 1345     True
+1346    False
+1347     True
+1348     True
+1349     True
+        ...  
+5375    False
+5376     True
+5377     True
+5378     True
+5379     True
+Name: Age_Followup, Length: 4035, dtype: bool",0.95
+151841-V1,robust/sample/old,robustness/sample_restrictions.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,"Sample restriction: 1345    False
+1346     True
+1347    False
+1348    False
+1349    False
+        ...  
+5375     True
+5376    False
+5377    False
+5378    False
+5379    False
+Name: Age_Followup, Length: 4035, dtype: bool",0.95
+151841-V1,robust/sample/winsorize_1pct,robustness/sample_restrictions.md,Trim_Profits_wins,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Sample restriction: Full sample,0.95
+151841-V1,robust/sample/winsorize_5pct,robustness/sample_restrictions.md,Trim_Profits_wins,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Sample restriction: Full sample,0.95
+151841-V1,robust/sample/winsorize_10pct,robustness/sample_restrictions.md,Trim_Profits_wins,Winner_Quint_Rank_NS,G1,baseline,0,1,core_sample,Sample restriction: Full sample,0.95
+151841-V1,robust/cluster/GroupNumber,robustness/clustering_variations.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_inference,Inference variation: GroupNumber,0.95
+151841-V1,robust/cluster/Id,robustness/clustering_variations.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_inference,Inference variation: Id,0.95
+151841-V1,robust/estimation/no_fe,robustness/model_specification.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_fe,Estimation/FE variation: None,0.95
+151841-V1,robust/estimation/strata_fe,robustness/model_specification.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_fe,"Estimation/FE variation: ['Survey_Version', 'Final_Randomization_Cluster']",0.95
+151841-V1,robust/funcform/rank_squared,robustness/functional_form.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,1,core_funcform,"Functional form: ['Winner', 'Quint_Rank_NS', 'Winner_Quint_Rank_NS_sq', 'Quint_Rank_NS_sq']",0.95
+151841-V1,robust/placebo/baseline_only,robustness/placebo_tests.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_placebo,Placebo/balance test: robust/placebo/baseline_only,0.95
+151841-V1,robust/placebo/hours_worked,robustness/placebo_tests.md,Trim_Owner_Hours_Week,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_placebo,Placebo/balance test: robust/placebo/hours_worked,0.95
+151841-V1,robust/heterogeneity/gender,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/gender,0.9
+151841-V1,robust/heterogeneity/education,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/education,0.9
+151841-V1,robust/heterogeneity/B_manufacturing,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/B_manufacturing,0.9
+151841-V1,robust/heterogeneity/B_retail,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/B_retail,0.9
+151841-V1,robust/heterogeneity/B_service,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/B_service,0.9
+151841-V1,robust/heterogeneity/high_rank,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/high_rank,0.9
+151841-V1,robust/heterogeneity/low_rank,robustness/heterogeneity.md,Trim_Profits_30Days,Winner_Quint_Rank_NS,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: robust/heterogeneity/low_rank,0.9

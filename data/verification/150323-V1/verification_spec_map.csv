@@ -1,94 +1,94 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-150323-V1,baseline,methods/regression_discontinuity.md#baseline,both_score_4_std,pX_dummy,G1,baseline,1,1,core_controls,Canonical baseline for 4th grade test scores,1.0
-150323-V1,rd/bandwidth/optimal_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,1,1,core_controls,Duplicate of baseline (identical estimate and sample),1.0
-150323-V1,rd/bandwidth/optimal_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,1,1,core_controls,Canonical baseline for teacher turnover outcome,1.0
-150323-V1,rd/bandwidth/optimal_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,1,1,core_controls,Canonical baseline for headmaster replacement outcome,1.0
-150323-V1,rd/bandwidth/narrow_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Narrower bandwidth (0.07) on test scores,0.95
-150323-V1,rd/bandwidth/narrow_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Narrower bandwidth (0.07) on teacher turnover,0.95
-150323-V1,rd/bandwidth/narrow_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Narrower bandwidth (0.07) on headmaster replacement,0.95
-150323-V1,rd/bandwidth/wide_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Wider bandwidth (0.11) on test scores,0.95
-150323-V1,rd/bandwidth/wide_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Wider bandwidth (0.11) on teacher turnover,0.95
-150323-V1,rd/bandwidth/wide_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Wider bandwidth (0.11) on headmaster replacement,0.95
-150323-V1,rd/bandwidth/very_narrow_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Very narrow bandwidth (0.05) on test scores,0.95
-150323-V1,rd/bandwidth/very_narrow_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Very narrow bandwidth (0.05) on teacher turnover,0.95
-150323-V1,rd/bandwidth/very_narrow_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Very narrow bandwidth (0.05) on headmaster replacement,0.95
-150323-V1,rd/bandwidth/very_wide_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Very wide bandwidth (0.15) on test scores,0.95
-150323-V1,rd/bandwidth/very_wide_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Very wide bandwidth (0.15) on teacher turnover,0.95
-150323-V1,rd/bandwidth/very_wide_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Very wide bandwidth (0.15) on headmaster replacement,0.95
-150323-V1,rd/bandwidth/half_optimal_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Half-optimal bandwidth (0.045) on test scores,0.95
-150323-V1,rd/bandwidth/half_optimal_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Half-optimal bandwidth (0.045) on teacher turnover,0.95
-150323-V1,rd/bandwidth/half_optimal_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Half-optimal bandwidth (0.045) on headmaster replacement,0.95
-150323-V1,rd/bandwidth/double_optimal_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Double-optimal bandwidth (0.18) on test scores,0.95
-150323-V1,rd/bandwidth/double_optimal_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Double-optimal bandwidth (0.18) on teacher turnover,0.95
-150323-V1,rd/bandwidth/double_optimal_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Double-optimal bandwidth (0.18) on headmaster replacement,0.95
-150323-V1,rd/poly/order1_both_score,methods/regression_discontinuity.md#polynomial,both_score_4_std,pX_dummy,G1,baseline,0,1,core_method,Linear polynomial for test scores (same as baseline order),0.9
-150323-V1,rd/poly/order1_newtchr,methods/regression_discontinuity.md#polynomial,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_method,Linear polynomial for teacher turnover,0.9
-150323-V1,rd/poly/order2_both_score,methods/regression_discontinuity.md#polynomial,both_score_4_std,pX_dummy,G1,baseline,0,1,core_method,Quadratic polynomial for test scores,0.9
-150323-V1,rd/poly/order2_newtchr,methods/regression_discontinuity.md#polynomial,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_method,Quadratic polynomial for teacher turnover,0.9
-150323-V1,rd/controls/none_both_score,methods/regression_discontinuity.md#controls,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,No controls for test scores,0.95
-150323-V1,rd/controls/none_newtchr,methods/regression_discontinuity.md#controls,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,No controls for teacher turnover,0.95
-150323-V1,rd/controls/none_expthissch,methods/regression_discontinuity.md#controls,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_controls,No controls for headmaster replacement,0.95
-150323-V1,rd/controls/none_tx_abandon,methods/regression_discontinuity.md#controls,tx_abandono_primary,pX_dummy,,,0,0,noncore_alt_outcome,Dropout rate is not a baseline claim outcome,0.85
-150323-V1,rd/controls/year_only_both_score,methods/regression_discontinuity.md#controls,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Year dummy only controls for test scores,0.95
-150323-V1,rd/controls/year_only_newtchr,methods/regression_discontinuity.md#controls,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,Year dummy only controls for teacher turnover,0.95
-150323-V1,rd/controls/full_both_score,methods/regression_discontinuity.md#controls,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Full controls for test scores,0.95
-150323-V1,rd/controls/full_newtchr,methods/regression_discontinuity.md#controls,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,Full controls for teacher turnover,0.95
-150323-V1,robust/loo/drop_urban_schl,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Leave-one-out dropping urban_schl control,0.95
-150323-V1,robust/loo/drop_Nstaff_schl,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Leave-one-out dropping Nstaff_schl control,0.95
-150323-V1,robust/loo/drop_alltchr_docen,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Leave-one-out dropping alltchr_docen control,0.95
-150323-V1,robust/loo/drop_eqpinternet_schl,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Leave-one-out dropping eqpinternet control,0.95
-150323-V1,robust/loo/drop_waterpblcnetwork_schl,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Leave-one-out dropping water network control,0.95
-150323-V1,robust/loo/drop_sewerpblcnetwork_schl,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Leave-one-out dropping sewer network control,0.95
-150323-V1,robust/outcome/both_score_4_std,,both_score_4_std,pX_dummy,G1,baseline,1,1,core_controls,Duplicate of baseline (identical estimate),1.0
-150323-V1,robust/outcome/both_score_8_std,,both_score_8_std,pX_dummy,,,0,0,noncore_alt_outcome,8th grade scores are a different outcome not in baselines,0.85
-150323-V1,robust/outcome/tx_abandono_primary,,tx_abandono_primary,pX_dummy,,,0,0,noncore_alt_outcome,Dropout rate is a different outcome not in baselines,0.85
-150323-V1,robust/outcome/newtchr,,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,1,1,core_controls,Duplicate of G2 baseline (identical estimate),1.0
-150323-V1,robust/outcome/lefttchr,,lefttchr,pX_dummy,,,0,0,noncore_alt_outcome,Left-teacher share is a related but different outcome,0.8
-150323-V1,robust/outcome/expthisschl_lessthan2_DPB,,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,1,1,core_controls,Duplicate of G3 baseline (identical estimate),1.0
-150323-V1,robust/sample/year_2009,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to 2009 election year only,0.9
-150323-V1,robust/sample/year_2013,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to 2013 election year only,0.9
-150323-V1,robust/sample/urban_schools,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to urban schools only,0.9
-150323-V1,robust/sample/rural_schools,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to rural schools only,0.9
-150323-V1,robust/sample/large_pop,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to large population municipalities,0.9
-150323-V1,robust/sample/small_pop,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to small population municipalities,0.9
-150323-V1,robust/sample/with_internet,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to schools with internet,0.9
-150323-V1,robust/sample/no_internet,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to schools without internet,0.9
-150323-V1,rd/donut/exclude_1pct,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Donut RD excluding obs within 1pct of cutoff,0.95
-150323-V1,rd/donut/exclude_2pct,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Donut RD excluding obs within 2pct of cutoff,0.95
-150323-V1,rd/donut/exclude_3pct,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Donut RD excluding obs within 3pct of cutoff,0.95
-150323-V1,robust/placebo/nonmunic_both_score,,both_score_4_std,pX_dummy,,,0,0,noncore_placebo,Placebo: non-municipal schools should show no effect,0.95
-150323-V1,robust/placebo/nonmunic_newtchr,,newtchr,pX_dummy,,,0,0,noncore_placebo,Placebo: non-municipal schools should show no effect,0.95
-150323-V1,robust/placebo/nonmunic_expthissch,,expthisschl_lessthan2_DPB,pX_dummy,,,0,0,noncore_placebo,Placebo: non-municipal schools should show no effect,0.95
-150323-V1,rd/placebo/cutoff_left_median,,both_score_4_std,pX_dummy_placebo,,,0,0,noncore_placebo,Placebo cutoff test using fake treatment at left median,0.95
-150323-V1,rd/placebo/cutoff_right_median,,both_score_4_std,pX_dummy_placebo,,,0,0,noncore_placebo,Placebo cutoff test using fake treatment at right median,0.95
-150323-V1,robust/het/urban_interaction,,both_score_4_std,pX_dummy,,,0,0,noncore_heterogeneity,Heterogeneity by urban status via interaction term,0.9
-150323-V1,robust/het/school_size_interaction,,both_score_4_std,pX_dummy,,,0,0,noncore_heterogeneity,Heterogeneity by school size via interaction term,0.9
-150323-V1,robust/het/internet_interaction,,both_score_4_std,pX_dummy,,,0,0,noncore_heterogeneity,Heterogeneity by internet access via interaction term,0.9
-150323-V1,robust/inference/robust_hc1,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_inference,HC1 robust SEs instead of municipality clustering,0.95
-150323-V1,robust/inference/robust_hc3,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_inference,HC3 robust SEs instead of municipality clustering,0.95
-150323-V1,robust/funcform/log_newtchr,,log_newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_funcform,Log transform of teacher turnover outcome,0.85
-150323-V1,robust/funcform/log_lefttchr,,log_lefttchr,pX_dummy,,,0,0,noncore_alt_outcome,Log of left-teacher share; different outcome not in baselines,0.75
-150323-V1,robust/funcform/ihs_score,,ihs_score,pX_dummy,G1,baseline,0,1,core_funcform,IHS transform of test scores preserving interpretation,0.85
-150323-V1,rd/sample/symmetric,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Symmetric sample restriction around cutoff,0.9
-150323-V1,rd/validity/sensitivity_bw04,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth sensitivity at 0.04 for test scores,0.95
-150323-V1,rd/validity/sensitivity_bw06,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth sensitivity at 0.06 for test scores,0.95
-150323-V1,rd/validity/sensitivity_bw08,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth sensitivity at 0.08 for test scores,0.95
-150323-V1,rd/validity/sensitivity_bw10,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth sensitivity at 0.10 for test scores,0.95
-150323-V1,rd/validity/sensitivity_bw12,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth sensitivity at 0.12 for test scores,0.95
-150323-V1,rd/validity/sensitivity_bw14,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth sensitivity at 0.14 for test scores,0.95
-150323-V1,rd/validity/newtch_bw06,,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth sensitivity at 0.06 for teacher turnover,0.95
-150323-V1,rd/validity/newtch_bw08,,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth sensitivity at 0.08 for teacher turnover,0.95
-150323-V1,rd/validity/newtch_bw10,,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth sensitivity at 0.10 for teacher turnover,0.95
-150323-V1,rd/validity/newtch_bw12,,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth sensitivity at 0.12 for teacher turnover,0.95
-150323-V1,rd/validity/expthi_bw06,,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth sensitivity at 0.06 for headmaster replacement,0.95
-150323-V1,rd/validity/expthi_bw08,,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth sensitivity at 0.08 for headmaster replacement,0.95
-150323-V1,rd/validity/expthi_bw10,,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth sensitivity at 0.10 for headmaster replacement,0.95
-150323-V1,rd/validity/expthi_bw12,,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth sensitivity at 0.12 for headmaster replacement,0.95
-150323-V1,rd/validity/tx_aba_bw06,,tx_abandono_primary,pX_dummy,,,0,0,noncore_alt_outcome,Dropout rate bandwidth sensitivity; not a baseline outcome,0.85
-150323-V1,rd/validity/tx_aba_bw08,,tx_abandono_primary,pX_dummy,,,0,0,noncore_alt_outcome,Dropout rate bandwidth sensitivity; not a baseline outcome,0.85
-150323-V1,rd/validity/tx_aba_bw10,,tx_abandono_primary,pX_dummy,,,0,0,noncore_alt_outcome,Dropout rate bandwidth sensitivity; not a baseline outcome,0.85
-150323-V1,rd/validity/tx_aba_bw12,,tx_abandono_primary,pX_dummy,,,0,0,noncore_alt_outcome,Dropout rate bandwidth sensitivity; not a baseline outcome,0.85
-150323-V1,robust/sample/with_water,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to schools with water access,0.9
-150323-V1,robust/sample/no_water,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to schools without water access,0.9
-150323-V1,robust/sample/with_sewage,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to schools with sewage access,0.9
-150323-V1,robust/sample/no_sewage,,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Restricts to schools without sewage access,0.9
+150323-V1,baseline,methods/regression_discontinuity.md#baseline,both_score_4_std,pX_dummy,G1,baseline,1,1,core_controls,"Primary baseline: 4th grade test scores, RD with optimal bandwidth 0.09",1.0
+150323-V1,rd/bandwidth/optimal_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.09,0.95
+150323-V1,rd/bandwidth/optimal_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,1,1,core_controls,Baseline for teacher turnover outcome,1.0
+150323-V1,rd/bandwidth/optimal_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,1,1,core_controls,Baseline for headmaster replacement outcome,1.0
+150323-V1,rd/bandwidth/narrow_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.07,0.95
+150323-V1,rd/bandwidth/narrow_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.07,0.95
+150323-V1,rd/bandwidth/narrow_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.07,0.95
+150323-V1,rd/bandwidth/wide_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.11,0.95
+150323-V1,rd/bandwidth/wide_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.11,0.95
+150323-V1,rd/bandwidth/wide_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.11,0.95
+150323-V1,rd/bandwidth/very_narrow_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.05,0.95
+150323-V1,rd/bandwidth/very_narrow_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.05,0.95
+150323-V1,rd/bandwidth/very_narrow_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.05,0.95
+150323-V1,rd/bandwidth/very_wide_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.15,0.95
+150323-V1,rd/bandwidth/very_wide_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.15,0.95
+150323-V1,rd/bandwidth/very_wide_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.15,0.95
+150323-V1,rd/bandwidth/half_optimal_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.045,0.95
+150323-V1,rd/bandwidth/half_optimal_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.045,0.95
+150323-V1,rd/bandwidth/half_optimal_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.045,0.95
+150323-V1,rd/bandwidth/double_optimal_both_score,methods/regression_discontinuity.md#bandwidth-selection,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.18,0.95
+150323-V1,rd/bandwidth/double_optimal_newtchr,methods/regression_discontinuity.md#bandwidth-selection,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.18,0.95
+150323-V1,rd/bandwidth/double_optimal_expthissch,methods/regression_discontinuity.md#bandwidth-selection,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.18,0.95
+150323-V1,rd/poly/order1_both_score,methods/regression_discontinuity.md#polynomial-order,both_score_4_std,pX_dummy,G1,baseline,0,1,core_funcform,Polynomial order variation: School controls,0.95
+150323-V1,rd/poly/order1_newtchr,methods/regression_discontinuity.md#polynomial-order,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_funcform,Polynomial order variation: School controls,0.95
+150323-V1,rd/poly/order2_both_score,methods/regression_discontinuity.md#polynomial-order,both_score_4_std,pX_dummy,G1,baseline,0,1,core_funcform,Polynomial order variation: School controls,0.95
+150323-V1,rd/poly/order2_newtchr,methods/regression_discontinuity.md#polynomial-order,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_funcform,Polynomial order variation: School controls,0.95
+150323-V1,rd/controls/none_both_score,methods/regression_discontinuity.md#control-sets,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: No controls,0.95
+150323-V1,rd/controls/none_newtchr,methods/regression_discontinuity.md#control-sets,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,Control variation: No controls,0.95
+150323-V1,rd/controls/none_expthissch,methods/regression_discontinuity.md#control-sets,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_controls,Control variation: No controls,0.95
+150323-V1,rd/controls/none_tx_abandon,methods/regression_discontinuity.md#control-sets,tx_abandono_primary,pX_dummy,G1,baseline,0,1,core_controls,Control variation: No controls,0.95
+150323-V1,rd/controls/year_only_both_score,methods/regression_discontinuity.md#control-sets,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Year dummy only,0.95
+150323-V1,rd/controls/year_only_newtchr,methods/regression_discontinuity.md#control-sets,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,Control variation: Year dummy only,0.95
+150323-V1,rd/controls/full_both_score,methods/regression_discontinuity.md#control-sets,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Full controls (school + teacher),0.95
+150323-V1,rd/controls/full_newtchr,methods/regression_discontinuity.md#control-sets,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,Control variation: Full controls (school + teacher),0.95
+150323-V1,robust/loo/drop_urban_schl,robustness/leave_one_out.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Controls minus urban_schl,0.95
+150323-V1,robust/loo/drop_Nstaff_schl,robustness/leave_one_out.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Controls minus Nstaff_schl,0.95
+150323-V1,robust/loo/drop_alltchr_docen,robustness/leave_one_out.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Controls minus alltchr_docen,0.95
+150323-V1,robust/loo/drop_eqpinternet_schl,robustness/leave_one_out.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Controls minus eqpinternet_schl,0.95
+150323-V1,robust/loo/drop_waterpblcnetwork_schl,robustness/leave_one_out.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Controls minus waterpblcnetwork_schl,0.95
+150323-V1,robust/loo/drop_sewerpblcnetwork_schl,robustness/leave_one_out.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Control variation: Controls minus sewerpblcnetwork_schl,0.95
+150323-V1,robust/outcome/both_score_4_std,robustness/measurement.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_controls,Duplicate of baseline (same outcome),0.95
+150323-V1,robust/outcome/both_score_8_std,robustness/measurement.md,both_score_8_std,pX_dummy,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: both_score_8_std,0.95
+150323-V1,robust/outcome/tx_abandono_primary,robustness/measurement.md,tx_abandono_primary,pX_dummy,G1,baseline,0,0,noncore_alt_outcome,Alternative outcome: tx_abandono_primary,0.95
+150323-V1,robust/outcome/newtchr,robustness/measurement.md,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_controls,Duplicate of newtchr baseline,0.95
+150323-V1,robust/outcome/lefttchr,robustness/measurement.md,lefttchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,0,noncore_alt_outcome,Alternative outcome: lefttchr,0.95
+150323-V1,robust/outcome/expthisschl_lessthan2_DPB,robustness/measurement.md,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_controls,Duplicate of headmaster baseline,0.95
+150323-V1,robust/sample/year_2009,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Year 2009 only, |pX|<0.09",0.95
+150323-V1,robust/sample/year_2013,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Year 2013 only, |pX|<0.09",0.95
+150323-V1,robust/sample/urban_schools,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Urban schools only, |pX|<0.09",0.95
+150323-V1,robust/sample/rural_schools,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Rural schools only, |pX|<0.09",0.95
+150323-V1,robust/sample/large_pop,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Large Pop municipalities, |pX|<0.09",0.95
+150323-V1,robust/sample/small_pop,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Small Pop municipalities, |pX|<0.09",0.95
+150323-V1,robust/sample/with_internet,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Schools with internet, |pX|<0.09",0.95
+150323-V1,robust/sample/no_internet,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Schools no internet, |pX|<0.09",0.95
+150323-V1,rd/donut/exclude_1pct,methods/regression_discontinuity.md#donut-hole-specifications,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Donut hole RD: |pX|>0.01 and |pX|<0.09,0.95
+150323-V1,rd/donut/exclude_2pct,methods/regression_discontinuity.md#donut-hole-specifications,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Donut hole RD: |pX|>0.02 and |pX|<0.09,0.95
+150323-V1,rd/donut/exclude_3pct,methods/regression_discontinuity.md#donut-hole-specifications,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Donut hole RD: |pX|>0.03 and |pX|<0.09,0.95
+150323-V1,robust/placebo/nonmunic_both_score,robustness/placebo_tests.md,both_score_4_std,pX_dummy,G1,baseline,0,0,noncore_placebo,"Placebo test: Non-municipal schools (placebo), |pX|<0.09",0.95
+150323-V1,robust/placebo/nonmunic_newtchr,robustness/placebo_tests.md,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,0,noncore_placebo,"Placebo test: Non-municipal schools (placebo), |pX|<0.09",0.95
+150323-V1,robust/placebo/nonmunic_expthissch,robustness/placebo_tests.md,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,0,noncore_placebo,"Placebo test: Non-municipal schools (placebo), |pX|<0.09",0.95
+150323-V1,rd/placebo/cutoff_left_median,methods/regression_discontinuity.md#placebo-cutoff-tests,both_score_4_std,pX_dummy_placebo,G1,baseline,0,0,noncore_placebo,"Placebo test: Left of cutoff, placebo at -0.115",0.95
+150323-V1,rd/placebo/cutoff_right_median,methods/regression_discontinuity.md#placebo-cutoff-tests,both_score_4_std,pX_dummy_placebo,G1,baseline,0,0,noncore_placebo,"Placebo test: Right of cutoff, placebo at 0.122",0.95
+150323-V1,robust/het/urban_interaction,robustness/heterogeneity.md,both_score_4_std,pX_dummy,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Includes urban interaction,0.9
+150323-V1,robust/het/school_size_interaction,robustness/heterogeneity.md,both_score_4_std,pX_dummy,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Includes school size interaction,0.9
+150323-V1,robust/het/internet_interaction,robustness/heterogeneity.md,both_score_4_std,pX_dummy,G1,baseline,0,0,noncore_heterogeneity,Heterogeneity: Includes internet interaction,0.9
+150323-V1,robust/inference/robust_hc1,robustness/inference_alternatives.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_inference,Inference variation: HC1 robust,0.95
+150323-V1,robust/inference/robust_hc3,robustness/inference_alternatives.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_inference,Inference variation: HC3 robust,0.95
+150323-V1,robust/funcform/log_newtchr,robustness/functional_form.md,log_newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_funcform,"Functional form: Year dummy, log transform",0.95
+150323-V1,robust/funcform/log_lefttchr,robustness/functional_form.md,log_lefttchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_funcform,"Functional form: Year dummy, log transform",0.95
+150323-V1,robust/funcform/ihs_score,robustness/functional_form.md,ihs_score,pX_dummy,G1,baseline,0,1,core_funcform,"Functional form: Year dummy, IHS transform",0.95
+150323-V1,rd/sample/symmetric,methods/regression_discontinuity.md#sample-restrictions,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,RD sample: Symmetric sample around cutoff,0.95
+150323-V1,rd/validity/sensitivity_bw04,methods/regression_discontinuity.md#validation-tests,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.04,0.95
+150323-V1,rd/validity/sensitivity_bw06,methods/regression_discontinuity.md#validation-tests,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.06,0.95
+150323-V1,rd/validity/sensitivity_bw08,methods/regression_discontinuity.md#validation-tests,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.08,0.95
+150323-V1,rd/validity/sensitivity_bw10,methods/regression_discontinuity.md#validation-tests,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.1,0.95
+150323-V1,rd/validity/sensitivity_bw12,methods/regression_discontinuity.md#validation-tests,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.12,0.95
+150323-V1,rd/validity/sensitivity_bw14,methods/regression_discontinuity.md#validation-tests,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.14,0.95
+150323-V1,rd/validity/newtch_bw06,methods/regression_discontinuity.md#validation-tests,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.06,0.95
+150323-V1,rd/validity/newtch_bw08,methods/regression_discontinuity.md#validation-tests,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.08,0.95
+150323-V1,rd/validity/newtch_bw10,methods/regression_discontinuity.md#validation-tests,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.1,0.95
+150323-V1,rd/validity/newtch_bw12,methods/regression_discontinuity.md#validation-tests,newtchr,pX_dummy,G2,rd/bandwidth/optimal_newtchr,0,1,core_sample,Bandwidth variation: |pX|<0.12,0.95
+150323-V1,rd/validity/expthi_bw06,methods/regression_discontinuity.md#validation-tests,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.06,0.95
+150323-V1,rd/validity/expthi_bw08,methods/regression_discontinuity.md#validation-tests,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.08,0.95
+150323-V1,rd/validity/expthi_bw10,methods/regression_discontinuity.md#validation-tests,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.1,0.95
+150323-V1,rd/validity/expthi_bw12,methods/regression_discontinuity.md#validation-tests,expthisschl_lessthan2_DPB,pX_dummy,G3,rd/bandwidth/optimal_expthissch,0,1,core_sample,Bandwidth variation: |pX|<0.12,0.95
+150323-V1,rd/validity/tx_aba_bw06,methods/regression_discontinuity.md#validation-tests,tx_abandono_primary,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.06,0.95
+150323-V1,rd/validity/tx_aba_bw08,methods/regression_discontinuity.md#validation-tests,tx_abandono_primary,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.08,0.95
+150323-V1,rd/validity/tx_aba_bw10,methods/regression_discontinuity.md#validation-tests,tx_abandono_primary,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.1,0.95
+150323-V1,rd/validity/tx_aba_bw12,methods/regression_discontinuity.md#validation-tests,tx_abandono_primary,pX_dummy,G1,baseline,0,1,core_sample,Bandwidth variation: |pX|<0.12,0.95
+150323-V1,robust/sample/with_water,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Schools with water, |pX|<0.09",0.95
+150323-V1,robust/sample/no_water,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Schools no water, |pX|<0.09",0.95
+150323-V1,robust/sample/with_sewage,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Schools with sewage, |pX|<0.09",0.95
+150323-V1,robust/sample/no_sewage,robustness/sample_restrictions.md,both_score_4_std,pX_dummy,G1,baseline,0,1,core_sample,"Sample restriction: Schools no sewage, |pX|<0.09",0.95

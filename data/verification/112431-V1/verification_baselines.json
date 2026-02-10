@@ -1,12 +1,12 @@
 {
   "paper_id": "112431-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/112431-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112431-V1",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "First-term mayors who face reelection incentives engage in less corruption (lower proportion of audited federal funds associated with corruption) than term-limited second-term mayors.",
+      "claim_summary": "First-term mayors (who can seek reelection) engage in less corruption than second-term mayors (who face term limits). The proportion of federal funds associated with corruption is lower for first-term mayors.",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline",
@@ -18,8 +18,8 @@
       "baseline_treatment_vars": [
         "first"
       ],
-      "notes": "Two baseline specs: baseline is the no-FE specification (coef=-0.0188, p=0.047) and baseline_fe adds state fixed effects (coef=-0.0193, p=0.056). Both test the same claim with pcorrupt as outcome and first as treatment. The paper emphasizes the state-FE version as its main specification."
+      "notes": "Table 4, Column 1 (no controls) and Column 6 (state FE + full controls). Baseline coef = -0.0188 (SE 0.0095, p=0.047). With state FE: -0.0193 (SE 0.0101, p=0.056). N=476."
     }
   ],
-  "global_notes": "96 specifications total. The paper tests one core hypothesis (reelection incentives reduce corruption) using cross-sectional OLS. Alternative outcomes (ncorrupt, dcorrupt variants, pmismanagement) test related but distinct outcome concepts. Heterogeneity interactions test conditional effects, not the main effect. RDD specifications use a different identification strategy but test the same causal claim. The coefficient in inference-variation rows (58-63) is -0.01756, slightly different from both baselines, suggesting an intermediate control set was used."
+  "global_notes": "Paper is 'Electoral Accountability and Corruption' by Ferraz & Finan (AER 2011). Treatment is first-term status (binary). Primary outcome is pcorrupt (proportion of audited funds associated with corruption). The paper also includes RDD analysis using election margin as running variable. Placebo tests use predetermined characteristics. The 'no_polcheck_mills' spec has treatment 'capacity' not 'first' -- appears to be a data issue but is included as-is."
 }

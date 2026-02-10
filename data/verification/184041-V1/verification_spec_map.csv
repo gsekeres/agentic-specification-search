@@ -1,134 +1,134 @@
 paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
-184041-V1,baseline,methods/cross_sectional_ols.md#baseline,BF,CV,G1,baseline,1,1,core_controls,Baseline specification for BF outcome,1.0
-184041-V1,baseline,methods/cross_sectional_ols.md#baseline,BEBF,CV,G1,baseline,1,1,core_controls,Baseline specification for BEBF outcome,1.0
-184041-V1,baseline,methods/cross_sectional_ols.md#baseline,NEBF,CV,G1,baseline,1,1,core_controls,Baseline specification for NEBF outcome,1.0
-184041-V1,robust/control/add_male_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_age_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_correctAns_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_RP_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_CRP_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_AP_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_male_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_age_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_correctAns_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_RP_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_CRP_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_AP_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_male_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_age_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_correctAns_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_RP_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_CRP_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/add_AP_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/loo/drop_male,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/loo/drop_age,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/loo/drop_correctAns,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/loo/drop_RP,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/loo/drop_CRP,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/loo/drop_AP,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/single/male,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/single/age,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/single/correctAns,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/single/RP,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/single/CRP,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/single/AP,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/sample/early_rounds_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Early/late round sample split within Exp1,0.95
-184041-V1,robust/sample/late_rounds_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Early/late round sample split within Exp1,0.95
-184041-V1,robust/sample/early_rounds_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Early/late round sample split within Exp1,0.95
-184041-V1,robust/sample/late_rounds_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Early/late round sample split within Exp1,0.95
-184041-V1,robust/sample/exclude_first_round,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Excludes first/last round from Exp1 sample,0.95
-184041-V1,robust/sample/exclude_last_round,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Excludes first/last round from Exp1 sample,0.95
-184041-V1,robust/sample/winsor_1pct_NEBF,robustness/sample_restrictions.md,NEBF_wins,CV,G1,baseline,0,1,core_sample,Winsorized outcome in Exp1 sample,0.95
-184041-V1,robust/sample/winsor_5pct_NEBF,robustness/sample_restrictions.md,NEBF_wins,CV,G1,baseline,0,1,core_sample,Winsorized outcome in Exp1 sample,0.95
-184041-V1,robust/sample/winsor_10pct_NEBF,robustness/sample_restrictions.md,NEBF_wins,CV,G1,baseline,0,1,core_sample,Winsorized outcome in Exp1 sample,0.95
-184041-V1,robust/sample/winsor_1pct_BF,robustness/sample_restrictions.md,BF_wins,CV,G1,baseline,0,1,core_sample,Winsorized outcome in Exp1 sample,0.95
-184041-V1,robust/sample/winsor_5pct_BF,robustness/sample_restrictions.md,BF_wins,CV,G1,baseline,0,1,core_sample,Winsorized outcome in Exp1 sample,0.95
-184041-V1,robust/sample/winsor_10pct_BF,robustness/sample_restrictions.md,BF_wins,CV,G1,baseline,0,1,core_sample,Winsorized outcome in Exp1 sample,0.95
-184041-V1,robust/sample/trim_1pct_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Trimmed extreme bids in Exp1 sample,0.95
-184041-V1,robust/sample/trim_5pct_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Trimmed extreme bids in Exp1 sample,0.95
-184041-V1,robust/sample/trim_1pct_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Trimmed extreme bids in Exp1 sample,0.95
-184041-V1,robust/sample/trim_5pct_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Trimmed extreme bids in Exp1 sample,0.95
-184041-V1,robust/sample/lottery_4,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Restricted to single lottery round in Exp1,0.9
-184041-V1,robust/sample/lottery_2,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Restricted to single lottery round in Exp1,0.9
-184041-V1,robust/sample/lottery_6,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Restricted to single lottery round in Exp1,0.9
-184041-V1,robust/sample/lottery_8,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Restricted to single lottery round in Exp1,0.9
-184041-V1,robust/sample/lottery_3,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Restricted to single lottery round in Exp1,0.9
-184041-V1,robust/sample/winners_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Restricted to auction winners only in Exp1,0.9
-184041-V1,robust/sample/winners_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Restricted to auction winners only in Exp1,0.9
-184041-V1,robust/sample/winners_BEBF,robustness/sample_restrictions.md,BEBF,CV,G1,baseline,0,1,core_sample,Restricted to auction winners only in Exp1,0.9
-184041-V1,robust/outcome/bid,methods/cross_sectional_ols.md,bid,CV,G1,baseline,0,1,core_funcform,Raw bid level instead of deviation from benchmark,0.85
-184041-V1,robust/outcome/lnbid,methods/cross_sectional_ols.md,lnbid,CV,G1,baseline,0,1,core_funcform,Log bid as alternative functional form of outcome,0.8
-184041-V1,robust/outcome/payoff,methods/cross_sectional_ols.md,payoff,CV,G1,baseline,0,0,noncore_alt_outcome,Payoff is a different concept from overbidding,0.85
-184041-V1,robust/outcome/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_controls,Duplicate of baseline with same outcome/sample,0.95
-184041-V1,robust/outcome/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_controls,Duplicate of baseline with same outcome/sample,0.95
-184041-V1,robust/outcome/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_controls,Duplicate of baseline with same outcome/sample,0.95
-184041-V1,robust/form/log_BF,robustness/functional_form.md,ln_BF,CV,G1,baseline,0,1,core_funcform,Log transformation of bid factor outcome,0.9
-184041-V1,robust/form/log_NEBF,robustness/functional_form.md,ln_NEBF,CV,G1,baseline,0,1,core_funcform,Log transformation of bid factor outcome,0.9
-184041-V1,robust/cluster/robust_NEBF,robustness/clustering_variations.md,NEBF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/subject_NEBF,robustness/clustering_variations.md,NEBF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/robust_BF,robustness/clustering_variations.md,BF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/subject_BF,robustness/clustering_variations.md,BF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/robust_BEBF,robustness/clustering_variations.md,BEBF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/subject_BEBF,robustness/clustering_variations.md,BEBF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/session_NEBF,robustness/clustering_variations.md,NEBF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/cluster/session_BF,robustness/clustering_variations.md,BF,CV,G1,baseline,0,1,core_inference,Alternative SE clustering or robust SE,0.95
-184041-V1,robust/qreg/NEBF_q10,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/NEBF_q25,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/NEBF_q50,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/NEBF_q75,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/NEBF_q90,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/BF_q10,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/BF_q25,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/BF_q50,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/BF_q75,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/BF_q90,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/qreg/NEBF_q50_controls,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile regression; same treatment/outcome/sample,0.9
-184041-V1,robust/form/asinh_NEBF,robustness/functional_form.md,NEBF_asinh,CV,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine transformation of outcome,0.9
-184041-V1,robust/form/asinh_BF,robustness/functional_form.md,BF_asinh,CV,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine transformation of outcome,0.9
-184041-V1,robust/form/asinh_BEBF,robustness/functional_form.md,BEBF_asinh,CV,G1,baseline,0,1,core_funcform,Inverse hyperbolic sine transformation of outcome,0.9
-184041-V1,robust/form/standardized_NEBF,robustness/functional_form.md,NEBF_std,CV,G1,baseline,0,1,core_funcform,Standardized (z-score) outcome variable,0.95
-184041-V1,robust/form/standardized_BF,robustness/functional_form.md,BF_std,CV,G1,baseline,0,1,core_funcform,Standardized (z-score) outcome variable,0.95
-184041-V1,robust/het/male_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Gender subgroup split; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/female_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Gender subgroup split; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/male_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Gender subgroup split; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/female_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Gender subgroup split; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/young_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Age subgroup split; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/old_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Age subgroup split; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/high_cognitive_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Cognitive ability subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/low_cognitive_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Cognitive ability subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/high_cognitive_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Cognitive ability subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/low_cognitive_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Cognitive ability subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/interact_male,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect,0.9
-184041-V1,robust/het/interact_age,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect,0.9
-184041-V1,robust/het/interact_cognitive,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Interaction term; tests heterogeneity not main effect,0.9
-184041-V1,robust/exp2/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp3/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp3/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp3/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp3b/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp3b/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp3b/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp4/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp4/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/exp4/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Replication on different experiment; same claim/treatment,0.9
-184041-V1,robust/pooled/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Pooled sample across all experiments,0.9
-184041-V1,robust/pooled/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Pooled sample across all experiments,0.9
-184041-V1,robust/pooled/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Pooled sample across all experiments,0.9
-184041-V1,robust/placebo/balance_male,robustness/placebo_tests.md,male,CV,G1,baseline,0,0,noncore_placebo,Balance/placebo test; different outcome concept entirely,0.95
-184041-V1,robust/placebo/balance_age,robustness/placebo_tests.md,age,CV,G1,baseline,0,0,noncore_placebo,Balance/placebo test; different outcome concept entirely,0.95
-184041-V1,robust/placebo/balance_correctAns,robustness/placebo_tests.md,correctAns,CV,G1,baseline,0,0,noncore_placebo,Balance/placebo test; different outcome concept entirely,0.95
-184041-V1,robust/placebo/signal_balance,robustness/placebo_tests.md,signal,CV,G1,baseline,0,0,noncore_placebo,Balance/placebo test; different outcome concept entirely,0.95
-184041-V1,robust/control/full_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/full_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/control/full_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Adds/drops controls; same treatment/outcome/sample,0.95
-184041-V1,robust/het/risk_averse_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Risk preference subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/risk_seeking_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Risk preference subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/risk_averse_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Risk preference subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/risk_seeking_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Risk preference subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/high_ambiguity,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Ambiguity aversion subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/het/low_ambiguity,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Ambiguity aversion subgroup; tests heterogeneity not main effect,0.85
-184041-V1,robust/sample/drop_lottoround_1,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Drops one lottery round from Exp1 sample,0.95
-184041-V1,robust/sample/drop_lottoround_2,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Drops one lottery round from Exp1 sample,0.95
-184041-V1,robust/sample/drop_lottoround_3,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Drops one lottery round from Exp1 sample,0.95
-184041-V1,robust/sample/drop_lottoround_4,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Drops one lottery round from Exp1 sample,0.95
-184041-V1,robust/sample/drop_lottoround_5,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Drops one lottery round from Exp1 sample,0.95
+184041-V1,baseline_BF,methods/cross_sectional_ols.md#baseline,BF,CV,G1,baseline,1,1,core_controls,Baseline: CV on BF,1.0
+184041-V1,baseline_BEBF,methods/cross_sectional_ols.md#baseline,BEBF,CV,G1,baseline,1,1,core_controls,Baseline: CV on BEBF,1.0
+184041-V1,baseline_NEBF,methods/cross_sectional_ols.md#baseline,NEBF,CV,G1,baseline,1,1,core_controls,Baseline: CV on NEBF,1.0
+184041-V1,robust/control/add_male_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Add control: add_male_BF,0.95
+184041-V1,robust/control/add_age_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Add control: add_age_BF,0.95
+184041-V1,robust/control/add_correctAns_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Add control: add_correctAns_BF,0.95
+184041-V1,robust/control/add_RP_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Add control: add_RP_BF,0.95
+184041-V1,robust/control/add_CRP_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Add control: add_CRP_BF,0.95
+184041-V1,robust/control/add_AP_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Add control: add_AP_BF,0.95
+184041-V1,robust/control/add_male_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Add control: add_male_BEBF,0.95
+184041-V1,robust/control/add_age_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Add control: add_age_BEBF,0.95
+184041-V1,robust/control/add_correctAns_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Add control: add_correctAns_BEBF,0.95
+184041-V1,robust/control/add_RP_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Add control: add_RP_BEBF,0.95
+184041-V1,robust/control/add_CRP_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Add control: add_CRP_BEBF,0.95
+184041-V1,robust/control/add_AP_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Add control: add_AP_BEBF,0.95
+184041-V1,robust/control/add_male_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Add control: add_male_NEBF,0.95
+184041-V1,robust/control/add_age_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Add control: add_age_NEBF,0.95
+184041-V1,robust/control/add_correctAns_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Add control: add_correctAns_NEBF,0.95
+184041-V1,robust/control/add_RP_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Add control: add_RP_NEBF,0.95
+184041-V1,robust/control/add_CRP_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Add control: add_CRP_NEBF,0.95
+184041-V1,robust/control/add_AP_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Add control: add_AP_NEBF,0.95
+184041-V1,robust/loo/drop_male,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,LOO: drop_male,0.95
+184041-V1,robust/loo/drop_age,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,LOO: drop_age,0.95
+184041-V1,robust/loo/drop_correctAns,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,LOO: drop_correctAns,0.95
+184041-V1,robust/loo/drop_RP,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,LOO: drop_RP,0.95
+184041-V1,robust/loo/drop_CRP,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,LOO: drop_CRP,0.95
+184041-V1,robust/loo/drop_AP,robustness/leave_one_out.md,NEBF,CV,G1,baseline,0,1,core_controls,LOO: drop_AP,0.95
+184041-V1,robust/single/male,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Single control: male,0.95
+184041-V1,robust/single/age,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Single control: age,0.95
+184041-V1,robust/single/correctAns,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Single control: correctAns,0.95
+184041-V1,robust/single/RP,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Single control: RP,0.95
+184041-V1,robust/single/CRP,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Single control: CRP,0.95
+184041-V1,robust/single/AP,robustness/single_covariate.md,NEBF,CV,G1,baseline,0,1,core_controls,Single control: AP,0.95
+184041-V1,robust/sample/early_rounds_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: early_rounds_NEBF,0.95
+184041-V1,robust/sample/late_rounds_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: late_rounds_NEBF,0.95
+184041-V1,robust/sample/early_rounds_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Sample: early_rounds_BF,0.95
+184041-V1,robust/sample/late_rounds_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Sample: late_rounds_BF,0.95
+184041-V1,robust/sample/exclude_first_round,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: exclude_first_round,0.95
+184041-V1,robust/sample/exclude_last_round,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: exclude_last_round,0.95
+184041-V1,robust/sample/winsor_1pct_NEBF,robustness/sample_restrictions.md,NEBF_wins,CV,G1,baseline,0,1,core_sample,Sample: winsor_1pct_NEBF,0.95
+184041-V1,robust/sample/winsor_5pct_NEBF,robustness/sample_restrictions.md,NEBF_wins,CV,G1,baseline,0,1,core_sample,Sample: winsor_5pct_NEBF,0.95
+184041-V1,robust/sample/winsor_10pct_NEBF,robustness/sample_restrictions.md,NEBF_wins,CV,G1,baseline,0,1,core_sample,Sample: winsor_10pct_NEBF,0.95
+184041-V1,robust/sample/winsor_1pct_BF,robustness/sample_restrictions.md,BF_wins,CV,G1,baseline,0,1,core_sample,Sample: winsor_1pct_BF,0.95
+184041-V1,robust/sample/winsor_5pct_BF,robustness/sample_restrictions.md,BF_wins,CV,G1,baseline,0,1,core_sample,Sample: winsor_5pct_BF,0.95
+184041-V1,robust/sample/winsor_10pct_BF,robustness/sample_restrictions.md,BF_wins,CV,G1,baseline,0,1,core_sample,Sample: winsor_10pct_BF,0.95
+184041-V1,robust/sample/trim_1pct_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: trim_1pct_NEBF,0.95
+184041-V1,robust/sample/trim_5pct_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: trim_5pct_NEBF,0.95
+184041-V1,robust/sample/trim_1pct_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Sample: trim_1pct_BF,0.95
+184041-V1,robust/sample/trim_5pct_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Sample: trim_5pct_BF,0.95
+184041-V1,robust/sample/lottery_4,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: lottery_4,0.95
+184041-V1,robust/sample/lottery_2,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: lottery_2,0.95
+184041-V1,robust/sample/lottery_6,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: lottery_6,0.95
+184041-V1,robust/sample/lottery_8,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: lottery_8,0.95
+184041-V1,robust/sample/lottery_3,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: lottery_3,0.95
+184041-V1,robust/sample/winners_NEBF,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: winners_NEBF,0.95
+184041-V1,robust/sample/winners_BF,robustness/sample_restrictions.md,BF,CV,G1,baseline,0,1,core_sample,Sample: winners_BF,0.95
+184041-V1,robust/sample/winners_BEBF,robustness/sample_restrictions.md,BEBF,CV,G1,baseline,0,1,core_sample,Sample: winners_BEBF,0.95
+184041-V1,robust/outcome/bid,methods/cross_sectional_ols.md,bid,CV,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: bid,0.95
+184041-V1,robust/outcome/lnbid,methods/cross_sectional_ols.md,lnbid,CV,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: lnbid,0.95
+184041-V1,robust/outcome/payoff,methods/cross_sectional_ols.md,payoff,CV,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: payoff,0.95
+184041-V1,robust/outcome/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: BF,0.95
+184041-V1,robust/outcome/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: BEBF,0.95
+184041-V1,robust/outcome/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,0,noncore_alt_outcome,Alt outcome: NEBF,0.95
+184041-V1,robust/form/log_BF,robustness/functional_form.md,ln_BF,CV,G1,baseline,0,1,core_funcform,Funcform: log_BF,0.95
+184041-V1,robust/form/log_NEBF,robustness/functional_form.md,ln_NEBF,CV,G1,baseline,0,1,core_funcform,Funcform: log_NEBF,0.95
+184041-V1,robust/cluster/robust_NEBF,robustness/clustering_variations.md,NEBF,CV,G1,baseline,0,1,core_inference,Cluster: robust_NEBF,0.95
+184041-V1,robust/cluster/subject_NEBF,robustness/clustering_variations.md,NEBF,CV,G1,baseline,0,1,core_inference,Cluster: subject_NEBF,0.95
+184041-V1,robust/cluster/robust_BF,robustness/clustering_variations.md,BF,CV,G1,baseline,0,1,core_inference,Cluster: robust_BF,0.95
+184041-V1,robust/cluster/subject_BF,robustness/clustering_variations.md,BF,CV,G1,baseline,0,1,core_inference,Cluster: subject_BF,0.95
+184041-V1,robust/cluster/robust_BEBF,robustness/clustering_variations.md,BEBF,CV,G1,baseline,0,1,core_inference,Cluster: robust_BEBF,0.95
+184041-V1,robust/cluster/subject_BEBF,robustness/clustering_variations.md,BEBF,CV,G1,baseline,0,1,core_inference,Cluster: subject_BEBF,0.95
+184041-V1,robust/cluster/session_NEBF,robustness/clustering_variations.md,NEBF,CV,G1,baseline,0,1,core_inference,Cluster: session_NEBF,0.95
+184041-V1,robust/cluster/session_BF,robustness/clustering_variations.md,BF,CV,G1,baseline,0,1,core_inference,Cluster: session_BF,0.95
+184041-V1,robust/qreg/NEBF_q10,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile reg: NEBF_q10,0.9
+184041-V1,robust/qreg/NEBF_q25,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile reg: NEBF_q25,0.9
+184041-V1,robust/qreg/NEBF_q50,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile reg: NEBF_q50,0.9
+184041-V1,robust/qreg/NEBF_q75,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile reg: NEBF_q75,0.9
+184041-V1,robust/qreg/NEBF_q90,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile reg: NEBF_q90,0.9
+184041-V1,robust/qreg/BF_q10,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile reg: BF_q10,0.9
+184041-V1,robust/qreg/BF_q25,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile reg: BF_q25,0.9
+184041-V1,robust/qreg/BF_q50,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile reg: BF_q50,0.9
+184041-V1,robust/qreg/BF_q75,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile reg: BF_q75,0.9
+184041-V1,robust/qreg/BF_q90,methods/cross_sectional_ols.md#quantile,BF,CV,G1,baseline,0,1,core_method,Quantile reg: BF_q90,0.9
+184041-V1,robust/qreg/NEBF_q50_controls,methods/cross_sectional_ols.md#quantile,NEBF,CV,G1,baseline,0,1,core_method,Quantile reg: NEBF_q50_controls,0.9
+184041-V1,robust/form/asinh_NEBF,robustness/functional_form.md,NEBF_asinh,CV,G1,baseline,0,1,core_funcform,Funcform: asinh_NEBF,0.95
+184041-V1,robust/form/asinh_BF,robustness/functional_form.md,BF_asinh,CV,G1,baseline,0,1,core_funcform,Funcform: asinh_BF,0.95
+184041-V1,robust/form/asinh_BEBF,robustness/functional_form.md,BEBF_asinh,CV,G1,baseline,0,1,core_funcform,Funcform: asinh_BEBF,0.95
+184041-V1,robust/form/standardized_NEBF,robustness/functional_form.md,NEBF_std,CV,G1,baseline,0,1,core_funcform,Funcform: standardized_NEBF,0.95
+184041-V1,robust/form/standardized_BF,robustness/functional_form.md,BF_std,CV,G1,baseline,0,1,core_funcform,Funcform: standardized_BF,0.95
+184041-V1,robust/het/male_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: male_NEBF,0.95
+184041-V1,robust/het/female_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: female_NEBF,0.95
+184041-V1,robust/het/male_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: male_BF,0.95
+184041-V1,robust/het/female_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: female_BF,0.95
+184041-V1,robust/het/young_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: young_NEBF,0.95
+184041-V1,robust/het/old_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: old_NEBF,0.95
+184041-V1,robust/het/high_cognitive_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: high_cognitive_NEBF,0.95
+184041-V1,robust/het/low_cognitive_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: low_cognitive_NEBF,0.95
+184041-V1,robust/het/high_cognitive_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: high_cognitive_BF,0.95
+184041-V1,robust/het/low_cognitive_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: low_cognitive_BF,0.95
+184041-V1,robust/het/interact_male,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: interact_male,0.95
+184041-V1,robust/het/interact_age,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: interact_age,0.95
+184041-V1,robust/het/interact_cognitive,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: interact_cognitive,0.95
+184041-V1,robust/exp2/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp2/BF,0.9
+184041-V1,robust/exp3/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp3/BF,0.9
+184041-V1,robust/exp3/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp3/NEBF,0.9
+184041-V1,robust/exp3/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp3/BEBF,0.9
+184041-V1,robust/exp3b/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp3b/BF,0.9
+184041-V1,robust/exp3b/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp3b/NEBF,0.9
+184041-V1,robust/exp3b/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp3b/BEBF,0.9
+184041-V1,robust/exp4/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp4/BF,0.9
+184041-V1,robust/exp4/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp4/NEBF,0.9
+184041-V1,robust/exp4/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/exp4/BEBF,0.9
+184041-V1,robust/pooled/BF,methods/cross_sectional_ols.md,BF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/pooled/BF,0.9
+184041-V1,robust/pooled/NEBF,methods/cross_sectional_ols.md,NEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/pooled/NEBF,0.9
+184041-V1,robust/pooled/BEBF,methods/cross_sectional_ols.md,BEBF,CV,G1,baseline,0,1,core_sample,Cross-experiment: robust/pooled/BEBF,0.9
+184041-V1,robust/placebo/balance_male,robustness/placebo_tests.md,male,CV,G1,baseline,0,0,noncore_placebo,Placebo: male,0.95
+184041-V1,robust/placebo/balance_age,robustness/placebo_tests.md,age,CV,G1,baseline,0,0,noncore_placebo,Placebo: age,0.95
+184041-V1,robust/placebo/balance_correctAns,robustness/placebo_tests.md,correctAns,CV,G1,baseline,0,0,noncore_placebo,Placebo: correctAns,0.95
+184041-V1,robust/placebo/signal_balance,robustness/placebo_tests.md,signal,CV,G1,baseline,0,0,noncore_placebo,Placebo: signal,0.95
+184041-V1,robust/control/full_NEBF,robustness/control_progression.md,NEBF,CV,G1,baseline,0,1,core_controls,Full controls: NEBF,0.95
+184041-V1,robust/control/full_BF,robustness/control_progression.md,BF,CV,G1,baseline,0,1,core_controls,Full controls: BF,0.95
+184041-V1,robust/control/full_BEBF,robustness/control_progression.md,BEBF,CV,G1,baseline,0,1,core_controls,Full controls: BEBF,0.95
+184041-V1,robust/het/risk_averse_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: risk_averse_NEBF,0.95
+184041-V1,robust/het/risk_seeking_NEBF,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: risk_seeking_NEBF,0.95
+184041-V1,robust/het/risk_averse_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: risk_averse_BF,0.95
+184041-V1,robust/het/risk_seeking_BF,robustness/heterogeneity.md,BF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: risk_seeking_BF,0.95
+184041-V1,robust/het/high_ambiguity,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: high_ambiguity,0.95
+184041-V1,robust/het/low_ambiguity,robustness/heterogeneity.md,NEBF,CV,G1,baseline,0,0,noncore_heterogeneity,Het: low_ambiguity,0.95
+184041-V1,robust/sample/drop_lottoround_1,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: drop_lottoround_1,0.95
+184041-V1,robust/sample/drop_lottoround_2,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: drop_lottoround_2,0.95
+184041-V1,robust/sample/drop_lottoround_3,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: drop_lottoround_3,0.95
+184041-V1,robust/sample/drop_lottoround_4,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: drop_lottoround_4,0.95
+184041-V1,robust/sample/drop_lottoround_5,robustness/sample_restrictions.md,NEBF,CV,G1,baseline,0,1,core_sample,Sample: drop_lottoround_5,0.95

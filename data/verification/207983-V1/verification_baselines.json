@@ -1,12 +1,12 @@
 {
   "paper_id": "207983-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/207983-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/207983-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Small class size (vs. regular) improves kindergarten standardized test scores in the Project STAR experiment.",
+      "claim_summary": "Small class size (13-17 students) improves standardized test scores relative to regular class size (22-25 students), estimated with school FE in the STAR experiment.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,11 +17,11 @@
       "baseline_treatment_vars": [
         "small_class"
       ],
-      "notes": "Baseline is OLS with school FE, no additional controls, full STAR sample. Coefficient ~5.27 points."
+      "notes": "Coefficient: 5.27 (SE~1.3, p<0.001). N=5902. School FE absorb between-school variation. This replicates the STAR small class effect used as an illustration in the contamination bias methodology paper."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Teaching aide (vs. regular class) has no significant effect on kindergarten test scores in STAR.",
+      "claim_summary": "Teacher aide treatment shows no significant effect on test scores relative to control, consistent with the paper's finding that this treatment is ineffective.",
       "expected_sign": "0",
       "baseline_spec_ids": [
         "baseline_aide"
@@ -32,8 +32,8 @@
       "baseline_treatment_vars": [
         "aide_class"
       ],
-      "notes": "Aide treatment is a secondary finding. Coefficient ~0.24, not significant (p=0.74)."
+      "notes": "Coefficient: 0.24 (SE=0.72, p=0.74). Null result as expected."
     }
   ],
-  "global_notes": "Methodology paper using STAR as illustration. Two Benhassine specs from different dataset not comparable. Some heterogeneity subsample specs duplicate sample restriction specs. Interaction specs change estimand."
+  "global_notes": "Paper: 'Contamination Bias in Multiple-Treatment Regressions' by Kolesar & Walters (AER). The main contribution is methodological (the multe decomposition). The STAR analysis is illustrative. Specification search focuses on the small class vs control comparison. 75 total specs including aide treatment and Benhassine et al. replication specs. The Benhassine specs (girls_only/boys_only with lct_father treatment) are from a different dataset entirely."
 }

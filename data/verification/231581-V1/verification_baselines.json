@@ -1,0 +1,16 @@
+{
+  "paper_id": "231581-V1",
+  "title": "Teacher Value-Added, Salary, and Contract Status in Pakistan",
+  "journal": "AER",
+  "method": "Cross-sectional OLS with absorbed FE",
+  "baseline_description": "OLS: TVA on log salary, district FE, clustered at school group",
+  "baseline_spec_ids": [
+    "baseline"
+  ],
+  "total_specifications": 89,
+  "classification_summary": {
+    "baseline": 1,
+    "core": 59,
+    "non_core": 29
+  }
+}

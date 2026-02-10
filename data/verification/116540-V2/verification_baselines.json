@@ -1,12 +1,12 @@
 {
   "paper_id": "116540-V2",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/116540-V2",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/116540-V2",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "IDA program participation (treatment assignment) increases homeownership rates among low-income renters at Wave 4 follow-up.",
+      "claim_summary": "IDA program participation increases homeownership rates among low-income renters.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Single baseline specification from an RCT. Outcome is homeownership at Wave 4, treatment is random assignment to IDA program. Baseline includes full set of demographic and socioeconomic controls with robust HC1 standard errors. The baseline coefficient is 0.011 (SE=0.039, p=0.77), a null result."
+      "notes": "Baseline coefficient 0.011 (p=0.77), NOT significant. All 80 specifications yield insignificant results (0% significant at 5%). The null finding is robust across all specification choices. Point estimates are consistently small and positive (median 0.011, 80% positive)."
     }
   ],
-  "global_notes": "This paper has a single core claim (ITT effect of IDA on homeownership). 80 total specifications. Heterogeneity specs (rows 40-50) use interaction terms changing the estimand. Placebo tests (rows 59-63) use different outcome variables. Row 42 (treat x race_cau) has coefficient 0.0 and empty p-value due to no variation in race_cau. Row 39 (LPM no controls) is identical to row 2 (bivariate)."
+  "global_notes": "RCT of Individual Development Accounts (IDAs) and homeownership. The American Dream Demonstration experiment, baseline renters followed to Wave 4 (~10 years). The main finding is a ROBUST NULL: no significant treatment effect on homeownership in any of 80 specifications. N=652, so the study may be underpowered to detect small effects. Heterogeneity by income shows marginally significant effect for high-income subgroup (p=0.07)."
 }

@@ -1,0 +1,67 @@
+{
+  "paper_id": "113842-V1",
+  "package_path": "data/downloads/extracted/113842-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "EITC information treatment has no statistically significant average effect on EITC amounts (d_fdeic) in the full sample of ~43,000 H&R Block clients.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "reg_12"
+      ],
+      "baseline_outcome_vars": [
+        "d_fdeic"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "baseline_coefficient": 24.019257,
+      "baseline_pvalue": 0.099,
+      "baseline_pvalue_permutation": 0.0995,
+      "notes": "Table 3 Col 1: d_fdeic ~ treat | No controls | Full sample. The only spec marked is_baseline=True. Coefficient $24 (p=0.099 standard, p=0.100 permutation). This is the headline null result: information provision has a marginally insignificant average effect. The paper notes this null is explained by offsetting effects among complying vs non-complying tax preparers."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Among clients of 'complying' tax preparers (goodtax==1), the EITC information treatment significantly increased EITC amounts by $58-67.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "reg_13",
+        "reg_18"
+      ],
+      "baseline_outcome_vars": [
+        "d_fdeic"
+      ],
+      "baseline_treatment_vars": [
+        "treat"
+      ],
+      "baseline_coefficient_no_controls": 67.257256,
+      "baseline_pvalue_no_controls": 0.003,
+      "baseline_coefficient_with_controls": 58.050167,
+      "baseline_pvalue_with_controls": 0.007,
+      "notes": "Table 3 Cols 1-2: d_fdeic ~ treat | goodtax==1 subsample. This is the paper's central positive finding. The treatment increases EITC amounts by $67 without controls (p=0.003) and $58 with controls (p=0.007). Robust to permutation inference (p=0.002 and p=0.0045 respectively). The complier subsample is defined by above-median tax preparer effects on the share of clients with income in the EITC-maximizing range."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "The differential treatment effect between complying and non-complying tax preparers (goodtax x treat interaction) on EITC amounts is large and significant.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "reg_15",
+        "reg_20"
+      ],
+      "baseline_outcome_vars": [
+        "d_fdeic"
+      ],
+      "baseline_treatment_vars": [
+        "good_treat"
+      ],
+      "baseline_coefficient_no_controls": 95.21268,
+      "baseline_pvalue_no_controls": 0.009,
+      "baseline_coefficient_with_controls": 90.3265,
+      "baseline_pvalue_with_controls": 0.007,
+      "notes": "Table 3 Cols 1-2: d_fdeic ~ good_treat (interaction term) | Full sample with goodtax interaction. The differential effect of $90-95 between complying and non-complying preparers is significant (p=0.007-0.009) and robust to permutation inference (p=0.006-0.007). This is the key result establishing that treatment heterogeneity is driving the average null result."
+    }
+  ],
+  "global_notes": "Paper is 'Teaching the Tax Code' by Chetty & Saez (AEJ: Applied, 2013). The underlying microdata (ts0708_total.dta) is confidential/proprietary H&R Block data, so no new specifications could be run. All 130 specifications were extracted from the permutation results file (coeff_final.dta), which stores coefficients and p-values for 24 KS tests and 106 OLS regressions. Standard errors and sample sizes are unavailable. The 40 specifications with clearly identified outcomes and designs (reg_1 through reg_66, kst_1 through kst_24) can be classified with high confidence. The remaining 40 specs (reg_67 through reg_106) have unidentified outcomes ('outcome_spec_67' etc.) because they come from unlabeled columns in the permutation file; their exact specifications cannot be determined from the available code and data. These are classified as non-core with reduced confidence. The paper's central finding is that treatment effects are concentrated among complying tax preparers, not that there is a significant full-sample effect."
+}

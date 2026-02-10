@@ -1,0 +1,17 @@
+{
+  "paper_id": "114614-V1",
+  "title": "Training Microentrepreneurs (SEWA Business Training RCT)",
+  "journal": "AEJ: Economic Policy",
+  "method": "OLS with clustered SE (RCT)",
+  "baseline_description": "Pooled treatment (Treated_All), center*baseline + month FE, clustered at training group",
+  "baseline_spec_ids": [
+    "baseline_pooled",
+    "baseline_peer"
+  ],
+  "total_specifications": 1417,
+  "classification_summary": {
+    "baseline": 75,
+    "core": 533,
+    "non_core": 809
+  }
+}

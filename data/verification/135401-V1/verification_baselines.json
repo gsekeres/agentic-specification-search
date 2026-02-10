@@ -1,0 +1,54 @@
+{
+  "paper_id": "135401-V1",
+  "package_path": "data/downloads/extracted/135401-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Breastfeeding for at least 90 days causally increases child cognitive development (summary index), estimated via Wooldridge NTSLS with weekend exposure instrument on low-educated UK mothers.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "7"
+      ],
+      "baseline_outcome_vars": [
+        "cog_index"
+      ],
+      "baseline_treatment_vars": [
+        "bfd90"
+      ],
+      "notes": "Table 5 headline result. Coefficient 0.464 (SE 0.179, p=0.010). NTSLS Exposure with hospital FE and full controls on low-educated sample (N=5015). This is the paper's primary finding."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Breastfeeding for at least 90 days has a positive but imprecisely estimated effect on child non-cognitive development (summary index).",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "8"
+      ],
+      "baseline_outcome_vars": [
+        "non_cog_index"
+      ],
+      "baseline_treatment_vars": [
+        "bfd90"
+      ],
+      "notes": "Table 5 secondary result. Coefficient 0.319 (SE 0.224, p=0.154). Same NTSLS Exposure method. Positive but not significant at conventional levels. N=4957."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Breastfeeding for at least 90 days has no significant effect on the child health summary index.",
+      "expected_sign": "0",
+      "baseline_spec_ids": [
+        "9"
+      ],
+      "baseline_outcome_vars": [
+        "health_index"
+      ],
+      "baseline_treatment_vars": [
+        "bfd90"
+      ],
+      "notes": "Table 5 null result. Coefficient 0.009 (SE 0.082, p=0.913). Health index shows essentially zero effect. N=5809. The paper treats this as a robust null."
+    }
+  ],
+  "global_notes": "Paper is 'Breastfeeding and Child Development' by Del Bono & Giardili (AEJ:Applied 2022). The specification search extracted 194 specs from Stata output files (data is confidential). Only spec_id 7 is marked is_baseline=True in the CSV (cog_index, NTSLS Exposure). However, specs 8 and 9 are the equivalent NTSLS Exposure results for non_cog_index and health_index, representing the paper's secondary and tertiary claims from the same table. We define three baseline groups corresponding to the three outcome domains. Core tests include: (a) alternative estimation methods (OLS, 2SLS, NTSLS) with same outcome and treatment; (b) alternative instruments (polynomial vs exposure); (c) alternative breastfeeding duration thresholds (bfd30, bfd60, bfd120) which change treatment operationalization; (d) robustness sample restrictions from Table F7. Non-core specs include individual cognitive/non-cognitive/health components (which are different outcomes from the summary indices) and percentile-transformed cognitive scores. Spec 105 (w2_obesity, OLS) has a missing coefficient and is marked invalid. Specs 10-11 appear to be duplicates (both OLS cog_index from the polynomial source file). Many component-level specs (45-194) test sub-outcomes rather than the summary indices."
+}

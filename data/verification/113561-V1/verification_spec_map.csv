@@ -1,0 +1,158 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+113561-V1,baseline_tab3_col2,methods/cross_sectional_ols.md#baseline,giving,picshowblack,G1,baseline_tab3_col2,1,1,core_controls,Primary baseline: Table 3 Col 2 giving on picshowblack all respondents WLS with demographics,1.0
+113561-V1,baseline_tab3_col5_white,methods/cross_sectional_ols.md#baseline,giving,picshowblack,G2,baseline_tab3_col5_white,1,1,core_sample,Primary baseline: Table 3 Col 5 white respondents only,1.0
+113561-V1,baseline_tab3_col6_black,methods/cross_sectional_ols.md#baseline,giving,picshowblack,G3,baseline_tab3_col6_black,1,1,core_sample,Primary baseline: Table 3 Col 6 black respondents only,1.0
+113561-V1,baseline_tab4_r1_all,methods/cross_sectional_ols.md#baseline,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Table 4 Row 1 all respondents using nraudworthy composite instead of full audio manips,0.95
+113561-V1,outcome_giving_white,methods/cross_sectional_ols.md#baseline,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,White respondents with nraudworthy composite audio control,0.95
+113561-V1,outcome_giving_black,methods/cross_sectional_ols.md#baseline,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Black respondents with nraudworthy composite audio control,0.95
+113561-V1,outcome_hypgiv_tc500_all,robustness/alternative_outcomes.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_outcome,Hypothetical giving (topcoded $500) all respondents -- alternative outcome same treatment,0.9
+113561-V1,outcome_hypgiv_tc500_white,robustness/alternative_outcomes.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_outcome,Hypothetical giving white respondents,0.9
+113561-V1,outcome_hypgiv_tc500_black,robustness/alternative_outcomes.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_outcome,Hypothetical giving black respondents,0.9
+113561-V1,outcome_subjsupchar_all,robustness/alternative_outcomes.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_outcome,Support for charity spending all respondents -- related attitudinal outcome,0.9
+113561-V1,outcome_subjsupchar_white,robustness/alternative_outcomes.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_outcome,Support for charity spending white respondents,0.9
+113561-V1,outcome_subjsupchar_black,robustness/alternative_outcomes.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_outcome,Support for charity spending black respondents,0.9
+113561-V1,outcome_subjsupgov_all,robustness/alternative_outcomes.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_outcome,Support for government spending all respondents -- related attitudinal outcome,0.9
+113561-V1,outcome_subjsupgov_white,robustness/alternative_outcomes.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_outcome,Support for government spending white respondents,0.9
+113561-V1,outcome_subjsupgov_black,robustness/alternative_outcomes.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_outcome,Support for government spending black respondents,0.9
+113561-V1,tab5_giving_s2_main_survey_white,robustness/sample_restrictions.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Table 5 white main survey subsample -- sample restriction,0.95
+113561-V1,tab5_giving_s3_slidell_white,robustness/sample_restrictions.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Table 5 white Slidell city subsample,0.95
+113561-V1,tab5_giving_s4_biloxi_white,robustness/sample_restrictions.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Table 5 white Biloxi city subsample,0.95
+113561-V1,tab5_giving_s5_no_demog_white,robustness/control_variations.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Table 5 white no demographic controls,0.95
+113561-V1,tab5_giving_s6_extra_ctrls_white,robustness/control_variations.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Table 5 white extra controls (HfH effectiveness + life priorities),0.95
+113561-V1,tab5_giving_s8_race_shown_white,robustness/sample_restrictions.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Table 5 white race-shown treatment only (excludes obscured condition),0.95
+113561-V1,tab5_hypgiv_tc500_s1_baseline_white,robustness/alternative_outcomes.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_outcome,Duplicate of outcome_hypgiv_tc500_white (Table 5 s1 = baseline white hypgiv),0.9
+113561-V1,tab5_hypgiv_tc500_s2_main_survey_white,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Hypothetical giving white main survey subsample,0.9
+113561-V1,tab5_hypgiv_tc500_s3_slidell_white,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Hypothetical giving white Slidell subsample,0.9
+113561-V1,tab5_hypgiv_tc500_s4_biloxi_white,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Hypothetical giving white Biloxi subsample,0.9
+113561-V1,tab5_hypgiv_tc500_s5_no_demog_white,robustness/control_variations.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Hypothetical giving white no demographic controls,0.9
+113561-V1,tab5_hypgiv_tc500_s6_extra_ctrls_white,robustness/control_variations.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Hypothetical giving white extra controls,0.9
+113561-V1,tab5_hypgiv_tc500_s8_race_shown_white,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Hypothetical giving white race-shown only,0.9
+113561-V1,tab5_subjsupchar_s1_baseline_white,robustness/alternative_outcomes.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_outcome,Duplicate of outcome_subjsupchar_white (Table 5 s1 = baseline white subjsupchar),0.9
+113561-V1,tab5_subjsupchar_s2_main_survey_white,robustness/sample_restrictions.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Charity support white main survey subsample,0.9
+113561-V1,tab5_subjsupchar_s3_slidell_white,robustness/sample_restrictions.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Charity support white Slidell subsample,0.9
+113561-V1,tab5_subjsupchar_s4_biloxi_white,robustness/sample_restrictions.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Charity support white Biloxi subsample,0.9
+113561-V1,tab5_subjsupchar_s5_no_demog_white,robustness/control_variations.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Charity support white no demographic controls,0.9
+113561-V1,tab5_subjsupchar_s6_extra_ctrls_white,robustness/control_variations.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Charity support white extra controls,0.9
+113561-V1,tab5_subjsupchar_s8_race_shown_white,robustness/sample_restrictions.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Charity support white race-shown only,0.9
+113561-V1,tab5_subjsupgov_s1_baseline_white,robustness/alternative_outcomes.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_outcome,Duplicate of outcome_subjsupgov_white (Table 5 s1 = baseline white subjsupgov),0.9
+113561-V1,tab5_subjsupgov_s2_main_survey_white,robustness/sample_restrictions.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Govt support white main survey subsample,0.9
+113561-V1,tab5_subjsupgov_s3_slidell_white,robustness/sample_restrictions.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Govt support white Slidell subsample,0.9
+113561-V1,tab5_subjsupgov_s4_biloxi_white,robustness/sample_restrictions.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Govt support white Biloxi subsample,0.9
+113561-V1,tab5_subjsupgov_s5_no_demog_white,robustness/control_variations.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Govt support white no demographic controls,0.9
+113561-V1,tab5_subjsupgov_s6_extra_ctrls_white,robustness/control_variations.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Govt support white extra controls,0.9
+113561-V1,tab5_subjsupgov_s8_race_shown_white,robustness/sample_restrictions.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_sample,Govt support white race-shown only,0.9
+113561-V1,tab5B_giving_s2_main_survey_all,robustness/sample_restrictions.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Giving all respondents main survey subsample,0.95
+113561-V1,tab5B_giving_s3_slidell_all,robustness/sample_restrictions.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Giving all respondents Slidell subsample,0.95
+113561-V1,tab5B_giving_s4_biloxi_all,robustness/sample_restrictions.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Giving all respondents Biloxi subsample,0.95
+113561-V1,tab5B_giving_s5_no_demog_all,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Giving all respondents no demographic controls,0.95
+113561-V1,tab5B_giving_s6_extra_ctrls_all,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Giving all respondents extra controls,0.95
+113561-V1,tab5B_giving_s8_race_shown_all,robustness/sample_restrictions.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Giving all respondents race-shown only,0.95
+113561-V1,tab5B_hypgiv_tc500_s2_main_survey_all,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Hypothetical giving all respondents main survey subsample,0.9
+113561-V1,tab5B_hypgiv_tc500_s3_slidell_all,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Hypothetical giving all respondents Slidell subsample,0.9
+113561-V1,tab5B_hypgiv_tc500_s4_biloxi_all,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Hypothetical giving all respondents Biloxi subsample,0.9
+113561-V1,tab5B_hypgiv_tc500_s5_no_demog_all,robustness/control_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Hypothetical giving all respondents no demographic controls,0.9
+113561-V1,tab5B_hypgiv_tc500_s6_extra_ctrls_all,robustness/control_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Hypothetical giving all respondents extra controls,0.9
+113561-V1,tab5B_hypgiv_tc500_s8_race_shown_all,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Hypothetical giving all respondents race-shown only,0.9
+113561-V1,tab5B_subjsupchar_s2_main_survey_all,robustness/sample_restrictions.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Charity support all respondents main survey subsample,0.9
+113561-V1,tab5B_subjsupchar_s3_slidell_all,robustness/sample_restrictions.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Charity support all respondents Slidell subsample,0.9
+113561-V1,tab5B_subjsupchar_s4_biloxi_all,robustness/sample_restrictions.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Charity support all respondents Biloxi subsample,0.9
+113561-V1,tab5B_subjsupchar_s5_no_demog_all,robustness/control_variations.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Charity support all respondents no demographic controls,0.9
+113561-V1,tab5B_subjsupchar_s6_extra_ctrls_all,robustness/control_variations.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Charity support all respondents extra controls,0.9
+113561-V1,tab5B_subjsupchar_s8_race_shown_all,robustness/sample_restrictions.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Charity support all respondents race-shown only,0.9
+113561-V1,tab5B_subjsupgov_s2_main_survey_all,robustness/sample_restrictions.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Govt support all respondents main survey subsample,0.9
+113561-V1,tab5B_subjsupgov_s3_slidell_all,robustness/sample_restrictions.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Govt support all respondents Slidell subsample,0.9
+113561-V1,tab5B_subjsupgov_s4_biloxi_all,robustness/sample_restrictions.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Govt support all respondents Biloxi subsample,0.9
+113561-V1,tab5B_subjsupgov_s5_no_demog_all,robustness/control_variations.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Govt support all respondents no demographic controls,0.9
+113561-V1,tab5B_subjsupgov_s6_extra_ctrls_all,robustness/control_variations.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Govt support all respondents extra controls,0.9
+113561-V1,tab5B_subjsupgov_s8_race_shown_all,robustness/sample_restrictions.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_sample,Govt support all respondents race-shown only,0.9
+113561-V1,tab5C_giving_s2_main_survey_black,robustness/sample_restrictions.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Giving black main survey subsample,0.95
+113561-V1,tab5C_giving_s3_slidell_black,robustness/sample_restrictions.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Giving black Slidell subsample,0.95
+113561-V1,tab5C_giving_s4_biloxi_black,robustness/sample_restrictions.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Giving black Biloxi subsample,0.95
+113561-V1,tab5C_giving_s5_no_demog_black,robustness/control_variations.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Giving black no demographic controls,0.95
+113561-V1,tab5C_giving_s6_extra_ctrls_black,robustness/control_variations.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Giving black extra controls,0.95
+113561-V1,tab5C_giving_s8_race_shown_black,robustness/sample_restrictions.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Giving black race-shown only,0.95
+113561-V1,tab5C_hypgiv_tc500_s2_main_survey_black,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Hypothetical giving black main survey subsample,0.9
+113561-V1,tab5C_hypgiv_tc500_s3_slidell_black,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Hypothetical giving black Slidell subsample,0.9
+113561-V1,tab5C_hypgiv_tc500_s4_biloxi_black,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Hypothetical giving black Biloxi subsample,0.9
+113561-V1,tab5C_hypgiv_tc500_s5_no_demog_black,robustness/control_variations.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Hypothetical giving black no demographic controls,0.9
+113561-V1,tab5C_hypgiv_tc500_s6_extra_ctrls_black,robustness/control_variations.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Hypothetical giving black extra controls,0.9
+113561-V1,tab5C_hypgiv_tc500_s8_race_shown_black,robustness/sample_restrictions.md,hypgiv_tc500,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Hypothetical giving black race-shown only,0.9
+113561-V1,tab5C_subjsupchar_s2_main_survey_black,robustness/sample_restrictions.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Charity support black main survey subsample,0.9
+113561-V1,tab5C_subjsupchar_s3_slidell_black,robustness/sample_restrictions.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Charity support black Slidell subsample,0.9
+113561-V1,tab5C_subjsupchar_s4_biloxi_black,robustness/sample_restrictions.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Charity support black Biloxi subsample,0.9
+113561-V1,tab5C_subjsupchar_s5_no_demog_black,robustness/control_variations.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Charity support black no demographic controls,0.9
+113561-V1,tab5C_subjsupchar_s6_extra_ctrls_black,robustness/control_variations.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Charity support black extra controls,0.9
+113561-V1,tab5C_subjsupchar_s8_race_shown_black,robustness/sample_restrictions.md,subjsupchar,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Charity support black race-shown only,0.9
+113561-V1,tab5C_subjsupgov_s2_main_survey_black,robustness/sample_restrictions.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Govt support black main survey subsample,0.9
+113561-V1,tab5C_subjsupgov_s3_slidell_black,robustness/sample_restrictions.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Govt support black Slidell subsample,0.9
+113561-V1,tab5C_subjsupgov_s4_biloxi_black,robustness/sample_restrictions.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Govt support black Biloxi subsample,0.9
+113561-V1,tab5C_subjsupgov_s5_no_demog_black,robustness/control_variations.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Govt support black no demographic controls,0.9
+113561-V1,tab5C_subjsupgov_s6_extra_ctrls_black,robustness/control_variations.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Govt support black extra controls,0.9
+113561-V1,tab5C_subjsupgov_s8_race_shown_black,robustness/sample_restrictions.md,subjsupgov,picshowblack,G3,baseline_tab3_col6_black,0,1,core_sample,Govt support black race-shown only,0.9
+113561-V1,ctrl_full_manip_all,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Duplicate of baseline_tab3_col2 -- full audio manipulation dummies instead of composite,0.95
+113561-V1,ctrl_full_manip_white,robustness/control_variations.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Duplicate of baseline_tab3_col5_white -- full audio manipulation dummies,0.95
+113561-V1,ctrl_full_manip_black,robustness/control_variations.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Duplicate of baseline_tab3_col6_black -- full audio manipulation dummies,0.95
+113561-V1,ctrl_no_charity_all,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,All respondents dropping prior charity controls from demographics,0.95
+113561-V1,ctrl_no_charity_white,robustness/control_variations.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,White respondents dropping prior charity controls,0.95
+113561-V1,ctrl_no_charity_black,robustness/control_variations.md,giving,picshowblack,G3,baseline_tab3_col6_black,0,1,core_controls,Black respondents dropping prior charity controls,0.95
+113561-V1,unweighted_giving_all,robustness/inference_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_inference,All respondents OLS unweighted (no tweight) -- inference variation,0.95
+113561-V1,unweighted_giving_white,robustness/inference_variations.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_inference,White respondents OLS unweighted,0.95
+113561-V1,unweighted_hypgiv_tc500_all,robustness/inference_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_inference,Hypothetical giving all respondents OLS unweighted,0.9
+113561-V1,unweighted_hypgiv_tc500_white,robustness/inference_variations.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_inference,Hypothetical giving white respondents OLS unweighted,0.9
+113561-V1,unweighted_subjsupchar_all,robustness/inference_variations.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_inference,Charity support all respondents OLS unweighted,0.9
+113561-V1,unweighted_subjsupchar_white,robustness/inference_variations.md,subjsupchar,picshowblack,G2,baseline_tab3_col5_white,0,1,core_inference,Charity support white respondents OLS unweighted,0.9
+113561-V1,unweighted_subjsupgov_all,robustness/inference_variations.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_inference,Govt support all respondents OLS unweighted,0.9
+113561-V1,unweighted_subjsupgov_white,robustness/inference_variations.md,subjsupgov,picshowblack,G2,baseline_tab3_col5_white,0,1,core_inference,Govt support white respondents OLS unweighted,0.9
+113561-V1,extra_region_giving_all,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Giving all respondents with extra region dummies,0.95
+113561-V1,extra_region_giving_white,robustness/control_variations.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Giving white respondents with extra region dummies,0.95
+113561-V1,extra_region_hypgiv_tc500_all,robustness/control_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Hypothetical giving all with extra region dummies,0.9
+113561-V1,extra_region_hypgiv_tc500_white,robustness/control_variations.md,hypgiv_tc500,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,Hypothetical giving white with extra region dummies,0.9
+113561-V1,extra_hhsize_giving_all,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Giving all respondents with household size control,0.95
+113561-V1,extra_hhsize_hypgiv_tc500_all,robustness/control_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Hypothetical giving all with household size control,0.9
+113561-V1,perception_per_votebush_all,robustness/alternative_outcomes.md,per_votebush,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: voted for Bush -- different construct from giving/support outcomes,0.85
+113561-V1,perception_per_votebush_white,robustness/alternative_outcomes.md,per_votebush,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: voted for Bush,0.85
+113561-V1,perception_per_income_all,robustness/alternative_outcomes.md,per_income,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: income of victims -- different construct,0.85
+113561-V1,perception_per_income_white,robustness/alternative_outcomes.md,per_income,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: income,0.85
+113561-V1,perception_per_govtcash_all,robustness/alternative_outcomes.md,per_govtcash,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: government cash assistance,0.85
+113561-V1,perception_per_govtcash_white,robustness/alternative_outcomes.md,per_govtcash,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: government cash,0.85
+113561-V1,perception_per_prepared_all,robustness/alternative_outcomes.md,per_prepared,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: preparedness,0.85
+113561-V1,perception_per_prepared_white,robustness/alternative_outcomes.md,per_prepared,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: preparedness,0.85
+113561-V1,perception_per_attrelig_all,robustness/alternative_outcomes.md,per_attrelig,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: attend religious services,0.85
+113561-V1,perception_per_attrelig_white,robustness/alternative_outcomes.md,per_attrelig,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: attend religious services,0.85
+113561-V1,perception_per_crimrec_all,robustness/alternative_outcomes.md,per_crimrec,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: criminal record,0.85
+113561-V1,perception_per_crimrec_white,robustness/alternative_outcomes.md,per_crimrec,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: criminal record,0.85
+113561-V1,perception_per_helpoth_all,robustness/alternative_outcomes.md,per_helpoth,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: help others,0.85
+113561-V1,perception_per_helpoth_white,robustness/alternative_outcomes.md,per_helpoth,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: help others,0.85
+113561-V1,perception_per_workhard_all,robustness/alternative_outcomes.md,per_workhard,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: work hard,0.85
+113561-V1,perception_per_workhard_white,robustness/alternative_outcomes.md,per_workhard,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: work hard,0.85
+113561-V1,perception_per_windspeed_all,robustness/alternative_outcomes.md,per_windspeed,picshowblack,G1,baseline_tab3_col2,0,0,noncore_alt_outcome,Perception outcome: windspeed -- placebo-like perception unrelated to race,0.85
+113561-V1,perception_per_windspeed_white,robustness/alternative_outcomes.md,per_windspeed,picshowblack,G2,baseline_tab3_col5_white,0,0,noncore_alt_outcome,Perception outcome white: windspeed,0.85
+113561-V1,manip_check_per_hfhdif_all,robustness/alternative_outcomes.md,per_hfhdif,picshowblack,G4,manip_check_per_hfhdif_all,1,0,noncore_diagnostic,Manipulation check: perceived % black recipients -- validates experimental design not main effect,0.95
+113561-V1,manip_check_per_hfhdif_white,robustness/alternative_outcomes.md,per_hfhdif,picshowblack,G4,manip_check_per_hfhdif_all,0,0,noncore_diagnostic,Manipulation check white subsample,0.95
+113561-V1,manip_check_per_hfhdif_black,robustness/alternative_outcomes.md,per_hfhdif,picshowblack,G4,manip_check_per_hfhdif_all,0,0,noncore_diagnostic,Manipulation check black subsample,0.95
+113561-V1,minimal_ctrl_giving,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Giving all respondents minimal controls (picture manips only),0.95
+113561-V1,minimal_ctrl_hypgiv_tc500,robustness/control_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Hypothetical giving all minimal controls,0.9
+113561-V1,minimal_ctrl_subjsupchar,robustness/control_variations.md,subjsupchar,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Charity support all minimal controls,0.9
+113561-V1,minimal_ctrl_subjsupgov,robustness/control_variations.md,subjsupgov,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Govt support all minimal controls,0.9
+113561-V1,pic_audio_only_giving,robustness/control_variations.md,giving,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Giving all picture + audio controls only (no demographics),0.95
+113561-V1,pic_audio_only_hypgiv_tc500,robustness/control_variations.md,hypgiv_tc500,picshowblack,G1,baseline_tab3_col2,0,1,core_controls,Hypothetical giving all picture + audio only,0.9
+113561-V1,loo_drop_age_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop age control,0.9
+113561-V1,loo_drop_age2_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop age-squared control,0.9
+113561-V1,loo_drop_black_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop black dummy (irrelevant in white-only sample -- duplicate of outcome_giving_white),0.9
+113561-V1,loo_drop_other_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop other race dummy (irrelevant in white-only sample -- duplicate of loo_drop_black_white),0.9
+113561-V1,loo_drop_edudo_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop edudo (dropout education) control,0.9
+113561-V1,loo_drop_edusc_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop edusc (some college) control,0.9
+113561-V1,loo_drop_educp_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop educp (college+) control,0.9
+113561-V1,loo_drop_lnhhinc_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop log household income control,0.9
+113561-V1,loo_drop_dualin_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop dual income control,0.9
+113561-V1,loo_drop_married_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop married control,0.9
+113561-V1,loo_drop_male_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop male control,0.9
+113561-V1,loo_drop_singlemale_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop single male control,0.9
+113561-V1,loo_drop_south_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop south region control,0.9
+113561-V1,loo_drop_work_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop employment control,0.9
+113561-V1,loo_drop_disabled_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop disabled control,0.9
+113561-V1,loo_drop_retired_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop retired control,0.9
+113561-V1,loo_drop_dcharkatrina_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop donated to Katrina dummy,0.9
+113561-V1,loo_drop_lcharkatrina_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop log Katrina donations,0.9
+113561-V1,loo_drop_dchartot2005_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop donated to charity 2005 dummy,0.9
+113561-V1,loo_drop_lchartot2005_white,robustness/leave_one_out.md,giving,picshowblack,G2,baseline_tab3_col5_white,0,1,core_controls,LOO white: drop log total 2005 charity donations,0.9

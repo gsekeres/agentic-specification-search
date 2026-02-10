@@ -1,12 +1,12 @@
 {
   "paper_id": "198865-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/198865-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/198865-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Price elasticity of cement demand is negative: higher prices reduce quantity shipped, estimated via OLS with market FE on log-log specification.",
+      "claim_summary": "Cement demand is price-elastic (negative price elasticity).",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline"
@@ -17,11 +17,11 @@
       "baseline_treatment_vars": [
         "log_price"
       ],
-      "notes": "Cement application baseline. OLS with market FE, no controls, clustered by EPA market. Spec iv/method/ols is an exact duplicate of baseline (identical coefficient, SE, and all fields)."
+      "notes": "OLS baseline: coef = -0.47. Market FE, clustered by market."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "Price elasticity of airline demand is negative: higher ticket prices reduce market share (nested logit), estimated with route FE and product controls.",
+      "claim_summary": "Airlines demand is price-elastic.",
       "expected_sign": "-",
       "baseline_spec_ids": [
         "baseline_airlines"
@@ -32,8 +32,8 @@
       "baseline_treatment_vars": [
         "price100"
       ],
-      "notes": "Airlines application baseline. Nested logit demand model with market (route-quarter) FE, product-level controls (direct, HUB, miles, airline FE), clustered by route. Separate dataset and model structure from cement."
+      "notes": "Nested logit baseline. Route FE, clustered by route."
     }
   ],
-  "global_notes": "Methods paper with two empirical applications (cement and airlines). Key issues: (1) iv/method/ols duplicates baseline exactly; (2) LOO controls for cement start from the full-controls model, not the no-controls baseline; (3) quadratic spec reports linear term of quadratic, not comparable to elasticity; (4) direct_only and connecting_only change from nested to simple logit, altering model structure; (5) some IV specs (cpi_ng_price, cpi_wage_hr) have weak first stages producing sign reversals."
+  "global_notes": "Methods paper demonstrating covariance restriction estimators. Two empirical applications: cement (1984-2009) and airlines (2004). Some IV instruments are weak."
 }

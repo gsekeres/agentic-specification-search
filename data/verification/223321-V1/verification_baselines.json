@@ -1,17 +1,15 @@
 {
   "paper_id": "223321-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/223321-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/223321-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Children of Mexican immigrant parents who arrived in the US at ages 0-8 are more likely to not identify as Hispanic than children of parents who arrived at ages 9-17.",
+      "claim_summary": "Children of Mexican immigrant parents who arrived at ages 0-8 are more likely to not identify as Hispanic compared to children whose parents arrived at ages 9-17, after controlling for demographics, English ability, education, family structure, intermarriage, and state FE.",
       "expected_sign": "+",
       "baseline_spec_ids": [
-        "baseline",
-        "baseline_no_controls",
-        "baseline_basic_controls"
+        "baseline"
       ],
       "baseline_outcome_vars": [
         "not_hisp"
@@ -19,8 +17,8 @@
       "baseline_treatment_vars": [
         "par_Arrived0_8"
       ],
-      "notes": "Three baseline specs represent a control-progression from no controls to full controls. The papers preferred specification is baseline (full controls), which yields an insignificant coefficient (p=0.10). The no-controls and basic-controls baselines are significant but largely driven by confounding through intermarriage."
+      "notes": "Coefficient: 0.0014 (SE~0.0008, p=0.10). NOT significant at 5% in the full specification. The no-controls (0.011, p<0.001) and basic-controls (0.012, p<0.001) versions are significant, but the effect is largely absorbed by intermarriage controls."
     }
   ],
-  "global_notes": "The paper tests whether parents age at arrival affects childs Hispanic identification. The core claim is sensitive to controls: significant without intermarriage controls but insignificant with full controls. 62 total specs. Heterogeneity interaction specs change the treatment variable to an interaction term and are non-core. The placebo uses a different outcome. Logit/probit are core_method but different scale. Alternative treatment cutoffs test the same concept."
+  "global_notes": "Paper: Effect of Parent's Age at Arrival on Child's Hispanic Identity (AER P&P 2025). WLS with Census/ACS data (N=281,076). The key finding is that the raw effect (1.1pp) drops to 0.14pp and becomes insignificant when intermarriage is controlled. This suggests the mechanism is through marriage patterns rather than direct cultural transmission. The paper presents 3 baselines: no controls, basic controls, and full controls. The full controls spec is the preferred one. Placebo test on parent's own identity is significant (0.18pp), which is a concern. Heterogeneity by parent gender is stark (strong for fathers, null for mothers). 62 total specs."
 }

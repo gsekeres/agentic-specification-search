@@ -16,14 +16,32 @@ I4R  = ROOT / "i4r"
 RESULTS = ROOT / "estimation" / "results"
 OVERLEAF = Path(__file__).resolve().parents[3] / "overleaf" / "tex"
 
-# ── 1. Read verification_summary to get our 95 paper_ids ──────────────────
-verification = {}
-with open(DATA / "verification_summary_by_paper.csv") as f:
-    reader = csv.DictReader(f)
-    for r in reader:
-        verification[r["paper_id"]] = r
+# ── 1. Read paper_ids from unified_results.csv (primary) + verification ───
+import pandas as pd
+_unified = pd.read_csv(ROOT / "unified_results.csv")
+_unified_pids = sorted(_unified["paper_id"].unique())
 
-print(f"Verification papers: {len(verification)}")
+verification = {}
+# Verification summary for spec counts where available
+try:
+    with open(DATA / "verification_summary_by_paper.csv") as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            verification[r["paper_id"]] = r
+except FileNotFoundError:
+    pass
+
+# Ensure all unified papers are in the verification dict (with fallback counts)
+for pid in _unified_pids:
+    if pid not in verification:
+        sub = _unified[_unified["paper_id"] == pid]
+        verification[pid] = {
+            "paper_id": pid,
+            "total_specs": str(len(sub)),
+            "core_specs": "0",
+        }
+
+print(f"Catalog papers: {len(verification)} ({len(_unified_pids)} from unified_results)")
 
 # ── 2. Read claim_level.csv (40 I4R papers with title, journal, year) ─────
 claims = {}
@@ -75,16 +93,34 @@ with open(META / "icpsr_openicpsr_packages.jsonl") as f:
             if pid not in icpsr_meta or len(clean) > len(icpsr_meta[pid].get("title", "")):
                 icpsr_meta[pid] = {"title": clean, "doi": doi, "url": url, "raw_title": title}
 
-# ── 6. Join all sources ──────────────────────────────────────────────────
+# ── 5b. Read author-reported regression counts ─────────────────────────
+n_regressions = {}
+reg_path = RESULTS / "n_regressions_by_paper.csv"
+if reg_path.exists():
+    with open(reg_path) as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            pid = r["paper_id"]
+            try:
+                n_regressions[pid] = int(r["n_regressions_original"])
+            except (ValueError, KeyError):
+                pass
+    print(f"Loaded regression counts: {len(n_regressions)} papers")
+
+# ── 6. Join all sources (restrict to unified_results papers) ─────────────
+_unified_set = set(str(p) for p in _unified_pids)
 papers = {}
 for pid in sorted(verification.keys()):
+    if pid not in _unified_set:
+        continue
     title = ""
     journal = ""
     year = ""
     repl_doi = ""
     repl_url = ""
-    n_specs = int(verification[pid].get("total_specs", 0))
-    n_core = int(verification[pid].get("core_specs", 0))
+    # Spec counts: prefer unified_results (always available), core from verification
+    n_specs = int(_unified[_unified["paper_id"] == pid].shape[0])
+    n_core = int(float(verification[pid].get("core_specs", 0) or 0))
 
     # Source: claim_level
     if pid in claims:
@@ -142,6 +178,7 @@ for pid in sorted(verification.keys()):
         "repl_url": repl_url,
         "n_specs": n_specs,
         "n_core": n_core,
+        "n_regressions": n_regressions.get(pid, None),
         "in_sample_a": pid in claims,
     }
 
@@ -273,92 +310,92 @@ for pid, info in papers.items():
         info["journal"] = cr["cr_journal"]
 
 
-# ── 9. Generate BibTeX entries ────────────────────────────────────────────
-def make_bib_key(pid, info):
-    """Generate a BibTeX key like 'smith2022local'."""
-    short = info.get("authors_short", "")
-    first_author = short.split(" ")[0].split(",")[0] if short else pid.split("-")[0]
-    first_author = re.sub(r"[^a-zA-Z]", "", first_author).lower()
-    year = info.get("year", "")
-    title_word = ""
-    if info.get("title"):
-        words = re.findall(r"[A-Za-z]+", info["title"])
-        # Skip common words
-        skip = {"the", "a", "an", "of", "in", "on", "and", "for", "to", "from", "with", "by", "at", "is", "are", "how", "do", "does", "can", "when", "why", "what", "evidence"}
-        for w in words:
-            if w.lower() not in skip:
-                title_word = w.lower()
-                break
-    return f"{first_author}{year}{title_word}"
-
-
-def escape_bibtex(s):
-    """Escape special characters for BibTeX."""
-    s = s.replace("&", r"\&")
-    return s
-
-
-bib_entries = []
-for pid in sorted(papers.keys(), key=lambda p: (papers[p].get("journal", ""), papers[p].get("year", ""), p)):
-    info = papers[pid]
-    key = make_bib_key(pid, info)
-    info["bib_key"] = key
-
-    # Published paper entry
-    authors = info.get("authors_bibtex", "")
-    title = info.get("title", pid)
-    journal = info.get("journal", "")
-    year = info.get("year", "")
-    doi = info.get("pub_doi", "")
-    volume = info.get("cr_volume", "")
-    issue = info.get("cr_issue", "")
-    pages = info.get("cr_pages", "")
-
-    entry = f"@article{{{key},\n"
-    if authors:
-        entry += f"  author = {{{authors}}},\n"
-    entry += f"  title = {{{escape_bibtex(title)}}},\n"
-    if journal:
-        entry += f"  journal = {{{escape_bibtex(journal)}}},\n"
-    if year:
-        entry += f"  year = {{{year}}},\n"
-    if volume:
-        entry += f"  volume = {{{volume}}},\n"
-    if issue:
-        entry += f"  number = {{{issue}}},\n"
-    if pages:
-        entry += f"  pages = {{{pages}}},\n"
-    if doi:
-        entry += f"  doi = {{{doi}}},\n"
-    entry += "}\n"
-    bib_entries.append(entry)
-
-    # Replication package entry
-    repl_key = f"{key}_data"
-    info["repl_bib_key"] = repl_key
-    repl_doi = info.get("repl_doi", "")
-    repl_url = info.get("repl_url", "")
-    repl_entry = f"@misc{{{repl_key},\n"
-    if authors:
-        repl_entry += f"  author = {{{authors}}},\n"
-    repl_entry += f"  title = {{Replication data for: {escape_bibtex(title)}}},\n"
-    if year:
-        repl_entry += f"  year = {{{year}}},\n"
-    repl_entry += f"  publisher = {{openICPSR}},\n"
-    if repl_doi:
-        repl_entry += f"  doi = {{{repl_doi}}},\n"
-    if repl_url:
-        repl_entry += f"  url = {{{repl_url}}},\n"
-    repl_entry += "}\n"
-    bib_entries.append(repl_entry)
-
-# Write BibTeX file
+# ── 9. Parse bib file as authoritative source for citekeys, journal, year ──
+# The bib file is maintained manually and has corrected metadata.
 bib_path = OVERLEAF / "v8_sections" / "replicated_papers.bib"
-with open(bib_path, "w") as f:
-    f.write("% Auto-generated BibTeX entries for replicated papers\n")
-    f.write("% Generated by 26_build_paper_catalog.py\n\n")
-    f.write("\n".join(bib_entries))
-print(f"\nWrote {len(bib_entries)} BibTeX entries to {bib_path}")
+bib_entries = {}  # citekey -> {journal, year, title, ...}
+if bib_path.exists():
+    with open(bib_path) as f:
+        bib_content = f.read()
+    # Split into entries and parse each one
+    for m in re.finditer(
+        r'@article\{(\w+),\s*(.*?)\n\}', bib_content, re.DOTALL
+    ):
+        citekey = m.group(1)
+        body = m.group(2)
+        entry = {"citekey": citekey}
+        for field_m in re.finditer(r'(\w+)\s*=\s*\{(.*?)\}', body, re.DOTALL):
+            entry[field_m.group(1).lower()] = field_m.group(2).strip()
+        bib_entries[citekey] = entry
+    print(f"Parsed {len(bib_entries)} entries from bib file")
+
+# Build a mapping from citekey -> paper_id by matching on title
+# (title is the most reliable common field between bib and our papers dict)
+def normalize_title(t):
+    """Lowercase, strip punctuation/LaTeX for fuzzy matching."""
+    t = re.sub(r'\\[a-zA-Z]+\{([^}]*)\}', r'\1', t)  # \'{e} -> e
+    t = re.sub(r'[{}\\\'"`,.:;!?–—\-]', '', t).lower()
+    return re.sub(r'\s+', ' ', t).strip()
+
+bib_title_to_key = {}
+for citekey, entry in bib_entries.items():
+    t = entry.get("title", "")
+    if t:
+        bib_title_to_key[normalize_title(t)] = citekey
+
+# Match each paper to its bib entry and override journal/year/citekey
+n_bib_matched = 0
+for pid, info in papers.items():
+    our_title = normalize_title(info.get("title", ""))
+    matched_key = bib_title_to_key.get(our_title)
+    # Fallback: try substring matching (first 40 chars of normalized title)
+    if not matched_key and len(our_title) > 20:
+        our_prefix = our_title[:40]
+        for bib_norm, bib_key in bib_title_to_key.items():
+            if bib_norm.startswith(our_prefix) or our_prefix in bib_norm:
+                matched_key = bib_key
+                break
+    # Fallback: strip common prefixes and retry
+    if not matched_key:
+        stripped = re.sub(
+            r'^(supplementary data\s*|data and code for\s*|replication data for\s*)',
+            '', our_title, flags=re.IGNORECASE
+        ).strip()
+        if stripped != our_title and len(stripped) > 20:
+            matched_key = bib_title_to_key.get(stripped)
+            if not matched_key:
+                sp = stripped[:40]
+                for bib_norm, bib_key in bib_title_to_key.items():
+                    if bib_norm.startswith(sp) or sp in bib_norm:
+                        matched_key = bib_key
+                        break
+    if matched_key and matched_key in bib_entries:
+        bib_e = bib_entries[matched_key]
+        info["bib_key"] = matched_key
+        # Override journal and year from bib (authoritative)
+        if bib_e.get("journal"):
+            info["journal"] = bib_e["journal"]
+        if bib_e.get("year"):
+            info["year"] = bib_e["year"]
+        n_bib_matched += 1
+    else:
+        # Fallback: generate key from CrossRef data
+        short = info.get("authors_short", "")
+        first_author = short.split(" ")[0].split(",")[0] if short else pid.split("-")[0]
+        first_author = re.sub(r"[^a-zA-Z]", "", first_author).lower()
+        year = info.get("year", "")
+        title_word = ""
+        if info.get("title"):
+            words = re.findall(r"[A-Za-z]+", info["title"])
+            skip = {"the", "a", "an", "of", "in", "on", "and", "for", "to", "from", "with", "by", "at", "is", "are", "how", "do", "does", "can", "when", "why", "what", "evidence"}
+            for w in words:
+                if w.lower() not in skip:
+                    title_word = w.lower()
+                    break
+        info["bib_key"] = f"{first_author}{year}{title_word}"
+        print(f"  WARNING: no bib match for {pid}: {info.get('title', '')[:60]}")
+
+print(f"Bib-matched: {n_bib_matched}/{len(papers)} papers")
 
 
 # ── 10. Generate LaTeX table ─────────────────────────────────────────────
@@ -424,30 +461,35 @@ sorted_pids = sorted(papers.keys(), key=lambda p: (
 
 # Build LaTeX longtable
 lines = []
-lines.append(r"\begin{longtable}{p{0.55\textwidth}lccp{0.08\textwidth}}")
-lines.append(r"\caption{Full catalog of replicated papers. ``Sample~A'' marks the 40 papers with paired I4R reproductions. Specs (core) reports total verified-core specifications.}")
+lines.append(r"{\small")
+lines.append(r"\begin{longtable}{p{0.40\textwidth}l@{\hskip 6pt}c@{\hskip 6pt}c@{\hskip 6pt}c@{\hskip 6pt}c}")
+lines.append(r"\caption{Full catalog of replicated papers. ``A'' marks the 40 papers with paired I4R reproductions. Specs = total automated specifications (verified-core in parentheses). Auth.\ regs.\ = regression commands in the authors' original code.}")
 lines.append(r"\label{tab:paper_catalog} \\")
 lines.append(r"\toprule")
-lines.append(r"Paper & Journal & Year & Specs (core) & Sample~A \\")
+lines.append(r"Paper & Journal & Year & Specs (core) & Auth.\ regs. & A \\")
 lines.append(r"\midrule")
 lines.append(r"\endfirsthead")
 lines.append(r"\toprule")
-lines.append(r"Paper & Journal & Year & Specs (core) & Sample~A \\")
+lines.append(r"Paper & Journal & Year & Specs (core) & Auth.\ regs. & A \\")
 lines.append(r"\midrule")
 lines.append(r"\endhead")
 lines.append(r"\midrule")
-lines.append(r"\multicolumn{5}{r}{\emph{Continued on next page}} \\")
+lines.append(r"\multicolumn{6}{r}{\emph{Continued on next page}} \\")
 lines.append(r"\endfoot")
 lines.append(r"\bottomrule")
 lines.append(r"\endlastfoot")
 
 for pid in sorted_pids:
     info = papers[pid]
+    n_core = info.get("n_core", 0)
+    if n_core == 0:
+        continue  # Skip papers without verified-core specs
     key = info.get("bib_key", "")
     repl_key = info.get("repl_bib_key", "")
     journal = standardize_journal(info.get("journal", ""))
     year = info.get("year", "")
-    n_core = info.get("n_core", 0)
+    n_reg = info.get("n_regressions")
+    n_reg_str = str(n_reg) if n_reg is not None else "---"
     sample_a = r"\checkmark" if info.get("in_sample_a") else ""
 
     # Format: \citet{key} [\href{repl_url}{data}]
@@ -458,9 +500,13 @@ for pid in sorted_pids:
         title = info.get("title", pid)
         paper_col = rf"{title} [\href{{{repl_url}}}{{data}}]"
 
-    lines.append(rf"{paper_col} & {journal} & {year} & {n_core} & {sample_a} \\")
+    n_specs_val = info.get("n_specs", 0)
+    n_core_val = info.get("n_core", 0)
+    specs_str = f"{n_specs_val} ({n_core_val})" if n_core_val > 0 else str(n_specs_val)
+    lines.append(rf"{paper_col} & {journal} & {year} & {specs_str} & {n_reg_str} & {sample_a} \\")
 
 lines.append(r"\end{longtable}")
+lines.append(r"}")
 
 table_path = OVERLEAF / "v8_tables" / "tab_paper_catalog.tex"
 with open(table_path, "w") as f:

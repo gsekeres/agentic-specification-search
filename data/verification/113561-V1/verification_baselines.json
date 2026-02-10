@@ -1,0 +1,69 @@
+{
+  "paper_id": "113561-V1",
+  "package_path": "data/downloads/extracted/113561-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Showing pictures of black Katrina victims (picshowblack) reduces charitable giving among all respondents. The main effect on real giving ($0-$100) is small and statistically insignificant, consistent with the paper's framing that positive and negative subgroup effects cancel.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_tab3_col2"
+      ],
+      "baseline_outcome_vars": [
+        "giving"
+      ],
+      "baseline_treatment_vars": [
+        "picshowblack"
+      ],
+      "notes": "Table 3, Column 2. Coefficient -2.30 (SE 3.85, p = 0.55). N = 1,343. WLS with survey weights (tweight), robust SE. All respondents who passed soundcheck. Controls: picture manipulations + audio manipulations + demographics. The paper's main hypothesis is about heterogeneous (interaction) effects by race/attitudes, NOT the main effect -- so the insignificant main effect is expected."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Showing pictures of black victims reduces charitable giving among WHITE respondents. This is the key subgroup where the paper expects negative effects due to racial group loyalty.",
+      "expected_sign": "-",
+      "baseline_spec_ids": [
+        "baseline_tab3_col5_white"
+      ],
+      "baseline_outcome_vars": [
+        "giving"
+      ],
+      "baseline_treatment_vars": [
+        "picshowblack"
+      ],
+      "notes": "Table 3, Column 5. Coefficient -4.33 (SE 4.68, p = 0.35). N = 915. White respondents only, WLS with tweight. Still insignificant for the unconditional main effect; the paper's result comes from interacting picshowblack with racial attitudes (Table 3 cols 3-6)."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Showing pictures of black victims increases charitable giving among BLACK respondents, reflecting in-group solidarity.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline_tab3_col6_black"
+      ],
+      "baseline_outcome_vars": [
+        "giving"
+      ],
+      "baseline_treatment_vars": [
+        "picshowblack"
+      ],
+      "notes": "Table 3, Column 6. Coefficient +5.63 (SE 8.54, p = 0.51). N = 247. Black respondents only, WLS with tweight. Positive but insignificant, consistent with the opposing-signs hypothesis."
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "The manipulation check confirms that showing black victims significantly increases perceived percentage of black recipients (per_hfhdif), validating the experimental design.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "manip_check_per_hfhdif_all"
+      ],
+      "baseline_outcome_vars": [
+        "per_hfhdif"
+      ],
+      "baseline_treatment_vars": [
+        "picshowblack"
+      ],
+      "notes": "Manipulation check. Coefficient +16.35 (SE 3.99, p < 0.001). N = 1,321. All respondents. This is the strongest and most clearly significant result in the entire specification search, confirming the treatment worked as intended."
+    }
+  ],
+  "global_notes": "Paper is 'What Determines Giving to Hurricane Katrina Victims?' by Fong & Luttmer (AEJ: Applied 2009). This is a survey experiment with randomized picture (black/white/obscured victims) and audio manipulations. The specification search tests the MAIN EFFECT of picshowblack across 157 specifications covering 4 outcomes (giving, hypgiv_tc500, subjsupchar, subjsupgov), 9 perception outcomes, 1 manipulation check (per_hfhdif), 3 race subsamples (all/white/black), multiple city/survey subsamples (Table 5 variants), control variations (no controls, minimal, extra, LOO), and inference variations (unweighted OLS). CRITICAL CAVEAT: The paper's actual contribution is about INTERACTION effects (picshowblack x racial attitudes), not main effects. The weak/insignificant main effect on giving is expected and reported as such in the paper. The specification search is therefore testing a claim that the paper itself frames as ambiguous. Three duplicates identified: ctrl_full_manip_all = baseline_tab3_col2, ctrl_full_manip_white = baseline_tab3_col5_white, ctrl_full_manip_black = baseline_tab3_col6_black (identical coefficients). Also tab5_hypgiv_tc500_s1_baseline_white = outcome_hypgiv_tc500_white, tab5_subjsupchar_s1_baseline_white = outcome_subjsupchar_white, tab5_subjsupgov_s1_baseline_white = outcome_subjsupgov_white. And loo_drop_black_white = loo_drop_other_white (race dummies irrelevant in white-only subsample)."
+}

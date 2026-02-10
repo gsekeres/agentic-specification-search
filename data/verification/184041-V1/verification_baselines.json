@@ -1,26 +1,26 @@
 {
   "paper_id": "184041-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/184041-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/184041-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Subjects bid significantly higher in Common Value (CV) auctions than in economically equivalent Common Probability (CP) auctions, as measured by bid factor deviations from theoretical benchmarks.",
+      "claim_summary": "Subjects bid higher in Common Value auctions than Common Probability auctions.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
       ],
       "baseline_outcome_vars": [
+        "NEBF",
         "BF",
-        "BEBF",
-        "NEBF"
+        "BEBF"
       ],
       "baseline_treatment_vars": [
         "CV"
       ],
-      "notes": "Three baseline rows correspond to three equivalent outcome measures (BF, BEBF, NEBF) all measuring the same overbidding concept against different benchmarks. All from Experiment 1 main sample with near-identical coefficients (~15.1). Treated as a single baseline group."
+      "notes": "3 baseline rows with same spec_id for 3 outcomes. Lab experiment, 360 subjects, 4 experiments."
     }
   ],
-  "global_notes": "Clean experimental economics paper with a single core claim across 133 specs. Three baseline outcomes are nearly identical. Heterogeneity analyses classified as non-core. Cross-experiment replications classified as core sample restrictions. Placebo/balance tests clearly non-core."
+  "global_notes": "Paper: The Common-Probability Auction Puzzle (AER: Insights). Note: 3 rows share spec_id 'baseline' with different outcomes. Cross-experiment specs replicate across experimental designs."
 }

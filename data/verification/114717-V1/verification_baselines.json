@@ -1,0 +1,24 @@
+{
+  "paper_id": "114717-V1",
+  "package_path": "data/downloads/extracted/114717-V1",
+  "verified_at": "2026-02-09",
+  "verifier": "verification_agent",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Abolishing the death penalty for specific offenses increases jury conviction rates at the Old Bailey. When an offense is no longer punishable by death, juries become more willing to convict because the consequences are less severe.",
+      "expected_sign": "+",
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "baseline_outcome_vars": [
+        "guilty_jury_dummy"
+      ],
+      "baseline_treatment_vars": [
+        "not_death_punishable"
+      ],
+      "notes": "Table 3, Panel A, Column 2. Coefficient 0.0764 (SE 0.0365, p=0.036). N=104,670, R2=0.068. DiD with year FE, month FE, offense category FE, plus controls for num_defendants and maledef. SEs clustered by offense category (26 clusters). The paper's second experiment (transportation) is treated separately as a non-core placebo/validation test."
+    }
+  ],
+  "global_notes": "Paper is 'How Punishment Severity Affects Jury Verdicts' by Bindler and Hjalmarsson (AEJ:EP). Uses 206,733 case-defendant observations from Old Bailey Proceedings Online, 1715-1900; main analysis uses ~105K observations (1803-1871). The DiD exploits staggered abolition of capital punishment across offense categories. Key concern: only 26 clusters for clustering (paper addresses with wild bootstrap). The effect is driven primarily by violent/sex offenses (coef=0.22) rather than property offenses (coef=0.015). Age controls substantially reduce sample and effect. There are 69 total specifications."
+}

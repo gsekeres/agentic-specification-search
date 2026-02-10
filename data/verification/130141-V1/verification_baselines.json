@@ -1,12 +1,12 @@
 {
   "paper_id": "130141-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/130141-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/130141-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "TFP news shocks explain a significant share (15-25%) of GDP forecast error variance at business cycle frequencies (20 quarters) in a 7-variable SVAR with financial frictions.",
+      "claim_summary": "TFP news shocks explain approximately 22% of GDP forecast error variance at 20-quarter horizon, indicating they are an important driver of business cycles.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "TFP_shock"
       ],
-      "notes": "Baseline uses Cholesky identification with TFP ordered first, 5 lags, 7 variables. Paper uses medium-run identification. FEVD at h=20 is 22.3%."
+      "notes": "Structural VAR with Cholesky identification, 7-variable system (TFP, GDP, Consumption, Hours, GZ spread, SP500, Inflation), 5 lags, 1984Q1-2017Q1. FEVD = 22.3%. Note: paper uses medium-run identification, this replication uses Cholesky."
     }
   ],
-  "global_notes": "SVAR methodology. Coefficient = FEVD share (0-1). Cholesky vs medium-run identification. Some specs are duplicates. Rolling windows use 4 lags. Placebo shuffled TFP shows 12% FEVD."
+  "global_notes": "Paper studies news shocks under financial frictions using SVAR and DSGE. The specification search covers only the VAR component. The key metric is FEVD (share of GDP variance explained by TFP shocks). Results are sensitive to sample period (post-2000 much stronger) and lag selection (AIC/BIC select p=1 with 7.5% FEVD vs paper's p=5 with 22.3%). Excluding 2008-2009 drops FEVD to 2.4%. Rolling windows show instability."
 }

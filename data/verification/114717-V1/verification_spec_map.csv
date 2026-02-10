@@ -1,0 +1,70 @@
+paper_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_id,is_baseline,is_core_test,category,why,confidence
+114717-V1,baseline,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,1,1,core_controls,Primary baseline: Table 3 Panel A Col 2,1.0
+114717-V1,did/controls/none,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,No individual controls (year+month+offense FE only),0.95
+114717-V1,did/controls/minimal,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Minimal controls (same as none -- FE only),0.95
+114717-V1,did/controls/offense_linear_trends,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + offense-specific linear time trends,0.95
+114717-V1,did/controls/offense_specific_trends,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + offense-specific quadratic trends,0.95
+114717-V1,did/controls/add_session_count,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + session count control,0.95
+114717-V1,did/controls/add_num_cases,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + number of cases control,0.95
+114717-V1,did/controls/add_criminal_history,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + criminal history controls (reduces sample),0.95
+114717-V1,did/controls/add_age,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + age controls (substantially reduces sample to 79K),0.95
+114717-V1,did/controls/add_age_and_missing,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Baseline + age with missing age indicator (full sample),0.95
+114717-V1,did/controls/full,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_controls,Full controls including age + missing indicator,0.95
+114717-V1,did/fe/none,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_fe,No fixed effects,0.95
+114717-V1,did/fe/time_only,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_fe,Year FE only,0.95
+114717-V1,did/fe/unit_only,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_fe,Offense category FE only,0.95
+114717-V1,did/fe/month_only,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_fe,Month FE only,0.95
+114717-V1,did/fe/year_offense,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_fe,Year + offense FE (no month FE),0.95
+114717-V1,did/sample/off_prop,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Property offenses only,0.95
+114717-V1,did/sample/off_viol_or_off_sex,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Violent or sex offenses only,0.95
+114717-V1,did/sample/property_excl_larceny,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Property offenses excluding larceny,0.95
+114717-V1,did/sample/excl_sodomy_wounding,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Excluding sodomy and wounding offenses,0.95
+114717-V1,did/sample/year_leq_1850,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Pre-1850 sample,0.95
+114717-V1,did/sample/year_1820_1850,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,1820-1850 window,0.95
+114717-V1,did/sample/single_defendant,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Single-defendant cases only,0.95
+114717-V1,did/sample/excl_never_almost_never_death,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Excluding categories that never/rarely received death,0.95
+114717-V1,did/sample/excl_always_death,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Excluding categories always carrying death,0.95
+114717-V1,did/sample/excl_fraud_pervjust_receiving,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Excluding fraud/perverting justice/receiving,0.95
+114717-V1,did/sample/viol_sex/offense_linear_trends,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Violent/sex offenses with offense trends,0.95
+114717-V1,did/sample/viol_sex_excl_sodomy_wounding,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Violent/sex excluding sodomy/wounding,0.95
+114717-V1,did/sample/viol_sex/year_leq_1850,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Violent/sex pre-1850,0.95
+114717-V1,did/sample/viol_sex/year_1820_1850,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Violent/sex 1820-1850 window,0.95
+114717-V1,did/sample/excl_reform_year,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Excluding reform year observations,0.95
+114717-V1,did/sample/bandwidth_10yr,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,10-year bandwidth around reform,0.95
+114717-V1,did/sample/males_only,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Male defendants only,0.95
+114717-V1,did/sample/females_only,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Female defendants only,0.95
+114717-V1,did/sample/year_geq_1832,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_sample,Post-1832 sample,0.95
+114717-V1,did/inference/robust_se,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_inference,Robust (HC) standard errors,0.95
+114717-V1,did/inference/cluster_year,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_inference,Clustered by year,0.95
+114717-V1,did/inference/cluster_offence_x_year,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,1,core_inference,Clustered by offense x year,0.95
+114717-V1,did/outcome/guilty_jury_dummy_full/no_controls,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge (no controls),0.95
+114717-V1,did/outcome/guilty_jury_dummy_full/baseline_controls,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge (baseline controls),0.95
+114717-V1,did/outcome/guilty_full/baseline,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge (duplicate of above),0.95
+114717-V1,did/outcome/guilty_full/offense_specific_trends,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge + offense trends,0.95
+114717-V1,did/outcome/guilty_full/year_leq_1850,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge pre-1850,0.95
+114717-V1,did/outcome/guilty_full/off_prop,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge: property offenses,0.95
+114717-V1,did/outcome/guilty_full/off_viol_or_off_sex,methods/difference_in_differences.md,guilty_jury_dummy_full,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty of original charge: violent/sex offenses,0.95
+114717-V1,did/outcome/lesser_guilty_dummy_all/no_controls,methods/difference_in_differences.md,lesser_guilty_dummy_all,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Convicted of lesser charge (no controls),0.95
+114717-V1,did/outcome/lesser_guilty_dummy_all/baseline_controls,methods/difference_in_differences.md,lesser_guilty_dummy_all,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Convicted of lesser charge (baseline controls),0.95
+114717-V1,did/outcome/lesser_guilty_dummy_all/off_prop,methods/difference_in_differences.md,lesser_guilty_dummy_all,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Lesser charge: property offenses,0.95
+114717-V1,did/outcome/lesser_guilty_dummy_all/off_viol_or_off_sex,methods/difference_in_differences.md,lesser_guilty_dummy_all,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Lesser charge: violent/sex offenses,0.95
+114717-V1,did/outcome/lesser_guilty_dummy_all/off_fraud,methods/difference_in_differences.md,lesser_guilty_dummy_all,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Lesser charge: fraud offenses,0.95
+114717-V1,did/outcome/mercy_dummy/no_controls,methods/difference_in_differences.md,mercy_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Mercy recommendation (no controls),0.95
+114717-V1,did/outcome/mercy_dummy/baseline_controls,methods/difference_in_differences.md,mercy_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Mercy recommendation (baseline controls),0.95
+114717-V1,did/outcome/mercy_dummy/off_prop,methods/difference_in_differences.md,mercy_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Mercy: property offenses,0.95
+114717-V1,did/outcome/mercy_dummy/off_viol_or_off_sex,methods/difference_in_differences.md,mercy_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Mercy: violent/sex offenses,0.95
+114717-V1,did/outcome/mercy_dummy/off_fraud,methods/difference_in_differences.md,mercy_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Mercy: fraud offenses,0.95
+114717-V1,did/outcome/guilty_dummy_incl_pleas,methods/difference_in_differences.md,guilty_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty including plea bargains,0.95
+114717-V1,did/outcome/plea_dummy,methods/difference_in_differences.md,plea_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Plea dummy as outcome,0.95
+114717-V1,did/outcome/guilty_incl_pleas/off_prop,methods/difference_in_differences.md,guilty_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty incl pleas: property,0.95
+114717-V1,did/outcome/guilty_incl_pleas/off_viol_or_off_sex,methods/difference_in_differences.md,guilty_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty incl pleas: violent/sex,0.95
+114717-V1,did/outcome/guilty_incl_pleas/off_fraud,methods/difference_in_differences.md,guilty_dummy,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Guilty incl pleas: fraud,0.95
+114717-V1,did/outcome/death_punish,methods/difference_in_differences.md,death_punish,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Punishment outcome: death sentence,0.95
+114717-V1,did/outcome/trans_punish,methods/difference_in_differences.md,trans_punish,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Punishment outcome: transportation,0.95
+114717-V1,did/outcome/impris_punish,methods/difference_in_differences.md,impris_punish,not_death_punishable,G1,baseline,0,0,noncore_alt_outcome,Punishment outcome: imprisonment,0.95
+114717-V1,did/heterogeneity/treatment_x_male,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,0,noncore_heterogeneity,Treatment x male interaction,0.95
+114717-V1,did/heterogeneity/treatment_x_criminal_history,methods/difference_in_differences.md,guilty_jury_dummy,not_death_punishable,G1,baseline,0,0,noncore_heterogeneity,Treatment x criminal history interaction,0.95
+114717-V1,did/transport/col1_no_controls,methods/difference_in_differences.md,guilty_jury_dummy,trans1_pre,G1,baseline,0,0,noncore_placebo,Transportation experiment: no controls,0.9
+114717-V1,did/transport/col2_controls,methods/difference_in_differences.md,guilty_jury_dummy,trans1_pre,G1,baseline,0,0,noncore_placebo,Transportation experiment: with controls,0.9
+114717-V1,did/transport/col3_noncapital,methods/difference_in_differences.md,guilty_jury_dummy,trans1_pre,G1,baseline,0,0,noncore_placebo,Transportation experiment: noncapital offenses,0.9
+114717-V1,did/transport/col4_capital,methods/difference_in_differences.md,guilty_jury_dummy,trans1_pre,G1,baseline,0,0,noncore_placebo,Transportation experiment: capital offenses,0.9

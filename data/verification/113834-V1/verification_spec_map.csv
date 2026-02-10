@@ -1,0 +1,87 @@
+spec_id,baseline_id,classification,category,notes
+baseline/table2_col1,G1,non_core,noncore_alternative_baseline,Table 2 Col 1: time FE only (no reactor FE) with no age controls. Alternative baseline from paper build-up table rather than a robustness test of the main specification.
+baseline/table2_col2,G1,non_core,noncore_alternative_baseline,Table 2 Col 2: reactor + time FE but no age controls. Alternative baseline from paper build-up table rather than a robustness test of the main specification.
+baseline,G1,baseline,baseline,Table 2 Col 3 replication: reactor + time FE with age^2 and age^3 controls clustered at plant level. Coefficient=10.007 se=2.060 p<0.0001 N=36667.
+baseline/table2_col5_plant,G1,non_core,noncore_different_unit,Table 2 Col 5: plant-level aggregation. Changes unit of analysis from reactor to plant creating fractional treatment values for multi-reactor plants. Coefficient=-9.60 (insignificant) due to attenuation from averaging.
+panel/fe/none,G1,core,core_fe_structure,No fixed effects with age controls. Tests sensitivity to FE structure. Coefficient=14.20 significant.
+panel/fe/unit_only,G1,core,core_fe_structure,Reactor FE only (no time FE). Tests sensitivity to FE structure. Coefficient=11.18 significant.
+panel/fe/time_only,G1,core,core_fe_structure,Time FE only (no reactor FE) with age controls. Tests sensitivity to FE structure. Coefficient=6.04 significant.
+panel/fe/year_only,G1,core,core_fe_structure,Reactor + year FE (coarser time FE than baseline year-month). Tests sensitivity to FE granularity. Coefficient=10.05 significant.
+panel/fe/plant_fe,G1,core,core_fe_structure,Plant + time FE (coarser unit FE than baseline reactor). Tests sensitivity to unit FE granularity. Coefficient=9.93 significant.
+robust/control/no_age,G1,core,core_controls,No age controls. Tests sensitivity to polynomial age controls. Coefficient=10.22 significant.
+robust/control/age_quad_only,G1,core,core_controls,Age^2 only (no cubic). Tests sensitivity to age control polynomial order. Coefficient=10.14 significant.
+robust/control/add_capacity,G1,core,core_controls,Add capacity as control. Tests sensitivity to additional controls. Coefficient=10.01 significant (identical to baseline since capacity is time-invariant and absorbed by reactor FE).
+robust/control/add_same_owner,G1,core,core_controls,Add same_owner consolidation measure as control. Tests whether divestiture effect operates through consolidation channel. Coefficient=7.67 significant.
+robust/cluster/reactor,G1,core,core_clustering,Cluster at reactor level (finer than baseline plant clustering). Coefficient=10.01 SE=1.62 significant.
+robust/cluster/state,G1,core,core_clustering,Cluster at state level. Coefficient=10.01 SE=1.88 significant.
+robust/cluster/nrc_region,G1,core,core_clustering,Cluster at NRC region level (very few clusters). Coefficient=10.01 SE=2.10 p=0.017 significant at 5%.
+robust/cluster/hetero,G1,core,core_clustering,Heteroskedasticity-robust SEs (no clustering). Coefficient=10.01 SE=0.60 highly significant.
+robust/sample/excl_CA,G1,core,core_sample_restriction,Exclude California reactors. Coefficient=9.55 significant.
+robust/sample/excl_MI,G1,core,core_sample_restriction,Exclude Michigan reactors. Coefficient=10.27 significant.
+robust/sample/excl_IL,G1,core,core_sample_restriction,Exclude Illinois reactors (large nuclear state). Coefficient=8.59 significant.
+robust/sample/excl_NY,G1,core,core_sample_restriction,Exclude New York reactors. Coefficient=9.56 significant.
+robust/sample/excl_PA,G1,core,core_sample_restriction,Exclude Pennsylvania reactors. Coefficient=10.44 significant.
+robust/sample/excl_NJ,G1,core,core_sample_restriction,Exclude New Jersey reactors. Coefficient=10.06 significant.
+robust/sample/excl_CT,G1,core,core_sample_restriction,Exclude Connecticut reactors. Coefficient=9.90 significant.
+robust/sample/excl_IA_WI,G1,core,core_sample_restriction,Exclude Iowa and Wisconsin reactors. Coefficient=10.12 significant.
+robust/sample/excl_NE,G1,core,core_sample_restriction,Exclude Northeast region. Coefficient=9.89 significant.
+robust/sample/excl_MW,G1,core,core_sample_restriction,Exclude Midwest region. Coefficient=7.39 significant.
+robust/sample/excl_SO,G1,core,core_sample_restriction,Exclude South region. Coefficient=14.43 significant.
+robust/sample/excl_WE,G1,core,core_sample_restriction,Exclude West region. Coefficient=9.44 significant.
+robust/sample/excl_NE_WE,G1,core,core_sample_restriction,Exclude Northeast and West regions. Coefficient=9.21 significant.
+robust/sample/divest_post2001,G1,core,core_sample_restriction,Treatment redefined as post-2001 divestitures only. Coefficient=7.65 significant.
+robust/sample/post-1990,G1,core,core_sample_restriction,Post-1990 sample. Coefficient=12.01 significant.
+robust/sample/post-1995,G1,core,core_sample_restriction,Post-1995 sample. Coefficient=13.70 significant.
+robust/sample/post-2000,G1,core,core_sample_restriction,Post-2000 sample. Coefficient=9.01 significant.
+robust/sample/pre_2005,G1,core,core_sample_restriction,Pre-2005 sample. Coefficient=8.94 significant.
+robust/sample/drop_1996_1998,G1,core,core_sample_restriction,Drop 1996-1998 transitional period. Coefficient=8.63 significant.
+robust/sample/drop_long_outage,G1,core,core_sample_restriction,Drop 10 long-outage reactors. Coefficient=8.10 significant.
+hetero/type/PWR,G1,non_core,noncore_heterogeneity,PWR type x divested interaction. Tests heterogeneity by reactor type. Coefficient=9.37 significant. Different treatment variable (divtypePWR) measuring a subgroup effect.
+hetero/type/BWR,G1,non_core,noncore_heterogeneity,BWR type x divested interaction. Tests heterogeneity by reactor type. Coefficient=10.65 significant. Different treatment variable (divtypeBWR) measuring a subgroup effect.
+hetero/manuf/WE,G1,non_core,noncore_heterogeneity,Westinghouse manufacturer x divested interaction. Coefficient=9.92 significant. Different treatment variable (divmanfWE).
+hetero/manuf/GE,G1,non_core,noncore_heterogeneity,GE manufacturer x divested interaction. Coefficient=10.62 significant. Different treatment variable (divmanfGE).
+hetero/manuf/CE,G1,non_core,noncore_heterogeneity,CE manufacturer x divested interaction. Coefficient=5.73 NOT significant (p=0.10). Different treatment variable (divmanfCE). Small subsample.
+hetero/manuf/BW,G1,non_core,noncore_heterogeneity,B&W manufacturer x divested interaction. Coefficient=12.33 significant. Different treatment variable (divmanfBW).
+hetero/vintage/V75,G1,non_core,noncore_heterogeneity,Pre-1975 vintage x divested interaction. Coefficient=10.13 significant. Different treatment variable (divV75).
+hetero/vintage/V85,G1,non_core,noncore_heterogeneity,1975-84 vintage x divested interaction. Coefficient=13.46 significant. Different treatment variable (divV85).
+hetero/vintage/V95,G1,non_core,noncore_heterogeneity,1985+ vintage x divested interaction. Coefficient=7.06 significant. Different treatment variable (divV95).
+hetero/sale,G1,non_core,noncore_heterogeneity,External sale x divested interaction. Coefficient=11.35 significant. Different treatment variable (divsale).
+hetero/transfer,G1,non_core,noncore_heterogeneity,Internal transfer x divested interaction. Coefficient=9.22 significant. Different treatment variable (divtransfer).
+hetero/price/high,G1,non_core,noncore_heterogeneity,High wholesale price region x divested interaction. Coefficient=9.37 significant. Different treatment variable (divpriceHI).
+hetero/price/low,G1,non_core,noncore_heterogeneity,Low wholesale price region x divested interaction. Coefficient=10.96 significant. Different treatment variable (divpriceLO).
+consol/same_owner,G1,core,core_controls,Controlling for same_owner consolidation measure. Tests whether divestiture effect survives after controlling for consolidation. Coefficient=7.67 significant. Duplicate of robust/control/add_same_owner.
+consol/same_owner_coef,G1,non_core,noncore_different_treatment,Coefficient on same_owner (not divested). Different treatment variable testing consolidation channel directly. Not a robustness check of divestiture effect.
+consol/same_type,G1,core,core_controls,With same_type consolidation control. Coefficient=8.61 significant.
+consol/same_manuf,G1,core,core_controls,With same_manuf consolidation control. Coefficient=8.60 significant.
+consol/never_divested,G1,non_core,noncore_different_treatment,Never-divested reactors only with same_owner as treatment. Different treatment variable (same_owner) and different subsample. Tests consolidation effect in non-divested plants.
+robust/outcome/log_power,G1,core,core_outcome_transform,Log(power+1) as outcome. Coefficient=0.36 significant. Different scale but same direction.
+robust/outcome/binary_high80,G1,core,core_outcome_transform,Binary outcome: power > 80%. Coefficient=0.091 significant. 9.1 pp increase in probability of exceeding 80% threshold.
+robust/outcome/binary_high90,G1,core,core_outcome_transform,Binary outcome: power > 90%. Coefficient=0.091 significant. 9.1 pp increase in probability of exceeding 90% threshold.
+robust/outcome/generation,G1,core,core_outcome_transform,Generation (MWh) as outcome. Coefficient=70763 significant. Divestiture increases monthly generation by ~71 GWh.
+hetero/month/Jan,G1,non_core,noncore_monthly_decomposition,Month=January only regression. Coefficient=9.19 significant. Tests seasonal heterogeneity not robustness of pooled estimate.
+hetero/month/Feb,G1,non_core,noncore_monthly_decomposition,Month=February only regression. Coefficient=10.59 significant.
+hetero/month/Mar,G1,non_core,noncore_monthly_decomposition,Month=March only regression. Coefficient=9.41 significant (p=0.018).
+hetero/month/Apr,G1,non_core,noncore_monthly_decomposition,Month=April only regression. Coefficient=9.36 significant (p=0.007).
+hetero/month/May,G1,non_core,noncore_monthly_decomposition,Month=May only regression. Coefficient=14.50 significant. Largest effect (refueling season).
+hetero/month/Jun,G1,non_core,noncore_monthly_decomposition,Month=June only regression. Coefficient=12.40 significant.
+hetero/month/Jul,G1,non_core,noncore_monthly_decomposition,Month=July only regression. Coefficient=7.26 significant.
+hetero/month/Aug,G1,non_core,noncore_monthly_decomposition,Month=August only regression. Coefficient=7.42 significant.
+hetero/month/Sep,G1,non_core,noncore_monthly_decomposition,Month=September only regression. Coefficient=7.89 significant.
+hetero/month/Oct,G1,non_core,noncore_monthly_decomposition,Month=October only regression. Coefficient=8.42 significant (p=0.014).
+hetero/month/Nov,G1,non_core,noncore_monthly_decomposition,Month=November only regression. Coefficient=13.74 significant.
+hetero/month/Dec,G1,non_core,noncore_monthly_decomposition,Month=December only regression. Coefficient=9.47 significant.
+robust/subsample/BWR_only,G1,core,core_subsample,BWR reactors only subsample. Coefficient=0.92 NOT significant (p=0.82). Very few divested BWR reactors.
+robust/subsample/PWR_only,G1,core,core_subsample,PWR reactors only subsample. Coefficient=11.95 significant.
+robust/subsample/GE_only,G1,core,core_subsample,GE reactors only subsample. Coefficient=0.92 NOT significant (p=0.82). Identical to BWR_only (all GE reactors are BWR).
+robust/subsample/WE_only,G1,core,core_subsample,Westinghouse reactors only subsample. Coefficient=11.48 significant.
+robust/subsample/vintage_V75,G1,core,core_subsample,Pre-1975 vintage subsample. Coefficient=13.34 significant.
+robust/subsample/vintage_V85,G1,core,core_subsample,1975-84 vintage subsample. Coefficient=8.63 NOT significant (p=0.10). Marginal.
+robust/subsample/vintage_V95,G1,core,core_subsample,1985+ vintage subsample. Coefficient=9.44 significant.
+robust/subsample/nrc_1,G1,core,core_subsample,NRC region 1 subsample. Coefficient=6.52 NOT significant at 5% (p=0.092). Marginal.
+robust/subsample/nrc_3,G1,core,core_subsample,NRC region 3 subsample. Coefficient=14.33 significant.
+robust/subsample/nrc_4,G1,core,core_subsample,NRC region 4 subsample. Coefficient=6.52 significant (p=0.028).
+robust/trim/drop_negative,G1,core,core_trimming,Drop negative capacity factors. Coefficient=5.18 significant.
+robust/trim/winsorize_1_99,G1,core,core_trimming,Winsorize at 1st/99th percentiles. Coefficient=9.89 significant.
+robust/trim/drop_above_100,G1,core,core_trimming,Drop capacity factors above 100%. Coefficient=7.90 significant.
+robust/trend/linear,G1,core,core_time_trend,Linear time trend replacing time FE. Coefficient=11.13 significant.
+robust/trend/quadratic,G1,core,core_time_trend,Quadratic time trend replacing time FE. Coefficient=10.87 significant.

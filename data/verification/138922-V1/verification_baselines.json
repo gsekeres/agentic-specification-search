@@ -1,12 +1,12 @@
 {
   "paper_id": "138922-V1",
-  "package_path": "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/138922-V1",
-  "verified_at": "2026-02-03",
+  "package_path": "data/downloads/extracted/138922-V1",
+  "verified_at": "2026-02-09",
   "verifier": "verification_agent",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Sports club vouchers for primary school children in Saxony increase long-run sports club membership relative to children in Brandenburg and Thuringia.",
+      "claim_summary": "Sports club vouchers (Saxony treatment) increase sports club membership. Difference-in-differences comparing Saxony to Brandenburg and Thuringia, 2006-2010.",
       "expected_sign": "+",
       "baseline_spec_ids": [
         "baseline"
@@ -17,8 +17,8 @@
       "baseline_treatment_vars": [
         "treat"
       ],
-      "notes": "Single baseline: TWFE with year+state+city FE, clustered at city, no controls, main sample 2006-2010. Coef=0.0089, p=0.635."
+      "notes": "Baseline: coef=0.009, p=0.635, insignificant. DID with year+state+city FE. The paper finds a null result for the behavioral outcome."
     }
   ],
-  "global_notes": "84 total specs. Many use different outcome variables that measure different constructs than sports club membership."
+  "global_notes": "Paper finds a null effect on sports club membership despite strong first-stage (program awareness). The 84 specs include first-stage outcomes (6 specs), alternative behavioral outcomes, heterogeneity, and placebo tests. The FE variations (pooled OLS, unit-only FE) show significance but are biased due to omitted confounders."
 }

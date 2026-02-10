@@ -1,0 +1,18 @@
+{
+  "paper_id": "114643-V1",
+  "title": "Immigration, Employment Opportunities, and Criminal Behavior",
+  "journal": "AEJ: Economic Policy",
+  "method": "Triple-Difference (DiD)",
+  "baseline_description": "Triple-diff: hisp x imm_index x post-IRCA, clustered at block group",
+  "baseline_spec_ids": [
+    "baseline",
+    "baseline/exLAW",
+    "baseline/exSAW"
+  ],
+  "total_specifications": 119,
+  "classification_summary": {
+    "baseline": 3,
+    "non_core": 52,
+    "core": 64
+  }
+}
