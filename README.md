@@ -4,10 +4,11 @@ Replication package for "Editorial Screening when Science is Cheap" (Fishman & S
 
 ## Overview
 
-1. **Specification trees** define standardized robustness specifications for each empirical method (DiD, IV, RD, panel FE, etc.)
-2. **AI agents** (Claude Code) systematically execute all specifications from the trees on each paper's replication package
-3. **Verification agents** audit the raw results for correctness
-4. **Estimation pipeline** fits mixture models, estimates within-paper dependence, and computes counterfactual disclosure requirements
+1. **Typed specification tree** defines designs + orthogonal modules (RC, inference, diagnostics, sensitivity, exploration)
+2. **Specification surface (per paper)** defines the executable universe (constraints, budgets, sampling) *before* any models run
+3. **Runner agents** execute the approved surface and write structured outputs
+4. **Verification agents** audit baseline groups + core eligibility and flag invalid/drifted rows
+5. **Estimation pipeline** fits mixture models, estimates within-paper dependence, and computes counterfactual disclosure requirements
 
 The current sample covers **99 papers** from AEA journals (AER, AEJ-Applied, AEJ-Policy, AEJ-Macro, AEJ-Micro, AER: Insights, AEA P&P), yielding ~7,500 specifications (~4,900 verified-core).
 
@@ -20,32 +21,23 @@ agentic_specification_search/
 │
 ├── specification_tree/                 # Specification tree definitions
 │   ├── INDEX.md
-│   ├── methods/                        # Method-specific specs
-│   │   ├── difference_in_differences.md
-│   │   ├── event_study.md
-│   │   ├── regression_discontinuity.md
-│   │   ├── instrumental_variables.md
-│   │   ├── panel_fixed_effects.md
-│   │   ├── cross_sectional_ols.md
-│   │   ├── discrete_choice.md
-│   │   └── dynamic_panel.md
-│   └── robustness/                     # Universal robustness checks
-│       ├── leave_one_out.md
-│       ├── single_covariate.md
-│       ├── sample_restrictions.md
-│       ├── clustering_variations.md
-│       └── functional_form.md
+│   ├── designs/                        # Design/identification families (within-design implementations)
+│   └── modules/                        # Orthogonal modules (rc/*, infer/*, diag/*, sens/*, explore/*, post/*)
 │
 ├── prompts/                            # Agent prompts
-│   ├── spec_search_agent.md            # Main specification search agent
-│   ├── verification_agent.md           # Result verification agent
+│   ├── paper_classifier.md             # Design-family classification (pre-surface)
+│   ├── spec_surface_builder.md         # Build SPECIFICATION_SURFACE.json (pre-run)
+│   ├── spec_surface_verifier.md        # Critique/edit surface (pre-run)
+│   ├── spec_search_agent.md            # Runner: execute approved surface (run stage)
+│   ├── verification_agent.md           # Post-run audit and core classification
 │   ├── download_agent.md               # Package download automation
-│   └── paper_classifier.md             # Method classification
+│   └── CLEANUP.md                      # Optional disk cleanup guidance
 │
 ├── scripts/                            # Infrastructure scripts
 │   ├── create_unified_csv.py           # Aggregate per-paper results
 │   ├── select_new_papers.py            # Stratified paper selection
 │   ├── batch_download.py               # Batch download helper
+│   ├── cleanup_after_spec_search.sh    # Optional disk cleanup helper (per paper)
 │   ├── 01_collect_dois.py              # DOI collection
 │   ├── 02_identify_journals.py         # Journal identification
 │   └── paper_analyses/                 # Per-paper estimation scripts
@@ -147,25 +139,30 @@ python estimation/run_all.py --extensions   # Extension analyses only
 ### Adding new papers
 
 1. Download replication packages to `data/downloads/extracted/{PAPER_ID}/`
-2. Run the spec search agent (see `prompts/spec_search_agent.md`)
-3. Run the verification agent (see `prompts/verification_agent.md`)
-4. Rebuild unified results: `python scripts/create_unified_csv.py`
-5. Re-run the pipeline: `python estimation/run_all.py --all`
+2. Classify designs (see `prompts/paper_classifier.md`)
+3. Build a surface (see `prompts/spec_surface_builder.md`)
+4. Pre-run audit/edit surface (see `prompts/spec_surface_verifier.md`)
+5. Run the approved surface (see `prompts/spec_search_agent.md`)
+6. Post-run audit + core classification (see `prompts/verification_agent.md`)
+7. Rebuild unified results: `python scripts/create_unified_csv.py`
+8. Re-run the pipeline: `python estimation/run_all.py --all`
 
 ## Specification Tree
 
-| Method | File | Key Variations |
-|--------|------|----------------|
-| Difference-in-Differences | `methods/difference_in_differences.md` | FE, controls, samples, modern estimators |
-| Event Study | `methods/event_study.md` | Window, reference period, pre-trends |
-| Regression Discontinuity | `methods/regression_discontinuity.md` | Bandwidth, polynomial, kernel |
-| Instrumental Variables | `methods/instrumental_variables.md` | First stage, weak IV, LIML |
-| Panel Fixed Effects | `methods/panel_fixed_effects.md` | FE structure, clustering |
-| Cross-Sectional OLS | `methods/cross_sectional_ols.md` | Controls, functional form |
-| Discrete Choice | `methods/discrete_choice.md` | Logit/probit, marginal effects |
-| Dynamic Panel | `methods/dynamic_panel.md` | GMM, lag structure |
+Design files live in `specification_tree/designs/` and enumerate **within-design** estimator implementations (`design/*`).
 
-**Robustness checks** (applied universally): leave-one-out, single-covariate, sample restrictions, clustering variations, functional form.
+Universal (cross-design) modules live in `specification_tree/modules/` and enumerate:
+
+- robustness checks (`rc/*`)
+- inference variants (`infer/*`)
+- diagnostics (`diag/*`)
+- sensitivity analysis (`sens/*`)
+- post-processing (`post/*`)
+- exploration (`explore/*`)
+
+The paper-specific executable object is `SPECIFICATION_SURFACE.json` (see `specification_tree/SPECIFICATION_SURFACE.md`). The runner executes only `baseline`, `design/*`, `rc/*`, and `infer/*` into `specification_results.csv`; if diagnostics are planned, it writes `diagnostics_results.csv` separately and links them via `spec_diagnostics_map.csv`.
+
+See `specification_tree/INDEX.md` for the canonical file/module index and typed namespace rules.
 
 ## Output Format
 
@@ -176,16 +173,26 @@ Each row is one specification from one paper:
 | Column | Description |
 |--------|-------------|
 | `paper_id` | Package identifier (e.g., `223561-V1`) |
-| `claim_id` | Claim within the paper |
-| `spec_id` | Specification identifier |
-| `spec_type` | Specification tree category |
+| `journal` | Journal (if available from package metadata) |
+| `paper_title` | Paper title (if available from package metadata) |
+| `spec_run_id` | Unique executed-row identifier (within paper) |
+| `baseline_group_id` | Baseline claim object identifier (from the pre-run surface) |
+| `spec_id` | Typed specification identifier (`baseline`, `design/*`, `rc/*`, `infer/*`, etc.) |
+| `spec_tree_path` | Defining node path under `specification_tree/` (file + optional section anchor) |
+| `outcome_var` | Dependent variable name |
+| `treatment_var` | Treatment/exposure variable name |
 | `coefficient` | Point estimate |
 | `std_error` | Standard error |
-| `t_statistic` | t-statistic |
 | `p_value` | p-value |
+| `ci_lower` | CI lower bound (optional; can be empty) |
+| `ci_upper` | CI upper bound (optional; can be empty) |
 | `n_obs` | Number of observations |
-| `is_original` | Whether this is the paper's original specification |
-| `ran_successfully` | Whether execution completed |
+| `r_squared` | \(R^2\) (optional; can be empty) |
+| `coefficient_vector_json` | Full output payload (JSON; required; may include bundles/focal/vector outputs) |
+| `sample_desc` | Sample description (optional) |
+| `fixed_effects` | Fixed effects description (optional) |
+| `controls_desc` | Controls description (optional) |
+| `cluster_var` | Clustering variable(s) used (optional) |
 
 ## Software
 

@@ -40,6 +40,8 @@ REQUIRED_COLUMNS = [
     'paper_id',
     'journal',
     'paper_title',
+    'spec_run_id',
+    'baseline_group_id',
     'spec_id',
     'spec_tree_path',
     'outcome_var',
@@ -199,12 +201,20 @@ def compute_stats(df):
         'significance_rate': (df['p_value'] < 0.05).mean() if 'p_value' in df.columns else None,
     }
 
-    # Count by spec_tree_path (method)
-    if 'spec_tree_path' in df.columns:
-        method_counts = df['spec_tree_path'].apply(
-            lambda x: x.split('/')[1] if pd.notna(x) and '/' in str(x) else 'unknown'
-        ).value_counts().to_dict()
-        stats['methods'] = method_counts
+    # Count by design_code when possible; otherwise by spec namespace
+    if 'spec_id' in df.columns:
+        def _bucket(s: str) -> str:
+            parts = str(s).split("/")
+            if not parts:
+                return "unknown"
+            if parts[0] == "design" and len(parts) >= 2:
+                return parts[1]  # design_code
+            return parts[0]  # namespace (baseline/rc/infer/...)
+
+        stats['methods'] = df['spec_id'].apply(_bucket).value_counts().to_dict()
+    elif 'spec_tree_path' in df.columns:
+        # Fallback: bucket by tree root
+        stats['methods'] = df['spec_tree_path'].astype(str).apply(lambda x: x.split('/')[0] if '/' in x else 'unknown').value_counts().to_dict()
 
     return stats
 

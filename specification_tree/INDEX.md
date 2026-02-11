@@ -1,112 +1,112 @@
-# Specification Tree Index
+# Specification Tree Index (Typed, Orthogonal)
 
-This directory contains structured templates for systematic specification searches across different empirical methods in economics research.
+This directory defines the **specification-tree contract** used to make replication, robustness, diagnostics, sensitivity analysis, and exploration **auditable and mechanically filterable**.
 
-## Method Types
+Start with:
 
-Each paper is classified by primary empirical method. Select the appropriate method file and run ALL specifications listed therein.
+- `specification_tree/ARCHITECTURE.md` (conceptual contract + typing)
+- `specification_tree/CONTRACT.md` (practical output/schema rules)
+- `specification_tree/CLAIM_GROUPING.md` (baseline groups; core vs exploration)
+- `specification_tree/REVEALED_SEARCH_SPACE.md` (revealed vs potential search; linkage constraints)
+- `specification_tree/SPECIFICATION_SURFACE.md` (paper-specific universe + constraints + budgets)
+- `specification_tree/SPEC_UNIVERSE_AND_SAMPLING.md` (define the universe; budgeted sampling)
+- `specification_tree/COVERAGE.md` (coverage checklist + gaps)
 
-| Method | File | Description |
-|--------|------|-------------|
-| DiD | [methods/difference_in_differences.md](methods/difference_in_differences.md) | Two-way FE, staggered adoption |
-| Event Study | [methods/event_study.md](methods/event_study.md) | Dynamic treatment effects |
-| RD | [methods/regression_discontinuity.md](methods/regression_discontinuity.md) | Sharp/fuzzy discontinuity |
-| IV | [methods/instrumental_variables.md](methods/instrumental_variables.md) | 2SLS, control function |
-| Panel FE | [methods/panel_fixed_effects.md](methods/panel_fixed_effects.md) | Within estimator |
-| Cross-sectional | [methods/cross_sectional_ols.md](methods/cross_sectional_ols.md) | Single time period |
-| Discrete Choice | [methods/discrete_choice.md](methods/discrete_choice.md) | Logit/probit/multinomial |
-| Dynamic Panel | [methods/dynamic_panel.md](methods/dynamic_panel.md) | Arellano-Bond, PMG |
-| Structural VAR | [methods/structural_var.md](methods/structural_var.md) | SVAR, sign/zero restrictions |
-| Structural Calibration | [methods/structural_calibration.md](methods/structural_calibration.md) | Model calibration, GMM moments |
-| Bunching Estimation | [methods/bunching_estimation.md](methods/bunching_estimation.md) | Kink/notch bunching elasticities |
-| Local Projection | [methods/local_projection.md](methods/local_projection.md) | Impulse responses, dynamic effects |
-| Duration/Survival | [methods/duration_survival.md](methods/duration_survival.md) | Hazard models, Cox regression |
-| DSGE Bayesian | [methods/dsge_bayesian_estimation.md](methods/dsge_bayesian_estimation.md) | Structural macro MCMC (NOT APPLICABLE) |
+## 1) Designs (method / identification families)
 
-## Robustness Checks (Apply to All Methods)
+Pick the relevant design file(s) and run the **design-specific** estimator implementations and diagnostics it lists.
 
-These checks apply to every paper regardless of primary method:
+| Design family | File |
+|---|---|
+| Difference-in-differences | `specification_tree/designs/difference_in_differences.md` |
+| Event study | `specification_tree/designs/event_study.md` |
+| Regression discontinuity | `specification_tree/designs/regression_discontinuity.md` |
+| Instrumental variables | `specification_tree/designs/instrumental_variables.md` |
+| Randomized experiment | `specification_tree/designs/randomized_experiment.md` |
+| Synthetic control | `specification_tree/designs/synthetic_control.md` |
+| Panel fixed effects | `specification_tree/designs/panel_fixed_effects.md` |
+| Cross-sectional / OLS | `specification_tree/designs/cross_sectional_ols.md` |
+| Dynamic panel | `specification_tree/designs/dynamic_panel.md` |
+| Discrete choice | `specification_tree/designs/discrete_choice.md` |
+| Local projection | `specification_tree/designs/local_projection.md` |
+| Structural VAR | `specification_tree/designs/structural_var.md` |
+| Structural calibration / moments | `specification_tree/designs/structural_calibration.md` |
+| Bunching | `specification_tree/designs/bunching_estimation.md` |
+| Duration / survival | `specification_tree/designs/duration_survival.md` |
+| DSGE Bayesian | `specification_tree/designs/dsge_bayesian_estimation.md` |
 
-| Check | File | Description |
-|-------|------|-------------|
-| Leave-One-Out | [robustness/leave_one_out.md](robustness/leave_one_out.md) | Drop each covariate |
-| Single Covariate | [robustness/single_covariate.md](robustness/single_covariate.md) | Treatment + 1 control |
-| Sample Restrictions | [robustness/sample_restrictions.md](robustness/sample_restrictions.md) | Subsamples, time windows, outliers |
-| Clustering Variations | [robustness/clustering_variations.md](robustness/clustering_variations.md) | Different SE levels, spatial |
-| Functional Form | [robustness/functional_form.md](robustness/functional_form.md) | Logs, polynomials, quantiles |
-| Inference Alternatives | [robustness/inference_alternatives.md](robustness/inference_alternatives.md) | Randomization, MHT corrections |
-| Placebo Tests | [robustness/placebo_tests.md](robustness/placebo_tests.md) | Fake treatments, pre-trends |
-| Measurement Variations | [robustness/measurement.md](robustness/measurement.md) | Alternative coding, weights |
-| Heterogeneity | [robustness/heterogeneity.md](robustness/heterogeneity.md) | Subgroup analyses, interactions |
-| Model Specification | [robustness/model_specification.md](robustness/model_specification.md) | FE vs RE, estimator choice |
-| Control Progression | [robustness/control_progression.md](robustness/control_progression.md) | Build-up from bivariate |
+## 2) Universal modules (apply across designs)
 
-## Specification ID Format
+These are **typed** and should be referenced (not duplicated) from design files and agent prompts.
 
-All specifications use a hierarchical ID format:
-```
-{method}/{category}/{variation}
-```
+### Robustness checks (estimand-preserving; `rc/*`)
+
+- `specification_tree/modules/robustness/controls.md`
+- `specification_tree/modules/robustness/sample.md`
+- `specification_tree/modules/robustness/fixed_effects.md`
+- `specification_tree/modules/robustness/preprocessing.md`
+- `specification_tree/modules/robustness/data_construction.md`
+- `specification_tree/modules/robustness/functional_form.md`
+- `specification_tree/modules/robustness/weights.md`
+
+### Inference (`infer/*`)
+
+- `specification_tree/modules/inference/standard_errors.md`
+- `specification_tree/modules/inference/resampling.md`
+
+### Diagnostics (`diag/*`)
+
+- `specification_tree/modules/diagnostics/placebos.md`
+- `specification_tree/modules/diagnostics/design_diagnostics.md`
+- `specification_tree/modules/diagnostics/regression_diagnostics.md`
+
+### Sensitivity analysis / partial identification (`sens/*`)
+
+- `specification_tree/modules/sensitivity/unobserved_confounding.md`
+- `specification_tree/modules/sensitivity/assumptions/instrumental_variables.md`
+- `specification_tree/modules/sensitivity/assumptions/difference_in_differences.md`
+- `specification_tree/modules/sensitivity/assumptions/regression_discontinuity.md`
+- `specification_tree/modules/sensitivity/assumptions/randomized_experiment.md`
+- `specification_tree/modules/sensitivity/assumptions/synthetic_control.md`
+
+### Post-processing (set-level; `post/*`)
+
+- `specification_tree/modules/postprocess/multiple_testing.md`
+- `specification_tree/modules/postprocess/specification_curve.md`
+
+### Exploration (concept/estimand changes; `explore/*`)
+
+- `specification_tree/modules/exploration/variable_definitions.md`
+- `specification_tree/modules/exploration/heterogeneity.md`
+- `specification_tree/modules/exploration/cate_estimation.md`
+- `specification_tree/modules/exploration/policy_learning.md`
+- `specification_tree/modules/exploration/alternative_estimands.md`
+
+### Estimation wrappers (implementation alternatives)
+
+- `specification_tree/modules/estimation/dml.md` (DML as nuisance-learning layer)
+
+## 3) Typed `spec_id` namespaces (required)
+
+Every recorded row must use a typed namespace so its statistical object is mechanically recoverable:
+
+- `baseline` (reserved; paper’s canonical estimate(s) for a claim object)
+- `design/{design_code}/...` (within-design estimator/implementation)
+- `rc/{axis}/{variant}` (estimand-preserving robustness checks)
+- `infer/{axis}/{variant}` (inference variations)
+- `diag/{family}/{axis}/{variant}` (diagnostics/falsification)
+- `sens/{family}/{variant}` (sensitivity/partial-ID)
+- `post/{axis}/{variant}` (set-level transforms)
+- `explore/{axis}/{variant}` (concept/estimand changes)
 
 Examples:
-- `did/fe/twoway` - DiD with two-way fixed effects
-- `iv/first_stage/weak_iv_test` - IV weak instrument test
-- `robust/leave_one_out/drop_age` - Robustness check dropping age covariate
 
-## Explicit Method Tree Referencing (Required)
+- `design/difference_in_differences/estimator/twfe`
+- `rc/controls/loo/drop_age`
+- `infer/se/cluster/unit_time`
+- `diag/difference_in_differences/pretrends/joint_test`
+- `sens/assumption/instrumental_variables/exclusion/conley_bound_small`
+- `post/mht/family_core_rc/bh`
+- `explore/heterogeneity/interaction/gender`
 
-Every specification result must include:
-
-1. `spec_id` (hierarchical ID)
-2. `spec_tree_path` pointing to the defining markdown file and section header
-
-Example:
-
-```
-spec_id: did/fe/twoway
-spec_tree_path: methods/difference_in_differences.md#fixed-effects
-```
-
-Robustness example:
-
-```
-spec_id: robust/cluster/unit
-spec_tree_path: robustness/clustering_variations.md#single-level-clustering
-```
-
-If a spec is custom and not in the tree, use:
-
-```
-spec_id: custom/{description}
-spec_tree_path: custom
-```
-
-## Workflow
-
-1. **Classify** the paper's primary method
-2. **Read** the corresponding method file
-3. **Run baseline** specification (exact replication)
-4. **Run all method specs** listed in the method file
-5. **Run all robustness specs** from the robustness files
-6. **Record results** with full coefficient vectors
-
-## Adding New Specifications
-
-If you identify a reasonable specification NOT in the tree:
-1. Run it anyway
-2. Use `spec_id = "custom/{description}"`
-3. Note in your summary that this should be added to the tree
-4. **Add the spec directly to the appropriate method or robustness markdown file**
-   in `specification_tree/` (include the spec_id, description, and any constraints)
-5. If unsure where it belongs, add a short note in the Summary Report explaining why
-   and propose a location
-
-## Output Format
-
-Every specification must record:
-- `spec_id`: Hierarchical identifier
-- `spec_tree_path`: Path to defining markdown file
-- `coefficient_vector_json`: Full model output as JSON
-- All standard regression outputs (coef, se, pval, n, R2)
-
-See the main `unified_results.csv` schema for complete column list.
+See `specification_tree/CONTRACT.md` for the required output fields and the rules for scalar summaries of vector estimates (event studies, local projections, SVARs).

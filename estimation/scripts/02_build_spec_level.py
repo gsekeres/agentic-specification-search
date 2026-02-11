@@ -33,9 +33,9 @@ def _load_verification_maps() -> pd.DataFrame:
     """
     Load per-paper verification maps if present.
 
-    Important: spec_id is not always unique within a paper (some scripts reuse
-    spec_id across outcomes). To avoid many-to-many merges, we merge on
-    (paper_id, spec_id, outcome_var, treatment_var).
+    Newer verification maps include `spec_run_id`, which is unique within a paper
+    and is the preferred merge key. Legacy maps omit `spec_run_id` and require
+    merging on (paper_id, spec_id, outcome_var, treatment_var).
     """
     if not VERIFICATION_DIR.exists():
         return pd.DataFrame()
@@ -51,45 +51,77 @@ def _load_verification_maps() -> pd.DataFrame:
         except Exception as e:
             print(f"  Warning: failed to read verification map {p}: {e}")
             continue
+        if "paper_id" not in d.columns:
+            d["paper_id"] = p.parent.name
+
+        if "spec_run_id" in d.columns:
+            keep = [
+                "paper_id",
+                "spec_run_id",
+                "baseline_group_id",
+                "closest_baseline_spec_run_id",
+                "is_baseline",
+                "is_core_test",
+                "category",
+                "why",
+                "confidence",
+            ]
+            missing = [c for c in keep if c not in d.columns]
+            if missing:
+                print(f"  Warning: skipping {p} (missing columns: {missing})")
+                continue
+            d = d[keep].copy()
+            d = d.rename(
+                columns={
+                    "baseline_group_id": "v_baseline_group_id",
+                    "closest_baseline_spec_run_id": "v_closest_baseline_spec_run_id",
+                    "is_baseline": "v_is_baseline",
+                    "is_core_test": "v_is_core_test",
+                    "category": "v_category",
+                    "why": "v_why",
+                    "confidence": "v_confidence",
+                }
+            )
+            d["spec_run_id"] = d["spec_run_id"].astype(str)
+            dfs.append(d)
+            continue
+
+        # Legacy schema (no spec_run_id)
+        keep = [
+            "paper_id",
+            "spec_id",
+            "outcome_var",
+            "treatment_var",
+            "baseline_group_id",
+            "closest_baseline_spec_id",
+            "is_baseline",
+            "is_core_test",
+            "category",
+            "why",
+            "confidence",
+        ]
+        missing = [c for c in keep if c not in d.columns]
+        if missing:
+            print(f"  Warning: skipping {p} (missing columns: {missing})")
+            continue
+        d = d[keep].copy()
+        d = d.rename(
+            columns={
+                "baseline_group_id": "v_baseline_group_id",
+                "closest_baseline_spec_id": "v_closest_baseline_spec_id",
+                "is_baseline": "v_is_baseline",
+                "is_core_test": "v_is_core_test",
+                "category": "v_category",
+                "why": "v_why",
+                "confidence": "v_confidence",
+            }
+        )
         dfs.append(d)
 
     if not dfs:
         return pd.DataFrame()
 
-    v = pd.concat(dfs, ignore_index=True)
-
-    # Keep only merge keys + fields needed downstream; prefix to avoid collisions.
-    keep = [
-        "paper_id",
-        "spec_id",
-        "outcome_var",
-        "treatment_var",
-        "baseline_group_id",
-        "closest_baseline_spec_id",
-        "is_baseline",
-        "is_core_test",
-        "category",
-        "why",
-        "confidence",
-    ]
-    missing = [c for c in keep if c not in v.columns]
-    if missing:
-        raise ValueError(f"Verification map missing required columns: {missing}")
-
-    v = v[keep].copy()
-    v = v.rename(
-        columns={
-            "baseline_group_id": "v_baseline_group_id",
-            "closest_baseline_spec_id": "v_closest_baseline_spec_id",
-            "is_baseline": "v_is_baseline",
-            "is_core_test": "v_is_core_test",
-            "category": "v_category",
-            "why": "v_why",
-            "confidence": "v_confidence",
-        }
-    )
-
-    return v
+    return pd.concat(dfs, ignore_index=True)
 
 
 def _load_expected_sign_map() -> dict[tuple[str, str], str]:
@@ -157,10 +189,10 @@ def parse_tree_path(spec_tree_path):
     Parse specification tree path into components for distance calculation.
 
     Example paths:
-        "methods/cross_sectional_ols.md"
-        "methods/difference_in_differences.md#fixed-effects"
-        "robustness/leave_one_out.md"
-        "robustness/clustering_variations.md"
+        "designs/cross_sectional_ols.md"
+        "designs/difference_in_differences.md#baseline"
+        "modules/robustness/controls.md#leave-one-out-controls-loo"
+        "modules/inference/standard_errors.md#multi-way-clustering"
 
     Returns:
         dict with tree_depth, branch components
@@ -289,27 +321,72 @@ def main():
     else:
         print(f"  Loaded verification maps for {vmap['paper_id'].nunique()} papers")
 
-        # Left join on (paper_id, spec_id, outcome_var, treatment_var) to avoid
-        # many-to-many blowups when spec_id is reused across outcomes.
-        merge_keys = ["paper_id", "spec_id", "outcome_var", "treatment_var"]
-        for k in merge_keys:
-            if k not in df.columns:
-                raise ValueError(f"unified_results missing merge key: {k}")
+        df["v_has_map"] = False
 
-        # Deduplicate verification map on merge keys (keep first)
-        n_before_dedup = len(vmap)
-        vmap = vmap.drop_duplicates(subset=merge_keys, keep="first")
-        n_after_dedup = len(vmap)
-        if n_before_dedup != n_after_dedup:
-            print(f"  Deduplicated verification map: {n_before_dedup} → {n_after_dedup} rows")
+        # Preferred merge key: (paper_id, spec_run_id)
+        did_primary_merge = False
+        if "spec_run_id" in df.columns and "spec_run_id" in vmap.columns and vmap["spec_run_id"].notna().any():
+            df["spec_run_id"] = df["spec_run_id"].astype(str)
+            merge_keys = ["paper_id", "spec_run_id"]
+            for k in merge_keys:
+                if k not in df.columns:
+                    raise ValueError(f"unified_results missing merge key: {k}")
 
-        before = len(df)
-        df = df.merge(vmap, how="left", on=merge_keys, validate="m:1", indicator=True)
-        after = len(df)
-        if after != before:
-            raise RuntimeError("Verification merge changed row count; merge keys are not unique in verification map.")
-        df['v_has_map'] = df["_merge"].eq("both")
-        df = df.drop(columns=["_merge"])
+            vmap_run = vmap[vmap["spec_run_id"].notna()].copy()
+            vmap_run["spec_run_id"] = vmap_run["spec_run_id"].astype(str)
+            n_before_dedup = len(vmap_run)
+            vmap_run = vmap_run.drop_duplicates(subset=merge_keys, keep="first")
+            n_after_dedup = len(vmap_run)
+            if n_before_dedup != n_after_dedup:
+                print(f"  Deduplicated run-key verification map: {n_before_dedup} → {n_after_dedup} rows")
+
+            before = len(df)
+            df = df.merge(vmap_run, how="left", on=merge_keys, validate="m:1", indicator=True)
+            after = len(df)
+            if after != before:
+                raise RuntimeError("Run-key verification merge changed row count; merge keys are not unique in verification map.")
+            df["v_has_map"] = df["_merge"].eq("both")
+            df = df.drop(columns=["_merge"])
+            did_primary_merge = True
+
+        # Fallback merge for legacy maps: (paper_id, spec_id, outcome_var, treatment_var)
+        legacy_keys = ["paper_id", "spec_id", "outcome_var", "treatment_var"]
+        can_legacy_merge = all(k in df.columns for k in legacy_keys) and all(k in vmap.columns for k in legacy_keys)
+        if can_legacy_merge:
+            # If we already merged on spec_run_id, only try legacy merge for the still-unmapped rows.
+            if did_primary_merge:
+                unmapped = df.loc[~df["v_has_map"], legacy_keys].copy()
+            else:
+                unmapped = df.loc[:, legacy_keys].copy()
+            unmapped = unmapped.reset_index().rename(columns={"index": "__rowid"})
+
+            if "spec_run_id" in vmap.columns:
+                vmap_legacy = vmap[vmap["spec_run_id"].isna()].copy()
+            else:
+                vmap_legacy = vmap.copy()
+
+            n_before_dedup = len(vmap_legacy)
+            vmap_legacy = vmap_legacy.drop_duplicates(subset=legacy_keys, keep="first")
+            n_after_dedup = len(vmap_legacy)
+            if n_before_dedup != n_after_dedup:
+                print(f"  Deduplicated legacy-key verification map: {n_before_dedup} → {n_after_dedup} rows")
+
+            # Merge only keys+rowid to avoid creating duplicate v_* columns.
+            legacy_join = unmapped.merge(vmap_legacy, how="left", on=legacy_keys, validate="m:1", indicator=True)
+            matched = legacy_join[legacy_join["_merge"].eq("both")].copy()
+            if len(matched) > 0:
+                vcols = [c for c in vmap_legacy.columns if c.startswith("v_")]
+                for c in vcols:
+                    df.loc[matched["__rowid"], c] = matched[c].values
+                df.loc[matched["__rowid"], "v_has_map"] = True
+
+                if did_primary_merge:
+                    print(f"  Legacy-key merge filled {len(matched)} additional rows")
+                else:
+                    print(f"  Legacy-key merge matched {len(matched)} rows")
+
+        if not df["v_has_map"].any():
+            print("  Warning: verification maps loaded but no rows matched (check merge keys / schema).")
 
         # Attach expected sign at the baseline-group level.
         expected_sign_map = _load_expected_sign_map()
@@ -396,12 +473,13 @@ def main():
     # Select columns
     cols = [
         'paper_id', 'journal', 'title', 'year', 'method', 'i4r',
+        'spec_run_id', 'baseline_group_id',
         'spec_id', 'spec_tree_path', 'tree_depth', 'branch_0', 'branch_1', 'branch_2',
         'spec_order', 'orientation_sign', 'Z', 'Z_raw', 'Z_abs', 'Z_logp', 't_stat', 'coefficient', 'std_error', 'p_value', 'p_value_eff',
         'n_obs', 'r_squared', 'outcome_var', 'treatment_var',
         'fixed_effects', 'controls_desc', 'cluster_var',
         # Verification-derived fields (present only for verified papers)
-        'v_has_map', 'v_baseline_group_id', 'v_closest_baseline_spec_id',
+        'v_has_map', 'v_baseline_group_id', 'v_closest_baseline_spec_run_id', 'v_closest_baseline_spec_id',
         'v_is_baseline', 'v_is_core_test', 'v_category', 'v_why', 'v_confidence',
         'v_expected_sign', 'orientation_sign_vgroup', 'Z_vgroup'
     ]

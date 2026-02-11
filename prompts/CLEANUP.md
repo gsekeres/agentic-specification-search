@@ -24,6 +24,11 @@ Each extracted package folder contains the original replication materials (data 
 
 - `specification_results.csv` - The structured results from all specifications
 - `SPECIFICATION_SEARCH.md` - The summary report
+- `SPECIFICATION_SURFACE.json` - The approved pre-run spec universe (surface)
+- `SPECIFICATION_SURFACE.md` - Human-readable surface summary/rationale
+- `SPEC_SURFACE_REVIEW.md` - Pre-run verifier critique/edits (if present)
+- `diagnostics_results.csv` - Separate diagnostics table (if present)
+- `spec_diagnostics_map.csv` - Spec-run ↔ diagnostic-run linkage (if present)
 
 Remove everything else (data files, original code, etc.).
 
@@ -37,7 +42,15 @@ rm data/downloads/raw_packages/*.zip
 
 # For each extracted package, remove everything except results
 for dir in data/downloads/extracted/*/; do
-    find "$dir" -type f ! -name "specification_results.csv" ! -name "SPECIFICATION_SEARCH.md" -delete
+    find "$dir" -type f \
+        ! -name "specification_results.csv" \
+        ! -name "SPECIFICATION_SEARCH.md" \
+        ! -name "SPECIFICATION_SURFACE.json" \
+        ! -name "SPECIFICATION_SURFACE.md" \
+        ! -name "SPEC_SURFACE_REVIEW.md" \
+        ! -name "diagnostics_results.csv" \
+        ! -name "spec_diagnostics_map.csv" \
+        -delete
     find "$dir" -type d -empty -delete
 done
 ```
@@ -56,7 +69,15 @@ for zip_file in (BASE_DIR / "raw_packages").glob("*.zip"):
     zip_file.unlink()
 
 # Clean extracted folders
-KEEP_FILES = {"specification_results.csv", "SPECIFICATION_SEARCH.md"}
+KEEP_FILES = {
+    "specification_results.csv",
+    "SPECIFICATION_SEARCH.md",
+    "SPECIFICATION_SURFACE.json",
+    "SPECIFICATION_SURFACE.md",
+    "SPEC_SURFACE_REVIEW.md",
+    "diagnostics_results.csv",
+    "spec_diagnostics_map.csv",
+}
 
 for package_dir in (BASE_DIR / "extracted").iterdir():
     if not package_dir.is_dir():
@@ -83,6 +104,10 @@ Typical savings per package:
 After cleanup, each package folder contains only:
 - `specification_results.csv`: ~10-500 KB
 - `SPECIFICATION_SEARCH.md`: ~5-30 KB
+- `SPECIFICATION_SURFACE.json`: typically small (KB)
+- `SPECIFICATION_SURFACE.md`: typically small (KB)
+- `SPEC_SURFACE_REVIEW.md`: typically small (KB; if present)
+- `diagnostics_results.csv`, `spec_diagnostics_map.csv`: typically small (KB–MB; if present)
 
 ## When to Run Cleanup
 

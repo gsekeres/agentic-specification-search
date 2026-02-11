@@ -6,18 +6,64 @@ This document describes the methodological approach behind the Agentic Specifica
 
 Published research findings in economics often reflect only a small subset of the specifications that researchers explored during analysis. This "researcher degrees of freedom" problem makes it difficult to assess the robustness of findings without access to the full specification space.
 
-Our goal is to systematically explore the specification space for published papers by:
+Our goal is to make replication and robustness auditing **mechanically auditable** at scale by:
 
-1. Defining **standardized specification trees** for each empirical method
-2. Running **all specifications** from these trees for each paper
-3. Recording **complete coefficient vectors** (not just treatment effects)
-4. Enabling **meta-analysis** of robustness across papers and methods
+1. Defining a **typed specification tree** (orthogonal statistical object types)
+2. Defining a **per-paper specification surface** (the executable universe, constraints, and budgets) *before any models run*
+3. Executing the approved surface and writing standardized outputs
+4. Auditing outputs to produce a conservative **verified core**
+5. Feeding the verified core into mixture/dependence/counterfactual estimation
 
 ## Key Design Decisions
 
-### 1. Coefficient Vector Format
+### 1) Baseline claim objects and baseline groups
 
-**Decision**: Store all model coefficients in a single JSON column (`coefficient_vector_json`).
+A paper can have multiple “main” claims (different outcomes, treatments, target populations, or even designs). We represent each main claim as a **baseline group**: one claim object with:
+
+- outcome concept
+- treatment/exposure concept
+- estimand concept
+- target population
+
+This separation is central because “robustness” is meaningful **within** a baseline group, not across unrelated claim objects.
+
+See `specification_tree/CLAIM_GROUPING.md`.
+
+### 2) Typed specification tree (orthogonal axes)
+
+Empirical variation mixes multiple statistical object types. To keep this auditable, every row is typed by `spec_id` namespace:
+
+- `baseline`, `design/*`, `rc/*`, `infer/*` are estimate-like and core-eligible by default
+- `diag/*` (diagnostics), `sens/*` (assumption relaxations), `post/*` (set-level transforms), and `explore/*` (concept changes) are non-core by default
+
+Design/identification families live in `specification_tree/designs/*.md` and enumerate within-design variants (`design/{design_code}/*`). Cross-design modules live in `specification_tree/modules/*`.
+
+See `specification_tree/ARCHITECTURE.md` and `specification_tree/INDEX.md`.
+
+### 3) DML positioning
+
+Double/debiased machine learning (DML) is treated as an **estimation wrapper** (nuisance learning + orthogonalization), not as a primary design. It is `rc/estimation/dml/*` only when it preserves the baseline claim object.
+
+See `specification_tree/modules/estimation/dml.md`.
+
+### 4) Surface-driven execution (define universe before running)
+
+**Decision**: separate “define the universe” from “run the universe”.
+
+Per paper, an agent produces `SPECIFICATION_SURFACE.json` that:
+
+- enumerates baseline groups and baseline specs,
+- selects the core-eligible universe (`baseline`, `design/*`, `rc/*`, `infer/*`),
+- encodes constraints (e.g., control-count envelope, linkage rules for bundles),
+- defines budgets and reproducible sampling for intractable combinatorics.
+
+This surface is reviewed and edited *pre-run* by a verifier agent. Only then does a runner execute it.
+
+See `specification_tree/SPECIFICATION_SURFACE.md`, `specification_tree/SPEC_UNIVERSE_AND_SAMPLING.md`, and `specification_tree/REVEALED_SEARCH_SPACE.md`.
+
+### 5) Coefficient-vector format (carry full outputs)
+
+**Decision**: store full model outputs and metadata in a single JSON column (`coefficient_vector_json`) alongside scalar focal estimates.
 
 **Rationale**:
 - Different methods have different output structures (OLS coefficients differ from IV first stages, which differ from event study lead/lag coefficients)
@@ -25,7 +71,27 @@ Our goal is to systematically explore the specification space for published pape
 - Downstream analysis can parse the JSON for specific use cases
 - Full model output is preserved for reproducibility
 
-### 2. Paper Selection
+Vector-producing designs (event studies, local projections, SVAR IRFs) must declare a **scalar focal parameter** in JSON and store the full path/vector.
+
+See `specification_tree/CONTRACT.md`.
+
+### 6) Diagnostics as separate, linkable objects
+
+**Decision**: diagnostics are recorded in a separate table (when run) and linked to estimates via a join map, rather than being mixed into the estimate table.
+
+Outputs (optional, when planned in the surface):
+
+- `diagnostics_results.csv` (one row per diagnostic run; `diag/*`)
+- `spec_diagnostics_map.csv` (links `spec_run_id` ↔ `diagnostic_run_id`)
+
+This supports diagnostics that are:
+
+- `baseline_group`-scoped (e.g., RD McCrary density at a cutoff), or
+- `spec`-scoped (e.g., IV first-stage strength under a specific control set).
+
+See `specification_tree/modules/diagnostics/design_diagnostics.md` and `specification_tree/CONTRACT.md`.
+
+### 7) Paper selection
 
 **Decision**: Random sample from ALL AEA papers with data in openICPSR, stratified by journal.
 
@@ -36,142 +102,64 @@ Our goal is to systematically explore the specification space for published pape
 - Method type is determined during analysis, not during selection
 - Journal stratification ensures representation across AEA outlets
 
-### 3. Specification Tree Structure
+## Workflow (agents and artifacts)
 
-**Decision**: Method-specific trees plus universal robustness checks.
+At a high level:
 
-**Rationale**:
-- Different methods have fundamentally different specification choices
-- DiD papers need modern estimators (Sun-Abraham, Callaway-Sant'Anna)
-- IV papers need first-stage diagnostics and weak IV tests
-- RD papers need bandwidth and polynomial variations
-- But ALL papers benefit from:
-  - Leave-one-out covariate checks
-  - Single covariate analysis
-  - Sample restrictions
-  - Clustering variations
-  - Functional form tests
+1) **Design classification** (`prompts/paper_classifier.md`) → `design_code`
+2) **Surface build (pre-run)** (`prompts/spec_surface_builder.md`) → `SPECIFICATION_SURFACE.json` + `SPECIFICATION_SURFACE.md`
+3) **Surface verification (pre-run)** (`prompts/spec_surface_verifier.md`) → edited surface + `SPEC_SURFACE_REVIEW.md`
+4) **Surface execution** (`prompts/spec_search_agent.md`) → `specification_results.csv` + `SPECIFICATION_SEARCH.md` (+ optional diagnostics tables)
+5) **Post-run verification** (`prompts/verification_agent.md`) → `data/verification/{PAPER_ID}/...`
 
-### 4. Agent-Driven Analysis
+## Output schema (core)
 
-**Decision**: Use AI agents to run specifications rather than fully automated scripts.
+### `specification_results.csv` (estimate-like rows only)
 
-**Rationale**:
-- Each paper has unique data structures and variable names
-- Automated scripts cannot handle the heterogeneity across packages
-- Agents can read documentation, understand context, and adapt
-- Agents can identify appropriate specifications for each paper
-- Human review still needed for quality assurance
+Core required fields include:
 
-### 5. Specification Tree Editing
+- `paper_id`, `spec_run_id`, `baseline_group_id`
+- `spec_id`, `spec_tree_path`
+- `outcome_var`, `treatment_var`
+- `coefficient`, `std_error`, `p_value` (scalar focal estimate)
+- `coefficient_vector_json` (required JSON payload; may include full vectors/bundles)
 
-**Decision**: Agents can directly edit the specification tree markdown files.
+See `specification_tree/CONTRACT.md` for the full contract.
 
-**Rationale**:
-- The tree should evolve as we encounter new specification types
-- Initial tree is based on common practices but not exhaustive
-- As agents analyze papers, they may identify missing specifications
-- Direct editing allows organic tree growth
-- Future workflow may transition to flag-for-review
+### `verification_spec_map.csv` (post-run classification)
 
-## Specification Categories
+Verification assigns each executed row:
 
-### Method-Specific Specifications
+- a baseline-group mapping,
+- a core eligibility flag,
+- a category and short justification.
 
-Each method has specifications across these categories:
+This produces the conservative **verified core** used downstream.
 
-| Category | Purpose |
-|----------|---------|
-| **Fixed Effects** | How unobserved heterogeneity is controlled |
-| **Controls** | Which covariates are included |
-| **Sample** | Who is included in the analysis |
-| **Estimation** | What estimator is used |
-| **Standard Errors** | How inference is conducted |
-| **Diagnostics** | Method-specific validity tests |
+## Revealed search space and linkage constraints
 
-### Universal Robustness Checks
+The surface is constrained by the manuscript’s **revealed search space**:
 
-Applied to all papers regardless of method:
+- **Control-count envelope**: bounds sampled control-set sizes by what the paper reports as “main” control complexity.
+- **Bundled estimators**: IV/AIPW/DML/synth often share adjustment sets across components; the surface records whether adjustment is linked and enforces joint variation when linked.
 
-| Check | Purpose |
-|-------|---------|
-| **Leave-One-Out** | Identify influential covariates |
-| **Single Covariate** | Understand covariate contributions |
-| **Sample Restrictions** | Test sensitivity to sample composition |
-| **Clustering** | Test sensitivity to inference assumptions |
-| **Functional Form** | Test sensitivity to specification |
+See `specification_tree/REVEALED_SEARCH_SPACE.md`.
 
-## Output Schema
+## Quality assurance (high level)
 
-### Required Fields
+We rely on layered guardrails:
 
-Every specification result must include:
-
-```
-paper_id          # Unique identifier
-spec_id           # Hierarchical specification ID
-spec_tree_path    # Path to defining markdown
-outcome_var       # Dependent variable
-treatment_var     # Main treatment/exposure
-coefficient       # Point estimate
-std_error         # Standard error
-p_value           # p-value
-n_obs             # Sample size
-```
-
-### Coefficient Vector Schema
-
-The `coefficient_vector_json` field contains:
-
-```json
-{
-  "treatment": {
-    "var": "string",
-    "coef": "number",
-    "se": "number",
-    "pval": "number",
-    "ci_lower": "number",
-    "ci_upper": "number"
-  },
-  "controls": [
-    {"var": "string", "coef": "number", "se": "number", "pval": "number"}
-  ],
-  "fixed_effects": ["string"],
-  "diagnostics": {
-    "first_stage_F": "number|null",
-    "overid_pval": "number|null",
-    "pretrend_pval": "number|null"
-  },
-  "n_obs": "number",
-  "r_squared": "number|null"
-}
-```
-
-## Quality Assurance
-
-### Validation Steps
-
-1. **Baseline Replication**: First specification must match the paper's published results
-2. **Coefficient Sign Consistency**: Check for unexpected sign reversals
-3. **Sample Size Tracking**: Verify N is reasonable across specifications
-4. **Standard Error Reasonableness**: Flag unusually small or large SEs
-5. **Specification Count**: Ensure sufficient coverage of the tree
-
-### Red Flags
-
-Automated checks flag specifications where:
-- Treatment coefficient flips sign from baseline
-- p-value jumps from <0.01 to >0.10
-- Sample size drops by >50%
-- R-squared is suspiciously high (>0.99) or low (<0.01)
+- **Pre-run**: surface verification forces explicit constraints/budgets/linkage decisions.
+- **Run-time**: runner emits stable IDs (`spec_run_id`) and records rich metadata in JSON.
+- **Post-run**: verification filters drift/invalid rows and labels core vs non-core conservatively.
 
 ## Limitations
 
 1. **Software Translation**: Original Stata code must be translated to Python/R, potentially introducing errors
 2. **Variable Naming**: Agent must correctly identify variables across heterogeneous naming conventions
-3. **Missing Specifications**: The tree may not capture all reasonable specifications
+3. **Surface specification**: Defining the surface is itself a judgment call; the verifier stage is designed to catch incoherent expansion
 4. **Data Availability**: Some papers may have restricted data not in the openICPSR package
-5. **Computational Constraints**: Some specifications may be computationally infeasible
+5. **Computational constraints**: Some specs/diagnostics/sensitivity objects may be infeasible in a given package
 
 ## References
 

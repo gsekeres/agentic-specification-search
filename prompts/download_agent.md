@@ -21,7 +21,7 @@ Download AEA replication packages from openICPSR using Chrome MCP tools.
 
 I'm logged into openICPSR in Chrome. Download packages from the metadata file.
 
-**Metadata file**: /Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/metadata/packages_2025_classified.jsonl
+**Metadata file**: `data/metadata/packages_2025_classified.jsonl` (repo-relative; adjust if your path differs)
 
 **Filter criteria**: Download packages where data files are present (dta, csv, xlsx, etc.)
 

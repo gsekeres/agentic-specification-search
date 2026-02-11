@@ -1,132 +1,81 @@
-# Paper Classifier Prompt
+# Paper Design Classifier Prompt (Pre-Surface)
 
-Use this prompt to classify papers by their primary empirical method before running specification searches.
-
----
-
-## Purpose
-
-Given an AEA replication package, identify the primary empirical method used in the paper to determine which specification tree to follow.
+Use this prompt to classify an empirical paper’s primary identification/design family **before** building a specification surface.
 
 ---
 
-## Prompt Template
+## Inputs
 
-```
-Classify the empirical method used in this AEA replication package.
+- **Package directory**: `{EXTRACTED_PACKAGE_PATH}`
 
-**Package Directory**: {EXTRACTED_PACKAGE_PATH}
+---
 
-## Instructions
+## Task
 
-1. Read the README and documentation
-2. Examine the primary do files / scripts
-3. Identify the main estimation approach
+1) Read the README/documentation.
+2) Inspect the main analysis scripts (do-files, R scripts, Python).
+3) Identify the primary empirical design family used for the *main claim(s)*.
 
-## Classification Categories
+---
 
-Classify into ONE of the following:
+## Classification categories (must match `specification_tree/designs/*.md`)
 
-| Code | Method | Key Indicators |
-|------|--------|----------------|
-| `did` | Difference-in-Differences | `xtreg ... i.treat#i.post`, `reghdfe`, treatment×post interaction, two-way FE |
-| `es` | Event Study | `eventdd`, `eventstudyinteract`, leads/lags relative to treatment |
-| `rd` | Regression Discontinuity | `rdrobust`, `rddensity`, running variable, bandwidth |
-| `iv` | Instrumental Variables | `ivreghdfe`, `ivreg2`, `2sls`, first stage, instrument |
-| `panel` | Panel Fixed Effects | `xtreg, fe`, `reghdfe`, entity + time FE without DiD |
-| `ols` | Cross-Sectional OLS | Single cross-section, `reg`, no panel structure |
-| `discrete` | Discrete Choice | `logit`, `probit`, `mlogit`, `ologit`, binary/categorical Y |
-| `dynpanel` | Dynamic Panel | `xtabond`, `xtdpdsys`, lagged dependent variable |
+Return one primary `design_code` from:
 
-## Output Format
+- `difference_in_differences`
+- `event_study`
+- `regression_discontinuity`
+- `instrumental_variables`
+- `randomized_experiment`
+- `synthetic_control`
+- `panel_fixed_effects`
+- `cross_sectional_ols`
+- `discrete_choice`
+- `dynamic_panel`
+- `local_projection`
+- `structural_var`
+- `structural_calibration`
+- `bunching_estimation`
+- `duration_survival`
+- `dsge_bayesian_estimation`
 
-Return a JSON object:
+Also return `secondary_design_codes` (possibly empty) for meaningful secondary methods used in the paper (e.g., DiD main + event study robustness).
+
+---
+
+## Output format (JSON only)
 
 ```json
 {
-  "paper_id": "{project_id}",
-  "method_code": "did",
-  "method_name": "Difference-in-Differences",
+  "paper_id": "{PAPER_ID}",
+  "design_code": "difference_in_differences",
   "confidence": "high|medium|low",
   "evidence": [
-    "Uses reghdfe with unit and time fixed effects",
-    "Has treat*post interaction term",
-    "README mentions difference-in-differences"
+    "Uses reghdfe with unit and time fixed effects and treat×post",
+    "Main tables are DiD estimates"
   ],
-  "secondary_methods": ["es"],
-  "notes": "Also includes event study as robustness"
+  "secondary_design_codes": ["event_study"],
+  "notes": "Event study appears in appendix as robustness."
 }
 ```
 
-## Decision Rules
-
-### DiD vs Panel FE
-- **DiD**: Treatment status changes over time for some units (staggered or simultaneous)
-- **Panel FE**: Treatment is time-invariant OR continuous policy variable
-
-### Event Study vs DiD
-- **Event Study**: Explicit dynamic specification with relative time indicators
-- **DiD**: Single post-treatment indicator (or treat×post)
-
-### IV vs OLS
-- **IV**: Endogenous regressor instrumented
-- **OLS**: No instrumental variable, all regressors exogenous
-
-### Panel vs Cross-Sectional
-- **Panel**: Multiple observations per unit over time
-- **Cross-Sectional**: Single observation per unit
-
-### When Uncertain
-- If paper uses multiple methods, classify by the PRIMARY (main table) method
-- Note secondary methods in the `secondary_methods` field
-- If truly ambiguous, set `confidence: "low"` and explain in notes
-```
-
 ---
 
-## Usage
+## Decision rules (high-level)
 
-Launch with:
+- `difference_in_differences` vs `panel_fixed_effects`:
+  - DiD: treatment changes over time for some units and main parameter is a treatment×post-type contrast.
+  - Panel FE: repeated observations with FE but no clear treated-vs-control adoption structure.
+- `event_study`:
+  - explicit relative-time leads/lags and a dynamic path is a main object.
+- `instrumental_variables`:
+  - 2SLS/IV estimator with explicit instrument(s) and first-stage discussion.
+- `regression_discontinuity`:
+  - running variable + cutoff/bandwidth logic; rdrobust-like code.
+- `synthetic_control`:
+  - treated unit + donor pool + synthetic weights/placebos.
+- `randomized_experiment`:
+  - random assignment / strata / treatment arms; ITT/TOT framing.
 
-```
-Task tool with subagent_type="general-purpose"
-prompt: [paste template with {EXTRACTED_PACKAGE_PATH} filled in]
-```
+If truly ambiguous, choose the design family most aligned with the paper’s **main** interpreted claim and lower the confidence.
 
----
-
-## Batch Classification
-
-For classifying multiple papers:
-
-```python
-import json
-
-def classify_papers(metadata_file, output_file):
-    """
-    Classify all papers in metadata file.
-    """
-    classifications = []
-
-    with open(metadata_file) as f:
-        for line in f:
-            paper = json.loads(line)
-            # Launch classifier agent for each paper
-            # ... agent call ...
-            classifications.append(result)
-
-    with open(output_file, 'w') as f:
-        for c in classifications:
-            f.write(json.dumps(c) + '\n')
-```
-
----
-
-## Integration with Specification Search
-
-After classification, the specification search agent should:
-
-1. Read the classification result
-2. Load the corresponding specification tree file
-3. Run all specifications from that tree
-4. Apply universal robustness checks from `robustness/` directory

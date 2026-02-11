@@ -126,10 +126,16 @@ def main() -> None:
                 groups = d.get("baseline_groups", []) or []
                 baselines_ok = True
                 n_baseline_groups = int(len(groups))
-                spec_ids = []
+                spec_run_ids: list[str] = []
+                spec_ids: list[str] = []
                 for g in groups:
+                    spec_run_ids.extend(list(g.get("baseline_spec_run_ids", []) or []))
                     spec_ids.extend(list(g.get("baseline_spec_ids", []) or []))
-                n_baseline_specs = int(len(set(map(str, spec_ids)))) if spec_ids else 0
+
+                if spec_run_ids:
+                    n_baseline_specs = int(len(set(map(str, spec_run_ids))))
+                else:
+                    n_baseline_specs = int(len(set(map(str, spec_ids)))) if spec_ids else 0
             except Exception as e:
                 baselines_error = str(e)
         else:
