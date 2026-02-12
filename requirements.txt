@@ -6,9 +6,6 @@ pandas>=2.0.0
 statsmodels>=0.14.0
 linearmodels>=5.0
 
-# Optional (Stata-like syntax)
-# pyfixest>=0.18.0
-
 # Visualization
 matplotlib>=3.7.0
 

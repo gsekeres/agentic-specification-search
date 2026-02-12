@@ -17,7 +17,7 @@ The current sample covers **99 papers** from AEA journals (AER, AEJ-Applied, AEJ
 ```
 agentic_specification_search/
 ├── README.md
-├── unified_results.csv                 # Aggregated results across all papers
+├── unified_results.csv                 
 │
 ├── specification_tree/                 # Specification tree definitions
 │   ├── INDEX.md
@@ -25,36 +25,30 @@ agentic_specification_search/
 │   └── modules/                        # Orthogonal modules (rc/*, infer/*, diag/*, sens/*, explore/*, post/*)
 │
 ├── prompts/                            # Agent prompts
-│   ├── paper_classifier.md             # Design-family classification (pre-surface)
-│   ├── spec_surface_builder.md         # Build SPECIFICATION_SURFACE.json (pre-run)
-│   ├── spec_surface_verifier.md        # Critique/edit surface (pre-run)
-│   ├── spec_search_agent.md            # Runner: execute approved surface (run stage)
-│   ├── verification_agent.md           # Post-run audit and core classification
-│   ├── download_agent.md               # Package download automation
-│   └── CLEANUP.md                      # Optional disk cleanup guidance
+│   ├── 01_downloader.md                # Package download automation
+│   ├── 02_paper_classifier.md          # Design-family classification (pre-surface)
+│   ├── 03_spec_surface_builder.md      # Build SPECIFICATION_SURFACE.json (pre-run)
+│   ├── 04_spec_surface_verifier.md     # Critique/edit surface (pre-run)
+│   ├── 05_spec_searcher.md             # Runner: execute approved surface (run stage)
+│   ├── 06_post_run_verifier.md         # Post-run audit and core classification
+│   └── 07_CLEANUP.md                   # Optional disk cleanup guidance
 │
 ├── scripts/                            # Infrastructure scripts
-│   ├── create_unified_csv.py           # Aggregate per-paper results
-│   ├── select_new_papers.py            # Stratified paper selection
-│   ├── batch_download.py               # Batch download helper
-│   ├── cleanup_after_spec_search.sh    # Optional disk cleanup helper (per paper)
-│   ├── 01_collect_dois.py              # DOI collection
-│   ├── 02_identify_journals.py         # Journal identification
 │   └── paper_analyses/                 # Per-paper estimation scripts
 │       └── {PAPER_ID}.py
 │
 ├── estimation/                         # Estimation pipeline
-│   ├── run_all.py                      # Master pipeline runner
-│   ├── scripts/                        # Numbered analysis scripts
+│   ├── run_all.py
+│   ├── scripts/
 │   │   ├── 00_summarize_verification.py
 │   │   ├── 01a_build_i4r_claim_map.py
 │   │   ├── 01b_build_i4r_oracle_claim_map.py
 │   │   ├── 01_build_claim_level.py
 │   │   ├── 02_build_spec_level.py
 │   │   ├── 03_extract_i4r_baseline.py
-│   │   ├── 04_fit_mixture.py           # Mixture model estimation
-│   │   ├── 05_estimate_dependence.py   # AR(1) dependence estimation
-│   │   ├── 06_counterfactual.py        # Disclosure counterfactual
+│   │   ├── 04_fit_mixture.py
+│   │   ├── 05_estimate_dependence.py 
+│   │   ├── 06_counterfactual.py
 │   │   ├── 07_i4r_discrepancies.py
 │   │   ├── 08_i4r_paper_audit.py
 │   │   ├── 10_inference_audit.py
@@ -74,7 +68,7 @@ agentic_specification_search/
 │   │   ├── 26_build_paper_catalog.py
 │   │   ├── 27_mixture_comparison_table.py
 │   │   ├── 27_sensitivity_tables.py
-│   │   └── make_figures.jl             # All figures (Julia/PyPlot)
+│   │   └── make_figures.jl     
 │   ├── data/                           # Intermediate datasets
 │   │   ├── claim_level.csv
 │   │   ├── spec_level.csv
@@ -94,7 +88,7 @@ agentic_specification_search/
 │   │   └── ...
 │   ├── downloads/
 │   │   ├── raw_packages/               # Downloaded ZIP files
-│   │   └── extracted/                  # Unzipped replication packages (99 papers)
+│   │   └── extracted/                  # Unzipped replication packages
 │   └── tracking/
 │       ├── spec_search_status.json     # Per-paper analysis status
 │       ├── completed_analyses.jsonl
