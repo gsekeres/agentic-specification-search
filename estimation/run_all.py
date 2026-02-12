@@ -59,7 +59,7 @@ def main():
     print("Empirical Analysis Pipeline")
     print("=" * 60)
 
-    # Step 1: Data construction
+    # Step 1: Data construction (scripts 00-03, 07-08)
     if run_data:
         print("\n" + "#" * 60)
         print("STEP 1: DATA CONSTRUCTION")
@@ -71,11 +71,10 @@ def main():
         run_python("01_build_claim_level.py")
         run_python("02_build_spec_level.py")
         run_python("03_extract_i4r_baseline.py")
-        run_python("08_i4r_paper_audit.py")
-        run_python("10_inference_audit.py")
+        run_python("08_inference_audit.py")
         run_python("07_i4r_discrepancies.py")
 
-    # Step 2: Estimation
+    # Step 2: Estimation (scripts 04-06, 09)
     if run_est:
         print("\n" + "#" * 60)
         print("STEP 2: ESTIMATION")
@@ -86,9 +85,9 @@ def main():
         run_python("06_counterfactual.py")
         # Appendix tables (requires outputs from both data + estimation stages)
         if (BASE_DIR / "estimation" / "results" / "inference_audit_i4r.csv").exists():
-            run_python("11_write_overleaf_tables.py")
+            run_python("09_write_overleaf_tables.py")
         else:
-            print("Skipping 11_write_overleaf_tables.py (missing inference_audit_i4r.csv; run --data first).")
+            print("Skipping 09_write_overleaf_tables.py (missing inference_audit_i4r.csv; run --data first).")
 
     # Step 3: Figures (Julia)
     if run_figs:
@@ -98,34 +97,27 @@ def main():
 
         run_julia("make_figures.jl")
 
-    # Step 4: Extension analyses (appendix robustness)
+    # Step 4: Extension analyses (scripts 10-19)
     if run_ext:
         print("\n" + "#" * 60)
         print("STEP 4: EXTENSION ANALYSES")
         print("#" * 60)
 
         # Mixture extensions
-        run_python("12_bootstrap_mixture_ci.py")
-        run_python("15_journal_subgroup.py")
-        run_python("16_posterior_assignment.py")
-
-        # Dependence extensions
-        run_python("17_dependence_heterogeneity.py")
-        run_python("18_sign_consistency.py")
-        run_python("19_funnel_plot.py")
+        run_python("10_bootstrap_mixture_ci.py")
+        run_python("11_journal_subgroup.py")
+        run_python("12_posterior_assignment.py")
 
         # Counterfactual extensions
-        run_python("20_counterfactual_montecarlo.py")
-        run_python("21_effective_sample_size.py")
-        run_python("22_window_surface.py")
-        run_python("23_within_paper_dispersion.py")
+        run_python("13_counterfactual_montecarlo.py")
+        run_python("14_effective_sample_size.py")
 
         # Summary tables
-        run_python("24_summary_statistics.py")
-        run_python("25_variance_decomposition.py")
-        run_python("26_build_paper_catalog.py")
-        run_python("27_mixture_comparison_table.py")
-        run_python("27_sensitivity_tables.py")
+        run_python("15_summary_statistics.py")
+        run_python("16_variance_decomposition.py")
+        run_python("17_build_paper_catalog.py")
+        run_python("18_mixture_comparison_table.py")
+        run_python("19_sensitivity_tables.py")
 
     print("\n" + "=" * 60)
     print("Pipeline complete!")

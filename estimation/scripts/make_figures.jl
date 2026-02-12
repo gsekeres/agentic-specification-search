@@ -875,20 +875,16 @@ function fig_foldnorm_mufree(comp_key::String, K::Int, filename::String)
     save_both(fig, filename)
 end
 
+fig2e_foldnorm_mufree_k2() = fig_foldnorm_mufree(
+    "foldnorm_K=2_trim10", 2, "fig_foldnorm_mufree_sigma1_K2.pdf"
+)
+
 fig2f_foldnorm_mufree_k3() = fig_foldnorm_mufree(
     "foldnorm_K=3_trim10", 3, "fig_foldnorm_mufree_sigma1_K3.pdf"
 )
 
-fig2f_foldnorm_mufree_k3_full() = fig_foldnorm_mufree(
-    "foldnorm_K=3_full", 3, "fig_foldnorm_mufree_sigma1_K3_full.pdf"
-)
-
 fig2g_foldnorm_mufree_k4() = fig_foldnorm_mufree(
     "foldnorm_K=4_trim10", 4, "fig_foldnorm_mufree_sigma1_K4.pdf"
-)
-
-fig2g_foldnorm_mufree_k4_full() = fig_foldnorm_mufree(
-    "foldnorm_K=4_full", 4, "fig_foldnorm_mufree_sigma1_K4_full.pdf"
 )
 
 
@@ -2557,42 +2553,27 @@ function main()
     println("=" ^ 60)
 
     for f in [
+        # Main text figures
         fig1_z_threeway,
         fig1b_tstat_filters,
-        fig2_mixture_fit,
-        fig2b_mixture_k2,
-        fig2c_mixture_k4,
+        fig2e_foldnorm_mufree_k2,
+        fig2f_foldnorm_mufree_k3,
+        fig2g_foldnorm_mufree_k4,
+        fig3b_nullfdr_m50,
+        # Appendix figures
+        fig4_i4r_agreement,
         fig2d_mixture_sigma_fixed_1,
         fig2e_mixture_sigma_geq_1,
-        fig_folded_k2,
-        fig_folded_k3,
-        fig_folded_k4,
-        fig_mu_free_comparison,
-        fig2f_foldnorm_mufree_k3,
-        fig2f_foldnorm_mufree_k3_full,
-        fig2g_foldnorm_mufree_k4,
-        fig2g_foldnorm_mufree_k4_full,
         fig_systematic_grid,
-        fig3_counterfactual,
-        fig3b_nullfdr_m50,
-        fig4_i4r_agreement,
         fig5_corr_distance,
         fig6_mixture_diagnostics,
         fig7_k_sensitivity,
-        fig8_dependence_alternatives,
         fig9c_disclosure_scaling_nullfdr,
         fig10_bootstrap_ci,
-        fig11_bootstrap_lrt,
-        fig12_leave_one_out_cv,
         fig13_journal_subgroup,
         fig14_posterior_heatmap,
-        fig15_phi_vs_nspecs,
-        fig16_sign_consistency,
-        fig17_funnel_plot,
         fig18_montecarlo,
         fig19_effective_sample_size,
-        fig20_window_surface,
-        table_baseline_specs_summary,
     ]
         try
             f()

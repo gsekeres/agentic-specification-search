@@ -1,6 +1,6 @@
 # Agentic Specification Search
 
-Replication package for "Editorial Screening when Science is Cheap" (Fishman & Sekeres, 2025). This repository implements an automated specification search framework that applies AI agents to run large-scale robustness analyses on empirical economics papers, then estimates mixture, dependence, and counterfactual screening models from the resulting specification-level data.
+Replication package for "Editorial Screening when Science is Cheap" (Fishman & Sekeres, 2026). This repository implements an automated specification search framework that applies AI agents to run large-scale robustness analyses on empirical economics papers, then estimates mixture, dependence, and counterfactual screening models from the resulting specification-level data.
 
 ## Overview
 
