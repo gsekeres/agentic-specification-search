@@ -70,17 +70,17 @@ Implemented:
 Implemented:
 
 - Added a surface-driven workflow:
-  - `prompts/paper_classifier.md` (design classification)
-  - `prompts/spec_surface_builder.md` (define `SPECIFICATION_SURFACE.json`)
-  - `prompts/spec_surface_verifier.md` (pre-run audit/edit surface)
-- Updated `prompts/spec_search_agent.md` to be a **runner-only** prompt: execute the approved surface and write typed outputs (estimates table + optional diagnostics tables).
-- Updated `prompts/verification_agent.md` to audit surface-driven outputs keyed on `spec_run_id` and `baseline_group_id` and to classify core vs non-core mechanically by namespace.
+  - `prompts/02_paper_classifier.md` (design classification)
+  - `prompts/03_spec_surface_builder.md` (define `SPECIFICATION_SURFACE.json`)
+  - `prompts/04_spec_surface_verifier.md` (pre-run audit/edit surface)
+- Updated `prompts/05_spec_searcher.md` to be a **runner-only** prompt: execute the approved surface and write typed outputs (estimates table + optional diagnostics tables).
+- Updated `prompts/06_post_run_verifier.md` to audit surface-driven outputs keyed on `spec_run_id` and `baseline_group_id` and to classify core vs non-core mechanically by namespace.
 
 ### C) Pipeline + data schema
 
 Implemented (partial):
 
-- Updated `scripts/create_unified_csv.py` to carry `spec_run_id` and `baseline_group_id` into `unified_results.csv` and to bucket summary stats by `spec_id` namespace/design.
+- `unified_results.csv` carries `spec_run_id` and `baseline_group_id` and buckets summary stats by `spec_id` namespace/design.
 - Updated `estimation/scripts/02_build_spec_level.py` to prefer merging verification maps on `spec_run_id` when present (fallback to legacy merge keys otherwise).
 
 ## Open econometric questions (need explicit policy)

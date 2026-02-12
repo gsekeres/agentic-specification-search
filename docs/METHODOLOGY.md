@@ -106,11 +106,11 @@ See `specification_tree/modules/diagnostics/design_diagnostics.md` and `specific
 
 At a high level:
 
-1) **Design classification** (`prompts/paper_classifier.md`) → `design_code`
-2) **Surface build (pre-run)** (`prompts/spec_surface_builder.md`) → `SPECIFICATION_SURFACE.json` + `SPECIFICATION_SURFACE.md`
-3) **Surface verification (pre-run)** (`prompts/spec_surface_verifier.md`) → edited surface + `SPEC_SURFACE_REVIEW.md`
-4) **Surface execution** (`prompts/spec_search_agent.md`) → `specification_results.csv` + `SPECIFICATION_SEARCH.md` (+ optional diagnostics tables)
-5) **Post-run verification** (`prompts/verification_agent.md`) → `data/verification/{PAPER_ID}/...`
+1) **Design classification** (`prompts/02_paper_classifier.md`) → `design_code`
+2) **Surface build (pre-run)** (`prompts/03_spec_surface_builder.md`) → `SPECIFICATION_SURFACE.json` + `SPECIFICATION_SURFACE.md`
+3) **Surface verification (pre-run)** (`prompts/04_spec_surface_verifier.md`) → edited surface + `SPEC_SURFACE_REVIEW.md`
+4) **Surface execution** (`prompts/05_spec_searcher.md`) → `specification_results.csv` + `SPECIFICATION_SEARCH.md` (+ optional diagnostics tables)
+5) **Post-run verification** (`prompts/06_post_run_verifier.md`) → `data/verification/{PAPER_ID}/...`
 
 ## Output schema (core)
 

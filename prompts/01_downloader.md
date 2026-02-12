@@ -100,7 +100,7 @@ Status values: `downloaded`, `restricted`, `error`, `missing`
 After downloads complete:
 
 1. Unzip to `data/downloads/extracted/{project_id}-V1/`
-2. Proceed to specification search (see `prompts/spec_search_agent.md`)
+2. Proceed to specification search (see `prompts/05_spec_searcher.md`)
 3. Optionally delete raw zip files after extraction
 
 ---

@@ -133,13 +133,12 @@ python estimation/run_all.py --extensions   # Extension analyses only
 ### Adding new papers
 
 1. Download replication packages to `data/downloads/extracted/{PAPER_ID}/`
-2. Classify designs (see `prompts/paper_classifier.md`)
-3. Build a surface (see `prompts/spec_surface_builder.md`)
-4. Pre-run audit/edit surface (see `prompts/spec_surface_verifier.md`)
-5. Run the approved surface (see `prompts/spec_search_agent.md`)
-6. Post-run audit + core classification (see `prompts/verification_agent.md`)
-7. Rebuild unified results: `python scripts/create_unified_csv.py`
-8. Re-run the pipeline: `python estimation/run_all.py --all`
+2. Classify designs (see `prompts/02_paper_classifier.md`)
+3. Build a surface (see `prompts/03_spec_surface_builder.md`)
+4. Pre-run audit/edit surface (see `prompts/04_spec_surface_verifier.md`)
+5. Run the approved surface (see `prompts/05_spec_searcher.md`)
+6. Post-run audit + core classification (see `prompts/06_post_run_verifier.md`)
+7. Re-run the pipeline: `python estimation/run_all.py --all`
 
 ## Specification Tree
 
