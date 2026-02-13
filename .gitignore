@@ -1,17 +1,29 @@
-# Data files (large, downloaded content)
-data/downloads/
-data/extracted/
+# Raw downloaded packages (large zip/tar files - do not commit)
+data/downloads/raw_packages/*
+!data/downloads/raw_packages/.gitkeep
+
+# Extracted packages: ignore raw data, track only agent outputs
+data/downloads/extracted/*
+!data/downloads/extracted/.gitkeep
+!data/downloads/extracted/*/
+data/downloads/extracted/*/*
+!data/downloads/extracted/*/SPECIFICATION_SURFACE.json
+!data/downloads/extracted/*/SPECIFICATION_SURFACE.md
+!data/downloads/extracted/*/SPEC_SURFACE_REVIEW.md
+!data/downloads/extracted/*/specification_results.csv
+!data/downloads/extracted/*/diagnostics_results.csv
+!data/downloads/extracted/*/spec_diagnostics_map.csv
+!data/downloads/extracted/*/SPECIFICATION_SEARCH.md
+!data/downloads/extracted/*/replication.csv
+!data/downloads/extracted/*/replication_report.md
+
+# Metadata cache files
 data/metadata/*.jsonl
 data/metadata/*.json
-
-# Large cache files (exceeds GitHub 100MB limit)
-data/cache/datacite_responses.db
-
-# Keep directory structure
-!data/.gitkeep
 !data/metadata/.gitkeep
-!data/downloads/.gitkeep
-!data/extracted/.gitkeep
+
+# Large cache files
+data/cache/datacite_responses.db
 
 # Python
 __pycache__/

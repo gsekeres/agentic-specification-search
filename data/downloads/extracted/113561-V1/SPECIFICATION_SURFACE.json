@@ -1,0 +1,412 @@
+{
+  "paper_id": "113561-V1",
+  "created_at": "2026-02-13",
+  "paper_title": "What Determines Giving to Hurricane Katrina Victims? Experimental Evidence on Racial Group Loyalty",
+  "authors": "Fong and Luttmer (2009)",
+  "design_classification": "randomized_experiment",
+  "notes": "Online survey experiment. Respondents randomly shown pictures of Hurricane Katrina victims varying by race (black vs white vs race-obscured). Four picture manipulation variables form the treatment arms: picshowblack, picraceb, picobscur (three dummies plus omitted group). The paper's main analysis uses WLS with survey weights (tweight) and HC1 robust SE. The focal treatment coefficient is on picshowblack throughout.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "claim_object": {
+        "outcome_concept": "Experimental charitable giving (dictator game, 0-100 scale)",
+        "treatment_concept": "Pictures show black Katrina victims (vs white or race-obscured)",
+        "estimand_concept": "ITT: effect of racial manipulation on giving, white respondents",
+        "target_population": "White respondents in Knowledge Networks panel who passed audio check",
+        "direction_expectation": "Negative (in-group bias: whites give less when shown black victims)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-R1-White (reg_id=8)",
+          "outcome_var": "giving",
+          "treatment_var": "picshowblack",
+          "additional_treatment_vars": ["picraceb", "picobscur"],
+          "controls": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+          "n_controls": 29,
+          "n_controls_effective_white_subsample": 27,
+          "weight_var": "tweight",
+          "se_type": "HC1",
+          "sample_filter": "white == 1",
+          "n_obs": 915,
+          "replicated_coef": -4.198,
+          "replicated_pvalue": 0.370,
+          "notes": "n_controls=29 is the formula count including black and other (collinear zeros on white subsample). Effective controls = 27."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 9,
+        "controls_count_max": 32,
+        "linked_adjustment": false,
+        "notes": "Not a bundled estimator. Min controls = 9 (Table 5 s5 on white subsample: nraud manipulation controls only; black/other are collinear zeros and dropped). On full sample, the formula includes black+other giving 11, but the white-subsample effective min is 9. Max controls = 32 (Table 5 s6: nraud + cntrldems + addcntrl1). The bivariate spec (0 controls) is outside the envelope but explicitly enumerated. Treatment arms (picshowblack, picraceb, picobscur) are always included and are NOT counted as controls. The envelope constrains only budgeted subset sampling, not the explicitly enumerated progression/set specs."
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "design_notes": "with_covariates is the baseline estimator for G1, not a separate design variant.",
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/manipulation_only",
+          "rc/controls/progression/manipulation_plus_demographics",
+          "rc/controls/progression/manipulation_plus_demographics_plus_charity",
+          "rc/controls/progression/full",
+          "rc/controls/loo/*",
+          "rc/controls/manipulation_coding/separate_worthiness",
+          "rc/sample/subpopulation/full_sample",
+          "rc/sample/subpopulation/main_variant_only",
+          "rc/sample/subpopulation/slidell_only",
+          "rc/sample/subpopulation/biloxi_only",
+          "rc/sample/subpopulation/race_shown_only",
+          "rc/weights/main/unweighted",
+          "rc/preprocess/outcome/topcode_giving_at_99",
+          "rc/preprocess/outcome/winsor_1_99"
+        ],
+        "rc_dedup_notes": "Removed baseline-identical entries: rc/controls/sets/baseline (=baseline), rc/controls/manipulation_coding/nraudworthy (=baseline coding), rc/weights/main/paper_weights (=baseline weights). Removed rc/controls/sets/minimal (alias for rc/controls/progression/manipulation_only). Removed rc/controls/progression/bivariate (alias for rc/controls/sets/none). Removed infer/se/hc/hc1 from infer_spec_ids (=baseline inference).",
+        "infer_spec_ids": [
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3",
+          "infer/se/hc/classical"
+        ]
+      },
+      "control_pool": {
+        "mandatory_treatment_vars": ["picshowblack", "picraceb", "picobscur"],
+        "manipulation_controls_nraud": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient"],
+        "manipulation_controls_manip": ["aud_republ", "aud_econdis", "aud_govtben", "aud_prephur", "aud_church", "aud_crime", "aud_helpoth", "aud_contrib", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient"],
+        "demographic_controls": ["age", "age2", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired"],
+        "charitable_giving_controls": ["dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+        "race_controls_for_full_sample": ["black", "other"],
+        "extra_controls": ["hfh_effective", "lifepriorities_help", "lifepriorities_mony"],
+        "notes": "LOO drops are from the demographic + charitable giving block only (14 + 4 = 18 variables on white subsample, yielding 17 LOO drops because age/age2 are dropped as a pair). Manipulation controls are mandatory as they correspond to the experimental design. Race controls (black, other) are mandatory when running full sample but irrelevant (collinear zeros) on white-only sample."
+      },
+      "control_blocks": {
+        "manipulation_nraud": {
+          "variables": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient"],
+          "mandatory": true,
+          "notes": "Always included; these are experimental manipulation controls"
+        },
+        "demographics_core": {
+          "variables": ["age", "age2", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale"],
+          "mandatory": false
+        },
+        "geography": {
+          "variables": ["south"],
+          "mandatory": false
+        },
+        "labor_force": {
+          "variables": ["work", "disabled", "retired"],
+          "mandatory": false
+        },
+        "charitable_giving": {
+          "variables": ["dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+          "mandatory": false,
+          "notes": "Self-reported prior charitable giving; potentially endogenous but paper includes in baseline"
+        },
+        "extra_controls": {
+          "variables": ["hfh_effective", "lifepriorities_help", "lifepriorities_mony"],
+          "mandatory": false,
+          "notes": "Table 5 row 6 addition; paper notes these are 'possibly endogenous'"
+        }
+      },
+      "budgets": {
+        "max_specs_core_total": 37,
+        "max_specs_design_variant": 1,
+        "max_specs_controls_unique": 7,
+        "max_specs_controls_loo": 17,
+        "max_specs_sample": 5,
+        "max_specs_inference": 3,
+        "max_specs_other_rc": 3,
+        "notes": "After deduplication: 1 baseline + 1 design (diff_in_means) + 7 unique control specs (none, extended, manip_only, manip+demo, manip+demo+charity, full, separate_worthiness) + 17 LOO (age/age2 paired) + 5 sample + 1 weights + 2 outcome preprocess + 3 inference (HC2, HC3, classical) = ~37 total."
+      },
+      "sampling": {
+        "seed": 113561,
+        "notes": "Full enumeration is feasible for this baseline group. No random sampling needed. Total core specs estimated at ~37 for G1."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance check of demographics across treatment arms (picshowblack vs not)"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "claim_object": {
+        "outcome_concept": "Hypothetical charitable giving (topcoded at $500)",
+        "treatment_concept": "Pictures show black Katrina victims (vs white or race-obscured)",
+        "estimand_concept": "ITT: effect of racial manipulation on hypothetical giving, white respondents",
+        "target_population": "White respondents in Knowledge Networks panel who passed audio check",
+        "direction_expectation": "Negative (same mechanism as giving)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-R2-White (reg_id=11)",
+          "outcome_var": "hypgiv_tc500",
+          "treatment_var": "picshowblack",
+          "additional_treatment_vars": ["picraceb", "picobscur"],
+          "controls": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+          "n_controls": 29,
+          "weight_var": "tweight",
+          "se_type": "HC1",
+          "sample_filter": "white == 1",
+          "n_obs": 913,
+          "replicated_coef": -2.181,
+          "replicated_pvalue": 0.591
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 9,
+        "controls_count_max": 32,
+        "linked_adjustment": false,
+        "notes": "Same control-count envelope as G1 (min=9 on white subsample). Treatment arms always included."
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/manipulation_plus_demographics_plus_charity",
+          "rc/controls/progression/full",
+          "rc/controls/loo/*",
+          "rc/controls/manipulation_coding/separate_worthiness",
+          "rc/sample/subpopulation/full_sample",
+          "rc/sample/subpopulation/main_variant_only",
+          "rc/sample/subpopulation/slidell_only",
+          "rc/sample/subpopulation/biloxi_only",
+          "rc/sample/subpopulation/race_shown_only",
+          "rc/weights/main/unweighted",
+          "rc/preprocess/outcome/topcode_hypgiv_at_250",
+          "rc/preprocess/outcome/no_topcode"
+        ],
+        "rc_dedup_notes": "Removed rc/controls/sets/baseline (=baseline), rc/controls/progression/bivariate (=sets/none). Removed infer/se/hc/hc1 (=baseline inference).",
+        "infer_spec_ids": [
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 34,
+        "notes": "After deduplication: 1 baseline + 1 design (diff_in_means) + 5 unique control specs (none, extended, manip+demo+charity, full, separate_worthiness) + 17 LOO + 5 sample + 1 weights + 2 outcome preprocess + 2 inference (HC2, HC3) = ~34 total."
+      },
+      "sampling": {
+        "seed": 113561,
+        "notes": "Full enumeration feasible."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "claim_object": {
+        "outcome_concept": "Subjective support for charity spending to help Katrina victims (1-7 scale)",
+        "treatment_concept": "Pictures show black Katrina victims (vs white or race-obscured)",
+        "estimand_concept": "ITT: effect of racial manipulation on charity support, white respondents",
+        "target_population": "White respondents in Knowledge Networks panel who passed audio check",
+        "direction_expectation": "Negative"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-R3-White (reg_id=14)",
+          "outcome_var": "subjsupchar",
+          "treatment_var": "picshowblack",
+          "additional_treatment_vars": ["picraceb", "picobscur"],
+          "controls": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+          "n_controls": 29,
+          "weight_var": "tweight",
+          "se_type": "HC1",
+          "sample_filter": "white == 1",
+          "n_obs": 907,
+          "replicated_coef": -0.221,
+          "replicated_pvalue": 0.167
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 9,
+        "controls_count_max": 32,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/manipulation_plus_demographics_plus_charity",
+          "rc/controls/progression/full",
+          "rc/controls/loo/*",
+          "rc/controls/manipulation_coding/separate_worthiness",
+          "rc/sample/subpopulation/full_sample",
+          "rc/sample/subpopulation/main_variant_only",
+          "rc/sample/subpopulation/slidell_only",
+          "rc/sample/subpopulation/biloxi_only",
+          "rc/sample/subpopulation/race_shown_only",
+          "rc/weights/main/unweighted"
+        ],
+        "rc_dedup_notes": "Same dedup as G2.",
+        "infer_spec_ids": [
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 32,
+        "notes": "After deduplication: 1 baseline + 1 design + 5 control specs (none, extended, manip+demo+charity, full, separate_worthiness) + 17 LOO + 5 sample + 1 weights + 0 outcome preprocess + 2 inference = ~32 total."
+      },
+      "sampling": {
+        "seed": 113561,
+        "notes": "Full enumeration feasible."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G4",
+      "design_code": "randomized_experiment",
+      "claim_object": {
+        "outcome_concept": "Subjective support for government spending to help Katrina victims (1-7 scale)",
+        "treatment_concept": "Pictures show black Katrina victims (vs white or race-obscured)",
+        "estimand_concept": "ITT: effect of racial manipulation on government support, white respondents",
+        "target_population": "White respondents in Knowledge Networks panel who passed audio check",
+        "direction_expectation": "Negative (this is the strongest statistical result for whites: p=0.026 in baseline)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-R4-White (reg_id=17)",
+          "outcome_var": "subjsupgov",
+          "treatment_var": "picshowblack",
+          "additional_treatment_vars": ["picraceb", "picobscur"],
+          "controls": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+          "n_controls": 29,
+          "weight_var": "tweight",
+          "se_type": "HC1",
+          "sample_filter": "white == 1",
+          "n_obs": 913,
+          "replicated_coef": -0.435,
+          "replicated_pvalue": 0.026
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 9,
+        "controls_count_max": 32,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/manipulation_plus_demographics_plus_charity",
+          "rc/controls/progression/full",
+          "rc/controls/loo/*",
+          "rc/controls/manipulation_coding/separate_worthiness",
+          "rc/sample/subpopulation/full_sample",
+          "rc/sample/subpopulation/main_variant_only",
+          "rc/sample/subpopulation/slidell_only",
+          "rc/sample/subpopulation/biloxi_only",
+          "rc/sample/subpopulation/race_shown_only",
+          "rc/weights/main/unweighted"
+        ],
+        "rc_dedup_notes": "Same dedup as G2/G3.",
+        "infer_spec_ids": [
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 32,
+        "notes": "Same structure as G3."
+      },
+      "sampling": {
+        "seed": 113561,
+        "notes": "Full enumeration feasible."
+      },
+      "diagnostics_plan": []
+    }
+  ],
+  "shared_definitions": {
+    "treatment_arm_variables": {
+      "notes": "In all regressions, three treatment dummies are included: picshowblack, picraceb, picobscur. The omitted category is 'white victims, race clearly shown'. The focal coefficient is always on picshowblack.",
+      "focal_treatment": "picshowblack",
+      "other_treatment_arms": ["picraceb", "picobscur"]
+    },
+    "manipulation_control_sets": {
+      "manip_full": {
+        "variables": ["aud_republ", "aud_econdis", "aud_govtben", "aud_prephur", "aud_church", "aud_crime", "aud_helpoth", "aud_contrib", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient"],
+        "n": 12,
+        "used_in": "Table 3"
+      },
+      "manip_nraud": {
+        "variables": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient"],
+        "n": 9,
+        "used_in": "Tables 4, 5 (baseline)",
+        "notes": "nraudworthy = aud_helpoth - aud_crime + aud_contrib + aud_prephur (collapses 4 worthiness indicators into one count)"
+      }
+    },
+    "demographic_control_set": {
+      "cntrldems": ["age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+      "n": 20,
+      "notes": "When running white-only subsample, 'black' and 'other' drop out (all zeros). Effective demographic controls on white sample = 18."
+    },
+    "extra_controls": {
+      "addcntrl1": ["hfh_effective", "lifepriorities_help", "lifepriorities_mony"],
+      "n": 3,
+      "notes": "Paper describes these as 'possibly endogenous controls' used in Table 5 row 6"
+    },
+    "sample_definitions": {
+      "full_sample": "soundcheck == 3 & giving not missing (N~1343)",
+      "white_only": "white == 1 (N~915)",
+      "black_only": "black == 1 (N~247)",
+      "main_variant": "surveyvariant == 1, uses mweight instead of tweight",
+      "slidell_only": "cityslidell == 1",
+      "biloxi_only": "cityslidell == 0",
+      "race_shown_only": "picobscur == 0 (COLLINEARITY: picobscur is constant 0 and picraceb == picshowblack, creating perfect collinearity. One treatment dummy must be dropped automatically.)"
+    },
+    "weight_definitions": {
+      "tweight": "Survey weight correcting for oversampling of black respondents (baseline)",
+      "mweight": "Weight for main survey variant subsample only"
+    }
+  },
+  "excluded_from_core": {
+    "table_3_interactions": {
+      "reason": "Table 3 cols 3-6 introduce interactions with respondent race and subjective identification. These are heterogeneity/interaction analyses that change the estimand from a simple ITT to a conditional treatment effect. Classified as explore/*.",
+      "explore_spec_ids": [
+        "explore/heterogeneity/by_respondent_race",
+        "explore/heterogeneity/by_ethnic_closeness"
+      ]
+    },
+    "table_6_interactions": {
+      "reason": "Table 6 examines treatment effect heterogeneity by racial attitudes (ethnic closeness, social contact, perceived opportunities for blacks). These are explicitly heterogeneity analyses. Furthermore, the Table 6 interactd program uses unweighted OLS (no pweights), which is a different estimator than the baseline.",
+      "explore_spec_ids": [
+        "explore/heterogeneity/by_ethclosed",
+        "explore/heterogeneity/by_soccon_difd",
+        "explore/heterogeneity/by_oppblkd"
+      ]
+    },
+    "censored_regression_ordered_probit": {
+      "reason": "Table 5 rows 7 include censored normal regression (for giving, hypgiv) and ordered probit (for subjsupchar, subjsupgov). These are alternative functional form estimators that are difficult to implement reliably in Python (see replication_report.md). They target a different parameter (latent variable model). Could be treated as design/randomized_experiment/estimator/censored or explore/estimator/ordered_probit but excluded from core for feasibility.",
+      "notes": "The oprob specs had NaN SEs and the cnreg SEs differed from Stata. Not included in core."
+    },
+    "black_respondent_results": {
+      "reason": "Table 4 black respondent columns and Table 5C (black robustness) are parallel analyses for a different target population. The paper's interpretive focus is on white respondents. Black respondent results could form separate baseline groups but the sample is small (N~247) and results are mostly insignificant.",
+      "notes": "Could be added as additional baseline groups if desired."
+    },
+    "full_sample_results_tables_4_5B": {
+      "reason": "Full sample results (Table 4 all columns, Table 5B) pool white and black respondents. The full sample is included as a sample RC within G1 (rc/sample/subpopulation/full_sample) rather than a separate baseline group, since the paper's interpretive focus is on white respondents and the full sample is an alternative way to estimate the average effect."
+    }
+  },
+  "total_estimated_specs": {
+    "G1_giving": 37,
+    "G2_hypothetical_giving": 34,
+    "G3_charity_support": 32,
+    "G4_government_support": 32,
+    "total": 135,
+    "notes": "After deduplication and removal of baseline-identical specs. G1 has more specs due to outcome coding variants (topcode, winsor) and additional control progression steps. All groups share 17 LOO drops (age/age2 paired), 5 sample variants, 2 non-baseline inference variants, and common control progression and coding specs. Total is a sum across axes (one-axis-at-a-time), not a cross-product."
+  }
+}

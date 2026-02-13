@@ -19,7 +19,7 @@ Do not run regressions in this stage.
 
 ## Outputs (REQUIRED)
 
-Write to `{EXTRACTED_PACKAGE_PATH}`:
+Write to `{EXTRACTED_PACKAGE_PATH}` (the **top-level** extracted package directory, NOT a subfolder):
 
 1) Update `SPECIFICATION_SURFACE.json` in place (edit it to reflect your critique).
 2) `SPEC_SURFACE_REVIEW.md` (short audit report: issues found + changes made + rationale).

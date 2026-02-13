@@ -1,0 +1,51 @@
+{
+  "paper_id": "112431-V1",
+  "verified_at": "2026-02-13",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "First-term mayors (eligible for reelection) have lower corruption share (pcorrupt) than term-limited second-term mayors, conditional on observables + state FE. Cross-sectional OLS, N=476 audited Brazilian municipalities.",
+      "expected_sign": "Negative",
+      "baseline_spec_run_ids": ["112431-V1_run0001"],
+      "baseline_spec_ids": ["baseline"],
+      "baseline_coefficient": -0.02748,
+      "baseline_std_error": 0.01126,
+      "baseline_p_value": 0.01512,
+      "baseline_n_obs": 476,
+      "notes": "Matches Table 4 Col 6 of Ferraz & Finan (2011). Design row run0002 is an exact duplicate of baseline. Block-combo row run0007 (all 6 blocks = baseline) is also an exact duplicate. These are flagged in the spec_map."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "First-term mayors have fewer corruption violations (ncorrupt count) than second-term mayors, conditional on observables + state FE + mandatory control lrec_fisc. Cross-sectional OLS, N=476.",
+      "expected_sign": "Negative",
+      "baseline_spec_run_ids": ["112431-V1_run0109"],
+      "baseline_spec_ids": ["baseline"],
+      "baseline_coefficient": -0.47095,
+      "baseline_std_error": 0.14779,
+      "baseline_p_value": 0.00155,
+      "baseline_n_obs": 476,
+      "notes": "Matches Table 5A Col 2 of Ferraz & Finan (2011). Design row run0110 is an exact duplicate. Mandatory control lrec_fisc is never dropped across G2 specs."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "First-term mayors have lower corruption violation share (ncorrupt_os, normalized count) than second-term mayors, conditional on observables + state FE + mandatory controls lrec_fisc and lfunc_ativ. Cross-sectional OLS, N=476.",
+      "expected_sign": "Negative",
+      "baseline_spec_run_ids": ["112431-V1_run0125"],
+      "baseline_spec_ids": ["baseline"],
+      "baseline_coefficient": -0.01051,
+      "baseline_std_error": 0.00437,
+      "baseline_p_value": 0.01657,
+      "baseline_n_obs": 476,
+      "notes": "Matches Table 5B Col 2 of Ferraz & Finan (2011). Design row run0126 and rc/controls/sets/baseline row run0128 are exact duplicates of this baseline. Mandatory controls lrec_fisc and lfunc_ativ are never dropped across G3 specs."
+    }
+  ],
+  "global_notes": [
+    "All 3 baseline groups from SPECIFICATION_SURFACE.json are present in the results and are coherent.",
+    "No spurious baseline groups found. No missing baseline groups.",
+    "Treatment variable 'first' is consistent across all 139 rows. No treatment drift.",
+    "Outcome drift: G1 has 1 row with outcome 'asinh_pcorrupt' (run0100, rc/form/outcome/asinh) and G2 has 1 row with 'asinh_ncorrupt' (run0121). These are functional-form transforms of the baseline outcome, not concept-level drift. They remain core.",
+    "Several exact numerical duplicates exist due to overlapping spec definitions (baseline vs design, block-combo full-set vs baseline, block-combo subsets vs progressive control-set specs). These are noted per-row but remain valid as they represent distinct nodes in the specification tree.",
+    "No linked adjustment concerns: all groups use unlinked estimators.",
+    "R-squared is NaN for 2 rows: Tobit (run0104, run0137) and NegBin (run0122). This is expected since these are MLE-based models where OLS R-squared is not defined."
+  ]
+}

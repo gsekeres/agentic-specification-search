@@ -1,0 +1,334 @@
+{
+  "paper_id": "112749-V1",
+  "created_at": "2026-02-13",
+  "paper_title": "When the Levee Breaks: Black Migration and Economic Development in the American South",
+  "authors": "Hornbeck & Naidu (AER 2014)",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "label": "Flood impact on Black share of population",
+      "design_code": "difference_in_differences",
+      "claim_object": {
+        "outcome_concept": "Log fraction Black population in county",
+        "treatment_concept": "Flood intensity (share of county flooded in 1927 Mississippi flood) interacted with post-flood year dummies",
+        "estimand_concept": "Dynamic ATT path: effect of flood exposure on Black population share at each post-flood decade",
+        "target_population": "Counties in Southern US states bordering the Mississippi flood zone (balanced panel, >=10% Black and >=15% cotton in 1920)",
+        "direction_expectation": "Negative (flood caused Black out-migration)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "outcome_var": "lnfrac_black",
+          "treatment_var": "f_int_{year} (flood_intensity x post-year dummies for 1930,1940,1950,1960,1970)",
+          "fixed_effects": ["county (fips)", "state-by-year (d_sy_*)"],
+          "controls": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag2_lnfrac_black_*", "lag3_lnfrac_black_*", "lag4_lnfrac_black_*"],
+          "controls_blocks": {
+            "geography": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*"],
+            "lagged_dv": ["lag2_lnfrac_black_*", "lag3_lnfrac_black_*", "lag4_lnfrac_black_*"]
+          },
+          "n_control_blocks": 2,
+          "n_controls_approx": 36,
+          "weights": "county_w (county area in 1920, analytic weights)",
+          "cluster_var": "fips",
+          "estimator": "areg (TWFE with absorbed county FE)",
+          "n_obs": 978,
+          "focal_parameter": {
+            "label": "f_int_1950 (peak effect period)",
+            "selector": {"rel_time": "1950"},
+            "summary_rule": "single"
+          }
+        },
+        {
+          "label": "Table2-Col2",
+          "outcome_var": "lnfrac_black",
+          "treatment_var": "f_int_{year} (flood_intensity x post-year dummies for 1930,1940,1950,1960,1970)",
+          "fixed_effects": ["county (fips)", "state-by-year (d_sy_*)"],
+          "controls": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag2_lnfrac_black_*", "lag3_lnfrac_black_*", "lag4_lnfrac_black_*", "lnpcpubwor_*", "lnpcaaa_*", "lnpcrelief_*", "lnpcndloan_*", "lnpcndins_*"],
+          "controls_blocks": {
+            "geography": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*"],
+            "lagged_dv": ["lag2_lnfrac_black_*", "lag3_lnfrac_black_*", "lag4_lnfrac_black_*"],
+            "new_deal": ["lnpcpubwor_*", "lnpcaaa_*", "lnpcrelief_*", "lnpcndloan_*", "lnpcndins_*"]
+          },
+          "n_control_blocks": 3,
+          "n_controls_approx": 61,
+          "weights": "county_w",
+          "cluster_var": "fips",
+          "estimator": "areg (TWFE with absorbed county FE)",
+          "n_obs": 978
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 15,
+        "controls_count_max": 80,
+        "controls_count_note": "RefTable 1 step 1 uses lagged DV only (~15 vars for G1: 3 lag orders x 5 year interactions). Table 2 col 1 (geography+lags) has ~36. Table 2 col 2 (+New Deal) has ~61. RefTable 1 step 7 (full kitchen sink with tenancy/mfg/plantation/propensity) is the maximum at ~80. The min/max here span the full revealed range across RefTable progression steps.",
+        "controls_mandatory": [],
+        "controls_mandatory_note": "No mandatory controls; even the lagged DV can be dropped (rc/controls/sets/none is a stress test below the revealed minimum).",
+        "linked_adjustment": false,
+        "linked_adjustment_note": "Not a bundled estimator; single-equation TWFE",
+        "max_fe_dimensions": 2,
+        "max_fe_note": "county + state-by-year; paper does not vary FE structure"
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/progression/lagged_dv_only",
+          "rc/controls/progression/geography_only",
+          "rc/controls/progression/geography_and_lags",
+          "rc/controls/progression/geography_lags_tenancy_mfg",
+          "rc/controls/progression/geography_lags_newdeal",
+          "rc/controls/progression/geography_lags_newdeal_plantation",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg_propscore",
+          "rc/controls/loo_block/drop_geography",
+          "rc/controls/loo_block/drop_lagged_dv",
+          "rc/controls/loo_block/drop_new_deal",
+          "rc/controls/loo_block/drop_crop_suitability",
+          "rc/controls/loo_block/drop_distance_ms",
+          "rc/controls/loo_block/drop_coordinates",
+          "rc/controls/loo_block/drop_ruggedness",
+          "rc/controls/loo_block/drop_tenancy_mfg",
+          "rc/weights/main/unweighted",
+          "rc/sample/time/drop_1970",
+          "rc/sample/time/drop_1930",
+          "rc/sample/outliers/trim_treatment_p95",
+          "rc/form/treatment/alt_measure_redcross_acres",
+          "rc/form/treatment/alt_measure_redcross_people"
+        ],
+        "rc_spec_notes": {
+          "rc/controls/sets/none": "Stress test: FE only, no time-varying controls. Below revealed minimum but standard stress test.",
+          "rc/controls/progression/geography_only": "Geography block only (no lagged DV). Not a revealed RefTable step (all RefTable steps include lagged DV), but included as stress test. Renamed from 'geography' for clarity.",
+          "rc/controls/progression/geography_and_lags": "= Table 2 col 1 baseline. RefTable step 2.",
+          "rc/controls/progression/geography_lags_tenancy_mfg": "RefTable step 3. Tenancy block = lag*_lnfarms_nonwhite_t_*, mfg block = lag*_lnmfgestab_*, lag*_lnmfgavewages_*.",
+          "rc/controls/progression/geography_lags_newdeal": "= Table 2 col 2 baseline. RefTable step 4.",
+          "rc/controls/progression/geography_lags_newdeal_plantation": "RefTable step 5. Adds plantation_* year-interacted dummies.",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg": "RefTable step 6.",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg_propscore": "RefTable step 7. Adds prop_plant_flstate_1*.",
+          "loo_block_base_spec": "LOO blocks computed relative to Table 2 col 2 baseline (geography + lags + New Deal).",
+          "rc/controls/loo_block/drop_tenancy_mfg": "Added: drop tenancy/mfg block from RefTable step 6/7 spec.",
+          "pre1960_removed": "rc/sample/time/pre1960_only removed from G1: G1 has decadal observations only (1930,1940,1950,1960,1970), so no 1964 to drop. 'pre1960_only' for G1 = 'drop_1970', already covered."
+        },
+        "infer_spec_ids": [
+          "infer/se/cluster/unit",
+          "infer/se/hc/hc1",
+          "infer/se/spatial/conley_50km",
+          "infer/se/spatial/conley_100km",
+          "infer/se/spatial/conley_200km",
+          "infer/se/cluster/state"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "notes": "Full enumeration feasible since controls progression is block-based (not combinatorial variable-level subsets)"
+      },
+      "sampling": {
+        "seed": 112749001,
+        "method": "full_enumeration",
+        "notes": "Control variations are block-based progressions (revealed by RefTables 1-3); no variable-level combinatorial subset search needed"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/event_study_plot",
+          "scope": "baseline_group",
+          "description": "Event study coefficients for pre-flood periods (1900, 1910, 1920 dummies) from Figure 3 specification; visual pre-trends check"
+        },
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/joint_test",
+          "scope": "spec",
+          "description": "Joint F-test of pre-flood year dummies = 0 for each specification"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "label": "Flood impact on agricultural capital intensity",
+      "design_code": "difference_in_differences",
+      "claim_object": {
+        "outcome_concept": "Log value of farm equipment per county (mechanization/capital intensity)",
+        "treatment_concept": "Flood intensity (share of county flooded in 1927 Mississippi flood) interacted with post-flood year dummies",
+        "estimand_concept": "Dynamic ATT path: effect of flood exposure on agricultural capital at each post-flood census year",
+        "target_population": "Counties in Southern US states bordering the Mississippi flood zone (balanced panel, >=10% Black and >=15% cotton in 1920)",
+        "direction_expectation": "Positive (labor outflow induced capital substitution toward mechanization)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col3",
+          "outcome_var": "lnvalue_equipment",
+          "treatment_var": "f_int_{year} (flood_intensity x post-year dummies for 1930,1935,1940,1945,1950,1954,1960,1964,1970)",
+          "fixed_effects": ["county (fips)", "state-by-year (d_sy_*)"],
+          "controls": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag1_lnvalue_equipment_*", "lag2_lnvalue_equipment_*", "lag3_lnvalue_equipment_*", "lag4_lnvalue_equipment_*"],
+          "controls_blocks": {
+            "geography": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*"],
+            "lagged_dv": ["lag1_lnvalue_equipment_*", "lag2_lnvalue_equipment_*", "lag3_lnvalue_equipment_*", "lag4_lnvalue_equipment_*"]
+          },
+          "n_control_blocks": 2,
+          "n_controls_approx": 42,
+          "weights": "county_w",
+          "cluster_var": "fips",
+          "estimator": "areg (TWFE with absorbed county FE)",
+          "focal_parameter": {
+            "label": "f_int_1950 (post-WWII mechanization peak)",
+            "selector": {"rel_time": "1950"},
+            "summary_rule": "single"
+          }
+        },
+        {
+          "label": "Table4-Col4",
+          "outcome_var": "lnvalue_equipment",
+          "treatment_var": "f_int_{year} (flood_intensity x post-year dummies for 1930,1935,1940,1945,1950,1954,1960,1964,1970)",
+          "fixed_effects": ["county (fips)", "state-by-year (d_sy_*)"],
+          "controls": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag1_lnvalue_equipment_*", "lag2_lnvalue_equipment_*", "lag3_lnvalue_equipment_*", "lag4_lnvalue_equipment_*", "lnpcpubwor_*", "lnpcaaa_*", "lnpcrelief_*", "lnpcndloan_*", "lnpcndins_*"],
+          "controls_blocks": {
+            "geography": ["cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*"],
+            "lagged_dv": ["lag1_lnvalue_equipment_*", "lag2_lnvalue_equipment_*", "lag3_lnvalue_equipment_*", "lag4_lnvalue_equipment_*"],
+            "new_deal": ["lnpcpubwor_*", "lnpcaaa_*", "lnpcrelief_*", "lnpcndloan_*", "lnpcndins_*"]
+          },
+          "n_control_blocks": 3,
+          "n_controls_approx": 67,
+          "weights": "county_w",
+          "cluster_var": "fips",
+          "estimator": "areg (TWFE with absorbed county FE)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 20,
+        "controls_count_max": 90,
+        "controls_count_note": "RefTable 2 step 1 uses lagged DV only (~20 vars for G2: 4 lag orders x ~5 year interactions). Table 4 col 3 (geography+lags) has ~42. Table 4 col 4 (+New Deal) has ~67. RefTable 2 step 7 (full kitchen sink) is the maximum at ~90. G2 has more periods (9 post-treatment) than G1 (5), so year-interacted controls have more variables.",
+        "controls_mandatory": [],
+        "linked_adjustment": false,
+        "linked_adjustment_note": "Not a bundled estimator; single-equation TWFE",
+        "max_fe_dimensions": 2,
+        "max_fe_note": "county + state-by-year; paper does not vary FE structure"
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/progression/lagged_dv_only",
+          "rc/controls/progression/geography_only",
+          "rc/controls/progression/geography_and_lags",
+          "rc/controls/progression/geography_lags_tenancy_mfg",
+          "rc/controls/progression/geography_lags_newdeal",
+          "rc/controls/progression/geography_lags_newdeal_plantation",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg_propscore",
+          "rc/controls/loo_block/drop_geography",
+          "rc/controls/loo_block/drop_lagged_dv",
+          "rc/controls/loo_block/drop_new_deal",
+          "rc/controls/loo_block/drop_crop_suitability",
+          "rc/controls/loo_block/drop_distance_ms",
+          "rc/controls/loo_block/drop_coordinates",
+          "rc/controls/loo_block/drop_ruggedness",
+          "rc/controls/loo_block/drop_tenancy_mfg",
+          "rc/weights/main/unweighted",
+          "rc/sample/time/drop_1970",
+          "rc/sample/time/drop_1930",
+          "rc/sample/time/pre1960_only",
+          "rc/sample/outliers/trim_treatment_p95",
+          "rc/form/treatment/alt_measure_redcross_acres",
+          "rc/form/treatment/alt_measure_redcross_people"
+        ],
+        "rc_spec_notes": {
+          "rc/controls/sets/none": "Stress test: FE only, no time-varying controls.",
+          "rc/controls/progression/geography_only": "Geography block only (no lagged DV). Not a revealed RefTable step, included as stress test.",
+          "rc/controls/progression/geography_and_lags": "= Table 4 col 3 baseline. RefTable step 2.",
+          "rc/controls/progression/geography_lags_tenancy_mfg": "RefTable step 3.",
+          "rc/controls/progression/geography_lags_newdeal": "= Table 4 col 4 baseline. RefTable step 4.",
+          "rc/controls/progression/geography_lags_newdeal_plantation": "RefTable step 5.",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg": "RefTable step 6.",
+          "rc/controls/progression/geography_lags_newdeal_tenancy_mfg_propscore": "RefTable step 7.",
+          "loo_block_base_spec": "LOO blocks computed relative to Table 4 col 4 baseline (geography + lags + New Deal).",
+          "rc/controls/loo_block/drop_tenancy_mfg": "Added: drop tenancy/mfg block from RefTable step 6/7 spec.",
+          "rc/sample/time/pre1960_only": "G2 has intercensus observations (1964); pre1960_only drops 1960, 1964, and 1970, keeping 1930-1954. This is a meaningful time-window restriction for G2."
+        },
+        "infer_spec_ids": [
+          "infer/se/cluster/unit",
+          "infer/se/hc/hc1",
+          "infer/se/spatial/conley_50km",
+          "infer/se/spatial/conley_100km",
+          "infer/se/spatial/conley_200km",
+          "infer/se/cluster/state"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 85,
+        "notes": "Same block-based structure as G1; full enumeration feasible. Slightly higher budget than G1 because G2 retains pre1960_only spec."
+      },
+      "sampling": {
+        "seed": 112749002,
+        "method": "full_enumeration"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/event_study_plot",
+          "scope": "baseline_group",
+          "description": "Event study coefficients for pre-flood periods from Figure 4 specification"
+        },
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/joint_test",
+          "scope": "spec",
+          "description": "Joint F-test of pre-flood year dummies = 0"
+        }
+      ]
+    }
+  ],
+  "revealed_search_space_summary": {
+    "axes_revealed_by_paper": {
+      "controls": {
+        "description": "Paper reveals 7 control-set progressions across RefTables 1-3: (1) lagged DV only, (2) lagged DV + geography, (3) lagged DV + geography + tenancy/mfg, (4) lagged DV + geography + New Deal, (5) lagged DV + geography + New Deal + plantation, (6) lagged DV + geography + New Deal + tenancy/mfg, (7) lagged DV + geography + New Deal + tenancy/mfg + propensity score. NOTE: all 7 steps include lagged DV; geography-only (without lags) is NOT a revealed step.",
+        "n_revealed_sets": 7,
+        "blocks_identified": [
+          "geography (crop suitability x year + distance to MS x year + coordinates x year + ruggedness x year)",
+          "lagged dependent variables (outcome-specific: lag2-4 for G1 labor, lag1-4 for G2 capital)",
+          "New Deal spending controls (5 per-capita spending measures x year)",
+          "tenancy/manufacturing (lagged nonwhite farm tenancy share x year + lagged mfg establishments x year + lagged mfg wages x year)",
+          "plantation dummy (plantation_* x year)",
+          "propensity score (prop_plant_flstate_1* -- propensity for plantation status in flood states)"
+        ]
+      },
+      "treatment_definition": {
+        "description": "Paper reveals 3 flood intensity measures: (1) baseline flood_intensity = share of county flooded, (2) flood_intensity_2 = Red Cross flooded acres/county area, (3) flood_intensity_3 = Red Cross affected population/total population",
+        "n_revealed_measures": 3
+      },
+      "inference": {
+        "description": "Paper uses county-clustered SE as baseline, and explicitly computes Conley spatial HAC SE at 50mi, 100mi, and 200mi cutoffs",
+        "n_revealed_methods": 4
+      },
+      "sample": {
+        "description": "Main sample restricted to counties with >=10% Black and >=15% cotton; Tables 6-7 use alternative samples (southern rivers, non-flooded counties) as falsification/validation",
+        "n_revealed_samples": 3
+      },
+      "outcomes": {
+        "description": "Paper examines multiple outcomes across Tables 2, 4, 5: labor (frac_black, population_black, population), capital (equipment, tractors, mules/horses, farm size), farmland (farmland acres, land/building values). Additional tables include crop yields, crop value per capita.",
+        "note": "Multiple outcomes are different baseline groups for the core claim (labor=G1, capital=G2). Other outcomes are exploration."
+      },
+      "weights": {
+        "description": "All regressions use analytic weights (county_w = county area in 1920). Unweighted is not shown but is a natural RC.",
+        "n_revealed_weight_schemes": 1
+      },
+      "fixed_effects": {
+        "description": "All panel regressions use county FE (absorbed) + state-by-year FE. No variation in FE structure is revealed.",
+        "n_revealed_fe_structures": 1
+      }
+    },
+    "axes_not_revealed_but_feasible": {
+      "fe_variations": "Dropping state-by-year FE to year FE only; this is a meaningful RC but changes identifying variation substantially",
+      "alternative_estimators": "Modern heterogeneity-robust DiD estimators (e.g., Sun-Abraham, Callaway-Santanna) are not applicable because treatment timing is not staggered -- all treatment occurs simultaneously in 1927 with continuous intensity",
+      "sample_restrictions": "Relaxing the 10% Black or 15% cotton sample restrictions could change the target population"
+    }
+  },
+  "design_notes": {
+    "treatment_timing": "The 1927 Mississippi flood is a single event; all treatment occurs simultaneously. This is NOT staggered adoption. flood_intensity is continuous (share of county flooded), not binary.",
+    "panel_structure": "Balanced panel of ~163 counties observed at census years: 1900, 1910, 1920, 1925, 1930, 1935, 1940, 1945, 1950, 1954, 1960, 1964, 1970 (13 periods). Post-treatment periods for Table 2 labor outcomes: 1930-1970 (5 decadal periods). Post-treatment for Table 4 capital outcomes: 1930-1970 with additional 5-year intercensus periods (9 periods).",
+    "identification": "Continuous-treatment DiD: county FE absorb time-invariant county heterogeneity; state-by-year FE absorb state-level aggregate shocks. Treatment = flood_intensity (continuous) interacted with post-flood year dummies. Key identifying assumption: parallel trends in outcomes across counties with different flood intensity, conditional on controls.",
+    "modern_did_note": "Because treatment is continuous intensity from a single event (not staggered binary adoption), modern staggered-DiD estimators (Callaway-Santanna, Sun-Abraham, Borusyak imputation) are NOT directly applicable. The relevant concern is whether TWFE with continuous treatment and multiple post-periods produces well-defined causal parameters, but this is the standard specification in the literature.",
+    "conley_se_note": "The paper explicitly computes Conley spatial HAC standard errors at 50mi, 100mi, and 200mi cutoffs as a robustness check. These are important because counties near the Mississippi River may have spatially correlated shocks.",
+    "dataset_note": "Main tables (Table 2, 4, 5) use preanalysis_post1930.dta (post-treatment panel only). RefTables 1-3 use preanalysis.dta (full panel including pre-treatment years), but because treatment variables f_int_* are zero before 1930, the treatment coefficient estimates are numerically equivalent. The Conley SE computation uses period-by-period first-differenced regressions. Event study figures (Figures 3-4) use preanalysis.dta with pre-treatment year dummies included.",
+    "lagged_dv_note": "G1 (labor outcomes) uses lag2-lag4 of the DV (no lag1), while G2 (capital outcomes) uses lag1-lag4. This is because Table 2 labor data has decadal observations (so lag1 = immediate pre-period = reference) while Table 4 capital data has 5-year intercensus observations. The lagged DV block must be outcome-specific.",
+    "tenancy_mfg_block_note": "The tenancy/manufacturing block in RefTables consists of lagged versions of these variables interacted with year: lag*_lnfarms_nonwhite_t_* (nonwhite farm tenancy share), lag*_lnmfgestab_* (manufacturing establishments), lag*_lnmfgavewages_* (manufacturing average wages). These are time-varying economic controls that could be endogenous to the flood."
+  }
+}

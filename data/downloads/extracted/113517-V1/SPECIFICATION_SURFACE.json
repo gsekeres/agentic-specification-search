@@ -1,0 +1,596 @@
+{
+  "paper_id": "113517-V1",
+  "created_at": "2026-02-13",
+  "verified_at": "2026-02-13",
+  "paper_title": "The Relative Power of Employment-to-Employment Reallocation and Unemployment Exits in Predicting Wage Growth",
+  "authors": "Moscarini & Postel-Vinay (AER P&P 2017)",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "claim_object": {
+        "outcome_concept": "Composition-adjusted wage growth (change in log nominal earnings) at the market level",
+        "treatment_concept": "Composition-adjusted EE (employment-to-employment) transition rate at the market level",
+        "estimand_concept": "Within-market predictive association between EE reallocation rate and wage growth, conditional on other labor market flows and time trend",
+        "target_population": "Demographic labor markets (sex x race x agegroup x education cells) observed monthly in SIPP panels 1996-2013, employed-to-employed eligible workers",
+        "direction_expectation": "positive"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Spec1-NomEarn",
+          "reg_id": 1,
+          "outcome_var": "xdlogern_nom",
+          "treatment_var": "xee",
+          "other_regressors": ["year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 1,
+          "n_obs": 6158358,
+          "coefficient": 0.0450,
+          "notes": "Bivariate second stage: EE only + year_month + market FE"
+        },
+        {
+          "label": "Table1-Spec5-NomEarn",
+          "reg_id": 5,
+          "outcome_var": "xdlogern_nom",
+          "treatment_var": "xee",
+          "other_regressors": ["xue", "xur", "year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 3,
+          "n_obs": 6059753,
+          "coefficient": 0.0414,
+          "notes": "EE + UE + UR + year_month + market FE"
+        },
+        {
+          "label": "Table1-Spec6-NomEarn",
+          "reg_id": 6,
+          "outcome_var": "xdlogern_nom",
+          "treatment_var": "xee",
+          "other_regressors": ["xue", "xur", "xne", "xen", "xeu", "year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 6,
+          "n_obs": 6057561,
+          "coefficient": 0.0450,
+          "notes": "All flows + year_month + market FE (fullest second-stage spec)"
+        }
+      ],
+      "two_stage_procedure": {
+        "description": "First stage: individual-level areg absorbing market*time FE to extract composition-adjusted market-level transition rates and wage growth. Second stage: market-level areg of predicted wage growth FE on predicted transition rate FEs, absorbing market FE with year_month as continuous control.",
+        "first_stage": {
+          "unit": "individual",
+          "absorbed_fe": "mkt_t (market x year_month, ~17,500 groups)",
+          "e_controls": ["lagstate", "laguni", "lagsiz", "lagocc", "lagind", "lagpub"],
+          "e_controls_notes": "lag(depvar) is also included for EE and wage first-stage regressions only, not for EU/EN. See do-file lines 165 and 197.",
+          "u_controls": ["lagstate"],
+          "weights": "wgt",
+          "dependent_variables": {
+            "ee": "eetrans_i (EE transition indicator; uses e_controls + lag(depvar))",
+            "ue": "uetrans_i (UE transition indicator; uses u_controls only)",
+            "ne": "netrans_i (NE transition indicator; uses u_controls only)",
+            "eu": "eutrans_i (EU transition indicator; uses e_controls only, no lag(depvar))",
+            "en": "entrans_i (EN transition indicator; uses e_controls only, no lag(depvar))",
+            "ur": "unm (unemployment status; uses u_controls only)",
+            "dw": "d{depvar} (change in log wage/earnings; uses e_controls + eetrans_i)"
+          },
+          "notes": "The FE predicted from first stage are averaged within mkt_t cells and used as generated regressors in second stage. Note: lag(depvar) enters only the EE and wage growth first-stage regressions, not the EU/EN regressions."
+        },
+        "second_stage": {
+          "unit": "individual (with mkt_t-level generated regressors)",
+          "absorbed_fe": "mkt (market, 100 groups)",
+          "continuous_control": "year_month_num",
+          "weights": "wgt"
+        },
+        "linked_adjustment": true,
+        "linkage_notes": "First-stage controls are fixed by the paper's procedure and not varied in the second stage. The first-stage FE extraction uses the same control set for all employed-eligible regressions (e_controls) and all unemployed-eligible regressions (u_controls). Second-stage regressors are the predicted FE from first stage, so varying first-stage controls would change the generated regressors. We treat first-stage controls as linked/fixed and vary specification choices at the second-stage level.",
+        "g3_g4_eligibility_notes": "For hourly wage outcomes (G3/G4), the do-file modifies EZeligible and DWeligible by additionally requiring lagphr==1 (paid hourly). This means the first stage for G3/G4 runs on a different subsample than G1/G2. The first-stage FE extraction must be re-run for G3/G4, not shared with G1/G2."
+      },
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 6,
+        "controls_count_notes": "Second-stage flow regressors range from 1 (EE only) to 6 (all flows: EE+UE+UR+NE+EN+EU). Spec 7 has 4 (grouped), Spec 9 has 7 (all flows + EE interaction) but Spec 9 changes the estimand (see reclassification). The year_month_num continuous control is always present and not counted.",
+        "linked_adjustment": true,
+        "linked_adjustment_notes": "First-stage and second-stage are linked: changing first-stage controls would change the generated regressors in the second stage. We hold first-stage controls fixed and vary second-stage composition of flow regressors.",
+        "max_fe_dimensions": 2,
+        "max_fe_dimensions_notes": "Baseline uses market FE (absorbed) in second stage. Adding time FE (year_month dummies instead of continuous control) is feasible."
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within"
+        ],
+        "rc_spec_ids": {
+          "rc/controls/sets (second-stage flow composition)": {
+            "description": "Vary which labor market flow FEs enter the second-stage regression alongside xee. These are the paper's revealed second-stage specifications that preserve the EE claim.",
+            "specs": [
+              "rc/controls/sets/ee_only",
+              "rc/controls/sets/ee_ue",
+              "rc/controls/sets/ee_ue_ur",
+              "rc/controls/sets/all_flows",
+              "rc/controls/sets/grouped_flows"
+            ],
+            "notes": "5 specs that include xee and vary which other flows are conditioned on. Specs 1, 4, 5, 6, 7 from Table 1. Specs 2 and 3 (UE-only, UR-only) are excluded because they drop xee entirely and therefore do not estimate the EE-wage claim. They are reclassified as explore/treatment/ue_only and explore/treatment/ur_only. Spec 8 (job stayers) is reclassified as rc/sample. Spec 9 (EE interaction) is reclassified as explore/ because the interaction changes the focal estimand."
+          },
+          "rc/controls/first_stage": {
+            "description": "Vary first-stage individual-level control sets used to extract composition-adjusted FE. This changes the generated regressors.",
+            "specs": [
+              "rc/controls/first_stage/e_controls_minimal",
+              "rc/controls/first_stage/e_controls_extended",
+              "rc/controls/first_stage/u_controls_extended",
+              "rc/controls/first_stage/no_lag_depvar",
+              "rc/controls/first_stage/add_lag_hours"
+            ],
+            "notes": "The paper uses e_controls = {lagstate, laguni, lagsiz, lagocc, lagind, lagpub} + lag(depvar) for EE and wage regressions, and u_controls = {lagstate} for UE/NE/UR regressions. Minimal: drop some e_controls. Extended: add u_controls variables to e_controls or vice versa. No_lag_depvar: exclude the lagged dependent variable from first-stage EE and wage regressions. Add_lag_hours: add lagged log(hours)."
+          },
+          "rc/sample": {
+            "description": "Sample restriction robustness checks.",
+            "specs": [
+              "rc/sample/time/drop_first_panel",
+              "rc/sample/time/drop_last_panel",
+              "rc/sample/time/pre_crisis",
+              "rc/sample/time/post_crisis",
+              "rc/sample/quality/drop_short_spells",
+              "rc/sample/restriction/job_stayers"
+            ],
+            "notes": "The data spans SIPP panels 1996-2013. Pre-crisis = before 2008, post-crisis = 2008+. Drop short spells: require individuals observed >= 3 months. Job stayers: restrict second-stage sample to eetrans_i==0 & lagemp>0 (originally Spec 8 in Table 1, reclassified from rc/controls because it is a sample restriction, not a controls change)."
+          },
+          "rc/fe": {
+            "description": "Vary the second-stage fixed effects and time control.",
+            "specs": [
+              "rc/fe/replace/time_dummies",
+              "rc/fe/replace/time_quadratic"
+            ],
+            "notes": "Baseline uses market FE (absorbed) + year_month as continuous control. Replace: use year_month dummies instead of continuous control. Quadratic: use year_month + year_month^2. Note: rc/fe/drop/market_fe has been reclassified to explore/identification/pooled because dropping market FE changes the identifying variation from within-market to pooled, which is a fundamental change."
+          },
+          "rc/weights": {
+            "description": "Vary weighting scheme.",
+            "specs": [
+              "rc/weights/main/unweighted",
+              "rc/weights/trim/p99"
+            ],
+            "notes": "Baseline uses SIPP person weights (wgt). Unweighted: no weights. Trim: cap extreme weights at 99th percentile."
+          },
+          "rc/data/aggregation": {
+            "description": "Vary how demographic markets are defined, which changes the mkt and mkt_t groupings.",
+            "specs": [
+              "rc/data/aggregation/coarser_markets"
+            ],
+            "notes": "Baseline: mkt = sex x race x agegroup x education (2x2x5x5 = 100 groups). Coarser: drop race (2x5x5 = 50). Note: finer_markets (adding state) has been moved to explore/data/aggregation/finer_markets because it requires re-running the full first-stage on ~5,000+ market groups with very thin cells, is computationally speculative, and the paper never considers geographic disaggregation."
+          }
+        },
+        "infer_spec_ids": [
+          "infer/se/hc/hc1",
+          "infer/se/cluster/market",
+          "infer/se/cluster/time",
+          "infer/se/cluster/market_time"
+        ],
+        "infer_notes": "Baseline uses Stata areg default SE (HC1 at the individual level, which is conventional OLS SE after FE absorption). Clustering at market level (100 clusters) is natural given the market-level generated regressors. Clustering at the time level is relevant for potential serial correlation. Two-way clustering market x time would address both."
+      },
+      "explore_universe": {
+        "explore_spec_ids": [
+          {
+            "id": "explore/treatment/ue_only",
+            "description": "UE-only second-stage regression (Table 1 Spec 2). Drops xee. Tests the UE-wage relationship as an alternative treatment concept.",
+            "regressors": ["xue"]
+          },
+          {
+            "id": "explore/treatment/ur_only",
+            "description": "UR-only second-stage regression (Table 1 Spec 3). Drops xee. Tests the UR-wage relationship as an alternative treatment concept.",
+            "regressors": ["xur"]
+          },
+          {
+            "id": "explore/estimand/ee_interaction",
+            "description": "All flows + EE interaction (Table 1 Spec 9). xee_i = xee * eetrans_i changes the focal estimand: the coefficient on xee now represents the EE effect for non-movers only.",
+            "regressors": ["xee", "xee_i", "xue", "xur", "xne", "xen", "xeu"]
+          },
+          {
+            "id": "explore/identification/pooled",
+            "description": "Drop market FE from second stage (originally rc/fe/drop/market_fe). Changes from within-market to pooled identification.",
+            "second_stage_fe": [],
+            "continuous_control": "year_month_num"
+          },
+          {
+            "id": "explore/data/aggregation/finer_markets",
+            "description": "Add state to market definition (~5,000 groups). Computationally speculative and not revealed by the paper.",
+            "mkt_vars": ["sex", "race", "agegroup", "education", "state"]
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "breakdown": {
+          "baseline_flow_specs": 5,
+          "first_stage_controls_variants": 15,
+          "sample_variants": 18,
+          "fe_variants": 6,
+          "weight_variants": 6,
+          "market_definition_variants": 3,
+          "inference_variants": 12,
+          "cross_axis_high_value": 15,
+          "notes": "Core battery: 5 (baseline flow specs: EE-only, EE+UE, EE+UE+UR, all flows, grouped flows) + 5 (first-stage control variants) x 3 (anchor specs: Spec1, Spec5, Spec6) = 15 + 6 (sample variants) x 3 (anchor specs) = 18 + 2 (FE variants) x 3 = 6 + 2 (weight variants) x 3 = 6 + 1 (market def variant) x 3 = 3 + 4 (inference variants) x 3 = 12 + ~15 high-value cross-axis combos. Total: 5 + 15 + 18 + 6 + 6 + 3 + 12 + 15 = 80. Budget of 100 gives headroom for additional combos."
+        }
+      },
+      "sampling": {
+        "notes": "Full enumeration is feasible for all axes. No random sampling needed. The second-stage flow composition is already fully enumerated by the paper. Other axes are small (1-6 variants each). One-axis-at-a-time from 3 anchor specs (Spec1=EE only, Spec5=EE+UE+UR, Spec6=all flows) keeps the total manageable."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/generated_regressors/murphy_topel_se",
+          "scope": "baseline_group",
+          "notes": "The two-stage procedure uses generated regressors, which means second-stage SE are inconsistent unless corrected (Murphy-Topel / bootstrap). The paper does not address this. Diagnosing the SE correction is important."
+        },
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/wooldridge",
+          "scope": "baseline_group",
+          "notes": "Test for serial correlation in second-stage residuals given the panel structure of markets over time."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "panel_fixed_effects",
+      "claim_object": {
+        "outcome_concept": "Composition-adjusted wage growth (change in log real earnings) at the market level",
+        "treatment_concept": "Composition-adjusted EE transition rate at the market level",
+        "estimand_concept": "Within-market predictive association between EE reallocation rate and wage growth (real), conditional on other labor market flows and time trend",
+        "target_population": "Same as G1 (demographic labor markets in SIPP 1996-2013)",
+        "direction_expectation": "positive"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Spec1-RealEarn",
+          "reg_id": 10,
+          "outcome_var": "xdlogern",
+          "treatment_var": "xee",
+          "other_regressors": ["year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 1,
+          "n_obs": 6158358,
+          "coefficient": 0.0373
+        },
+        {
+          "label": "Table1-Spec6-RealEarn",
+          "reg_id": 15,
+          "outcome_var": "xdlogern",
+          "treatment_var": "xee",
+          "other_regressors": ["xue", "xur", "xne", "xen", "xeu", "year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 6,
+          "n_obs": 6057561,
+          "coefficient": 0.0387
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 6,
+        "linked_adjustment": true,
+        "notes": "Same two-stage procedure as G1, with real earnings as the outcome. Shares the same first-stage extraction procedure (same eligibility as G1)."
+      },
+      "core_universe": {
+        "inherits_from": "G1",
+        "outcome_var_override": "xdlogern",
+        "notes": "Same structure as G1. The specification surface is identical except the outcome variable is real earnings (logern) instead of nominal earnings (logern_nom). All RC axes, FE, sample, weight, inference variants apply identically. First-stage extraction is shared with G1 (same eligibility criteria)."
+      },
+      "explore_universe": {
+        "inherits_from": "G1"
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "notes": "Same budget structure as G1."
+      },
+      "sampling": {
+        "notes": "Full enumeration feasible. Same as G1."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/generated_regressors/murphy_topel_se",
+          "scope": "baseline_group"
+        },
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/wooldridge",
+          "scope": "baseline_group"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "panel_fixed_effects",
+      "claim_object": {
+        "outcome_concept": "Composition-adjusted wage growth (change in log nominal hourly wage) at the market level",
+        "treatment_concept": "Composition-adjusted EE transition rate at the market level",
+        "estimand_concept": "Within-market predictive association between EE reallocation rate and hourly wage growth, conditional on other labor market flows and time trend",
+        "target_population": "Demographic labor markets in SIPP 1996-2013, restricted to paid-hourly workers (lagphr==1)",
+        "direction_expectation": "weak_positive_or_null"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Spec1-NomHrWage",
+          "reg_id": 19,
+          "outcome_var": "xdloghwr_nom",
+          "treatment_var": "xee",
+          "other_regressors": ["year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 1,
+          "n_obs": 3176722,
+          "coefficient": 0.00956
+        },
+        {
+          "label": "Table1-Spec6-NomHrWage",
+          "reg_id": 24,
+          "outcome_var": "xdloghwr_nom",
+          "treatment_var": "xee",
+          "other_regressors": ["xue", "xur", "xne", "xen", "xeu", "year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 6,
+          "n_obs": 3147108,
+          "coefficient": 0.000552,
+          "notes": "EE coefficient becomes small and insignificant (p=0.104) when all flows are included. This is a key finding: the EE-wage relationship operates through earnings, not hourly wages."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 6,
+        "linked_adjustment": true,
+        "notes": "Same structure as G1 but with smaller sample (paid-hourly workers only, ~3.2M obs). IMPORTANT: first-stage eligibility differs from G1/G2. EZeligible and DWeligible additionally require lagphr==1. First-stage FE must be re-extracted on this restricted sample."
+      },
+      "core_universe": {
+        "inherits_from": "G1",
+        "outcome_var_override": "xdloghwr_nom",
+        "notes": "Same RC axis structure as G1. Outcome is nominal hourly wage. Sample restricted to lagphr==1 in first stage. First-stage extraction must be re-run (NOT shared with G1/G2)."
+      },
+      "explore_universe": {
+        "inherits_from": "G1"
+      },
+      "budgets": {
+        "max_specs_core_total": 100
+      },
+      "sampling": {
+        "notes": "Full enumeration feasible. Same as G1."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/generated_regressors/murphy_topel_se",
+          "scope": "baseline_group"
+        },
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/wooldridge",
+          "scope": "baseline_group"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G4",
+      "design_code": "panel_fixed_effects",
+      "claim_object": {
+        "outcome_concept": "Composition-adjusted wage growth (change in log real hourly wage) at the market level",
+        "treatment_concept": "Composition-adjusted EE transition rate at the market level",
+        "estimand_concept": "Within-market predictive association between EE reallocation rate and real hourly wage growth, conditional on other labor market flows and time trend",
+        "target_population": "Demographic labor markets in SIPP 1996-2013, restricted to paid-hourly workers",
+        "direction_expectation": "null_or_negative"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Spec1-RealHrWage",
+          "reg_id": 28,
+          "outcome_var": "xdloghwr",
+          "treatment_var": "xee",
+          "other_regressors": ["year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 1,
+          "n_obs": 3176722,
+          "coefficient": 0.00385
+        },
+        {
+          "label": "Table1-Spec6-RealHrWage",
+          "reg_id": 33,
+          "outcome_var": "xdloghwr",
+          "treatment_var": "xee",
+          "other_regressors": ["xue", "xur", "xne", "xen", "xeu", "year_month_num"],
+          "fixed_effects": ["mkt"],
+          "weights": "wgt",
+          "n_controls_second_stage": 6,
+          "n_obs": 3147108,
+          "coefficient": -0.00372,
+          "notes": "EE coefficient becomes NEGATIVE and significant when all flows are included. This is a key finding: EE reallocation does not predict real hourly wage growth once other flows are controlled for."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 6,
+        "linked_adjustment": true,
+        "notes": "Same as G3. First-stage eligibility additionally requires lagphr==1."
+      },
+      "core_universe": {
+        "inherits_from": "G1",
+        "outcome_var_override": "xdloghwr",
+        "notes": "Same structure as G1. Outcome is real hourly wage. First-stage extraction must be re-run (NOT shared with G1/G2)."
+      },
+      "explore_universe": {
+        "inherits_from": "G1"
+      },
+      "budgets": {
+        "max_specs_core_total": 100
+      },
+      "sampling": {
+        "notes": "Full enumeration feasible. Same as G1."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/generated_regressors/murphy_topel_se",
+          "scope": "baseline_group"
+        },
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/wooldridge",
+          "scope": "baseline_group"
+        }
+      ]
+    }
+  ],
+  "shared_rc_axes": {
+    "description": "All four baseline groups share the same RC axes since they differ only in outcome variable (and eligibility sample for G3/G4). The following RC specifications apply to each baseline group.",
+    "second_stage_flow_specs": {
+      "description": "5 core second-stage flow compositions from Table 1 that preserve the EE claim",
+      "core_specs": [
+        {"id": "rc/controls/sets/ee_only", "regressors": ["xee"], "label": "Spec 1: EE only (baseline bivariate)"},
+        {"id": "rc/controls/sets/ee_ue", "regressors": ["xee", "xue"], "label": "Spec 4: EE + UE"},
+        {"id": "rc/controls/sets/ee_ue_ur", "regressors": ["xee", "xue", "xur"], "label": "Spec 5: EE + UE + UR"},
+        {"id": "rc/controls/sets/all_flows", "regressors": ["xee", "xue", "xur", "xne", "xen", "xeu"], "label": "Spec 6: All flows"},
+        {"id": "rc/controls/sets/grouped_flows", "regressors": ["xee", "xur", "xnue", "xenu"], "label": "Spec 7: Grouped flows"}
+      ],
+      "reclassified_specs": [
+        {"id": "explore/treatment/ue_only", "regressors": ["xue"], "label": "Spec 2: UE only (drops xee; alternative treatment concept)", "original_table1_spec": 2},
+        {"id": "explore/treatment/ur_only", "regressors": ["xur"], "label": "Spec 3: UR only (drops xee; alternative treatment concept)", "original_table1_spec": 3},
+        {"id": "rc/sample/restriction/job_stayers", "regressors": ["xee", "xue", "xur", "xne", "xen", "xeu"], "sample_restriction": "eetrans_i==0 & lagemp>0", "label": "Spec 8: All flows, job stayers (reclassified as sample restriction)", "original_table1_spec": 8},
+        {"id": "explore/estimand/ee_interaction", "regressors": ["xee", "xee_i", "xue", "xur", "xne", "xen", "xeu"], "label": "Spec 9: All flows + EE interaction (changes focal estimand)", "original_table1_spec": 9}
+      ]
+    },
+    "first_stage_control_variants": {
+      "description": "Vary the individual-level controls used in the first-stage FE extraction. This changes the generated regressors used in the second stage.",
+      "specs": [
+        {
+          "id": "rc/controls/first_stage/e_controls_minimal",
+          "e_controls": ["lagstate"],
+          "u_controls": ["lagstate"],
+          "notes": "Drop occupation, industry, union, firm size, public sector from employed controls. Match to unemployed controls."
+        },
+        {
+          "id": "rc/controls/first_stage/e_controls_extended",
+          "e_controls": ["lagstate", "laguni", "lagsiz", "lagocc", "lagind", "lagpub"],
+          "u_controls": ["lagstate", "laguni", "lagsiz", "lagocc", "lagind", "lagpub"],
+          "notes": "Use full employed controls for unemployed regressions too (where variable exists / is non-missing)."
+        },
+        {
+          "id": "rc/controls/first_stage/u_controls_extended",
+          "e_controls": ["lagstate", "laguni", "lagsiz", "lagocc", "lagind", "lagpub"],
+          "u_controls": ["lagstate", "laguni"],
+          "notes": "Add laguni to the unemployed controls. Intermediate between baseline and fully extended."
+        },
+        {
+          "id": "rc/controls/first_stage/no_lag_depvar",
+          "e_controls": ["lagstate", "laguni", "lagsiz", "lagocc", "lagind", "lagpub"],
+          "u_controls": ["lagstate"],
+          "exclude_lag_depvar": true,
+          "notes": "Drop lag(depvar) from the EE first-stage regression and eetrans_i from the wage growth first-stage regression. The lagged dependent variable may introduce bias."
+        },
+        {
+          "id": "rc/controls/first_stage/add_lag_hours",
+          "e_controls": ["lagstate", "laguni", "lagsiz", "lagocc", "lagind", "lagpub", "laghrs"],
+          "u_controls": ["lagstate"],
+          "notes": "Add lagged hours (log(hrs) lagged) to employed controls as additional labor supply control."
+        }
+      ]
+    },
+    "sample_variants": [
+      {
+        "id": "rc/sample/time/drop_first_panel",
+        "description": "Drop the 1996 SIPP panel (earliest panel, potentially different measurement)",
+        "filter": "panel >= 2001 (approx)"
+      },
+      {
+        "id": "rc/sample/time/drop_last_panel",
+        "description": "Drop the 2008 SIPP panel (latest panel, partial coverage)",
+        "filter": "panel <= 2004 (approx)"
+      },
+      {
+        "id": "rc/sample/time/pre_crisis",
+        "description": "Pre-Great-Recession period only",
+        "filter": "year_month < 2008-01"
+      },
+      {
+        "id": "rc/sample/time/post_crisis",
+        "description": "Great Recession and recovery period",
+        "filter": "year_month >= 2008-01"
+      },
+      {
+        "id": "rc/sample/quality/drop_short_spells",
+        "description": "Drop individuals with fewer than 3 consecutive monthly observations",
+        "filter": "spell_length >= 3"
+      },
+      {
+        "id": "rc/sample/restriction/job_stayers",
+        "description": "Restrict second-stage sample to job stayers (eetrans_i==0 & lagemp>0). Originally Spec 8 in Table 1. Reclassified from rc/controls because it is a sample restriction, not a controls change.",
+        "filter": "eetrans_i==0 & lagemp>0",
+        "second_stage_regressors": ["xee", "xue", "xur", "xne", "xen", "xeu"]
+      }
+    ],
+    "fe_variants": [
+      {
+        "id": "rc/fe/replace/time_dummies",
+        "description": "Replace year_month continuous control with year_month fixed effects (dummies) in second stage",
+        "second_stage_fe": ["mkt", "year_month"],
+        "continuous_control": null
+      },
+      {
+        "id": "rc/fe/replace/time_quadratic",
+        "description": "Use quadratic time trend (year_month + year_month^2) instead of linear",
+        "second_stage_fe": ["mkt"],
+        "continuous_control": ["year_month_num", "year_month_num_sq"]
+      }
+    ],
+    "weight_variants": [
+      {
+        "id": "rc/weights/main/unweighted",
+        "description": "Run without person weights",
+        "weights": null
+      },
+      {
+        "id": "rc/weights/trim/p99",
+        "description": "Trim SIPP person weights at 99th percentile",
+        "weights": "wgt_trimmed_p99"
+      }
+    ],
+    "market_definition_variants": [
+      {
+        "id": "rc/data/aggregation/coarser_markets",
+        "description": "Coarser market definition: sex x agegroup x education (drop race). Reduces from 100 to 50 market cells.",
+        "mkt_vars": ["sex", "agegroup", "education"]
+      }
+    ],
+    "inference_variants": [
+      {
+        "id": "infer/se/hc/hc1",
+        "description": "HC1 robust SE (Stata areg default)",
+        "cluster_var": null
+      },
+      {
+        "id": "infer/se/cluster/market",
+        "description": "Cluster SE at market level (100 clusters). Natural given market-level generated regressors.",
+        "cluster_var": "mkt"
+      },
+      {
+        "id": "infer/se/cluster/time",
+        "description": "Cluster SE at year_month level (~176 clusters). Addresses serial correlation.",
+        "cluster_var": "year_month"
+      },
+      {
+        "id": "infer/se/cluster/market_time",
+        "description": "Two-way clustering: market x year_month. Addresses both cross-sectional and serial dependence.",
+        "cluster_var": ["mkt", "year_month"],
+        "notes": "Two-way clustering with 100 market clusters and ~176 time clusters."
+      }
+    ]
+  },
+  "execution_plan": {
+    "anchor_specs_per_group": [
+      "Spec1 (EE only)",
+      "Spec5 (EE+UE+UR)",
+      "Spec6 (All flows)"
+    ],
+    "one_axis_at_a_time_from_anchors": true,
+    "cross_axis_specs": {
+      "description": "A small number of high-value two-axis combinations",
+      "examples": [
+        "first_stage_no_lag_depvar x all 5 core flow specs (test generated regressor sensitivity)",
+        "cluster_market x all 5 core flow specs (inference robustness across flow specs)",
+        "unweighted x all 5 core flow specs (weight sensitivity across flow specs)"
+      ]
+    },
+    "total_estimated_specs_per_group": "~80 one-axis-at-a-time + ~15 high-value cross-axis = ~95",
+    "total_across_groups": "4 groups x ~95 specs = ~380 total specs (but G1/G2 share first-stage extraction, and G3/G4 share first-stage extraction)"
+  }
+}

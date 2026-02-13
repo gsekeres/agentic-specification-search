@@ -1,0 +1,403 @@
+{
+  "paper_id": "112431-V1",
+  "created_at": "2026-02-13",
+  "reviewed_at": "2026-02-13",
+  "paper_title": "Electoral Accountability and Corruption: Evidence from the Audits of Local Governments",
+  "authors": "Ferraz and Finan (AER 2011)",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "claim_object": {
+        "outcome_concept": "Corruption in municipal government (share of audited resources involving corruption)",
+        "treatment_concept": "Reelection incentives (first-term mayor indicator: first=1 means first term, eligible for reelection; first=0 means second term, term-limited)",
+        "estimand_concept": "ATE of first-term status on corruption, conditional on observables + state FE",
+        "target_population": "Brazilian municipalities audited by CGU anti-corruption program (esample2==1, N=476)",
+        "sign_expectation": "Negative (first-term mayors expected to be less corrupt due to reelection incentives)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col6",
+          "reg_id": 6,
+          "outcome_var": "pcorrupt",
+          "treatment_var": "first",
+          "controls": [
+            "pref_masc", "pref_idade_tse", "pref_escola",
+            "party_d1", "party_d3", "party_d4", "party_d5", "party_d6", "party_d7",
+            "party_d8", "party_d9", "party_d10", "party_d11", "party_d12",
+            "party_d13", "party_d14", "party_d15", "party_d16", "party_d17", "party_d18",
+            "lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea",
+            "lrec_trans",
+            "p_cad_pref", "vereador_eleit", "ENLP2000", "comarca",
+            "sorteio1", "sorteio2", "sorteio3", "sorteio4", "sorteio5",
+            "sorteio6", "sorteio7", "sorteio8", "sorteio9", "sorteio10"
+          ],
+          "n_controls": 40,
+          "n_controls_note": "41 variables listed but one sorteio dummy is collinear/dropped in estimation; paper reports 40 control variables",
+          "fixed_effects": ["uf"],
+          "se_type": "HC1",
+          "sample_filter": "esample2==1",
+          "coefficient": -0.0275,
+          "std_error": 0.0113,
+          "p_value": 0.015,
+          "n_obs": 476
+        }
+      ],
+      "mandatory_controls": [],
+      "mandatory_controls_note": "No mandatory controls for G1 (pcorrupt). Audit scale controls (lrec_fisc, lfunc_ativ) are not required for this outcome because pcorrupt is a share, not a count.",
+      "control_blocks": {
+        "prefchar2_continuous": {
+          "label": "Mayor demographics (continuous)",
+          "vars": ["pref_masc", "pref_idade_tse", "pref_escola"]
+        },
+        "prefchar2_party": {
+          "label": "Party dummies",
+          "vars": ["party_d1", "party_d3", "party_d4", "party_d5", "party_d6", "party_d7", "party_d8", "party_d9", "party_d10", "party_d11", "party_d12", "party_d13", "party_d14", "party_d15", "party_d16", "party_d17", "party_d18"]
+        },
+        "munichar2": {
+          "label": "Municipal characteristics",
+          "vars": ["lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea"]
+        },
+        "fiscal": {
+          "label": "Fiscal transfer revenue",
+          "vars": ["lrec_trans"]
+        },
+        "political": {
+          "label": "Political competition variables",
+          "vars": ["p_cad_pref", "vereador_eleit", "ENLP2000", "comarca"]
+        },
+        "sorteio": {
+          "label": "Audit lottery dummies",
+          "vars": ["sorteio1", "sorteio2", "sorteio3", "sorteio4", "sorteio5", "sorteio6", "sorteio7", "sorteio8", "sorteio9", "sorteio10"]
+        },
+        "audit_scale": {
+          "label": "Audit scale controls (used in Tables 6-11 but not in Table 4 baseline for G1)",
+          "vars": ["lfunc_ativ", "lrec_fisc"],
+          "note": "These appear in later tables. For G1, adding them is an RC. For G2/G3, some are mandatory."
+        }
+      },
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 42,
+        "controls_count_baseline": 40,
+        "linked_adjustment": false,
+        "notes": "Table 4 reveals a full progression from 0 to 40 controls (Cols 1-6). Tables 6-11 add lfunc_ativ and/or lrec_fisc, reaching up to 42. The count envelope spans [0, 42] to include the full Tables 6-11 set."
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols"
+        ],
+        "rc_spec_ids": {
+          "controls_sets": [
+            "rc/controls/sets/none",
+            "rc/controls/sets/prefchar2",
+            "rc/controls/sets/prefchar2_munichar2_fiscal",
+            "rc/controls/sets/prefchar2_munichar2_fiscal_political",
+            "rc/controls/sets/prefchar2_munichar2_fiscal_political_sorteio",
+            "rc/controls/sets/full_with_audit_scale"
+          ],
+          "controls_sets_notes": {
+            "rc/controls/sets/none": "Bivariate: first + state FE only (0 controls)",
+            "rc/controls/sets/prefchar2": "Mayor characteristics: prefchar2_continuous + prefchar2_party blocks (20 vars)",
+            "rc/controls/sets/prefchar2_munichar2_fiscal": "Add municipal chars + fiscal (27 vars)",
+            "rc/controls/sets/prefchar2_munichar2_fiscal_political": "Add political competition (31 vars)",
+            "rc/controls/sets/prefchar2_munichar2_fiscal_political_sorteio": "Add lottery dummies = baseline without state FE (41 vars)",
+            "rc/controls/sets/full_with_audit_scale": "Baseline + lfunc_ativ + lrec_fisc (42 vars, as used in Tables 6-11)"
+          },
+          "controls_loo_blocks": [
+            "rc/controls/loo_block/drop_prefchar2_continuous",
+            "rc/controls/loo_block/drop_prefchar2_party",
+            "rc/controls/loo_block/drop_munichar2",
+            "rc/controls/loo_block/drop_fiscal",
+            "rc/controls/loo_block/drop_political",
+            "rc/controls/loo_block/drop_sorteio"
+          ],
+          "controls_loo_key_vars": [
+            "rc/controls/loo/drop_pref_masc",
+            "rc/controls/loo/drop_pref_idade_tse",
+            "rc/controls/loo/drop_pref_escola",
+            "rc/controls/loo/drop_lpop",
+            "rc/controls/loo/drop_purb",
+            "rc/controls/loo/drop_p_secundario",
+            "rc/controls/loo/drop_mun_novo",
+            "rc/controls/loo/drop_lpib02",
+            "rc/controls/loo/drop_gini_ipea",
+            "rc/controls/loo/drop_lrec_trans",
+            "rc/controls/loo/drop_p_cad_pref",
+            "rc/controls/loo/drop_vereador_eleit",
+            "rc/controls/loo/drop_ENLP2000",
+            "rc/controls/loo/drop_comarca"
+          ],
+          "controls_add": [
+            "rc/controls/add/exp_prefeito",
+            "rc/controls/add/nexp_nexp2"
+          ],
+          "controls_add_notes": "Table 7 (Cols 3-4) adds political experience controls to address confounding-by-experience concern. These are revealed RC from the paper. rc/controls/add/exp_prefeito adds exp_prefeito to the full Tables 6-11 control set. rc/controls/add/nexp_nexp2 adds nexp + nexp2.",
+          "controls_subset": [
+            "rc/controls/subset/exhaustive_blocks"
+          ],
+          "fe_variants": [
+            "rc/fe/drop/uf",
+            "rc/fe/add/region"
+          ],
+          "sample_variants": [
+            "rc/sample/outliers/trim_y_1_99",
+            "rc/sample/outliers/trim_y_5_95",
+            "rc/sample/outliers/cooksd_4_over_n",
+            "rc/sample/restriction/running_nonmissing",
+            "rc/sample/restriction/pmismanagement_nonmissing"
+          ],
+          "functional_form": [
+            "rc/form/outcome/asinh",
+            "rc/form/model/rdd_polynomial_linear",
+            "rc/form/model/rdd_polynomial_quadratic",
+            "rc/form/model/rdd_polynomial_cubic"
+          ],
+          "functional_form_notes": {
+            "rdd_polynomial_constraint": "RDD polynomial specs are joint specs: they necessarily (a) restrict the sample to running_nonmissing (N=328) and (b) add polynomial controls in the running variable. They hold the baseline control set fixed otherwise. The running variable must be generated from winmargin2000/winmargin2000_inclost as in the do-file."
+          },
+          "estimator_variants": [
+            "rc/estimation/tobit_ll0"
+          ]
+        },
+        "infer_spec_ids": [
+          "infer/se/hc/classical",
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3",
+          "infer/se/cluster/uf"
+        ],
+        "infer_notes": {
+          "cluster_uf_caveat": "State-level clustering has only 26 clusters. Asymptotic cluster SE may be unreliable. Results should be interpreted cautiously. Wild cluster bootstrap (if feasible) would be more reliable but is not in the current environment."
+        }
+      },
+      "budgets": {
+        "max_specs_core_total": 150,
+        "max_specs_controls_subset": 64,
+        "max_specs_controls_loo_vars": 14,
+        "max_specs_controls_loo_blocks": 6,
+        "max_specs_controls_sets": 6,
+        "max_specs_controls_add": 2,
+        "max_specs_fe": 2,
+        "max_specs_sample": 5,
+        "max_specs_form": 4,
+        "max_specs_estimator": 1,
+        "max_specs_infer": 4,
+        "total_estimated": 109,
+        "total_estimated_note": "1 baseline + 6 control sets + 6 LOO blocks + 14 LOO vars + 2 add-experience + 62 block combos (64 - 2 already counted) + 2 FE + 5 sample + 4 form + 1 estimator + 4 infer = 107, plus 2 add-experience = 109. Well within 150 budget."
+      },
+      "sampling": {
+        "seed": 112431,
+        "controls_subset_sampler": "exhaustive_blocks",
+        "controls_blocks_for_subset": [
+          "prefchar2_continuous",
+          "prefchar2_party",
+          "munichar2",
+          "fiscal",
+          "political",
+          "sorteio"
+        ],
+        "n_blocks": 6,
+        "n_block_combinations": 64,
+        "notes": "6 control blocks -> 2^6 = 64 block-level combinations (including empty set and full set). This is feasible for full enumeration. All 64 block subsets will be run with state FE held fixed. The empty set duplicates rc/controls/sets/none and the full set duplicates the baseline; both should be tagged as overlapping to avoid double-counting."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/cross_sectional_ols/balance/treatment_balance",
+          "scope": "baseline_group",
+          "notes": "Balance test of first-term vs second-term mayors on observables (already in Table 3 of paper)"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "cross_sectional_ols",
+      "claim_object": {
+        "outcome_concept": "Number of corruption violations (count)",
+        "treatment_concept": "Reelection incentives (first-term mayor indicator)",
+        "estimand_concept": "ATE of first-term status on corruption violation count, conditional on observables + state FE",
+        "target_population": "Brazilian municipalities audited by CGU anti-corruption program (esample2==1, N=476)",
+        "sign_expectation": "Negative"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5A-Col2",
+          "reg_id": 9,
+          "outcome_var": "ncorrupt",
+          "treatment_var": "first",
+          "controls": [
+            "lrec_fisc",
+            "pref_masc", "pref_idade_tse", "pref_escola",
+            "party_d1", "party_d3", "party_d4", "party_d5", "party_d6", "party_d7",
+            "party_d8", "party_d9", "party_d10", "party_d11", "party_d12",
+            "party_d13", "party_d14", "party_d15", "party_d16", "party_d17", "party_d18",
+            "lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea",
+            "lrec_trans",
+            "p_cad_pref", "vereador_eleit", "ENLP2000", "comarca",
+            "sorteio1", "sorteio2", "sorteio3", "sorteio4", "sorteio5",
+            "sorteio6", "sorteio7", "sorteio8", "sorteio9", "sorteio10"
+          ],
+          "n_controls": 41,
+          "fixed_effects": ["uf"],
+          "se_type": "HC1",
+          "sample_filter": "esample2==1",
+          "coefficient": -0.4710,
+          "std_error": 0.1478,
+          "p_value": 0.002,
+          "n_obs": 476
+        }
+      ],
+      "mandatory_controls": ["lrec_fisc"],
+      "mandatory_controls_note": "lrec_fisc (log audited resources) is mandatory because audit scale mechanically determines how many violations can be found. Dropping it changes the estimand concept. All RC specs for G2 must include lrec_fisc.",
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 42,
+        "controls_count_baseline": 41,
+        "linked_adjustment": false,
+        "notes": "Table 5 shows bivariate (Col 1) and full controls (Col 2). Minimum is 1 (lrec_fisc alone) not 0, because lrec_fisc is mandatory. Maximum is 42 if lfunc_ativ is also added."
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols"
+        ],
+        "rc_spec_ids": {
+          "controls_sets": [
+            "rc/controls/sets/mandatory_only",
+            "rc/controls/sets/full_with_lfunc_ativ"
+          ],
+          "controls_sets_notes": {
+            "rc/controls/sets/mandatory_only": "lrec_fisc + state FE only (mandatory controls, no optional controls)",
+            "rc/controls/sets/full_with_lfunc_ativ": "All baseline controls + lfunc_ativ"
+          },
+          "controls_loo_blocks": [
+            "rc/controls/loo_block/drop_prefchar2_continuous",
+            "rc/controls/loo_block/drop_prefchar2_party",
+            "rc/controls/loo_block/drop_munichar2",
+            "rc/controls/loo_block/drop_fiscal",
+            "rc/controls/loo_block/drop_political",
+            "rc/controls/loo_block/drop_sorteio"
+          ],
+          "controls_loo_blocks_note": "LOO block drops are from the optional control pool only. Mandatory control lrec_fisc is never dropped.",
+          "sample_variants": [
+            "rc/sample/outliers/trim_y_1_99",
+            "rc/sample/outliers/trim_y_5_95"
+          ],
+          "functional_form": [
+            "rc/form/outcome/asinh"
+          ],
+          "estimator_variants": [
+            "rc/estimation/nbreg"
+          ],
+          "estimator_variants_note": "Negative binomial regression (Table 5A Col 4) is a revealed estimator variant for count outcomes. Implementation may have numerical issues (NaN SEs noted in replication report)."
+        },
+        "infer_spec_ids": [
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "total_estimated": 15,
+        "total_estimated_note": "1 baseline + 2 control sets + 6 LOO blocks + 2 sample + 1 form + 1 estimator + 2 infer = 15"
+      },
+      "sampling": {
+        "seed": 112431,
+        "notes": "Smaller surface for secondary outcome. Full enumeration is feasible."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "cross_sectional_ols",
+      "claim_object": {
+        "outcome_concept": "Corruption violations as share of audited items (normalized count)",
+        "treatment_concept": "Reelection incentives (first-term mayor indicator)",
+        "estimand_concept": "ATE of first-term status on normalized corruption count, conditional on observables + state FE",
+        "target_population": "Brazilian municipalities audited by CGU anti-corruption program (esample2==1, N=476)",
+        "sign_expectation": "Negative"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5B-Col2",
+          "reg_id": 12,
+          "outcome_var": "ncorrupt_os",
+          "treatment_var": "first",
+          "controls": [
+            "lrec_fisc", "lfunc_ativ",
+            "pref_masc", "pref_idade_tse", "pref_escola",
+            "party_d1", "party_d3", "party_d4", "party_d5", "party_d6", "party_d7",
+            "party_d8", "party_d9", "party_d10", "party_d11", "party_d12",
+            "party_d13", "party_d14", "party_d15", "party_d16", "party_d17", "party_d18",
+            "lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea",
+            "lrec_trans",
+            "p_cad_pref", "vereador_eleit", "ENLP2000", "comarca",
+            "sorteio1", "sorteio2", "sorteio3", "sorteio4", "sorteio5",
+            "sorteio6", "sorteio7", "sorteio8", "sorteio9", "sorteio10"
+          ],
+          "n_controls": 42,
+          "fixed_effects": ["uf"],
+          "se_type": "HC1",
+          "sample_filter": "esample2==1",
+          "coefficient": -0.0105,
+          "std_error": 0.0044,
+          "p_value": 0.017,
+          "n_obs": 476
+        }
+      ],
+      "mandatory_controls": ["lrec_fisc", "lfunc_ativ"],
+      "mandatory_controls_note": "Both lrec_fisc (log audited resources) and lfunc_ativ (log number of activities audited) are mandatory for G3 because the outcome is a ratio of violations to audited items. Dropping either changes the estimand concept.",
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 42,
+        "controls_count_baseline": 42,
+        "linked_adjustment": false,
+        "notes": "Minimum is 2 (mandatory controls only). Maximum is 42 (full baseline)."
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols"
+        ],
+        "rc_spec_ids": {
+          "controls_sets": [
+            "rc/controls/sets/mandatory_only",
+            "rc/controls/sets/baseline"
+          ],
+          "controls_sets_notes": {
+            "rc/controls/sets/mandatory_only": "lrec_fisc + lfunc_ativ + state FE only (mandatory controls, no optional controls)",
+            "rc/controls/sets/baseline": "Full baseline set (42 controls)"
+          },
+          "controls_loo_blocks": [
+            "rc/controls/loo_block/drop_prefchar2_continuous",
+            "rc/controls/loo_block/drop_prefchar2_party",
+            "rc/controls/loo_block/drop_munichar2",
+            "rc/controls/loo_block/drop_fiscal",
+            "rc/controls/loo_block/drop_political",
+            "rc/controls/loo_block/drop_sorteio"
+          ],
+          "controls_loo_blocks_note": "LOO block drops are from the optional control pool only. Mandatory controls lrec_fisc and lfunc_ativ are never dropped.",
+          "sample_variants": [
+            "rc/sample/outliers/trim_y_1_99",
+            "rc/sample/outliers/trim_y_5_95"
+          ],
+          "estimator_variants": [
+            "rc/estimation/tobit_ll0"
+          ],
+          "estimator_variants_note": "Tobit left-censored at 0 (Table 5B Col 4) is a revealed estimator variant for this bounded outcome."
+        },
+        "infer_spec_ids": [
+          "infer/se/hc/hc2",
+          "infer/se/hc/hc3"
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "total_estimated": 14,
+        "total_estimated_note": "1 baseline + 2 control sets + 6 LOO blocks + 2 sample + 1 estimator + 2 infer = 14"
+      },
+      "sampling": {
+        "seed": 112431,
+        "notes": "Smaller surface for secondary outcome. Full enumeration is feasible."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "paper_id": "113517-V1",
+  "verified_at": "2026-02-13",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "EE reallocation rate positively predicts composition-adjusted nominal earnings growth at the market level, conditional on other labor market flows and time trend. Two-stage WLS with market FE, SIPP 1996-2013.",
+      "expected_sign": "Positive",
+      "baseline_spec_run_ids": [
+        "113517-V1_run0058",
+        "113517-V1_run0059",
+        "113517-V1_run0060",
+        "113517-V1_run0061",
+        "113517-V1_run0062"
+      ],
+      "baseline_spec_ids": [
+        "baseline/ee_only",
+        "baseline/ee_ue",
+        "baseline/ee_ue_ur",
+        "baseline/all_flows",
+        "baseline/grouped_flows"
+      ],
+      "primary_baseline_coefficient": 0.04496096045529495,
+      "primary_baseline_std_error": 0.0008102287490823362,
+      "primary_baseline_p_value": 0.0,
+      "primary_baseline_n_obs": 6158358,
+      "outcome_var": "xdlogern_nom",
+      "paper_reference": "Table 1, Spec 1 (0.045) and Spec 6 (0.045)",
+      "notes": "5 baseline flow specs (ee_only, ee_ue, ee_ue_ur, all_flows, grouped_flows) from Table 1. Primary is ee_only (Spec 1). Coefficients: ee_only=0.0450, ee_ue=0.0474, ee_ue_ur=0.0414, all_flows=0.0450, grouped_flows=0.0516"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "EE reallocation rate positively predicts composition-adjusted real earnings growth at the market level, conditional on other labor market flows and time trend. Two-stage WLS with market FE, SIPP 1996-2013.",
+      "expected_sign": "Positive",
+      "baseline_spec_run_ids": [
+        "113517-V1_run0007",
+        "113517-V1_run0008",
+        "113517-V1_run0009",
+        "113517-V1_run0010",
+        "113517-V1_run0011"
+      ],
+      "baseline_spec_ids": [
+        "baseline/ee_only",
+        "baseline/ee_ue",
+        "baseline/ee_ue_ur",
+        "baseline/all_flows",
+        "baseline/grouped_flows"
+      ],
+      "primary_baseline_coefficient": 0.03733232441577591,
+      "primary_baseline_std_error": 0.0008178123309591482,
+      "primary_baseline_p_value": 0.0,
+      "primary_baseline_n_obs": 6158358,
+      "outcome_var": "xdlogern",
+      "paper_reference": "Table 1, Spec 1 (0.037) and Spec 6 (0.039)",
+      "notes": "5 baseline flow specs (ee_only, ee_ue, ee_ue_ur, all_flows, grouped_flows) from Table 1. Primary is ee_only (Spec 1). Coefficients: ee_only=0.0373, ee_ue=0.0386, ee_ue_ur=0.0354, all_flows=0.0387, grouped_flows=0.0448"
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "EE reallocation rate has a weak/null effect on composition-adjusted nominal hourly wage growth. Effect weakens with additional flow controls (Spec 6 = 0.0006, p=0.104). Two-stage WLS, hourly-worker subsample.",
+      "expected_sign": "Weak positive or null",
+      "baseline_spec_run_ids": [
+        "113517-V1_run0200",
+        "113517-V1_run0201",
+        "113517-V1_run0202",
+        "113517-V1_run0203",
+        "113517-V1_run0204"
+      ],
+      "baseline_spec_ids": [
+        "baseline/ee_only",
+        "baseline/ee_ue",
+        "baseline/ee_ue_ur",
+        "baseline/all_flows",
+        "baseline/grouped_flows"
+      ],
+      "primary_baseline_coefficient": 0.009557602533974228,
+      "primary_baseline_std_error": 0.00033485823392528566,
+      "primary_baseline_p_value": 0.0,
+      "primary_baseline_n_obs": 3176722,
+      "outcome_var": "xdloghwr_nom",
+      "paper_reference": "Table 1, Spec 1 (0.0096) and Spec 6 (0.0006, insignificant)",
+      "notes": "5 baseline flow specs (ee_only, ee_ue, ee_ue_ur, all_flows, grouped_flows) from Table 1. Primary is ee_only (Spec 1). Coefficients: ee_only=0.0096, ee_ue=0.0040, ee_ue_ur=0.0016, all_flows=0.0006, grouped_flows=0.0018"
+    },
+    {
+      "baseline_group_id": "G4",
+      "claim_summary": "EE reallocation rate has null or negative effect on composition-adjusted real hourly wage growth. Sign reverses with full controls (Spec 6 = -0.0037). Two-stage WLS, hourly-worker subsample.",
+      "expected_sign": "Null or negative",
+      "baseline_spec_run_ids": [
+        "113517-V1_run0149",
+        "113517-V1_run0150",
+        "113517-V1_run0151",
+        "113517-V1_run0152",
+        "113517-V1_run0153"
+      ],
+      "baseline_spec_ids": [
+        "baseline/ee_only",
+        "baseline/ee_ue",
+        "baseline/ee_ue_ur",
+        "baseline/all_flows",
+        "baseline/grouped_flows"
+      ],
+      "primary_baseline_coefficient": 0.0038518320842954343,
+      "primary_baseline_std_error": 0.0003601181168512941,
+      "primary_baseline_p_value": 0.0,
+      "primary_baseline_n_obs": 3176722,
+      "outcome_var": "xdloghwr",
+      "paper_reference": "Table 1, Spec 1 (0.0039) and Spec 6 (-0.0037)",
+      "notes": "5 baseline flow specs (ee_only, ee_ue, ee_ue_ur, all_flows, grouped_flows) from Table 1. Primary is ee_only (Spec 1). Coefficients: ee_only=0.0039, ee_ue=-0.0018, ee_ue_ur=-0.0024, all_flows=-0.0037, grouped_flows=-0.0026"
+    }
+  ],
+  "global_notes": [
+    "All 4 baseline groups from SPECIFICATION_SURFACE.json are present in the results and are coherent.",
+    "No spurious or missing baseline groups.",
+    "Treatment variable 'xee' is consistent across all 284 rows. No treatment drift.",
+    "No outcome drift: each group uses exactly one outcome variable throughout.",
+    "20 total baselines (5 per group), matching the surface plan exactly.",
+    "All baselines succeeded (0 failures). Coefficients match Table 1 values at reported precision.",
+    "G1/G2 (earnings) show robust positive EE effect. G3 (nominal hourly wage) shows weak effect. G4 (real hourly wage) shows sign reversal with controls. This matches the paper's central finding."
+  ]
+}

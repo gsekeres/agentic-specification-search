@@ -1,0 +1,46 @@
+{
+  "paper_id": "112749-V1",
+  "verified_at": "2026-02-13",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of 1927 Mississippi flood intensity on log fraction Black population in Southern US counties (continuous-treatment DiD with county + state-by-year FE). Negative expected sign: flood caused Black out-migration.",
+      "outcome_concept": "Log fraction Black population in county",
+      "treatment_concept": "Flood intensity (share of county flooded) interacted with post-flood year dummies",
+      "estimand_concept": "Dynamic ATT path at each post-flood decade (focal: f_int_1950)",
+      "target_population": "Southern US counties bordering Mississippi flood zone (>=10% Black, >=15% cotton in 1920), balanced panel",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": ["112749-V1_G1_0001", "112749-V1_G1_0002"],
+      "baseline_spec_ids": ["baseline", "baseline"],
+      "baseline_labels": ["Table2-Col1 (geography+lags)", "Table2-Col2 (geography+lags+NewDeal)"],
+      "baseline_coefficients": [-0.202355, -0.240261],
+      "baseline_p_values": [0.0008, 0.000063],
+      "baseline_n_obs": [978, 978],
+      "notes": "Two baselines correspond to Table 2 columns 1 and 2. Both succeed. Focal parameter is f_int_1950 (peak effect period). The runner correctly ran many RC variations with both control sets (geo+lags and geo+lags+ND), yielding pairs of specs. LOO blocks are run relative to baseline 2 (geo+lags+ND) only."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of 1927 Mississippi flood intensity on log value of farm equipment per county (continuous-treatment DiD with county + state-by-year FE). Positive expected sign: labor outflow induced capital substitution toward mechanization.",
+      "outcome_concept": "Log value of farm equipment per county (mechanization/capital intensity)",
+      "treatment_concept": "Flood intensity (share of county flooded) interacted with post-flood year dummies",
+      "estimand_concept": "Dynamic ATT path at each post-flood census year (focal: f_int_1940, adjusted from surface plan f_int_1950)",
+      "target_population": "Same as G1 (Southern US counties bordering Mississippi flood zone)",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["112749-V1_G2_0036", "112749-V1_G2_0037"],
+      "baseline_spec_ids": ["baseline", "baseline"],
+      "baseline_labels": ["Table4-Col3 (geography+lags)", "Table4-Col4 (geography+lags+NewDeal) -- FAILED"],
+      "baseline_coefficients": [0.377972, null],
+      "baseline_p_values": [0.000236, null],
+      "baseline_n_obs": [815, null],
+      "notes": "Baseline 2 (geo+lags+ND) failed due to collinearity: equipment data available for only 5 of 13 panel years (1920, 1925, 1930, 1940, 1970), severely limiting degrees of freedom when adding year-interacted New Deal controls. This is a legitimate collinearity issue. Focal parameter changed from f_int_1950 (surface plan) to f_int_1940 because equipment data unavailable at 1950. 12 of 37 G2 specs failed for similar collinearity reasons. Runner documented this clearly in SPECIFICATION_SEARCH.md deviation notes."
+    }
+  ],
+  "global_notes": [
+    "Baseline group assignments from SPECIFICATION_SURFACE.json match exactly what appears in specification_results.csv. No adjustments needed.",
+    "Two baseline groups (G1, G2) are coherent: G1 tests the labor/migration channel, G2 tests the capital/mechanization channel. Both share the same treatment, design, and population but differ in outcome.",
+    "The runner ran most RC variations in pairs (one with geo+lags controls, one with geo+lags+ND controls), which creates duplicate spec_ids within groups. These are distinct specifications with different control sets, not true duplicates.",
+    "G2 focal parameter was changed from f_int_1950 to f_int_1940 due to data availability constraints. This is a reasonable deviation documented in SPECIFICATION_SEARCH.md.",
+    "Conley spatial SEs (6 rows) report point estimates but no standard errors due to pyfixest limitations. These are partial results.",
+    "LOO spec 'drop_tenancy_mfg' in G1 is redundant: baseline 2 (geo+lags+ND) does not include tenancy/mfg controls, so dropping them changes nothing. The result is identical to baseline 2. Similarly, LOO 'drop_new_deal' in G1 is identical to baseline 1."
+  ]
+}

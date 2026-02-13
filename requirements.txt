@@ -3,11 +3,16 @@ numpy>=1.24.0
 pandas>=2.0.0
 
 # Econometrics
-statsmodels>=0.14.0
-linearmodels>=5.0
+statsmodels>=0.14.6
+pyfixest>=0.40.0
+linearmodels>=6.0
+rdrobust>=1.3.0
 
 # Visualization
 matplotlib>=3.7.0
 
-# For specification curve analysis
+# For specification curve analysis / optimization
 scipy>=1.10.0
+
+# Data loading
+openpyxl>=3.1.0

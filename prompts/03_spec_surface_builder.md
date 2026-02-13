@@ -16,7 +16,7 @@ This is the “define the universe” stage. Do **not** run regressions here.
 
 ## Outputs (REQUIRED)
 
-Write both files to `{EXTRACTED_PACKAGE_PATH}`:
+Write both files to `{EXTRACTED_PACKAGE_PATH}` (the **top-level** extracted package directory, NOT a subfolder):
 
 1) `SPECIFICATION_SURFACE.json` (machine-readable surface)
 2) `SPECIFICATION_SURFACE.md` (human-readable summary + rationale)

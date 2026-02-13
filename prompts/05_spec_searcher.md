@@ -11,15 +11,17 @@ This is the *execution* stage. Do **not** redefine the universe of specs here: i
 - **Package directory**: `{EXTRACTED_PACKAGE_PATH}`
 - **Surface file (required)**: `{EXTRACTED_PACKAGE_PATH}/SPECIFICATION_SURFACE.json`
 - **Spec tree**: `specification_tree/` (typed designs + modules)
+- **Method reference**: `prompts/reference/estimation_methods.md` (Stata→Python translation guide)
 
 Important environment constraint:
 - Stata is not available. Implement using **Python** and/or **R**.
+- **Consult `prompts/reference/estimation_methods.md`** for translation recipes before implementing.
 
 ---
 
 ## Outputs (REQUIRED)
 
-Write the following to `{EXTRACTED_PACKAGE_PATH}`:
+Write the following to `{EXTRACTED_PACKAGE_PATH}` (the **top-level** extracted package directory, NOT a subfolder like `Codes-and-data/`):
 
 1) `specification_results.csv` (estimates only: `baseline`, `design/*`, `rc/*`, `infer/*`)
 2) `SPECIFICATION_SEARCH.md` (run log + what was executed vs skipped)
@@ -28,6 +30,8 @@ If the surface includes a diagnostics plan, also write:
 
 3) `diagnostics_results.csv` (diagnostics only: `diag/*`)
 4) `spec_diagnostics_map.csv` (spec-run ↔ diagnostic-run links)
+
+**Important**: Input data files may be in subfolders (e.g., `Codes-and-data/`, `data/`), but all output files listed above must be written directly to `{EXTRACTED_PACKAGE_PATH}/`, not to any subfolder. The analysis script should use separate paths for reading input data vs writing outputs.
 
 Also save your executable script to:
 
