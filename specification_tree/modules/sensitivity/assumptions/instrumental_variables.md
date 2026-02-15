@@ -12,7 +12,7 @@ This file records **design-specific sensitivity analyses** for instrumental vari
 
 - These are **sensitivity** objects (`sens/*`), not new estimands by default.
 - Some procedures may change the estimand (e.g., switching instruments can change the LATE); those belong in `explore/*`.
-- Diagnostics and inference-only procedures should be typed under `diag/*` and `infer/*` when we add those modules. This file includes a “Related diagnostics” section for completeness.
+- Diagnostics and inference-only procedures should be typed under `diag/*` and `infer/*`. This file lists closely related diagnostics/inference references for convenience.
 
 ## Key IV assumptions
 
@@ -67,7 +67,7 @@ When plausible negative-control outcomes or exposures exist, they provide eviden
 | `sens/assumption/instrumental_variables/exclusion/neg_control_outcome` | Run IV with a negative-control outcome as placebo (conceptually diagnostic) |
 | `sens/assumption/instrumental_variables/exogeneity/neg_control_exposure` | Include negative-control exposure to probe confounding of Z |
 
-## Related diagnostics / inference (to be typed elsewhere)
+## Related diagnostics / inference (references)
 
 Related menus:
 

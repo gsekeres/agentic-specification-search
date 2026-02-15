@@ -23,13 +23,17 @@ Important environment constraint:
 
 Write the following to `{EXTRACTED_PACKAGE_PATH}` (the **top-level** extracted package directory, NOT a subfolder like `Codes-and-data/`):
 
-1) `specification_results.csv` (estimates only: `baseline`, `design/*`, `rc/*`, `infer/*`)
+1) `specification_results.csv` (estimates only: `baseline`, `design/*`, `rc/*`)
 2) `SPECIFICATION_SEARCH.md` (run log + what was executed vs skipped)
+
+If the surface includes an inference plan (canonical inference + optional variants), also write:
+
+3) `inference_results.csv` (inference-only recomputations: `infer/*`, linked to a base `spec_run_id`)
 
 If the surface includes a diagnostics plan, also write:
 
-3) `diagnostics_results.csv` (diagnostics only: `diag/*`)
-4) `spec_diagnostics_map.csv` (spec-run ↔ diagnostic-run links)
+4) `diagnostics_results.csv` (diagnostics only: `diag/*`)
+5) `spec_diagnostics_map.csv` (spec-run ↔ diagnostic-run links)
 
 **Important**: Input data files may be in subfolders (e.g., `Codes-and-data/`, `data/`), but all output files listed above must be written directly to `{EXTRACTED_PACKAGE_PATH}/`, not to any subfolder. The analysis script should use separate paths for reading input data vs writing outputs.
 
@@ -50,6 +54,7 @@ Hard rules:
 
 - Every estimate-like row must have a typed `spec_id` and a unique `spec_run_id`.
 - Every row must include `baseline_group_id` from the surface (do not invent new groups during execution).
+- Do not write `infer/*` rows into `specification_results.csv`.
 - Do **not** run `explore/*`, `sens/*`, `diag/*`, or `post/*` into `specification_results.csv`.
   - Diagnostics go to `diagnostics_results.csv` only.
 
@@ -61,6 +66,7 @@ Open `SPECIFICATION_SURFACE.json` and validate:
 
 - `paper_id` matches `{PAPER_ID}`
 - baseline groups exist and are non-empty
+- `inference_plan.canonical` exists for each baseline group (canonical inference for estimate rows)
 - budgets + sampling seed exist (when combinatorial axes are included)
 - linkage constraints for bundled estimators are explicit when relevant (`linked_adjustment`)
 
@@ -85,7 +91,10 @@ For each baseline group, run the surface’s core universe:
 
 - `design/*` variants (within-design implementations)
 - `rc/*` variants (estimand-preserving robustness)
-- `infer/*` variants (inference-only changes)
+
+All baseline/design/rc rows in `specification_results.csv` must be estimated under the baseline group’s **canonical inference choice** (as specified in the surface).
+
+If the surface requests additional inference variants, recompute uncertainty (SEs/p-values/intervals) and write those rows to `inference_results.csv` instead of `specification_results.csv`.
 
 ### Budgeted combinatorics (controls)
 
@@ -137,8 +146,33 @@ Must include at least:
 - `n_obs`, `r_squared` (blank allowed)
 - `coefficient_vector_json`
 - `sample_desc`, `fixed_effects`, `controls_desc`, `cluster_var` (blank allowed)
+- `run_success` (0/1)
+- `run_error` (empty string allowed; required when `run_success=0`)
 
-### 4.2 `SPECIFICATION_SEARCH.md`
+Every planned spec should appear as a row, even if it fails. For failures:
+
+- set `run_success=0`
+- set numeric estimate fields to `NaN` where applicable
+- record a short `run_error` string (exception message or concrete failure reason)
+
+### 4.2 `inference_results.csv` (inference-only; if run)
+
+One row per `(spec_run_id, infer spec_id)` recomputation. Must include at least:
+
+- `paper_id`
+- `inference_run_id` (unique within paper)
+- `spec_run_id` (the base estimate row being recomputed)
+- `spec_id` (typed `infer/*`)
+- `spec_tree_path`
+- `baseline_group_id`
+- `coefficient`, `std_error`, `p_value` (computed under this inference choice)
+- `ci_lower`, `ci_upper` (blank allowed)
+- `n_obs`, `r_squared` (blank allowed)
+- `coefficient_vector_json` (required; include inference metadata and any warnings)
+- `run_success` (0/1)
+- `run_error` (empty string allowed; required when `run_success=0`)
+
+### 4.3 `SPECIFICATION_SEARCH.md`
 
 Include:
 
@@ -147,7 +181,7 @@ Include:
 - any deviations (e.g., a spec variant skipped because infeasible in this package)
 - exact software stack used (Python/R packages, versions if available)
 
-### 4.3 Diagnostics tables (if run)
+### 4.4 Diagnostics tables (if run)
 
 Follow the schemas in `specification_tree/CONTRACT.md`.
 
@@ -158,5 +192,6 @@ Follow the schemas in `specification_tree/CONTRACT.md`.
 - `spec_run_id` is unique within `{PAPER_ID}`
 - every executed row’s `spec_tree_path` points to an existing design/module node
 - no `diag/*` rows appear in `specification_results.csv`
+- no `infer/*` rows appear in `specification_results.csv`
 - `coefficient_vector_json` is valid JSON for every row (use `{}` only as last resort)
-
+- run `python scripts/validate_agent_outputs.py --paper-id {PAPER_ID}` and ensure it reports 0 `ERROR` issues

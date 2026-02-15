@@ -44,10 +44,10 @@ These checks often change the exposure mapping; default to exploration unless th
 | `sens/assumption/randomized_experiment/interference/drop_close_units` | Exclude close neighbors / buffer to reduce spillovers |
 | `sens/assumption/randomized_experiment/interference/exposure_mapping_alt` | Alternative exposure mappings (e.g., share treated neighbors) |
 
-## Related diagnostics / inference (to be typed elsewhere)
+## Related diagnostics / inference (references)
 
-These should ultimately live under `diag/randomized_experiment/*` and `infer/*`:
+Record these under `diag/*` and `infer/*` (not under `sens/*`):
 
-- baseline balance checks (covariate balance, randomization tests)
-- randomization inference / permutation tests
-- clustered SEs / design-based variance estimators (CR2, etc.)
+- baseline balance checks (covariate balance, randomization tests): `specification_tree/modules/diagnostics/design_diagnostics.md`
+- randomization inference / permutation tests: `specification_tree/modules/inference/resampling.md`
+- clustered SEs / design-based variance estimators (CR2, etc.): `specification_tree/modules/inference/standard_errors.md`

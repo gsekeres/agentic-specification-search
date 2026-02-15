@@ -19,7 +19,7 @@ The first path segment of `spec_id` defines the **node kind** and default **core
 | `baseline` | estimate | ✅ | Paper’s canonical estimate(s) for a baseline claim object |
 | `design/*` | estimate | ✅ | Within-design estimator/implementation alternatives |
 | `rc/*` | estimate | ✅ | Estimand-preserving robustness checks (ceteris paribus) |
-| `infer/*` | inference | ✅ | Inference-only alternatives (SE/resampling) |
+| `infer/*` | inference | ❌ | Inference-only recomputations (SE/resampling), recorded separately from the estimate table |
 | `diag/*` | diagnostic | ❌ | Diagnostics/falsification; not a new estimate of the estimand |
 | `sens/*` | sensitivity | ❌ | Assumption relaxations / partial-ID / breakdown points |
 | `post/*` | postprocess | ❌ | Set-level transforms (MHT, spec-curve summaries) |
@@ -29,7 +29,7 @@ If a paper’s *baseline claim itself* is heterogeneous (e.g., the headline esti
 
 ## 2) Minimal required columns for estimate-like rows
 
-For `baseline`, `design/*`, `rc/*`, `infer/*` rows, the CSV must contain:
+For `baseline`, `design/*`, `rc/*` rows, the CSV must contain:
 
 - `spec_run_id` (unique within paper; stable ID for this executed row)
 - `spec_id`
@@ -41,6 +41,17 @@ For `baseline`, `design/*`, `rc/*`, `infer/*` rows, the CSV must contain:
 - `n_obs`, `r_squared` (if meaningful; else empty)
 - `coefficient_vector_json` (required; may be `{}` if truly unavailable)
 - `sample_desc`, `fixed_effects`, `controls_desc`, `cluster_var` (empty allowed when not applicable)
+- `run_success` (0/1)
+- `run_error` (empty string allowed; required when `run_success=0`)
+
+These rows should be computed under the baseline group’s **canonical inference choice** recorded in the surface. Alternative uncertainty recomputations belong in `inference_results.csv`.
+
+### Run-success rule (required)
+
+Every planned spec should appear as a row in `specification_results.csv`, even if it fails, so the run is auditable against the surface budget.
+
+- If the run produced a valid focal estimate and uncertainty, set `run_success=1` and leave `run_error=""`.
+- If the run failed (or produced unusable focal outputs), set `run_success=0`, set numeric fields to `NaN` where applicable, and provide a short `run_error` string.
 
 ## 3) `spec_tree_path` rules (auditability)
 
@@ -140,11 +151,29 @@ See `specification_tree/modules/estimation/dml.md`.
 Diagnostics, sensitivity objects, post-processing, and exploration are **not** part of the default “core estimate” table.
 To avoid schema conflicts (e.g., missing p-values) and to make linkage explicit, prefer **separate output tables**:
 
-- `specification_results.csv`: estimate-like rows only (`baseline`, `design/*`, `rc/*`, `infer/*`)
+- `specification_results.csv`: estimate-like rows only (`baseline`, `design/*`, `rc/*`)
+- `inference_results.csv`: inference-only recomputations (`infer/*`), linked to the base estimate via `spec_run_id`
 - `diagnostics_results.csv`: diagnostics only (`diag/*`)
 - `spec_diagnostics_map.csv`: join table linking specs ↔ diagnostics
 
-### A) `diagnostics_results.csv` (recommended schema)
+### A) `inference_results.csv` (recommended schema)
+
+One row per inference recomputation of an existing estimate row.
+
+- `paper_id`
+- `inference_run_id` (unique within paper)
+- `spec_run_id` (the base estimate row being recomputed)
+- `spec_id` (typed `infer/*`)
+- `spec_tree_path`
+- `baseline_group_id`
+- `coefficient`, `std_error`, `p_value`, `ci_lower`, `ci_upper`
+- `n_obs`, `r_squared` (blank allowed)
+- `cluster_var` (blank allowed; record the clustering variable(s) if applicable)
+- `coefficient_vector_json` (required; include inference metadata and any warnings)
+- `run_success` (0/1)
+- `run_error` (empty string allowed; required when `run_success=0`)
+
+### B) `diagnostics_results.csv` (recommended schema)
 
 - `paper_id`
 - `diagnostic_run_id` (unique within paper)
@@ -153,8 +182,10 @@ To avoid schema conflicts (e.g., missing p-values) and to make linkage explicit,
 - `diagnostic_scope` (one of: `paper`, `baseline_group`, `spec`, `design_variant`)
 - `diagnostic_context_id` (stable hash/key of inputs used)
 - `diagnostic_json` (required; full output payload)
+- `run_success` (0/1)
+- `run_error` (empty string allowed; required when `run_success=0`)
 
-### B) `spec_diagnostics_map.csv` (foreign-key linking)
+### C) `spec_diagnostics_map.csv` (foreign-key linking)
 
 Each row links one spec run to one diagnostic run:
 
@@ -168,7 +199,7 @@ This supports the common situation where:
 - some diagnostics are invariant and shared across many specs (e.g., RD manipulation of the running variable), while
 - others are spec-dependent (e.g., IV first-stage strength under a particular control set).
 
-### C) When you must keep a single CSV
+### D) When you must keep a single CSV
 
 If tooling constraints require storing diagnostics in the same CSV as estimates:
 

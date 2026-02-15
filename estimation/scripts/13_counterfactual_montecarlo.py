@@ -35,7 +35,7 @@ from scipy import stats
 BASE_DIR = Path(__file__).parent.parent.parent
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
 FIG_DIR = BASE_DIR / "estimation" / "figures"
-OL_FIG_DIR = Path(__file__).parent.parent.parent.parent / "overleaf" / "tex" / "v8_figures"
+OL_FIG_DIR = BASE_DIR / "overleaf" / "tex" / "v8_figures"
 
 OUTPUT_NAME = "fig_montecarlo_validation.pdf"
 OUTPUT_JSON = RESULTS_DIR / "montecarlo_validation.json"

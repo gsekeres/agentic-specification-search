@@ -47,6 +47,7 @@ See `specification_tree/ARCHITECTURE.md` for the conceptual contract.
 Key decisions:
 
 - Typed `spec_id` namespaces: `design/*`, `rc/*`, `infer/*`, `sens/*`, `diag/*`, `post/*`, `explore/*` (+ reserved `baseline`).
+- One canonical inference choice per baseline group for estimate rows; additional `infer/*` variants are recorded separately as inference outputs (not treated as additional estimate rows).
 - Explicitly distinguish **RC (robustness checks)** from **sensitivity analysis**:
   - `rc/*` = estimand-preserving re-specifications under maintained assumptions (controls/sample/coding/etc.).
   - `sens/*` = assumption-relaxation objects (bounds, breakdown points), not ordinary regressions.
@@ -81,7 +82,7 @@ Implemented:
 Implemented (partial):
 
 - `unified_results.csv` carries `spec_run_id` and `baseline_group_id` and buckets summary stats by `spec_id` namespace/design.
-- Updated `estimation/scripts/02_build_spec_level.py` to prefer merging verification maps on `spec_run_id` when present (fallback to legacy merge keys otherwise).
+- Updated `estimation/scripts/02_build_spec_level.py` to merge verification maps on `(paper_id, spec_run_id)` and to exclude `infer/*` rows from the estimation evidence set.
 
 ## Open econometric questions (need explicit policy)
 

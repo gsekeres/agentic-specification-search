@@ -11,6 +11,7 @@ data/downloads/extracted/*/*
 !data/downloads/extracted/*/SPECIFICATION_SURFACE.md
 !data/downloads/extracted/*/SPEC_SURFACE_REVIEW.md
 !data/downloads/extracted/*/specification_results.csv
+!data/downloads/extracted/*/inference_results.csv
 !data/downloads/extracted/*/diagnostics_results.csv
 !data/downloads/extracted/*/spec_diagnostics_map.csv
 !data/downloads/extracted/*/SPECIFICATION_SEARCH.md

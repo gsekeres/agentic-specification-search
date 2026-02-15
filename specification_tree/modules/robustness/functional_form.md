@@ -33,6 +33,8 @@ Default rule:
 
 When in doubt, record the run but label as exploration.
 
+Surface requirement: if `rc/form/*` variants are included for a baseline group, the surface (and its pre-run review) should make an explicit call on whether the transformation preserves the baseline claim object and what coefficient interpretation is intended.
+
 ## A) Outcome transformations
 
 | spec_id | Description |

@@ -15,6 +15,7 @@ You do **not** run new regressions. You verify:
 - **Package directory**: `{EXTRACTED_PACKAGE_PATH}`
 - Expected files:
   - `specification_results.csv` (required)
+  - `inference_results.csv` (optional; if present, contains `infer/*` recomputations linked to `spec_run_id`)
   - `SPECIFICATION_SEARCH.md` (optional but usually present)
   - `SPECIFICATION_SURFACE.json` (recommended; if present, treat as the pre-run baseline-group plan)
   - `diagnostics_results.csv`, `spec_diagnostics_map.csv` (optional)
@@ -57,9 +58,9 @@ These namespaces are *eligible* to be core RC **by default**:
 - `baseline`
 - `design/*`
 - `rc/*`
-- `infer/*`
 
 Other namespaces are non-core by default (`diag/*`, `sens/*`, `post/*`, `explore/*`). In a surface-driven run, they should not appear in `specification_results.csv`.
+Inference variants (`infer/*`) should appear only in `inference_results.csv` (if that file is present), not in `specification_results.csv`.
 
 ---
 
@@ -72,7 +73,9 @@ Open `{EXTRACTED_PACKAGE_PATH}/specification_results.csv` and confirm:
 - `spec_run_id` exists and is unique within the paper
 - `baseline_group_id` exists (surface-driven requirement)
 - `spec_id` is typed and consistent with `spec_tree_path`
+- `run_success` exists (0/1) and failures have a concrete `run_error`
 - numeric fields are finite for executed rows (or clearly marked missing with reason in JSON)
+- no `infer/*` rows are present in `specification_results.csv`
 
 Flag any violations as `invalid`.
 
@@ -104,6 +107,11 @@ For each row, decide:
 3) `is_core_test` (0/1)
 4) `category`
 
+Default for `is_valid`:
+
+- start with `run_success==1` (from `specification_results.csv`), then
+- override to 0 if the focal estimate is clearly mis-extracted (wrong variable, wrong sign due to coding error, nonsensical p-values, etc.).
+
 Default `category` by namespace:
 
 - `baseline` or `design/*` → `core_method`
@@ -114,7 +122,6 @@ Default `category` by namespace:
 - `rc/preprocess/*` → `core_preprocess`
 - `rc/data/*` → `core_data`
 - `rc/weights/*` → `core_weights`
-- `infer/*` → `core_inference`
 
 Then override mechanically if the row drifted away from the baseline claim object:
 
@@ -146,6 +153,7 @@ Include one row per spec-run row with at least:
 - `baseline_group_id`
 - `closest_baseline_spec_run_id` (blank allowed)
 - `is_baseline` (0/1)
+- `is_valid` (0/1)
 - `is_core_test` (0/1)
 - `category`
 - `why` (≤ 25 words; concrete)
@@ -168,4 +176,4 @@ Include:
 - Every `spec_run_id` in `specification_results.csv` appears exactly once in `verification_spec_map.csv`.
 - Every baseline group referenced in the CSV exists in the JSON.
 - Explanations are concrete and anchored in observable row fields.
-
+- run `python scripts/validate_agent_outputs.py --paper-id {PAPER_ID}` and ensure it reports 0 `ERROR` issues

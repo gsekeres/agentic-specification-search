@@ -22,9 +22,10 @@ import json
 import os
 
 # Paths
-PKG_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112533-V1"
-FIG_DIR = os.path.join(PKG_DIR, "AdditionalMaterials", "AdditionalFigures")
 PAPER_ID = "112533-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PKG_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
+FIG_DIR = os.path.join(PKG_DIR, "AdditionalMaterials", "AdditionalFigures")
 
 # =============================================================================
 # Step 1: Load data

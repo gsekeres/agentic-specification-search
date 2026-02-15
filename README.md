@@ -25,7 +25,7 @@ agentic_specification_search/
 │   └── modules/                        # Orthogonal modules (rc/*, infer/*, diag/*, sens/*, explore/*, post/*)
 │
 ├── prompts/                            # Agent prompts
-│   ├── 01_downloader.md                # Package download automation
+│   ├── 01_replicator.md                # (Optional) replicate author results + translate code
 │   ├── 02_paper_classifier.md          # Design-family classification (pre-surface)
 │   ├── 03_spec_surface_builder.md      # Build SPECIFICATION_SURFACE.json (pre-run)
 │   ├── 04_spec_surface_verifier.md     # Critique/edit surface (pre-run)
@@ -34,12 +34,16 @@ agentic_specification_search/
 │   └── 07_CLEANUP.md                   # Optional disk cleanup guidance
 │
 ├── scripts/                            # Infrastructure scripts
-│   └── paper_analyses/                 # Per-paper estimation scripts
+│   ├── validate_agent_outputs.py       # Mechanical validation of agent outputs
+│   ├── paper_replications/             # Per-paper replication scripts (optional)
+│   │   └── {PAPER_ID}.py
+│   └── paper_analyses/                 # Per-paper surface-driven runner scripts
 │       └── {PAPER_ID}.py
 │
 ├── estimation/                         # Estimation pipeline
 │   ├── run_all.py
 │   ├── scripts/
+│   │   ├── 00_build_unified_results.py
 │   │   ├── 00_summarize_verification.py
 │   │   ├── 01a_build_i4r_claim_map.py
 │   │   ├── 01b_build_i4r_oracle_claim_map.py
@@ -47,28 +51,22 @@ agentic_specification_search/
 │   │   ├── 02_build_spec_level.py
 │   │   ├── 03_extract_i4r_baseline.py
 │   │   ├── 04_fit_mixture.py
-│   │   ├── 05_estimate_dependence.py 
+│   │   ├── 05_estimate_dependence.py
 │   │   ├── 06_counterfactual.py
 │   │   ├── 07_i4r_discrepancies.py
-│   │   ├── 08_i4r_paper_audit.py
-│   │   ├── 10_inference_audit.py
-│   │   ├── 11_write_overleaf_tables.py
-│   │   ├── 12_bootstrap_mixture_ci.py
-│   │   ├── 15_journal_subgroup.py
-│   │   ├── 16_posterior_assignment.py
-│   │   ├── 17_dependence_heterogeneity.py
-│   │   ├── 18_sign_consistency.py
-│   │   ├── 19_funnel_plot.py
-│   │   ├── 20_counterfactual_montecarlo.py
-│   │   ├── 21_effective_sample_size.py
-│   │   ├── 22_window_surface.py
-│   │   ├── 23_within_paper_dispersion.py
-│   │   ├── 24_summary_statistics.py
-│   │   ├── 25_variance_decomposition.py
-│   │   ├── 26_build_paper_catalog.py
-│   │   ├── 27_mixture_comparison_table.py
-│   │   ├── 27_sensitivity_tables.py
-│   │   └── make_figures.jl     
+│   │   ├── 08_inference_audit.py
+│   │   ├── 09_write_overleaf_tables.py
+│   │   ├── 10_bootstrap_mixture_ci.py
+│   │   ├── 11_journal_subgroup.py
+│   │   ├── 12_posterior_assignment.py
+│   │   ├── 13_counterfactual_montecarlo.py
+│   │   ├── 14_effective_sample_size.py
+│   │   ├── 15_summary_statistics.py
+│   │   ├── 16_variance_decomposition.py
+│   │   ├── 17_build_paper_catalog.py
+│   │   ├── 18_mixture_comparison_table.py
+│   │   ├── 19_sensitivity_tables.py
+│   │   └── make_figures.jl
 │   ├── data/                           # Intermediate datasets
 │   │   ├── claim_level.csv
 │   │   ├── spec_level.csv
@@ -109,17 +107,17 @@ python estimation/run_all.py --all
 
 This runs four stages in order:
 
-1. **Data construction** (`--data`): Scripts 00-10 build `claim_level.csv`, `spec_level.csv`, and I4R comparison datasets from raw `specification_results.csv` files in each paper's extracted directory.
+1. **Data construction** (`--data`): Scripts 00-03, 07-08 build `unified_results.csv`, `claim_level.csv`, `spec_level.csv`, and I4R comparison datasets from per-paper outputs in each paper's extracted directory.
 
-2. **Estimation** (`--est`): Scripts 04-06, 11.
+2. **Estimation** (`--est`): Scripts 04-06 (+ 09 when available).
    - `04_fit_mixture.py` — fits folded/truncated normal mixture models (K=2,3,4) to the |t|-statistic distribution
    - `05_estimate_dependence.py` — estimates AR(1) within-paper dependence parameter phi
    - `06_counterfactual.py` — computes counterfactual disclosure requirements (m_new)
-   - `11_write_overleaf_tables.py` — generates LaTeX tables for the paper
+   - `09_write_overleaf_tables.py` — generates LaTeX tables for the paper (requires data-stage outputs)
 
 3. **Figures** (`--figs`): `make_figures.jl` generates all PDF figures (requires Julia with PyPlot).
 
-4. **Extensions** (`--extensions`): Scripts 12-27 run bootstrap CIs, leave-one-out CV, journal subgroup analysis, Monte Carlo validation, sensitivity tables, paper catalog, etc.
+4. **Extensions** (`--extensions`): Scripts 10-19 run bootstrap CIs, journal subgroup analysis, Monte Carlo validation, sensitivity tables, paper catalog, etc.
 
 ### Individual stages
 
@@ -133,12 +131,14 @@ python estimation/run_all.py --extensions   # Extension analyses only
 ### Adding new papers
 
 1. Download replication packages to `data/downloads/extracted/{PAPER_ID}/`
-2. Classify designs (see `prompts/02_paper_classifier.md`)
-3. Build a surface (see `prompts/03_spec_surface_builder.md`)
-4. Pre-run audit/edit surface (see `prompts/04_spec_surface_verifier.md`)
-5. Run the approved surface (see `prompts/05_spec_searcher.md`)
-6. Post-run audit + core classification (see `prompts/06_post_run_verifier.md`)
-7. Re-run the pipeline: `python estimation/run_all.py --all`
+2. (Optional) Replicate baseline results / translate code (see `prompts/01_replicator.md`)
+3. Classify designs (see `prompts/02_paper_classifier.md`)
+4. Build a surface (see `prompts/03_spec_surface_builder.md`)
+5. Pre-run audit/edit surface (see `prompts/04_spec_surface_verifier.md`)
+6. Run the approved surface (see `prompts/05_spec_searcher.md`)
+7. Post-run audit + core classification (see `prompts/06_post_run_verifier.md`)
+8. Validate outputs: `python scripts/validate_agent_outputs.py --paper-id {PAPER_ID}`
+9. Re-run the pipeline: `python estimation/run_all.py --all`
 
 ## Specification Tree
 
@@ -147,13 +147,13 @@ Design files live in `specification_tree/designs/` and enumerate **within-design
 Universal (cross-design) modules live in `specification_tree/modules/` and enumerate:
 
 - robustness checks (`rc/*`)
-- inference variants (`infer/*`)
+- inference variants (`infer/*`) (recorded as inference outputs, not new estimates)
 - diagnostics (`diag/*`)
 - sensitivity analysis (`sens/*`)
 - post-processing (`post/*`)
 - exploration (`explore/*`)
 
-The paper-specific executable object is `SPECIFICATION_SURFACE.json` (see `specification_tree/SPECIFICATION_SURFACE.md`). The runner executes only `baseline`, `design/*`, `rc/*`, and `infer/*` into `specification_results.csv`; if diagnostics are planned, it writes `diagnostics_results.csv` separately and links them via `spec_diagnostics_map.csv`.
+The paper-specific executable object is `SPECIFICATION_SURFACE.json` (see `specification_tree/SPECIFICATION_SURFACE.md`). The runner executes only `baseline`, `design/*`, and `rc/*` into `specification_results.csv` using a **canonical inference choice** per baseline group. Additional inference variants (`infer/*`) are recorded separately in `inference_results.csv` (keyed by `spec_run_id`). Diagnostics (if planned) are written to `diagnostics_results.csv` and linked via `spec_diagnostics_map.csv`.
 
 See `specification_tree/INDEX.md` for the canonical file/module index and typed namespace rules.
 
@@ -170,7 +170,7 @@ Each row is one specification from one paper:
 | `paper_title` | Paper title (if available from package metadata) |
 | `spec_run_id` | Unique executed-row identifier (within paper) |
 | `baseline_group_id` | Baseline claim object identifier (from the pre-run surface) |
-| `spec_id` | Typed specification identifier (`baseline`, `design/*`, `rc/*`, `infer/*`, etc.) |
+| `spec_id` | Typed estimate identifier (`baseline`, `design/*`, `rc/*`). Inference variants live in `inference_results.csv`. |
 | `spec_tree_path` | Defining node path under `specification_tree/` (file + optional section anchor) |
 | `outcome_var` | Dependent variable name |
 | `treatment_var` | Treatment/exposure variable name |
@@ -186,6 +186,32 @@ Each row is one specification from one paper:
 | `fixed_effects` | Fixed effects description (optional) |
 | `controls_desc` | Controls description (optional) |
 | `cluster_var` | Clustering variable(s) used (optional) |
+| `run_success` | 0/1 success flag for the executed row |
+| `run_error` | Short error string when `run_success=0` |
+| `spec_fingerprint` | Deterministic hash of the spec signature (duplicate tracking) |
+| `dup_group_size` | Number of rows sharing the same fingerprint (within paper) |
+| `dup_rank` | Deterministic rank within the fingerprint group |
+| `dup_canonical_spec_run_id` | The canonical `spec_run_id` for the fingerprint group |
+| `dup_is_duplicate` | 0/1 flag for non-canonical duplicates (`dup_rank>1`) |
+
+### inference_results.csv
+
+Each row is one inference-only recomputation (`infer/*`) for a reference estimate row:
+
+| Column | Description |
+|--------|-------------|
+| `paper_id` | Package identifier |
+| `inference_run_id` | Unique inference-row identifier (within paper) |
+| `spec_run_id` | Reference estimate-row identifier being recomputed |
+| `baseline_group_id` | Baseline claim object identifier |
+| `spec_id` | Typed inference identifier (`infer/*`) |
+| `spec_tree_path` | Defining inference node path under `specification_tree/` |
+| `coefficient` | Point estimate (typically matches the reference row) |
+| `std_error` | Standard error under this inference choice |
+| `p_value` | p-value under this inference choice |
+| `coefficient_vector_json` | Full output payload (JSON; required; include inference metadata/warnings) |
+| `run_success` | 0/1 success flag for the inference recomputation |
+| `run_error` | Short error string when `run_success=0` |
 
 ## Software
 

@@ -117,6 +117,9 @@ def main() -> None:
             continue
 
         unified_paper = unified[unified["paper_id"] == pid].copy()
+        if "run_success" in unified_paper.columns:
+            rs = pd.to_numeric(unified_paper["run_success"], errors="coerce").fillna(0).astype(int)
+            unified_paper = unified_paper.loc[rs == 1].copy()
         if len(unified_paper) == 0:
             rows.append({**base, "oracle_status": "paper_missing_in_unified"})
             continue

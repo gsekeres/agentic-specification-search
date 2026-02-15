@@ -65,6 +65,7 @@ def main():
         print("STEP 1: DATA CONSTRUCTION")
         print("#" * 60)
 
+        run_python("00_build_unified_results.py")
         run_python("00_summarize_verification.py")
         run_python("01a_build_i4r_claim_map.py")
         run_python("01b_build_i4r_oracle_claim_map.py")

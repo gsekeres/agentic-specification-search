@@ -31,8 +31,9 @@ from scipy.stats import norm
 # =============================================================================
 # Configuration
 # =============================================================================
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112431-V1"
 PAPER_ID = "112431-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 
 # =============================================================================
 # Load data

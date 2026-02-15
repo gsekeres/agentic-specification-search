@@ -1,0 +1,41 @@
+paper_id,claim_description,t_orig,t_i4r,map_status,map_source,map_score,map_baseline_group_id,map_expected_sign,map_spec_id,map_outcome_var,map_treatment_var,t_stat,abs_t_stat,abs_diff_abs_t_to_i4r,needs_review
+147561-V3,City chiefs increase tax compliance in DRC,2.89,2.73,paper_missing,,,,,,,,,,,1
+140921-V1,Assortative matching at top of distribution,4.21,4.15,paper_missing,,,,,,,,,,,1
+120078-V1,Information reduces ethnic discrimination on Airbnb,2.45,2.38,paper_missing,,,,,,,,,,,1
+149481-V1,Thank-you calls increase charitable giving,1.98,1.82,paper_missing,,,,,,,,,,,1
+126722-V1,Patient demand contributes to overuse of prescriptions,3.12,2.95,paper_missing,,,,,,,,,,,1
+136741-V1,Historical lynchings affect Black voting behavior,2.67,2.51,paper_missing,,,,,,,,,,,1
+131981-V1,Mental health costs of COVID lockdowns,3.45,3.28,paper_missing,,,,,,,,,,,1
+128521-V1,"Recessions, mortality in Lancashire Cotton Famine",2.34,2.19,paper_missing,,,,,,,,,,,1
+120483-V1,Malaria immunity affects African slavery distribution,2.78,2.62,paper_missing,,,,,,,,,,,1
+140161-V1,Checking and sharing alt-facts,2.56,2.41,paper_missing,,,,,,,,,,,1
+130784-V1,Child marriage bans improve female outcomes,2.89,2.75,paper_missing,,,,,,,,,,,1
+134041-V1,Beliefs about gender wage gap affect policy demand,3.23,3.08,paper_missing,,,,,,,,,,,1
+125201-V1,"Mortality, temperature, public health in Mexico",2.45,2.32,paper_missing,,,,,,,,,,,1
+148301-V1,Multinationals profit shifting in tax havens,3.67,3.52,paper_missing,,,,,,,,,,,1
+125821-V1,School spending effects in Wisconsin,2.12,1.98,paper_missing,,,,,,,,,,,1
+149262-V2,Peer effects on student performance,2.78,2.65,paper_missing,,,,,,,,,,,1
+140121-V2,Alaska Permanent Fund labor market impacts,0.45,0.38,paper_missing,,,,,,,,,,,1
+138922-V1,Sports club vouchers long-run effects,1.56,1.42,paper_missing,,,,,,,,,,,1
+138401-V1,Measles vaccination long-term effects,2.34,2.18,paper_missing,,,,,,,,,,,1
+128143-V1,"Yellow vests, beliefs, carbon tax aversion",4.56,4.42,paper_missing,,,,,,,,,,,1
+120568-V1,Declining worker turnover patterns,5.23,5.08,paper_missing,,,,,,,,,,,1
+130141-V1,News shocks under financial frictions,2.89,2.72,paper_missing,,,,,,,,,,,1
+125321-V1,Technology solving principal-agent: China pollution,3.45,3.31,paper_missing,,,,,,,,,,,1
+180741-V1,Demand for moral commitment,2.67,2.54,paper_missing,,,,,,,,,,,1
+171681-V1,Deliberative competence in financial choice,2.12,1.98,paper_missing,,,,,,,,,,,1
+174501-V1,"Interaction, stereotypes, performance: South Africa",1.89,1.75,paper_missing,,,,,,,,,,,1
+158401-V1,Market access and quality upgrading: Uganda,2.45,2.32,paper_missing,,,,,,,,,,,1
+145141-V1,Welfare effects of shame and pride,3.78,3.65,paper_missing,,,,,,,,,,,1
+150323-V1,"Political turnover, bureaucratic turnover: Brazil",2.56,2.42,paper_missing,,,,,,,,,,,1
+151841-V1,Targeting entrepreneurs using community info,3.12,2.98,paper_missing,,,,,,,,,,,1
+150581-V1,Wage cyclicality and labor market sorting,2.89,2.75,paper_missing,,,,,,,,,,,1
+157781-V1,Rebel on the Canal: trade and conflict in China,2.34,2.18,paper_missing,,,,,,,,,,,1
+149882-V1,Reshaping gender attitudes: India school experiment,1.78,1.62,paper_missing,,,,,,,,,,,1
+181166-V1,Technological change and job loss consequences,3.45,3.32,paper_missing,,,,,,,,,,,1
+184041-V1,Common-probability auction puzzle,4.23,4.08,paper_missing,,,,,,,,,,,1
+146041-V1,Relative efficiency of skilled labor,2.67,2.54,paper_missing,,,,,,,,,,,1
+173341-V1,Vulnerability and clientelism,2.12,1.98,paper_missing,,,,,,,,,,,1
+181581-V1,Doctor supply and infant mortality,2.89,2.75,paper_missing,,,,,,,,,,,1
+139262-V1,Motivated beliefs and uncertainty resolution,2.45,2.31,paper_missing,,,,,,,,,,,1
+163822-V2,Digital addiction,3.56,3.42,paper_missing,,,,,,,,,,,1

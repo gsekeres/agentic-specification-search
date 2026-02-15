@@ -23,7 +23,8 @@ from scipy import stats
 # Configuration
 # ============================================================================
 PAPER_ID = "112355-V1"
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112355-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 DATA_DIR = os.path.join(PACKAGE_DIR, "20070334_data")
 OUTPUT_CSV = os.path.join(PACKAGE_DIR, "replication.csv")
 OUTPUT_REPORT = os.path.join(PACKAGE_DIR, "replication_report.md")

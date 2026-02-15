@@ -57,6 +57,7 @@ Diagnostics (`diag/*`) and sensitivity (`sens/*`) should not contaminate the cor
 - Are the included `rc/*` axes the right ones for this design and paper?
 - Are any high-leverage axes missing (especially data construction + preprocessing/coding)?
 - Are any axes incorrectly included as RC when they change the claim object?
+- If `rc/form/*` transformations are included: do they preserve the claim object *and* the coefficient interpretation the paper cares about? If not, move them to `explore/*` or require an explicit justification/interpretation note in the surface.
 
 ### D) Controls multiverse policy
 
@@ -64,13 +65,19 @@ Diagnostics (`diag/*`) and sensitivity (`sens/*`) should not contaminate the cor
 - Are “mandatory controls” vs “optional pool” implicitly assumed? If so, make it explicit in the surface.
 - For bundled estimators: is `linked_adjustment` correct? If yes, ensure the surface does not allow component-wise mixing.
 
-### E) Budgets + sampling
+### E) Inference plan
+
+- Is `inference_plan.canonical` present for each baseline group?
+- Does the canonical inference choice match the paper’s baseline (e.g., clustering level) and the baseline specs’ `cluster_var` fields?
+- Are any additional `inference_plan.variants` clearly described as inference-only recomputations (separate from the core universe)?
+
+### F) Budgets + sampling
 
 - Are budgets large enough to be informative but small enough to be feasible?
 - Is the sampling plan reproducible (seed, sampler type)?
 - If the universe is huge: does the surface clearly define it and sample from it instead of pretending to enumerate it?
 
-### F) Diagnostics plan (if present)
+### G) Diagnostics plan (if present)
 
 - Are standard design diagnostics listed when appropriate (e.g., IV first-stage strength, DiD pretrends)?
 - Is the diagnostic `scope` correct (spec vs baseline_group) given dependence on controls?

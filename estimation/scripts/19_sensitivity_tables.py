@@ -34,9 +34,7 @@ from scipy.stats import binom, norm
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent.parent.parent
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
-OL_TABLE_DIR = (
-    Path(__file__).parent.parent.parent.parent / "overleaf" / "tex" / "v8_tables"
-)
+OL_TABLE_DIR = BASE_DIR / "overleaf" / "tex" / "v8_tables"
 
 
 def load_json(path: Path) -> dict:

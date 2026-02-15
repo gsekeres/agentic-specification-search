@@ -101,7 +101,10 @@ def main() -> None:
                 map_error = ""
                 total = int(len(df))
                 core = int(df["is_core_test"].sum()) if "is_core_test" in df.columns else 0
-                invalid = int((df["category"] == "invalid").sum()) if "category" in df.columns else 0
+                if "is_valid" in df.columns:
+                    invalid = int((pd.to_numeric(df["is_valid"], errors="coerce").fillna(0).astype(int) == 0).sum())
+                else:
+                    invalid = int((df["category"] == "invalid").sum()) if "category" in df.columns else 0
                 core_share = float(core / total) if total > 0 else float("nan")
 
                 if "category" in df.columns:

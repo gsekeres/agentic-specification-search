@@ -26,7 +26,7 @@ This module standardizes the families and outputs so the pipeline can:
 
 Recommended families:
 
-- `family_core_rc`: within a baseline group, include `baseline`, `design/*`, `rc/*`, optionally `infer/*`.
+- `family_core_rc`: within a baseline group, include `baseline`, `design/*`, `rc/*` (estimate rows under canonical inference).
 - `family_exploration`: within a baseline group, include `explore/*` rows (or a subtype family such as heterogeneity).
 - `family_placebos`: include `diag/*` placebo rows.
 

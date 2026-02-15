@@ -23,6 +23,7 @@ Location: `data/downloads/extracted/*/`
 Each extracted package folder contains the original replication materials (data files, code, documentation). After specification search, only keep:
 
 - `specification_results.csv` - The structured results from all specifications
+- `inference_results.csv` - Inference-only recomputations (if present)
 - `SPECIFICATION_SEARCH.md` - The summary report
 - `SPECIFICATION_SURFACE.json` - The approved pre-run spec universe (surface)
 - `SPECIFICATION_SURFACE.md` - Human-readable surface summary/rationale
@@ -44,6 +45,7 @@ rm data/downloads/raw_packages/*.zip
 for dir in data/downloads/extracted/*/; do
     find "$dir" -type f \
         ! -name "specification_results.csv" \
+        ! -name "inference_results.csv" \
         ! -name "SPECIFICATION_SEARCH.md" \
         ! -name "SPECIFICATION_SURFACE.json" \
         ! -name "SPECIFICATION_SURFACE.md" \
@@ -71,6 +73,7 @@ for zip_file in (BASE_DIR / "raw_packages").glob("*.zip"):
 # Clean extracted folders
 KEEP_FILES = {
     "specification_results.csv",
+    "inference_results.csv",
     "SPECIFICATION_SEARCH.md",
     "SPECIFICATION_SURFACE.json",
     "SPECIFICATION_SURFACE.md",
@@ -103,6 +106,7 @@ Typical savings per package:
 
 After cleanup, each package folder contains only:
 - `specification_results.csv`: ~10-500 KB
+- `inference_results.csv`: ~10-500 KB (if present)
 - `SPECIFICATION_SEARCH.md`: ~5-30 KB
 - `SPECIFICATION_SURFACE.json`: typically small (KB)
 - `SPECIFICATION_SURFACE.md`: typically small (KB)

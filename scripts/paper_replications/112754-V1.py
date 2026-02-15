@@ -39,7 +39,8 @@ import json
 # Configuration
 # ============================================================
 PAPER_ID = "112754-V1"
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112754-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 DATA_DIR = os.path.join(PACKAGE_DIR, "data", "Original2014_data", "AER-2011-1278_Estimation")
 OUTPUT_CSV = os.path.join(PACKAGE_DIR, "replication.csv")
 

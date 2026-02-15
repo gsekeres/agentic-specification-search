@@ -13,11 +13,12 @@ The surface is designed to be **auditable** and **reviewable before running mode
 
 For a paper \(i\) and a baseline claim object (baseline group) \(g\), the **specification surface** \(S_{ig}\) consists of:
 
-1) a **core-eligible universe** \(\mathcal{U}^{core}_{ig}\) (typed namespaces: `baseline`, `design/*`, `rc/*`, `infer/*`),
+1) a **core-eligible universe** \(\mathcal{U}^{core}_{ig}\) (typed namespaces: `baseline`, `design/*`, `rc/*`),
 2) an optional **exploration universe** \(\mathcal{U}^{explore}_{ig}\) (`explore/*`),
 3) a **diagnostics plan** \(\mathcal{D}_{ig}\) (`diag/*`) with an explicit scope/linkage rule,
-4) **constraints** that rule out invalid/incoherent combinations (linkage constraints, size caps, feasibility constraints),
-5) a **budget** (max specs to run) and a **sampling plan** when \(|\mathcal{U}|\) is too large.
+4) an **inference plan** (one canonical inference choice for estimate rows + optional `infer/*` variants recorded separately),
+5) **constraints** that rule out invalid/incoherent combinations (linkage constraints, size caps, feasibility constraints),
+6) a **budget** (max specs to run) and a **sampling plan** when \(|\mathcal{U}|\) is too large.
 
 Diagnostics (`diag/*`) and sensitivity analysis (`sens/*`) are kept in the repo, but **excluded from the default surface** until we decide how they enter the theory pipeline.
 
@@ -27,7 +28,7 @@ Diagnostics (`diag/*`) and sensitivity analysis (`sens/*`) are kept in the repo,
 2) **Identify baseline specs**: the paper’s canonical implementations for each baseline group.
 3) **Define a candidate specification surface** \(S_{ig}\):
    - pick relevant design file(s),
-   - pick relevant universal RC/inference axes,
+   - pick relevant universal RC axes and define an inference plan,
    - define the admissible universe and budgets,
    - define constraints from the manuscript surface.
 4) **Surface review (verifier intervention)**:
@@ -53,7 +54,8 @@ To keep this auditable, the surface should specify for each baseline group:
 
 Operationally, prefer separate outputs:
 
-- `specification_results.csv` for estimates (`baseline`, `design/*`, `rc/*`, `infer/*`),
+- `specification_results.csv` for estimates (`baseline`, `design/*`, `rc/*`),
+- `inference_results.csv` for inference-only recomputations (`infer/*`),
 - `diagnostics_results.csv` for diagnostics (`diag/*`),
 - `spec_diagnostics_map.csv` linking spec runs ↔ diagnostic runs.
 
@@ -124,6 +126,26 @@ Sketch:
         "controls_count_min": 6,
         "controls_count_max": 12,
         "linked_adjustment": true
+      },
+      "core_universe": {
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/*",
+          "rc/sample/outliers/trim_y_1_99"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/unit",
+          "params": {"cluster_var": "unit_id"},
+          "notes": "Used for all baseline/design/rc estimate rows."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust-only (no clustering)."},
+          {"spec_id": "infer/se/cluster/state", "params": {"cluster_var": "state"}, "notes": "Coarser clustering as a stress test."}
+        ]
       },
       "diagnostics_plan": [
         {

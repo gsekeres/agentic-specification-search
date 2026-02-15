@@ -65,6 +65,7 @@ Inference-only recomputations or alternative uncertainty methods:
 - Small-sample corrections
 
 These are not “new estimands”; they are changes to the uncertainty model.
+In surface-driven runs, one inference choice is designated as **canonical** for each baseline group and is used for all estimate rows (`baseline`, `design/*`, `rc/*`). Additional `infer/*` variants (if requested) are recorded separately as inference outputs, not as additional estimate rows.
 
 ### E. Diagnostics (assumption checks, falsification)
 
@@ -198,7 +199,7 @@ Diagnostics/postprocess rows may not have a meaningful `(coef, se)` pair; they s
 
 Default rule (for the **verified core used in mixture/dependence estimation**):
 
-- Core-eligible namespaces: `baseline`, `design/*`, `rc/*`, `infer/*`
+- Core-eligible namespaces: `baseline`, `design/*`, `rc/*`
 - Not in verified core by default: `sens/*`, `diag/*`, `post/*`, `explore/*`
 
 The verification stage can override this *only with an explicit reason*, e.g., when the baseline claim itself is heterogeneous (so some heterogeneity nodes become core for that baseline group).

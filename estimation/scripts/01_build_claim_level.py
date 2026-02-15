@@ -9,6 +9,8 @@ Extracts the baseline t-statistic for each paper's canonical claim.
 Output: estimation/data/claim_level.csv
 """
 
+from __future__ import annotations
+
 import json
 import pandas as pd
 import numpy as np
@@ -26,6 +28,25 @@ OUTPUT_FILE = DATA_DIR / "claim_level.csv"
 
 def load_i4r_papers():
     """Load list of i4r papers from status file."""
+    if not STATUS_FILE.exists():
+        # Fallback: use the i4r claim map (built in the data stage) as the paper list.
+        if I4R_CLAIM_MAP_FILE.exists():
+            try:
+                cm = pd.read_csv(I4R_CLAIM_MAP_FILE)
+                ids = sorted(set(cm["paper_id"].astype(str).tolist())) if "paper_id" in cm.columns else []
+            except Exception:
+                ids = []
+            print(f"  Warning: missing status file {STATUS_FILE}; using i4r_claim_map.csv with {len(ids)} paper_ids.")
+            return pd.DataFrame(
+                [
+                    {"paper_id": pid, "title": pid, "journal": "", "year": "", "method": "", "n_specs": 0}
+                    for pid in ids
+                ]
+            )
+
+        print(f"  Warning: missing status file {STATUS_FILE}; no i4r paper list available.")
+        return pd.DataFrame(columns=["paper_id", "title", "journal", "year", "method", "n_specs"])
+
     with open(STATUS_FILE, 'r') as f:
         status = json.load(f)
 
@@ -94,7 +115,7 @@ def extract_baseline_tstat(df_unified, paper_id, orientation_sign_map=None, clai
             if not baseline.empty:
                 selection_rule = f"i4r_claim_map: {spec_id} ({outcome_var} ~ {treatment_var})"
 
-    # Fallbacks (legacy behavior)
+    # Fallbacks (heuristics)
     if baseline.empty:
         # Prefer explicit baseline spec_id
         baseline = paper_df[paper_df['spec_id'] == 'baseline']
@@ -111,7 +132,20 @@ def extract_baseline_tstat(df_unified, paper_id, orientation_sign_map=None, clai
                 selection_rule = "fallback: first spec"
 
     # If multiple baseline-like rows exist, take a deterministic choice.
+    # Prefer successful rows if run_success is available.
+    if "run_success" in baseline.columns:
+        rs = pd.to_numeric(baseline["run_success"], errors="coerce").fillna(0).astype(int)
+        baseline = baseline.loc[rs == 1].copy()
+
+    # Require a finite focal estimate and standard error.
+    baseline["__coef"] = pd.to_numeric(baseline.get("coefficient"), errors="coerce")
+    baseline["__se"] = pd.to_numeric(baseline.get("std_error"), errors="coerce")
+    baseline = baseline[baseline["__coef"].notna() & baseline["__se"].notna() & np.isfinite(baseline["__se"]) & (baseline["__se"] > 0)].copy()
+    if baseline.empty:
+        return None
+
     baseline = baseline.sort_values('spec_id').iloc[[0]]
+    baseline = baseline.drop(columns=["__coef", "__se"], errors="ignore")
 
     row = baseline.iloc[0]
 
@@ -176,6 +210,21 @@ def main():
     i4r_df = load_i4r_papers()
     print(f"Found {len(i4r_df)} i4r papers")
 
+    OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    if len(i4r_df) == 0:
+        cols = [
+            'paper_id', 'title', 'journal', 'year', 'method',
+            'spec_id', 'baseline_selection_rule',
+            't_AI', 't_AI_oriented', 't_AI_abs', 'orientation_sign',
+            'coefficient', 'std_error', 'p_value', 'n_obs',
+            'outcome_var', 'treatment_var', 'spec_tree_path', 'n_specs',
+            'i4r_map_source', 'i4r_map_score', 'i4r_map_group', 'i4r_map_expected_sign', 'i4r_map_needs_review'
+        ]
+        pd.DataFrame(columns=cols).to_csv(OUTPUT_FILE, index=False)
+        print(f"\nNo i4r papers available; wrote empty {OUTPUT_FILE}")
+        return
+
     # Load unified results
     print("\nLoading unified results...")
     df_unified = pd.read_csv(UNIFIED_RESULTS)
@@ -206,25 +255,53 @@ def main():
     for _, paper in i4r_df.iterrows():
         paper_id = paper['paper_id']
         cm_row = claim_map.get(paper_id) if claim_map is not None else None
-        result = extract_baseline_tstat(df_unified, paper_id, orientation_sign_map=orientation_sign_map, claim_map_row=cm_row)
+        extracted = extract_baseline_tstat(
+            df_unified,
+            paper_id,
+            orientation_sign_map=orientation_sign_map,
+            claim_map_row=cm_row,
+        )
 
-        if result:
-            # Merge with paper metadata
-            result['title'] = paper['title']
-            result['journal'] = paper['journal']
-            result['year'] = paper['year']
-            result['method'] = paper['method']
-            result['n_specs'] = paper['n_specs']
-            # Carry mapping metadata (if available)
-            if cm_row is not None:
-                result["i4r_map_source"] = cm_row.get("map_source", "")
-                result["i4r_map_score"] = cm_row.get("map_score", np.nan)
-                result["i4r_map_group"] = cm_row.get("map_baseline_group_id", "")
-                result["i4r_map_expected_sign"] = cm_row.get("map_expected_sign", "")
-                result["i4r_map_needs_review"] = cm_row.get("needs_review", np.nan)
-            results.append(result)
-        else:
+        row = {
+            'paper_id': paper_id,
+            'title': paper.get('title', ''),
+            'journal': paper.get('journal', ''),
+            'year': paper.get('year', ''),
+            'method': paper.get('method', ''),
+            'n_specs': paper.get('n_specs', 0),
+        }
+
+        if extracted is None:
             print(f"  Warning: No baseline found for {paper_id}")
+            row.update(
+                {
+                    't_AI': np.nan,
+                    't_AI_oriented': np.nan,
+                    't_AI_abs': np.nan,
+                    'orientation_sign': np.nan,
+                    'spec_id': '',
+                    'baseline_selection_rule': '',
+                    'coefficient': np.nan,
+                    'std_error': np.nan,
+                    'p_value': np.nan,
+                    'n_obs': np.nan,
+                    'outcome_var': '',
+                    'treatment_var': '',
+                    'spec_tree_path': '',
+                }
+            )
+        else:
+            row.update(extracted)
+
+        # Carry mapping metadata (if available), even when missing baseline.
+        if cm_row is not None:
+            row["i4r_map_source"] = cm_row.get("map_source", "")
+            row["i4r_map_score"] = cm_row.get("map_score", np.nan)
+            row["i4r_map_group"] = cm_row.get("map_baseline_group_id", "")
+            row["i4r_map_expected_sign"] = cm_row.get("map_expected_sign", "")
+            row["i4r_map_needs_review"] = cm_row.get("needs_review", np.nan)
+
+        results.append(row)
 
     # Create DataFrame
     claim_df = pd.DataFrame(results)

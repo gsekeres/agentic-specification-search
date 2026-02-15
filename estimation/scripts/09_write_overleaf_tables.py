@@ -248,7 +248,7 @@ Paper ID & Script & Flag description \\
 def main() -> None:
     base_dir = Path(__file__).resolve().parents[2]
     results_dir = base_dir / "estimation" / "results"
-    overleaf_tables = base_dir.parent / "overleaf" / "tex" / "v8_tables"
+    overleaf_tables = base_dir / "overleaf" / "tex" / "v8_tables"
     overleaf_tables.mkdir(parents=True, exist_ok=True)
 
     mix_abs = json.loads((results_dir / "mixture_params_abs_t.json").read_text())

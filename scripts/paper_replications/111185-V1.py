@@ -26,7 +26,8 @@ from datetime import datetime
 # Configuration
 # ============================================================
 PAPER_ID = "111185-V1"
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/111185-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 DATA_FILE = os.path.join(PACKAGE_DIR, "estimate_damage_parameters", "10640_2017_166_MOESM10_ESM.dta")
 ORIGINAL_TABLE1 = os.path.join(PACKAGE_DIR, "generate_plots", "data", "table_1.csv")
 

@@ -9,8 +9,10 @@ It is motivated by two facts:
 
 This policy applies to both:
 
-- **replication robustness** (`baseline`, `design/*`, `rc/*`, `infer/*`), and
+- **replication robustness** (`baseline`, `design/*`, `rc/*`) under a fixed canonical inference choice per baseline group, and
 - large exploratory families (`explore/*`) when they are intentionally run.
+
+Inference variants (`infer/*`) are handled via an explicit **inference plan**: one canonical choice used for all estimate rows, plus optional inference-only recomputations recorded separately. They are not part of the estimate-universe cross-product by default.
 
 ## 1) Define the “specification universe” first
 

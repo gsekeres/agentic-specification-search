@@ -1,0 +1,41 @@
+paper_id,claim_description,t_orig,t_i4r,oracle_status
+147561-V3,City chiefs increase tax compliance in DRC,2.89,2.73,missing_spec_map
+140921-V1,Assortative matching at top of distribution,4.21,4.15,missing_spec_map
+120078-V1,Information reduces ethnic discrimination on Airbnb,2.45,2.38,missing_spec_map
+149481-V1,Thank-you calls increase charitable giving,1.98,1.82,missing_spec_map
+126722-V1,Patient demand contributes to overuse of prescriptions,3.12,2.95,missing_spec_map
+136741-V1,Historical lynchings affect Black voting behavior,2.67,2.51,missing_spec_map
+131981-V1,Mental health costs of COVID lockdowns,3.45,3.28,missing_spec_map
+128521-V1,"Recessions, mortality in Lancashire Cotton Famine",2.34,2.19,missing_spec_map
+120483-V1,Malaria immunity affects African slavery distribution,2.78,2.62,missing_spec_map
+140161-V1,Checking and sharing alt-facts,2.56,2.41,missing_spec_map
+130784-V1,Child marriage bans improve female outcomes,2.89,2.75,missing_spec_map
+134041-V1,Beliefs about gender wage gap affect policy demand,3.23,3.08,missing_spec_map
+125201-V1,"Mortality, temperature, public health in Mexico",2.45,2.32,missing_spec_map
+148301-V1,Multinationals profit shifting in tax havens,3.67,3.52,missing_spec_map
+125821-V1,School spending effects in Wisconsin,2.12,1.98,missing_spec_map
+149262-V2,Peer effects on student performance,2.78,2.65,missing_spec_map
+140121-V2,Alaska Permanent Fund labor market impacts,0.45,0.38,missing_spec_map
+138922-V1,Sports club vouchers long-run effects,1.56,1.42,missing_spec_map
+138401-V1,Measles vaccination long-term effects,2.34,2.18,missing_spec_map
+128143-V1,"Yellow vests, beliefs, carbon tax aversion",4.56,4.42,missing_spec_map
+120568-V1,Declining worker turnover patterns,5.23,5.08,missing_spec_map
+130141-V1,News shocks under financial frictions,2.89,2.72,missing_spec_map
+125321-V1,Technology solving principal-agent: China pollution,3.45,3.31,missing_spec_map
+180741-V1,Demand for moral commitment,2.67,2.54,missing_spec_map
+171681-V1,Deliberative competence in financial choice,2.12,1.98,missing_spec_map
+174501-V1,"Interaction, stereotypes, performance: South Africa",1.89,1.75,missing_spec_map
+158401-V1,Market access and quality upgrading: Uganda,2.45,2.32,missing_spec_map
+145141-V1,Welfare effects of shame and pride,3.78,3.65,missing_spec_map
+150323-V1,"Political turnover, bureaucratic turnover: Brazil",2.56,2.42,missing_spec_map
+151841-V1,Targeting entrepreneurs using community info,3.12,2.98,missing_spec_map
+150581-V1,Wage cyclicality and labor market sorting,2.89,2.75,missing_spec_map
+157781-V1,Rebel on the Canal: trade and conflict in China,2.34,2.18,missing_spec_map
+149882-V1,Reshaping gender attitudes: India school experiment,1.78,1.62,missing_spec_map
+181166-V1,Technological change and job loss consequences,3.45,3.32,missing_spec_map
+184041-V1,Common-probability auction puzzle,4.23,4.08,missing_spec_map
+146041-V1,Relative efficiency of skilled labor,2.67,2.54,missing_spec_map
+173341-V1,Vulnerability and clientelism,2.12,1.98,missing_spec_map
+181581-V1,Doctor supply and infant mortality,2.89,2.75,missing_spec_map
+139262-V1,Motivated beliefs and uncertainty resolution,2.45,2.31,missing_spec_map
+163822-V2,Digital addiction,3.56,3.42,missing_spec_map

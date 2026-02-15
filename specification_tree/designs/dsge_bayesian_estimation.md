@@ -75,3 +75,24 @@ DSGE outputs should be stored in `coefficient_vector_json` under a `dsge` block,
 - convergence summaries.
 
 If integrating into a scalar evidence pipeline, the surface must declare a focal scalar summary (e.g., a particular IRF response at a horizon, or a log marginal likelihood difference), and that choice must be recorded in JSON.
+
+## Typed references to universal modules (do not duplicate here)
+
+### Robustness checks (`rc/*`)
+
+- Sample rules (window, exclusions): `specification_tree/modules/robustness/sample.md`
+- Pre-processing/coding (deflators, scaling, standardization): `specification_tree/modules/robustness/preprocessing.md`
+- Data construction (aggregation, measurement choices): `specification_tree/modules/robustness/data_construction.md`
+
+### Inference (`infer/*`)
+
+- Resampling / uncertainty procedures (when representing DSGE outputs with scalar summaries): `specification_tree/modules/inference/resampling.md`
+
+### Post-processing (`post/*`)
+
+- Specification-curve / multiverse summaries: `specification_tree/modules/postprocess/specification_curve.md`
+
+### Exploration (`explore/*`)
+
+- Alternative scalar summaries / estimands (IRF horizons, welfare/policy objects): `specification_tree/modules/exploration/alternative_estimands.md`
+- Variable definitions / measurement choices: `specification_tree/modules/exploration/variable_definitions.md`

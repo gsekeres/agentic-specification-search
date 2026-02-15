@@ -1,0 +1,6 @@
+paper_id,path,is_i4r,mentions_cluster_var,has_cov_type_cluster,has_cov_kwds_groups,has_get_robustcov_cluster,has_hc_fit,has_pyfixest,has_pyfixest_cluster,suspected_cluster_ignored_in_sm_branch
+112431-V1,/Users/njwfish/Dropbox/agentic-specification-search/scripts/paper_analyses/112431-V1.py,0,1,0,0,0,1,1,1,1
+111185-V1,/Users/njwfish/Dropbox/agentic-specification-search/scripts/paper_analyses/111185-V1.py,0,1,1,1,0,1,0,0,0
+112749-V1,/Users/njwfish/Dropbox/agentic-specification-search/scripts/paper_analyses/112749-V1.py,0,1,0,0,0,0,1,1,0
+113517-V1,/Users/njwfish/Dropbox/agentic-specification-search/scripts/paper_analyses/113517-V1.py,0,1,0,0,0,0,1,0,0
+113561-V1,/Users/njwfish/Dropbox/agentic-specification-search/scripts/paper_analyses/113561-V1.py,0,1,0,0,0,1,0,0,0

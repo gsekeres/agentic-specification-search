@@ -2,14 +2,14 @@
 
 This file contains descriptions and justifications for the specification searches run on each paper.
 
-> Note: This document is a **legacy narrative artifact** from earlier, non-surface-driven runs. The current workflow records per-paper choices in:
+> Note: This document is not the primary record for the surface-driven workflow. The authoritative per-paper artifacts are:
 >
 > - `{EXTRACTED_PACKAGE_PATH}/SPECIFICATION_SURFACE.md` (pre-run universe + constraints + budgets)
 > - `{EXTRACTED_PACKAGE_PATH}/SPEC_SURFACE_REVIEW.md` (pre-run verifier critique/edits)
 > - `{EXTRACTED_PACKAGE_PATH}/SPECIFICATION_SEARCH.md` (execution log)
 > - `data/verification/{PAPER_ID}/VERIFICATION_REPORT.md` (post-run audit + core/non-core classification)
 >
-> We keep this file for context, but it may be removed once the repo is fully re-run under the surface-driven protocol.
+> This file is kept only for additional narrative context.
 
 ---
 

@@ -25,10 +25,10 @@ warnings.filterwarnings('ignore')
 # ============================================================================
 # PATHS
 # ============================================================================
-BASE = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search"
-PKG_DIR = os.path.join(BASE, "data/downloads/extracted/112749-V1")
-REPL_PKG = os.path.join(PKG_DIR, "Replication_AER-2012-0980")
 PAPER_ID = "112749-V1"
+BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PKG_DIR = os.path.join(BASE, "data", "downloads", "extracted", PAPER_ID)
+REPL_PKG = os.path.join(PKG_DIR, "Replication_AER-2012-0980")
 
 # ============================================================================
 # DATA GENERATION - import from replication script

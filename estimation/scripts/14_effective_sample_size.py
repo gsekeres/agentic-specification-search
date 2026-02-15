@@ -28,7 +28,7 @@ import numpy as np
 BASE_DIR = Path(__file__).parent.parent.parent
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
 FIG_DIR = BASE_DIR / "estimation" / "figures"
-OL_FIG_DIR = Path(__file__).parent.parent.parent.parent / "overleaf" / "tex" / "v8_figures"
+OL_FIG_DIR = BASE_DIR / "overleaf" / "tex" / "v8_figures"
 
 DEPENDENCE_FILE = RESULTS_DIR / "dependence.json"
 OUTPUT_NAME = "fig_effective_sample_size.pdf"

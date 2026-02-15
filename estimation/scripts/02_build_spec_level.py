@@ -33,9 +33,9 @@ def _load_verification_maps() -> pd.DataFrame:
     """
     Load per-paper verification maps if present.
 
-    Newer verification maps include `spec_run_id`, which is unique within a paper
-    and is the preferred merge key. Legacy maps omit `spec_run_id` and require
-    merging on (paper_id, spec_id, outcome_var, treatment_var).
+    Expected schema is keyed on `spec_run_id` (unique within paper). These maps
+    provide the baseline-group assignment, core eligibility, and validity flags
+    used to construct verified datasets for estimation.
     """
     if not VERIFICATION_DIR.exists():
         return pd.DataFrame()
@@ -54,68 +54,36 @@ def _load_verification_maps() -> pd.DataFrame:
         if "paper_id" not in d.columns:
             d["paper_id"] = p.parent.name
 
-        if "spec_run_id" in d.columns:
-            keep = [
-                "paper_id",
-                "spec_run_id",
-                "baseline_group_id",
-                "closest_baseline_spec_run_id",
-                "is_baseline",
-                "is_core_test",
-                "category",
-                "why",
-                "confidence",
-            ]
-            missing = [c for c in keep if c not in d.columns]
-            if missing:
-                print(f"  Warning: skipping {p} (missing columns: {missing})")
-                continue
-            d = d[keep].copy()
-            d = d.rename(
-                columns={
-                    "baseline_group_id": "v_baseline_group_id",
-                    "closest_baseline_spec_run_id": "v_closest_baseline_spec_run_id",
-                    "is_baseline": "v_is_baseline",
-                    "is_core_test": "v_is_core_test",
-                    "category": "v_category",
-                    "why": "v_why",
-                    "confidence": "v_confidence",
-                }
-            )
-            d["spec_run_id"] = d["spec_run_id"].astype(str)
-            dfs.append(d)
-            continue
-
-        # Legacy schema (no spec_run_id)
-        keep = [
+        required = [
             "paper_id",
-            "spec_id",
-            "outcome_var",
-            "treatment_var",
             "baseline_group_id",
-            "closest_baseline_spec_id",
+            "spec_run_id",
+            "closest_baseline_spec_run_id",
             "is_baseline",
+            "is_valid",
             "is_core_test",
             "category",
             "why",
             "confidence",
         ]
-        missing = [c for c in keep if c not in d.columns]
+        missing = [c for c in required if c not in d.columns]
         if missing:
             print(f"  Warning: skipping {p} (missing columns: {missing})")
             continue
-        d = d[keep].copy()
+        d = d[required].copy()
         d = d.rename(
             columns={
                 "baseline_group_id": "v_baseline_group_id",
-                "closest_baseline_spec_id": "v_closest_baseline_spec_id",
+                "closest_baseline_spec_run_id": "v_closest_baseline_spec_run_id",
                 "is_baseline": "v_is_baseline",
+                "is_valid": "v_is_valid",
                 "is_core_test": "v_is_core_test",
                 "category": "v_category",
                 "why": "v_why",
                 "confidence": "v_confidence",
             }
         )
+        d["spec_run_id"] = d["spec_run_id"].astype(str)
         dfs.append(d)
 
     if not dfs:
@@ -237,6 +205,10 @@ def compute_tree_distance(path1, path2):
 
 def load_paper_metadata():
     """Load paper metadata from status file."""
+    if not STATUS_FILE.exists():
+        print(f"  Warning: missing status file {STATUS_FILE}; proceeding without paper metadata.")
+        return {}
+
     with open(STATUS_FILE, 'r') as f:
         status = json.load(f)
 
@@ -263,6 +235,24 @@ def main():
     df = pd.read_csv(UNIFIED_RESULTS)
     print(f"Loaded {len(df)} specifications")
 
+    # Exclude inference-only recomputations (`infer/*`). The spec-level dataset is
+    # meant to represent estimating-equation variants (baseline/design/rc) under
+    # the paper's canonical inference choice.
+    if "spec_id" in df.columns:
+        infer_mask = df["spec_id"].astype(str).str.startswith("infer/")
+        n_infer = int(infer_mask.sum())
+        if n_infer > 0:
+            print(f"  Dropping {n_infer} inference-only rows (`infer/*`) from spec-level dataset.")
+            df = df.loc[~infer_mask].copy()
+
+    # Keep only successful estimate rows when run_success is available.
+    if "run_success" in df.columns:
+        run_success = pd.to_numeric(df["run_success"], errors="coerce").fillna(0).astype(int)
+        n_failed = int((run_success == 0).sum())
+        if n_failed > 0:
+            print(f"  Dropping {n_failed} failed rows (run_success=0)")
+        df = df.loc[run_success == 1].copy()
+
     # Load paper metadata
     print("\nLoading paper metadata...")
     metadata = load_paper_metadata()
@@ -271,16 +261,25 @@ def main():
     print("\nComputing evidence index Z...")
     df['t_stat'] = df['coefficient'] / df['std_error']
 
-    # Filter out invalid t-statistics (inf, nan, extremely large values)
+    # Filter out invalid t-statistics (inf, nan). Do NOT clip/drop large values here:
+    # extremely large |t| can arise legitimately in very large samples (or when
+    # clustering is omitted), and any winsorization/robustification should be done
+    # explicitly in the downstream estimation scripts (e.g., mixture fitting).
     valid_mask = (
         df['t_stat'].notna() &
-        np.isfinite(df['t_stat']) &
-        (df['t_stat'].abs() < 20)  # Remove extreme outliers (|t| > 20 is unrealistic)
+        np.isfinite(df['t_stat'])
     )
     n_invalid = (~valid_mask).sum()
     if n_invalid > 0:
         print(f"  Filtering out {n_invalid} invalid t-statistics")
     df = df[valid_mask].copy()
+
+    # QC flags for extreme values (kept, but useful for debugging inference choices)
+    df["t_stat_abs"] = df["t_stat"].abs()
+    df["qc_t_abs_gt_20"] = (df["t_stat_abs"] > 20).astype(int)
+    n_extreme = int(df["qc_t_abs_gt_20"].sum())
+    if n_extreme > 0:
+        print(f"  Note: {n_extreme} specs have |t|>20 (kept; winsorize only in estimation).")
 
     # Orient sign so that larger Z corresponds to stronger support for the paper's
     # main claim. We approximate the direction of the claim by the within-paper
@@ -323,67 +322,27 @@ def main():
 
         df["v_has_map"] = False
 
-        # Preferred merge key: (paper_id, spec_run_id)
-        did_primary_merge = False
-        if "spec_run_id" in df.columns and "spec_run_id" in vmap.columns and vmap["spec_run_id"].notna().any():
-            df["spec_run_id"] = df["spec_run_id"].astype(str)
-            merge_keys = ["paper_id", "spec_run_id"]
-            for k in merge_keys:
-                if k not in df.columns:
-                    raise ValueError(f"unified_results missing merge key: {k}")
+        # Merge key: (paper_id, spec_run_id)
+        if "spec_run_id" not in df.columns:
+            raise ValueError("unified_results missing required column: spec_run_id")
 
-            vmap_run = vmap[vmap["spec_run_id"].notna()].copy()
-            vmap_run["spec_run_id"] = vmap_run["spec_run_id"].astype(str)
-            n_before_dedup = len(vmap_run)
-            vmap_run = vmap_run.drop_duplicates(subset=merge_keys, keep="first")
-            n_after_dedup = len(vmap_run)
-            if n_before_dedup != n_after_dedup:
-                print(f"  Deduplicated run-key verification map: {n_before_dedup} → {n_after_dedup} rows")
+        merge_keys = ["paper_id", "spec_run_id"]
+        df["spec_run_id"] = df["spec_run_id"].astype(str)
+        vmap_run = vmap.copy()
+        vmap_run["spec_run_id"] = vmap_run["spec_run_id"].astype(str)
+        n_before_dedup = len(vmap_run)
+        vmap_run = vmap_run.drop_duplicates(subset=merge_keys, keep="first")
+        n_after_dedup = len(vmap_run)
+        if n_before_dedup != n_after_dedup:
+            print(f"  Deduplicated verification map: {n_before_dedup} → {n_after_dedup} rows")
 
-            before = len(df)
-            df = df.merge(vmap_run, how="left", on=merge_keys, validate="m:1", indicator=True)
-            after = len(df)
-            if after != before:
-                raise RuntimeError("Run-key verification merge changed row count; merge keys are not unique in verification map.")
-            df["v_has_map"] = df["_merge"].eq("both")
-            df = df.drop(columns=["_merge"])
-            did_primary_merge = True
-
-        # Fallback merge for legacy maps: (paper_id, spec_id, outcome_var, treatment_var)
-        legacy_keys = ["paper_id", "spec_id", "outcome_var", "treatment_var"]
-        can_legacy_merge = all(k in df.columns for k in legacy_keys) and all(k in vmap.columns for k in legacy_keys)
-        if can_legacy_merge:
-            # If we already merged on spec_run_id, only try legacy merge for the still-unmapped rows.
-            if did_primary_merge:
-                unmapped = df.loc[~df["v_has_map"], legacy_keys].copy()
-            else:
-                unmapped = df.loc[:, legacy_keys].copy()
-            unmapped = unmapped.reset_index().rename(columns={"index": "__rowid"})
-
-            if "spec_run_id" in vmap.columns:
-                vmap_legacy = vmap[vmap["spec_run_id"].isna()].copy()
-            else:
-                vmap_legacy = vmap.copy()
-
-            n_before_dedup = len(vmap_legacy)
-            vmap_legacy = vmap_legacy.drop_duplicates(subset=legacy_keys, keep="first")
-            n_after_dedup = len(vmap_legacy)
-            if n_before_dedup != n_after_dedup:
-                print(f"  Deduplicated legacy-key verification map: {n_before_dedup} → {n_after_dedup} rows")
-
-            # Merge only keys+rowid to avoid creating duplicate v_* columns.
-            legacy_join = unmapped.merge(vmap_legacy, how="left", on=legacy_keys, validate="m:1", indicator=True)
-            matched = legacy_join[legacy_join["_merge"].eq("both")].copy()
-            if len(matched) > 0:
-                vcols = [c for c in vmap_legacy.columns if c.startswith("v_")]
-                for c in vcols:
-                    df.loc[matched["__rowid"], c] = matched[c].values
-                df.loc[matched["__rowid"], "v_has_map"] = True
-
-                if did_primary_merge:
-                    print(f"  Legacy-key merge filled {len(matched)} additional rows")
-                else:
-                    print(f"  Legacy-key merge matched {len(matched)} rows")
+        before = len(df)
+        df = df.merge(vmap_run, how="left", on=merge_keys, validate="m:1", indicator=True)
+        after = len(df)
+        if after != before:
+            raise RuntimeError("Verification merge changed row count; merge keys are not unique in verification map.")
+        df["v_has_map"] = df["_merge"].eq("both")
+        df = df.drop(columns=["_merge"])
 
         if not df["v_has_map"].any():
             print("  Warning: verification maps loaded but no rows matched (check merge keys / schema).")
@@ -400,8 +359,9 @@ def main():
 
         # Orientation at (paper, baseline group) level: use expected_sign if given,
         # otherwise fall back to median sign within the baseline group.
+        v_ok = pd.to_numeric(df.get("v_is_valid"), errors="coerce").fillna(0).astype(int)
         group_med = (
-            df[df["v_baseline_group_id"].notna()]
+            df[(df["v_has_map"]) & (v_ok == 1) & (df["v_baseline_group_id"].notna())]
             .groupby(["paper_id", "v_baseline_group_id"])["t_stat"]
             .median()
         )
@@ -437,8 +397,15 @@ def main():
     df['method'] = df['paper_id'].map(lambda x: metadata.get(x, {}).get('method', ''))
     df['i4r'] = df['paper_id'].map(lambda x: metadata.get(x, {}).get('i4r', False))
 
+    # Ensure journal column exists (some unified_results builds omit it).
+    if 'journal' not in df.columns:
+        df['journal'] = ''
+    df['journal'] = df['journal'].fillna('').astype(str)
+
     # Fill missing journals from bib file (authoritative source) and normalize
-    bib_file = BASE_DIR.parent / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
+    bib_file_local = BASE_DIR / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
+    bib_file_external = BASE_DIR.parent / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
+    bib_file = bib_file_local if bib_file_local.exists() else bib_file_external
     bib_journal_map = _build_bib_journal_map(bib_file)
     journal_from_bib = df['paper_id'].map(bib_journal_map)
     # Use bib journal when available, fall back to existing
@@ -475,12 +442,14 @@ def main():
         'paper_id', 'journal', 'title', 'year', 'method', 'i4r',
         'spec_run_id', 'baseline_group_id',
         'spec_id', 'spec_tree_path', 'tree_depth', 'branch_0', 'branch_1', 'branch_2',
-        'spec_order', 'orientation_sign', 'Z', 'Z_raw', 'Z_abs', 'Z_logp', 't_stat', 'coefficient', 'std_error', 'p_value', 'p_value_eff',
+        'spec_order', 'orientation_sign', 'Z', 'Z_raw', 'Z_abs', 'Z_logp', 't_stat', 't_stat_abs', 'qc_t_abs_gt_20', 'coefficient', 'std_error', 'p_value', 'p_value_eff',
+        'run_success', 'run_error',
+        'spec_fingerprint', 'dup_group_size', 'dup_rank', 'dup_canonical_spec_run_id', 'dup_is_duplicate',
         'n_obs', 'r_squared', 'outcome_var', 'treatment_var',
         'fixed_effects', 'controls_desc', 'cluster_var',
         # Verification-derived fields (present only for verified papers)
         'v_has_map', 'v_baseline_group_id', 'v_closest_baseline_spec_run_id', 'v_closest_baseline_spec_id',
-        'v_is_baseline', 'v_is_core_test', 'v_category', 'v_why', 'v_confidence',
+        'v_is_baseline', 'v_is_valid', 'v_is_core_test', 'v_category', 'v_why', 'v_confidence',
         'v_expected_sign', 'orientation_sign_vgroup', 'Z_vgroup'
     ]
     df = df[[c for c in cols if c in df.columns]]
@@ -494,7 +463,9 @@ def main():
         print(f"\nSaving verification-augmented dataset to {OUTPUT_FILE_VERIFIED}")
         df.to_csv(OUTPUT_FILE_VERIFIED, index=False)
 
-        core_mask = (df["v_has_map"]) & (df["v_is_core_test"] == 1) & (df["v_category"] != "invalid")
+        v_core = pd.to_numeric(df.get("v_is_core_test"), errors="coerce").fillna(0).astype(int)
+        v_ok = pd.to_numeric(df.get("v_is_valid"), errors="coerce").fillna(0).astype(int)
+        core_mask = (df["v_has_map"]) & (v_core == 1) & (v_ok == 1)
         core_df = df[core_mask].copy()
         print(f"Saving verified-core subset ({len(core_df)} rows) to {OUTPUT_FILE_VERIFIED_CORE}")
         core_df.to_csv(OUTPUT_FILE_VERIFIED_CORE, index=False)

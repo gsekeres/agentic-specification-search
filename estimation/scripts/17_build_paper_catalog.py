@@ -14,7 +14,7 @@ DATA = ROOT / "estimation" / "data"
 META = ROOT / "data" / "metadata"
 I4R  = ROOT / "i4r"
 RESULTS = ROOT / "estimation" / "results"
-OVERLEAF = Path(__file__).resolve().parents[3] / "overleaf" / "tex"
+OVERLEAF = ROOT / "overleaf" / "tex"
 
 # ── 1. Read paper_ids from unified_results.csv (primary) + verification ───
 import pandas as pd

@@ -33,7 +33,8 @@ See `specification_tree/CLAIM_GROUPING.md`.
 
 Empirical variation mixes multiple statistical object types. To keep this auditable, every row is typed by `spec_id` namespace:
 
-- `baseline`, `design/*`, `rc/*`, `infer/*` are estimate-like and core-eligible by default
+- `baseline`, `design/*`, `rc/*` are estimate-like and core-eligible by default
+- `infer/*` are inference-only recomputations recorded separately (not treated as additional estimate rows)
 - `diag/*` (diagnostics), `sens/*` (assumption relaxations), `post/*` (set-level transforms), and `explore/*` (concept changes) are non-core by default
 
 Design/identification families live in `specification_tree/designs/*.md` and enumerate within-design variants (`design/{design_code}/*`). Cross-design modules live in `specification_tree/modules/*`.
@@ -53,7 +54,8 @@ See `specification_tree/modules/estimation/dml.md`.
 Per paper, an agent produces `SPECIFICATION_SURFACE.json` that:
 
 - enumerates baseline groups and baseline specs,
-- selects the core-eligible universe (`baseline`, `design/*`, `rc/*`, `infer/*`),
+- selects the core-eligible universe (`baseline`, `design/*`, `rc/*`),
+- defines an inference plan (one canonical inference choice for estimate rows + optional `infer/*` variants recorded separately),
 - encodes constraints (e.g., control-count envelope, linkage rules for bundles),
 - defines budgets and reproducible sampling for intractable combinatorics.
 
@@ -110,6 +112,7 @@ At a high level:
 2) **Surface build (pre-run)** (`prompts/03_spec_surface_builder.md`) → `SPECIFICATION_SURFACE.json` + `SPECIFICATION_SURFACE.md`
 3) **Surface verification (pre-run)** (`prompts/04_spec_surface_verifier.md`) → edited surface + `SPEC_SURFACE_REVIEW.md`
 4) **Surface execution** (`prompts/05_spec_searcher.md`) → `specification_results.csv` + `SPECIFICATION_SEARCH.md` (+ optional diagnostics tables)
+   - optional `inference_results.csv` for `infer/*` recomputations
 5) **Post-run verification** (`prompts/06_post_run_verifier.md`) → `data/verification/{PAPER_ID}/...`
 
 ## Output schema (core)
@@ -123,8 +126,15 @@ Core required fields include:
 - `outcome_var`, `treatment_var`
 - `coefficient`, `std_error`, `p_value` (scalar focal estimate)
 - `coefficient_vector_json` (required JSON payload; may include full vectors/bundles)
+- `run_success` (0/1) and `run_error` (failure reason when `run_success=0`)
 
 See `specification_tree/CONTRACT.md` for the full contract.
+
+### `inference_results.csv` (inference-only rows; optional)
+
+If inference variants are computed, they are recorded separately and linked back to estimate rows via `spec_run_id`.
+
+See `specification_tree/CONTRACT.md` for the recommended schema.
 
 ### `verification_spec_map.csv` (post-run classification)
 

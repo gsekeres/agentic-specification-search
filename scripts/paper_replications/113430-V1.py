@@ -14,7 +14,9 @@ import pandas as pd
 import os
 
 # Configuration
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113430-V1"
+PAPER_ID = "113430-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 DATA_FILE = os.path.join(PACKAGE_DIR, "P2016_1005_data", "real_rates_data.xlsx")
 OUTPUT_FILE = os.path.join(PACKAGE_DIR, "replication.csv")
 

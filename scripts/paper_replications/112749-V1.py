@@ -19,8 +19,10 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Paths
-BASE = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search"
-PKG = os.path.join(BASE, "data/downloads/extracted/112749-V1/Replication_AER-2012-0980")
+PAPER_ID = "112749-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
+PKG = os.path.join(PACKAGE_DIR, "Replication_AER-2012-0980")
 GDIR = os.path.join(PKG, "Generate_Data")
 ADIR = os.path.join(PKG, "Analysis")
 
@@ -1572,7 +1574,7 @@ if __name__ == "__main__":
 
     # Save results
     results_df = pd.DataFrame(all_results)
-    out_path = os.path.join(PKG, "replication.csv")
+    out_path = os.path.join(PACKAGE_DIR, "replication.csv")
     results_df.to_csv(out_path, index=False)
     print(f"\nSaved {len(results_df)} results to {out_path}")
 

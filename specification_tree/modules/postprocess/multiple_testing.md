@@ -31,7 +31,7 @@ Common families:
 - placebo tests (multiple falsification checks),
 - RC (“robustness check”) specs within a baseline group (default for this project).
 
-**Project default recommendation**: apply MHT **within baseline groups** and only across *estimand-preserving estimate-like rows* (e.g., `baseline`, `design/*`, `rc/*`, optionally `infer/*`). Do **not** pool across:
+**Project default recommendation**: apply MHT **within baseline groups** and only across *estimand-preserving estimate rows* (`baseline`, `design/*`, `rc/*`). Do **not** pool across:
 
 - `explore/*` (concept/estimand changes),
 - `diag/*` (diagnostics/placebos),

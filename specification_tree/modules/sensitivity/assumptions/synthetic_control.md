@@ -42,9 +42,9 @@ These are often diagnostics, but they can be treated as sensitivity objects when
 | `sens/assumption/synthetic_control/placebo/in_time` | In-time placebo (fake treatment dates) |
 | `sens/assumption/synthetic_control/placebo/rmspe_ratio` | RMSPE ratio sensitivity for significance thresholds |
 
-## Related diagnostics / inference (to be typed elsewhere)
+## Related diagnostics / inference (references)
 
-These should ultimately live under `diag/synthetic_control/*` and `infer/*`:
+Record these under `diag/*` and `infer/*` (not under `sens/*`):
 
-- pre-treatment balance / fit metrics (RMSPE, predictor balance)
-- permutation inference from placebo distributions
+- pre-treatment fit metrics (RMSPE, predictor balance): `specification_tree/modules/diagnostics/design_diagnostics.md`
+- permutation inference from placebo distributions: `specification_tree/modules/inference/resampling.md`

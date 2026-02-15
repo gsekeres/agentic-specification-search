@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RESULTS = ROOT / "estimation" / "results"
-OVERLEAF = Path(__file__).resolve().parents[3] / "overleaf" / "tex" / "v8_tables"
+OVERLEAF = ROOT / "overleaf" / "tex" / "v8_tables"
 
 
 def main():

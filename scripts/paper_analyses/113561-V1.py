@@ -28,8 +28,9 @@ from scipy.stats import t as t_dist
 # =============================================================================
 # Configuration
 # =============================================================================
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/113561-V1"
 PAPER_ID = "113561-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 
 # =============================================================================
 # Load and prepare data (identical to replication script)

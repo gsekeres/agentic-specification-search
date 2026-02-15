@@ -23,8 +23,9 @@ using structural calibration/simulation methods, not regressions.
 import os
 import csv
 
-PACKAGE_DIR = "/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search/data/downloads/extracted/112870-V2"
 PAPER_ID = "112870-V2"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 
 def main():
     print(f"Replication for {PAPER_ID}: NOT POSSIBLE")

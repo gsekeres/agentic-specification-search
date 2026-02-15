@@ -154,6 +154,12 @@ def _pick_baseline_like(paper_id: str, unified: pd.DataFrame) -> dict | None:
     if len(sub) == 0:
         return None
 
+    if "run_success" in sub.columns:
+        rs = pd.to_numeric(sub["run_success"], errors="coerce").fillna(0).astype(int)
+        sub = sub.loc[rs == 1].copy()
+        if len(sub) == 0:
+            return None
+
     sub["n_obs_num"] = pd.to_numeric(sub.get("n_obs"), errors="coerce")
     sub["t_stat"] = sub["coefficient"] / sub["std_error"]
 
@@ -234,22 +240,46 @@ def main() -> None:
         rows.append({**base, **picked})
 
     out = pd.DataFrame(rows)
+    # Ensure a stable schema even when no papers match the current unified_results subset.
+    defaults = {
+        "map_source": "",
+        "map_score": np.nan,
+        "map_baseline_group_id": "",
+        "map_expected_sign": "",
+        "map_spec_id": "",
+        "map_outcome_var": "",
+        "map_treatment_var": "",
+        "map_status": "",
+        "t_stat": np.nan,
+    }
+    for c, v in defaults.items():
+        if c not in out.columns:
+            out[c] = v
+
     # Compute mismatch diagnostic: compare |t| to i4r benchmark
-    if "t_stat" in out.columns:
-        out["abs_t_stat"] = out["t_stat"].abs()
-        out["abs_diff_abs_t_to_i4r"] = (out["abs_t_stat"] - out["t_i4r"]).abs()
+    out["t_stat"] = pd.to_numeric(out.get("t_stat"), errors="coerce")
+    out["t_i4r"] = pd.to_numeric(out.get("t_i4r"), errors="coerce")
+    out["abs_t_stat"] = out["t_stat"].abs()
+    out["abs_diff_abs_t_to_i4r"] = (out["abs_t_stat"] - out["t_i4r"]).abs()
 
     # Needs review heuristic
     out["needs_review"] = 0
-    out.loc[out["map_status"].ne("ok"), "needs_review"] = 1
-    out.loc[out["map_source"].eq("verification_baselines") & out["map_score"].fillna(0).lt(0.05), "needs_review"] = 1
-    out.loc[out.get("abs_diff_abs_t_to_i4r", pd.Series(dtype=float)).fillna(0).gt(3.0), "needs_review"] = 1
+    out.loc[out["map_status"].astype(str).ne("ok"), "needs_review"] = 1
+    out["map_score"] = pd.to_numeric(out.get("map_score"), errors="coerce")
+    out.loc[
+        out["map_source"].astype(str).eq("verification_baselines") & out["map_score"].fillna(0).lt(0.05),
+        "needs_review",
+    ] = 1
+    out.loc[pd.to_numeric(out["abs_diff_abs_t_to_i4r"], errors="coerce").fillna(0).gt(3.0), "needs_review"] = 1
 
-    out = out.sort_values(["needs_review", "abs_diff_abs_t_to_i4r"], ascending=[False, False])
+    out = out.sort_values(["needs_review", "abs_diff_abs_t_to_i4r"], ascending=[False, False], na_position="last")
     out.to_csv(out_path, index=False)
     print(f"Wrote {out_path}")
     print(f"Needs review: {int(out['needs_review'].sum())} / {len(out)}")
-    print(out.head(15)[["paper_id", "map_source", "map_spec_id", "map_outcome_var", "map_treatment_var", "t_i4r", "t_stat", "needs_review"]].to_string(index=False))
+    preview_cols = ["paper_id", "map_source", "map_spec_id", "map_outcome_var", "map_treatment_var", "t_i4r", "t_stat", "needs_review"]
+    preview_cols = [c for c in preview_cols if c in out.columns]
+    if preview_cols:
+        print(out.head(15)[preview_cols].to_string(index=False))
 
 
 if __name__ == "__main__":

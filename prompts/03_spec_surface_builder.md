@@ -78,15 +78,21 @@ The default core universe contains only:
 - `baseline`
 - `design/*` (within-design implementations)
 - `rc/*` (robustness checks)
-- `infer/*` (inference-only variations)
 
 For each baseline group, specify:
 
 1) the baseline group’s `design_code` (file stem from `specification_tree/designs/*.md`)
 2) which `rc/*` axes are feasible and high-value for this package
-3) which `infer/*` variants are feasible and high-value
+3) the baseline group’s **canonical inference choice** (the SE/uncertainty method used for all baseline/design/rc rows)
 
 Do not include `explore/*`, `sens/*`, `post/*`, or `diag/*` in the core universe.
+
+### Inference plan (separate from core universe)
+
+Inference variants (`infer/*`) are not treated as additional estimating-equation variants. The surface should:
+
+- pick one **canonical** inference choice per baseline group (used for all estimate rows), and
+- optionally list additional `infer/*` variants to compute as separate outputs (written to `inference_results.csv`).
 
 ---
 
@@ -97,6 +103,7 @@ For each baseline group, define constraints that prevent incoherent expansion:
 - `controls_count_min/max` (control-count envelope from main specs)
 - `linked_adjustment` (for bundled estimators)
 - any feasibility caps (e.g., max FE dimensions, max polynomial degree)
+- functional-form policy when relevant (whether outcome/treatment transforms are treated as preserving the claim object, and the intended coefficient interpretation)
 
 If the paper reveals multiple control sets or components that are intended to move together, enforce those linkage constraints explicitly.
 
@@ -165,9 +172,17 @@ Use this shape (extend as needed):
         "rc_spec_ids": [
           "rc/controls/loo/*",
           "rc/sample/outliers/trim_y_1_99"
-        ],
-        "infer_spec_ids": [
-          "infer/se/cluster/unit"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/unit",
+          "params": {"cluster_var": "firm_id"},
+          "notes": "Matches the paper's baseline inference."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust-only (no clustering)."},
+          {"spec_id": "infer/se/cluster/state", "params": {"cluster_var": "state"}, "notes": "Coarser clustering as a stress test."}
         ]
       },
       "budgets": {
