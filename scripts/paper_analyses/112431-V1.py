@@ -5,14 +5,14 @@ American Economic Review, 101(4), 1274-1311.
 
 Paper ID: 112431-V1
 
-Executes the approved SPECIFICATION_SURFACE.json:
-  - G1: pcorrupt ~ first  (Table 4 Col 6 baseline)
-  - G2: ncorrupt ~ first  (Table 5A Col 2 baseline)
-  - G3: ncorrupt_os ~ first (Table 5B Col 2 baseline)
+Surface-driven execution:
+  - G1: pcorrupt ~ first (Table 4 Col 6 baseline)
+  - Cross-sectional OLS with state FE, HC1 robust SE
+  - Target: 50+ specifications
 
 Outputs:
-  - specification_results.csv
-  - diagnostics_results.csv
+  - specification_results.csv (baseline, design/*, rc/* rows)
+  - inference_results.csv (infer/* rows)
   - SPECIFICATION_SEARCH.md
 """
 
@@ -20,15 +20,10 @@ import pandas as pd
 import numpy as np
 import pyfixest as pf
 import statsmodels.api as sm
-import statsmodels.formula.api as smf
 import json
 import os
-import itertools
 import warnings
 warnings.filterwarnings('ignore')
-
-from scipy.optimize import minimize, approx_fprime
-from scipy.stats import norm, t as t_dist
 
 # =============================================================================
 # Configuration
@@ -43,52 +38,38 @@ SEED = 112431
 # =============================================================================
 df = pd.read_stata(os.path.join(PACKAGE_DIR, "corruptiondata_aer.dta"))
 dfs = df[df['esample2'] == 1].copy()
-
 print(f"Loaded data: {len(df)} total rows, {len(dfs)} in estimation sample (esample2==1)")
 
 # =============================================================================
-# Variable group definitions (matching Stata globals / surface control blocks)
+# Variable group definitions (matching surface control blocks)
 # =============================================================================
-prefchar2_continuous = ["pref_masc", "pref_idade_tse", "pref_escola"]
-prefchar2_party = ["party_d1", "party_d3", "party_d4", "party_d5", "party_d6",
-                   "party_d7", "party_d8", "party_d9", "party_d10", "party_d11",
-                   "party_d12", "party_d13", "party_d14", "party_d15", "party_d16",
-                   "party_d17", "party_d18"]
-munichar2 = ["lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea"]
+mayor_demographics = ["pref_masc", "pref_idade_tse", "pref_escola"]
+party_dummies = ["party_d1", "party_d3", "party_d4", "party_d5", "party_d6",
+                 "party_d7", "party_d8", "party_d9", "party_d10", "party_d11",
+                 "party_d12", "party_d13", "party_d14", "party_d15", "party_d16",
+                 "party_d17", "party_d18"]
+municipality_chars = ["lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea"]
 fiscal = ["lrec_trans"]
 political = ["p_cad_pref", "vereador_eleit", "ENLP2000", "comarca"]
-sorteio = [f"sorteio{i}" for i in range(1, 11)]
-audit_scale = ["lfunc_ativ", "lrec_fisc"]
+audit_controls = [f"sorteio{i}" for i in range(1, 11)]
+additional_fiscal = ["lfunc_ativ", "lrec_fisc"]
 
-# Block definitions for combinatorial enumeration
+# Baseline control set (Table 4 Col 6)
+BASELINE_CONTROLS = (mayor_demographics + party_dummies + municipality_chars +
+                     fiscal + political + audit_controls)
+
+# Block definitions for LOO and enumeration
 CONTROL_BLOCKS = {
-    "prefchar2_continuous": prefchar2_continuous,
-    "prefchar2_party": prefchar2_party,
-    "munichar2": munichar2,
+    "mayor_demographics": mayor_demographics,
+    "party_dummies": party_dummies,
+    "municipality_chars": municipality_chars,
     "fiscal": fiscal,
     "political": political,
-    "sorteio": sorteio,
+    "audit_controls": audit_controls,
 }
+BLOCK_NAMES = list(CONTROL_BLOCKS.keys())
 
-BLOCK_NAMES = list(CONTROL_BLOCKS.keys())  # order matters for enumeration
-
-uf_dummies = [c for c in df.columns if c.startswith("uf_d")]
-
-# G1 baseline controls (all 6 blocks, no audit_scale)
-G1_BASELINE_CONTROLS = (prefchar2_continuous + prefchar2_party + munichar2 +
-                        fiscal + political + sorteio)
-
-# G2 baseline controls (mandatory: lrec_fisc + all 6 blocks)
-G2_BASELINE_CONTROLS = (["lrec_fisc"] + prefchar2_continuous + prefchar2_party +
-                        munichar2 + fiscal + political + sorteio)
-
-# G3 baseline controls (mandatory: lrec_fisc + lfunc_ativ + all 6 blocks)
-G3_BASELINE_CONTROLS = (["lrec_fisc", "lfunc_ativ"] + prefchar2_continuous +
-                        prefchar2_party + munichar2 + fiscal + political + sorteio)
-
-# =============================================================================
-# Prepare running variable for RDD specs
-# =============================================================================
+# Prepare running variable for RDD-style specs (Table 6)
 dfs['wm'] = np.nan
 dfs.loc[dfs['reeleito'] == 1, 'wm'] = dfs.loc[dfs['reeleito'] == 1, 'winmargin2000']
 dfs.loc[dfs['incumbent'] == 1, 'wm'] = dfs.loc[dfs['incumbent'] == 1, 'winmargin2000_inclost']
@@ -97,66 +78,64 @@ dfs.loc[dfs['incumbent'] == 1, 'running'] = -dfs.loc[dfs['incumbent'] == 1, 'wm'
 dfs['running2'] = dfs['running'] ** 2
 dfs['running3'] = dfs['running'] ** 3
 
-# Experience variables for add-experience specs
-dfs['nexp'] = (dfs['exp_prefeito'].fillna(0) + dfs['vereador9600'].fillna(0)) * 4
-dfs['nexp2'] = dfs['nexp'] ** 2
+# Create region variable for FE variant
+state_to_region = {
+    'AC': 'N', 'AM': 'N', 'AP': 'N', 'PA': 'N', 'RO': 'N', 'RR': 'N', 'TO': 'N',
+    'AL': 'NE', 'BA': 'NE', 'CE': 'NE', 'MA': 'NE', 'PB': 'NE', 'PE': 'NE',
+    'PI': 'NE', 'RN': 'NE', 'SE': 'NE',
+    'ES': 'SE', 'MG': 'SE', 'RJ': 'SE', 'SP': 'SE',
+    'PR': 'S', 'RS': 'S', 'SC': 'S',
+    'DF': 'CO', 'GO': 'CO', 'MS': 'CO', 'MT': 'CO'
+}
+dfs['region'] = dfs['uf'].map(state_to_region)
+
+# asinh transform
+dfs['asinh_pcorrupt'] = np.arcsinh(dfs['pcorrupt'])
+dfs['log1p_pcorrupt'] = np.log1p(dfs['pcorrupt'])
 
 # =============================================================================
 # Helper functions
 # =============================================================================
-results = []
+spec_results = []
+infer_results = []
 run_counter = 0
+infer_counter = 0
 
 
 def fml(y, rhs, absorb=None):
     """Build pyfixest formula."""
-    rhs_str = " + ".join(rhs)
+    if not rhs:
+        rhs_str = "1"
+    else:
+        rhs_str = " + ".join(rhs)
     if absorb:
         return f"{y} ~ {rhs_str} | {absorb}"
     else:
         return f"{y} ~ {rhs_str}"
 
 
-def run_ols(outcome, treatment, controls, data, fe=None, vcov_type="hetero",
-            cluster_var=None, spec_id=None, spec_tree_path=None,
-            baseline_group_id=None, controls_desc="", sample_desc="esample2==1",
-            fe_desc="", extra_json=None):
-    """Run OLS regression and return result dict."""
+def run_spec(outcome, treatment, controls, data, fe=None, vcov="hetero",
+             spec_id=None, spec_tree_path=None, baseline_group_id="G1",
+             controls_desc="", sample_desc="esample2==1", fe_desc="",
+             extra_json=None):
+    """Run OLS spec and append to spec_results. Returns the row dict."""
     global run_counter
     run_counter += 1
     spec_run_id = f"{PAPER_ID}_run{run_counter:04d}"
 
     rhs = [treatment] + controls
-    if cluster_var:
-        vcov = {"CRV1": cluster_var}
-    else:
-        vcov = vcov_type
 
     try:
         formula = fml(outcome, rhs, absorb=fe)
         m = pf.feols(formula, data=data, vcov=vcov)
 
         coef = float(m.coef()[treatment])
-        se = float(m.se()[treatment])
+        se_val = float(m.se()[treatment])
         pval = float(m.pvalue()[treatment])
         nobs = int(m._N)
         r2 = float(m._r2)
-
-        # Fallback to statsmodels if pyfixest returns NaN SE (happens with HC2 + many dummies)
-        if np.isnan(se) or np.isnan(pval):
-            all_vars = [outcome] + rhs
-            clean = data[all_vars].dropna()
-            y = clean[outcome]
-            X = sm.add_constant(clean[rhs])
-            m_sm = sm.OLS(y, X).fit(cov_type=vcov_type if isinstance(vcov_type, str) and vcov_type != "hetero" else "HC2")
-            coef = float(m_sm.params[treatment])
-            se = float(m_sm.bse[treatment])
-            pval = float(m_sm.pvalues[treatment])
-            nobs = int(m_sm.nobs)
-            r2 = float(m_sm.rsquared)
-
-        ci_lower = coef - 1.96 * se
-        ci_upper = coef + 1.96 * se
+        ci_lower = coef - 1.96 * se_val
+        ci_upper = coef + 1.96 * se_val
 
         coef_dict = {k: float(v) for k, v in m.coef().items()}
         if extra_json:
@@ -171,7 +150,7 @@ def run_ols(outcome, treatment, controls, data, fe=None, vcov_type="hetero",
             "outcome_var": outcome,
             "treatment_var": treatment,
             "coefficient": round(coef, 8),
-            "std_error": round(se, 8),
+            "std_error": round(se_val, 8),
             "p_value": round(pval, 8),
             "ci_lower": round(ci_lower, 8),
             "ci_upper": round(ci_upper, 8),
@@ -181,209 +160,11 @@ def run_ols(outcome, treatment, controls, data, fe=None, vcov_type="hetero",
             "sample_desc": sample_desc,
             "fixed_effects": fe_desc if fe_desc else (fe if fe else ""),
             "controls_desc": controls_desc,
-            "cluster_var": cluster_var if cluster_var else "",
-        }
-        results.append(row)
-        print(f"  {spec_run_id}: {spec_id} | coef={coef:.6f} se={se:.6f} p={pval:.4f} N={nobs}")
-        return row
-
-    except Exception as e:
-        row = {
-            "paper_id": PAPER_ID,
-            "spec_run_id": spec_run_id,
-            "spec_id": spec_id,
-            "spec_tree_path": spec_tree_path,
-            "baseline_group_id": baseline_group_id,
-            "outcome_var": outcome,
-            "treatment_var": treatment,
-            "coefficient": "",
-            "std_error": "",
-            "p_value": "",
-            "ci_lower": "",
-            "ci_upper": "",
-            "n_obs": "",
-            "r_squared": "",
-            "coefficient_vector_json": json.dumps({"error": str(e)}),
-            "sample_desc": sample_desc,
-            "fixed_effects": fe_desc if fe_desc else (fe if fe else ""),
-            "controls_desc": controls_desc,
-            "cluster_var": cluster_var if cluster_var else "",
-        }
-        results.append(row)
-        print(f"  {spec_run_id}: {spec_id} | FAILED: {e}")
-        return row
-
-
-def run_tobit(outcome, treatment, controls, data, fe_dummies=None, lower=0,
-              spec_id=None, spec_tree_path=None, baseline_group_id=None,
-              controls_desc="", sample_desc="esample2==1", fe_desc=""):
-    """Run tobit regression via manual MLE and return result dict."""
-    global run_counter
-    run_counter += 1
-    spec_run_id = f"{PAPER_ID}_run{run_counter:04d}"
-
-    try:
-        rhs_vars = [treatment] + controls
-        if fe_dummies:
-            rhs_vars = rhs_vars + fe_dummies
-        all_vars = [outcome] + rhs_vars
-        data_clean = data[all_vars].dropna()
-        y = data_clean[outcome].values.astype(float)
-        X = sm.add_constant(data_clean[rhs_vars])
-        col_names = list(X.columns)
-        X_arr = X.values.astype(float)
-        n, k = X_arr.shape
-
-        # OLS starting values
-        ols_res = np.linalg.lstsq(X_arr, y, rcond=None)
-        beta_init = ols_res[0]
-        resid = y - X_arr @ beta_init
-        sigma_init = max(np.std(resid), 0.01)
-        init = np.concatenate([beta_init, [np.log(sigma_init)]])
-
-        def negll(params):
-            beta = params[:-1]
-            log_sigma = params[-1]
-            sigma = np.exp(log_sigma)
-            xb = X_arr @ beta
-            censored = (y <= lower)
-            ll = 0.0
-            if censored.any():
-                ll += np.sum(norm.logcdf((lower - xb[censored]) / sigma))
-            if (~censored).any():
-                ll += np.sum(-0.5 * np.log(2 * np.pi) - log_sigma
-                             - 0.5 * ((y[~censored] - xb[~censored]) / sigma) ** 2)
-            return -ll
-
-        res = minimize(negll, init, method='BFGS', options={'maxiter': 10000, 'gtol': 1e-8})
-
-        # Numerical Hessian for SEs
-        eps = 1e-5
-        k_total = len(res.x)
-        H = np.zeros((k_total, k_total))
-        for i in range(k_total):
-            def grad_i(p, idx=i):
-                return approx_fprime(p, negll, eps)[idx]
-            H[i] = approx_fprime(res.x, grad_i, eps)
-        try:
-            se_all = np.sqrt(np.diag(np.linalg.inv(H)))
-        except:
-            se_all = np.full(k_total, np.nan)
-
-        beta = res.x[:-1]
-        se = se_all[:-1]
-
-        treat_idx = col_names.index(treatment)
-        coef = float(beta[treat_idx])
-        se_val = float(se[treat_idx])
-        pval = float(2 * (1 - norm.cdf(abs(coef / se_val)))) if se_val > 0 else np.nan
-        ci_lower = coef - 1.96 * se_val
-        ci_upper = coef + 1.96 * se_val
-
-        coef_dict = {col_names[i]: float(beta[i]) for i in range(len(col_names))}
-
-        row = {
-            "paper_id": PAPER_ID,
-            "spec_run_id": spec_run_id,
-            "spec_id": spec_id,
-            "spec_tree_path": spec_tree_path,
-            "baseline_group_id": baseline_group_id,
-            "outcome_var": outcome,
-            "treatment_var": treatment,
-            "coefficient": round(coef, 8),
-            "std_error": round(se_val, 8),
-            "p_value": round(pval, 8) if not np.isnan(pval) else "",
-            "ci_lower": round(ci_lower, 8),
-            "ci_upper": round(ci_upper, 8),
-            "n_obs": n,
-            "r_squared": "",
-            "coefficient_vector_json": json.dumps(coef_dict),
-            "sample_desc": sample_desc,
-            "fixed_effects": fe_desc,
-            "controls_desc": controls_desc,
             "cluster_var": "",
+            "run_success": 1,
+            "run_error": "",
         }
-        results.append(row)
-        print(f"  {spec_run_id}: {spec_id} | coef={coef:.6f} se={se_val:.6f} p={pval:.4f} N={n}")
-        return row
-
-    except Exception as e:
-        row = {
-            "paper_id": PAPER_ID,
-            "spec_run_id": spec_run_id,
-            "spec_id": spec_id,
-            "spec_tree_path": spec_tree_path,
-            "baseline_group_id": baseline_group_id,
-            "outcome_var": outcome,
-            "treatment_var": treatment,
-            "coefficient": "",
-            "std_error": "",
-            "p_value": "",
-            "ci_lower": "",
-            "ci_upper": "",
-            "n_obs": "",
-            "r_squared": "",
-            "coefficient_vector_json": json.dumps({"error": str(e)}),
-            "sample_desc": sample_desc,
-            "fixed_effects": fe_desc,
-            "controls_desc": controls_desc,
-            "cluster_var": "",
-        }
-        results.append(row)
-        print(f"  {spec_run_id}: {spec_id} | FAILED: {e}")
-        return row
-
-
-def run_nbreg(outcome, treatment, controls, data, fe_dummies=None,
-              spec_id=None, spec_tree_path=None, baseline_group_id=None,
-              controls_desc="", sample_desc="esample2==1", fe_desc=""):
-    """Run negative binomial regression via statsmodels."""
-    global run_counter
-    run_counter += 1
-    spec_run_id = f"{PAPER_ID}_run{run_counter:04d}"
-
-    try:
-        rhs_vars = [treatment] + controls
-        if fe_dummies:
-            rhs_vars = rhs_vars + fe_dummies
-        all_vars = [outcome] + rhs_vars
-        data_clean = data[all_vars].dropna()
-
-        formula_str = f"{outcome} ~ " + " + ".join(rhs_vars)
-        m = smf.negativebinomial(formula_str, data=data_clean).fit(disp=0, maxiter=500, cov_type="HC1")
-
-        coef = float(m.params[treatment])
-        se_val = float(m.bse[treatment])
-        pval = float(m.pvalues[treatment])
-        nobs = int(m.nobs)
-        r2 = float(m.prsquared) if hasattr(m, 'prsquared') else ""
-        ci_lower = coef - 1.96 * se_val
-        ci_upper = coef + 1.96 * se_val
-
-        coef_dict = {k: float(v) for k, v in m.params.items()}
-
-        row = {
-            "paper_id": PAPER_ID,
-            "spec_run_id": spec_run_id,
-            "spec_id": spec_id,
-            "spec_tree_path": spec_tree_path,
-            "baseline_group_id": baseline_group_id,
-            "outcome_var": outcome,
-            "treatment_var": treatment,
-            "coefficient": round(coef, 8),
-            "std_error": round(se_val, 8),
-            "p_value": round(pval, 8),
-            "ci_lower": round(ci_lower, 8),
-            "ci_upper": round(ci_upper, 8),
-            "n_obs": nobs,
-            "r_squared": round(r2, 6) if isinstance(r2, float) else "",
-            "coefficient_vector_json": json.dumps(coef_dict),
-            "sample_desc": sample_desc,
-            "fixed_effects": fe_desc,
-            "controls_desc": controls_desc,
-            "cluster_var": "",
-        }
-        results.append(row)
+        spec_results.append(row)
         print(f"  {spec_run_id}: {spec_id} | coef={coef:.6f} se={se_val:.6f} p={pval:.4f} N={nobs}")
         return row
 
@@ -396,699 +177,409 @@ def run_nbreg(outcome, treatment, controls, data, fe_dummies=None,
             "baseline_group_id": baseline_group_id,
             "outcome_var": outcome,
             "treatment_var": treatment,
-            "coefficient": "",
-            "std_error": "",
-            "p_value": "",
-            "ci_lower": "",
-            "ci_upper": "",
-            "n_obs": "",
-            "r_squared": "",
+            "coefficient": np.nan,
+            "std_error": np.nan,
+            "p_value": np.nan,
+            "ci_lower": np.nan,
+            "ci_upper": np.nan,
+            "n_obs": np.nan,
+            "r_squared": np.nan,
             "coefficient_vector_json": json.dumps({"error": str(e)}),
             "sample_desc": sample_desc,
-            "fixed_effects": fe_desc,
+            "fixed_effects": fe_desc if fe_desc else (fe if fe else ""),
             "controls_desc": controls_desc,
             "cluster_var": "",
+            "run_success": 0,
+            "run_error": str(e),
         }
-        results.append(row)
+        spec_results.append(row)
         print(f"  {spec_run_id}: {spec_id} | FAILED: {e}")
         return row
 
 
-def blocks_to_controls(block_indices):
-    """Convert a tuple of block inclusion indicators (0/1) to a flat list of control variables."""
-    controls = []
-    for i, include in enumerate(block_indices):
-        if include:
-            controls.extend(CONTROL_BLOCKS[BLOCK_NAMES[i]])
-    return controls
+def run_infer(base_spec_run_id, outcome, treatment, controls, data, fe=None,
+              vcov=None, cluster_var=None, infer_spec_id=None,
+              spec_tree_path=None, baseline_group_id="G1",
+              controls_desc="", sample_desc="esample2==1", fe_desc=""):
+    """Run inference variant and append to infer_results."""
+    global infer_counter
+    infer_counter += 1
+    inference_run_id = f"{PAPER_ID}_infer{infer_counter:04d}"
 
-
-def blocks_to_desc(block_indices):
-    """Convert block indices to human-readable description."""
-    included = [BLOCK_NAMES[i] for i, v in enumerate(block_indices) if v]
-    if not included:
-        return "none (empty set)"
-    return " + ".join(included)
-
-
-def trim_sample(data, outcome, lower_pct, upper_pct):
-    """Trim sample by percentiles of outcome variable."""
-    lo = data[outcome].quantile(lower_pct / 100.0)
-    hi = data[outcome].quantile(upper_pct / 100.0)
-    return data[(data[outcome] >= lo) & (data[outcome] <= hi)].copy()
-
-
-def cooksd_filter(data, outcome, treatment, controls, fe_col, threshold_mult=4):
-    """Remove high Cook's D observations (4/N threshold). Preserves all columns."""
     rhs = [treatment] + controls
-    # Include FE dummies in the OLS for Cook's D computation
-    fe_dum_cols = [c for c in data.columns if c.startswith("uf_d")]
-    all_vars = list(set([outcome] + rhs + fe_dum_cols + ([fe_col] if fe_col else [])))
-    clean = data.dropna(subset=[outcome] + rhs)
-    y = clean[outcome].values
-    X_mat = sm.add_constant(clean[rhs + fe_dum_cols].values)
+
     try:
-        ols = sm.OLS(y, X_mat).fit()
-        influence = ols.get_influence()
-        cooks = influence.cooks_distance[0]
-        n = len(y)
-        mask = cooks < (threshold_mult / n)
-        return clean[mask].copy()
-    except:
-        return clean.copy()
+        formula = fml(outcome, rhs, absorb=fe)
+        if cluster_var:
+            try:
+                m = pf.feols(formula, data=data, vcov={"CRV1": cluster_var})
+            except Exception:
+                # Fall back to CRV1 without dimension issues
+                m = pf.feols(formula, data=data, vcov={"CRV1": cluster_var})
+        elif vcov:
+            m = pf.feols(formula, data=data, vcov=vcov)
+        else:
+            m = pf.feols(formula, data=data, vcov="hetero")
+
+        coef = float(m.coef()[treatment])
+        se_val = float(m.se()[treatment])
+        pval = float(m.pvalue()[treatment])
+        nobs = int(m._N)
+        r2 = float(m._r2)
+        ci_lower = coef - 1.96 * se_val
+        ci_upper = coef + 1.96 * se_val
+
+        coef_dict = {k: float(v) for k, v in m.coef().items()}
+        coef_dict["inference"] = {
+            "spec_id": infer_spec_id,
+            "method": "cluster" if cluster_var else "hc",
+            "cluster_var": cluster_var if cluster_var else "",
+        }
+
+        row = {
+            "paper_id": PAPER_ID,
+            "inference_run_id": inference_run_id,
+            "spec_run_id": base_spec_run_id,
+            "spec_id": infer_spec_id,
+            "spec_tree_path": spec_tree_path,
+            "baseline_group_id": baseline_group_id,
+            "outcome_var": outcome,
+            "treatment_var": treatment,
+            "coefficient": round(coef, 8),
+            "std_error": round(se_val, 8),
+            "p_value": round(pval, 8),
+            "ci_lower": round(ci_lower, 8),
+            "ci_upper": round(ci_upper, 8),
+            "n_obs": nobs,
+            "r_squared": round(r2, 6),
+            "coefficient_vector_json": json.dumps(coef_dict),
+            "cluster_var": cluster_var if cluster_var else "",
+            "run_success": 1,
+            "run_error": "",
+        }
+        infer_results.append(row)
+        print(f"  {inference_run_id}: {infer_spec_id} (base={base_spec_run_id}) | se={se_val:.6f} p={pval:.4f}")
+        return row
+
+    except Exception as e:
+        row = {
+            "paper_id": PAPER_ID,
+            "inference_run_id": inference_run_id,
+            "spec_run_id": base_spec_run_id,
+            "spec_id": infer_spec_id,
+            "spec_tree_path": spec_tree_path,
+            "baseline_group_id": baseline_group_id,
+            "outcome_var": outcome,
+            "treatment_var": treatment,
+            "coefficient": np.nan,
+            "std_error": np.nan,
+            "p_value": np.nan,
+            "ci_lower": np.nan,
+            "ci_upper": np.nan,
+            "n_obs": np.nan,
+            "r_squared": np.nan,
+            "coefficient_vector_json": json.dumps({"error": str(e)}),
+            "cluster_var": cluster_var if cluster_var else "",
+            "run_success": 0,
+            "run_error": str(e),
+        }
+        infer_results.append(row)
+        print(f"  {inference_run_id}: {infer_spec_id} | FAILED: {e}")
+        return row
 
 
 # =============================================================================
-# ==================== BASELINE GROUP G1: pcorrupt ============================
+# BASELINE GROUP G1: pcorrupt ~ first
 # =============================================================================
 print("\n" + "=" * 70)
 print("BASELINE GROUP G1: pcorrupt ~ first")
 print("=" * 70)
 
-# --- G1 Baseline ---
-print("\n--- G1 Baseline (Table 4 Col 6) ---")
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="baseline", spec_tree_path="baseline",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="prefchar2_continuous + prefchar2_party + munichar2 + fiscal + political + sorteio")
+# ---- 1. BASELINE ----
+print("\n--- Baseline (Table 4 Col 6) ---")
+bl_row = run_spec("pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
+                  spec_id="baseline",
+                  spec_tree_path="baseline",
+                  fe_desc="uf",
+                  controls_desc="prefchar2 + munichar2 + fiscal + political + sorteio")
+baseline_run_id = bl_row["spec_run_id"]
 
-# --- G1 Design ---
-print("\n--- G1 Design (OLS, same as baseline) ---")
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="design/cross_sectional_ols/estimator/ols",
-        spec_tree_path="designs/cross_sectional_ols.md#estimators",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls")
+# ---- 2. CONTROL PROGRESSION (rc/controls/progression/*) ----
+print("\n--- Control Progression ---")
 
-# --- G1 RC: Control Sets ---
-print("\n--- G1 RC: Control Sets ---")
+# Bivariate (no controls, just state FE)
+run_spec("pcorrupt", "first", [], dfs, fe="uf",
+         spec_id="rc/controls/progression/bivariate",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="none (bivariate + state FE)")
 
-# none (bivariate + state FE)
-run_ols("pcorrupt", "first", [], dfs, fe="uf",
-        spec_id="rc/controls/sets/none",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="none (bivariate)")
+# Mayor demographics only
+run_spec("pcorrupt", "first", mayor_demographics, dfs, fe="uf",
+         spec_id="rc/controls/progression/mayor_demographics",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="mayor_demographics (3 vars)")
 
-# prefchar2 only
-run_ols("pcorrupt", "first", prefchar2_continuous + prefchar2_party, dfs, fe="uf",
-        spec_id="rc/controls/sets/prefchar2",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="prefchar2_continuous + prefchar2_party")
+# Mayor demographics + party dummies
+run_spec("pcorrupt", "first", mayor_demographics + party_dummies, dfs, fe="uf",
+         spec_id="rc/controls/progression/mayor_demographics_party",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="mayor_demographics + party_dummies (20 vars)")
 
-# prefchar2 + munichar2 + fiscal
-run_ols("pcorrupt", "first", prefchar2_continuous + prefchar2_party + munichar2 + fiscal,
-        dfs, fe="uf",
-        spec_id="rc/controls/sets/prefchar2_munichar2_fiscal",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="prefchar2 + munichar2 + fiscal")
+# + municipality characteristics
+run_spec("pcorrupt", "first", mayor_demographics + party_dummies + municipality_chars, dfs, fe="uf",
+         spec_id="rc/controls/progression/plus_municipality",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="prefchar2 + munichar2 (26 vars)")
 
-# prefchar2 + munichar2 + fiscal + political
-run_ols("pcorrupt", "first",
-        prefchar2_continuous + prefchar2_party + munichar2 + fiscal + political,
-        dfs, fe="uf",
-        spec_id="rc/controls/sets/prefchar2_munichar2_fiscal_political",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="prefchar2 + munichar2 + fiscal + political")
+# + fiscal
+run_spec("pcorrupt", "first", mayor_demographics + party_dummies + municipality_chars + fiscal, dfs, fe="uf",
+         spec_id="rc/controls/progression/plus_fiscal",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="prefchar2 + munichar2 + fiscal (27 vars)")
 
-# prefchar2 + munichar2 + fiscal + political + sorteio (= baseline without FE... but we use FE)
-run_ols("pcorrupt", "first",
-        prefchar2_continuous + prefchar2_party + munichar2 + fiscal + political + sorteio,
-        dfs, fe="uf",
-        spec_id="rc/controls/sets/prefchar2_munichar2_fiscal_political_sorteio",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="all 6 blocks (= baseline)")
+# + political
+run_spec("pcorrupt", "first", mayor_demographics + party_dummies + municipality_chars + fiscal + political,
+         dfs, fe="uf",
+         spec_id="rc/controls/progression/plus_political",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="prefchar2 + munichar2 + fiscal + political (31 vars)")
 
-# full with audit scale
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + audit_scale, dfs, fe="uf",
-        spec_id="rc/controls/sets/full_with_audit_scale",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline + lfunc_ativ + lrec_fisc")
-
-# --- G1 RC: LOO Blocks ---
-print("\n--- G1 RC: LOO Blocks ---")
-for block_name in BLOCK_NAMES:
-    remaining = [v for bn, bv in CONTROL_BLOCKS.items()
-                 for v in bv if bn != block_name]
-    run_ols("pcorrupt", "first", remaining, dfs, fe="uf",
-            spec_id=f"rc/controls/loo_block/drop_{block_name}",
-            spec_tree_path="modules/robustness/controls.md#leave-one-out-block",
-            baseline_group_id="G1", fe_desc="uf",
-            controls_desc=f"baseline minus {block_name}")
-
-# --- G1 RC: LOO Key Variables ---
-print("\n--- G1 RC: LOO Key Variables ---")
-loo_vars = ["pref_masc", "pref_idade_tse", "pref_escola",
-            "lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea",
-            "lrec_trans", "p_cad_pref", "vereador_eleit", "ENLP2000", "comarca"]
-for var in loo_vars:
-    remaining = [v for v in G1_BASELINE_CONTROLS if v != var]
-    run_ols("pcorrupt", "first", remaining, dfs, fe="uf",
-            spec_id=f"rc/controls/loo/drop_{var}",
-            spec_tree_path="modules/robustness/controls.md#leave-one-out-controls-loo",
-            baseline_group_id="G1", fe_desc="uf",
-            controls_desc=f"baseline minus {var}")
-
-# --- G1 RC: Add Experience Controls ---
-print("\n--- G1 RC: Add Experience Controls ---")
-# exp_prefeito
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + audit_scale + ["exp_prefeito"],
-        dfs, fe="uf",
-        spec_id="rc/controls/add/exp_prefeito",
-        spec_tree_path="modules/robustness/controls.md#add-controls",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline + audit_scale + exp_prefeito")
-
-# nexp + nexp2
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + audit_scale + ["nexp", "nexp2"],
-        dfs, fe="uf",
-        spec_id="rc/controls/add/nexp_nexp2",
-        spec_tree_path="modules/robustness/controls.md#add-controls",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline + audit_scale + nexp + nexp2")
-
-# --- G1 RC: Exhaustive Block Combinations (2^6 = 64) ---
-print("\n--- G1 RC: Exhaustive Block Combinations ---")
-n_blocks = len(BLOCK_NAMES)
-for combo_idx in range(2 ** n_blocks):
-    bits = tuple((combo_idx >> i) & 1 for i in range(n_blocks))
-    ctrl = blocks_to_controls(bits)
-    desc = blocks_to_desc(bits)
-
-    # Tag overlaps with existing specs
-    if combo_idx == 0:
-        # Empty set = same as rc/controls/sets/none -- skip duplicate
-        continue
-    if all(b == 1 for b in bits):
-        # Full set = same as baseline -- skip duplicate
-        continue
-
-    extra = {"block_combination": {BLOCK_NAMES[i]: bool(bits[i]) for i in range(n_blocks)},
-             "combo_index": combo_idx}
-
-    run_ols("pcorrupt", "first", ctrl, dfs, fe="uf",
-            spec_id=f"rc/controls/subset/exhaustive_blocks",
-            spec_tree_path="modules/robustness/controls.md#control-subset-enumeration",
-            baseline_group_id="G1", fe_desc="uf",
-            controls_desc=desc, extra_json=extra)
-
-# --- G1 RC: FE Variants ---
-print("\n--- G1 RC: FE Variants ---")
-
-# Drop state FE
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe=None,
-        spec_id="rc/fe/drop/uf",
-        spec_tree_path="modules/robustness/fixed_effects.md#drop-fe",
-        baseline_group_id="G1", fe_desc="none",
-        controls_desc="baseline controls, no FE")
-
-# Add region FE instead of state FE
-# Create region indicator from state codes
-if 'region' not in dfs.columns:
-    # Brazilian states to regions mapping
-    # North: AC AM AP PA RO RR TO -> uf codes: AC=12,AM=13,AP=16,PA=15,RO=11,RR=14,TO=17
-    # Northeast: AL BA CE MA PB PE PI RN SE -> uf codes
-    # Southeast: ES MG RJ SP
-    # South: PR RS SC
-    # Central-West: DF GO MS MT
-    # Use the first digit of state code as a proxy for region
-    # Actually, just use C(uf) with fewer categories - use region dummies
-    # For simplicity, create region from uf categories
-    state_to_region = {
-        'AC': 'N', 'AM': 'N', 'AP': 'N', 'PA': 'N', 'RO': 'N', 'RR': 'N', 'TO': 'N',
-        'AL': 'NE', 'BA': 'NE', 'CE': 'NE', 'MA': 'NE', 'PB': 'NE', 'PE': 'NE',
-        'PI': 'NE', 'RN': 'NE', 'SE': 'NE',
-        'ES': 'SE', 'MG': 'SE', 'RJ': 'SE', 'SP': 'SE',
-        'PR': 'S', 'RS': 'S', 'SC': 'S',
-        'DF': 'CO', 'GO': 'CO', 'MS': 'CO', 'MT': 'CO'
-    }
-    if 'uf' in dfs.columns:
-        dfs['region'] = dfs['uf'].map(state_to_region)
-    else:
-        # Use uf_dummies to infer region - create a simple numeric region
-        # Just partition by available uf values
-        dfs['region'] = 'unknown'
-
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe="region",
-        spec_id="rc/fe/add/region",
-        spec_tree_path="modules/robustness/fixed_effects.md#fe-variants",
-        baseline_group_id="G1", fe_desc="region",
-        controls_desc="baseline controls, region FE instead of state FE")
-
-# --- G1 RC: Sample Variants ---
-print("\n--- G1 RC: Sample Variants ---")
-
-# Trim 1-99
-trimmed_1_99 = trim_sample(dfs, "pcorrupt", 1, 99)
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, trimmed_1_99, fe="uf",
-        spec_id="rc/sample/outliers/trim_y_1_99",
-        spec_tree_path="modules/robustness/sample.md#trimming",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, pcorrupt trimmed 1-99 pctile")
-
-# Trim 5-95
-trimmed_5_95 = trim_sample(dfs, "pcorrupt", 5, 95)
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, trimmed_5_95, fe="uf",
-        spec_id="rc/sample/outliers/trim_y_5_95",
-        spec_tree_path="modules/robustness/sample.md#trimming",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, pcorrupt trimmed 5-95 pctile")
-
-# Cook's D
-cooksd_data = cooksd_filter(dfs, "pcorrupt", "first", G1_BASELINE_CONTROLS, "uf")
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, cooksd_data, fe="uf",
-        spec_id="rc/sample/outliers/cooksd_4_over_n",
-        spec_tree_path="modules/robustness/sample.md#cooks-distance",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, Cook's D < 4/N")
-
-# Running variable non-missing (RDD sample)
-running_nonmissing = dfs[dfs['running'].notna()].copy()
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, running_nonmissing, fe="uf",
-        spec_id="rc/sample/restriction/running_nonmissing",
-        spec_tree_path="modules/robustness/sample.md#sample-restriction",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1 & running~=. (N~328)")
-
-# pmismanagement non-missing
-pmis_nonmissing = dfs[dfs['pmismanagement'].notna()].copy()
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, pmis_nonmissing, fe="uf",
-        spec_id="rc/sample/restriction/pmismanagement_nonmissing",
-        spec_tree_path="modules/robustness/sample.md#sample-restriction",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1 & pmismanagement non-missing")
-
-# --- G1 RC: Functional Form ---
-print("\n--- G1 RC: Functional Form ---")
-
-# asinh(pcorrupt)
-dfs['asinh_pcorrupt'] = np.arcsinh(dfs['pcorrupt'])
-run_ols("asinh_pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="rc/form/outcome/asinh",
-        spec_tree_path="modules/robustness/functional_form.md#outcome-transform",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls, asinh(pcorrupt)")
-
-# RDD polynomial: linear (joint: restrict to running_nonmissing + add running)
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + ["running"],
-        running_nonmissing, fe="uf",
-        spec_id="rc/form/model/rdd_polynomial_linear",
-        spec_tree_path="modules/robustness/functional_form.md#rdd-polynomial",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline + linear running",
-        sample_desc="esample2==1 & running~=.")
-
-# RDD polynomial: quadratic
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + ["running", "running2"],
-        running_nonmissing, fe="uf",
-        spec_id="rc/form/model/rdd_polynomial_quadratic",
-        spec_tree_path="modules/robustness/functional_form.md#rdd-polynomial",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline + quadratic running",
-        sample_desc="esample2==1 & running~=.")
-
-# RDD polynomial: cubic
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + ["running", "running2", "running3"],
-        running_nonmissing, fe="uf",
-        spec_id="rc/form/model/rdd_polynomial_cubic",
-        spec_tree_path="modules/robustness/functional_form.md#rdd-polynomial",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline + cubic running",
-        sample_desc="esample2==1 & running~=.")
-
-# --- G1 RC: Estimator Variant (Tobit) ---
-print("\n--- G1 RC: Tobit ---")
-tobit_controls = G1_BASELINE_CONTROLS + audit_scale
-run_tobit("pcorrupt", "first", tobit_controls, dfs,
-          fe_dummies=uf_dummies, lower=0,
-          spec_id="rc/estimation/tobit_ll0",
-          spec_tree_path="modules/estimation/tobit.md",
-          baseline_group_id="G1", fe_desc="uf (dummies)",
-          controls_desc="baseline + audit_scale + uf dummies")
-
-# --- G1 Inference Variants ---
-print("\n--- G1 Inference Variants ---")
-
-# Classical (non-robust) SE
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe="uf",
-        vcov_type="iid",
-        spec_id="infer/se/hc/classical",
-        spec_tree_path="modules/inference/standard_errors.md#classical",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls, classical SE")
-
-# HC2 -- pyfixest does not support HC2/HC3 with absorbed FE, use explicit dummies
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + uf_dummies, dfs, fe=None,
-        vcov_type="HC2",
-        spec_id="infer/se/hc/hc2",
-        spec_tree_path="modules/inference/standard_errors.md#hc2",
-        baseline_group_id="G1", fe_desc="uf (dummies)",
-        controls_desc="baseline controls + uf dummies, HC2 SE")
-
-# HC3
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS + uf_dummies, dfs, fe=None,
-        vcov_type="HC3",
-        spec_id="infer/se/hc/hc3",
-        spec_tree_path="modules/inference/standard_errors.md#hc3",
-        baseline_group_id="G1", fe_desc="uf (dummies)",
-        controls_desc="baseline controls + uf dummies, HC3 SE")
-
-# Cluster at state level
-run_ols("pcorrupt", "first", G1_BASELINE_CONTROLS, dfs, fe="uf",
-        cluster_var="uf",
-        spec_id="infer/se/cluster/uf",
-        spec_tree_path="modules/inference/standard_errors.md#cluster",
-        baseline_group_id="G1", fe_desc="uf",
-        controls_desc="baseline controls, clustered SE at state level")
-
-
-# =============================================================================
-# ==================== BASELINE GROUP G2: ncorrupt ============================
-# =============================================================================
-print("\n" + "=" * 70)
-print("BASELINE GROUP G2: ncorrupt ~ first")
-print("=" * 70)
-
-# --- G2 Baseline ---
-print("\n--- G2 Baseline (Table 5A Col 2) ---")
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="baseline", spec_tree_path="baseline",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="lrec_fisc + prefchar2 + munichar2 + fiscal + political + sorteio")
-
-# --- G2 Design ---
-print("\n--- G2 Design ---")
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="design/cross_sectional_ols/estimator/ols",
-        spec_tree_path="designs/cross_sectional_ols.md#estimators",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="baseline controls")
-
-# --- G2 RC: Control Sets ---
-print("\n--- G2 RC: Control Sets ---")
-
-# Mandatory only (lrec_fisc + state FE)
-run_ols("ncorrupt", "first", ["lrec_fisc"], dfs, fe="uf",
-        spec_id="rc/controls/sets/mandatory_only",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="lrec_fisc only (mandatory)")
+# + sorteio = baseline (skip, already baseline)
 
 # Full with lfunc_ativ
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS + ["lfunc_ativ"], dfs, fe="uf",
-        spec_id="rc/controls/sets/full_with_lfunc_ativ",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="baseline + lfunc_ativ")
+run_spec("pcorrupt", "first", BASELINE_CONTROLS + ["lfunc_ativ"], dfs, fe="uf",
+         spec_id="rc/controls/progression/full_with_lfunc_ativ",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="baseline + lfunc_ativ (42 vars)")
 
-# --- G2 RC: LOO Blocks ---
-print("\n--- G2 RC: LOO Blocks ---")
-for block_name in BLOCK_NAMES:
-    remaining_optional = [v for bn, bv in CONTROL_BLOCKS.items()
-                         for v in bv if bn != block_name]
-    controls_g2 = ["lrec_fisc"] + remaining_optional
-    run_ols("ncorrupt", "first", controls_g2, dfs, fe="uf",
-            spec_id=f"rc/controls/loo_block/drop_{block_name}",
-            spec_tree_path="modules/robustness/controls.md#leave-one-out-block",
-            baseline_group_id="G2", fe_desc="uf",
-            controls_desc=f"lrec_fisc + baseline minus {block_name}")
+# Full with lfunc_ativ + lrec_fisc
+run_spec("pcorrupt", "first", BASELINE_CONTROLS + ["lfunc_ativ", "lrec_fisc"], dfs, fe="uf",
+         spec_id="rc/controls/progression/full_with_lrec_fisc",
+         spec_tree_path="modules/robustness/controls.md#control-progression",
+         fe_desc="uf", controls_desc="baseline + lfunc_ativ + lrec_fisc (43 vars)")
 
-# --- G2 RC: Sample Variants ---
-print("\n--- G2 RC: Sample Variants ---")
+# ---- 3. CONTROL SET VARIANTS (rc/controls/sets/*) ----
+print("\n--- Control Sets ---")
 
-# Trim 1-99
-trimmed_1_99_nc = trim_sample(dfs, "ncorrupt", 1, 99)
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS, trimmed_1_99_nc, fe="uf",
-        spec_id="rc/sample/outliers/trim_y_1_99",
-        spec_tree_path="modules/robustness/sample.md#trimming",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, ncorrupt trimmed 1-99 pctile")
+# Minimal = audit controls only (sorteio dummies)
+run_spec("pcorrupt", "first", audit_controls, dfs, fe="uf",
+         spec_id="rc/controls/sets/minimal",
+         spec_tree_path="modules/robustness/controls.md#control-sets",
+         fe_desc="uf", controls_desc="audit_controls only (sorteio, 10 vars)")
 
-# Trim 5-95
-trimmed_5_95_nc = trim_sample(dfs, "ncorrupt", 5, 95)
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS, trimmed_5_95_nc, fe="uf",
-        spec_id="rc/sample/outliers/trim_y_5_95",
-        spec_tree_path="modules/robustness/sample.md#trimming",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, ncorrupt trimmed 5-95 pctile")
+# Extended = baseline + lfunc_ativ + lrec_fisc
+run_spec("pcorrupt", "first", BASELINE_CONTROLS + additional_fiscal, dfs, fe="uf",
+         spec_id="rc/controls/sets/extended",
+         spec_tree_path="modules/robustness/controls.md#control-sets",
+         fe_desc="uf", controls_desc="baseline + lfunc_ativ + lrec_fisc (43 vars)")
 
-# --- G2 RC: Functional Form ---
-print("\n--- G2 RC: Functional Form ---")
+# ---- 4. LOO CONTROLS (rc/controls/loo/*) ----
+print("\n--- LOO Controls ---")
 
-# asinh(ncorrupt)
-dfs['asinh_ncorrupt'] = np.arcsinh(dfs['ncorrupt'])
-run_ols("asinh_ncorrupt", "first", G2_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="rc/form/outcome/asinh",
-        spec_tree_path="modules/robustness/functional_form.md#outcome-transform",
-        baseline_group_id="G2", fe_desc="uf",
-        controls_desc="baseline controls, asinh(ncorrupt)")
+# LOO individual variables (non-block vars from baseline)
+loo_individual_vars = ["pref_masc", "pref_idade_tse", "pref_escola",
+                       "lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea",
+                       "lrec_trans", "p_cad_pref", "vereador_eleit", "ENLP2000", "comarca"]
 
-# --- G2 RC: Estimator Variant (Negative Binomial) ---
-print("\n--- G2 RC: Negative Binomial ---")
-# NB with uf dummies (Table 5A Col 4 approach: sorteio2-10, uf_dummies)
-sorteio_2_10 = [f"sorteio{i}" for i in range(2, 11)]
-nbreg_controls = (["lrec_fisc"] + prefchar2_continuous + prefchar2_party +
-                  munichar2 + fiscal + ["lfunc_ativ"] + political + sorteio_2_10)
-run_nbreg("ncorrupt", "first", nbreg_controls, dfs,
-          fe_dummies=uf_dummies,
-          spec_id="rc/estimation/nbreg",
-          spec_tree_path="modules/estimation/count_models.md#negative-binomial",
-          baseline_group_id="G2", fe_desc="uf (dummies)",
-          controls_desc="full controls + uf dummies (NegBin)")
+for var in loo_individual_vars:
+    remaining = [v for v in BASELINE_CONTROLS if v != var]
+    extra = {"controls": {"spec_id": f"rc/controls/loo/drop_{var}", "family": "loo",
+                          "dropped": [var], "added": [], "n_controls": len(remaining)}}
+    run_spec("pcorrupt", "first", remaining, dfs, fe="uf",
+             spec_id=f"rc/controls/loo/drop_{var}",
+             spec_tree_path="modules/robustness/controls.md#leave-one-out-controls-loo",
+             fe_desc="uf", controls_desc=f"baseline minus {var}",
+             extra_json=extra)
 
-# --- G2 Inference Variants ---
-print("\n--- G2 Inference Variants ---")
+# LOO block: drop party dummies
+remaining_no_party = [v for v in BASELINE_CONTROLS if v not in party_dummies]
+run_spec("pcorrupt", "first", remaining_no_party, dfs, fe="uf",
+         spec_id="rc/controls/loo/drop_party_block",
+         spec_tree_path="modules/robustness/controls.md#leave-one-out-controls-loo",
+         fe_desc="uf", controls_desc="baseline minus party_dummies (17 vars dropped)")
 
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS + uf_dummies, dfs, fe=None,
-        vcov_type="HC2",
-        spec_id="infer/se/hc/hc2",
-        spec_tree_path="modules/inference/standard_errors.md#hc2",
-        baseline_group_id="G2", fe_desc="uf (dummies)",
-        controls_desc="baseline controls + uf dummies, HC2 SE")
+# LOO block: drop sorteio dummies
+remaining_no_sorteio = [v for v in BASELINE_CONTROLS if v not in audit_controls]
+run_spec("pcorrupt", "first", remaining_no_sorteio, dfs, fe="uf",
+         spec_id="rc/controls/loo/drop_sorteio_block",
+         spec_tree_path="modules/robustness/controls.md#leave-one-out-controls-loo",
+         fe_desc="uf", controls_desc="baseline minus audit_controls (10 vars dropped)")
 
-run_ols("ncorrupt", "first", G2_BASELINE_CONTROLS + uf_dummies, dfs, fe=None,
-        vcov_type="HC3",
-        spec_id="infer/se/hc/hc3",
-        spec_tree_path="modules/inference/standard_errors.md#hc3",
-        baseline_group_id="G2", fe_desc="uf (dummies)",
-        controls_desc="baseline controls + uf dummies, HC3 SE")
+# ---- 5. RANDOM CONTROL SUBSETS (rc/controls/subset/*) ----
+print("\n--- Random Control Subsets ---")
 
+# Define the pool (non-block-level individual controls + blocks as atomic units)
+# We sample which blocks to include, with some additional individual-var variation
+np.random.seed(SEED)
+n_random_specs = 20
 
-# =============================================================================
-# ==================== BASELINE GROUP G3: ncorrupt_os =========================
-# =============================================================================
-print("\n" + "=" * 70)
-print("BASELINE GROUP G3: ncorrupt_os ~ first")
-print("=" * 70)
+for draw_idx in range(n_random_specs):
+    # Each draw: randomly include/exclude each of the 6 blocks
+    block_bits = np.random.randint(0, 2, size=len(BLOCK_NAMES))
+    # Ensure at least one block is included
+    if block_bits.sum() == 0:
+        block_bits[np.random.randint(0, len(BLOCK_NAMES))] = 1
+    # Ensure not all blocks are included (that's the baseline)
+    if block_bits.sum() == len(BLOCK_NAMES):
+        block_bits[np.random.randint(0, len(BLOCK_NAMES))] = 0
 
-# --- G3 Baseline ---
-print("\n--- G3 Baseline (Table 5B Col 2) ---")
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="baseline", spec_tree_path="baseline",
-        baseline_group_id="G3", fe_desc="uf",
-        controls_desc="lrec_fisc + lfunc_ativ + prefchar2 + munichar2 + fiscal + political + sorteio")
+    controls = []
+    included_blocks = []
+    excluded_blocks = []
+    for i, bn in enumerate(BLOCK_NAMES):
+        if block_bits[i]:
+            controls.extend(CONTROL_BLOCKS[bn])
+            included_blocks.append(bn)
+        else:
+            excluded_blocks.append(bn)
 
-# --- G3 Design ---
-print("\n--- G3 Design ---")
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="design/cross_sectional_ols/estimator/ols",
-        spec_tree_path="designs/cross_sectional_ols.md#estimators",
-        baseline_group_id="G3", fe_desc="uf",
-        controls_desc="baseline controls")
+    extra = {
+        "controls": {
+            "spec_id": f"rc/controls/subset/random_{draw_idx+1:03d}",
+            "family": "subset",
+            "method": "random_block",
+            "seed": SEED,
+            "draw_index": draw_idx + 1,
+            "included_blocks": included_blocks,
+            "excluded_blocks": excluded_blocks,
+            "n_controls": len(controls),
+        }
+    }
 
-# --- G3 RC: Control Sets ---
-print("\n--- G3 RC: Control Sets ---")
+    run_spec("pcorrupt", "first", controls, dfs, fe="uf",
+             spec_id=f"rc/controls/subset/random_{draw_idx+1:03d}",
+             spec_tree_path="modules/robustness/controls.md#control-subset-enumeration",
+             fe_desc="uf",
+             controls_desc=f"random subset draw {draw_idx+1}: {' + '.join(included_blocks)}",
+             extra_json=extra)
 
-# Mandatory only (lrec_fisc + lfunc_ativ + state FE)
-run_ols("ncorrupt_os", "first", ["lrec_fisc", "lfunc_ativ"], dfs, fe="uf",
-        spec_id="rc/controls/sets/mandatory_only",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G3", fe_desc="uf",
-        controls_desc="lrec_fisc + lfunc_ativ only (mandatory)")
+# ---- 6. FE VARIANTS (rc/fe/*) ----
+print("\n--- FE Variants ---")
 
-# Baseline (full controls)
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS, dfs, fe="uf",
-        spec_id="rc/controls/sets/baseline",
-        spec_tree_path="modules/robustness/controls.md#control-sets",
-        baseline_group_id="G3", fe_desc="uf",
-        controls_desc="full baseline (42 controls)")
+# Drop state FE (pooled OLS)
+run_spec("pcorrupt", "first", BASELINE_CONTROLS, dfs, fe=None,
+         spec_id="rc/fe/drop/uf",
+         spec_tree_path="modules/robustness/fixed_effects.md#drop-fe",
+         fe_desc="none", controls_desc="baseline controls, no state FE")
 
-# --- G3 RC: LOO Blocks ---
-print("\n--- G3 RC: LOO Blocks ---")
-for block_name in BLOCK_NAMES:
-    remaining_optional = [v for bn, bv in CONTROL_BLOCKS.items()
-                         for v in bv if bn != block_name]
-    controls_g3 = ["lrec_fisc", "lfunc_ativ"] + remaining_optional
-    run_ols("ncorrupt_os", "first", controls_g3, dfs, fe="uf",
-            spec_id=f"rc/controls/loo_block/drop_{block_name}",
-            spec_tree_path="modules/robustness/controls.md#leave-one-out-block",
-            baseline_group_id="G3", fe_desc="uf",
-            controls_desc=f"lrec_fisc + lfunc_ativ + baseline minus {block_name}")
+# Region FE instead of state FE
+run_spec("pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="region",
+         spec_id="rc/fe/add/region",
+         spec_tree_path="modules/robustness/fixed_effects.md#fe-variants",
+         fe_desc="region (5 Brazilian regions)",
+         controls_desc="baseline controls, region FE instead of state FE")
 
-# --- G3 RC: Sample Variants ---
-print("\n--- G3 RC: Sample Variants ---")
+# ---- 7. SAMPLE VARIANTS (rc/sample/*) ----
+print("\n--- Sample Variants ---")
 
-# Trim 1-99
-trimmed_1_99_nos = trim_sample(dfs, "ncorrupt_os", 1, 99)
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS, trimmed_1_99_nos, fe="uf",
-        spec_id="rc/sample/outliers/trim_y_1_99",
-        spec_tree_path="modules/robustness/sample.md#trimming",
-        baseline_group_id="G3", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, ncorrupt_os trimmed 1-99 pctile")
+# Trim pcorrupt at 1-99 percentile
+lo1 = dfs['pcorrupt'].quantile(0.01)
+hi99 = dfs['pcorrupt'].quantile(0.99)
+trimmed_1_99 = dfs[(dfs['pcorrupt'] >= lo1) & (dfs['pcorrupt'] <= hi99)].copy()
+extra_trim1 = {"sample": {"spec_id": "rc/sample/outliers/trim_y_1_99", "axis": "outliers",
+                           "rule": "trim", "params": {"var": "pcorrupt", "lower_q": 0.01, "upper_q": 0.99},
+                           "n_obs_before": len(dfs), "n_obs_after": len(trimmed_1_99)}}
+run_spec("pcorrupt", "first", BASELINE_CONTROLS, trimmed_1_99, fe="uf",
+         spec_id="rc/sample/outliers/trim_y_1_99",
+         spec_tree_path="modules/robustness/sample.md#trimming",
+         fe_desc="uf", controls_desc="baseline controls",
+         sample_desc=f"esample2==1, pcorrupt trimmed [1%,99%], N={len(trimmed_1_99)}",
+         extra_json=extra_trim1)
 
-# Trim 5-95
-trimmed_5_95_nos = trim_sample(dfs, "ncorrupt_os", 5, 95)
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS, trimmed_5_95_nos, fe="uf",
-        spec_id="rc/sample/outliers/trim_y_5_95",
-        spec_tree_path="modules/robustness/sample.md#trimming",
-        baseline_group_id="G3", fe_desc="uf",
-        controls_desc="baseline controls",
-        sample_desc="esample2==1, ncorrupt_os trimmed 5-95 pctile")
+# Trim pcorrupt at 5-95 percentile
+lo5 = dfs['pcorrupt'].quantile(0.05)
+hi95 = dfs['pcorrupt'].quantile(0.95)
+trimmed_5_95 = dfs[(dfs['pcorrupt'] >= lo5) & (dfs['pcorrupt'] <= hi95)].copy()
+extra_trim5 = {"sample": {"spec_id": "rc/sample/outliers/trim_y_5_95", "axis": "outliers",
+                           "rule": "trim", "params": {"var": "pcorrupt", "lower_q": 0.05, "upper_q": 0.95},
+                           "n_obs_before": len(dfs), "n_obs_after": len(trimmed_5_95)}}
+run_spec("pcorrupt", "first", BASELINE_CONTROLS, trimmed_5_95, fe="uf",
+         spec_id="rc/sample/outliers/trim_y_5_95",
+         spec_tree_path="modules/robustness/sample.md#trimming",
+         fe_desc="uf", controls_desc="baseline controls",
+         sample_desc=f"esample2==1, pcorrupt trimmed [5%,95%], N={len(trimmed_5_95)}",
+         extra_json=extra_trim5)
 
-# --- G3 RC: Estimator Variant (Tobit) ---
-print("\n--- G3 RC: Tobit ---")
-run_tobit("ncorrupt_os", "first", G3_BASELINE_CONTROLS, dfs,
-          fe_dummies=uf_dummies, lower=0,
-          spec_id="rc/estimation/tobit_ll0",
-          spec_tree_path="modules/estimation/tobit.md",
-          baseline_group_id="G3", fe_desc="uf (dummies)",
-          controls_desc="baseline + uf dummies, tobit ll(0)")
+# ---- 8. FUNCTIONAL FORM VARIANTS (rc/form/*) ----
+print("\n--- Functional Form Variants ---")
 
-# --- G3 Inference Variants ---
-print("\n--- G3 Inference Variants ---")
+# log(1+pcorrupt)
+run_spec("log1p_pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
+         spec_id="rc/form/outcome/log1p",
+         spec_tree_path="modules/robustness/functional_form.md#outcome-transform",
+         fe_desc="uf", controls_desc="baseline controls, log(1+pcorrupt) outcome",
+         extra_json={"functional_form": {"outcome_transform": "log1p",
+                     "interpretation": "Semi-elasticity; preserves direction of effect."}})
 
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS + uf_dummies, dfs, fe=None,
-        vcov_type="HC2",
-        spec_id="infer/se/hc/hc2",
-        spec_tree_path="modules/inference/standard_errors.md#hc2",
-        baseline_group_id="G3", fe_desc="uf (dummies)",
-        controls_desc="baseline controls + uf dummies, HC2 SE")
-
-run_ols("ncorrupt_os", "first", G3_BASELINE_CONTROLS + uf_dummies, dfs, fe=None,
-        vcov_type="HC3",
-        spec_id="infer/se/hc/hc3",
-        spec_tree_path="modules/inference/standard_errors.md#hc3",
-        baseline_group_id="G3", fe_desc="uf (dummies)",
-        controls_desc="baseline controls + uf dummies, HC3 SE")
+# asinh(pcorrupt)
+run_spec("asinh_pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
+         spec_id="rc/form/outcome/asinh",
+         spec_tree_path="modules/robustness/functional_form.md#outcome-transform",
+         fe_desc="uf", controls_desc="baseline controls, asinh(pcorrupt) outcome",
+         extra_json={"functional_form": {"outcome_transform": "asinh",
+                     "interpretation": "Approx semi-elasticity for large y; handles zeros."}})
 
 
 # =============================================================================
-# ==================== DIAGNOSTICS ============================================
+# INFERENCE VARIANTS (written to inference_results.csv)
 # =============================================================================
 print("\n" + "=" * 70)
-print("DIAGNOSTICS: Balance test for G1")
+print("INFERENCE VARIANTS")
 print("=" * 70)
 
-diag_results = []
-# Balance test: regress each control on treatment (first)
-balance_vars = (prefchar2_continuous + munichar2 + fiscal + political +
-                ["exp_prefeito", "lpib02", "gini_ipea"])
-# Deduplicate
-balance_vars = list(dict.fromkeys(balance_vars))
+# Cluster SE at state level (for baseline spec)
+run_infer(baseline_run_id, "pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
+          cluster_var="uf",
+          infer_spec_id="infer/se/cluster/uf",
+          spec_tree_path="modules/inference/standard_errors.md#cluster",
+          fe_desc="uf", controls_desc="baseline controls, cluster SE at uf")
 
-balance_rows = []
-for bvar in balance_vars:
-    try:
-        bdata = dfs[[bvar, "first"]].dropna()
-        if len(bdata) < 10:
-            continue
-        m = pf.feols(f"{bvar} ~ first", data=bdata, vcov="hetero")
-        coef = float(m.coef()["first"])
-        se = float(m.se()["first"])
-        pval = float(m.pvalue()["first"])
-        balance_rows.append({
-            "variable": bvar,
-            "coefficient": round(coef, 6),
-            "std_error": round(se, 6),
-            "p_value": round(pval, 4),
-            "n_obs": int(m._N),
-            "significant_05": pval < 0.05
-        })
-    except Exception as e:
-        balance_rows.append({
-            "variable": bvar,
-            "coefficient": "",
-            "std_error": "",
-            "p_value": "",
-            "n_obs": "",
-            "significant_05": "",
-            "error": str(e)
-        })
-
-n_sig = sum(1 for r in balance_rows if r.get("significant_05") == True)
-n_total = len(balance_rows)
-
-diag_results.append({
-    "paper_id": PAPER_ID,
-    "diagnostic_run_id": f"{PAPER_ID}_diag001",
-    "diag_spec_id": "diag/cross_sectional_ols/balance/treatment_balance",
-    "spec_tree_path": "modules/diagnostics/balance.md",
-    "diagnostic_scope": "baseline_group",
-    "diagnostic_context_id": "G1_balance",
-    "diagnostic_json": json.dumps({
-        "baseline_group_id": "G1",
-        "n_variables_tested": n_total,
-        "n_significant_05": n_sig,
-        "fraction_significant": round(n_sig / n_total, 4) if n_total > 0 else "",
-        "variable_results": balance_rows
-    })
-})
-print(f"  Balance test: {n_sig}/{n_total} variables significant at 5%")
+# HC3 SE (for baseline spec)
+run_infer(baseline_run_id, "pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
+          vcov={"HC3": True},
+          infer_spec_id="infer/se/hc/hc3",
+          spec_tree_path="modules/inference/standard_errors.md#hc3",
+          fe_desc="uf", controls_desc="baseline controls, HC3 SE")
 
 
 # =============================================================================
-# ==================== WRITE OUTPUTS ==========================================
+# WRITE OUTPUTS
 # =============================================================================
 print("\n" + "=" * 70)
 print("WRITING OUTPUTS")
 print("=" * 70)
 
 # 1. specification_results.csv
-results_df = pd.DataFrame(results)
+spec_df = pd.DataFrame(spec_results)
 csv_path = os.path.join(PACKAGE_DIR, "specification_results.csv")
-results_df.to_csv(csv_path, index=False)
-print(f"Wrote {len(results_df)} rows to specification_results.csv")
+spec_df.to_csv(csv_path, index=False)
+print(f"Wrote {len(spec_df)} rows to specification_results.csv")
 
-# Count by group
-for gid in ["G1", "G2", "G3"]:
-    n = (results_df['baseline_group_id'] == gid).sum()
-    print(f"  {gid}: {n} specs")
+# Verify no infer/* rows in specification_results
+n_infer_in_spec = spec_df['spec_id'].str.startswith('infer/').sum()
+assert n_infer_in_spec == 0, f"Found {n_infer_in_spec} infer/* rows in specification_results.csv!"
 
-# Count by type
-for prefix in ["baseline", "design/", "rc/", "infer/"]:
-    n = results_df['spec_id'].str.startswith(prefix).sum()
-    print(f"  {prefix}: {n} specs")
+# 2. inference_results.csv
+infer_df = pd.DataFrame(infer_results)
+infer_csv_path = os.path.join(PACKAGE_DIR, "inference_results.csv")
+infer_df.to_csv(infer_csv_path, index=False)
+print(f"Wrote {len(infer_df)} rows to inference_results.csv")
 
-# 2. diagnostics_results.csv
-diag_df = pd.DataFrame(diag_results)
-diag_path = os.path.join(PACKAGE_DIR, "diagnostics_results.csv")
-diag_df.to_csv(diag_path, index=False)
-print(f"Wrote {len(diag_df)} rows to diagnostics_results.csv")
-
-# 3. Check uniqueness
-assert results_df['spec_run_id'].nunique() == len(results_df), "spec_run_id not unique!"
+# 3. Quality checks
+assert spec_df['spec_run_id'].nunique() == len(spec_df), "spec_run_id not unique!"
 print("All spec_run_ids are unique.")
 
-# 4. Summary statistics
-n_success = results_df[results_df['coefficient'] != ''].shape[0]
-n_fail = results_df[results_df['coefficient'] == ''].shape[0]
-print(f"\nExecution summary: {n_success} succeeded, {n_fail} failed, {len(results_df)} total")
+# Count by spec type
+for prefix in ["baseline", "rc/controls/", "rc/fe/", "rc/sample/", "rc/form/"]:
+    n = spec_df['spec_id'].str.startswith(prefix).sum()
+    print(f"  {prefix}: {n} specs")
 
-# Print coefficient range for baselines
-for gid in ["G1", "G2", "G3"]:
-    bl = results_df[(results_df['baseline_group_id'] == gid) & (results_df['spec_id'] == 'baseline')]
-    if len(bl) > 0 and bl.iloc[0]['coefficient'] != '':
-        print(f"  {gid} baseline: coef={bl.iloc[0]['coefficient']}, se={bl.iloc[0]['std_error']}, p={bl.iloc[0]['p_value']}")
+n_success = (spec_df['run_success'] == 1).sum()
+n_fail = (spec_df['run_success'] == 0).sum()
+print(f"\nExecution summary: {n_success} succeeded, {n_fail} failed, {len(spec_df)} total")
+
+# Baseline summary
+bl = spec_df[spec_df['spec_id'] == 'baseline']
+if len(bl) > 0:
+    print(f"Baseline: coef={bl.iloc[0]['coefficient']}, se={bl.iloc[0]['std_error']}, "
+          f"p={bl.iloc[0]['p_value']}, N={bl.iloc[0]['n_obs']}")

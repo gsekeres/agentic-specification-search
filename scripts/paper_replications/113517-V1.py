@@ -13,8 +13,13 @@ import pyfixest as pf
 import json
 import warnings
 import time
+import gc
+import sys
 
 warnings.filterwarnings('ignore')
+
+# Force unbuffered output so progress is visible
+sys.stdout.reconfigure(line_buffering=True)
 
 DATA_DIR = 'data/downloads/extracted/113517-V1/Codes-and-data'
 
@@ -26,19 +31,32 @@ t0 = time.time()
 df = pd.read_parquet(f'{DATA_DIR}/preprocessed.parquet')
 print(f"Loaded in {time.time()-t0:.1f}s, shape: {df.shape}")
 
-# Prepare data types
+# Prepare data types -- use Int32 instead of Int64 to save memory
 for v in ['lagstate', 'laguni', 'lagsiz', 'lagocc', 'lagind', 'lagpub', 'mkt_t', 'mkt']:
-    df[v] = df[v].astype('Int64')
+    df[v] = df[v].astype('Int32')
 
-df['ym_num'] = df['year_month_num']
+df['ym_num'] = df['year_month_num'].astype('float32')
 
 # Create wage changes
 for dv in ['logern_nom', 'logern', 'loghwr_nom', 'loghwr']:
     df[f'd{dv}'] = df[dv] - df[f'lag{dv}']
 
 # Create hourly-wage-adjusted eligibility
-df['EZeligible_hw'] = ((df['EZeligible'] == 1) & (df['lagphr'] == 1)).astype(int)
-df['DWeligible_hw'] = ((df['DWeligible'] == 1) & (df['lagphr'] == 1)).astype(int)
+df['EZeligible_hw'] = ((df['EZeligible'] == 1) & (df['lagphr'] == 1)).astype('int8')
+df['DWeligible_hw'] = ((df['DWeligible'] == 1) & (df['lagphr'] == 1)).astype('int8')
+
+# Drop columns no longer needed to reduce memory footprint
+drop_now = [c for c in df.columns if c in [
+    'year_month', 'year_month_num', 'loghrs', 'lagphr',
+    'clw', 'siz', 'ind', 'occ', 'phr', 'married', 'state', 'uni',
+    'sex', 'race', 'education', 'agegroup', 'panel_id',
+    'lagmarried', 'laglogern_raw', 'laglogern_raw_nom',
+    'laglogern_sm', 'laglogern_sm_nom',
+]]
+df.drop(columns=drop_now, inplace=True)
+gc.collect()
+print(f"Dropped {len(drop_now)} unneeded columns. Shape now: {df.shape}")
+print(f"Memory: {df.memory_usage(deep=True).sum()/1e9:.2f} GB")
 
 # ============================================================
 # Control variable formulas
@@ -51,10 +69,8 @@ u_controls = "C(lagstate)"
 # Helper functions
 # ============================================================
 def run_first_stage(data, depv, rhs_formula, elig_col):
-    """Run first-stage areg and return FE dict, N, R2, coefs, SEs"""
-    mask = data[elig_col] == 1
-    sub = data[mask].copy()
-
+    """Run first-stage areg and return FE dict, N, R2, coefs, SEs.
+    Memory-efficient: avoids full .copy(), explicitly deletes model."""
     all_vars = [depv, 'wgt']
     for term in rhs_formula.split('+'):
         term = term.strip()
@@ -64,15 +80,25 @@ def run_first_stage(data, depv, rhs_formula, elig_col):
             all_vars.append(term)
     all_vars.append('mkt_t')
 
-    sub = sub.dropna(subset=all_vars)
-    sub = sub[sub['wgt'] > 0]
+    # Filter in-place without full copy
+    mask = (data[elig_col] == 1) & (data['wgt'] > 0)
+    for v in all_vars:
+        mask = mask & data[v].notna()
+    sub = data.loc[mask, all_vars]
 
     formula = f"{depv} ~ {rhs_formula} | mkt_t"
     m = pf.feols(formula, data=sub, weights='wgt')
 
     fe = m.fixef()
     fe_key = [k for k in fe.keys() if 'mkt_t' in k][0]
-    return fe[fe_key], m._N, m._r2, m.coef(), m.se()
+    fe_dict = fe[fe_key]
+    n, r2, coef, se = m._N, m._r2, m.coef(), m.se()
+
+    # Explicitly free model memory
+    del m, sub
+    gc.collect()
+
+    return fe_dict, n, r2, coef, se
 
 
 def map_fe_all(df, fe_dict, colname):
@@ -107,6 +133,9 @@ fe_eu_hw, _, _, _, _ = run_first_stage(df, 'eutrans_i', e_controls, 'EZeligible_
 
 print("  EN transition (hourly wage sample)...")
 fe_en_hw, _, _, _, _ = run_first_stage(df, 'entrans_i', e_controls, 'EZeligible_hw')
+
+gc.collect()
+print(f"  Shared first-stage done in {time.time()-t0:.1f}s")
 
 # ============================================================
 # Loop over dependent variables
@@ -185,11 +214,13 @@ for depvar in depvarlist:
             rhs_vars = [v.strip() for v in rhs_part.split('+')]
             all_needed = [lhs] + rhs_vars + [fe_part, 'wgt']
 
-            sub = df.dropna(subset=all_needed)
-            sub = sub[sub['wgt'] > 0]
-
+            # Build mask instead of dropna (avoids copying full df)
+            mask = (df['wgt'] > 0)
+            for v in all_needed:
+                mask = mask & df[v].notna()
             if sample_filter is not None:
-                sub = sub[sample_filter(sub)]
+                mask = mask & sample_filter(df)
+            sub = df.loc[mask]
 
             m = pf.feols(formula, data=sub, weights="wgt")
 
@@ -197,14 +228,19 @@ for depvar in depvarlist:
             se = m.se()
             pvals = m.pvalue()
             ci = m.confint()
+            n_obs = int(m._N)
+            r2 = float(m._r2)
 
             ci_lower = float(ci.loc[focal_var, '2.5%']) if focal_var in ci.index else np.nan
             ci_upper = float(ci.loc[focal_var, '97.5%']) if focal_var in ci.index else np.nan
 
             coef_dict = {k: float(v) for k, v in coef.items()}
 
-            print(f"    Spec {spec_num} ({desc}): N={m._N}, R2={m._r2:.4f}")
+            print(f"    Spec {spec_num} ({desc}): N={n_obs}, R2={r2:.4f}")
             print(f"      {focal_var}: coef={coef[focal_var]:.6f}, se={se[focal_var]:.6f}")
+
+            del m, sub
+            gc.collect()
 
             all_results.append({
                 'depvar': depvar, 'spec': spec_num, 'desc': desc,
@@ -212,7 +248,7 @@ for depvar in depvarlist:
                 'coef': float(coef[focal_var]), 'se': float(se[focal_var]),
                 'pval': float(pvals[focal_var]),
                 'ci_lower': ci_lower, 'ci_upper': ci_upper,
-                'n_obs': int(m._N), 'r2': float(m._r2),
+                'n_obs': n_obs, 'r2': r2,
                 'coef_dict': coef_dict, 'sample': sample_desc
             })
 
@@ -232,6 +268,8 @@ for depvar in depvarlist:
     for col in ['xee', 'xue', 'xne', 'xeu', 'xen', 'xur', xdvar, 'xnue', 'xenu', 'xee_i']:
         if col in df.columns:
             df.drop(columns=[col], inplace=True)
+    gc.collect()
+    print(f"  Finished {depvar} at {time.time()-t0:.1f}s")
 
 # ============================================================
 # Write replication.csv

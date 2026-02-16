@@ -1,5 +1,0 @@
-spec_run_id,diag_run_id,scope
-111185-V1_G1_baseline,111185-V1_diag_cooks_d,baseline_group
-111185-V1_G1_baseline,111185-V1_diag_jarque_bera,baseline_group
-111185-V1_G1_baseline,111185-V1_diag_breusch_pagan,baseline_group
-111185-V1_G1_baseline,111185-V1_diag_ramsey_reset,baseline_group

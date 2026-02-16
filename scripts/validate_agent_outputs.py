@@ -356,7 +356,10 @@ def _validate_surface(
 
         # Only define matching patterns when core_universe exists and is parseable.
         if core_patterns.get(gid, "__unset__") is not None:
-            pats = ["baseline", "baseline__*"] + [str(s) for s in design_spec_ids] + [str(s) for s in rc_spec_ids]
+            baseline_spec_ids = core.get("baseline_spec_ids", [])
+            if not isinstance(baseline_spec_ids, list):
+                baseline_spec_ids = []
+            pats = ["baseline", "baseline__*", "baseline/*"] + [str(s) for s in baseline_spec_ids] + [str(s) for s in design_spec_ids] + [str(s) for s in rc_spec_ids]
             if len(pats) <= 2:
                 _issue(
                     issues,
@@ -513,7 +516,7 @@ def _validate_spec_results(
                 f"specification_results.csv contains non-estimate namespaces (examples: {bad_ids}).",
             )
 
-        allowed_prefix = spec_id.eq("baseline") | spec_id.str.startswith(("baseline__", "design/", "rc/"))
+        allowed_prefix = spec_id.eq("baseline") | spec_id.str.startswith(("baseline__", "baseline/", "design/", "rc/"))
         if (~allowed_prefix).any():
             bad_ids = spec_id[~allowed_prefix].value_counts().head(8).to_dict()
             _issue(
@@ -718,7 +721,7 @@ def _validate_spec_results(
             sub = df[df["baseline_group_id"].astype(str).str.strip() == gid]
             if len(sub) == 0:
                 continue
-            is_baseline = sub["spec_id"].astype(str).eq("baseline") | sub["spec_id"].astype(str).str.startswith("baseline__")
+            is_baseline = sub["spec_id"].astype(str).eq("baseline") | sub["spec_id"].astype(str).str.startswith(("baseline__", "baseline/"))
             if not bool(is_baseline.any()):
                 _issue(
                     issues,

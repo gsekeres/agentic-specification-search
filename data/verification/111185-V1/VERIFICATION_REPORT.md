@@ -1,160 +1,91 @@
 # Verification Report: 111185-V1
 
-**Paper**: "Optimal Climate Policy When Damages are Unknown" (Rudik, 2020, AEJ: Economic Policy)
-**Verification date**: 2026-02-13
-**Verifier**: Post-run verification agent
+## Paper
+Rudik (2020), "Optimal Climate Policy When Damages are Unknown", AEJ: Economic Policy
 
----
+## Baseline Groups Found
 
-## 1. Baseline Groups
+### G1: Damage exponent estimation (Table 1)
+- **Baseline spec_run_id**: 111185-V1_spec_001
+- **Baseline spec_id**: baseline
+- **Claim**: Elasticity of climate damages with respect to temperature (d2 in power-law damage function D = exp(d1) * T^d2)
+- **Baseline coefficient (logt)**: 1.882 (SE=0.451, p=0.00015, N=43, R2=0.299)
+- **Expected sign**: Positive (higher temperature -> higher damages)
 
-### G1: Table 1 Damage Parameter Estimation
-
-- **Claim object**: Elasticity of climate damages with respect to temperature (power-law exponent d2) estimated via OLS of log damages on log temperature using Howard & Sterner (2017) meta-analysis data (N=43).
-- **Expected sign**: Positive (higher temperatures increase climate damages).
-- **Baseline spec_run_id**: `111185-V1_G1_baseline`
-- **Baseline spec_id**: `baseline`
-- **Baseline coefficient**: 1.882, SE=0.451, p=0.00015, N=43, R2=0.299
-- **Reproduction quality**: EXACT at reported precision for all five parameters.
-
-This is the only reduced-form regression in the paper. All other results are structural/calibration outputs that depend on the d2 parameter estimated here.
-
----
-
-## 2. Counts
+## Counts
 
 | Metric | Count |
 |--------|-------|
-| Total rows | 42 |
-| Baseline | 1 |
-| Core tests | 41 |
+| Total rows in specification_results.csv | 62 |
+| Valid (run_success=1) | 62 |
+| Invalid (run_success=0) | 0 |
+| Core tests (is_core_test=1) | 62 |
 | Non-core | 0 |
-| Invalid | 0 |
-| Unclear | 0 |
+| Baseline rows | 1 |
+| Inference variants (inference_results.csv) | 3 |
 
-### Category Breakdown
+## Category Counts
 
 | Category | Count |
 |----------|-------|
-| baseline | 1 |
-| core_controls | 16 |
-| core_sample | 10 |
-| core_preprocess | 5 |
-| core_inference | 4 |
-| core_weights | 3 |
-| core_funcform | 2 |
-| core_method | 1 |
+| core_method (baseline) | 1 |
+| core_controls | 35 |
+| core_sample | 19 |
+| core_funcform | 5 |
+| core_preprocess | 2 |
 
----
+## Robustness Assessment
 
-## 3. Surface Alignment
+### Sign consistency
+- **59 of 62** specifications (95.2%) produce a positive coefficient, consistent with the baseline sign.
+- 3 specifications produce negative coefficients, all in the functional form category:
+  - `rc/form/model/levels_quadratic` (correct_d ~ t + t^2): The linear temperature term is negative because the quadratic term captures the convex damage relationship.
+  - Two joint specs with levels treatment + restricted samples also show near-zero or negative coefficients.
 
-### Surface completeness
+### Statistical significance
+- **53 of 62** specifications (85.5%) are significant at the 5% level.
+- **51 of 62** specifications (82.3%) are significant at the 1% level.
+- 9 specifications have p >= 0.05, primarily from:
+  - Temporal splits (small subsamples, N ~ 20)
+  - Joint specs with small subsamples and controls
+  - Functional form changes (levels outcome/treatment)
 
-All spec_ids planned in `SPECIFICATION_SURFACE.json` appear in `specification_results.csv`:
-- 1 baseline spec: present
-- 1 design spec: present
-- 30 rc spec_ids: all present
-- 4 infer spec_ids: all present
-- 6 joint/interaction spec_ids: all present
-- 3 explore spec_ids: correctly excluded from results
+### Controls sensitivity
+- All 35 control specifications are positive and significant at 5%.
+- Coefficient range across control specs: [1.384, 2.182]
+- The result is highly robust to any combination of meta-analytic study-characteristic controls.
 
-No spurious spec_ids appear in results that are not in the surface.
+### Sample sensitivity
+- 11 sample restrictions: all positive, 6 of 11 significant at 5%.
+- Non-significant specs are due to small subsamples (temporal splits reduce N to ~20).
+- Dropping catastrophic estimates or grey literature preserves significance.
 
-### Baseline group alignment
+### Inference sensitivity (from inference_results.csv)
+- **Classical SE**: 0.451 (p = 0.00015) -- baseline
+- **HC1 (robust)**: 0.924 (p = 0.048) -- still significant at 5%
+- **HC2**: 1.012 (p = 0.070) -- borderline, not significant at 5%
+- **HC3**: 1.136 (p = 0.105) -- not significant at 10%
 
-The surface defined one baseline group (G1). All 42 rows are assigned to G1 in the results. No missing or spurious baseline groups.
+This is a notable finding: the heteroskedasticity-robust standard errors are approximately double the classical SEs. With N=43 and potential heteroskedasticity in the meta-analysis data, the classical SEs may substantially overstate precision. The result remains directionally strong but statistically fragile under conservative inference.
 
-### Duplicate-value specs (noted, not flagged as invalid)
+## Top Issues
 
-1. **design/cross_sectional_ols/estimator/ols** and **rc/weights/main/unweighted** are both mechanically identical to the baseline (same coefficient, SE, p-value, N, R2). This is expected per the surface design: the design spec confirms the estimator choice, and the unweighted spec is the explicit reference point for the weights axis.
+1. **Inference fragility**: The baseline uses classical (homoskedastic) SEs. Heteroskedasticity-robust SEs (HC1-HC3) roughly double the standard error. HC2 and HC3 make the baseline result insignificant at conventional levels. This is the primary vulnerability.
 
-2. **rc/controls/sets/study_characteristics_basic** and **rc/controls/progression/study_type** produce identical results (coef=1.699, same controls: Market, Grey, Preindustrial). This was noted in `SPECIFICATION_SEARCH.md` and was retained by design since they occupy different spec_id slots.
+2. **Functional form sensitivity**: Level-outcome and polynomial specifications produce very different coefficient magnitudes and interpretations. The power-law (log-log) specification is a strong modeling choice that drives the result.
 
----
+3. **Small sample**: N=43 limits the power of many robustness checks and makes the results sensitive to individual observations (the Cook's D filter drops observations and preserves significance).
 
-## 4. Claim Object Preservation
+4. **No outcome/treatment drift in core controls/sample specs**: All control and sample RC specs maintain log_correct ~ logt, so there is no concept drift in the large majority of specifications.
 
-All 42 rows preserve the baseline claim object (log-log elasticity of climate damages w.r.t. temperature). Specific notes on borderline cases:
+## Recommendations
 
-### Treatment variable variants (preserved)
-- **Temperature adjustment specs** (FUND, NASA, AVG): Treatment changes from `logt` to `log(t - Temp_adj_X)`. The conceptual estimand (log-log elasticity) is preserved; the temperature baseline shifts. Classified as core_preprocess with confidence 0.95.
+1. The paper should report heteroskedasticity-robust standard errors as a robustness check, given the substantial difference from classical SEs.
+2. Sensitivity to the power-law functional form assumption should be acknowledged.
+3. Influence diagnostics (Cook's D) suggest checking which studies drive the result most.
 
-### Functional form variants (preserved with caveats)
-- **Quadratic treatment** (`rc/form/model/quadratic_treatment`): Treatment listed as `logt + logt^2`. The focal coefficient is the linear term on logt, which in the presence of a quadratic is no longer a constant elasticity but a conditional partial derivative. The surface explicitly planned this as core, and the coefficient_vector_json includes the logt^2 term and joint F-test. Classified as core_funcform with confidence 0.85.
-- **Joint drop Weitzman + quadratic** (`rc/joint/outlier_form/drop_weitzman_quadratic`): Same interpretation issue. Classified as core_funcform with confidence 0.80.
+## Conclusion
 
-### Outcome variable variants (preserved)
-- **Winsorized outcome** (`rc/preprocess/outcome/winsor_1_99`): Outcome listed as `log_correct (winsorized 1%/99%)`. Same variable concept with tails capped. Classified as core_preprocess with confidence 1.0.
+The specification search confirms that the baseline result (d2 = 1.88) is **robust to control specification and most sample restrictions** but **sensitive to the inference method** (classical vs robust SEs). Under heteroskedasticity-robust inference, the result is borderline significant. The functional form (log-log) is a strong assumption that drives the power-law interpretation.
 
-### No outcome/treatment drift to different concepts
-No rows change the outcome concept (e.g., to levels) or the treatment concept (e.g., to a different regressor). The three explore specs that would have changed the estimand concept were correctly excluded.
-
----
-
-## 5. Issues and Observations
-
-### Issue 1: Extreme outlier sensitivity
-The Weitzman 12C observation (Cook's D=2.41, compared to threshold 4/N=0.093) dominates the baseline result. Dropping it alone halves the coefficient from 1.88 to 0.94. This is the most important sensitivity finding and is well-documented.
-
-### Issue 2: Classical SE may be inappropriate
-The baseline uses classical (homoskedastic) standard errors. The Breusch-Pagan test does not reject (p=0.133), but the RESET test strongly rejects functional form (F=22.3, p<0.001), and HC1/HC2/HC3 SEs are 2-2.5x larger than classical SEs. The baseline p-value of 0.00015 degrades to 0.042 (HC1), 0.063 (HC2), 0.098 (HC3), and 0.100 (clustered). This is a substantively important finding.
-
-### Issue 3: WLS sign flip
-The WLS with 1/t^2 weights flips the coefficient sign to -0.22 (p=0.42). The SPECIFICATION_SEARCH.md correctly notes this is because the weighting heavily down-weights high-temperature observations, and the proxy may not be appropriate for the log-log form. The result is valid as executed but should be interpreted cautiously as noted.
-
-### Issue 4: Functional form misspecification
-The Ramsey RESET test (F=22.3, p<0.001) strongly rejects the linear log-log specification. Consistent with this, the quadratic treatment spec shows that adding logt^2 dramatically improves R2 (0.30 to 0.67) and flips the linear coefficient to -1.66. This suggests the constant-elasticity assumption (power law with fixed exponent) is rejected by the data.
-
-### Issue 5: Numerically identical spec pairs
-Two pairs of specs produce identical results:
-- `design/...ols` = `baseline` (by construction)
-- `rc/weights/main/unweighted` = `baseline` (by construction)
-- `rc/controls/sets/study_characteristics_basic` = `rc/controls/progression/study_type` (same controls)
-
-These are documented and intentional per the surface design.
-
----
-
-## 6. Diagnostics Coverage
-
-All four planned diagnostics were executed and linked to the baseline via `spec_diagnostics_map.csv`:
-
-| Diagnostic | Result | Concern Level |
-|------------|--------|---------------|
-| Cook's D | max=2.41, 4 obs > 4/N | HIGH |
-| Jarque-Bera | stat=18.9, p<0.001 | MODERATE |
-| Breusch-Pagan | LM=2.26, p=0.133 | LOW |
-| Ramsey RESET | F=22.3, p<0.001 | HIGH |
-
-The diagnostics are well-integrated with the specification battery: the outlier sensitivity (Cook's D) is directly tested via sample restriction specs, and the functional form concern (RESET) is addressed by the quadratic treatment spec.
-
----
-
-## 7. Validity Summary
-
-| Criterion | Status |
-|-----------|--------|
-| spec_run_id uniqueness | PASS (42 unique) |
-| baseline_group_id present | PASS (all G1) |
-| spec_id consistent with spec_tree_path | PASS (identical for all rows) |
-| Numeric fields finite | PASS (all non-null, finite) |
-| Surface-to-results alignment | PASS (all planned specs present, no spurious) |
-| Explore specs correctly excluded | PASS |
-| Baseline reproduction | PASS (exact match) |
-| No invalid rows | PASS |
-| No claim-object drift | PASS (no rows reclassified to non-core) |
-
----
-
-## 8. Recommendations
-
-1. **Consider dropping one of the duplicate spec pairs**: `rc/controls/sets/study_characteristics_basic` and `rc/controls/progression/study_type` produce identical results. A future surface iteration could consolidate these into a single spec_id.
-
-2. **Consider dropping `rc/weights/main/unweighted`**: This is mechanically identical to the baseline and adds no information. It was included as the explicit weights-axis reference point, but the baseline already serves that role.
-
-3. **Quadratic spec coefficient reporting**: For `rc/form/model/quadratic_treatment`, the reported coefficient (-1.66) is the partial on logt conditional on logt^2. The `coefficient_vector_json` correctly includes the logt^2 coefficient and joint F-stat. Consider adding a note in the surface that the focal parameter interpretation changes in this spec.
-
-4. **WLS proxy quality**: The 1/t^2 inverse-variance proxy is acknowledged as rough. Future iterations could explore alternative precision proxies (e.g., inverse of the range of reported damage estimates, or study-level sample size if available).
-
-5. **No block-combination subset sampling was needed**: The surface correctly identified that with 4 control blocks and a 4-control cap, exhaustive block enumeration suffices. The `sampling.controls_subset_sampler = "exhaustive_blocks"` setting was appropriate.
+Overall assessment: **MODERATE support** for the baseline claim. The point estimate is stable across specifications, but statistical significance depends on the inference assumption.

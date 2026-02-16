@@ -1,35 +1,22 @@
 {
   "paper_id": "111185-V1",
-  "verification_date": "2026-02-13",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Elasticity of climate damages with respect to temperature (power-law exponent d2): OLS of log damages on log temperature using Howard & Sterner (2017) meta-analysis data (N=43). Table 1 in the paper.",
+      "claim_summary": "Elasticity of climate damages wrt temperature (damage exponent d2 in power-law damage function). OLS of log(damages) on log(temperature) using Howard & Sterner (2017) meta-analysis data.",
       "expected_sign": "positive",
-      "expected_sign_rationale": "Higher temperatures should increase climate damages; the paper estimates d2=1.88>0, indicating convex damages.",
       "baseline_spec_run_ids": [
-        "111185-V1_G1_baseline"
+        "111185-V1_spec_001"
       ],
       "baseline_spec_ids": [
         "baseline"
       ],
-      "baseline_coefficient": 1.882,
-      "baseline_std_error": 0.451,
-      "baseline_p_value": 0.00015,
+      "baseline_coefficient": 1.8820378009906156,
+      "baseline_std_error": 0.4505271818190953,
+      "baseline_p_value": 0.0001503239979378,
       "baseline_n_obs": 43,
-      "baseline_r_squared": 0.299,
-      "reproduction_quality": "exact",
-      "reproduction_notes": "All five parameters (coefficient, SE, N, R-squared, p-value) match the reported Table 1 values at reported precision.",
-      "notes": [
-        "Single baseline group; this is the only reduced-form regression in the paper.",
-        "Design spec (design/cross_sectional_ols/estimator/ols) and weights/unweighted spec are mechanically identical to baseline.",
-        "rc/controls/sets/study_characteristics_basic is numerically identical to rc/controls/progression/study_type (both use Market+Grey+Preindustrial). Both retained as planned in the surface."
-      ]
+      "notes": "Single regression from Table 1. Paper is primarily structural/calibration; this OLS is used to estimate damage function parameters."
     }
   ],
-  "global_notes": [
-    "No edits to baseline-group assignments relative to the surface. The surface defined a single group G1 and all 42 rows in specification_results.csv are assigned to G1, which is correct.",
-    "Three exploration specs (explore/form/outcome/level, explore/form/model/levels_quadratic, explore/preprocess/treatment/include_zero_damage_obs) were correctly excluded from specification_results.csv per the surface contract.",
-    "The quadratic treatment specs (rc/form/model/quadratic_treatment, rc/joint/outlier_form/drop_weitzman_quadratic) report the coefficient on the linear logt term with logt^2 included. This preserves the baseline claim object (the focal coefficient is still the logt elasticity), though the interpretation changes in the presence of the quadratic term. These are retained as core."
-  ]
+  "global_notes": "No changes to baseline group assignments relative to the surface. G1 is the sole baseline group."
 }

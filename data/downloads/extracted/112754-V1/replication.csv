@@ -1,1 +1,0 @@
-paper_id,reg_id,outcome_var,treatment_var,coefficient,std_error,p_value,ci_lower,ci_upper,n_obs,r_squared,original_coefficient,original_std_error,match_status,coefficient_vector_json,fixed_effects,controls_desc,cluster_var,estimator,sample_desc,notes

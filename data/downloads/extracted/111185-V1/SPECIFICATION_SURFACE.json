@@ -1,336 +1,117 @@
 {
   "paper_id": "111185-V1",
-  "created_at": "2026-02-13",
-  "verified_at": "2026-02-13",
-  "paper_title": "Optimal Climate Policy When Damages are Unknown",
-  "paper_classification": "structural_calibration",
-  "regression_scope_note": "This paper is primarily a structural/calibration paper. The ONLY reduced-form regression is Table 1: an OLS of log damages on log temperature (N=43) using Howard & Sterner (2017) meta-analysis data. This regression estimates damage function parameters that feed into the structural dynamic programming model. All specification search operates on this single calibration regression.",
+  "created_at": "2026-02-15",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
       "claim_object": {
-        "outcome_concept": "Log of climate damage (GDP loss transformed to damage function form, log((D/100)/(1-D/100)))",
-        "treatment_concept": "Log temperature change (log of degrees Celsius warming)",
-        "estimand_concept": "Elasticity of damages with respect to temperature (power-law exponent d2 in the damage function D(T) = d1 * T^d2)",
-        "target_population": "Meta-analysis estimates of climate damages from Howard & Sterner (2017): 49 study-estimates from published climate damage studies 1994-2015, restricted to 43 with positive damage values"
+        "outcome_concept": "Log climate damages (log of corrected damage fraction)",
+        "treatment_concept": "Log temperature increase (log degrees Celsius)",
+        "estimand_concept": "Elasticity of damages with respect to temperature (damage exponent d2 in power-law damage function)",
+        "target_population": "Howard & Sterner (2017) meta-analysis of global climate damage estimates (49 studies, 43 with positive damages)"
       },
       "baseline_specs": [
         {
-          "label": "Table1",
+          "label": "Table1-OLS",
           "outcome_var": "log_correct",
           "treatment_var": "logt",
           "controls": [],
           "n_controls": 0,
-          "fixed_effects": [],
-          "cluster_var": null,
-          "se_type": "classical",
           "estimator": "OLS",
+          "se_type": "classical",
           "n_obs": 43,
-          "coefficient": 1.882,
-          "std_error": 0.451,
-          "p_value": 0.00015,
-          "r_squared": 0.299,
-          "notes": "Bivariate regression: reg log_correct logt. No controls, no robust SEs. Coefficient is the damage function exponent d2."
+          "notes": "Bivariate OLS: reg log_correct logt. Classical (non-robust) standard errors. Coefficient 1.882, SE 0.451."
         }
       ],
       "constraints": {
         "controls_count_min": 0,
-        "controls_count_max": 4,
-        "controls_count_max_named_exception": 7,
-        "controls_count_max_named_exception_rationale": "Named multi-block control sets (study_type+method, full progression) may include up to 7 controls. These are explicitly enumerated and accepted despite exceeding the subset-sampling cap of 4, because they represent substantively meaningful meta-regression specifications. With N=43 and 7 controls, 35 degrees of freedom remain, which is marginal but not catastrophic.",
+        "controls_count_max": 6,
         "linked_adjustment": false,
-        "max_controls_hard_cap_for_subset_sampling": 4,
-        "max_controls_rationale": "With N=43 and only 41 degrees of freedom in the baseline, adding more than 4 controls in combinatorial subset sampling risks overfitting. Named multi-block sets exceeding 4 are permitted as explicit enumerated specs.",
-        "small_sample_warning": true,
-        "small_sample_note": "N=43 severely constrains the feasible specification space. All specifications with controls must be evaluated for degrees-of-freedom adequacy."
+        "notes": "Baseline has 0 controls. Max 6 controls is conservative given N=43 (adding more than ~6 risks severe overfitting). Controls are meta-analytic study characteristics from Howard & Sterner (2017) dataset."
       },
       "core_universe": {
         "design_spec_ids": [
           "design/cross_sectional_ols/estimator/ols"
         ],
         "rc_spec_ids": [
-          "rc/controls/single/add_Year",
-          "rc/controls/single/add_Market",
-          "rc/controls/single/add_Nonmarket",
-          "rc/controls/single/add_Grey",
+          "rc/controls/sets/none",
           "rc/controls/single/add_Preindustrial",
+          "rc/controls/single/add_Market",
+          "rc/controls/single/add_Grey",
+          "rc/controls/single/add_Year",
+          "rc/controls/single/add_Repeat_Obs",
           "rc/controls/single/add_Based_On_Other",
-          "rc/controls/single/add_Method_1",
-          "rc/controls/single/add_Method_2",
-          "rc/controls/single/add_Method_3",
-          "rc/controls/single/add_Method_5",
-          "rc/controls/sets/study_characteristics_basic",
-          "rc/controls/sets/study_characteristics_extended",
-          "rc/controls/progression/study_type",
-          "rc/controls/progression/study_type_plus_method",
+          "rc/controls/single/add_cat",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/extended",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/study_quality",
+          "rc/controls/progression/damage_type",
           "rc/controls/progression/full",
+          "rc/controls/subset/*",
           "rc/sample/outliers/trim_y_1_99",
           "rc/sample/outliers/trim_y_5_95",
-          "rc/sample/outliers/drop_weitzman_12C",
+          "rc/sample/outliers/trim_x_1_99",
           "rc/sample/outliers/cooksd_4_over_n",
-          "rc/sample/time/pre_2006",
-          "rc/sample/time/post_2006",
+          "rc/sample/quality/drop_repeat_obs",
           "rc/sample/quality/drop_based_on_other",
-          "rc/sample/quality/drop_grey_literature",
+          "rc/sample/quality/drop_grey_lit",
+          "rc/sample/quality/drop_catastrophic",
+          "rc/sample/quality/independent_only",
+          "rc/sample/time/early_studies",
+          "rc/sample/time/late_studies",
+          "rc/form/outcome/level",
+          "rc/form/outcome/asinh",
+          "rc/form/treatment/level",
           "rc/form/model/quadratic_treatment",
+          "rc/form/model/levels_quadratic",
           "rc/preprocess/outcome/winsor_1_99",
-          "rc/preprocess/treatment/temperature_adjustment_FUND",
-          "rc/preprocess/treatment/temperature_adjustment_NASA",
-          "rc/preprocess/treatment/temperature_adjustment_AVG",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/wls_inverse_variance_proxy"
-        ],
-        "infer_spec_ids": [
-          "infer/se/hc/hc1",
-          "infer/se/hc/hc2",
-          "infer/se/hc/hc3",
-          "infer/se/cluster/study"
-        ],
-        "explore_spec_ids": [
-          "explore/form/outcome/level",
-          "explore/form/model/levels_quadratic",
-          "explore/preprocess/treatment/include_zero_damage_obs"
+          "rc/preprocess/treatment/winsor_1_99",
+          "rc/joint/*"
         ]
       },
-      "rc_axis_definitions": {
-        "controls": {
-          "pool": [
-            "Year",
-            "Market",
-            "Nonmarket",
-            "Grey",
-            "Preindustrial",
-            "Based_On_Other",
-            "Method_1",
-            "Method_2",
-            "Method_3",
-            "Method_5"
-          ],
-          "mandatory": [],
-          "control_blocks": {
-            "study_type": ["Market", "Grey", "Preindustrial"],
-            "method": ["Method_1", "Method_2", "Method_3", "Method_5"],
-            "quality": ["Based_On_Other", "Nonmarket"],
-            "temporal": ["Year"]
-          },
-          "collinearity_note": "Method_1 through Method_5 are study-method dummies. Method_4 is all zeros in the regression sample and is excluded. The remaining 4 method dummies may be near-collinear if they nearly partition the sample. Check VIF when including the full method block.",
-          "notes": "The baseline is a bivariate regression (0 controls). The Howard & Sterner meta-analysis dataset contains study-level characteristics that could serve as meta-regression controls. These are standard in meta-analysis but were NOT used by Rudik. Since this is a calibration input (not the paper's main claim), we add controls sparingly."
-        },
-        "sample": {
-          "variants": [
-            {
-              "spec_id": "rc/sample/outliers/trim_y_1_99",
-              "description": "Trim log_correct outside [1%, 99%] percentiles"
-            },
-            {
-              "spec_id": "rc/sample/outliers/trim_y_5_95",
-              "description": "Trim log_correct outside [5%, 95%] percentiles"
-            },
-            {
-              "spec_id": "rc/sample/outliers/drop_weitzman_12C",
-              "description": "Drop the Weitzman (2010) 12C/99% damage estimate (Cook's D = 2.41, extreme leverage)",
-              "motivation": "This single observation has temperature 12C (next highest is 6C) and 99% GDP loss. It is the most influential observation by far."
-            },
-            {
-              "spec_id": "rc/sample/outliers/cooksd_4_over_n",
-              "description": "Drop all observations with Cook's D > 4/N (standard threshold, drops ~4 observations)",
-              "motivation": "Standard influential-observation diagnostic. Four observations exceed the 4/N threshold."
-            },
-            {
-              "spec_id": "rc/sample/time/pre_2006",
-              "description": "Studies published before 2006 only (early literature)",
-              "motivation": "Split-sample stability check on publication era"
-            },
-            {
-              "spec_id": "rc/sample/time/post_2006",
-              "description": "Studies published 2006 and after (recent literature)",
-              "motivation": "Split-sample stability check on publication era"
-            },
-            {
-              "spec_id": "rc/sample/quality/drop_based_on_other",
-              "description": "Drop studies based on other studies (Based_On_Other=1, N=10)",
-              "motivation": "These are derivative estimates that may introduce dependence"
-            },
-            {
-              "spec_id": "rc/sample/quality/drop_grey_literature",
-              "description": "Drop grey literature studies (Grey=1, N=9)",
-              "motivation": "Restrict to peer-reviewed published studies"
-            }
-          ]
-        },
-        "functional_form": {
-          "variants": [
-            {
-              "spec_id": "rc/form/model/quadratic_treatment",
-              "description": "log_correct on logt + logt^2. Tests whether power-law exponent is constant or varies with temperature. Focal coefficient is the linear term on logt; the joint test of logt + logt^2 should also be recorded."
-            }
-          ],
-          "exploration_variants": [
-            {
-              "spec_id": "explore/form/outcome/level",
-              "description": "Run in levels: correct_d on t (not logs). Coefficient is NOT d2 -- it is d1*d2*t^(d2-1) evaluated at t=1. This changes the estimand concept and is therefore exploration, not RC.",
-              "estimand_change_note": "The baseline estimand is the log-log elasticity d2. A levels regression estimates a different parameter. Comparable only via marginal-effect computation at a reference temperature."
-            },
-            {
-              "spec_id": "explore/form/model/levels_quadratic",
-              "description": "correct_d on t + t^2. Standard quadratic damage function (DICE/Nordhaus). Estimates d1*t + d2*t^2, a fundamentally different functional form from the power-law baseline.",
-              "estimand_change_note": "The quadratic-in-levels specification estimates parameters of D(T)=a*T+b*T^2, not the power-law D(T)=d1*T^d2. Different estimand."
-            }
-          ]
-        },
-        "preprocessing": {
-          "variants": [
-            {
-              "spec_id": "rc/preprocess/outcome/winsor_1_99",
-              "description": "Winsorize log_correct at 1st/99th percentiles"
-            },
-            {
-              "spec_id": "rc/preprocess/treatment/temperature_adjustment_FUND",
-              "description": "Use FUND-adjusted temperature: t_adjusted = t - Temp_adj_FUND_curr. Accounts for pre-industrial temperature adjustment using FUND model baseline.",
-              "motivation": "Howard & Sterner dataset includes temperature adjustment columns for different baseline periods. FUND current baseline adjustment."
-            },
-            {
-              "spec_id": "rc/preprocess/treatment/temperature_adjustment_NASA",
-              "description": "Use NASA-adjusted temperature: t_adjusted = t - Temp_adj_NASA.",
-              "motivation": "Alternative temperature baseline using NASA temperature data."
-            },
-            {
-              "spec_id": "rc/preprocess/treatment/temperature_adjustment_AVG",
-              "description": "Use average-adjusted temperature: t_adjusted = t - Temp_adj_AVG.",
-              "motivation": "Alternative temperature baseline using average adjustment."
-            }
-          ],
-          "exploration_variants": [
-            {
-              "spec_id": "explore/preprocess/treatment/include_zero_damage_obs",
-              "description": "Include observations with D_new=0 by using asinh(correct_d) as the outcome. This simultaneously changes the sample (adds 3 obs) and the outcome transformation (asinh instead of log). Recovers zero-damage studies.",
-              "estimand_change_note": "Changes both sample composition and outcome transformation. The asinh transform approximates log for large values but differs near zero. Since the outcome transformation changes, this is an estimand change (asinh-elasticity, not log-elasticity).",
-              "motivation": "Baseline drops 6 obs (3 zero, 3 negative). This recovers zero-damage studies using asinh transformation."
-            }
-          ]
-        },
-        "weights": {
-          "variants": [
-            {
-              "spec_id": "rc/weights/main/unweighted",
-              "description": "Unweighted OLS (identical to baseline). Included as the explicit reference for the weights axis."
-            },
-            {
-              "spec_id": "rc/weights/main/wls_inverse_variance_proxy",
-              "description": "Weighted least squares using a precision proxy (e.g., inverse of study-reported standard error, or number of observations/models in each study) if available in the Howard & Sterner data. Standard in meta-regression to give more weight to more precisely estimated damage figures.",
-              "motivation": "Meta-regression standard practice: weight by inverse variance or a precision proxy. Unweighted OLS treats a wide-confidence-interval study estimate the same as a narrow one.",
-              "feasibility_note": "Feasibility depends on whether the H&S dataset contains study-level precision measures. If not available, this spec should be dropped."
-            }
-          ],
-          "notes": "Weighting is a standard and important axis in meta-regression. The baseline is unweighted OLS. If precision weights are available in the dataset, WLS is a high-leverage robustness check."
-        },
-        "inference": {
-          "variants": [
-            {
-              "spec_id": "infer/se/hc/hc1",
-              "description": "HC1 robust standard errors (Stata default 'robust')"
-            },
-            {
-              "spec_id": "infer/se/hc/hc2",
-              "description": "HC2 standard errors (less biased for small samples)"
-            },
-            {
-              "spec_id": "infer/se/hc/hc3",
-              "description": "HC3 standard errors (best small-sample properties among HC variants)"
-            },
-            {
-              "spec_id": "infer/se/cluster/study",
-              "description": "Cluster standard errors by primary author/study group to account for within-study dependence",
-              "feasibility_note": "With 37 unique studies in N=43, many studies contribute only 1 observation. Clustering may be meaningful for authors with multiple estimates (e.g., Nordhaus, Tol). However, with so many singleton clusters, asymptotic cluster SE theory may not improve much over HC robust."
-            }
-          ]
+      "control_pool": {
+        "available_controls": [
+          {"var": "Preindustrial", "type": "binary", "description": "Whether temperature baseline is preindustrial (1) vs later reference year (0)", "block": "study_design"},
+          {"var": "Market", "type": "binary", "description": "Whether estimate includes only market damages (1) vs total (0)", "block": "damage_type"},
+          {"var": "Nonmarket", "type": "binary", "description": "Whether estimate includes only nonmarket damages (1) vs total (0); only 3 obs = 1 in regression sample -- low-power control", "block": "damage_type"},
+          {"var": "Grey", "type": "binary", "description": "Grey literature indicator (1 = grey, 0 = peer reviewed)", "block": "study_quality"},
+          {"var": "Repeat_Obs", "type": "binary", "description": "Whether study is a repeated/updated estimate from same author group", "block": "study_quality"},
+          {"var": "Based_On_Other", "type": "binary", "description": "Whether estimate is derived from another study's results", "block": "study_quality"},
+          {"var": "cat", "type": "binary", "description": "Catastrophic damages flag", "block": "damage_type"},
+          {"var": "Year", "type": "continuous", "description": "Publication year of underlying study", "block": "study_design"}
+        ],
+        "mandatory_controls": [],
+        "control_blocks": {
+          "study_quality": ["Grey", "Repeat_Obs", "Based_On_Other"],
+          "damage_type": ["Market", "cat"],
+          "study_design": ["Preindustrial", "Year"]
         }
       },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/classical",
+          "params": {},
+          "notes": "Paper uses classical (non-robust) OLS standard errors. Stata default: reg log_correct logt (no robust option)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "HC1 (Stata robust) -- standard robustness check for heteroskedasticity."},
+          {"spec_id": "infer/se/hc/hc2", "params": {}, "notes": "HC2 -- better small-sample properties for N=43."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 -- most conservative heteroskedasticity-robust SE for small samples."}
+        ]
+      },
       "budgets": {
-        "max_specs_core_total": 65,
-        "max_specs_controls_subset": 25,
-        "max_specs_explore": 5,
-        "rationale": "Small N=43 limits the feasible specification space. After removing duplicates and reclassifying estimand-changing specs as exploration, the core one-axis-at-a-time battery is ~35 specs. Adding block-combination control subsets (~10) and a handful of high-value interactions (~5-10) brings the total to ~50-55 core specs plus ~3-5 exploration specs. Budget of 65 core + 5 explore is sufficient for full enumeration."
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 32,
+        "notes": "With 3 control blocks (study_quality, damage_type, study_design), exhaustive block combinations = 2^3 = 8. Variable-level subsets add more. Total budget allows for ~80 specs across all axes."
       },
       "sampling": {
         "seed": 111185,
-        "controls_subset_sampler": "exhaustive_blocks",
-        "notes": "With only 4 control blocks (study_type, method, quality, temporal) and a subset-sampling cap of 4 controls, the block-combination space that satisfies the cap is small. The named multi-block specs (study_type+method, full) exceed the cap but are explicitly enumerated. No random sampling needed."
+        "controls_subset_sampler": "exhaustive_blocks_then_stratified_size"
       },
-      "universe_size_estimate": {
-        "baseline": 1,
-        "controls_single_add": 10,
-        "controls_named_sets": 2,
-        "controls_progression": 3,
-        "sample_variants": 8,
-        "functional_form_variants_core": 1,
-        "preprocessing_variants_core": 4,
-        "weights_variants_core": 1,
-        "inference_variants": 4,
-        "total_one_axis_at_a_time_core": 34,
-        "controls_subset_block_combos_within_cap": 8,
-        "high_value_interactions": 6,
-        "exploration_specs": 3,
-        "estimated_total_core": 49,
-        "estimated_total_with_explore": 52,
-        "notes": "After deduplication (removed rc/controls/sets/none, rc/controls/progression/bivariate, rc/sample/outliers/drop_high_influence as duplicates of baseline and cooksd_4_over_n respectively) and reclassification (levels/levels-quadratic/include-zero-damage as exploration), the core universe is ~49 specs. Block-combination control subsets that satisfy the 4-control cap add ~8 specs. With ~6 high-value interactions, total is ~55 core specs well within the 65-spec budget."
-      },
-      "high_value_interactions": [
-        {
-          "spec_id": "rc/joint/outlier_inference/drop_weitzman_hc3",
-          "description": "Drop Weitzman 12C outlier + HC3 standard errors",
-          "axes_changed": ["sample", "inference"]
-        },
-        {
-          "spec_id": "rc/joint/outlier_controls/drop_weitzman_study_type",
-          "description": "Drop Weitzman 12C outlier + study_type control block",
-          "axes_changed": ["sample", "controls"]
-        },
-        {
-          "spec_id": "rc/joint/inference_controls/hc3_study_type",
-          "description": "HC3 standard errors + study_type control block",
-          "axes_changed": ["inference", "controls"]
-        },
-        {
-          "spec_id": "rc/joint/outlier_form/drop_weitzman_quadratic",
-          "description": "Drop Weitzman 12C outlier + quadratic treatment term",
-          "axes_changed": ["sample", "functional_form"]
-        },
-        {
-          "spec_id": "rc/joint/preprocess_sample/temp_adj_fund_drop_weitzman",
-          "description": "FUND temperature adjustment + drop Weitzman outlier",
-          "axes_changed": ["preprocessing", "sample"]
-        },
-        {
-          "spec_id": "rc/joint/weights_inference/wls_hc3",
-          "description": "WLS precision weights + HC3 standard errors (if WLS feasible)",
-          "axes_changed": ["weights", "inference"],
-          "feasibility_note": "Only if WLS spec is feasible (precision weights available)."
-        }
-      ],
-      "diagnostics_plan": [
-        {
-          "diag_spec_id": "diag/regression/influence/cooks_d",
-          "scope": "baseline_group",
-          "description": "Compute and report Cook's D for all observations. Critical for N=43 meta-analysis with known extreme observations."
-        },
-        {
-          "diag_spec_id": "diag/regression/normality/jarque_bera",
-          "scope": "baseline_group",
-          "description": "Test normality of residuals. Baseline shows Omnibus p<0.001 and JB p<0.001, indicating non-normal residuals."
-        },
-        {
-          "diag_spec_id": "diag/regression/heteroskedasticity/breusch_pagan",
-          "scope": "baseline_group",
-          "description": "Test for heteroskedasticity. Classical SEs are used in baseline; this checks whether robust SEs would materially differ."
-        },
-        {
-          "diag_spec_id": "diag/regression/specification/ramsey_reset",
-          "scope": "baseline_group",
-          "description": "Ramsey RESET test for functional-form misspecification. Especially important given that the quadratic treatment axis tests nonlinearity."
-        }
-      ]
+      "diagnostics_plan": []
     }
   ]
 }
