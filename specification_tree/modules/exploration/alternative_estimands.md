@@ -63,7 +63,9 @@ Whether log transforms are RC or exploration depends on the claim object:
 | `explore/estimand/welfare/cs_ps` | Consumer/producer surplus welfare measure |
 | `explore/estimand/welfare/uplift` | Welfare under a treatment rule |
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`exploration_results.csv`)
+
+Write `explore/*` objects to `exploration_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `exploration_json` with an `exploration` block.
 
 Every `explore/estimand/*` row must include:
 

@@ -15,6 +15,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
   - priors,
   - sampling scheme (MCMC details),
   - and focal reported quantities (posterior moments, IRFs, marginal likelihood).
+- Record design-defining metadata under `coefficient_vector_json.design.dsge_bayesian_estimation` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/dsge_bayesian_estimation/*`)
 
@@ -67,7 +68,8 @@ These are **diagnostics**, not estimates of the focal DSGE quantities. They are 
 
 ## Output contract (JSON-heavy)
 
-DSGE outputs should be stored in `coefficient_vector_json` under a `dsge` block, including:
+DSGE outputs are design-specific and typically do not fit cleanly into a flat coefficient vector.
+Store them under `coefficient_vector_json.design.dsge_bayesian_estimation`, including:
 
 - priors + posteriors for key parameters,
 - sampler configuration (draws, burn-in, chains),

@@ -70,6 +70,14 @@ Rule of thumb examples:
 
 Note: exclusion restriction sensitivity belongs in `sens/assumption/instrumental_variables/*`.
 
+## C.1) Shift-share / Bartik diagnostics
+
+| spec_id | Description |
+|---|---|
+| `diag/shift_share/weights/rotemberg` | Rotemberg weights / effective-shocks summary (dominance by a few shocks) |
+| `diag/shift_share/concentration/share_hhi` | Share concentration (HHI / top-share) summary |
+| `diag/shift_share/sanity/shares_sum_to_one` | Sanity check: shares sum to 1 when normalization is intended |
+
 ## D) Randomized-experiment diagnostics
 
 | spec_id | Description |
@@ -158,10 +166,10 @@ Note: exclusion restriction sensitivity belongs in `sens/assumption/instrumental
 | `diag/dsge_bayesian_estimation/fit/marginal_likelihood` | Marginal likelihood / model fit summary |
 | `diag/dsge_bayesian_estimation/filter/kalman_ok` | Kalman filter likelihood computed without numerical failure |
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`diagnostic_json`)
 
-Diagnostics are heterogeneous; store outputs in a `diagnostic` block.
-If a scalar test statistic and p-value exist, include them there (and optionally in scalar fields if your pipeline supports it).
+Diagnostics are heterogeneous; write them to `diagnostics_results.csv` and store outputs in the row’s `diagnostic_json`.
+If a scalar test statistic and p-value exist, include them in the JSON payload.
 
 Example:
 

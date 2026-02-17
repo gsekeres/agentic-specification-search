@@ -78,7 +78,7 @@ All successful rows have finite coefficient, std_error, p_value, n_obs, r_square
 All p-values are in [0, 1]. All CIs contain their respective coefficients.
 
 ### 6. JSON Validity: PASS
-All coefficient_vector_json fields parse as valid JSON. Failed rows use "{}".
+All coefficient_vector_json fields parse as valid JSON. Failed rows include an explicit `{"error": ...}` payload (mirroring `run_error`).
 
 ### 7. Outcome/Treatment Consistency: PASS
 

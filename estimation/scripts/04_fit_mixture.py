@@ -44,17 +44,26 @@ I4R_COMPARISON_FILE = DATA_DIR / "i4r_comparison.csv"
 
 OUTPUT_ABS_T = RESULTS_DIR / "mixture_params_abs_t.json"
 
-# Winsorization thresholds (estimation only)
-WINSORIZE_T_THRESHOLD = 20.0
-WINSORIZE_T_SENSITIVITY = [15.0, 10.0]
-TRIM_ABS_T_CUTOFFS = [10.0]
+# Optional estimation sensitivity knobs (disabled by default)
+#
+# The baseline evidence index is |t| with no clipping/capping. If you want to
+# stress-test numerical stability or tail influence, enable winsorization and/or
+# trimming here explicitly and treat results as sensitivity objects.
+WINSORIZE_T_THRESHOLD = None  # no winsorization by default
+WINSORIZE_T_SENSITIVITY = [20.0, 15.0, 10.0]
+TRIM_ABS_T_CUTOFFS: list[float] = []
 
 
-def _winsorize_pos(x: np.ndarray, threshold: float) -> np.ndarray:
+def _winsorize_pos(x: np.ndarray, threshold: float | None) -> np.ndarray:
     x = np.asarray(x, dtype=float)
     x = x[np.isfinite(x)]
     x = np.clip(x, 0.0, None)
-    return np.minimum(x, float(threshold))
+    if threshold is None:
+        return x
+    thr = float(threshold)
+    if not np.isfinite(thr):
+        return x
+    return np.minimum(x, thr)
 
 
 def _softplus(x: np.ndarray) -> np.ndarray:
@@ -404,6 +413,13 @@ def main() -> None:
                 fit_truncnorm_mixture(t_base, n_init=25, random_state=42, lo=0.0) if np.isfinite(t_base).sum() >= 10 else None
             ),
         }
+        if np.isfinite(t_base).sum() >= 10:
+            out_t["baseline_only_sigma_fixed_1"] = fit_truncnorm_mixture(
+                t_base, n_init=40, random_state=42, lo=0.0, sigma_constraint="fixed_1"
+            )
+            out_t["baseline_only_sigma_geq_1"] = fit_truncnorm_mixture(
+                t_base, n_init=40, random_state=42, lo=0.0, sigma_constraint="geq_1"
+            )
 
         winsor_sens_t: dict = {}
         for thr in WINSORIZE_T_SENSITIVITY:
@@ -442,8 +458,16 @@ def main() -> None:
 
         out_vc: dict = {"z_column": t_col_vc}
         out_vc["all_core"] = fit_truncnorm_mixture(t_core, n_init=25, random_state=42, lo=0.0)
+        out_vc["all_core_sigma_fixed_1"] = fit_truncnorm_mixture(
+            t_core, n_init=40, random_state=42, lo=0.0, sigma_constraint="fixed_1"
+        )
+        out_vc["all_core_sigma_geq_1"] = fit_truncnorm_mixture(
+            t_core, n_init=40, random_state=42, lo=0.0, sigma_constraint="geq_1"
+        )
 
         params_baseline_vc = None
+        params_baseline_vc_sigma_fixed_1 = None
+        params_baseline_vc_sigma_geq_1 = None
         if "v_is_baseline" in vdf.columns:
             base = vdf[pd.to_numeric(vdf["v_is_baseline"], errors="coerce").fillna(0).astype(int) == 1]
             if len(base) > 0:
@@ -451,7 +475,15 @@ def main() -> None:
                 tb = _winsorize_pos(np.abs(tb), WINSORIZE_T_THRESHOLD)
                 if np.isfinite(tb).sum() >= 10:
                     params_baseline_vc = fit_truncnorm_mixture(tb, n_init=25, random_state=42, lo=0.0)
+                    params_baseline_vc_sigma_fixed_1 = fit_truncnorm_mixture(
+                        tb, n_init=40, random_state=42, lo=0.0, sigma_constraint="fixed_1"
+                    )
+                    params_baseline_vc_sigma_geq_1 = fit_truncnorm_mixture(
+                        tb, n_init=40, random_state=42, lo=0.0, sigma_constraint="geq_1"
+                    )
         out_vc["baseline_only"] = params_baseline_vc
+        out_vc["baseline_only_sigma_fixed_1"] = params_baseline_vc_sigma_fixed_1
+        out_vc["baseline_only_sigma_geq_1"] = params_baseline_vc_sigma_geq_1
 
         abs_t_results["spec_level_verified_core"] = out_vc
 
@@ -489,7 +521,7 @@ def main() -> None:
     abs_t_results["k_sensitivity"] = k_sensitivity
 
     # =========================================================================
-    # FOLDED-NORMAL ROBUSTNESS (σ=1, μ_N=0): K=2,3,4 on verified-core |t|≤10
+    # FOLDED-NORMAL ROBUSTNESS (σ=1, μ_N=0): K=2,3,4 on verified-core |t|
     # =========================================================================
     print("\n--- Folded-normal robustness (sigma=1, mu_N=0) ---")
     folded_robustness: dict = {}
@@ -498,12 +530,11 @@ def main() -> None:
         vdf_fn = pd.read_csv(SPEC_LEVEL_VERIFIED_CORE_FILE)
         t_col_fn = "Z_abs" if "Z_abs" in vdf_fn.columns else ("Z" if "Z" in vdf_fn.columns else "t_stat")
         t_fn = pd.to_numeric(vdf_fn[t_col_fn], errors="coerce").to_numpy(dtype=float)
-        t_fn = np.abs(t_fn)
-        t_fn = t_fn[np.isfinite(t_fn) & (t_fn <= 10.0)]
+        t_fn = _winsorize_pos(np.abs(t_fn), WINSORIZE_T_THRESHOLD)
 
         for K in [2, 3, 4]:
             if len(t_fn) >= max(10, K * 3):
-                print(f"  Fitting foldnorm K={K} (sigma=1, mu_N=0) on |t|<=10 (n={len(t_fn)})...")
+                print(f"  Fitting foldnorm K={K} (sigma=1, mu_N=0) on verified-core |t| (n={len(t_fn)})...")
                 folded_robustness[f"K={K}"] = fit_foldnorm_mixture(
                     t_fn, n_components=K, n_init=50, random_state=42,
                     sigma_constraint="fixed_1", fix_null_mean_zero=True,
@@ -514,7 +545,7 @@ def main() -> None:
     abs_t_results["folded_normal_robustness"] = folded_robustness
 
     # =========================================================================
-    # MU_FREE SIGMA=1 COMPARISON: both families, K=2,3,4, full + |t|≤10
+    # MU_FREE SIGMA=1 COMPARISON: both families, K=2,3,4 (full sample)
     # =========================================================================
     print("\n--- mu_free sigma=1 comparison (truncnorm + foldnorm, K=2,3,4) ---")
     mu_free_comparison: dict = {}
@@ -524,10 +555,7 @@ def main() -> None:
         t_col_mf = "Z_abs" if "Z_abs" in vdf_mf.columns else ("Z" if "Z" in vdf_mf.columns else "t_stat")
         t_mf_raw = pd.to_numeric(vdf_mf[t_col_mf], errors="coerce").to_numpy(dtype=float)
         t_mf_full = _winsorize_pos(np.abs(t_mf_raw), WINSORIZE_T_THRESHOLD)
-        t_mf_trim = np.abs(t_mf_raw)
-        t_mf_trim = t_mf_trim[np.isfinite(t_mf_trim) & (t_mf_trim <= 10.0)]
-
-        samples = [("full", t_mf_full), ("trim10", t_mf_trim)]
+        samples = [("full", t_mf_full)]
 
         for K in [2, 3, 4]:
             for sample_name, sample_data in samples:
@@ -565,7 +593,7 @@ def main() -> None:
 
     # =========================================================================
     # SYSTEMATIC GRID: K x sigma_constraint x sample (truncated-normal)
-    # 3 sigma specs (free, fixed_1, geq_1) x 3 K (2,3,4) x 2 samples (full, trim10)
+    # 3 sigma specs (free, fixed_1, geq_1) x 3 K (2,3,4) on a single (full) sample.
     # All on verified-core data for consistency.
     # =========================================================================
     print("\n--- Systematic grid: K x sigma x sample ---")
@@ -576,10 +604,7 @@ def main() -> None:
         t_col_sg = "Z_abs" if "Z_abs" in vdf_sg.columns else ("Z" if "Z" in vdf_sg.columns else "t_stat")
         t_sg_raw = pd.to_numeric(vdf_sg[t_col_sg], errors="coerce").to_numpy(dtype=float)
         t_sg_full = _winsorize_pos(np.abs(t_sg_raw), WINSORIZE_T_THRESHOLD)
-        t_sg_trim = np.abs(t_sg_raw)
-        t_sg_trim = t_sg_trim[np.isfinite(t_sg_trim) & (t_sg_trim <= 10.0)]
-
-        samples_sg = [("full", t_sg_full), ("trim10", t_sg_trim)]
+        samples_sg = [("full", t_sg_full)]
         sigma_specs = [("free", None), ("fixed_1", "fixed_1"), ("geq_1", "geq_1")]
 
         for K in [2, 3, 4]:

@@ -9,6 +9,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical dynamic-panel estimate for the claim object.
 - Record: lag structure, instrument strategy, and the paper’s focal parameterization (short-run vs long-run effects).
+- Record design-defining metadata under `coefficient_vector_json.design.dynamic_panel` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/dynamic_panel/*`)
 
@@ -69,7 +70,24 @@ If the paper reports long-run effects (e.g., \u03b2/(1-\u03b1) in an AR(1)-type 
 - the persistence parameter(s),
 - the derived long-run quantity,
 
-in `coefficient_vector_json.long_run` (and ensure scalar fields correspond to the paper’s focal object).
+under `coefficient_vector_json.design.dynamic_panel.long_run` (and ensure scalar fields correspond to the paper’s focal object).
+
+Example:
+
+```json
+{
+  "design": {
+    "dynamic_panel": {
+      "long_run": {
+        "short_run_beta": 0.12,
+        "persistence_alpha": 0.80,
+        "long_run_beta_over_1_minus_alpha": 0.60,
+        "formula": "beta/(1-alpha)"
+      }
+    }
+  }
+}
+```
 
 ## Typed references to universal modules (do not duplicate here)
 

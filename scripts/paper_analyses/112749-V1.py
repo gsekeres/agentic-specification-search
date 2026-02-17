@@ -26,12 +26,11 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 # PATHS
 # =============================================================================
-BASE_DIR = '/Users/gabesekeres/Dropbox/Papers/competition_science/agentic_specification_search'
-PKG_DIR = f'{BASE_DIR}/data/downloads/extracted/112749-V1'
-DATA_DIR = f'{PKG_DIR}/Replication_AER-2012-0980/Generate_Data'
+PAPER_ID = "112749-V1"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+PKG_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
+DATA_DIR = os.path.join(PKG_DIR, "Replication_AER-2012-0980", "Generate_Data")
 OUT_DIR = PKG_DIR
-
-PAPER_ID = '112749-V1'
 
 # =============================================================================
 # HELPER FUNCTIONS (from replication script)
@@ -477,13 +476,13 @@ G2L = ['lag1_lnvalue_equipment_*','lag2_lnvalue_equipment_*','lag3_lnvalue_equip
 G1T = ['f_int_1930','f_int_1940','f_int_1950','f_int_1960','f_int_1970']
 G2T = ['f_int_1930','f_int_1935','f_int_1940','f_int_1945','f_int_1950','f_int_1954','f_int_1960','f_int_1964','f_int_1970']
 
-def run_spec(df, dv, tvs, cps, ab, cl, wt, sid, stp, bgid, ft, sd='post1930', cd='', fed='fips'):
+def run_spec(df, dv, tvs, cps, ab, cl, wt, sid, stp, bgid, ft, sd='post1930', cd='', fed='fips', cv_extra=None):
     global run_counter; run_counter += 1; srid = f'{PAPER_ID}__{bgid}__{run_counter:03d}'
     ctrls = get_control_cols(df, cps) if cps else []
     avs = list(set([dv]+tvs+ctrls+([ab] if ab else [])+([cl] if cl else [])+([wt] if wt else [])))
     rd = df.dropna(subset=[v for v in avs if v in df.columns]).copy()
     if len(rd) < 10:
-        spec_results.append({'paper_id':PAPER_ID,'spec_run_id':srid,'spec_id':sid,'spec_tree_path':stp,'baseline_group_id':bgid,'outcome_var':dv,'treatment_var':ft,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':len(rd),'r_squared':np.nan,'coefficient_vector_json':'{}','sample_desc':sd,'fixed_effects':fed,'controls_desc':cd,'cluster_var':cl or '','run_success':0,'run_error':f'Only {len(rd)} obs'})
+        spec_results.append({'paper_id':PAPER_ID,'spec_run_id':srid,'spec_id':sid,'spec_tree_path':stp,'baseline_group_id':bgid,'outcome_var':dv,'treatment_var':ft,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':len(rd),'r_squared':np.nan,'coefficient_vector_json':json.dumps({'error': f'Only {len(rd)} obs'}),'sample_desc':sd,'fixed_effects':fed,'controls_desc':cd,'cluster_var':cl or '','run_success':0,'run_error':f'Only {len(rd)} obs'})
         return None
     rhs = ' + '.join(tvs+ctrls); fm = f'{dv} ~ {rhs} | {ab}' if ab else f'{dv} ~ {rhs}'
     try:
@@ -491,6 +490,8 @@ def run_spec(df, dv, tvs, cps, ab, cl, wt, sid, stp, bgid, ft, sd='post1930', cd
         mdl = pf.feols(fm, data=rd, vcov=vc, weights=wt)
         co,se,pv,ci = mdl.coef(),mdl.se(),mdl.pvalue(),mdl.confint()
         cd_j = {tv:round(float(co[tv]),8) for tv in tvs if tv in co.index}
+        if cv_extra:
+            cd_j.update(cv_extra)
         fc = float(co[ft]) if ft in co.index else np.nan; fse = float(se[ft]) if ft in se.index else np.nan
         fp = float(pv[ft]) if ft in pv.index else np.nan
         fcl = float(ci.loc[ft].iloc[0]) if ft in ci.index else np.nan; fcu = float(ci.loc[ft].iloc[1]) if ft in ci.index else np.nan
@@ -499,7 +500,7 @@ def run_spec(df, dv, tvs, cps, ab, cl, wt, sid, stp, bgid, ft, sd='post1930', cd
         return mdl
     except Exception as e:
         em = str(e)[:200]; print(f"  [{run_counter:03d}] {sid}: FAILED - {em[:80]}")
-        spec_results.append({'paper_id':PAPER_ID,'spec_run_id':srid,'spec_id':sid,'spec_tree_path':stp,'baseline_group_id':bgid,'outcome_var':dv,'treatment_var':ft,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':np.nan,'r_squared':np.nan,'coefficient_vector_json':'{}','sample_desc':sd,'fixed_effects':fed,'controls_desc':cd,'cluster_var':cl or '','run_success':0,'run_error':em})
+        spec_results.append({'paper_id':PAPER_ID,'spec_run_id':srid,'spec_id':sid,'spec_tree_path':stp,'baseline_group_id':bgid,'outcome_var':dv,'treatment_var':ft,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':np.nan,'r_squared':np.nan,'coefficient_vector_json':json.dumps({'error': em}),'sample_desc':sd,'fixed_effects':fed,'controls_desc':cd,'cluster_var':cl or '','run_success':0,'run_error':em})
         return None
 
 def run_infer(df, dv, tvs, cps, ab, wt, isid, istp, bgid, ft, bsrid, vcspec):
@@ -508,7 +509,7 @@ def run_infer(df, dv, tvs, cps, ab, wt, isid, istp, bgid, ft, bsrid, vcspec):
     avs = list(set([dv]+tvs+ctrls+([ab] if ab else [])+([wt] if wt else [])))
     rd = df.dropna(subset=[v for v in avs if v in df.columns]).copy()
     if len(rd) < 10:
-        inference_results.append({'paper_id':PAPER_ID,'inference_run_id':irid,'spec_run_id':bsrid,'spec_id':isid,'spec_tree_path':istp,'baseline_group_id':bgid,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':len(rd),'r_squared':np.nan,'coefficient_vector_json':'{}','run_success':0,'run_error':f'Only {len(rd)} obs'})
+        inference_results.append({'paper_id':PAPER_ID,'inference_run_id':irid,'spec_run_id':bsrid,'spec_id':isid,'spec_tree_path':istp,'baseline_group_id':bgid,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':len(rd),'r_squared':np.nan,'coefficient_vector_json':json.dumps({'error': f'Only {len(rd)} obs'}),'run_success':0,'run_error':f'Only {len(rd)} obs'})
         return
     rhs = ' + '.join(tvs+ctrls); fm = f'{dv} ~ {rhs} | {ab}' if ab else f'{dv} ~ {rhs}'
     try:
@@ -520,7 +521,7 @@ def run_infer(df, dv, tvs, cps, ab, wt, isid, istp, bgid, ft, bsrid, vcspec):
         fcl = float(ci.loc[ft].iloc[0]) if ft in ci.index else np.nan; fcu = float(ci.loc[ft].iloc[1]) if ft in ci.index else np.nan
         inference_results.append({'paper_id':PAPER_ID,'inference_run_id':irid,'spec_run_id':bsrid,'spec_id':isid,'spec_tree_path':istp,'baseline_group_id':bgid,'coefficient':round(fc,6),'std_error':round(fse,6),'p_value':round(fp,6),'ci_lower':round(fcl,6),'ci_upper':round(fcu,6),'n_obs':int(mdl._N),'r_squared':round(float(mdl._r2),6) if mdl._r2 is not None else np.nan,'coefficient_vector_json':json.dumps(cd_j),'run_success':1,'run_error':''})
     except Exception as e:
-        inference_results.append({'paper_id':PAPER_ID,'inference_run_id':irid,'spec_run_id':bsrid,'spec_id':isid,'spec_tree_path':istp,'baseline_group_id':bgid,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':np.nan,'r_squared':np.nan,'coefficient_vector_json':'{}','run_success':0,'run_error':str(e)[:200]})
+        inference_results.append({'paper_id':PAPER_ID,'inference_run_id':irid,'spec_run_id':bsrid,'spec_id':isid,'spec_tree_path':istp,'baseline_group_id':bgid,'coefficient':np.nan,'std_error':np.nan,'p_value':np.nan,'ci_lower':np.nan,'ci_upper':np.nan,'n_obs':np.nan,'r_squared':np.nan,'coefficient_vector_json':json.dumps({'error': str(e)[:200]}),'run_success':0,'run_error':str(e)[:200]})
 
 # --- G1: Black Population Share ---
 print("\n--- G1: Black Population Share ---")
@@ -544,15 +545,15 @@ run_spec(dsh, 'lnfrac_black', ['f_int_1930','f_int_1940','f_int_1950'], G1C, 'fi
 q01=preanalysis_post1930['lnfrac_black'].quantile(0.01); q99=preanalysis_post1930['lnfrac_black'].quantile(0.99)
 dtr = preanalysis_post1930[(preanalysis_post1930['lnfrac_black']>=q01)&(preanalysis_post1930['lnfrac_black']<=q99)].copy()
 run_spec(dtr, 'lnfrac_black', G1T, G1C, 'fips','fips','county_w', 'rc/sample/outliers/trim_y_1_99','modules/robustness/sample.md#outliers','G1',G1F, sd='post1930_trimmed', cd='state_year_FE+geo+lags')
-run_spec(preanalysis_post1930, 'frac_black_level', G1T, G1C, 'fips','fips','county_w', 'rc/form/outcome/level','modules/robustness/functional_form.md#outcome-transformations','G1',G1F, cd='state_year_FE+geo+lags')
-run_spec(preanalysis_post1930, 'lnfrac_black', ['f_bin_1930','f_bin_1940','f_bin_1950','f_bin_1960','f_bin_1970'], G1C, 'fips','fips','county_w', 'rc/form/treatment/binary_flood','modules/robustness/functional_form.md#treatment-transformations','G1','f_bin_1930', cd='state_year_FE+geo+lags')
+run_spec(preanalysis_post1930, 'frac_black_level', G1T, G1C, 'fips','fips','county_w', 'rc/form/outcome/level','modules/robustness/functional_form.md#outcome-transformations','G1',G1F, cd='state_year_FE+geo+lags', cv_extra={'functional_form': {'target':'outcome','operation':'transform','outcome_transform':'level','baseline_outcome_var':'lnfrac_black','new_outcome_var':'frac_black_level','interpretation':'Outcome in levels instead of log; coefficient interpreted in level units.'}})
+run_spec(preanalysis_post1930, 'lnfrac_black', ['f_bin_1930','f_bin_1940','f_bin_1950','f_bin_1960','f_bin_1970'], G1C, 'fips','fips','county_w', 'rc/form/treatment/binary_flood','modules/robustness/functional_form.md#treatment-transformations','G1','f_bin_1930', cd='state_year_FE+geo+lags', cv_extra={'functional_form': {'target':'treatment','operation':'binarize','source_var':'flooded_share','baseline_treatment_family':'f_int_{year}','new_var_family':'f_bin_{year}','recode_rule':'flood = 1[flooded_share > 0]; f_bin_{y} = flood * 1[year==y]','threshold':0,'direction':'>','units':'share (0-1)','interpretation':'Extensive-margin dynamic effects (flooded vs not flooded) rather than per-unit intensity.'}})
 run_spec(preanalysis_post1930, 'lnfrac_black', G1T, G1C, 'fips','fips',None, 'rc/weights/main/unweighted','modules/robustness/weights.md#main-weight-choices','G1',G1F, cd='state_year_FE+geo+lags')
 run_spec(preanalysis_post1930, 'lnfrac_black', G1T, G1C, 'fips','fips','pop_w_1920', 'rc/weights/main/population_1920','modules/robustness/weights.md#main-weight-choices','G1',G1F, cd='state_year_FE+geo+lags')
 run_spec(preanalysis_post1930, 'lnfrac_black', G1T, G1C, 'fips','fips','county_w', 'baseline__f_int_1950','designs/difference_in_differences.md#baseline','G1','f_int_1950', cd='state_year_FE+geo+lags')
 run_spec(preanalysis_post1930, 'lnfrac_black', G1T, G1C, 'fips','fips',None, 'rc/weights/main/unweighted__f_int_1950','modules/robustness/weights.md#main-weight-choices','G1','f_int_1950', cd='state_year_FE+geo+lags')
 run_spec(preanalysis_post1930, 'lnfrac_black', G1T, G1C+ND, 'fips','fips','county_w', 'rc/controls/sets/extended__f_int_1950','modules/robustness/controls.md#standard-control-sets','G1','f_int_1950', cd='state_year_FE+geo+lags+ND')
 run_spec(preanalysis_post1930, 'lnfrac_black', G1T, [], 'fips','fips','county_w', 'rc/controls/sets/none__f_int_1950','modules/robustness/controls.md#standard-control-sets','G1','f_int_1950', cd='none')
-run_spec(preanalysis_post1930, 'lnpopulation_black', G1T, SY+GEO+['lag2_lnpopulation_black_*','lag3_lnpopulation_black_*','lag4_lnpopulation_black_*'], 'fips','fips','county_w', 'rc/form/outcome/alt_pop_black','modules/robustness/functional_form.md#outcome-transformations','G1',G1F, cd='state_year_FE+geo+pop_black_lags')
+run_spec(preanalysis_post1930, 'lnpopulation_black', G1T, SY+GEO+['lag2_lnpopulation_black_*','lag3_lnpopulation_black_*','lag4_lnpopulation_black_*'], 'fips','fips','county_w', 'rc/form/outcome/alt_pop_black','modules/robustness/functional_form.md#outcome-transformations','G1',G1F, cd='state_year_FE+geo+pop_black_lags', cv_extra={'functional_form': {'target':'outcome','operation':'operationalization_swap','baseline_outcome_var':'lnfrac_black','new_outcome_var':'lnpopulation_black','interpretation':'Alternative outcome operationalization (log Black population level) used to probe denominator sensitivity vs log share.'}})
 
 # --- G2: Farm Equipment Value ---
 print("\n--- G2: Farm Equipment Value ---")
@@ -574,8 +575,8 @@ run_spec(dshg2, 'lnvalue_equipment', [t for t in G2T if int(t.split('_')[-1])<=1
 q01e=preanalysis_post1930['lnvalue_equipment'].quantile(0.01); q99e=preanalysis_post1930['lnvalue_equipment'].quantile(0.99)
 dtre = preanalysis_post1930[(preanalysis_post1930['lnvalue_equipment']>=q01e)&(preanalysis_post1930['lnvalue_equipment']<=q99e)].copy()
 run_spec(dtre, 'lnvalue_equipment', G2T, G2C, 'fips','fips','county_w', 'rc/sample/outliers/trim_y_1_99','modules/robustness/sample.md#outliers','G2',G2F, sd='post1930_trimmed', cd='state_year_FE+geo+equip_lags')
-run_spec(preanalysis_post1930, 'value_equipment_level', G2T, G2C, 'fips','fips','county_w', 'rc/form/outcome/level','modules/robustness/functional_form.md#outcome-transformations','G2',G2F, cd='state_year_FE+geo+equip_lags')
-run_spec(preanalysis_post1930, 'lnvalue_equipment', ['f_bin_1930','f_bin_1935','f_bin_1940','f_bin_1945','f_bin_1950','f_bin_1954','f_bin_1960','f_bin_1964','f_bin_1970'], G2C, 'fips','fips','county_w', 'rc/form/treatment/binary_flood','modules/robustness/functional_form.md#treatment-transformations','G2','f_bin_1940', cd='state_year_FE+geo+equip_lags')
+run_spec(preanalysis_post1930, 'value_equipment_level', G2T, G2C, 'fips','fips','county_w', 'rc/form/outcome/level','modules/robustness/functional_form.md#outcome-transformations','G2',G2F, cd='state_year_FE+geo+equip_lags', cv_extra={'functional_form': {'target':'outcome','operation':'transform','outcome_transform':'level','baseline_outcome_var':'lnvalue_equipment','new_outcome_var':'value_equipment_level','interpretation':'Outcome in levels instead of log; coefficient interpreted in level units.'}})
+run_spec(preanalysis_post1930, 'lnvalue_equipment', ['f_bin_1930','f_bin_1935','f_bin_1940','f_bin_1945','f_bin_1950','f_bin_1954','f_bin_1960','f_bin_1964','f_bin_1970'], G2C, 'fips','fips','county_w', 'rc/form/treatment/binary_flood','modules/robustness/functional_form.md#treatment-transformations','G2','f_bin_1940', cd='state_year_FE+geo+equip_lags', cv_extra={'functional_form': {'target':'treatment','operation':'binarize','source_var':'flooded_share','baseline_treatment_family':'f_int_{year}','new_var_family':'f_bin_{year}','recode_rule':'flood = 1[flooded_share > 0]; f_bin_{y} = flood * 1[year==y]','threshold':0,'direction':'>','units':'share (0-1)','interpretation':'Extensive-margin dynamic effects (flooded vs not flooded) rather than per-unit intensity.'}})
 run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, G2C, 'fips','fips',None, 'rc/weights/main/unweighted','modules/robustness/weights.md#main-weight-choices','G2',G2F, cd='state_year_FE+geo+equip_lags')
 run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, G2C, 'fips','fips','pop_w_1920', 'rc/weights/main/population_1920','modules/robustness/weights.md#main-weight-choices','G2',G2F, cd='state_year_FE+geo+equip_lags')
 run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, G2C, 'fips','fips','county_w', 'baseline__f_int_1930','designs/difference_in_differences.md#baseline','G2','f_int_1930', cd='state_year_FE+geo+equip_lags')
@@ -583,7 +584,7 @@ run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, G2C, 'fips','fips','cou
 run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, G2C, 'fips','fips',None, 'rc/weights/main/unweighted__f_int_1970','modules/robustness/weights.md#main-weight-choices','G2','f_int_1970', cd='state_year_FE+geo+equip_lags')
 run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, G2C+ND, 'fips','fips','county_w', 'rc/controls/sets/extended__f_int_1970','modules/robustness/controls.md#standard-control-sets','G2','f_int_1970', cd='state_year_FE+geo+equip_lags+ND')
 run_spec(preanalysis_post1930, 'lnvalue_equipment', G2T, [], 'fips','fips','county_w', 'rc/controls/sets/none__f_int_1970','modules/robustness/controls.md#standard-control-sets','G2','f_int_1970', cd='none')
-run_spec(preanalysis_post1930, 'lntractors', G2T, SY+GEO+['lag1_lntractors_*'], 'fips','fips','county_w', 'rc/form/outcome/alt_tractors','modules/robustness/functional_form.md#outcome-transformations','G2',G2F, cd='state_year_FE+geo+tractor_lags')
+run_spec(preanalysis_post1930, 'lntractors', G2T, SY+GEO+['lag1_lntractors_*'], 'fips','fips','county_w', 'rc/form/outcome/alt_tractors','modules/robustness/functional_form.md#outcome-transformations','G2',G2F, cd='state_year_FE+geo+tractor_lags', cv_extra={'functional_form': {'target':'outcome','operation':'operationalization_swap','baseline_outcome_var':'lnvalue_equipment','new_outcome_var':'lntractors','interpretation':'Alternative mechanization proxy (log tractors) used as a robustness check vs equipment value.'}})
 
 # INFERENCE VARIANTS
 print("\n--- Inference Variants ---")

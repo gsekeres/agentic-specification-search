@@ -8,6 +8,7 @@ Universal RC, inference, and exploration menus live in `specification_tree/modul
 
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical DiD estimate for the claim object.
+- Record design-defining metadata under `coefficient_vector_json.design.difference_in_differences` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/difference_in_differences/*`)
 

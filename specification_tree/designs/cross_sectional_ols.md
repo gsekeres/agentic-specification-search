@@ -8,6 +8,7 @@ Universal RC, inference, diagnostics, and exploration menus live in `specificati
 
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical cross-sectional estimate for the claim object.
+- Record design-defining metadata under `coefficient_vector_json.design.cross_sectional_ols` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/cross_sectional_ols/*`)
 

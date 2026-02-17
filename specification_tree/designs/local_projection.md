@@ -16,6 +16,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical LP object (shock definition, horizons, controls/dynamics, and inference).
 - Record the full IRF path \(\{\beta_h\}_{h=0}^H\).
+- Record design-defining metadata under `coefficient_vector_json.design.local_projection` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/local_projection/*`)
 

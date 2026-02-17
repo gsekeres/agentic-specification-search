@@ -254,8 +254,8 @@ def main() -> None:
     mix_abs = json.loads((results_dir / "mixture_params_abs_t.json").read_text())
     dep = json.loads((results_dir / "dependence.json").read_text())
 
-    # Prefer sigma=1 fixed (trimmed |t|<=10) as baseline; fall back to sigma-free.
-    mix_abs_params = mix_abs.get("spec_level", {}).get("trim_sensitivity", {}).get("trim_abs_le_10_sigma_fixed_1", None)
+    # Prefer sigma=1 fixed (baseline-only, no |t| capping) as baseline; fall back to sigma-free.
+    mix_abs_params = mix_abs.get("spec_level", {}).get("baseline_only_sigma_fixed_1", None)
     if mix_abs_params is None:
         mix_abs_params = mix_abs.get("spec_level", {}).get("baseline_only", None)
     if mix_abs_params is None:

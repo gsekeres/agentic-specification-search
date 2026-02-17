@@ -65,13 +65,22 @@ See `specification_tree/SPECIFICATION_SURFACE.md`, `specification_tree/SPEC_UNIV
 
 ### 5) Coefficient-vector format (carry full outputs)
 
-**Decision**: store full model outputs and metadata in a single JSON column (`coefficient_vector_json`) alongside scalar focal estimates.
+**Decision**: store full model outputs and audit metadata in a single structured JSON column (`coefficient_vector_json`) alongside scalar focal estimates.
 
 **Rationale**:
 - Different methods have different output structures (OLS coefficients differ from IV first stages, which differ from event study lead/lag coefficients)
 - A flexible JSON format accommodates all methods without requiring method-specific columns
 - Downstream analysis can parse the JSON for specific use cases
 - Full model output is preserved for reproducibility
+
+**Contract** (enforced by validators): for successful estimate-like rows, `coefficient_vector_json` is a JSON object with reserved audit keys and the full coefficient vector nested under `coefficients` to avoid key collisions. At minimum it includes:
+
+- `coefficients`: parameter name → estimate
+- `inference`: inference choice used for the scalar `std_error`/`p_value`
+- `software`: runner language/version + key package versions
+- `surface_hash`: deterministic hash of the `SPECIFICATION_SURFACE.json` used for the run
+
+For failures (`run_success=0`), scalar numeric columns are kept missing and the JSON payload must include a non-empty `error` string (plus optional structured details).
 
 Vector-producing designs (event studies, local projections, SVAR IRFs) must declare a **scalar focal parameter** in JSON and store the full path/vector.
 

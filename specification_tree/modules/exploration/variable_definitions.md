@@ -26,6 +26,11 @@ Many “reasonable” robustness checks in applied work are actually **changes t
 
 These are often scientifically valuable, but they typically change the estimand and should be **explicitly separated from core replication robustness**.
 
+Important overlap:
+
+- Some recodings (especially continuous exposure → binary “any exposure”) can also be used as an `rc/form/treatment/*` functional-form stress test when the treatment concept is unchanged and the surface explicitly records the intended coefficient interpretation.
+- Use `explore/definition/*` when the goal is to **redefine** the concept/estimand (new cutoff definitions, new timing rules, materially different outcome constructs), rather than to stress-test the baseline functional form.
+
 ## Treatment definition exploration
 
 ### Dichotomization / threshold rules (often changes the estimand)
@@ -72,6 +77,10 @@ These are often scientifically valuable, but they typically change the estimand 
 | `explore/definition/outcome/binary_threshold_median` | Median-split outcome |
 | `explore/definition/outcome/rank_transform` | Rank outcome (ordinalization) |
 
+## Output contract (`exploration_results.csv`)
+
+Write `explore/*` objects to `exploration_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `exploration_json` with an `exploration` block.
+
 ## Required labeling and audit fields
 
 Every `explore/*` row must clearly record **what concept changed**. Include:
@@ -80,7 +89,7 @@ Every `explore/*` row must clearly record **what concept changed**. Include:
 - how it differs from baseline,
 - a short reason why it is plausible.
 
-Suggested `coefficient_vector_json` block:
+Suggested `exploration_json` block:
 
 ```json
 {
@@ -93,4 +102,3 @@ Suggested `coefficient_vector_json` block:
   }
 }
 ```
-

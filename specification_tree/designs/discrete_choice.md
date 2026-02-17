@@ -8,6 +8,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical discrete-outcome estimate for the claim object.
+- Record design-defining metadata under `coefficient_vector_json.design.discrete_choice` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 **Focal-parameter rule (important)**: papers differ in what they treat as the headline object:
 
@@ -82,4 +83,3 @@ These are **diagnostics**, not estimates of the focal estimand. They are not par
 
 - Alternative estimands (e.g., distributional effects): `specification_tree/modules/exploration/alternative_estimands.md`
 - Heterogeneity / subgroup effects: `specification_tree/modules/exploration/heterogeneity.md`
-

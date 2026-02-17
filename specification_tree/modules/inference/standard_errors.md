@@ -66,7 +66,10 @@ Prefer resampling-based inference:
 
 ## Required audit fields (`coefficient_vector_json`)
 
-Include an `inference` block for all `infer/se/*` rows:
+Include an `inference` block for all successful rows:
+
+- estimate rows (`baseline`, `design/*`, `rc/*`): record the **canonical** inference choice used for the row’s scalar `std_error`/`p_value`.
+- inference-only rows (`infer/se/*`): record the variant choice (and any realized cluster counts, etc.).
 
 ```json
 {

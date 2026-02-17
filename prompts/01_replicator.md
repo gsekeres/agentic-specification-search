@@ -56,7 +56,7 @@ One row per replicated regression. Required columns:
 | `original_coefficient` | The coefficient reported in the paper's code/logs |
 | `original_std_error` | The SE reported in the paper's code/logs |
 | `match_status` | `exact`, `close`, `discrepant`, or `failed` (see tolerance rules) |
-| `coefficient_vector_json` | Full coefficient vector as JSON (all estimated coefficients) |
+| `coefficient_vector_json` | Structured JSON payload (required). Store all estimated coefficients under a `coefficients` object; include an `inference` block describing the SE/clustering used and a `software` block describing language/package versions. |
 | `fixed_effects` | Fixed effects included (e.g., `"unit + time"`) |
 | `controls_desc` | Brief description of control variables |
 | `cluster_var` | Clustering variable(s) (blank if none) |
@@ -255,7 +255,7 @@ This ensures the reference file can be updated for future papers. Do your best t
 ## Quality checks before finishing
 
 - Every `reg_id` in `replication.csv` is unique.
-- `coefficient_vector_json` is valid JSON for every row.
+- `coefficient_vector_json` is valid JSON for every row (and uses the reserved-key schema with `coefficients` nested, not a flat coefficient dict).
 - `match_status` is one of: `exact`, `close`, `discrepant`, `failed`.
 - `original_specifications` count is documented and plausible.
 - The replication script is self-contained and runnable.

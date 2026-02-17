@@ -49,9 +49,9 @@ Common families:
 | `post/mht/{family}/romano_wolf` | Romano–Wolf step-down (bootstrap) |
 | `post/mht/{family}/westfall_young` | Westfall–Young (resampling) |
 
-## Output contract
+## Output contract (`postprocess_results.csv`)
 
-Store results as a JSON object keyed by the corrected family and procedure. Example:
+Write one row per `post/*` object to `postprocess_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `postprocess_json` as a `postprocess` block. Example:
 
 ```json
 {

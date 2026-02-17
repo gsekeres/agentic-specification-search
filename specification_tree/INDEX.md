@@ -6,6 +6,7 @@ Start with:
 
 - `specification_tree/ARCHITECTURE.md` (conceptual contract + typing)
 - `specification_tree/CONTRACT.md` (practical output/schema rules)
+- `specification_tree/DESIGN_AUDIT_FIELDS.md` (where to record design-defining parameters in JSON)
 - `specification_tree/CLAIM_GROUPING.md` (baseline groups; core vs exploration)
 - `specification_tree/REVEALED_SEARCH_SPACE.md` (revealed vs potential search; linkage constraints)
 - `specification_tree/SPECIFICATION_SURFACE.md` (paper-specific universe + constraints + budgets)
@@ -22,6 +23,7 @@ Pick the relevant design file(s) and run the **design-specific** estimator imple
 | Event study | `specification_tree/designs/event_study.md` |
 | Regression discontinuity | `specification_tree/designs/regression_discontinuity.md` |
 | Instrumental variables | `specification_tree/designs/instrumental_variables.md` |
+| Shift-share / Bartik | `specification_tree/designs/shift_share.md` |
 | Randomized experiment | `specification_tree/designs/randomized_experiment.md` |
 | Synthetic control | `specification_tree/designs/synthetic_control.md` |
 | Panel fixed effects | `specification_tree/designs/panel_fixed_effects.md` |
@@ -47,6 +49,7 @@ These are **typed** and should be referenced (not duplicated) from design files 
 - `specification_tree/modules/robustness/preprocessing.md`
 - `specification_tree/modules/robustness/data_construction.md`
 - `specification_tree/modules/robustness/functional_form.md`
+- `specification_tree/modules/robustness/joint.md`
 - `specification_tree/modules/robustness/weights.md`
 
 ### Inference (`infer/*`)

@@ -21,6 +21,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
   - sample period,
   - shock normalization,
   - and focal response variable/horizon.
+- Record design-defining metadata under `coefficient_vector_json.design.structural_var` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/structural_var/*`)
 

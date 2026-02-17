@@ -35,7 +35,7 @@ These specs are **core-eligible** when they preserve the baseline claim’s:
 - estimand concept,
 - target population.
 
-If a coding change *redefines* treatment or outcome in a way that changes the estimand (e.g., converting a continuous treatment into a binary “above threshold” indicator when the baseline is continuous), it should be recorded as `explore/*` in the exploration modules instead.
+If a coding change *redefines* treatment or outcome in a way that substantively changes the estimand (e.g., converting a continuous treatment into a binary “above threshold” indicator), record it as `explore/*` in the exploration modules instead—unless the surface explicitly treats it as an `rc/form/treatment/*` functional-form stress test within the same concept and documents the recode rule and coefficient interpretation.
 
 ## Outcome coding variations
 

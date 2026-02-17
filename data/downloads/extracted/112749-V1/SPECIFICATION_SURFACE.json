@@ -5,6 +5,22 @@
     {
       "baseline_group_id": "G1",
       "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "fips",
+        "panel_time": "decade",
+        "fe_structure": [
+          "fips",
+          "state:decade"
+        ],
+        "cluster_vars": [
+          "fips"
+        ],
+        "weights": "county_w",
+        "treatment_timing": "post-1927 decades interacted with flood intensity (f_int_{decade})",
+        "estimand": "event_time_path",
+        "comparison_groups": "within-sample less-exposed counties (continuous intensity)"
+      },
       "claim_object": {
         "outcome_concept": "Black population share (fraction of county population that is Black)",
         "treatment_concept": "1927 Mississippi flood intensity (share of county area flooded)",
@@ -32,6 +48,9 @@
         "notes": "Controls are large vectors of year-interacted geographic/suitability variables plus lagged outcomes. Blocks are: state-year FE (d_sy), geographic controls (cotton_s, corn_s, ld, dx, dy, rug), outcome lags (lag2-lag4), New Deal controls (lnpcpubwor, lnpcaaa, lnpcrelief, lnpcndloan, lnpcndins)."
       },
       "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__f_int_1950"
+        ],
         "design_spec_ids": [
           "design/difference_in_differences/estimator/twfe"
         ],
@@ -82,6 +101,22 @@
     {
       "baseline_group_id": "G2",
       "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "fips",
+        "panel_time": "decade",
+        "fe_structure": [
+          "fips",
+          "state:decade"
+        ],
+        "cluster_vars": [
+          "fips"
+        ],
+        "weights": "county_w",
+        "treatment_timing": "post-1927 decades interacted with flood intensity (f_int_{decade})",
+        "estimand": "event_time_path",
+        "comparison_groups": "within-sample less-exposed counties (continuous intensity)"
+      },
       "claim_object": {
         "outcome_concept": "Farm capital intensity (value of farm equipment per county)",
         "treatment_concept": "1927 Mississippi flood intensity (share of county area flooded)",
@@ -109,6 +144,10 @@
         "notes": "Same control block structure as G1 but with 4 lags for equipment (lag1=1925, lag2=1920, lag3=1910, lag4=1900). Treatment vars differ: Table 4 uses f_int for all years including agriculture census years (1925, 1935, 1945, 1954, 1964)."
       },
       "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__f_int_1930",
+          "baseline__f_int_1970"
+        ],
         "design_spec_ids": [
           "design/difference_in_differences/estimator/twfe"
         ],

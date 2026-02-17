@@ -7,6 +7,18 @@
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "unit_of_observation": "market*time",
+        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
+        "fixed_effects": [
+          "mkt"
+        ],
+        "cluster_vars": [],
+        "weights": "wgt",
+        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
+        "selection_story": "descriptive partial correlation across markets/time"
+      },
       "claim_object": {
         "outcome_concept": "Predicted market-level wage growth (log nominal earnings change, xdlogern_nom)",
         "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
@@ -85,6 +97,18 @@
     {
       "baseline_group_id": "G2",
       "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "unit_of_observation": "market*time",
+        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
+        "fixed_effects": [
+          "mkt"
+        ],
+        "cluster_vars": [],
+        "weights": "wgt",
+        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
+        "selection_story": "descriptive partial correlation across markets/time"
+      },
       "claim_object": {
         "outcome_concept": "Predicted market-level wage growth (log real earnings change, xdlogern)",
         "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
@@ -163,6 +187,18 @@
     {
       "baseline_group_id": "G3",
       "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "unit_of_observation": "market*time",
+        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
+        "fixed_effects": [
+          "mkt"
+        ],
+        "cluster_vars": [],
+        "weights": "wgt",
+        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
+        "selection_story": "descriptive partial correlation across markets/time"
+      },
       "claim_object": {
         "outcome_concept": "Predicted market-level wage growth (log nominal hourly wage change, xdloghwr_nom)",
         "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
@@ -241,6 +277,18 @@
     {
       "baseline_group_id": "G4",
       "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "unit_of_observation": "market*time",
+        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
+        "fixed_effects": [
+          "mkt"
+        ],
+        "cluster_vars": [],
+        "weights": "wgt",
+        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
+        "selection_story": "descriptive partial correlation across markets/time"
+      },
       "claim_object": {
         "outcome_concept": "Predicted market-level wage growth (log real hourly wage change, xdloghwr)",
         "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",

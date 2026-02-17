@@ -40,7 +40,9 @@ Examples:
 | `explore/cate/best_linear/default` | Best linear predictor / low-dimensional CATE summary |
 | `explore/cate/sorted_effects/default` | Sorted effects / GATES-style summaries (if implementable) |
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`exploration_results.csv`)
+
+Write `explore/*` objects to `exploration_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `exploration_json` with an `exploration` block.
 
 Since CATE is not a scalar object, store:
 

@@ -1,5 +1,5 @@
 paper_id,spec_run_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_run_id,is_baseline,is_valid,is_core_test,category,why,confidence
-112431-V1,112431-V1_run0001,baseline,baseline,pcorrupt,first,G1,112431-V1_run0001,1,1,1,core_method,Paper baseline (Table 4 Col 6),0.95
+112431-V1,112431-V1_run0001,baseline,designs/cross_sectional_ols.md#baseline,pcorrupt,first,G1,112431-V1_run0001,1,1,1,core_method,Paper baseline (Table 4 Col 6),0.95
 112431-V1,112431-V1_run0002,rc/controls/progression/bivariate,modules/robustness/controls.md#control-progression,pcorrupt,first,G1,112431-V1_run0001,0,1,1,core_controls,Control-set robustness variation,0.95
 112431-V1,112431-V1_run0003,rc/controls/progression/mayor_demographics,modules/robustness/controls.md#control-progression,pcorrupt,first,G1,112431-V1_run0001,0,1,1,core_controls,Control-set robustness variation,0.95
 112431-V1,112431-V1_run0004,rc/controls/progression/mayor_demographics_party,modules/robustness/controls.md#control-progression,pcorrupt,first,G1,112431-V1_run0001,0,1,1,core_controls,Control-set robustness variation,0.95

@@ -12,7 +12,7 @@ Given:
 - Cost ratio lambda = gamma^new / gamma^old from timing data
 
 Compute:
-- Window optimization: B=[z_lo, 10] with z_lo optimized
+- Window optimization: B=[z_lo, +inf) with z_lo optimized
 - Calibration: binary-search N_eff_old such that FDR(m=50, N_eff_old)=0.05
 - Main result: m_new for new regime
 - Disclosure scaling: m_old=1..100
@@ -48,11 +48,33 @@ OUTPUT_DEP_SENS = RESULTS_DIR / "counterfactual_dependence_sensitivity.csv"
 # ---------------------------------------------------------------------------
 M_OLD_BASELINE = 50
 FDR_TARGET = 0.05
-Z_HI = 10.0
+Z_HI = None  # No upper bound on |t| (tail-probability thresholding)
 LAMBDA_FALLBACK = 1 / 172
 
 # Orderings to include in sensitivity
 ORDERING_KEYS = ["spec_order", "lex_path", "bfs", "dfs", "by_category"]
+
+def _is_infinite_upper_bound(z_hi) -> bool:
+    if z_hi is None:
+        return True
+    try:
+        return not np.isfinite(float(z_hi))
+    except Exception:
+        return True
+
+
+def _fmt_z_hi(z_hi) -> str:
+    return "+inf" if _is_infinite_upper_bound(z_hi) else f"{float(z_hi):.2f}"
+
+
+def _z_hi_to_scalar(z_hi) -> float:
+    """For CSV-friendly numeric columns: use NaN for +inf/None."""
+    return float("nan") if _is_infinite_upper_bound(z_hi) else float(z_hi)
+
+
+def _z_hi_to_json(z_hi) -> float | None:
+    """For strict JSON: use null for +inf/None."""
+    return None if _is_infinite_upper_bound(z_hi) else float(z_hi)
 
 
 # ---------------------------------------------------------------------------
@@ -111,15 +133,10 @@ def load_parameters():
     with open(MIXTURE_FILE, 'r') as f:
         mixture_all = json.load(f)
 
-    params = (
-        mixture_all
-        .get("spec_level", {})
-        .get("trim_sensitivity", {})
-        .get("trim_abs_le_10_sigma_fixed_1")
-    )
+    params = mixture_all.get("spec_level", {}).get("baseline_only_sigma_fixed_1")
     if params is None:
-        raise RuntimeError("sigma_fixed_1 mixture params not found in mixture_params_abs_t.json")
-    mixture_source = "spec_level:trim_sensitivity:trim_abs_le_10_sigma_fixed_1"
+        raise RuntimeError("baseline_only_sigma_fixed_1 mixture params not found in mixture_params_abs_t.json")
+    mixture_source = "spec_level:baseline_only_sigma_fixed_1"
 
     # Load dependence params
     if not DEPENDENCE_FILE.exists():
@@ -134,8 +151,8 @@ def load_parameters():
     # Also load all mixture variants for sensitivity
     mixture_variants = {}
 
-    # sigma-free
-    sf = mixture_all.get("spec_level", {}).get("trim_sensitivity", {}).get("trim_abs_le_10")
+    # sigma-free (baseline-only)
+    sf = mixture_all.get("spec_level", {}).get("baseline_only", None)
     if sf is not None:
         mixture_variants["sigma_free"] = sf
 
@@ -192,7 +209,9 @@ def compute_pass_probabilities(B, params):
             cdf_lo = 0.0 if (z_lo is None or float(z_lo) <= lo) else tcdf(z_lo)
             p_k = float(max(0.0, min(1.0, cdf_hi - cdf_lo)))
         else:
-            p_k = float(stats.norm.cdf((z_hi - mu_k) / sigma_k) - stats.norm.cdf((z_lo - mu_k) / sigma_k))
+            cdf_hi = 1.0 if (z_hi is None or (isinstance(z_hi, float) and not np.isfinite(z_hi))) else float(stats.norm.cdf((float(z_hi) - mu_k) / sigma_k))
+            cdf_lo = 0.0 if (z_lo is None or float(z_lo) <= -np.inf) else float(stats.norm.cdf((float(z_lo) - mu_k) / sigma_k))
+            p_k = float(max(0.0, min(1.0, cdf_hi - cdf_lo)))
 
         probs[k] = p_k
 
@@ -287,7 +306,7 @@ def find_min_m(n_eff, pass_probs, params, fdr_target=0.05):
 # ---------------------------------------------------------------------------
 def optimize_window(params, fdr_target=0.05, m_old=M_OLD_BASELINE):
     """
-    Grid-search z_lo in [0.5, 5.0] with z_hi=10 fixed.
+    Grid-search z_lo in [0.5, 5.0] with no upper bound (z_hi=None).
     Maximize p_H subject to FDR=0.05 being achievable at m_old.
     """
     z_lo_grid = np.arange(0.5, 5.01, 0.05)
@@ -363,11 +382,11 @@ def main():
     print(f"  lambda = {LAMBDA_BASELINE:.6f} (1/{1/LAMBDA_BASELINE:.1f})")
 
     # ------------------------------------------------------------------
-    # Evidence window: fixed at B=[1.96, 10] as stated in the paper
+    # Evidence window: tail threshold B=[1.96, +inf)
     # ------------------------------------------------------------------
     B = (1.96, Z_HI)
     p_pass = compute_pass_probabilities(B, params)
-    print(f"\nEvidence window B = ({B[0]:.2f}, {B[1]:.2f})")
+    print(f"\nEvidence window B = ({float(B[0]):.2f}, {_fmt_z_hi(B[1])})")
     print(f"  Pass probabilities: p_N={p_pass['N']:.4f}, p_H={p_pass['H']:.4f}, p_L={p_pass['L']:.4f}")
 
     # ------------------------------------------------------------------
@@ -496,7 +515,7 @@ def main():
             'n_new_implied': float(n_new_interp),
         })
 
-        # Also build dep_rows for backward-compatible CSV
+        # Dependence sensitivity rows for the counterfactual appendix table.
         dep_rows.append({
             "dependence_label": key,
             "phi": float(phi_v),
@@ -650,7 +669,7 @@ def main():
             'lambda': float(lam),
             'FDR_target': float(FDR_TARGET),
             'B_lo': float(B[0]),
-            'B_hi': float(B[1]),
+            'B_hi': _z_hi_to_scalar(B[1]),
             'n_eff_old': N_eff_old,
             'n_eff_new': n_eff_new_l,
             'm_old': old_sol['m'],
@@ -701,7 +720,7 @@ def main():
         },
         "evidence_window": {
             "z_lo": float(B[0]),
-            "z_hi": float(B[1]),
+            "z_hi": _z_hi_to_json(B[1]),
         },
         "pass_probabilities": {k: float(v) for k, v in p_pass.items()},
         "cost_parameters": {
@@ -749,7 +768,7 @@ def main():
     print(f"  m_new = {m_new}")
     print(f"  ratio = {m_new/M_OLD_BASELINE:.1f}x")
     print(f"  lambda = {LAMBDA_BASELINE:.6f} (1/{1/LAMBDA_BASELINE:.0f})")
-    print(f"  B = [{B[0]:.2f}, {B[1]:.2f}]")
+    print(f"  B = [{float(B[0]):.2f}, {_fmt_z_hi(B[1])}]")
     print(f"  N_eff_old = {N_eff_old}, N_eff_new = {N_eff_new}")
     print()
     print("Done!")

@@ -16,6 +16,7 @@ Hornbeck, R. & Naidu, S. (2014). "When the Levee Breaks: Black Migration and Eco
 - **Population**: Southern cotton-belt counties (>=10% Black, >=15% cotton in 1920)
 - **Baseline spec**: Table 2 Col 1, coef(f_int_1930) = -0.156, se = 0.032, N = 2604
 - **Focal parameter**: f_int_1930 coefficient (immediate post-flood decade effect)
+- **Additional baseline focal outputs**: f_int_1950 (emitted as `spec_id=baseline__f_int_1950`)
 
 ### G2: Farm Equipment Value (Table 4)
 - **Outcome**: lnvalue_equipment (log value of farm equipment)
@@ -24,6 +25,7 @@ Hornbeck, R. & Naidu, S. (2014). "When the Levee Breaks: Black Migration and Eco
 - **Population**: Same cotton-belt sample
 - **Baseline spec**: Table 4 Col 2, coef(f_int_1940) = 0.440, se = 0.099, N = 2170
 - **Focal parameter**: f_int_1940 coefficient (expected peak mechanization response)
+- **Additional baseline focal outputs**: f_int_1930 and f_int_1970 (emitted as `spec_id=baseline__f_int_1930` and `spec_id=baseline__f_int_1970`)
 
 ## Why Two Baseline Groups
 The paper makes two distinct headline claims:
@@ -56,7 +58,7 @@ We run: bivariate (no controls), geography only, lags only, new deal, baseline (
 
 ### Functional Form
 - Level outcome (instead of log): tests whether log transformation drives results
-- Binary flood indicator (instead of continuous intensity): tests dose-response linearity
+- Binary flood indicator (instead of continuous intensity): `flood_any = 1[flooded_share > 0]` where `flooded_share` is a share (0–1); tests dose-response linearity / extensive-margin effects
 
 ### Weights
 - Unweighted (baseline uses county area weights)

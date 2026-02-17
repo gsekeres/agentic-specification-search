@@ -51,6 +51,8 @@ Diagnostics (`diag/*`) and sensitivity (`sens/*`) should not contaminate the cor
 
 - Is each baseline group’s `design_code` correct for the paper’s identification strategy?
 - Are design variants in `core_universe.design_spec_ids` appropriate and not over-expansive?
+- Does each baseline group include a concise `design_audit` block (see `specification_tree/DESIGN_AUDIT_FIELDS.md`) with the design-defining parameters needed to interpret results out of context?
+  - Treat “estimator only” as incomplete: add the key design knobs that materially change interpretation (e.g., RD bandwidth/kernel/poly; event-study window/reference; IV instrument set; FE structure and clustering).
 
 ### C) RC axes (core robustness)
 

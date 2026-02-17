@@ -9,6 +9,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical panel-FE estimate for the claim object.
 - Record: panel index (unit, time), FE structure, clustering/inference, and the paper’s scalar focal parameter.
+- Record design-defining metadata under `coefficient_vector_json.design.panel_fixed_effects` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/panel_fixed_effects/*`)
 

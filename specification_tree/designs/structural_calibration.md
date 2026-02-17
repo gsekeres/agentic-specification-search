@@ -14,6 +14,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
   - targeted moments,
   - fit statistics,
   - and the headline counterfactual quantity.
+- Record design-defining metadata under `coefficient_vector_json.design.structural_calibration` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/structural_calibration/*`)
 

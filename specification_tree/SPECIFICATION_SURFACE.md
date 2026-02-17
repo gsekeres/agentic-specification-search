@@ -103,6 +103,12 @@ Depending on the design, the surface may also include caps like:
 
 Store the pre-run surface as a machine-readable file (e.g., `SPECIFICATION_SURFACE.json`) in the package directory.
 
+Notes:
+
+- `core_universe` is the **whitelist** of core-eligible `spec_id` patterns for a baseline group.
+- `baseline` is always allowed. If the paper has multiple baseline-like rows you want to emit (e.g., multiple canonical columns, or multiple focal parameters from the same regression), list those additional baseline IDs in `core_universe.baseline_spec_ids`.
+- `design_audit` is a small block of **design-defining metadata** (see `specification_tree/DESIGN_AUDIT_FIELDS.md`). Keep it concise (typically ~3–10 stable keys) and not estimator-only. The runner should copy this verbatim into `coefficient_vector_json.design.{design_code}` for baseline and `rc/*` rows so results remain interpretable when detached from code.
+
 Sketch:
 
 ```json
@@ -112,6 +118,13 @@ Sketch:
     {
       "baseline_group_id": "G1",
       "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "unit_id",
+        "panel_time": "year",
+        "fe_structure": ["unit", "time"],
+        "cluster_vars": ["unit"]
+      },
       "claim_object": {
         "outcome_concept": "earnings",
         "treatment_concept": "policy adoption",
@@ -128,6 +141,9 @@ Sketch:
         "linked_adjustment": true
       },
       "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2"
+        ],
         "design_spec_ids": [
           "design/difference_in_differences/estimator/twfe"
         ],

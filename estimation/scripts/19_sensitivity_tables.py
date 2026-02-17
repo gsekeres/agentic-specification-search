@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-27_sensitivity_tables.py
+19_sensitivity_tables.py
 ========================
 
 Generate a comprehensive disclosure scaling table for the counterfactual appendix.
@@ -116,7 +116,8 @@ def main() -> None:
     print(f"  pi = {[f'{x:.3f}' for x in pi]}")
     print(f"  pp = {[f'{x:.4f}' for x in pp_baseline]}")
     print(f"  lambda = {lam_baseline:.6f} (1/{1/lam_baseline:.0f})")
-    print(f"  B = [{z_lo_baseline:.2f}, {z_hi_baseline:.1f}]")
+    z_hi_disp = r"\infty" if (z_hi_baseline is None or not np.isfinite(float(z_hi_baseline))) else f"{float(z_hi_baseline):.1f}"
+    print(f"  B = [{z_lo_baseline:.2f}, {z_hi_disp}]")
 
     # ------------------------------------------------------------------
     # Define m_old rows — include empirical percentiles of specs per paper
@@ -168,7 +169,7 @@ def main() -> None:
                 "pp": pp_baseline,
             })
 
-    # z_lo variants (keep lambda=baseline, z_hi=10)
+    # z_lo variants (keep lambda=baseline, z_hi=baseline)
     for z_lo_v in [1.0, 1.5, 2.5, 3.0]:
         pp_v = compute_pass_probs(mus, sigmas, z_lo_v, z_hi_baseline)
         variants.append({
@@ -179,7 +180,9 @@ def main() -> None:
         })
 
     # z_hi variants
-    for z_hi_v, z_hi_label in [(15.0, "15"), (None, r"\infty")]:
+    for z_hi_v, z_hi_label in [(10.0, "10"), (15.0, "15"), (None, r"\infty")]:
+        if z_hi_v is None and z_hi_baseline is None:
+            continue
         pp_v = compute_pass_probs(mus, sigmas, z_lo_baseline, z_hi_v)
         variants.append({
             "label": f"z_hi={z_hi_label}",
@@ -192,7 +195,7 @@ def main() -> None:
     # Load sigma-free mixture
     try:
         mix_file = load_json(RESULTS_DIR / "mixture_params_abs_t.json")
-        sf = mix_file.get("spec_level", {}).get("trim_sensitivity", {}).get("trim_abs_le_10")
+        sf = mix_file.get("spec_level", {}).get("baseline_only", None)
         if sf and "N" in sf.get("pi", {}):
             sf_pi = [sf["pi"][k] for k in ["N", "H", "L"]]
             sf_mus = [sf["mu"][k] for k in ["N", "H", "L"]]
@@ -282,28 +285,6 @@ def main() -> None:
     with open(p1, "w") as f:
         f.write(table_tex)
     print(f"\n  Saved {p1}")
-
-    # Also save the old files for backward compatibility
-    # tab_disclosure_scaling.tex — just baseline, first 10 m_old values
-    scaling_lines = [r"\begin{tabular}{ccccc}", r"\toprule",
-                     r"$m^{\mathrm{old}}$ & $n_{\mathrm{eff}}^{\mathrm{old}}$ & "
-                     r"$m^{\mathrm{new}}$ & $n_{\mathrm{eff}}^{\mathrm{new}}$ & "
-                     r"$m^{\mathrm{new}}/m^{\mathrm{old}}$ \\",
-                     r"\midrule"]
-    for m_old in range(1, 11):
-        row = calibrate_per_m(m_old, lam_baseline, pi, pp_baseline)
-        bold = (m_old == highlight_m)
-        fmt = r"\textbf{%s}" if bold else "%s"
-        vals = [fmt % str(row["m_old"]), fmt % str(row["n_eff_old"]),
-                fmt % str(row["m_new"]), fmt % str(row["n_eff_new"]),
-                fmt % f"{row['ratio']:.1f}"]
-        scaling_lines.append(" & ".join(vals) + r" \\")
-    scaling_lines += [r"\bottomrule", r"\end{tabular}"]
-
-    p2 = OL_TABLE_DIR / "tab_disclosure_scaling.tex"
-    with open(p2, "w") as f:
-        f.write("\n".join(scaling_lines) + "\n")
-    print(f"  Saved {p2}")
 
     print("\nDone!")
 

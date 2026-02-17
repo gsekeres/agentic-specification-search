@@ -255,32 +255,6 @@ def main():
                 'Delta': float(preferred_Delta),
                 'r_squared': float(best_r2),
             }
-
-            # Backward-compat: ar1.pooled points to preferred ordering's results
-            out['ar1'] = {
-                'pooled': {
-                    'phi': pref['phi'],
-                    'phi_se': pref['phi_se'],
-                    'phi_ci_lower': pref['phi_ci_lower'],
-                    'phi_ci_upper': pref['phi_ci_upper'],
-                    'Delta': pref['Delta'],
-                },
-                'n_groups': pref['n_groups'],
-                'group_level': pref['group_level'],
-            }
-
-            # Backward-compat: alternative_models = other orderings (each with Delta key)
-            alt_models: dict = {}
-            for ord_name, ord_data in ar1_orderings.items():
-                if ord_name == best_ordering:
-                    continue
-                alt_models[ord_name] = {
-                    'Delta': ord_data['Delta'],
-                    'Delta_at_d1': ord_data['Delta'],
-                    'phi': ord_data['phi'],
-                    'r_squared': ord_data['r_squared'],
-                }
-            out['alternative_models'] = alt_models
         else:
             print("\nNo valid AR(1) estimates found.")
             out['preferred'] = {
@@ -288,8 +262,6 @@ def main():
                 'phi': float('nan'),
                 'Delta': float('nan'),
             }
-            out['ar1'] = {'pooled': {'phi': float('nan'), 'Delta': float('nan')}, 'n_groups': 0, 'group_level': []}
-            out['alternative_models'] = {}
 
         # Cross-check table
         print(f"\nCross-check across orderings:")

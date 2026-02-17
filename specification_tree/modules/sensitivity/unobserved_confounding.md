@@ -65,9 +65,9 @@ For sensitivity to **design-specific causal assumptions** (exclusion restriction
 - `specification_tree/modules/sensitivity/assumptions/randomized_experiment.md`
 - `specification_tree/modules/sensitivity/assumptions/synthetic_control.md`
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`sensitivity_results.csv`)
 
-Sensitivity objects must include a `sensitivity` block and may omit `(coef, se)` if not meaningful. If included in the regression-results table, set missing numeric fields to empty/NaN and record the sensitivity outputs in JSON.
+Write sensitivity objects to `sensitivity_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `sensitivity_json` with a `sensitivity` block. These objects may not have meaningful `(coef, se)` scalars; keep the full outputs in JSON.
 
 Example:
 

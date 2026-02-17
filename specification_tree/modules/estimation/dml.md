@@ -89,19 +89,23 @@ Scalar fields:
 
 `coefficient_vector_json` must include:
 
-- `estimand` (`plr_theta` / `ate` / `att` / `late`)
-- `score_family` (`plr` / `irm` / `iv`)
-- `crossfit` (`K`, seed, fold assignment, cluster fold var if any)
-- `learners` (names + key hyperparameters)
-- `trimming` (if any)
-- `diagnostics` (propensity support summaries; first-stage strength for IV-DML)
+- an `estimation` block (reserved-key schema) with:
+  - `spec_id` (must equal the row `spec_id`)
+  - `wrapper`: `"dml"`
+  - `estimand` (`plr_theta` / `ate` / `att` / `late`)
+  - `score_family` (`plr` / `irm` / `iv`)
+  - `crossfit` (`K`, seed, fold assignment, cluster fold var if any)
+  - `learners` (names + key hyperparameters)
+  - `trimming` (if any)
+  - `diagnostics` (propensity support summaries; first-stage strength for IV-DML)
 
 Example:
 
 ```json
 {
-  "dml": {
+  "estimation": {
     "spec_id": "rc/estimation/dml/irm/aipw_trim_01",
+    "wrapper": "dml",
     "estimand": "ate",
     "score_family": "irm",
     "crossfit": {"K": 5, "seed": 42, "cluster_fold_var": "state"},

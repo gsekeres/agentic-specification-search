@@ -22,6 +22,7 @@ import pyfixest as pf
 import statsmodels.api as sm
 import json
 import os
+import sys
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -32,6 +33,106 @@ PAPER_ID = "112431-V1"
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 SEED = 112431
+
+# Add repo root to import path so we can import shared output helpers.
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+from scripts.agent_output_utils import (  # noqa: E402
+    error_details_from_exception,
+    make_failure_payload,
+    make_success_payload,
+    safe_single_line,
+    software_block,
+    surface_hash as compute_surface_hash,
+)
+
+# Load surface for canonical inference + deterministic surface hash
+SURFACE_PATH = os.path.join(PACKAGE_DIR, "SPECIFICATION_SURFACE.json")
+with open(SURFACE_PATH, "r", encoding="utf-8") as f:
+    SURFACE = json.load(f)
+SURFACE_HASH = compute_surface_hash(SURFACE)
+SOFTWARE = software_block()
+CANON_INFER_BY_GID = {}
+for g in SURFACE.get("baseline_groups", []) or []:
+    gid = str(g.get("baseline_group_id", "")).strip()
+    canon = (g.get("inference_plan") or {}).get("canonical") or {}
+    if gid:
+        CANON_INFER_BY_GID[gid] = {
+            "spec_id": str(canon.get("spec_id", "")).strip(),
+            "params": canon.get("params", {}) or {},
+        }
+
+
+def _canonical_inference(baseline_group_id: str) -> dict:
+    return CANON_INFER_BY_GID.get(str(baseline_group_id).strip(), {"spec_id": "", "params": {}})
+
+
+def _ensure_rc_axis_block(spec_id: str, blocks: dict | None, *, n_controls: int | None = None) -> dict:
+    """
+    Ensure `rc/*` rows include the axis-appropriate audit block with a matching spec_id.
+    Keep this minimal and self-describing; store any paper-specific details under `extra`.
+    """
+    blocks = dict(blocks or {})
+    if not str(spec_id).startswith("rc/"):
+        return blocks
+
+    parts = str(spec_id).split("/")
+    axis = parts[1] if len(parts) > 1 else ""
+    family = parts[2] if len(parts) > 2 else ""
+    variant = "/".join(parts[3:]) if len(parts) > 3 else ""
+
+    if axis == "controls":
+        b = blocks.get("controls") if isinstance(blocks.get("controls"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("family", family)
+        b.setdefault("variant", variant)
+        if n_controls is not None:
+            b.setdefault("n_controls", int(n_controls))
+        blocks["controls"] = b
+    elif axis == "sample":
+        b = blocks.get("sample") if isinstance(blocks.get("sample"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("axis", family)
+        b.setdefault("variant", variant)
+        blocks["sample"] = b
+    elif axis == "fe":
+        b = blocks.get("fixed_effects") if isinstance(blocks.get("fixed_effects"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("family", family)
+        b.setdefault("variant", variant)
+        blocks["fixed_effects"] = b
+    elif axis == "weights":
+        b = blocks.get("weights") if isinstance(blocks.get("weights"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("family", family)
+        b.setdefault("variant", variant)
+        blocks["weights"] = b
+    elif axis == "preprocess":
+        b = blocks.get("preprocess") if isinstance(blocks.get("preprocess"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("target", family)
+        b.setdefault("variant", variant)
+        blocks["preprocess"] = b
+    elif axis == "data":
+        b = blocks.get("data_construction") if isinstance(blocks.get("data_construction"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("family", family)
+        b.setdefault("variant", variant)
+        blocks["data_construction"] = b
+    elif axis == "form":
+        b = blocks.get("functional_form") if isinstance(blocks.get("functional_form"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("variant", variant)
+        b.setdefault("interpretation", "See spec_id for transformation; interpret coefficient accordingly.")
+        blocks["functional_form"] = b
+    elif axis == "joint":
+        b = blocks.get("joint") if isinstance(blocks.get("joint"), dict) else {}
+        b["spec_id"] = spec_id
+        b.setdefault("axes_changed", [])
+        blocks["joint"] = b
+
+    return blocks
 
 # =============================================================================
 # Load data
@@ -137,9 +238,20 @@ def run_spec(outcome, treatment, controls, data, fe=None, vcov="hetero",
         ci_lower = coef - 1.96 * se_val
         ci_upper = coef + 1.96 * se_val
 
-        coef_dict = {k: float(v) for k, v in m.coef().items()}
-        if extra_json:
-            coef_dict.update(extra_json)
+        coef_dict = {str(k): float(v) for k, v in m.coef().items()}
+        blocks = extra_json if isinstance(extra_json, dict) else {}
+        blocks = _ensure_rc_axis_block(spec_id or "", blocks, n_controls=len(controls))
+        # Ensure functional_form carries spec_id when present.
+        if isinstance(blocks.get("functional_form"), dict):
+            blocks["functional_form"]["spec_id"] = spec_id
+
+        payload = make_success_payload(
+            coefficients=coef_dict,
+            inference=_canonical_inference(baseline_group_id),
+            software=SOFTWARE,
+            surface_hash=SURFACE_HASH,
+            blocks=blocks,
+        )
 
         row = {
             "paper_id": PAPER_ID,
@@ -156,7 +268,7 @@ def run_spec(outcome, treatment, controls, data, fe=None, vcov="hetero",
             "ci_upper": round(ci_upper, 8),
             "n_obs": nobs,
             "r_squared": round(r2, 6),
-            "coefficient_vector_json": json.dumps(coef_dict),
+            "coefficient_vector_json": json.dumps(payload, ensure_ascii=False),
             "sample_desc": sample_desc,
             "fixed_effects": fe_desc if fe_desc else (fe if fe else ""),
             "controls_desc": controls_desc,
@@ -169,6 +281,14 @@ def run_spec(outcome, treatment, controls, data, fe=None, vcov="hetero",
         return row
 
     except Exception as e:
+        run_err = safe_single_line(str(e))
+        payload = make_failure_payload(
+            error=run_err,
+            error_details=error_details_from_exception(e, stage="estimation"),
+            inference=_canonical_inference(baseline_group_id),
+            software=SOFTWARE,
+            surface_hash=SURFACE_HASH,
+        )
         row = {
             "paper_id": PAPER_ID,
             "spec_run_id": spec_run_id,
@@ -184,16 +304,16 @@ def run_spec(outcome, treatment, controls, data, fe=None, vcov="hetero",
             "ci_upper": np.nan,
             "n_obs": np.nan,
             "r_squared": np.nan,
-            "coefficient_vector_json": json.dumps({"error": str(e)}),
+            "coefficient_vector_json": json.dumps(payload, ensure_ascii=False),
             "sample_desc": sample_desc,
             "fixed_effects": fe_desc if fe_desc else (fe if fe else ""),
             "controls_desc": controls_desc,
             "cluster_var": "",
             "run_success": 0,
-            "run_error": str(e),
+            "run_error": run_err,
         }
         spec_results.append(row)
-        print(f"  {spec_run_id}: {spec_id} | FAILED: {e}")
+        print(f"  {spec_run_id}: {spec_id} | FAILED: {run_err}")
         return row
 
 
@@ -229,12 +349,18 @@ def run_infer(base_spec_run_id, outcome, treatment, controls, data, fe=None,
         ci_lower = coef - 1.96 * se_val
         ci_upper = coef + 1.96 * se_val
 
-        coef_dict = {k: float(v) for k, v in m.coef().items()}
-        coef_dict["inference"] = {
-            "spec_id": infer_spec_id,
-            "method": "cluster" if cluster_var else "hc",
-            "cluster_var": cluster_var if cluster_var else "",
-        }
+        coef_dict = {str(k): float(v) for k, v in m.coef().items()}
+        inf_params = {}
+        if cluster_var:
+            inf_params["cluster_var"] = cluster_var
+        if vcov and (not cluster_var):
+            inf_params["vcov"] = vcov
+        payload = make_success_payload(
+            coefficients=coef_dict,
+            inference={"spec_id": str(infer_spec_id or "").strip(), "params": inf_params},
+            software=SOFTWARE,
+            surface_hash=SURFACE_HASH,
+        )
 
         row = {
             "paper_id": PAPER_ID,
@@ -252,7 +378,7 @@ def run_infer(base_spec_run_id, outcome, treatment, controls, data, fe=None,
             "ci_upper": round(ci_upper, 8),
             "n_obs": nobs,
             "r_squared": round(r2, 6),
-            "coefficient_vector_json": json.dumps(coef_dict),
+            "coefficient_vector_json": json.dumps(payload, ensure_ascii=False),
             "cluster_var": cluster_var if cluster_var else "",
             "run_success": 1,
             "run_error": "",
@@ -262,6 +388,14 @@ def run_infer(base_spec_run_id, outcome, treatment, controls, data, fe=None,
         return row
 
     except Exception as e:
+        run_err = safe_single_line(str(e))
+        payload = make_failure_payload(
+            error=run_err,
+            error_details=error_details_from_exception(e, stage="inference"),
+            inference={"spec_id": str(infer_spec_id or "").strip(), "params": {}},
+            software=SOFTWARE,
+            surface_hash=SURFACE_HASH,
+        )
         row = {
             "paper_id": PAPER_ID,
             "inference_run_id": inference_run_id,
@@ -278,13 +412,13 @@ def run_infer(base_spec_run_id, outcome, treatment, controls, data, fe=None,
             "ci_upper": np.nan,
             "n_obs": np.nan,
             "r_squared": np.nan,
-            "coefficient_vector_json": json.dumps({"error": str(e)}),
+            "coefficient_vector_json": json.dumps(payload, ensure_ascii=False),
             "cluster_var": cluster_var if cluster_var else "",
             "run_success": 0,
-            "run_error": str(e),
+            "run_error": run_err,
         }
         infer_results.append(row)
-        print(f"  {inference_run_id}: {infer_spec_id} | FAILED: {e}")
+        print(f"  {inference_run_id}: {infer_spec_id} | FAILED: {run_err}")
         return row
 
 
@@ -299,7 +433,7 @@ print("=" * 70)
 print("\n--- Baseline (Table 4 Col 6) ---")
 bl_row = run_spec("pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
                   spec_id="baseline",
-                  spec_tree_path="baseline",
+                  spec_tree_path="designs/cross_sectional_ols.md#baseline",
                   fe_desc="uf",
                   controls_desc="prefchar2 + munichar2 + fiscal + political + sorteio")
 baseline_run_id = bl_row["spec_run_id"]
@@ -536,7 +670,7 @@ run_infer(baseline_run_id, "pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
 
 # HC3 SE (for baseline spec)
 run_infer(baseline_run_id, "pcorrupt", "first", BASELINE_CONTROLS, dfs, fe="uf",
-          vcov={"HC3": True},
+          vcov="HC3",
           infer_spec_id="infer/se/hc/hc3",
           spec_tree_path="modules/inference/standard_errors.md#hc3",
           fe_desc="uf", controls_desc="baseline controls, HC3 SE")

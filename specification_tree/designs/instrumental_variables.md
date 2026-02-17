@@ -8,6 +8,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical IV estimate for the claim object.
+- Record design-defining metadata under `coefficient_vector_json.design.instrumental_variables` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 **Bundled estimator note (important)**: IV is a multi-component bundle (first stage + reduced form + second stage). Record a `bundle` block in `coefficient_vector_json` and enforce any revealed linkage constraints for adjustment sets across stages. See `specification_tree/REVEALED_SEARCH_SPACE.md`.
 

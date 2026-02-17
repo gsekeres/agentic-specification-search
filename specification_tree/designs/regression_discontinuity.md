@@ -9,6 +9,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical RD estimate for the claim object.
 - Record: running variable, cutoff, bandwidth rule, kernel, polynomial order, and the paper’s chosen scalar summary of the discontinuity.
+- Store these design-defining parameters under `coefficient_vector_json.design.regression_discontinuity` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/regression_discontinuity/*`)
 
@@ -51,13 +52,13 @@ Spec ID format:
 | `design/regression_discontinuity/kernel/uniform` | Uniform (rectangular) |
 | `design/regression_discontinuity/kernel/epanechnikov` | Epanechnikov |
 
-### E) Bias correction / robust RD inference (design-specific)
+### E) Estimation/inference procedure (RD-specific)
 
 | spec_id | Description |
 |---|---|
-| `design/regression_discontinuity/inference/conventional` | Conventional (no bias correction) |
-| `design/regression_discontinuity/inference/robust_bias_corrected` | Robust bias-corrected (Calonico et al. style) |
-| `design/regression_discontinuity/inference/honest_ci` | “Honest” confidence intervals (when implementable) |
+| `design/regression_discontinuity/procedure/conventional` | Conventional (no bias correction) |
+| `design/regression_discontinuity/procedure/robust_bias_corrected` | Robust bias-corrected (Calonico et al. style) |
+| `design/regression_discontinuity/procedure/honest_ci` | “Honest” confidence intervals (when implementable) |
 
 ## Standard RD diagnostics (must record for each baseline group)
 

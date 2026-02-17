@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-16_posterior_assignment.py
+12_posterior_assignment.py
 =========================
 
 Compute posterior type probabilities P(k|Z) for each specification under
@@ -12,7 +12,7 @@ For each observation z and component k in {N, H, L}:
     P(k|z) = pi_k * f_k(z) / sum_j pi_j * f_j(z)
 
 Inputs:
-    estimation/results/mixture_params_abs_t.json   (spec_level_verified_core.baseline_only)
+    estimation/results/mixture_params_abs_t.json   (spec_level_verified_core.baseline_only_sigma_fixed_1 preferred)
     estimation/data/spec_level_verified_core.csv   (column Z_abs)
 
 Outputs:
@@ -78,13 +78,20 @@ def main() -> None:
     with open(MIXTURE_FILE, "r") as f:
         all_params = json.load(f)
 
-    params = all_params["spec_level_verified_core"]["baseline_only"]
+    vc = all_params.get("spec_level_verified_core", {}) or {}
+    params = vc.get("baseline_only_sigma_fixed_1")
+    source = "spec_level_verified_core.baseline_only_sigma_fixed_1"
+    if params is None:
+        params = vc.get("baseline_only")
+        source = "spec_level_verified_core.baseline_only"
+    if params is None:
+        raise RuntimeError("No baseline_only mixture params found under spec_level_verified_core in mixture_params_abs_t.json")
     pi = params["pi"]       # dict with keys N, H, L
     mu = params["mu"]       # dict with keys N, H, L
     sigma = params["sigma"] # dict with keys N, H, L
     lo = float(params.get("truncation_lo", 0.0))
 
-    print("Mixture parameters (spec_level_verified_core.baseline_only):")
+    print(f"Mixture parameters ({source}):")
     for k in COMPONENT_ORDER:
         print(f"  {k}: pi={pi[k]:.4f}, mu={mu[k]:.4f}, sigma={sigma[k]:.4f}")
     print(f"  truncation_lo={lo}")

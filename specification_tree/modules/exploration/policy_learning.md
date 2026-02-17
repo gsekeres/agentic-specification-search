@@ -45,7 +45,9 @@ This should reference the CATE method used (e.g., from `explore/cate/*`) in the 
 | `explore/policy/welfare/uplift` | Expected gain from deploying a rule vs baseline policy |
 | `explore/policy/welfare/cost_sensitive` | Welfare with treatment cost / capacity constraint |
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`exploration_results.csv`)
+
+Write `explore/*` objects to `exploration_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `exploration_json` with an `exploration` block.
 
 Policy objects must include:
 

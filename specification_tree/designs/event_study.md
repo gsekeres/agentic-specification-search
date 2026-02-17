@@ -11,6 +11,7 @@ Event studies typically produce a **vector** of coefficients; the output contrac
   - the event-time window,
   - the reference period,
   - all lead/lag coefficients (stored in JSON).
+- Record design-defining metadata under `coefficient_vector_json.design.event_study` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/event_study/*`)
 

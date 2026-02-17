@@ -5,6 +5,15 @@
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "unit_of_observation": "study estimate",
+        "model_formula": "log_correct ~ logt",
+        "fixed_effects": [],
+        "cluster_vars": [],
+        "weights": null,
+        "selection_story": "descriptive association (meta-regression)"
+      },
       "claim_object": {
         "outcome_concept": "Log climate damages (log of corrected damage fraction)",
         "treatment_concept": "Log temperature increase (log degrees Celsius)",

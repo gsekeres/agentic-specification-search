@@ -51,7 +51,9 @@ Heterogeneity creates many hypotheses. Treat multiplicity explicitly:
 - Use `post/mht/family_heterogeneity/*` (see `specification_tree/modules/postprocess/multiple_testing.md`).
 - Record the full set of subgroup tests executed, including how bins were formed.
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`exploration_results.csv`)
+
+Write `explore/*` objects to `exploration_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `exploration_json` with an `exploration` block.
 
 Every heterogeneity row must explicitly declare what concept changed.
 

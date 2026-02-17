@@ -14,6 +14,9 @@ data/downloads/extracted/*/*
 !data/downloads/extracted/*/inference_results.csv
 !data/downloads/extracted/*/diagnostics_results.csv
 !data/downloads/extracted/*/spec_diagnostics_map.csv
+!data/downloads/extracted/*/exploration_results.csv
+!data/downloads/extracted/*/sensitivity_results.csv
+!data/downloads/extracted/*/postprocess_results.csv
 !data/downloads/extracted/*/SPECIFICATION_SEARCH.md
 !data/downloads/extracted/*/replication.csv
 !data/downloads/extracted/*/replication_report.md
@@ -41,6 +44,21 @@ build/
 venv/
 env/
 .venv/
+.venv310/
+
+# Local sandbox/cache dirs (workspace-only)
+.home/
+.cache/
+
+# Downloaded literature PDFs (optional local cache)
+docs/literature/pdfs/
+
+# Paper-writing / Overleaf working directories (kept separately; generated outputs)
+overleaf/
+scientific-competition-overleaf/
+
+# Generated validation reports
+estimation/data/agent_output_validation_latest.csv
 
 # IDE
 .vscode/

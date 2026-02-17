@@ -188,7 +188,7 @@ At minimum for estimate-like rows:
 - `spec_tree_path` (file + section anchor)
 - `outcome_var`, `treatment_var`
 - `coefficient`, `std_error`, `p_value`, `n_obs`
-- `coefficient_vector_json` (full coefficient vector + diagnostics fields when relevant)
+- `coefficient_vector_json` (structured JSON payload with reserved audit keys; store the full coefficient vector under `coefficients` and include required audit blocks like `inference`/`software`/`surface_hash` and any axis-specific blocks for `rc/*` rows)
 
 Diagnostics/postprocess rows may not have a meaningful `(coef, se)` pair; they should either:
 

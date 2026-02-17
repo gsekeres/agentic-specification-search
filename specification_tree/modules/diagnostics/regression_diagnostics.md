@@ -46,9 +46,9 @@ They can be useful for verification reports and for interpreting fragile results
 | `diag/regression/influence/cooks_distance` | Cook’s distance summary (max + tail share) |
 | `diag/regression/influence/leverage` | High-leverage summary (max + tail share) |
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`diagnostic_json`)
 
-Diagnostics should store outputs in a `diagnostic` block. Example:
+Write regression diagnostics to `diagnostics_results.csv` and store outputs in `diagnostic_json` with a `diagnostic` block. Example:
 
 ```json
 {

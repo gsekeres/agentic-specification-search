@@ -27,19 +27,19 @@ def main():
 
     # --- Panel A: K comparison (folded, sigma=1) ---
     for K in [2, 3, 4]:
-        key = f"foldnorm_K={K}_trim10"
+        key = f"foldnorm_K={K}_full"
         r = mu_free[key]
-        rows.append(("K_panel", K, "Folded", r"$\sigma=1$", r"$|t|\le 10$", r))
+        rows.append(("K_panel", K, "Folded", r"$\sigma=1$", "Full", r))
 
-    # --- Panel B: Distribution comparison (K=3, sigma=1, trim10) ---
-    rows.append(("dist_panel", 3, "Truncated", r"$\sigma=1$", r"$|t|\le 10$",
-                 mu_free["truncnorm_K=3_trim10"]))
+    # --- Panel B: Distribution comparison (K=3, sigma=1, full) ---
+    rows.append(("dist_panel", 3, "Truncated", r"$\sigma=1$", "Full",
+                 mu_free["truncnorm_K=3_full"]))
 
-    # --- Panel C: Sigma comparison (K=3, truncated, trim10) ---
-    rows.append(("sigma_panel", 3, "Truncated", "Free", r"$|t|\le 10$",
-                 grid["K=3_sigma=free_trim10"]))
-    rows.append(("sigma_panel", 3, "Truncated", r"$\sigma\ge 1$", r"$|t|\le 10$",
-                 grid["K=3_sigma=geq_1_trim10"]))
+    # --- Panel C: Sigma comparison (K=3, truncated, full) ---
+    rows.append(("sigma_panel", 3, "Truncated", "Free", "Full",
+                 grid["K=3_sigma=free_full"]))
+    rows.append(("sigma_panel", 3, "Truncated", r"$\sigma\ge 1$", "Full",
+                 grid["K=3_sigma=geq_1_full"]))
 
     # --- Panel D: Sample comparison (folded, K=3, sigma=1) ---
     rows.append(("sample_panel", 3, "Folded", r"$\sigma=1$", "Full",

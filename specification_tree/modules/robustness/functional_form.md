@@ -35,6 +35,11 @@ When in doubt, record the run but label as exploration.
 
 Surface requirement: if `rc/form/*` variants are included for a baseline group, the surface (and its pre-run review) should make an explicit call on whether the transformation preserves the baseline claim object and what coefficient interpretation is intended.
 
+For this project, “functional form” includes both:
+
+- one-to-one transforms (log/asinh, polynomials/splines, interactions), and
+- variable coding / recoding choices (binarization, binning, top-coding, standardization) when treated as a within-concept stress test.
+
 ## A) Outcome transformations
 
 | spec_id | Description |
@@ -54,9 +59,9 @@ Surface requirement: if `rc/form/*` variants are included for a baseline group, 
 | `rc/form/treatment/log1p` | Log(1+x) when zeros exist |
 | `rc/form/treatment/standardize_z` | Standardize treatment (units only; often RC) |
 
-Thresholding / binning a continuous treatment is typically an **estimand change** and should be recorded as:
+Coding/recoding (including thresholds/binarization and binning) is acceptable as `rc/form/*` when it stays within the same concept and the surface records the intended coefficient interpretation. When it substantively redefines the concept/estimand, record it as exploration (typically `explore/definition/*`).
 
-- `explore/definition/treatment/*` (see `specification_tree/modules/exploration/variable_definitions.md`).
+The same logic applies to covariate (control) coding choices (e.g., binning or standardizing controls) when they are treated as functional-form stress tests rather than a change in the adjustment-set membership.
 
 ## C) Nonlinear dose-response (within the same concept)
 
@@ -99,3 +104,28 @@ Include a `functional_form` block:
   }
 }
 ```
+
+`interpretation` is required for all `rc/form/*` rows. It should be a short, plain-language description of how to read the scalar `coefficient` in this row (units/elasticity/extensive margin, etc.).
+
+For thresholding / binning / recoding variants (e.g., continuous → binary), extend `functional_form` with a recode description:
+
+```json
+{
+  "functional_form": {
+    "spec_id": "rc/form/treatment/binarize_any_exposure",
+    "target": "treatment",
+    "operation": "binarize",
+    "source_var": "exposure_share",
+    "new_var": "exposure_any",
+    "threshold": 0,
+    "direction": ">",
+    "units": "share (0-1)",
+    "recode_rule": "1[exposure_share > 0]",
+    "interpretation": "Extensive-margin effect (any exposure vs none) rather than per-unit intensity."
+  }
+}
+```
+
+For `operation` in `{binarize, threshold}`, `threshold`, `direction`, and `units` are required (in addition to `recode_rule`). Use these fields instead of burying threshold details only in a free-form string.
+
+Do not use placeholder values like `"unspecified"`, `"unknown"`, `"n/a"`, or `"same units as source_var"` for these fields. If the cutoff/inequality/units cannot be recovered from the paper/code, the surface should not include the spec as a core `rc/form/*` variant (treat it as exploration or omit it until it can be specified).

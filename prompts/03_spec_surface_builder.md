@@ -65,9 +65,16 @@ For each baseline group:
 - record the exact outcome and treatment variable names,
 - list the control set(s) and count them (for the control-count envelope).
 
+If you plan to emit multiple baseline-like rows in `specification_results.csv` for the same baseline group (beyond the single `baseline` row), list those additional baseline IDs in `core_universe.baseline_spec_ids` so the runner + validator treat them as explicit, surface-approved baselines.
+
 If the baseline estimator is bundled (IV, AIPW/DML, synth):
 
 - record components and whether adjustment is **linked/shared** across components (`linked_adjustment`).
+
+Also record a small `design_audit` block for each baseline group (required):
+
+- This should include the **design-defining parameters** that make the estimate interpretable out of context (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
+- Keep it concise (typically ~3–10 keys). Include more only when it materially affects interpretation (e.g., RD bandwidth/kernel/poly order; event-study window/reference; IV instrument set).
 
 ---
 
@@ -93,6 +100,8 @@ Inference variants (`infer/*`) are not treated as additional estimating-equation
 
 - pick one **canonical** inference choice per baseline group (used for all estimate rows), and
 - optionally list additional `infer/*` variants to compute as separate outputs (written to `inference_results.csv`).
+
+All inference spec_ids in the surface must be typed `infer/*` (including the canonical).
 
 ---
 
@@ -145,6 +154,13 @@ Use this shape (extend as needed):
     {
       "baseline_group_id": "G1",
       "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "unit_id",
+        "panel_time": "year",
+        "fe_structure": ["unit", "time"],
+        "cluster_vars": ["unit"]
+      },
       "claim_object": {
         "outcome_concept": "…",
         "treatment_concept": "…",
@@ -166,6 +182,9 @@ Use this shape (extend as needed):
         "linked_adjustment": true
       },
       "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2"
+        ],
         "design_spec_ids": [
           "design/difference_in_differences/estimator/twfe"
         ],

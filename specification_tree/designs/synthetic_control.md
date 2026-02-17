@@ -11,6 +11,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical synthetic-control estimate for the claim object.
 - Record: treated unit(s), donor pool definition, predictor/matching set, pre-treatment period, and the paper’s scalar summary rule for the post-treatment effect.
+- Record design-defining metadata under `coefficient_vector_json.design.synthetic_control` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/synthetic_control/*`)
 

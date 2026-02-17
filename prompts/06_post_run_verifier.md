@@ -19,6 +19,7 @@ You do **not** run new regressions. You verify:
   - `SPECIFICATION_SEARCH.md` (optional but usually present)
   - `SPECIFICATION_SURFACE.json` (recommended; if present, treat as the pre-run baseline-group plan)
   - `diagnostics_results.csv`, `spec_diagnostics_map.csv` (optional)
+  - `exploration_results.csv`, `sensitivity_results.csv`, `postprocess_results.csv` (optional; if present, contain `explore/*`, `sens/*`, `post/*` outputs)
 
 ---
 
@@ -73,8 +74,16 @@ Open `{EXTRACTED_PACKAGE_PATH}/specification_results.csv` and confirm:
 - `spec_run_id` exists and is unique within the paper
 - `baseline_group_id` exists (surface-driven requirement)
 - `spec_id` is typed and consistent with `spec_tree_path`
+- `spec_tree_path` references a spec-tree `.md` node (or is exactly `custom`) and includes a `#anchor` when possible
 - `run_success` exists (0/1) and failures have a concrete `run_error`
-- numeric fields are finite for executed rows (or clearly marked missing with reason in JSON)
+- `run_success=0` rows have `coefficient_vector_json` as a JSON object with a non-empty `error` field and a non-empty `error_details` object (mirrors `run_error` and records structured context)
+- `run_success=0` rows have missing scalar numeric fields (coef/SE/p/CI/N/R2) and do not mix partial numerics into scalar columns
+- `run_success=1` rows have `coefficient_vector_json` with required audit keys: `coefficients`, `inference`, `software`, `surface_hash`
+- `coefficient_vector_json` does not invent arbitrary new top-level keys (paper-specific fields live under `extra`; design-specific objects under `design`)
+- for `rc/form/*` rows, `coefficient_vector_json` includes a non-empty `functional_form` object
+- for `rc/*` rows, `coefficient_vector_json` includes the axis-appropriate block (`controls`, `sample`, `fixed_effects`, `preprocess`, `weights`, `data_construction`, `joint`, etc.) and that block’s `spec_id` matches the row `spec_id`
+- estimate rows use the baseline group’s canonical inference choice (`coefficient_vector_json.inference.spec_id` matches the surface’s `inference_plan.canonical.spec_id` when the surface is present)
+- numeric fields are finite for `run_success=1` rows (and `run_success=0` rows have missing numeric fields)
 - no `infer/*` rows are present in `specification_results.csv`
 
 Flag any violations as `invalid`.

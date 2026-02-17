@@ -7,6 +7,17 @@
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "unit_of_observation": "municipality",
+        "model_formula": "pcorrupt ~ first + [controls] + FE(uf)",
+        "fixed_effects": [
+          "uf"
+        ],
+        "cluster_vars": [],
+        "weights": null,
+        "selection_story": "selection-on-observables + state fixed effects"
+      },
       "claim_object": {
         "outcome_concept": "Share of audited resources found to involve corruption (pcorrupt)",
         "treatment_concept": "First-term mayor (first=1) vs reelection-eligible second-term mayor (first=0)",

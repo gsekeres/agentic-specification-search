@@ -261,9 +261,9 @@ function fig2_mixture_fit()
     isfile(mf) || return @warn "SKIP: mixture_params_abs_t.json missing"
     mix = JSON.parsefile(mf)
 
-    # Locate K=3 params: prefer trimmed (|t|<=10) fit used by counterfactual,
-    # then spec_level baseline, then k_sensitivity K=3
-    params = get(get(get(mix, "spec_level", Dict()), "trim_sensitivity", Dict()), "trim_abs_le_10", nothing)
+    # Locate K=3 params: prefer the baseline-only sigma=1 fit (used by the counterfactual),
+    # then baseline-only sigma-free, then k_sensitivity K=3.
+    params = get(get(mix, "spec_level", Dict()), "baseline_only_sigma_fixed_1", nothing)
     if params === nothing
         params = get(get(mix, "spec_level", Dict()), "baseline_only", nothing)
     end
@@ -279,10 +279,9 @@ function fig2_mixture_fit()
     σv = [params["sigma"][k] for k in keys3]
     lo = get(params, "truncation_lo", 0.0)
 
-    # Histogram data: verified-core replications, trimmed to |t| <= 10
+    # Histogram data: verified-core replications (x-axis capped for readability)
     t_data = load_verified_core_abs_t()
     t_data === nothing && return @warn "SKIP: no verified-core data"
-    t_data = t_data[t_data .<= 10.0]
 
     xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.5)
     xg = collect(range(0, xmax, length=500))
@@ -507,8 +506,8 @@ fig_folded_k4() = fig_folded_k(4)
     fig_mu_free_comparison()
 
 Visualize all mu_free sigma=1 mixture fits overlaid on data histograms.
-Two panels: full sample and |t|≤10 trimmed sample.
-Each panel overlays best truncnorm and foldnorm fits for K=2,3,4.
+Two panels: full sample and a zoomed view (|t|≤10). Both panels overlay the
+full-sample fits for K=2,3,4 (no separate "trim10" parameter set).
 Prints AIC/BIC table to stdout.
 """
 function fig_mu_free_comparison()
@@ -539,7 +538,7 @@ function fig_mu_free_comparison()
 
     samples = [
         ("Full sample", t_data, "full"),
-        (L"|t| \leq 10", t_data[t_data .<= 10.0], "trim10"),
+        (L"|t| \leq 10\;\mathrm{(zoom)}", t_data[t_data .<= 10.0], "full"),
     ]
 
     fig, axes = PyPlot.subplots(1, 2, figsize=(14, 5.5))
@@ -675,14 +674,14 @@ function fig_mixture_constrained(trim_key::String, constraint_label::AbstractStr
 end
 
 fig2d_mixture_sigma_fixed_1() = fig_mixture_constrained(
-    "K=3_sigma=fixed_1_trim10",
+    "K=3_sigma=fixed_1_full",
     latexstring("\\sigma_k = 1\\;\\mathrm{(fixed)}"),
     "fig_mixture_sigma_fixed_1.pdf";
     source="systematic_grid"
 )
 
 fig2e_mixture_sigma_geq_1() = fig_mixture_constrained(
-    "K=3_sigma=geq_1_trim10",
+    "K=3_sigma=geq_1_full",
     latexstring("\\sigma_k \\ge 1"),
     "fig_mixture_sigma_geq_1.pdf";
     source="systematic_grid"
@@ -708,14 +707,13 @@ const SIGMA_LABELS = Dict(
 
 const SAMPLE_LABELS = Dict(
     "full"   => "Full sample",
-    "trim10" => L"|t| \le 10",
 )
 
 """
     fig_systematic_grid()
 
-Generate one histogram + mixture overlay figure for each of the 18 systematic
-grid fits (K ∈ {2,3,4} × sigma ∈ {free, fixed_1, geq_1} × sample ∈ {full, trim10}).
+Generate one histogram + mixture overlay figure for each of the 9 systematic
+grid fits (K ∈ {2,3,4} × sigma ∈ {free, fixed_1, geq_1} × sample = full).
 """
 function fig_systematic_grid()
     println("\n=== Systematic grid figures ===")
@@ -728,7 +726,6 @@ function fig_systematic_grid()
 
     t_data_all = load_verified_core_abs_t()
     t_data_all === nothing && return @warn "SKIP: no verified-core data"
-    t_data_trim = t_data_all[t_data_all .<= 10.0]
 
     for K in [2, 3, 4]
         info = get(K_LABELS, K, nothing)
@@ -736,7 +733,7 @@ function fig_systematic_grid()
         keys_k, colors_k, labels_k = info
 
         for sigma_name in ["free", "fixed_1", "geq_1"]
-            for sample_name in ["full", "trim10"]
+            for sample_name in ["full"]
                 grid_key = "K=$(K)_sigma=$(sigma_name)_$(sample_name)"
                 params = get(grid, grid_key, nothing)
                 params === nothing && (println("  SKIP: $grid_key not in grid"); continue)
@@ -750,10 +747,10 @@ function fig_systematic_grid()
                 bic = round(params["bic"], digits=1)
                 n_obs = Int(params["n_obs"])
 
-                t_data = sample_name == "trim10" ? t_data_trim : t_data_all
-                xmax_data = sample_name == "trim10" ? 10.5 : 20.5
+                t_data = t_data_all
+                xmax_data = 20.5
                 xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, xmax_data)
-                bin_step = sample_name == "trim10" ? 0.3 : 0.5
+                bin_step = 0.5
                 xg = collect(range(0, xmax, length=600))
                 total = [mix_pdf(x, πv, μv, σv; lo=lo) for x in xg]
                 comps = [[πv[k] * tn_pdf(x, μv[k], σv[k]; lo=lo) for x in xg] for k in 1:K]
@@ -777,7 +774,7 @@ function fig_systematic_grid()
                 end
 
                 sigma_lab_plain = Dict("free"=>"sigma free", "fixed_1"=>"sigma=1 (fixed)", "geq_1"=>"sigma>=1")[sigma_name]
-                sample_lab_plain = Dict("full"=>"Full sample", "trim10"=>"|t|<=10")[sample_name]
+                sample_lab_plain = "Full sample"
                 title_str = "K=$K, $sigma_lab_plain, $sample_lab_plain -- AIC=$aic, BIC=$bic"
                 ax.set_title(title_str, fontsize=12, usetex=false)
                 ax.set_xlabel(L"Evidence index $|t|$ (absolute $t$-statistic)", fontsize=13)
@@ -809,7 +806,7 @@ end
     fig_foldnorm_mufree(comp_key, K, filename)
 
 Folded-normal mixture figure with σ=1 and free μ_N.
-Reads from mu_free_sigma1_comparison[comp_key], overlays on |t|≤10 histogram.
+Reads from mu_free_sigma1_comparison[comp_key], overlays on verified-core histogram.
 """
 function fig_foldnorm_mufree(comp_key::String, K::Int, filename::String)
     println("Fig: Folded-normal σ=1, μ_N free ($comp_key)")
@@ -876,15 +873,15 @@ function fig_foldnorm_mufree(comp_key::String, K::Int, filename::String)
 end
 
 fig2e_foldnorm_mufree_k2() = fig_foldnorm_mufree(
-    "foldnorm_K=2_trim10", 2, "fig_foldnorm_mufree_sigma1_K2.pdf"
+    "foldnorm_K=2_full", 2, "fig_foldnorm_mufree_sigma1_K2.pdf"
 )
 
 fig2f_foldnorm_mufree_k3() = fig_foldnorm_mufree(
-    "foldnorm_K=3_trim10", 3, "fig_foldnorm_mufree_sigma1_K3.pdf"
+    "foldnorm_K=3_full", 3, "fig_foldnorm_mufree_sigma1_K3.pdf"
 )
 
 fig2g_foldnorm_mufree_k4() = fig_foldnorm_mufree(
-    "foldnorm_K=4_trim10", 4, "fig_foldnorm_mufree_sigma1_K4.pdf"
+    "foldnorm_K=4_full", 4, "fig_foldnorm_mufree_sigma1_K4.pdf"
 )
 
 
@@ -2012,28 +2009,27 @@ function fig14_posterior_heatmap()
     (isfile(mf) && isfile(sf)) || return @warn "SKIP: missing files"
 
     mix = JSON.parsefile(mf)
-    # Use the main specification: folded-normal K=3, sigma=1, |t|<=10
-    params = get(get(mix, "mu_free_sigma1_comparison", Dict()), "foldnorm_K=3_trim10", nothing)
-    params === nothing && return @warn "SKIP: no foldnorm_K=3_trim10 params"
+    # Use the baseline specification: truncated-normal K=3, sigma=1 (no |t| cap)
+    params = get(get(mix, "spec_level", Dict()), "baseline_only_sigma_fixed_1", nothing)
+    params === nothing && return @warn "SKIP: no baseline_only_sigma_fixed_1 params"
 
     πv = [params["pi"][k] for k in ["N","H","L"]]
     μv = [params["mu"][k] for k in ["N","H","L"]]
     σv = [params["sigma"][k] for k in ["N","H","L"]]
+    lo = get(params, "truncation_lo", 0.0)
 
     spec = CSV.read(sf, DataFrame)
     t_col = findcol(spec, "Z_abs", "Z")
     t_col === nothing && return @warn "SKIP: no Z column"
     z_vals = finite(abs.(numcol(spec, t_col)))
-    # Trim to |t| <= 10 to match estimation window
-    z_vals = z_vals[z_vals .<= 10.0]
     length(z_vals) < 5 && return @warn "SKIP: too few obs"
 
-    # Compute posteriors for each z using folded-normal PDF
+    # Compute posteriors for each z using truncated-normal PDF
     n = length(z_vals)
     posteriors = zeros(n, 3)
     for i in 1:n
         for k in 1:3
-            posteriors[i, k] = πv[k] * fn_pdf(z_vals[i], μv[k], σv[k])
+            posteriors[i, k] = πv[k] * tn_pdf(z_vals[i], μv[k], σv[k]; lo=lo)
         end
         denom = sum(posteriors[i, :])
         denom > 0 && (posteriors[i, :] ./= denom)

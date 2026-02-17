@@ -11,6 +11,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical bunching estimate.
 - Record: threshold(s), binning, bandwidth/window, counterfactual specification, and the paper’s elasticity/excess-mass mapping.
+- Store these design-defining parameters under `coefficient_vector_json.design.bunching_estimation` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design implementation variants (`design/bunching_estimation/*`)
 
@@ -41,12 +42,15 @@ Spec ID format:
 | `design/bunching_estimation/threshold/single` | Threshold-specific estimate |
 | `design/bunching_estimation/threshold/pooled` | Pooled estimate across thresholds |
 
-### D) Standard-error construction (design-specific)
+### D) Inference choices (use `infer/*`, not `design/*`)
 
-| spec_id | Description |
-|---|---|
-| `design/bunching_estimation/se/bootstrap` | Bootstrap SEs (paper-aligned resampling unit) |
-| `design/bunching_estimation/se/parametric` | Parametric/delta-method SEs (if used) |
+Standard-error construction should be represented as an **inference** choice (canonical + variants), not as an additional design estimator.
+
+Typical inference options (paper-relevant only):
+
+- `infer/resampling/bootstrap/pairs` (row/bootstrap resampling)
+- `infer/resampling/bootstrap/cluster` (cluster bootstrap when the data are clustered)
+- `infer/se/hc/*` (sandwich / delta-method-style approximations when that is what the paper reports)
 
 ## Standard bunching diagnostics (must record for each baseline group)
 

@@ -35,6 +35,12 @@ If the surface includes a diagnostics plan, also write:
 4) `diagnostics_results.csv` (diagnostics only: `diag/*`)
 5) `spec_diagnostics_map.csv` (spec-run ↔ diagnostic-run links)
 
+If you intentionally execute any non-core objects (not part of the default core surface), write them to separate tables (do not mix them into `specification_results.csv`):
+
+6) `exploration_results.csv` (exploration only: `explore/*`)
+7) `sensitivity_results.csv` (sensitivity only: `sens/*`)
+8) `postprocess_results.csv` (post-processing only: `post/*`)
+
 **Important**: Input data files may be in subfolders (e.g., `Codes-and-data/`, `data/`), but all output files listed above must be written directly to `{EXTRACTED_PACKAGE_PATH}/`, not to any subfolder. The analysis script should use separate paths for reading input data vs writing outputs.
 
 Also save your executable script to:
@@ -79,6 +85,8 @@ Record a brief summary in `SPECIFICATION_SEARCH.md` (designs, #baseline groups, 
 For each `baseline_group_id` in the surface:
 
 1) run the baseline spec(s) exactly as in the paper’s code,
+   - emit a `spec_id=baseline` row, and
+   - emit any additional baseline rows only if they are explicitly listed in `core_universe.baseline_spec_ids`,
 2) record the scalar focal estimate in `coefficient/std_error/p_value`,
 3) store the full coefficient/vector output in `coefficient_vector_json`,
 4) include the *exact* outcome/treatment variable names used.
@@ -138,7 +146,7 @@ Must include at least:
 - `paper_id`
 - `spec_run_id`
 - `spec_id`
-- `spec_tree_path`
+- `spec_tree_path` (must reference a spec-tree `.md` node; include `#anchor` when possible; use `custom` only when unavoidable)
 - `baseline_group_id`
 - `outcome_var`, `treatment_var`
 - `coefficient`, `std_error`, `p_value`
@@ -152,8 +160,42 @@ Must include at least:
 Every planned spec should appear as a row, even if it fails. For failures:
 
 - set `run_success=0`
-- set numeric estimate fields to `NaN` where applicable
+- set **all scalar numeric fields** (`coefficient`, `std_error`, `p_value`, `ci_lower`, `ci_upper`, `n_obs`, `r_squared`) to `NaN`
 - record a short `run_error` string (exception message or concrete failure reason)
+- set `coefficient_vector_json` to a JSON object with at least `{"error": run_error, "error_details": {...}}`
+  - `error_details` must be a JSON object with at least: `stage`, `exception_type`, `exception_message` (optionally include a `traceback_tail`)
+  - keep `run_error` single-line; put rich structured context under `error_details`; store any partial outputs under `partial`
+
+#### Required `coefficient_vector_json` schema (all successful rows)
+
+For `run_success=1` rows, `coefficient_vector_json` must be a JSON object with reserved audit keys:
+
+- `coefficients`: full coefficient vector (dict)
+- `inference`: the inference choice used for the scalar `std_error`/`p_value` in this row (matches the baseline group’s **canonical** inference choice for estimate rows; equals the variant for `infer/*` rows)
+- `software`: runner language/version + key package versions (exact)
+- `surface_hash`: deterministic hash of `SPECIFICATION_SURFACE.json` used for this run
+- `design`: must include a non-empty `design.{design_code}` object. For `baseline` and `rc/*` rows, copy the baseline group’s `design_audit` from the surface verbatim into `design.{design_code}` (so results remain interpretable when detached from code). For `design/*` rows, start from the surface `design_audit` and override any design-defining parameters changed by the variant.
+
+Top-level schema rule (required): do not invent arbitrary new top-level keys. Put design-specific objects under `design`, wrapper configuration under `estimation` (when applicable), and any remaining paper-specific fields under `extra` so downstream parsing stays stable across designs.
+
+Use additional typed blocks when relevant (required for the corresponding `rc/*` prefixes): `controls`, `sample`, `fixed_effects`, `preprocess`, `estimation`, `weights`, `data_construction`, `functional_form`, `joint`.
+
+Optional helper (recommended): you may import `scripts/agent_output_utils.py` to construct contract-compliant payloads (`make_success_payload`, `make_failure_payload`, `error_details_from_exception`, `surface_hash`, `software_block`).
+
+Example (estimate row):
+
+```json
+{
+  "coefficients": {"treat": 0.12, "x1": 0.03},
+  "inference": {"spec_id": "infer/se/cluster/unit", "params": {"cluster_var": "unit_id"}},
+  "software": {"runner_language": "python", "runner_version": "3.10.15", "packages": {"pandas": "2.3.3"}},
+  "surface_hash": "sha256:...hex...",
+  "design": {"difference_in_differences": {"estimator": "twfe", "panel_unit": "unit_id", "panel_time": "year"}},
+  "controls": {"spec_id": "rc/controls/loo/drop_x1", "family": "loo", "dropped": ["x1"], "n_controls": 5}
+}
+```
+
+For `rc/form/*` rows, `coefficient_vector_json` must include a `functional_form` object with a non-empty `interpretation` (and for binarize/threshold operations include `threshold`, `direction`, `units`). See `specification_tree/modules/robustness/functional_form.md`.
 
 ### 4.2 `inference_results.csv` (inference-only; if run)
 
@@ -163,7 +205,7 @@ One row per `(spec_run_id, infer spec_id)` recomputation. Must include at least:
 - `inference_run_id` (unique within paper)
 - `spec_run_id` (the base estimate row being recomputed)
 - `spec_id` (typed `infer/*`)
-- `spec_tree_path`
+- `spec_tree_path` (must reference a spec-tree `.md` node; include `#anchor` when possible; use `custom` only when unavoidable)
 - `baseline_group_id`
 - `coefficient`, `std_error`, `p_value` (computed under this inference choice)
 - `ci_lower`, `ci_upper` (blank allowed)
@@ -191,7 +233,10 @@ Follow the schemas in `specification_tree/CONTRACT.md`.
 
 - `spec_run_id` is unique within `{PAPER_ID}`
 - every executed row’s `spec_tree_path` points to an existing design/module node
+- every executed row’s `spec_tree_path` includes a `.md` path (or is exactly `custom`)
 - no `diag/*` rows appear in `specification_results.csv`
 - no `infer/*` rows appear in `specification_results.csv`
-- `coefficient_vector_json` is valid JSON for every row (use `{}` only as last resort)
+- `coefficient_vector_json` is valid JSON for every row (for failures include at least `{"error": run_error, "error_details": {...}}`)
+- all `rc/form/*` rows include `coefficient_vector_json.functional_form`
+- all `run_success=1` rows include `coefficient_vector_json.coefficients`, `.inference`, `.software`, `.surface_hash`, and a non-empty `coefficient_vector_json.design.{design_code}`
 - run `python scripts/validate_agent_outputs.py --paper-id {PAPER_ID}` and ensure it reports 0 `ERROR` issues

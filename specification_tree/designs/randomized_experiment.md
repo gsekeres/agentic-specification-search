@@ -9,6 +9,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical experimental estimate for the claim object (often ITT).
 - Record: randomization unit, stratification/blocking, weights, and the paper’s outcome/treatment definitions.
+- Record design-defining metadata under `coefficient_vector_json.design.randomized_experiment` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/randomized_experiment/*`)
 

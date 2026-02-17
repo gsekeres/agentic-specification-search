@@ -18,6 +18,7 @@ The current sample covers **99 papers** from AEA journals (AER, AEJ-Applied, AEJ
 agentic_specification_search/
 ├── README.md
 ├── unified_results.csv                 
+├── unified_inference_results.csv        # Inference-only rows (infer/*), if present
 │
 ├── specification_tree/                 # Specification tree definitions
 │   ├── INDEX.md
@@ -97,6 +98,25 @@ agentic_specification_search/
 ```
 
 ## Running the Pipeline
+
+### Python environment
+
+This repo requires **Python >= 3.10** (needed by `pyfixest`).
+
+For a fully pinned environment (recommended for reproducing the included results):
+
+```bash
+python3.10 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
+python -m pip install -r requirements-py310.lock
+```
+
+For a minimal (unpinned) environment:
+
+```bash
+python -m pip install -r requirements.txt
+```
 
 ### Full pipeline
 
@@ -181,7 +201,7 @@ Each row is one specification from one paper:
 | `ci_upper` | CI upper bound (optional; can be empty) |
 | `n_obs` | Number of observations |
 | `r_squared` | \(R^2\) (optional; can be empty) |
-| `coefficient_vector_json` | Full output payload (JSON; required; may include bundles/focal/vector outputs) |
+| `coefficient_vector_json` | Full output payload (JSON object; required). Must include `coefficients`, `inference`, `software`, `surface_hash` (+ axis blocks like `controls` / `sample` / `functional_form` when applicable). Failures include `error` + `error_details`. Keep top-level schema stable (use `design`/`extra` for extensions). |
 | `sample_desc` | Sample description (optional) |
 | `fixed_effects` | Fixed effects description (optional) |
 | `controls_desc` | Controls description (optional) |
@@ -198,6 +218,8 @@ Each row is one specification from one paper:
 
 Each row is one inference-only recomputation (`infer/*`) for a reference estimate row:
 
+The data construction stage also concatenates these per-paper files into `unified_inference_results.csv` (same schema).
+
 | Column | Description |
 |--------|-------------|
 | `paper_id` | Package identifier |
@@ -209,7 +231,7 @@ Each row is one inference-only recomputation (`infer/*`) for a reference estimat
 | `coefficient` | Point estimate (typically matches the reference row) |
 | `std_error` | Standard error under this inference choice |
 | `p_value` | p-value under this inference choice |
-| `coefficient_vector_json` | Full output payload (JSON; required; include inference metadata/warnings) |
+| `coefficient_vector_json` | Full output payload (JSON object; required). Must include `coefficients`, `inference`, `software`, `surface_hash` (+ inference metadata/warnings). Failures include `error` + `error_details`. Keep top-level schema stable (use `design`/`extra` for extensions). |
 | `run_success` | 0/1 success flag for the inference recomputation |
 | `run_error` | Short error string when `run_success=0` |
 

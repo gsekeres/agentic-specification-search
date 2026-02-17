@@ -3,7 +3,7 @@
 15_journal_subgroup.py
 ======================
 
-Journal subgroup analysis: fit K=3 folded-normal mixture on AER papers
+Journal subgroup analysis: fit K=3 truncated-normal mixture on AER papers
 versus all non-AER (AEJ + AER: P&P) papers and compare parameters to the
 full-sample estimates.
 
@@ -35,14 +35,12 @@ SPEC_FILE = DATA_DIR / "spec_level_verified_core.csv"
 OUTPUT_JSON = RESULTS_DIR / "journal_subgroup.json"
 OUTPUT_FIG = "fig_journal_subgroup.pdf"
 
-TRIM_THRESHOLD = 10.0
-
 # ── Import fitting function from 04_fit_mixture.py ───────────────────────────
 SCRIPTS_DIR = Path(__file__).parent
 _spec = importlib.util.spec_from_file_location("fit_mixture", SCRIPTS_DIR / "04_fit_mixture.py")
 _mod = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_mod)
-fit_foldnorm_mixture = _mod.fit_foldnorm_mixture
+fit_truncnorm_mixture = _mod.fit_truncnorm_mixture
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
@@ -63,17 +61,17 @@ def main() -> None:
     z = np.clip(z, 0.0, None)
     df["Z_w"] = z
 
-    valid = np.isfinite(z) & (z <= TRIM_THRESHOLD)
+    valid = np.isfinite(z)
     df = df[valid].copy()
-    print(f"Loaded {len(df):,} specs from {df['paper_id'].nunique()} papers (|t| <= {TRIM_THRESHOLD})")
+    print(f"Loaded {len(df):,} specs from {df['paper_id'].nunique()} papers")
 
     # ------------------------------------------------------------------
     # 2. Full-sample fit (sigma=1 fixed, matching baseline)
     # ------------------------------------------------------------------
-    print("\nFitting full-sample K=3 folded-normal mixture (sigma=1 fixed)...")
-    full_params = fit_foldnorm_mixture(
+    print("\nFitting full-sample K=3 truncated-normal mixture (sigma=1 fixed)...")
+    full_params = fit_truncnorm_mixture(
         df["Z_w"].to_numpy(), n_components=3, n_init=40,
-        random_state=42, sigma_constraint="fixed_1",
+        random_state=42, lo=0.0, sigma_constraint="fixed_1",
     )
     print("  Full-sample params:")
     for k in sorted(full_params["pi"].keys()):
@@ -111,9 +109,9 @@ def main() -> None:
         print(f"\n{label}: {n_papers} papers, {len(z_sub):,} specs")
 
         try:
-            params = fit_foldnorm_mixture(
+            params = fit_truncnorm_mixture(
                 z_sub, n_components=3, n_init=40,
-                random_state=42, sigma_constraint="fixed_1",
+                random_state=42, lo=0.0, sigma_constraint="fixed_1",
             )
         except Exception as e:
             print(f"  Fitting failed: {e}")
@@ -154,9 +152,9 @@ def main() -> None:
         print(f"\n  {journal}: {n_papers_j} papers, {len(z_j):,} specs")
 
         try:
-            params_j = fit_foldnorm_mixture(
+            params_j = fit_truncnorm_mixture(
                 z_j, n_components=3, n_init=40,
-                random_state=42, sigma_constraint="fixed_1",
+                random_state=42, lo=0.0, sigma_constraint="fixed_1",
             )
         except Exception as e:
             print(f"    Fitting failed: {e}")

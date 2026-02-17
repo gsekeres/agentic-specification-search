@@ -1,24 +1,27 @@
 #!/usr/bin/env python3
 """
-12_bootstrap_mixture_ci.py
-==========================
+10_bootstrap_mixture_ci.py
+=========================
 
-Parametric bootstrap confidence intervals for the 3-component
-folded-normal mixture parameters (sigma=1 fixed, |t| <= 10).
+Parametric bootstrap confidence intervals for the **baseline** K=3 truncated-normal
+mixture parameters used in the screening counterfactuals.
+
+Baseline model:
+  |Z| := |t| (no clipping/capping),
+  |Z| | k ~ TruncNormal(mu_k, sigma_k; lo=0), k in {N, H, L},
+  with sigma constrained to 1.0 (for comparability across fits).
 
 Algorithm:
   1. Load fitted params from mixture_params_abs_t.json
-     (key: mu_free_sigma1_comparison.foldnorm_K=3_trim10).
-  2. Load real data (verified-core, trimmed to |t| <= 10) to get n_obs.
-  3. For B=500 bootstrap replications:
-     a. Draw n_obs samples from the fitted folded-normal mixture.
-     b. Re-fit the 3-component folded-normal mixture (sigma=1 fixed).
+     (key: spec_level.baseline_only_sigma_fixed_1).
+  2. For B bootstrap replications:
+     a. Draw n_obs samples from the fitted truncated-normal mixture.
+     b. Re-fit the 3-component truncated-normal mixture (sigma=1 fixed).
      c. Record pi, mu for each component (sorted by mu).
-  4. Output point estimates, bootstrap SE, and 2.5/97.5 percentiles.
+  3. Output point estimates, bootstrap SE, and 2.5/97.5 percentiles.
 
 Reads:
   - estimation/results/mixture_params_abs_t.json
-  - estimation/data/spec_level_verified_core.csv
 
 Output:
   - estimation/results/bootstrap_mixture_ci.json
@@ -30,12 +33,11 @@ from __future__ import annotations
 
 import importlib.util
 import json
-import sys
 import time
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import foldnorm as sp_foldnorm
+from scipy.stats import truncnorm as sp_truncnorm
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -48,19 +50,17 @@ OL_FIG_DIR = BASE_DIR / "overleaf" / "tex" / "v8_figures"
 SCRIPTS_DIR = Path(__file__).parent
 
 MIXTURE_FILE = RESULTS_DIR / "mixture_params_abs_t.json"
-DATA_FILE = DATA_DIR / "spec_level_verified_core.csv"
 OUTPUT_JSON = RESULTS_DIR / "bootstrap_mixture_ci.json"
 OUTPUT_NAME = "fig_bootstrap_mixture_ci.pdf"
 
 # Bootstrap parameters
 B = 500
 SEED = 42
-TRIM_THRESHOLD = 10.0
 COMPONENT_ORDER = ["N", "H", "L"]
 
 
 # ---------------------------------------------------------------------------
-# Import fit_foldnorm_mixture from 04_fit_mixture.py
+# Import fit_truncnorm_mixture from 04_fit_mixture.py
 # ---------------------------------------------------------------------------
 def _import_fit_mixture():
     spec = importlib.util.spec_from_file_location(
@@ -68,20 +68,18 @@ def _import_fit_mixture():
     )
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.fit_foldnorm_mixture
+    return mod.fit_truncnorm_mixture
 
 
 # ---------------------------------------------------------------------------
-# Sampling from a folded normal
+# Sampling from a truncated normal
 # ---------------------------------------------------------------------------
-def sample_foldnorm(mu: float, sigma: float, size: int,
-                    rng: np.random.Generator) -> np.ndarray:
-    """Draw samples from |N(mu, sigma^2)| (folded normal)."""
-    sigma = max(sigma, 1e-8)
-    # scipy foldnorm: c = mu/sigma, loc=0, scale=sigma
-    c = mu / sigma
-    return sp_foldnorm.rvs(c, loc=0, scale=sigma, size=size,
-                           random_state=rng)
+def sample_truncnorm(mu: float, sigma: float, size: int, rng: np.random.Generator) -> np.ndarray:
+    """Draw samples from N(mu, sigma^2) truncated to [0, +inf)."""
+    sigma = float(max(sigma, 1e-8))
+    a = (0.0 - float(mu)) / sigma
+    b = np.inf
+    return sp_truncnorm.rvs(a, b, loc=float(mu), scale=sigma, size=int(size), random_state=rng)
 
 
 # ---------------------------------------------------------------------------
@@ -95,29 +93,28 @@ def main() -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     FIG_DIR.mkdir(parents=True, exist_ok=True)
 
-    # 1. Load fitted parameters (folded-normal K=3, sigma=1, |t|<=10)
+    # 1. Load fitted parameters (baseline K=3 truncnorm, sigma=1 fixed)
     with open(MIXTURE_FILE, "r") as f:
         all_params = json.load(f)
-    params = all_params["mu_free_sigma1_comparison"]["foldnorm_K=3_trim10"]
+    params = all_params.get("spec_level", {}).get("baseline_only_sigma_fixed_1")
+    if params is None:
+        raise KeyError("Missing spec_level.baseline_only_sigma_fixed_1 in mixture_params_abs_t.json")
     pi = params["pi"]
     mu = params["mu"]
     sigma = params["sigma"]
 
-    print("\nPoint estimates (foldnorm K=3, sigma=1, |t|<=10):")
+    print("\nPoint estimates (truncnorm K=3, sigma=1 fixed):")
     for k in COMPONENT_ORDER:
         print(f"  {k}: pi={pi[k]:.4f}, mu={mu[k]:.4f}, sigma={sigma[k]:.4f}")
 
-    # 2. Load real data (trimmed to |t| <= 10) to get n_obs
-    import pandas as pd
-    df = pd.read_csv(DATA_FILE)
-    z = pd.to_numeric(df["Z_abs"], errors="coerce").to_numpy(dtype=float)
-    z = z[np.isfinite(z)]
-    z = z[z <= TRIM_THRESHOLD]
-    n_obs = len(z)
-    print(f"\nn_obs = {n_obs} (|t| <= {TRIM_THRESHOLD})")
+    # 2. Bootstrap sample size
+    n_obs = int(params.get("n_obs", 0))
+    if n_obs <= 0:
+        raise ValueError("Invalid n_obs in mixture parameters.")
+    print(f"\nn_obs = {n_obs}")
 
     # 3. Import the fitting function
-    fit_foldnorm_mixture = _import_fit_mixture()
+    fit_truncnorm_mixture = _import_fit_mixture()
 
     # 4. Bootstrap
     pi_arr = np.array([pi[k] for k in COMPONENT_ORDER])
@@ -136,31 +133,26 @@ def main() -> None:
             elapsed = time.time() - t0
             print(f"  Bootstrap replication {b + 1}/{B}  ({elapsed:.1f}s elapsed)")
 
-        # a. Draw n_obs samples from the fitted folded-normal mixture
+        # a. Draw n_obs samples from the fitted truncated-normal mixture
         components = rng.choice(3, size=n_obs, p=pi_arr)
         samples = np.empty(n_obs)
         for k in range(3):
             mask = components == k
             n_k = mask.sum()
             if n_k > 0:
-                samples[mask] = sample_foldnorm(
+                samples[mask] = sample_truncnorm(
                     mu_arr[k], sig_arr[k], n_k, rng
                 )
 
-        # Trim to |t| <= 10 (matching original pipeline)
-        samples = samples[samples <= TRIM_THRESHOLD]
-
-        # b. Re-fit the folded-normal mixture (sigma=1 fixed)
+        # b. Re-fit the truncated-normal mixture (sigma=1 fixed)
         try:
-            result = fit_foldnorm_mixture(
-                samples, n_components=3, n_init=10,
+            result = fit_truncnorm_mixture(
+                samples, n_components=3, n_init=10, lo=0.0,
                 sigma_constraint="fixed_1",
                 random_state=int(b),
             )
-            # c. Record (already sorted by mu)
-            labels = list(result["pi"].keys())  # sorted by mu
-            boot_params[b, 0:3] = [result["pi"][l] for l in labels]
-            boot_params[b, 3:6] = [result["mu"][l] for l in labels]
+            boot_params[b, 0:3] = [result["pi"][k] for k in COMPONENT_ORDER]
+            boot_params[b, 3:6] = [result["mu"][k] for k in COMPONENT_ORDER]
         except Exception as e:
             n_failed += 1
             if n_failed <= 5:
@@ -200,9 +192,9 @@ def main() -> None:
         "n_valid": n_valid,
         "n_obs": n_obs,
         "seed": SEED,
-        "distribution": "foldnorm",
+        "distribution": "truncnorm",
         "sigma_constraint": "fixed_1",
-        "trim_threshold": TRIM_THRESHOLD,
+        "mixture_source": "spec_level:baseline_only_sigma_fixed_1",
         "parameters": summary,
     }
 
@@ -266,7 +258,7 @@ def main() -> None:
             ax.legend(frameon=False, fontsize=8)
 
     fig.suptitle(
-        f"Parametric Bootstrap ($B={B}$): Folded-Normal Mixture ($\\sigma=1$)",
+        f"Parametric Bootstrap ($B={B}$): Truncated-Normal Mixture ($\\sigma=1$)",
         fontsize=13,
     )
 

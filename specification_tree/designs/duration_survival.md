@@ -9,6 +9,7 @@ Universal RC, inference, diagnostics, sensitivity, and exploration menus live in
 - **spec_id**: `baseline` (or `baseline__{slug}` for additional baseline claim objects)
 - Exact replication of the paper’s canonical duration-model estimate for the claim object.
 - Record: time scale, censoring rules, event definition, and the paper’s focal parameterization (hazard ratio vs log-hazard coefficient vs AFT time ratio).
+- Store these design-defining parameters under `coefficient_vector_json.design.duration_survival` (see `specification_tree/DESIGN_AUDIT_FIELDS.md`).
 
 ## Design estimator implementations (`design/duration_survival/*`)
 

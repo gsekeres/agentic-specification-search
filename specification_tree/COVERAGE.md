@@ -21,6 +21,7 @@ Current coverage exists as typed design files under `specification_tree/designs/
 - ✅ Event study
 - ✅ RD
 - ✅ IV
+- ✅ Shift-share / Bartik
 - ✅ Randomized experiment (RCT / field experiment)
 - ✅ Synthetic control / SDID
 - ✅ Panel FE
@@ -36,7 +37,6 @@ Current coverage exists as typed design files under `specification_tree/designs/
 
 Major design-family gaps to consider adding (depending on scope):
 
-- ❌ Shift-share / Bartik designs (common in applied micro)
 - ❌ Gravity/trade-style panel designs (if treated as distinct)
 - ❌ Structural demand / IO (if desired beyond discrete choice)
 
@@ -48,6 +48,7 @@ Major design-family gaps to consider adding (depending on scope):
 - ✅ Sample restrictions (`specification_tree/modules/robustness/sample.md`)
 - ✅ Fixed effects (`specification_tree/modules/robustness/fixed_effects.md`)
 - ✅ Functional form & transformations (`specification_tree/modules/robustness/functional_form.md`)
+- ✅ Joint multi-axis RC (`specification_tree/modules/robustness/joint.md`)
 - ✅ Weights (`specification_tree/modules/robustness/weights.md`)
 
 ## 4) Sensitivity analysis (assumption relaxations / partial-ID)

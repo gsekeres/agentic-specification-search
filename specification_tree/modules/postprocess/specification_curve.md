@@ -53,9 +53,9 @@ For a family of scalar estimates \(\{\hat\beta_s, \widehat{se}_s\}\):
 | `post/speccurve/family_exploration/heterogeneity` | Heterogeneity/CATE family summary |
 | `post/speccurve/family_placebos/default` | Placebo family summary |
 
-## Output contract (`coefficient_vector_json`)
+## Output contract (`postprocess_results.csv`)
 
-Store as a `postprocess` block:
+Write one row per `post/*` object to `postprocess_results.csv` (see `specification_tree/CONTRACT.md`) and store outputs in `postprocess_json` as a `postprocess` block:
 
 ```json
 {

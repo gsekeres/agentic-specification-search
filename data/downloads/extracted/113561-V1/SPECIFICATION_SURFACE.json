@@ -5,6 +5,15 @@
     {
       "baseline_group_id": "G1",
       "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "wls",
+        "randomization_unit": "respondent",
+        "estimand": "ITT",
+        "assignment_mechanism": "randomized photo race shown (picshowblack)",
+        "weights": "tweight",
+        "cluster_vars": [],
+        "strata_or_blocks": null
+      },
       "claim_object": {
         "outcome_concept": "Actual charitable giving to Hurricane Katrina victims (dollars, 0-100 scale)",
         "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
@@ -79,6 +88,15 @@
     {
       "baseline_group_id": "G2",
       "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "wls",
+        "randomization_unit": "respondent",
+        "estimand": "ITT",
+        "assignment_mechanism": "randomized photo race shown (picshowblack)",
+        "weights": "tweight",
+        "cluster_vars": [],
+        "strata_or_blocks": null
+      },
       "claim_object": {
         "outcome_concept": "Hypothetical giving to Hurricane Katrina victims (dollars, topcoded at 500)",
         "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
@@ -146,6 +164,15 @@
     {
       "baseline_group_id": "G3",
       "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "wls",
+        "randomization_unit": "respondent",
+        "estimand": "ITT",
+        "assignment_mechanism": "randomized photo race shown (picshowblack)",
+        "weights": "tweight",
+        "cluster_vars": [],
+        "strata_or_blocks": null
+      },
       "claim_object": {
         "outcome_concept": "Subjective support for charitable organizations helping Katrina victims (1-7 scale)",
         "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
@@ -212,6 +239,15 @@
     {
       "baseline_group_id": "G4",
       "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "wls",
+        "randomization_unit": "respondent",
+        "estimand": "ITT",
+        "assignment_mechanism": "randomized photo race shown (picshowblack)",
+        "weights": "tweight",
+        "cluster_vars": [],
+        "strata_or_blocks": null
+      },
       "claim_object": {
         "outcome_concept": "Subjective support for government aid to Katrina victims (1-7 scale)",
         "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",

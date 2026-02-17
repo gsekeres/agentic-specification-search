@@ -26,6 +26,7 @@ Return one primary `design_code` from:
 - `event_study`
 - `regression_discontinuity`
 - `instrumental_variables`
+- `shift_share`
 - `randomized_experiment`
 - `synthetic_control`
 - `panel_fixed_effects`
@@ -70,6 +71,8 @@ Also return `secondary_design_codes` (possibly empty) for meaningful secondary m
   - explicit relative-time leads/lags and a dynamic path is a main object.
 - `instrumental_variables`:
   - 2SLS/IV estimator with explicit instrument(s) and first-stage discussion.
+- `shift_share`:
+  - Constructed “Bartik” instrument (exposure shares × aggregate shocks) is central to identification.
 - `regression_discontinuity`:
   - running variable + cutoff/bandwidth logic; rdrobust-like code.
 - `synthetic_control`:
@@ -78,4 +81,3 @@ Also return `secondary_design_codes` (possibly empty) for meaningful secondary m
   - random assignment / strata / treatment arms; ITT/TOT framing.
 
 If truly ambiguous, choose the design family most aligned with the paper’s **main** interpreted claim and lower the confidence.
-

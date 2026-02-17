@@ -54,9 +54,9 @@ Only valid when assignment is plausibly exchangeable under the null (or as a str
 | `diag/placebo/regression_discontinuity/fake_cutoff_below` | Estimate RD at fake cutoff below true cutoff |
 | `diag/placebo/regression_discontinuity/multiple_fake_cutoffs` | Sweep a small set of plausible fake cutoffs |
 
-## Required audit fields (`coefficient_vector_json`)
+## Required audit fields (`diagnostic_json`)
 
-Placebo rows should include a `diagnostic` block:
+Placebo diagnostics should be written to `diagnostics_results.csv`. Store outputs in `diagnostic_json` with a `diagnostic` block:
 
 ```json
 {
@@ -70,4 +70,4 @@ Placebo rows should include a `diagnostic` block:
 }
 ```
 
-If a placebo produces a scalar coefficient/SE, those can be stored in the standard numeric fields, but the row must still be typed as `diag/*`.
+If a placebo produces a scalar coefficient-like output and uncertainty, store those values in the JSON payload (e.g., `estimate`, `std_error`, `p_value`) so the diagnostic remains self-contained.
