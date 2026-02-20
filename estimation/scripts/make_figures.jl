@@ -25,7 +25,8 @@ const BASE_DIR    = dirname(dirname(@__DIR__))
 const DATA_DIR    = joinpath(BASE_DIR, "estimation", "data")
 const RESULTS_DIR = joinpath(BASE_DIR, "estimation", "results")
 const FIG_DIR     = joinpath(BASE_DIR, "estimation", "figures")
-const OL_FIG_DIR  = joinpath(dirname(BASE_DIR), "overleaf", "tex", "v8_figures")
+const OL_FIG_DIR  = joinpath(BASE_DIR, "overleaf", "tex", "v8_figures")
+const PAPER_FIG_DIR = joinpath(BASE_DIR, "scientific-competition-overleaf", "tex", "v8_figures")
 
 mkpath(FIG_DIR)
 
@@ -33,8 +34,10 @@ mkpath(FIG_DIR)
 
 function save_both(fig, name)
     fig.savefig(joinpath(FIG_DIR, name), bbox_inches="tight", facecolor="white", dpi=300)
-    if isdir(OL_FIG_DIR)
-        fig.savefig(joinpath(OL_FIG_DIR, name), bbox_inches="tight", transparent=true, dpi=300)
+    for out_dir in (OL_FIG_DIR, PAPER_FIG_DIR)
+        if isdir(out_dir)
+            fig.savefig(joinpath(out_dir, name), bbox_inches="tight", transparent=true, dpi=300)
+        end
     end
     PyPlot.close(fig)
     println("  Saved $name")

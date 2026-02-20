@@ -128,7 +128,8 @@ def main():
     print("  Data:      estimation/data/{claim_level,spec_level,i4r_comparison}.csv")
     print("  Results:   estimation/results/{mixture_params,dependence,counterfactual}*.json")
     print("  Figures:   estimation/figures/*.pdf")
-    print("  Overleaf:  overleaf/tex/v8_figures/*.pdf, overleaf/tex/v8_tables/*.tex")
+    print("  Manuscript: scientific-competition-overleaf/tex/v8_figures/*.pdf, scientific-competition-overleaf/tex/v8_tables/*.tex")
+    print("  Overleaf:   overleaf/tex/v8_tables/*.tex")
 
 
 if __name__ == "__main__":

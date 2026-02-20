@@ -18,6 +18,10 @@ Writes:
   - overleaf/tex/v8_tables/tab_dependence_summary.tex
   - overleaf/tex/v8_tables/tab_counterfactual_sensitivity.tex
   - overleaf/tex/v8_tables/tab_inference_audit_i4r.tex
+  - scientific-competition-overleaf/tex/v8_tables/tab_mixture_params_abs_t.tex
+  - scientific-competition-overleaf/tex/v8_tables/tab_dependence_summary.tex
+  - scientific-competition-overleaf/tex/v8_tables/tab_counterfactual_sensitivity.tex
+  - scientific-competition-overleaf/tex/v8_tables/tab_inference_audit_i4r.tex
 """
 
 from __future__ import annotations
@@ -248,8 +252,12 @@ Paper ID & Script & Flag description \\
 def main() -> None:
     base_dir = Path(__file__).resolve().parents[2]
     results_dir = base_dir / "estimation" / "results"
-    overleaf_tables = base_dir / "overleaf" / "tex" / "v8_tables"
-    overleaf_tables.mkdir(parents=True, exist_ok=True)
+    out_dirs = [
+        base_dir / "overleaf" / "tex" / "v8_tables",
+        base_dir / "scientific-competition-overleaf" / "tex" / "v8_tables",
+    ]
+    for d in out_dirs:
+        d.mkdir(parents=True, exist_ok=True)
 
     mix_abs = json.loads((results_dir / "mixture_params_abs_t.json").read_text())
     dep = json.loads((results_dir / "dependence.json").read_text())
@@ -261,17 +269,20 @@ def main() -> None:
     if mix_abs_params is None:
         raise RuntimeError("mixture_params_abs_t.json missing sigma-fixed or baseline mixture results.")
 
-    write_mixture_table(mix_abs_params, overleaf_tables / "tab_mixture_params_abs_t.tex")
-    write_dependence_table(dep, overleaf_tables / "tab_dependence_summary.tex")
+    for d in out_dirs:
+        write_mixture_table(mix_abs_params, d / "tab_mixture_params_abs_t.tex")
+        write_dependence_table(dep, d / "tab_dependence_summary.tex")
 
-    write_counterfactual_table(
-        results_dir / "counterfactual.csv",
-        results_dir / "counterfactual_dependence_sensitivity.csv",
-        overleaf_tables / "tab_counterfactual_sensitivity.tex",
-        params_path=results_dir / "counterfactual_params.json",
-    )
+    for d in out_dirs:
+        write_counterfactual_table(
+            results_dir / "counterfactual.csv",
+            results_dir / "counterfactual_dependence_sensitivity.csv",
+            d / "tab_counterfactual_sensitivity.tex",
+            params_path=results_dir / "counterfactual_params.json",
+        )
 
-    write_inference_audit_table(results_dir / "inference_audit_i4r.csv", overleaf_tables / "tab_inference_audit_i4r.tex")
+    for d in out_dirs:
+        write_inference_audit_table(results_dir / "inference_audit_i4r.csv", d / "tab_inference_audit_i4r.tex")
 
 
 if __name__ == "__main__":
