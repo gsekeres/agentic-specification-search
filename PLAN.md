@@ -26,7 +26,7 @@ All from `i4r/papers_with_replication_urls.csv`, excluding 173441:
 
 ```bash
 export ICPSR_EMAIL="gs754@cornell.edu"
-export ICPSR_PASS="Summerduckpond19!"
+export ICPSR_PASS="2VC4$d7fafebQHY"
 
 python scripts/download_packages.py \
   --project-ids 140921 120078 149481 126722 136741 131981 128521 120483 \
