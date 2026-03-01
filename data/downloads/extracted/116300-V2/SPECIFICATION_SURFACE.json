@@ -1,0 +1,136 @@
+{
+  "paper_id": "116300-V2",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "panel_unit": "famid (PSID family ID)",
+        "panel_time": "year (survey wave: biennial after 1997)",
+        "fe_structure": ["year_x_region (interacted)"],
+        "differencing": "first_difference",
+        "estimator": "first_difference_ols",
+        "cluster_vars": ["famid"],
+        "notes": "All regressions in first differences (dpstk on dfw). Year-region interactions absorb macro trends."
+      },
+      "claim_object": {
+        "outcome_concept": "Change in risky asset share (dpstk = change in stocks/(financial wealth + other debt))",
+        "treatment_concept": "Change in log financial wealth (dfw = log(fw/lfw))",
+        "estimand_concept": "Elasticity of risky asset allocation to wealth changes (test of time-varying risk aversion)",
+        "target_population": "PSID households who are stock market participants, non-retired, non-movers, with positive financial wealth > $10,000"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1",
+          "outcome_var": "dpstk",
+          "treatment_var": "dfw",
+          "controls": ["i.year*i.region", "i.lmarit", "i.hdgender*age", "i.hdgender|agesq", "edu1", "edu2", "ageedu1", "agesqedu1", "ageedu2", "agesqedu2", "i.lhealth", "loglsvcar", "lfamsz", "lchild", "dumlunemp", "lunion", "lhouse", "lbus", "dumllab", "loglinc1", "ldinc1", "ldinc2", "loglinher", "dfamsz", "dchild", "house", "bus", "dumlab"],
+          "n_controls": 28,
+          "fixed_effects": ["year_x_region (via i.year*i.region)"],
+          "vcov": "cluster(famid)"
+        },
+        {
+          "label": "Table4-Col2",
+          "outcome_var": "dpstk",
+          "treatment_var": "dfw",
+          "controls": ["i.year*i.region", "i.lmarit", "i.hdgender*age", "i.hdgender|agesq", "edu1", "edu2", "ageedu1", "agesqedu1", "ageedu2", "agesqedu2", "i.lhealth", "loglsvcar", "lfamsz", "lchild", "dumlunemp", "lunion", "lhouse", "lbus", "dumllab", "loglinc1", "ldinc1", "ldinc2", "loglinher", "dfamsz", "dchild", "house", "bus", "dumlab", "dlabfw", "agedlabfw", "dhomefw", "dbusfw"],
+          "n_controls": 32,
+          "fixed_effects": ["year_x_region (via i.year*i.region)"],
+          "vcov": "cluster(famid)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 20,
+        "controls_count_max": 32,
+        "linked_adjustment": false,
+        "notes": "Large control set reflecting household demographics, income, employment, wealth composition. Year*region interactions are mandatory for identification. Minimum reflects the core demographic + income controls that should always be included."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__dpbhstk_dtwnocar",
+          "baseline__dpstk_dfw_with_composition",
+          "baseline__dpbhstk_with_composition",
+          "baseline__1984_1999_period"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/first_difference"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_loglinher",
+          "rc/controls/loo/drop_dfamsz",
+          "rc/controls/loo/drop_dchild",
+          "rc/controls/loo/drop_house",
+          "rc/controls/loo/drop_bus",
+          "rc/controls/loo/drop_dumlab",
+          "rc/controls/loo/drop_loglsvcar",
+          "rc/controls/loo/drop_dumlunemp",
+          "rc/controls/loo/drop_lunion",
+          "rc/controls/loo/drop_lhouse",
+          "rc/controls/loo/drop_lbus",
+          "rc/controls/loo/drop_dumllab",
+          "rc/controls/loo/drop_income_changes",
+          "rc/controls/sets/minimal_demographics",
+          "rc/controls/sets/demographics_income",
+          "rc/controls/sets/full",
+          "rc/controls/sets/full_with_composition",
+          "rc/controls/add/dlabfw",
+          "rc/controls/add/dhomefw",
+          "rc/controls/add/dbusfw",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/restrict/sample_1984_1999",
+          "rc/sample/restrict/sample_1999_2003",
+          "rc/sample/restrict/fw_gt_50000",
+          "rc/sample/restrict/tw_gt_50000",
+          "rc/sample/outliers/trim_dfw_1_99",
+          "rc/sample/outliers/trim_dpstk_1_99",
+          "rc/form/outcome/dlogpstk",
+          "rc/form/outcome/dlogitpstk",
+          "rc/form/outcome/dpstklev",
+          "rc/form/outcome/dpbhstk",
+          "rc/form/treatment/dtwnocar",
+          "rc/weights/famwt",
+          "rc/weights/unweighted",
+          "rc/sample/restrict/continuous_participants"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/famid",
+          "params": {"cluster_var": "famid"},
+          "notes": "Cluster at household (family) level, matching baseline code"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust-only (no clustering)"
+          },
+          {
+            "spec_id": "infer/se/bootstrap/quantile",
+            "params": {},
+            "notes": "Bootstrap quantile regression (paper uses bsqreg in appendix)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 116300,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "paper_id": "181581-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of deploying a doctor to a primary health center on 7-day neonatal mortality, in a cluster-RCT across health facilities in Kaduna State, Nigeria. Reghdfe OLS with strata FE, clustered at facility level.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": ["181581-V1_run_001", "181581-V1_run_002"],
+      "baseline_spec_ids": ["baseline", "baseline__basic_controls"],
+      "baseline_coefficient": -0.00530,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.143,
+      "baseline_n_obs": 9126,
+      "notes": "Two baseline specs: run_001 (Table 4 Col 1, strata FE only, no controls, p=0.143) and run_002 (Table 4 Col 2, basic controls + quarter FE, p=0.056). The baseline without controls is not significant at conventional levels; with basic controls it is borderline significant at 10%. Both treatment arms (doctor and mlp) are included simultaneously."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified one baseline group covering the doctor arm effect on 7-day neonatal mortality. The mort30 outcome variant and doctor_only treatment variant are classified as core data construction variations within the same baseline group."
+}

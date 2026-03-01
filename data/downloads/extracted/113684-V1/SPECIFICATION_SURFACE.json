@@ -1,0 +1,95 @@
+{
+  "paper_id": "113684-V1",
+  "created_at": "2026-02-25",
+  "notes": "Miller (2017) 'The Persistent Effect of Temporary Affirmative Action'. Event study of federal contractor status on black employment share using EEO-1 establishment-level panel. Main results in Tables 2-3, Figures 3-4. Regulation and deregulation event studies. Data is confidential EEO-1 microdata, not included in the package -- only do-files are provided.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "event_study",
+      "design_audit": {
+        "estimator": "reghdfe_event_study",
+        "panel_unit": "unit_id",
+        "panel_time": "year",
+        "event_var": "first_fedcon_yr",
+        "event_window": [-6, 6],
+        "reference_period": -1,
+        "fe_structure": ["unit_id", "divXyear"],
+        "cluster_vars": ["firm_id"],
+        "controls": ["ln_est_size", "ln_est_size_sq"],
+        "notes": "Regulation event study. Lead/lag dummies F6-F2, L0-L6 around first federal contractor year. F1 (t=-1) omitted as reference. Absorbs unit and division-by-year FE."
+      },
+      "claim_object": {
+        "outcome_concept": "Black share of establishment employment (f_black)",
+        "treatment_concept": "Gaining federal contractor status (first_fedcon)",
+        "estimand_concept": "Dynamic ATT of regulation on black employment share, event-study coefficients",
+        "target_population": "EEO-1 reporting establishments that become federal contractors (excluding those entering as contractors)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1-Fig3A",
+          "outcome_var": "f_black",
+          "treatment_var": "first_fedcon_F6...first_fedcon_L6",
+          "controls": ["ln_est_size", "ln_est_size_sq"],
+          "n_controls": 2
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "Paper uses only ln_est_size and ln_est_size_sq as time-varying controls throughout all specifications. No variation in control sets across main specs. Constraint is effectively fixed."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/event_study/fe/msa_x_year",
+          "design/event_study/fe/sic_x_div_x_year",
+          "design/event_study/sample/balanced_panel",
+          "design/event_study/sample/event_pre_1998",
+          "design/event_study/sample/contractor_losers_only",
+          "design/event_study/parametric/linear_slope"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_ln_est_size",
+          "rc/controls/loo/drop_ln_est_size_sq",
+          "rc/controls/add/none_no_controls",
+          "rc/sample/restriction/balanced_panel_5yr",
+          "rc/sample/restriction/event_pre_1998",
+          "rc/sample/restriction/contractor_losers",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/alt/unit_plus_year",
+          "rc/fe/alt/unit_plus_msa_x_year",
+          "rc/fe/alt/unit_plus_sic_x_div_x_year",
+          "rc/fe/cluster/unit_id",
+          "rc/fe/cluster/establishment"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/firm",
+          "params": {"cluster_var": "firm_id"},
+          "notes": "Clustered at firm level as in all paper specifications."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/unit", "params": {"cluster_var": "unit_id"}, "notes": "Cluster at establishment (panel unit) level."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 0,
+        "notes": "Control set is fixed (only 2 size controls). Budget driven by design variants (FE alternatives, sample restrictions) and focal parameter choices."
+      },
+      "sampling": {
+        "seed": 113684,
+        "controls_subset_sampler": "none",
+        "notes": "Full enumeration. No control-set combinatorics needed."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/event_study/pretrends/joint_f_test", "scope": "spec", "notes": "Joint F-test of pre-treatment leads being zero."},
+        {"diag_spec_id": "diag/event_study/pretrends/visual", "scope": "baseline_group", "notes": "Visual inspection of pre-treatment coefficient path."}
+      ]
+    }
+  ]
+}

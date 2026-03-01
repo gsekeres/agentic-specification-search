@@ -1,0 +1,143 @@
+{
+  "paper_id": "114875-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "score (project evaluation score, centered: s = score - 75)",
+        "cutoff": 75,
+        "rd_type": "sharp",
+        "bandwidth": "full sample (global polynomial), local: 50% and 35% windows",
+        "kernel": "uniform (unweighted regression within bandwidth)",
+        "poly_order": "0, 1, 2, 3 (separate polynomials each side)",
+        "bias_correction": "none",
+        "estimator": "parametric_rd_separate_polynomials"
+      },
+      "claim_object": {
+        "outcome_concept": "Investment-to-sales ratio (INVSALES) for subsidized firms",
+        "treatment_concept": "Receipt of R&D subsidy (score >= 75 threshold)",
+        "estimand_concept": "Discontinuity in investment at the subsidy eligibility cutoff (causal effect of R&D subsidy on investment)",
+        "target_population": "Firms applying for R&D subsidies from an Italian regional program"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-FullSample-Poly1",
+          "outcome_var": "INVSALES",
+          "treatment_var": "treat",
+          "controls": ["snotreat", "streat"],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "cluster(score)"
+        },
+        {
+          "label": "Table3-FullSample-Poly0",
+          "outcome_var": "INVSALES",
+          "treatment_var": "treat",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "cluster(score)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Controls are polynomial terms in centered score, separate on each side of cutoff. Max 6 = cubic on each side."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__poly0",
+          "baseline__poly2",
+          "baseline__poly3",
+          "baseline__poly1_bw50",
+          "baseline__poly1_bw35"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/poly/local_linear",
+          "design/regression_discontinuity/poly/local_quadratic",
+          "design/regression_discontinuity/poly/local_cubic",
+          "design/regression_discontinuity/bandwidth/half_baseline",
+          "design/regression_discontinuity/bandwidth/double_baseline",
+          "design/regression_discontinuity/kernel/triangular",
+          "design/regression_discontinuity/kernel/uniform",
+          "design/regression_discontinuity/procedure/conventional",
+          "design/regression_discontinuity/procedure/robust_bias_corrected"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/bandwidth/bw_50pct_window",
+          "rc/sample/bandwidth/bw_35pct_window",
+          "rc/sample/bandwidth/bw_25pct_window",
+          "rc/sample/bandwidth/bw_75pct_window",
+          "rc/sample/donut/exclude_1",
+          "rc/sample/donut/exclude_2",
+          "rc/sample/donut/exclude_3",
+          "rc/sample/restrict/small_firms_only",
+          "rc/sample/restrict/large_firms_only",
+          "rc/sample/restrict/high_coverage_only",
+          "rc/sample/restrict/low_coverage_only",
+          "rc/sample/restrict/young_firms_only",
+          "rc/sample/restrict/old_firms_only",
+          "rc/sample/placebo_cutoff/cutoff_60",
+          "rc/sample/placebo_cutoff/cutoff_65",
+          "rc/sample/placebo_cutoff/cutoff_70",
+          "rc/sample/placebo_cutoff/cutoff_80",
+          "rc/sample/placebo_cutoff/cutoff_85",
+          "rc/sample/placebo_cutoff/cutoff_90",
+          "rc/sample/bandwidth/bw_20pct_window",
+          "rc/sample/bandwidth/bw_60pct_window",
+          "rc/sample/bandwidth/bw_80pct_window",
+          "rc/sample/bandwidth/bw_90pct_window",
+          "rc/sample/donut/exclude_5",
+          "rc/sample/outliers/trim_INVSALES_1_99",
+          "rc/sample/outliers/trim_INVSALES_5_95",
+          "rc/form/outcome/log_INVSALES",
+          "rc/form/outcome/asinh_INVSALES",
+          "rc/form/outcome/winsorized_INVSALES",
+          "rc/joint/poly0_bw50",
+          "rc/joint/poly1_bw50",
+          "rc/joint/poly2_bw50",
+          "rc/joint/poly0_bw35",
+          "rc/joint/poly1_bw35",
+          "rc/joint/poly2_bw35"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/score",
+          "params": {"cluster_var": "score"},
+          "notes": "Cluster at score level, matching baseline Stata code"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust, no clustering"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114875,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check"
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check"
+        }
+      ]
+    }
+  ]
+}

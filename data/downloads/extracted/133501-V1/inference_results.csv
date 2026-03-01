@@ -1,0 +1,1 @@
+paper_id,inference_run_id,spec_run_id,spec_id,spec_tree_path,baseline_group_id,coefficient,std_error,p_value,ci_lower,ci_upper,n_obs,r_squared,coefficient_vector_json,run_success,run_error

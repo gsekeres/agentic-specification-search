@@ -1,84 +1,61 @@
-# Specification Search Run Log: 113561-V1
+# Specification Search: 113561-V1
 
-**Paper**: Fong & Luttmer (2009), "What Determines Giving to Hurricane Katrina Victims?"
-
-**Date**: 2026-02-15
+## Paper
+"What Determines Giving to Hurricane Katrina Victims? Experimental Evidence on Racial Group Loyalty"
+Fong & Luttmer, AEJ: Applied Economics, 2009
 
 ## Surface Summary
-
-- **Design**: Randomized experiment
-- **Baseline groups**: 4 (G1: giving, G2: hypgiv_tc500, G3: subjsupchar, G4: subjsupgov)
-- **Treatment**: picshowblack (randomly assigned photo showing Black victims)
-- **Population**: White respondents who passed soundcheck (N=915)
-- **Canonical inference**: HC1 robust SE (pyfixest vcov="hetero")
+- **Baseline groups**: 1 (G1: effect of picshowblack on giving)
+- **Design**: randomized_experiment
+- **Budget**: 60 specs max
+- **Sampling**: full enumeration (no random sampling needed)
 - **Seed**: 113561
 
-## Counts
+## Execution Summary
 
-| Metric | Count |
-|--------|-------|
-| Total specs planned | 90 |
-| Total specs executed | 90 |
-| Successful | 90 |
-| Failed | 0 |
-| Inference variants | 1 |
+| Category | Planned | Executed | Succeeded | Failed |
+|----------|---------|----------|-----------|--------|
+| Baseline | 2 | 2 | 2 | 0 |
+| Design | 1 | 1 | 1 | 0 |
+| RC: Controls (sets) | 5 | 5 | 5 | 0 |
+| RC: Controls (LOO) | 20 | 20 | 20 | 0 |
+| RC: Controls (progression) | 5 | 5 | 5 | 0 |
+| RC: Controls (subsets) | 6 | 6 | 6 | 0 |
+| RC: Sample | 8 | 8 | 8 | 0 |
+| RC: Functional form | 3 | 3 | 3 | 0 |
+| RC: Weights | 2 | 2 | 2 | 0 |
+| **Total** | **52** | **52** | **52** | **0** |
 
-### By Baseline Group
+## Inference Variants (separate table)
+- 3 inference variants computed for baseline spec (classical, HC2, HC3)
+- Written to `inference_results.csv`
 
-| Group | Outcome | Planned | Executed | Successful |
-|-------|---------|---------|----------|------------|
-| G1 | giving | 23 | 23 | 23 |
-| G2 | hypgiv_tc500 | 23 | 23 | 23 |
-| G3 | subjsupchar | 22 | 22 | 22 |
-| G4 | subjsupgov | 22 | 22 | 22 |
+## Key Findings
 
-### By Spec Type
+### Baseline result
+- **Coefficient**: -2.30 (SE = 3.85, p = 0.550, N = 1343)
+- The baseline effect of showing black victims on giving is negative but statistically insignificant
 
-| Spec type | Count |
-|-----------|-------|
-| baseline | 4 |
-| design/* | 4 |
-| rc/controls/sets/* | 12 |
-| rc/controls/loo/* | 28 |
-| rc/controls/progression/* | 16 |
-| rc/sample/restriction/* | 16 |
-| rc/weights/* | 8 |
-| rc/form/* | 2 |
+### Robustness across specifications
+- All 52 specifications produce negative point estimates (range: -7.37 to -0.22)
+- No specification achieves conventional significance (p < 0.05) except:
+  - None of the 52 specs is significant at the 5% level
+- The result is remarkably stable across control sets: LOO coefficients range from -2.42 to -1.87
+- Sample restrictions produce more variation: Slidell-only gives -0.64, Biloxi-only gives -3.61
+- Dropping extreme choices (0 and 100) strengthens the effect to -5.04 (p = 0.164)
+- Excluding fast completers gives -7.37 (p = 0.196)
+- Functional form changes (log, asinh, binary) all show negligible effects near zero
 
-## Key Results
-
-### G1: Actual Giving (giving)
-- **Baseline**: coef = -4.20, SE = 4.68, p = 0.370 (N=915)
-- Treatment effect is negative but not statistically significant across all 23 specifications.
-- Range of coefficients: -8.87 (Biloxi only) to +1.46 (Slidell only)
-- All p-values > 0.18
-
-### G2: Hypothetical Giving (hypgiv_tc500)
-- **Baseline**: coef = -2.18, SE = 4.06, p = 0.591 (N=913)
-- Treatment effect is negative but far from significance across all 23 specifications.
-- Range of coefficients: -3.97 to -0.53
-- All p-values > 0.24
-
-### G3: Charity Support (subjsupchar)
-- **Baseline**: coef = -0.22, SE = 0.16, p = 0.168 (N=907)
-- Consistently negative but not significant at 5% level.
-- Range of coefficients: -0.28 to +0.09
-- p-values range from 0.095 to 0.694
-
-### G4: Government Support (subjsupgov)
-- **Baseline**: coef = -0.44, SE = 0.20, p = 0.026 (N=913)
-- This is the only outcome where the baseline is significant at 5%.
-- Coefficient is robustly negative across most specifications.
-- 13 of 22 specs have p < 0.05; range extends from -0.50 to -0.14.
-- Significant in most control variations, but loses significance in Biloxi-only and race-shown-only subsamples.
-
-## Deviations from Surface
-
-None. All planned specifications were executed successfully.
+### Interpretation
+The main finding (all respondents) shows a weak, insignificant negative effect of showing black victims. This is consistent with the paper's Table 3 Col 2 result. The paper's main contribution is demonstrating that this effect is moderated by racial identification (Table 6), which we do not test in the core specification search (those are heterogeneity/interaction analyses that change the estimand).
 
 ## Software Stack
+- Python 3.12
+- pyfixest 0.40+
+- pandas 2.x
+- numpy 1.x
+- scipy 1.10+
 
-- Python 3.x
-- pyfixest (vcov="hetero" for HC1, vcov="HC3" for HC3 inference variant)
-- pandas, numpy
-- Data: katrina.dta (Stata format, loaded via pd.read_stata)
+## Deviations from Surface
+- None. All planned specs were executed successfully.
+- `rc/sample/outliers/trim_y_1_99` had no effect because giving is bounded [0,100] with no values outside the 1-99 percentile range (min=0, max=100).

@@ -1,93 +1,72 @@
 # Verification Report: 113561-V1
 
-**Paper**: Fong & Luttmer (2009), "What Determines Giving to Hurricane Katrina Victims?"
+## Paper
+"What Determines Giving to Hurricane Katrina Victims? Experimental Evidence on Racial Group Loyalty"
+Fong & Luttmer, AEJ: Applied Economics, 2009
 
-**Date**: 2026-02-15
+## Baseline Groups
 
-## 1. Baseline Groups
+### G1: Effect of picshowblack on giving (all respondents)
+- **Baseline spec_run_ids**: S001 (Table 3 Col 2), S002 (Table 4 Panel 1 with nraudworthy)
+- **Baseline coefficient**: -2.30 (SE=3.85, p=0.55, N=1343)
+- **Expected sign**: negative (weakly)
+- **Statistical significance**: Not significant at any conventional level
 
-Four baseline groups found, matching the surface definition:
+## Summary Counts
 
-| Group | Outcome | Baseline spec_run_id | Coefficient | p-value |
-|-------|---------|---------------------|-------------|---------|
-| G1 | giving | 113561-V1__run_0001 | -4.198 | 0.370 |
-| G2 | hypgiv_tc500 | 113561-V1__run_0024 | -2.181 | 0.591 |
-| G3 | subjsupchar | 113561-V1__run_0047 | -0.221 | 0.168 |
-| G4 | subjsupgov | 113561-V1__run_0069 | -0.435 | 0.026 |
-
-All baseline groups are correctly defined and match the surface.
-
-## 2. Row Counts
-
-| Metric | Count |
-|--------|-------|
-| Total rows | 90 |
-| Valid (is_valid=1) | 90 |
-| Core (is_core_test=1) | 90 |
+| Category | Count |
+|----------|-------|
+| Total rows | 52 |
+| Core-eligible | 52 |
 | Non-core | 0 |
 | Invalid | 0 |
 | Unclear | 0 |
 
-### Category Breakdown
-
+### By category
 | Category | Count |
 |----------|-------|
-| core_controls | 56 |
-| core_sample | 16 |
-| core_method | 8 |
-| core_weights | 8 |
-| core_funcform | 2 |
+| core_method | 3 |
+| core_controls | 31 |
+| core_sample | 8 |
+| core_funcform | 3 |
+| core_weights | 2 |
+| Baselines | 2 |
+| Additional baselines | 1 |
 
-## 3. Sanity Checks
+## Classification Details
 
-### 3.1 spec_run_id uniqueness
-All 90 spec_run_ids are unique. Verified.
+All 52 specifications preserve the baseline claim object:
+- Same outcome concept (giving, or monotone transforms thereof)
+- Same treatment (picshowblack)
+- Same estimand (ITT under random assignment)
+- Same population (all respondents, with sample-restriction variants)
 
-### 3.2 baseline_group_id consistency
-All rows have valid baseline_group_id values (G1, G2, G3, G4). Each group has the expected number of specs.
+### Functional form variants
+- S040 (log1p), S041 (asinh), S042 (binary): These transform the outcome but preserve the concept of "charitable giving to Katrina victims." The coefficient interpretation changes (semi-elasticity vs level vs extensive margin), but the claim object is preserved.
 
-### 3.3 spec_id typing
-All spec_ids follow the typed namespace convention. No `infer/*` rows appear in specification_results.csv (the single HC3 inference variant is correctly in inference_results.csv).
+### Sample restriction variants
+- S034 (main survey), S035-S036 (city subsamples), S037 (race-shown): These restrict the sample but the target population concept (all respondents) is unchanged since these are data quality/design robustness checks, not population changes.
+- S038 (trimming), S039 (drop extreme): Standard outlier handling.
+- S051-S052 (engaged respondents, not-fast completers): Quality filters.
 
-### 3.4 run_success
-All 90 rows have run_success=1 with empty run_error. No failures.
+## Issues Found
 
-### 3.5 Numeric fields
-All coefficient, std_error, p_value, ci_lower, ci_upper, n_obs, r_squared values are finite for all rows.
+1. **No issues with outcome/treatment drift**: All 52 rows use the correct outcome (giving or transforms) and treatment (picshowblack).
+2. **No issues with estimand drift**: All rows estimate the ITT effect.
+3. **No invalid extractions**: All 52 runs succeeded.
+4. **Trimming spec (S038) ineffective**: The 1/99 percentile trimming of giving had no effect because giving is bounded [0,100] by design.
 
-### 3.6 coefficient_vector_json
-All rows have valid JSON in coefficient_vector_json with non-empty content.
+## Key Findings Across Specifications
 
-## 4. Estimand Preservation Check
+The baseline result (picshowblack on giving, all respondents) is:
+- **Consistently negative** across all 52 specifications (range: -7.37 to -0.22)
+- **Consistently insignificant** at the 5% level in all specifications
+- **Very stable across control variations**: LOO estimates range from -2.42 to -1.87
+- **More variable across sample restrictions**: City subsamples show -0.64 (Slidell) to -3.61 (Biloxi)
+- **Strongest when restricting to interior choices**: -5.04 when dropping giving=0 and giving=100
 
-### 4.1 Outcome/treatment drift
-No outcome or treatment concept changes detected:
-- All G1 rows use outcome=giving (or giving_tc50 for the topcode variant, which preserves concept)
-- All G2 rows use outcome=hypgiv_tc500 (or hypgiv_tc200 for tighter topcode)
-- All G3 rows use outcome=subjsupchar
-- All G4 rows use outcome=subjsupgov
-- All rows use treatment=picshowblack
+## Recommendations
 
-### 4.2 Population changes
-Sample restrictions (main_survey_only, slidell_only, biloxi_only, race_shown_only) are within-population robustness checks, not estimand-changing population switches. The target population remains "white respondents" in all cases; these are subsets used as stability checks matching the paper's own Table 5.
-
-## 5. Top Issues
-
-None. The specification search is clean:
-- All rows are valid and core-eligible
-- No outcome/treatment drift
-- No duplicated spec_run_ids
-- No missing baseline groups
-- No `infer/*` rows in specification_results.csv
-
-## 6. Recommendations
-
-1. **Consider adding more functional form variants**: Only 2 of 90 specs explore functional form. For the dollar-denominated outcomes (G1, G2), log(1+giving) or asinh(giving) could be informative.
-
-2. **Consider interaction-based robustness**: The paper reveals interaction effects in Table 6 with racial attitude moderators. While these are heterogeneity/exploration (not core), they could be included as `explore/*` in a future round.
-
-3. **Multiple testing correction**: With 4 outcomes tested, a Bonferroni or BH correction could be applied as a post-processing step. The sole significant result (G4, p=0.026) would not survive Bonferroni correction (threshold = 0.0125).
-
-## 7. Final Assessment
-
-The specification search is **approved**. All 90 specifications are valid, correctly typed, and preserve their respective estimands. The search faithfully implements the approved surface and the results are auditable.
+1. The specification search confirms the paper's finding: picshowblack effect on giving is not significant for the full sample.
+2. The paper's main contribution (Table 6 heterogeneity by racial attitudes) was intentionally excluded from the core specification search.
+3. No changes to the surface are recommended.

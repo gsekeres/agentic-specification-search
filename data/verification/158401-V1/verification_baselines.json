@@ -1,0 +1,72 @@
+{
+  "paper_id": "158401-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of village-level market access for quality maize (buy_treatment) on farmer investment outcomes (expenses, post-harvest handling), OLS ANCOVA with survey_season FE and village-clustered SE",
+      "outcome_concept": "Farmer investment in maize quality (seeds/fertilizer expenses, input expenses, post-harvest handling practices and expenses)",
+      "treatment_concept": "Access to a market for quality maize (buy_treatment): village-level random assignment to an agro-trading company buying high-quality maize",
+      "estimand_concept": "Intent-to-Treat (ITT) average effect of market access assignment on investment outcomes",
+      "target_population": "Maize farming households in 20 experimental villages in Uganda, post-treatment seasons",
+      "expected_sign": "positive (market access increases investment in quality)",
+      "baseline_spec_run_ids": [
+        "158401-V1__001",
+        "158401-V1__002",
+        "158401-V1__003",
+        "158401-V1__004",
+        "158401-V1__005",
+        "158401-V1__006",
+        "158401-V1__007",
+        "158401-V1__008"
+      ],
+      "baseline_spec_ids": [
+        "baseline__t5a_col1_fert_seeds",
+        "baseline__t5a_col2_inputs",
+        "baseline__t5a_col3_tarpaulin",
+        "baseline__t5a_col4_sort",
+        "baseline__t5a_col5_winnow",
+        "baseline__t5a_col6_labor_pre",
+        "baseline__t5a_col7_postharvest",
+        "baseline__t5a_col8_labor_post"
+      ],
+      "focal_baseline_coefficient": 2.369,
+      "focal_baseline_p_value": 0.045,
+      "focal_outcome": "expenses_fert_seeds",
+      "notes": "G1 covers Table 5 Panel A (8 investment outcomes). OLS ANCOVA with baseline outcome mean as control (where available; sort_d and winnow_d have no ANCOVA control), survey_season FE, village-clustered SE. Focal outcome expenses_fert_seeds: coef=2.37, p=0.045. tarpaulin_d is the most robust (p=0.0004). All 8 coefficients are positive."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of village-level market access for quality maize (buy_treatment) on farmer productivity and income outcomes (price, harvest, yield, profit), OLS ANCOVA with survey_season FE and village-clustered SE",
+      "outcome_concept": "Farmer productivity and income (price per kg, acreage, harvest quantity, yield, harvest value, total expenses, profit, profit including own hours)",
+      "treatment_concept": "Access to a market for quality maize (buy_treatment): village-level random assignment to an agro-trading company buying high-quality maize",
+      "estimand_concept": "Intent-to-Treat (ITT) average effect of market access assignment on productivity and income outcomes",
+      "target_population": "Maize farming households in 20 experimental villages in Uganda, post-treatment seasons",
+      "expected_sign": "positive (market access increases productivity and income)",
+      "baseline_spec_run_ids": [
+        "158401-V1__009",
+        "158401-V1__010",
+        "158401-V1__011",
+        "158401-V1__012",
+        "158401-V1__013",
+        "158401-V1__014",
+        "158401-V1__015",
+        "158401-V1__016"
+      ],
+      "baseline_spec_ids": [
+        "baseline__t6a_col1_price",
+        "baseline__t6a_col2_acreage",
+        "baseline__t6a_col3_harvest",
+        "baseline__t6a_col4_yield",
+        "baseline__t6a_col5_harvest_value",
+        "baseline__t6a_col6_expenses",
+        "baseline__t6a_col7_surplus",
+        "baseline__t6a_col8_surplus_hrs"
+      ],
+      "focal_baseline_coefficient": 65.821,
+      "focal_baseline_p_value": 0.055,
+      "focal_outcome": "surplus",
+      "notes": "G2 covers Table 6 Panel A (8 productivity/income outcomes). Same design as G1. All 8 have ANCOVA controls. Focal outcome surplus: coef=65.82, p=0.055 (marginally significant). price (p=0.001) and yield (p=0.037) are significant. All 8 coefficients are positive."
+    }
+  ],
+  "global_notes": "Two baseline groups matching the pre-run surface exactly. G1 = Table 5 Panel A (investment, 8 outcomes). G2 = Table 6 Panel A (productivity/income, 8 outcomes). Both share the same cluster-RCT design (20 villages, 12T/8C, ITT with ANCOVA). All 70 specifications preserve baseline claim objects (same treatment buy_treatment, same estimand ITT, same population). Outcome transformations (asinh, log1p) change scale but preserve concept. 12 failed specifications all share the same root cause: household characteristics variable naming mismatch (hh_ prefix), producing 0 observations. One duplicate result: 158401-V1__049 (drop_first_post_season, expenses_postharvest) is numerically identical to baseline 158401-V1__007, because expenses_postharvest is only measured in later post-treatment seasons making the season drop a no-op. No baseline-group assignments were adjusted relative to the surface."
+}

@@ -1,0 +1,215 @@
+{
+  "paper_id": "116063-V1",
+  "created_at": "2026-02-25",
+  "notes": "Dafny (2005 AER) 'How Do Hospitals Respond to Price Changes?'. Exploits the 1988 Medicare PPS reform as a source of exogenous variation in DRG prices (weights). The paper has two main analyses: (1) Intensity analysis (Table 5, int.do): DRG-year panel estimating causal effect of DRG price (weight) on treatment intensity using Laspeyres price index as IV; (2) Upcoding analysis (Table 3, up.do): DRG-year panel estimating effect of price spread on fraction of patients coded with complications using IV. We define two baseline groups corresponding to these two main claims. The intensity analysis (Table 5) is the primary contribution; the upcoding analysis (Table 3) provides complementary evidence on hospital behavioral responses. DATA NOTE: The analysis data must be constructed by running the SAS programs (intdata.sas, updata.sas) on raw MedPAR 20% sample data. The raw SAS output files (drgcg, up, uphosp) are not included in the replication package. Only the DRG weights text file (drg85_96.txt) and PPS hospital-level files (pps*.dta) are provided directly. The runner must either construct the intermediate data or obtain pre-built Stata files.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endog_vars": ["lnwt"],
+        "instrument_vars": ["lnlas88instr"],
+        "panel_unit": "drg",
+        "panel_time": "year",
+        "fe_structure": ["drg", "drg_trend"],
+        "cluster_vars": [],
+        "se_type": "robust",
+        "weights": "frequency_weights (totprocs)",
+        "n_instruments": 1,
+        "overid_df": 0,
+        "notes": "IV regression: lnprocs = f(lnwt) instrumented by lnlas88instr (log Laspeyres price index), with DRG FE (drg_*), DRG-specific year trends (drgXyea_*), and year dummies (year86-year91). Frequency-weighted by total procedures. Robust SE. Years 85-91, DRG-pair level data."
+      },
+      "claim_object": {
+        "outcome_concept": "Log number of hospital procedures (admissions) for a DRG",
+        "treatment_concept": "Log DRG weight (Medicare reimbursement price)",
+        "estimand_concept": "Elasticity of hospital treatment volume with respect to DRG price, identified via reform-induced mechanical price changes (Laspeyres index)",
+        "target_population": "Medicare PPS hospital DRG-pairs, FY1985-1991"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-IV-lnprocs",
+          "outcome_var": "lnprocs",
+          "treatment_var": "lnwt",
+          "instrument_var": "lnlas88instr",
+          "controls": ["year86", "year87", "year88", "year89", "year90", "year91", "drg_*", "drgXyea_*"],
+          "n_controls_approx": "~550 (DRG dummies + DRG*year trends + year dummies)",
+          "weight_var": "totprocs",
+          "se_type": "robust"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": true,
+        "notes": "IV is a bundled estimator: first stage and second stage share the same control set (DRG FE + DRG-specific trends + year dummies). No additional covariates are used beyond the FE structure. The linkage means FE changes apply to both stages. The only 'controls' are the fixed effects structure, which is treated as an FE axis rather than a controls axis."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table5_iv_lnchga",
+          "baseline__table5_iv_lnlos",
+          "baseline__table5_iv_lnsurg",
+          "baseline__table5_iv_lnicu",
+          "baseline__table5_iv_lndeathr"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/liml",
+          "design/instrumental_variables/estimator/2sls"
+        ],
+        "rc_spec_ids": [
+          "rc/form/instrument/lnlascl88instr",
+          "rc/form/outcome/lnchga",
+          "rc/form/outcome/lnlos",
+          "rc/form/outcome/lnsurg",
+          "rc/form/outcome/lnicu",
+          "rc/form/outcome/lndeathr",
+          "rc/fe/drop_drg_trends",
+          "rc/fe/add_year_only",
+          "rc/weights/unweighted",
+          "rc/weights/chgprocs",
+          "rc/weights/sgprocs",
+          "rc/sample/time/drop_1985",
+          "rc/sample/time/pre_post_only",
+          "rc/sample/drgtype/elective_only",
+          "rc/sample/drgtype/urgent_only",
+          "rc/sample/drgtype/emergent_only",
+          "rc/sample/outliers/trim_lnwt_1_99",
+          "rc/sample/outliers/drop_extreme_price_change",
+          "rc/form/treatment/ols_no_iv",
+          "rc/joint/outcome_weight/*",
+          "rc/joint/sample_drgtype_outcome/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/robust",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SE (Eicker-Huber-White), matching the paper's baseline: ivreg ... , robust."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/drg",
+            "params": {"cluster_var": "drg"},
+            "notes": "Cluster at DRG level (panel unit)."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 standard errors (small-sample corrected)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0,
+        "notes": "No control pool to sample (all variation is in FE structure, instruments, outcomes, samples, and weights). Full enumeration of the discrete axis combinations."
+      },
+      "sampling": {
+        "seed": 116063,
+        "controls_subset_sampler": "not_applicable",
+        "notes": "Full enumeration. Variation is across outcomes (6), FE variants (~3), instrument variants (2), weight variants (~3), sample restrictions (~6), design alternatives (LIML, OLS). Cross-products are constrained by joint specs."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/strength/first_stage_f",
+          "scope": "spec",
+          "notes": "First-stage F-statistic for each IV specification. Critical given single instrument."
+        },
+        {
+          "diag_spec_id": "diag/instrumental_variables/endogeneity/hausman",
+          "scope": "baseline_group",
+          "notes": "Hausman test comparing IV to OLS (paper reports these)."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endog_vars": ["spread"],
+        "instrument_vars": ["sp8788pt"],
+        "panel_unit": "drg",
+        "panel_time": "year",
+        "fe_structure": ["drg"],
+        "cluster_vars": [],
+        "se_type": "robust",
+        "weights": "frequency_weights (totyoung)",
+        "n_instruments": 1,
+        "overid_df": 0,
+        "notes": "IV regression of upcoding (fraction of young patients coded with complications) on DRG weight spread, instrumented by the 1987-88 spread change interacted with post (sp8788pt). DRG FE and year dummies. Frequency-weighted by number of young admissions. Robust SE."
+      },
+      "claim_object": {
+        "outcome_concept": "Fraction of young patients coded into the higher-paying DRG (with complications)",
+        "treatment_concept": "DRG weight spread (price difference between complication and non-complication DRG code)",
+        "estimand_concept": "Causal effect of price incentive (spread) on upcoding behavior among young patients, identified via reform-induced spread changes",
+        "target_population": "Medicare DRG-pairs with young (<65) patients, FY1985-1991"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-IV-fracy-young",
+          "outcome_var": "fracy",
+          "treatment_var": "spread",
+          "instrument_var": "sp8788pt",
+          "controls": ["year86", "year87", "year88", "year89", "year90", "year91", "drg_*"],
+          "n_controls_approx": "~95 (DRG dummies + year dummies)",
+          "weight_var": "totyoung",
+          "se_type": "robust"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 1,
+        "linked_adjustment": true,
+        "notes": "The old patient specification (Table 3 col 2) adds fracy87post as a control. Linked adjustment: FE structure shared across first and second stage."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_iv_fraco_old"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/form/outcome/fraco",
+          "rc/controls/add/fracy87post",
+          "rc/fe/drop_drg_fe",
+          "rc/weights/unweighted",
+          "rc/weights/totold",
+          "rc/sample/time/drop_1985",
+          "rc/sample/outliers/trim_spread_1_99",
+          "rc/form/treatment/reduced_form"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/robust",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SE, matching the paper."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/drg",
+            "params": {"cluster_var": "drg"},
+            "notes": "Cluster at DRG level."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 20,
+        "max_specs_controls_subset": 0,
+        "notes": "Secondary claim. Fewer variations than the intensity analysis."
+      },
+      "sampling": {
+        "seed": 116063,
+        "controls_subset_sampler": "not_applicable"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/strength/first_stage_f",
+          "scope": "spec"
+        }
+      ]
+    }
+  ]
+}

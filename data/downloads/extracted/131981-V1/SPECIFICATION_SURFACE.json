@@ -1,0 +1,121 @@
+{
+  "paper_id": "131981-V1",
+  "created_at": "2026-02-24",
+  "notes": "Sharp RD at age-65 COVID curfew cutoff in Turkey. Running variable is birth month distance from December 1955 cutoff. Treatment is before1955 (born before Dec 1955, age >= 65, subject to curfew). Estimation via local linear regression with covariates, clustered at survey month-year (modate). Paper reports results at multiple bandwidths (17, 30, 45, 60 months). Baseline bandwidth = 30 months (Table 4, Column 2). Multiple mental health outcomes form the headline claim.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "dif",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": 30,
+        "kernel": "uniform",
+        "poly_order": 1,
+        "bias_correction": "none",
+        "estimator": "local_linear_ols",
+        "treatment_var": "before1955",
+        "cluster_var": "modate",
+        "notes": "Local linear OLS with separate slopes on each side of cutoff. The running variable dif is birth month distance from Dec 1955 cutoff. Covariates include month FE, province FE, ethnicity FE, education FE, female, and survey_taker_id FE. SE clustered at survey month-year (modate). Uniform kernel (all obs within bandwidth window equally weighted)."
+      },
+      "claim_object": {
+        "outcome_concept": "Mental distress index (inverse-covariance-weighted average of 20 SRQ items, normalized to control-group SD)",
+        "treatment_concept": "Exposure to age-based COVID-19 curfew (born before December 1955, age >= 65)",
+        "estimand_concept": "Sharp RD treatment effect at age-65 curfew cutoff on mental health",
+        "target_population": "Turkish adults near the age-65 curfew threshold, surveyed by phone during COVID-19"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col2-z_depression",
+          "outcome_var": "z_depression",
+          "treatment_var": "before1955",
+          "controls": ["dif", "dif_x_before1955", "month_FE", "province_FE", "ethnicity_FE", "education_FE", "female", "survey_taker_id_FE"],
+          "n_controls_approx": "~90 dummies + 2 RD polynomial terms",
+          "bandwidth": 30,
+          "notes": "Baseline spec: bw=30, linear polynomial, full controls"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 92,
+        "linked_adjustment": false,
+        "notes": "Minimum 2 controls = RD polynomial terms only (dif and dif*before1955). Maximum includes all FE dummies. The FE controls are grouped: month (12), province (66), ethnicity (4), education (7), survey_taker_id (88), female (1). Controls are block-structured: FE groups move as blocks."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_col1_bw17",
+          "baseline__table4_col3_bw45",
+          "baseline__table4_col4_bw60"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/bw17",
+          "design/regression_discontinuity/bandwidth/bw24",
+          "design/regression_discontinuity/bandwidth/bw36",
+          "design/regression_discontinuity/bandwidth/bw45",
+          "design/regression_discontinuity/bandwidth/bw48",
+          "design/regression_discontinuity/bandwidth/bw60",
+          "design/regression_discontinuity/bandwidth/bw72",
+          "design/regression_discontinuity/poly/local_quadratic"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_month_fe",
+          "rc/controls/loo/drop_province_fe",
+          "rc/controls/loo/drop_ethnicity_fe",
+          "rc/controls/loo/drop_education_fe",
+          "rc/controls/loo/drop_female",
+          "rc/controls/loo/drop_survey_taker_fe",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/minimal_demo",
+          "rc/controls/sets/full_baseline",
+          "rc/sample/donut/exclude_1month",
+          "rc/sample/donut/exclude_2month",
+          "rc/sample/donut/exclude_3month",
+          "rc/form/outcome/sum_srq",
+          "rc/form/outcome/z_somatic",
+          "rc/form/outcome/z_nonsomatic",
+          "rc/joint/bw_poly/*",
+          "rc/joint/bw_controls/*",
+          "rc/joint/outcome_bw/*",
+          "rc/joint/outcome_donut/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/modate",
+          "params": {"cluster_var": "modate"},
+          "notes": "Clustering at survey month-year (modate), matching the paper's baseline inference."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) standard errors, no clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/province",
+            "params": {"cluster_var": "province_n"},
+            "notes": "Clustering at province level as a stress test."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0,
+        "notes": "Full enumeration feasible. No random control-subset sampling needed. Budget covers bandwidth variations, polynomial order, control block LOO, donut holes, alternative outcomes, and joint specs."
+      },
+      "sampling": {
+        "seed": 131981,
+        "controls_subset_sampler": "none_full_enumeration",
+        "notes": "Controls are block-structured (FE groups), so LOO at the block level is tractable. No random sampling needed."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "notes": "Balance test: regress predetermined covariates on before1955 without controls (Table A2 replication)."
+        }
+      ]
+    }
+  ]
+}

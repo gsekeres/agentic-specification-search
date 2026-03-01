@@ -1,124 +1,157 @@
 {
   "paper_id": "112431-V1",
-  "created_at": "2026-02-15",
-  "surface_reviewed": true,
-  "review_date": "2026-02-15",
+  "created_at": "2026-02-22",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
       "design_audit": {
         "estimator": "ols",
-        "unit_of_observation": "municipality",
-        "model_formula": "pcorrupt ~ first + [controls] + FE(uf)",
-        "fixed_effects": [
+        "model_formula": "pcorrupt ~ first + controls | uf",
+        "selection_story": "Random audit assignment; reelection incentives identified by comparing first-term vs second-term mayors",
+        "fe_structure": [
           "uf"
         ],
-        "cluster_vars": [],
-        "weights": null,
-        "selection_story": "selection-on-observables + state fixed effects"
+        "cluster_vars": []
       },
       "claim_object": {
-        "outcome_concept": "Share of audited resources found to involve corruption (pcorrupt)",
-        "treatment_concept": "First-term mayor (first=1) vs reelection-eligible second-term mayor (first=0)",
-        "estimand_concept": "Average treatment effect of reelection incentives on corruption (conditional on observables + state FE)",
-        "target_population": "Brazilian municipalities audited by CGU lottery, esample2==1 (N=476)"
+        "outcome_concept": "Share of audited resources involving corruption",
+        "treatment_concept": "First-term mayor (eligible for reelection) vs second-term (term-limited)",
+        "estimand_concept": "Average treatment effect of reelection incentives on corruption",
+        "target_population": "Brazilian municipalities audited by CGU lottery (2001-2004)"
       },
       "baseline_specs": [
         {
           "label": "Table4-Col6",
-          "spec_id": "baseline",
           "outcome_var": "pcorrupt",
           "treatment_var": "first",
           "controls": [
-            "pref_masc", "pref_idade_tse", "pref_escola",
-            "party_d1", "party_d3", "party_d4", "party_d5", "party_d6",
-            "party_d7", "party_d8", "party_d9", "party_d10", "party_d11",
-            "party_d12", "party_d13", "party_d14", "party_d15", "party_d16",
-            "party_d17", "party_d18",
-            "lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea",
-            "lrec_trans", "p_cad_pref", "vereador_eleit", "ENLP2000", "comarca",
-            "sorteio1", "sorteio2", "sorteio3", "sorteio4", "sorteio5",
-            "sorteio6", "sorteio7", "sorteio8", "sorteio9", "sorteio10"
+            "pref_masc",
+            "pref_idade_tse",
+            "pref_escola",
+            "party_d1",
+            "party_d3",
+            "party_d4",
+            "party_d5",
+            "party_d6",
+            "party_d7",
+            "party_d8",
+            "party_d9",
+            "party_d10",
+            "party_d11",
+            "party_d12",
+            "party_d13",
+            "party_d14",
+            "party_d15",
+            "party_d16",
+            "party_d17",
+            "party_d18",
+            "lpop",
+            "purb",
+            "p_secundario",
+            "mun_novo",
+            "lpib02",
+            "gini_ipea",
+            "lrec_trans",
+            "p_cad_pref",
+            "vereador_eleit",
+            "ENLP2000",
+            "comarca",
+            "sorteio1",
+            "sorteio2",
+            "sorteio3",
+            "sorteio4",
+            "sorteio5",
+            "sorteio6",
+            "sorteio7",
+            "sorteio8",
+            "sorteio9",
+            "sorteio10"
           ],
           "n_controls": 41,
-          "fixed_effects": "uf",
-          "vcov": "hetero",
-          "notes": "Main specification: areg pcorrupt first [controls] | uf, robust. Table 4 Col 6."
+          "fixed_effects": [
+            "uf"
+          ],
+          "vcov": "hetero"
         }
       ],
       "constraints": {
         "controls_count_min": 0,
-        "controls_count_max": 43,
-        "linked_adjustment": false,
-        "notes": "Paper reveals control progression from 0 (T4C1) to 43 (T5 with lrec_fisc + lfunc_ativ). Lottery dummies (sorteio*) are design controls and should generally be included. Party dummies should move together as a block."
-      },
-      "control_blocks": {
-        "mayor_demographics": ["pref_masc", "pref_idade_tse", "pref_escola"],
-        "party_dummies": ["party_d1", "party_d3", "party_d4", "party_d5", "party_d6", "party_d7", "party_d8", "party_d9", "party_d10", "party_d11", "party_d12", "party_d13", "party_d14", "party_d15", "party_d16", "party_d17", "party_d18"],
-        "municipality_chars": ["lpop", "purb", "p_secundario", "mun_novo", "lpib02", "gini_ipea"],
-        "fiscal": ["lrec_trans"],
-        "political": ["p_cad_pref", "vereador_eleit", "ENLP2000", "comarca"],
-        "audit_controls": ["sorteio1", "sorteio2", "sorteio3", "sorteio4", "sorteio5", "sorteio6", "sorteio7", "sorteio8", "sorteio9", "sorteio10"],
-        "additional_fiscal": ["lfunc_ativ", "lrec_fisc"]
+        "controls_count_max": 41,
+        "linked_adjustment": false
       },
       "core_universe": {
-        "design_spec_ids": [
-          "design/cross_sectional_ols/estimator/ols"
+        "baseline_spec_ids": [
+          "baseline__ncorrupt",
+          "baseline__ncorrupt_os"
         ],
+        "design_spec_ids": [],
         "rc_spec_ids": [
-          "rc/controls/sets/minimal",
-          "rc/controls/sets/extended",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/mayor_demographics",
-          "rc/controls/progression/mayor_demographics_party",
-          "rc/controls/progression/plus_municipality",
-          "rc/controls/progression/plus_fiscal",
-          "rc/controls/progression/plus_political",
-          "rc/controls/progression/plus_sorteio",
-          "rc/controls/progression/full_with_lfunc_ativ",
-          "rc/controls/progression/full_with_lrec_fisc",
           "rc/controls/loo/drop_pref_masc",
           "rc/controls/loo/drop_pref_idade_tse",
           "rc/controls/loo/drop_pref_escola",
-          "rc/controls/loo/drop_party_block",
           "rc/controls/loo/drop_lpop",
           "rc/controls/loo/drop_purb",
           "rc/controls/loo/drop_p_secundario",
           "rc/controls/loo/drop_mun_novo",
           "rc/controls/loo/drop_lpib02",
           "rc/controls/loo/drop_gini_ipea",
-          "rc/controls/loo/drop_lrec_trans",
           "rc/controls/loo/drop_p_cad_pref",
           "rc/controls/loo/drop_vereador_eleit",
           "rc/controls/loo/drop_ENLP2000",
           "rc/controls/loo/drop_comarca",
-          "rc/controls/loo/drop_sorteio_block",
-          "rc/controls/subset/random_*",
-          "rc/fe/drop/uf",
-          "rc/fe/add/region",
+          "rc/controls/loo/drop_lrec_trans",
+          "rc/controls/sets/none",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/baseline",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/mayor_chars",
+          "rc/controls/progression/municipal_chars",
+          "rc/controls/progression/political",
+          "rc/controls/progression/lottery_dummies",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/controls/subset/random_011",
+          "rc/controls/subset/random_012",
+          "rc/controls/subset/random_013",
+          "rc/controls/subset/random_014",
+          "rc/controls/subset/random_015",
+          "rc/controls/subset/random_016",
+          "rc/controls/subset/random_017",
+          "rc/controls/subset/random_018",
+          "rc/controls/subset/random_019",
+          "rc/controls/subset/random_020",
           "rc/sample/outliers/trim_y_1_99",
           "rc/sample/outliers/trim_y_5_95",
-          "rc/form/outcome/log1p",
-          "rc/form/outcome/asinh"
+          "rc/fe/drop/uf",
+          "rc/fe/add/nsorteio",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p"
         ]
       },
       "inference_plan": {
         "canonical": {
           "spec_id": "infer/se/hc/hc1",
           "params": {},
-          "notes": "Paper uses Stata robust (HC1) SE throughout main tables. No clustering in main cross-sectional specs."
+          "notes": "Heteroskedasticity-robust HC1 SEs, matching Stata 'robust'"
         },
         "variants": [
           {
             "spec_id": "infer/se/cluster/uf",
-            "params": {"cluster_var": "uf"},
-            "notes": "Cluster at state level (26 states; matches FE level)."
-          },
-          {
-            "spec_id": "infer/se/hc/hc3",
-            "params": {},
-            "notes": "HC3 small-sample leverage correction."
+            "params": {
+              "cluster_var": "uf"
+            },
+            "notes": "Cluster at state level (26 clusters - small, but natural grouping)"
           }
         ]
       },
@@ -129,7 +162,8 @@
       "sampling": {
         "seed": 112431,
         "controls_subset_sampler": "stratified_size"
-      }
+      },
+      "diagnostics_plan": []
     }
   ]
 }

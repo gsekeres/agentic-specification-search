@@ -1,41 +1,41 @@
 paper_id,title,journal,year,method,spec_id,baseline_selection_rule,t_AI,t_AI_oriented,t_AI_abs,orientation_sign,coefficient,std_error,p_value,n_obs,outcome_var,treatment_var,spec_tree_path,n_specs,i4r_map_source,i4r_map_score,i4r_map_group,i4r_map_expected_sign,i4r_map_needs_review
-120078-V1,120078-V1,,,,,,,,,,,,,,,,,0,,,,,1
-120483-V1,120483-V1,,,,,,,,,,,,,,,,,0,,,,,1
-120568-V1,120568-V1,,,,,,,,,,,,,,,,,0,,,,,1
+120078-V1,120078-V1,,,,baseline__table5_col3,i4r_claim_map: baseline__table5_col3 (log_price ~ mino_x_rev100),2.6930124838061498,2.6930124838061498,2.6930124838061498,1.0,0.1200339793340814,0.0445723813223592,0.0070815717867436,2026586.0,log_price,mino_x_rev100,designs/panel_fixed_effects.md#baseline,0,verification_baselines,0.0666666666666666,G1,positive,0
+120483-V1,120483-V1,,,,baseline__table1_col5,i4r_claim_map: baseline__table1_col5 (slaveratio ~ MAL),3.849658122460758,3.849658122460758,3.849658122460758,1.0,0.1924908191134528,0.0500020555047132,0.0004811772867547,1955.0,slaveratio,MAL,specification_tree/methods/cross_sectional_ols.md,0,verification_baselines,0.0454545454545454,G1,positive,1
+120568-V1,120568-V1,,,,baseline,i4r_claim_map: baseline (oneqsepsrate ~ time_trend),-13.968801105554954,13.968801105554954,13.968801105554954,-1.0,-0.0004370752193809,3.128938668953407e-05,2.0650148258027912e-14,2276.0,oneqsepsrate,time_trend,designs/panel_time_series_ols.md#baseline,0,verification_baselines,0.0,G1,,1
 125201-V1,125201-V1,,,,,,,,,,,,,,,,,0,,,,,1
-125321-V1,125321-V1,,,,,,,,,,,,,,,,,0,,,,,1
-125821-V1,125821-V1,,,,,,,,,,,,,,,,,0,,,,,1
-126722-V1,126722-V1,,,,,,,,,,,,,,,,,0,,,,,1
-128143-V1,128143-V1,,,,,,,,,,,,,,,,,0,,,,,1
-128521-V1,128521-V1,,,,,,,,,,,,,,,,,0,,,,,1
-130141-V1,130141-V1,,,,,,,,,,,,,,,,,0,,,,,1
-130784-V1,130784-V1,,,,,,,,,,,,,,,,,0,,,,,1
-131981-V1,131981-V1,,,,,,,,,,,,,,,,,0,,,,,1
-134041-V1,134041-V1,,,,,,,,,,,,,,,,,0,,,,,1
-136741-V1,136741-V1,,,,,,,,,,,,,,,,,0,,,,,1
-138401-V1,138401-V1,,,,,,,,,,,,,,,,,0,,,,,1
-138922-V1,138922-V1,,,,,,,,,,,,,,,,,0,,,,,1
-139262-V1,139262-V1,,,,,,,,,,,,,,,,,0,,,,,1
-140121-V2,140121-V2,,,,,,,,,,,,,,,,,0,,,,,1
-140161-V1,140161-V1,,,,,,,,,,,,,,,,,0,,,,,1
-140921-V1,140921-V1,,,,,,,,,,,,,,,,,0,,,,,1
-145141-V1,145141-V1,,,,,,,,,,,,,,,,,0,,,,,1
-146041-V1,146041-V1,,,,,,,,,,,,,,,,,0,,,,,1
-147561-V3,147561-V3,,,,,,,,,,,,,,,,,0,,,,,1
-148301-V1,148301-V1,,,,,,,,,,,,,,,,,0,,,,,1
-149262-V2,149262-V2,,,,,,,,,,,,,,,,,0,,,,,1
-149481-V1,149481-V1,,,,,,,,,,,,,,,,,0,,,,,1
-149882-V1,149882-V1,,,,,,,,,,,,,,,,,0,,,,,1
-150323-V1,150323-V1,,,,,,,,,,,,,,,,,0,,,,,1
-150581-V1,150581-V1,,,,,,,,,,,,,,,,,0,,,,,1
-151841-V1,151841-V1,,,,,,,,,,,,,,,,,0,,,,,1
-157781-V1,157781-V1,,,,,,,,,,,,,,,,,0,,,,,1
-158401-V1,158401-V1,,,,,,,,,,,,,,,,,0,,,,,1
-163822-V2,163822-V2,,,,,,,,,,,,,,,,,0,,,,,1
-171681-V1,171681-V1,,,,,,,,,,,,,,,,,0,,,,,1
-173341-V1,173341-V1,,,,,,,,,,,,,,,,,0,,,,,1
-174501-V1,174501-V1,,,,,,,,,,,,,,,,,0,,,,,1
-180741-V1,180741-V1,,,,,,,,,,,,,,,,,0,,,,,1
-181166-V1,181166-V1,,,,,,,,,,,,,,,,,0,,,,,1
-181581-V1,181581-V1,,,,,,,,,,,,,,,,,0,,,,,1
-184041-V1,184041-V1,,,,,,,,,,,,,,,,,0,,,,,1
+125321-V1,125321-V1,,,,baseline__raw_pm10,i4r_claim_map: baseline__raw_pm10 (pm10 ~ T),3.0614546177482436,3.0614546177482436,3.0614546177482436,1.0,34.69473606664465,11.332761839913626,0.0080145721272692,90578.0,pm10,T,designs/regression_discontinuity.md#baseline-required,0,verification_baselines,0.054054054054054,G1,positive,0
+125821-V1,125821-V1,,,,baseline__tot_exp_mem,i4r_claim_map: baseline__tot_exp_mem (tot_exp_mem ~ op_win_prev1_through_10),1.9175681225853702,-1.9175681225853702,1.9175681225853702,-1.0,298.26827267482616,155.5450725123051,0.0558723549405655,7676.0,tot_exp_mem,op_win_prev1_through_10,designs/regression_discontinuity.md#baseline-required,0,verification_baselines,0.0606060606060606,G1,positive for test scores and spending; negative for dropout rate,0
+126722-V1,126722-V1,,,,baseline__treat_severe_mal,i4r_claim_map: baseline__treat_severe_mal (treat_severe_mal ~ patient_voucher),-0.7933340587282606,-0.7933340587282606,0.7933340587282606,1.0,-0.0167741388045767,0.0211438531095793,0.4307621952015887,2053.0,treat_severe_mal,patient_voucher,designs/randomized_experiment.md#baseline,0,verification_baselines,0.0344827586206896,G1,positive,1
+128143-V1,128143-V1,,,,baseline__table54_col3_iv_notnoyes,i4r_claim_map: baseline__table54_col3_iv_notnoyes (outcome_initial_notno ~ endogenous_eff_yes),2.136555458681938,2.136555458681938,2.136555458681938,1.0,0.5134827697471083,0.240332057686853,0.0327163597513586,3002.0,outcome_initial_notno,endogenous_eff_yes,designs/randomized_experiment.md#baseline,0,verification_baselines,0.1052631578947368,G2,positive,0
+128521-V1,128521-V1,,,,baseline__table2_col3,i4r_claim_map: baseline__table2_col3 (census_mr_tot ~ cotton_dist_post),4.19050057419128,4.19050057419128,4.19050057419128,1.0,2.53365749433984,0.6046192929656876,3.254203541613876e-05,1076.0,census_mr_tot,cotton_dist_post,specification_tree/designs/difference_in_differences.md#twfe,0,verification_baselines,0.1904761904761904,G1,positive,0
+130141-V1,130141-V1,,,,baseline,i4r_claim_map: baseline (GDP_irf_h8 ~ TFP_news_shock),1.3793753956029675,1.3793753956029675,1.3793753956029675,1.0,0.0058305099055793,0.0042269203323223,0.1677790412777149,133.0,GDP_irf_h8,TFP_news_shock,modules/baseline.md,0,verification_baselines,0.1111111111111111,G1,,0
+130784-V1,130784-V1,,,,baseline__employed,i4r_claim_map: baseline__employed (employed ~ bancohort_pcdist),-3.1859635248454583,3.1859635248454583,3.1859635248454583,-1.0,-0.0092223525041009,0.002894682387975,0.0017329464425961,94969.0,employed,bancohort_pcdist,designs/difference_in_differences.md#baseline,0,verification_baselines,0.1578947368421052,G1,negative,0
+131981-V1,131981-V1,,,,baseline__table4_col4_bw60,i4r_claim_map: baseline__table4_col4_bw60 (z_depression ~ before1955),3.356803568950348,3.356803568950348,3.356803568950348,1.0,0.2725754888896108,0.0812009053526011,0.00105664063678,1520.0,z_depression,before1955,designs/regression_discontinuity.md#baseline,0,verification_baselines,0.0769230769230769,G1,positive,0
+134041-V1,134041-V1,,,,baseline__govmore,i4r_claim_map: baseline__govmore (govmore ~ T1),6.897172546725515,6.897172546725515,6.897172546725515,1.0,0.2433785065634306,0.035286706967912,6.439959676640683e-12,3031.0,govmore,T1,designs/randomized_experiment.md#baseline,0,verification_baselines,0.0,G1,,1
+136741-V1,136741-V1,,,,baseline,i4r_claim_map: baseline (Blackrate_regvoters ~ lynchcapitamob),-3.265727925476943,3.265727925476943,3.265727925476943,-1.0,-0.4692258122052015,0.1436818445727298,0.0012426949110699,267.0,Blackrate_regvoters,lynchcapitamob,designs/cross_sectional_ols.md#baseline,0,verification_baselines,0.074074074074074,G1,negative,0
+138401-V1,138401-V1,,,,baseline__hrs_worked,i4r_claim_map: baseline__hrs_worked (hrs_worked ~ M12_exp_rate),-3.379345327580177,-3.379345327580177,3.379345327580177,1.0,-1.2797416311234937,0.3786951338411659,0.0007373061170525,15932210.0,hrs_worked,M12_exp_rate,specification_tree/designs/difference_in_differences.md,0,verification_baselines,0.0,G1,,1
+138922-V1,138922-V1,,,,baseline__kommused,i4r_claim_map: baseline__kommused (kommused ~ treat),20.135449463605486,20.135449463605486,20.135449463605486,1.0,0.1217978786743546,0.0060489277328774,0.0,13333.0,kommused,treat,specification_tree/designs/difference_in_differences.md#baseline-required,0,verification_baselines,0.0571428571428571,G1,positive (voucher intended to increase club membership),1
+139262-V1,139262-V1,,,,baseline__res_good,i4r_claim_map: baseline__res_good (belief_adjustment ~ bayes_belief_adjustment),2.427852090740787,2.427852090740787,2.427852090740787,1.0,0.5295853337419708,0.2181291585931759,0.018987832266718,50.0,belief_adjustment,bayes_belief_adjustment,designs/randomized_experiment.md#baseline,0,verification_baselines,0.1333333333333333,G1,near_zero_for_bad_news_nores,0
+140121-V2,140121-V2,,,,baseline__hourslw,i4r_claim_map: baseline__hourslw (hourslw ~ alaska_post),-14.648619005478727,-14.648619005478727,14.648619005478727,1.0,-1.5049409970370289,0.102736032418767,0.0,1836.0,hourslw,alaska_post,designs/panel_did.md#baseline,0,verification_baselines,0.125,G1,,1
+140161-V1,140161-V1,,,,baseline__share_action_g1,i4r_claim_map: baseline__share_action_g1 (share_click2 ~ survey2 + survey3),-3.3681131854348014,3.3681131854348014,3.3681131854348014,-1.0,-0.020178549873823,0.0059910545646399,0.0007681706340338,2537.0,share_click2,survey2 + survey3,designs/randomized_experiment.md#baseline,0,verification_baselines,0.1219512195121951,G1,negative,0
+140921-V1,140921-V1,,,,baseline__table2_panelb_col3,i4r_claim_map: baseline__table2_panelb_col3 (fmissmatch ~ syntheticT),2.4069988742727966,2.4069988742727966,2.4069988742727966,1.0,0.511758607270229,0.2126127322867327,0.0253675734243106,260.0,fmissmatch,syntheticT,designs/cross_sectional_ols.md#baseline,0,verification_baselines,0.1538461538461538,G2,positive,0
+145141-V1,145141-V1,,,,baseline__table6_col6_bu,i4r_claim_map: baseline__table6_col6_bu (wtp ~ interval_raw),2.6500174563551586,2.6500174563551586,2.6500174563551586,1.0,0.3085075912613038,0.116417192091114,0.0091620256471696,2006.0,wtp,interval_raw,specification_tree/designs/randomized_experiment.md,0,verification_baselines,0.025,G3,positive,1
+146041-V1,146041-V1,,,,baseline__pooled_bilateral,i4r_claim_map: baseline__pooled_bilateral (l_irAQ53_blee_skti ~ l_y),7.1919771778978365,7.1919771778978365,7.1919771778978365,1.0,1.107368401066985,0.1539727356852738,1.8218279160046382e-10,92.0,l_irAQ53_blee_skti,l_y,specification_tree/methods/cross_sectional_ols.md,0,verification_baselines,0.0,G1,,1
+147561-V3,147561-V3,,,,baseline__revenues,i4r_claim_map: baseline__revenues (taxes_paid_amt ~ t_l),3.4654417524011896,3.4654417524011896,3.4654417524011896,1.0,72.10564459276702,20.8070571501614,0.0006411813289415,27643.0,taxes_paid_amt,t_l,designs/randomized_experiment.md#baseline,0,verification_baselines,0.1071428571428571,G1,positive,0
+148301-V1,148301-V1,,,,baseline__table2_col8_ols_haven,i4r_claim_map: baseline__table2_col8_ols_haven (ep ~ lfma),-0.628052255012376,-0.628052255012376,0.628052255012376,1.0,-0.0497875606656494,0.0792729590066806,0.5455745025031371,479.0,ep,lfma,specification_tree/designs/panel_fixed_effects.md,0,verification_baselines,0.0,G1,,1
+149262-V2,149262-V2,,,,baseline,i4r_claim_map: baseline (extra2 ~ treat1),0.6638828830852297,0.6638828830852297,0.6638828830852297,1.0,0.5526099347744452,0.8323906954888318,0.51111515972925,901.0,extra2,treat1,designs/randomized_experiment.md#ancova,0,heuristic_baseline_like,,,,0
+149481-V1,149481-V1,,,,baseline__t2_exp1_gift_cond,fallback: first spec,0.36522495589391457,0.36522495589391457,0.36522495589391457,1.0,0.4126358032226562,1.1298127265501343,0.2008639041654117,136950.0,gift_cond,treat,specification_tree/designs/randomized_experiment.md,0,verification_baselines,0.1875,G1,null (paper reports null effects across all outcomes),1
+149882-V1,149882-V1,,,,baseline,i4r_claim_map: baseline (E_Sgender_index2 ~ B_treat),9.676265020093759,9.676265020093759,9.676265020093759,1.0,0.2179451682117517,0.0225236873689555,0.0,13799.0,E_Sgender_index2,B_treat,specification_tree/methods/cross_sectional_ols.md,0,verification_baselines,0.1153846153846153,G1,positive,1
+150323-V1,150323-V1,,,,baseline__8th_grade_with_controls,i4r_claim_map: baseline__8th_grade_with_controls (both_score_indiv_8_stdComb ~ pX_dummy),-1.3849293610764912,-1.3849293610764912,1.3849293610764912,1.0,-0.0449955744308423,0.032489436425745,0.166483153943642,96250.0,both_score_indiv_8_stdComb,pX_dummy,specification_tree/designs/regression_discontinuity.md,0,verification_baselines,0.0,G1,,1
+150581-V1,150581-V1,,,,,,,,,,,,,,,,,0,verification_baselines,0.0833333333333333,G1,negative,0
+151841-V1,151841-V1,,,,baseline,i4r_claim_map: baseline (Trim_Income ~ Winner_Quint_Rank_NS),2.418141012294757,2.418141012294757,2.418141012294757,1.0,2303.347762335349,952.5283060930876,0.0166818475547056,645.0,Trim_Income,Winner_Quint_Rank_NS,designs/randomized_experiment.md#panel-fe,0,verification_baselines,0.0434782608695652,G1,positive,1
+157781-V1,157781-V1,,,,baseline__table3_col5,i4r_claim_map: baseline__table3_col5 (ashonset_cntypop1600 ~ interaction1),1.9440805276313438,1.9440805276313438,1.9440805276313438,1.0,0.0328706129234988,0.0169080511101812,0.0524195705232259,137812.0,ashonset_cntypop1600,interaction1,specification_tree/designs/difference_in_differences.md#twfe,0,verification_baselines,0.1176470588235294,G1,positive,0
+158401-V1,158401-V1,,,,baseline__t5a_col8_labor_post,i4r_claim_map: baseline__t5a_col8_labor_post (expenses_labor_postharvest ~ buy_treatment),1.5192967660549834,1.5192967660549834,1.5192967660549834,1.0,5.705381925399064,3.755278134510678,0.145153702356207,482.0,expenses_labor_postharvest,buy_treatment,specification_tree/methods/randomized_experiment.md#ols-ancova,0,verification_baselines,0.1538461538461538,G1,positive (market access increases investment in quality),0
+163822-V2,163822-V2,,,,baseline__usage_p2to5_total,i4r_claim_map: baseline__usage_p2to5_total (PD_P2to5_Usage ~ B),-5.157155709359563,5.157155709359563,5.157155709359563,-1.0,-19.98996534901531,3.876160906434557,2.765285269656914e-07,1933.0,PD_P2to5_Usage,B,specification_tree/designs/randomized_experiment.md,0,verification_baselines,0.0,G1,negative,1
+171681-V1,171681-V1,,,,baseline,"i4r_claim_map: baseline (negAbsDiff ~ Control,Full,Rule72,Rhetoric)",0.5166374166623924,0.5166374166623924,0.5166374166623924,1.0,1.224123050951821,2.369404560087738,0.6054346451411836,4510.0,negAbsDiff,"Control,Full,Rule72,Rhetoric",designs/randomized_experiment.md#ols-itt,0,heuristic_baseline_like,,,,0
+173341-V1,173341-V1,,,,baseline__table3_col4,i4r_claim_map: baseline__table3_col4 (ask_private_stacked ~ treatment),-2.361469950693377,2.361469950693377,2.361469950693377,-1.0,-0.0295726505544413,0.0125229840615834,0.0186616041993572,4288.0,ask_private_stacked,treatment,specification_tree/designs/randomized_experiment.md#baseline,0,verification_baselines,0.037037037037037,G1,negative,1
+174501-V1,174501-V1,,,,baseline__table4_black_pcaperf,i4r_claim_map: baseline__table4_black_pcaperf (PCAperf ~ mixracebas),3.187674497625363,3.187674497625363,3.187674497625363,1.0,0.4432859634025861,0.1390624932792884,0.0016298896813871,324.0,PCAperf,mixracebas,specification_tree/designs/randomized_experiment.md#baseline,0,verification_baselines,0.0357142857142857,G2,positive,1
+180741-V1,180741-V1,,,,baseline,i4r_claim_map: baseline (recommendincentive ~ choicebefore),11.880307791505832,11.880307791505832,11.880307791505832,1.0,0.1814669831062815,0.0152746028378176,0.0,5908.0,recommendincentive,choicebefore,designs/randomized_experiment.md#baseline,0,heuristic_baseline_like,,,,1
+181166-V1,181166-V1,,,,baseline__table3_col3_ft,i4r_claim_map: baseline__table3_col3_ft (d_ln_real_earn_win1 ~ d_computer_2017_2007_n_s1_ft),0.25641423664596363,0.25641423664596363,0.25641423664596363,1.0,0.0121317203248473,0.0473129748314163,0.7997293114952395,109.0,d_ln_real_earn_win1,d_computer_2017_2007_n_s1_ft,specification_tree/designs/cross_sectional_ols.md,0,verification_baselines,0.1,G1,positive,1
+181581-V1,181581-V1,,,,baseline__basic_controls,i4r_claim_map: baseline__basic_controls (mort7 ~ doctor),-1.9211023877321283,1.9211023877321283,1.9211023877321283,-1.0,-0.0068679833422048,0.0035750220217635,0.0563077595866519,9124.0,mort7,doctor,designs/randomized_experiment.md#baseline,0,verification_baselines,0.0769230769230769,G1,negative,0
+184041-V1,184041-V1,,,,baseline__tablea1_expi_nebf_medianreg,i4r_claim_map: baseline__tablea1_expi_nebf_medianreg (NEBF ~ CV),34.24317818062511,34.24317818062511,34.24317818062511,1.0,17.264399713808587,0.5041704839061006,2.833139445741037e-234,5817.0,NEBF,CV,specification_tree/designs/randomized_experiment.md#median_regression,0,verification_baselines,0.1153846153846153,G1,positive,1

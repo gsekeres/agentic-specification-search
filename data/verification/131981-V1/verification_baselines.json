@@ -1,0 +1,64 @@
+{
+  "paper_id": "131981-V1",
+  "verified_at": "2026-02-24",
+  "global_notes": "Single baseline group G1 confirmed, matching the surface exactly. No adjustments to baseline-group assignments. All 45 specification_results.csv rows belong to G1. The surface core_universe explicitly includes rc/form/outcome/* and rc/joint/outcome_*/* specs; alternative mental health indices (z_somatic, z_nonsomatic, sum_srq) are treated as measures of the same outcome concept (mental distress from curfew). All 45 rows are valid and core. One minor metadata note: for rc/joint/bw_poly/* rows, the design.regression_discontinuity.poly_order field in coefficient_vector_json records 1 (the template default) rather than 2, while the joint.details.poly_order field correctly records 2 and the executed coefficients match local-quadratic run012 exactly, confirming correct execution. Inference variants appear only in inference_results.csv (2 rows) as required; no infer/* rows are present in specification_results.csv.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Sharp RD effect of age-based COVID-19 curfew (born before December 1955, age >= 65) on mental distress (z_depression, ICW-weighted SRQ index), at the age-65 threshold, among Turkish adults near the curfew cutoff",
+      "outcome_concept": "Mental distress index (inverse-covariance-weighted average of 20 SRQ items, normalized to control-group SD)",
+      "treatment_concept": "Exposure to age-based COVID-19 curfew (born before December 1955, age >= 65)",
+      "estimand_concept": "Sharp RD treatment effect at age-65 curfew cutoff on mental health",
+      "target_population": "Turkish adults near the age-65 curfew threshold, surveyed by phone during COVID-19",
+      "expected_sign": "positive",
+      "expected_sign_rationale": "The paper argues curfew restricts movement and social interaction, increasing mental distress. All 45 executed coefficients are positive.",
+      "baseline_spec_run_ids": [
+        "131981-V1_run001",
+        "131981-V1_run002",
+        "131981-V1_run003",
+        "131981-V1_run004"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table4_col1_bw17",
+        "baseline__table4_col3_bw45",
+        "baseline__table4_col4_bw60"
+      ],
+      "baseline_coefficients": {
+        "baseline_bw30": {
+          "spec_run_id": "131981-V1_run001",
+          "coefficient": 0.3877,
+          "std_error": 0.1153,
+          "p_value": 0.0013,
+          "n_obs": 795,
+          "bandwidth": 30
+        },
+        "baseline_bw17": {
+          "spec_run_id": "131981-V1_run002",
+          "coefficient": 0.2394,
+          "std_error": 0.1886,
+          "p_value": 0.2130,
+          "n_obs": 486,
+          "bandwidth": 17
+        },
+        "baseline_bw45": {
+          "spec_run_id": "131981-V1_run003",
+          "coefficient": 0.2436,
+          "std_error": 0.0985,
+          "p_value": 0.0153,
+          "n_obs": 1160,
+          "bandwidth": 45
+        },
+        "baseline_bw60": {
+          "spec_run_id": "131981-V1_run004",
+          "coefficient": 0.2726,
+          "std_error": 0.0812,
+          "p_value": 0.0011,
+          "n_obs": 1520,
+          "bandwidth": 60
+        }
+      },
+      "notes": "Four paper-reported baselines from Table 4 (columns 1-4). Primary baseline is bw=30, local linear, full controls, clustered at modate (run001). The surface designates run001 as the primary baseline; runs 002-004 anchor the other bandwidth columns from Table 4. bw17 is not significant due to low power (N=486); bw45 and bw60 are significant. The design block in coefficient_vector_json (poly_order=1 template) is consistent for bw_poly joint rows where the actual poly_order=2 is recorded only in joint.details; execution is verified correct."
+    }
+  ]
+}

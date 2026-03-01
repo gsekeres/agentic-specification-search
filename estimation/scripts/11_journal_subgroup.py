@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).parent.parent.parent
 DATA_DIR = BASE_DIR / "estimation" / "data"
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
 FIG_DIR = BASE_DIR / "estimation" / "figures"
-OL_FIG_DIR = BASE_DIR / "overleaf" / "tex" / "v8_figures"
+OL_FIG_DIR = BASE_DIR.parent / "overleaf" / "tex" / "v8_figures"
 
 SPEC_FILE = DATA_DIR / "spec_level_verified_core.csv"
 OUTPUT_JSON = RESULTS_DIR / "journal_subgroup.json"

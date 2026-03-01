@@ -1,0 +1,42 @@
+{
+  "paper_id": "113500-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of femaleXsolicited on decision",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113500-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of femaleXsolicited on decision",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113500-V1_run_021"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Effect of femaleXbacklashXsol on decision",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113500-V1_run_041"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

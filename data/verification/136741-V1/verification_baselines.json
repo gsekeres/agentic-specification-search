@@ -1,0 +1,19 @@
+{
+  "paper_id": "136741-V1",
+  "verification_date": "2026-02-25",
+  "global_notes": "Single baseline group G1. Surface matches results exactly. All 52 rows are in G1. Treatment variable alternatives (lynchcapitamob1910/1920/1930/lynchcapitasteve) are classified as core_data since the surface explicitly includes them in rc_spec_ids and the treatment concept ('historical lynching rate') is preserved. Outcome transforms (asinh, log1p) are classified as core_funcform per surface policy.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Cross-sectional OLS: Negative association between historical black lynching rate per capita (1882-1930) and contemporary black voter registration rate, with state FE and historical controls. Southern US counties.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "136741-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Table 2 Col 1: Blackrate_regvoters ~ lynchcapitamob + 7 historical controls | State_FIPS. coef=-0.469, p=0.001, N=267. R2=0.548. Default OLS SEs (no robust/cluster)."
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "paper_id": "171681-V1",
+  "verified_at": "2026-02-24",
+  "paper_description": "Ambuehl, Bernheim & Lusardi, 'Evaluating Deliberative Competence'. Two online RCTs (MTurk) testing whether a financial literacy intervention (Rule of 72 heuristic + framing rhetoric) improves compounding knowledge and financial decision-making.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of full financial literacy treatment (Full vs Control) on compounding test score (score_compounding, 0-5 scale), Experiment A individual-level sample, OLS with clustered SE at individual level.",
+      "claim_object": {
+        "outcome_concept": "Compounding knowledge score (5-question test, 0-5 scale)",
+        "treatment_concept": "Full financial literacy intervention (Rule of 72 heuristic + framing rhetoric video)",
+        "estimand_concept": "ITT effect of full treatment on compounding test score (Full vs Control)",
+        "target_population": "Online MTurk participants, Experiment A (sample=='old')"
+      },
+      "expected_sign": "positive",
+      "expected_sign_notes": "Treatment should improve compounding knowledge; coefficient on Full (vs Control) expected positive.",
+      "baseline_specs": [
+        {
+          "spec_run_id": "171681-V1__run_0001",
+          "spec_id": "baseline",
+          "label": "Table4-Col1-ExpA (canonical primary)",
+          "outcome_var": "score_compounding",
+          "treatment_var": "Full",
+          "n_obs": 214,
+          "coefficient": 1.4241788958770085,
+          "std_error": 0.1940699357294388,
+          "p_value": 4.482414e-12,
+          "sample_filter": "tag==1, Full|Control, sample=='old'",
+          "notes": "Primary baseline for G1. OLS ITT, cluster SE at id. Matches surface spec 'baseline__table4_col1_expA'. Runner used spec_id='baseline' (alias for the primary)."
+        },
+        {
+          "spec_run_id": "171681-V1__run_0002",
+          "spec_id": "baseline__table4_col2_expB",
+          "label": "Table4-Col2-ExpB (secondary baseline)",
+          "outcome_var": "score_compounding",
+          "treatment_var": "Full",
+          "n_obs": 347,
+          "coefficient": 1.5972665602553873,
+          "std_error": 0.1433439019986128,
+          "p_value": 0.0,
+          "sample_filter": "tag==1, fullNew|contNew, sample=='new'",
+          "notes": "Secondary baseline using Experiment B replication sample. Same outcome concept and estimand on independent sample."
+        }
+      ],
+      "surface_baseline_spec_ids_planned": ["baseline__table4_col1_expA", "baseline__table4_col2_expB"],
+      "surface_baseline_spec_ids_executed": ["baseline (alias for table4_col1_expA)", "baseline__table4_col2_expB"],
+      "surface_alignment_notes": "Surface planned spec_id 'baseline__table4_col1_expA'; runner used 'baseline' as the primary alias. The executed run_0001 matches the planned spec perfectly (same N=214, same sample filter, same estimand). No alignment issue.",
+      "missing_from_results": ["rc/sample/attrition/include_multi_switchers__requires_remanagement"],
+      "missing_notes": "Attrition spec skipped by runner: requires full pipeline re-run without multi==0 exclusion. This is documented in SPECIFICATION_SEARCH.md note 3. Not a critical omission."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of full financial literacy treatment on reducing valuation errors between simple and complex frames (negAbsDiff = -|discount_framed - discount_unframed|), Experiment A observation-level data (multiple obs per subject), no-constant OLS with focal Wald test Full==Control.",
+      "claim_object": {
+        "outcome_concept": "Financial competence: negative absolute valuation difference (-|discount_framed - discount_unframed|), higher is better",
+        "treatment_concept": "Full financial literacy intervention (Rule of 72 heuristic + framing rhetoric video)",
+        "estimand_concept": "ITT effect of full treatment on reducing valuation errors (Full vs Control, Wald test from nocons model)",
+        "target_population": "Online MTurk participants, Experiment A (sample=='old'), observation-level (subject x price-list)"
+      },
+      "expected_sign": "positive",
+      "expected_sign_notes": "Treatment should reduce valuation errors; negAbsDiff = -|error|, so positive contrast (Full - Control) means treatment reduces errors.",
+      "baseline_specs": [
+        {
+          "spec_run_id": "171681-V1__run_0030",
+          "spec_id": "baseline",
+          "label": "Table7-Col1-ExpA (canonical primary)",
+          "outcome_var": "negAbsDiff",
+          "treatment_var": "Control,Full,Rule72,Rhetoric",
+          "n_obs": 4510,
+          "coefficient": 1.2241230509518210,
+          "std_error": 2.369405,
+          "p_value": 0.6054346451411836,
+          "model_form": "nocons, focal_test Full==Control",
+          "sample_filter": "sample=='old'",
+          "notes": "Primary baseline for G2. 4-arm no-constant OLS ITT. Reported coefficient is the contrast Full - Control = -22.864 - (-24.088) = 1.224. p=0.605 indicates the Exp A effect is NOT statistically significant. Matches surface spec 'baseline__table7_col1_expA'. Runner used spec_id='baseline' as alias."
+        },
+        {
+          "spec_run_id": "171681-V1__run_0031",
+          "spec_id": "baseline__table7_col2_expB",
+          "label": "Table7-Col2-ExpB (secondary baseline)",
+          "outcome_var": "negAbsDiff",
+          "treatment_var": "Control,Full",
+          "n_obs": 3470,
+          "coefficient": 7.4147605066584990,
+          "std_error": 1.773545,
+          "p_value": 2.977209e-05,
+          "model_form": "nocons, focal_test Full==Control",
+          "sample_filter": "sample=='new'",
+          "notes": "Secondary baseline using Experiment B. Same outcome concept. Full - Control = -18.258 - (-25.673) = 7.415. Exp B shows strong significant improvement."
+        }
+      ],
+      "surface_baseline_spec_ids_planned": ["baseline__table7_col1_expA", "baseline__table7_col2_expB"],
+      "surface_baseline_spec_ids_executed": ["baseline (alias for table7_col1_expA)", "baseline__table7_col2_expB"],
+      "surface_alignment_notes": "Same alias pattern as G1. run_0030 matches the planned primary baseline. Execution is correct.",
+      "missing_from_results": ["rc/sample/attrition/include_multi_switchers__requires_remanagement"],
+      "missing_notes": "Same attrition spec skipped (requires pipeline remanagement). Documented in SPECIFICATION_SEARCH.md."
+    }
+  ],
+  "global_notes": [
+    "All 69 specs succeeded (run_success=1). No failed rows.",
+    "Both baseline groups used 'baseline' as the primary spec_id (alias for the canonical ExpA baseline), with the secondary ExpB baseline using an explicit spec_id. This deviates from the surface's planned spec_ids ('baseline__table4_col1_expA', 'baseline__table7_col1_expA') but the executed specs are substantively correct and match planned sample filters and N.",
+    "G2 primary baseline (Exp A) shows p=0.605 (not significant); G2 secondary (Exp B) shows p<0.001 (strongly significant). This asymmetry is substantively important and correctly captured.",
+    "Null CIs for many rows: the runner did not compute CI for multi-arm no-constant models or alternative outcome specs. This is an acceptable limitation; scalar SE and p-values are present for all rows.",
+    "Surface hash is consistent across all 69 rows: sha256:041c4646c5a78637a0e4e376de7e0cc1d8b9ee062acf774a10779689e5e352bd.",
+    "p_value=0.0 for 5 rows (Exp B specs with very large effects) reflects floating-point underflow, not a data error.",
+    "Baseline group assignments are correct and consistent with the surface. No adjustments needed."
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "paper_id": "112338-V1",
+  "created_at": "2026-02-25",
+  "notes": "Duggan & Scott Morton (2010) study the effect of Medicare Part D on drug prices. Cross-sectional regressions of log change in price-per-day (2003-2006) on Medicare market share across brand-name drugs. Tables 2-5 in the paper. Two main baseline groups: one for price effects (Table 2) and one for quantity effects (Table 3).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "outcome_var": "lppd0603",
+        "treatment_var": "mcar0203mepsrx",
+        "controls": ["yrs03onmkt", "anygen"],
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "robust",
+        "weights": "meps0203scripts",
+        "selection_story": "Selection-on-observables: cross-drug variation in Medicare market share is exogenous conditional on drug age and generic competition status",
+        "notes": "Table 2 Column 4 is the preferred specification: drops outliers (lppd0603 in [-1.1, 1.095]), drops cancer drugs (thercat!=8), weighted by total 2002-2003 MEPS prescription count. Robust (HC1) standard errors."
+      },
+      "claim_object": {
+        "outcome_concept": "Log change in price-per-day from 2003 to 2006 (inflation-adjusted)",
+        "treatment_concept": "Medicare market share of prescriptions (pooled 2002-2003 MEPS)",
+        "estimand_concept": "Effect of Medicare Part D market share on brand-name drug price growth -- marginal impact of a 1-unit increase in Medicare Rx share on log price change",
+        "target_population": "Top 1000 brand-name (non-OTC, non-generic) drugs by 2003 IMS sales, on market by 2003"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col4",
+          "outcome_var": "lppd0603",
+          "treatment_var": "mcar0203mepsrx",
+          "controls": ["yrs03onmkt", "anygen"],
+          "n_controls": 2,
+          "sample_restrictions": "imsgrouprank03<=1000, otc==2, imsgbo==2, fdayear<=2003, smallcat!=., lppd0603>=-1.100, lppd0603<=1.095, thercat!=8",
+          "weights": "meps0203scripts",
+          "se_type": "robust"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": false,
+        "notes": "Baseline uses 2 controls (yrs03onmkt, anygen). Additional controls available: protected, smallcat, mcar0203prot (Medicare share x protected class), scmcar0203 (Medicare share x small category), lppd0201 (lagged price change). Max 8 if interactions are counted separately."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col1",
+          "baseline__table2_col2",
+          "baseline__table2_col3"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_yrs03onmkt",
+          "rc/controls/loo/drop_anygen",
+          "rc/controls/single/add_protected",
+          "rc/controls/single/add_smallcat",
+          "rc/controls/single/add_lppd0201",
+          "rc/controls/sets/interactions_protected",
+          "rc/controls/sets/interactions_smallcat",
+          "rc/controls/sets/interactions_both",
+          "rc/controls/sets/full_with_lagged",
+          "rc/sample/outliers/no_trim",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/trim_y_2_98",
+          "rc/sample/subset/include_cancer",
+          "rc/sample/subset/top292",
+          "rc/sample/subset/top300",
+          "rc/sample/subset/top500",
+          "rc/sample/subset/drop_new_generic",
+          "rc/sample/subset/no_otc_filter",
+          "rc/form/treatment/spending_share",
+          "rc/form/treatment/self_pay_decomposed",
+          "rc/form/treatment/dual_decomposed",
+          "rc/form/outcome/level_price_change",
+          "explore/outcome/log_sales_change",
+          "explore/outcome/log_doses_change",
+          "rc/weights/unweighted",
+          "rc/weights/alt_02plus03_scripts",
+          "rc/fe/add_therapeutic_category",
+          "rc/joint/no_trim_include_cancer",
+          "rc/joint/top292_with_interactions",
+          "rc/joint/spending_share_no_cancer",
+          "rc/joint/unweighted_no_trim"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Robust (HC1) standard errors, matching the paper's baseline `reg ..., robust`."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/therapeutic_category",
+            "params": {"cluster_var": "ther1"},
+            "notes": "Clustered by therapeutic category, used in Table 5 of the paper."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 standard errors (small-sample corrected)."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 standard errors (jackknife-based, most conservative)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 20,
+        "notes": "Moderate budget. Control pool is small (5-8 variables), so exhaustive enumeration of key subsets is feasible. Main variation comes from sample restrictions and outcome/treatment definitions."
+      },
+      "sampling": {
+        "seed": 112338,
+        "controls_subset_sampler": "exhaustive_key_combinations",
+        "notes": "Small control pool makes exhaustive enumeration feasible for most blocks. Random sampling for joint axis combinations."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "outcome_var": "ldoses0603",
+        "treatment_var": "mcar0203mepsrx",
+        "controls": ["yrs03onmkt", "anygen"],
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "robust",
+        "weights": "meps0203scripts",
+        "selection_story": "Selection-on-observables: cross-drug variation in Medicare market share is exogenous conditional on drug age and generic competition status",
+        "notes": "Table 3 Column 4 is the preferred specification: drops outliers, drops cancer drugs, weighted by total MEPS scripts. Robust standard errors."
+      },
+      "claim_object": {
+        "outcome_concept": "Log change in total doses from 2003 to 2006",
+        "treatment_concept": "Medicare market share of prescriptions (pooled 2002-2003 MEPS)",
+        "estimand_concept": "Effect of Medicare Part D market share on brand-name drug quantity growth -- marginal impact of a 1-unit increase in Medicare Rx share on log dose change",
+        "target_population": "Top 1000 brand-name (non-OTC, non-generic) drugs by 2003 IMS sales, on market by 2003"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col4",
+          "outcome_var": "ldoses0603",
+          "treatment_var": "mcar0203mepsrx",
+          "controls": ["yrs03onmkt", "anygen"],
+          "n_controls": 2,
+          "sample_restrictions": "imsgrouprank03<=1000, otc==2, imsgbo==2, fdayear<=2003, smallcat!=., ldoses0603>=-3.95, ldoses0603<=1.51, thercat!=8",
+          "weights": "meps0203scripts",
+          "se_type": "robust"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": false,
+        "notes": "Same control pool as G1. Additional Table 3 Col 7 drops drugs facing generic competition (anygen==0)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col1",
+          "baseline__table3_col2",
+          "baseline__table3_col3"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_yrs03onmkt",
+          "rc/controls/loo/drop_anygen",
+          "rc/controls/single/add_protected",
+          "rc/controls/single/add_smallcat",
+          "rc/controls/single/add_ldoses0201",
+          "rc/controls/sets/interactions_protected",
+          "rc/controls/sets/interactions_smallcat",
+          "rc/controls/sets/interactions_both",
+          "rc/sample/outliers/no_trim",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/subset/include_cancer",
+          "rc/sample/subset/top293",
+          "rc/sample/subset/top300",
+          "rc/sample/subset/drop_generic_facing",
+          "rc/form/treatment/spending_share",
+          "rc/form/treatment/self_pay_decomposed",
+          "explore/outcome/log_sales_change",
+          "rc/weights/unweighted",
+          "rc/joint/no_trim_include_cancer",
+          "rc/joint/drop_generic_no_cancer"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Robust (HC1) standard errors, matching the paper's baseline."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/therapeutic_category",
+            "params": {"cluster_var": "ther1"},
+            "notes": "Clustered by therapeutic category (used in Table 5)."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 standard errors."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 15,
+        "notes": "Smaller budget than G1 since this is the secondary quantity outcome."
+      },
+      "sampling": {
+        "seed": 112339,
+        "controls_subset_sampler": "exhaustive_key_combinations",
+        "notes": "Same strategy as G1."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

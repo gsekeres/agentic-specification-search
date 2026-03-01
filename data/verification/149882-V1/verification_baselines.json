@@ -1,0 +1,30 @@
+{
+  "paper_id": "149882-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of Breakthrough gender-equality curriculum on gender attitude index (E_Sgender_index2) among students in government schools in Haryana, India. OLS with LASSO-selected controls, clustered at school level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["149882-V1_G1_baseline"],
+      "baseline_spec_ids": ["baseline"],
+      "baseline_coefficient": 0.2179,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.0,
+      "baseline_n_obs": 13799,
+      "notes": "Table 1.2 combined (boys+girls) gender attitude index. Treatment is school-level random assignment of Breakthrough curriculum. Clustered SEs at school level (314 schools). p=0.0 indicates very small p-value below machine precision."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of Breakthrough gender-equality curriculum on self-reported behavior index (E_Sbehavior_index2) among students in government schools in Haryana, India. OLS with LASSO-selected controls, clustered at school level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["149882-V1_G2_baseline"],
+      "baseline_spec_ids": ["baseline"],
+      "baseline_coefficient": 0.1844,
+      "baseline_std_error": null,
+      "baseline_p_value": 2.01e-05,
+      "baseline_n_obs": 13784,
+      "notes": "Table 1.2 combined (boys+girls) behavior index. Same design as G1 but different outcome concept (self-reported behaviors vs attitudes). Clustered SEs at school level."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified two baseline groups: G1 (gender attitudes) and G2 (gender-related behaviors). Both share the same RCT design and treatment but differ in outcome concept. The 32 rows are evenly split (16 per group) with perfectly mirrored spec_ids across groups."
+}

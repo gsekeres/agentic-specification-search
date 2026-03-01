@@ -1,0 +1,6 @@
+{
+  "paper_id": "125201-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [],
+  "data_availability_warning": "CRITICAL: Only the weather data creation portion of the replication package is present. The main analysis code, outcome data, and analysis datasets are NOT included. Based on the temperature bin construction for Mexican municipalities (2-degree and 4-degree Celsius bins with 30-day lags), this is likely a panel fixed effects study exploiting daily weather variation to estimate impacts on some outcome (e.g., agricultural output, mortality, or economic activity). However, without the main analysis code or data, it is impossible to identify the baseline claim object, outcome variable, estimating equation, or fixed effects structure. This specification surface CANNOT BE CONSTRUCTED or EXECUTED."
+}

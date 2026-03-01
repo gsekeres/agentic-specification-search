@@ -29,8 +29,8 @@ Rudik (2020), "Optimal Climate Policy When Damages are Unknown", AEJ: Economic P
 | Category | Count |
 |----------|-------|
 | core_method (baseline) | 1 |
-| core_controls | 35 |
-| core_sample | 19 |
+| core_controls | 43 |
+| core_sample | 11 |
 | core_funcform | 5 |
 | core_preprocess | 2 |
 

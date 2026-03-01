@@ -1,0 +1,158 @@
+{
+  "paper_id": "112517-V1",
+  "created_at": "2026-02-25",
+  "notes": "Fowlie, Holland & Mansur (2012, AER) study the RECLAIM NOx cap-and-trade program in southern California. The paper uses a matching-based DiD design: nearest-neighbor matching (nnmatch) on pre-treatment emissions with exact industry matching, comparing RECLAIM-regulated facilities to non-regulated facilities across pre/post periods. The main estimand is the ATT of RECLAIM participation on the change in NOx emissions. The primary results appear in Tables 4 (levels) and their log equivalents. Tables 7 and 8 examine environmental justice (heterogeneous effects by neighborhood demographics). Table 5 examines small-firm effects. Table 6 provides SUTVA robustness checks.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "nnmatch_att",
+        "treatment_timing": "RECLAIM program began 1994; pre-period = 1990/1993, post-period = 2004/2005",
+        "estimand": "ATT",
+        "comparison_groups": "Non-RECLAIM facilities in same 4-digit SIC industries in nonattainment counties across California",
+        "matching_vars": ["PRENOX"],
+        "exact_match_vars": ["fsic"],
+        "bias_adjustment": ["PRENOX"],
+        "n_matches": 3,
+        "robust_var": true,
+        "outcome_construction": "DIFFNOX = POSTNOX - PRENOX (post-period average minus pre-period average NOx emissions)",
+        "notes": "Table 4 Panel A rows 1-2 are the primary specifications. The nnmatch ATT estimator matches treated facilities to up to 3 nearest control facilities on pre-treatment emissions (PRENOX), with exact matching on 4-digit SIC code (fsic), bias adjustment on PRENOX, and Abadie-Imbens robust variance."
+      },
+      "claim_object": {
+        "outcome_concept": "Change in NOx emissions (tons/year) from pre-RECLAIM to post-RECLAIM period",
+        "treatment_concept": "Participation in RECLAIM cap-and-trade program (dumreclaim=1)",
+        "estimand_concept": "Average treatment effect on the treated (ATT) of RECLAIM program on facility NOx emissions change",
+        "target_population": "RECLAIM-regulated industrial facilities in Southern California, in industries with both treated and control units, in ozone nonattainment counties"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-PanelA-Row1-Levels",
+          "outcome_var": "DIFFNOX",
+          "treatment_var": "dumreclaim",
+          "matching_vars": ["PRENOX"],
+          "exact_match_vars": ["fsic"],
+          "bias_adj_vars": ["PRENOX"],
+          "n_matches": 3,
+          "sample": "nonattall==1, unrestricted (all firms including electric utilities)",
+          "n_controls": 0,
+          "notes": "Levels specification, pre=pd1 (1990/93), post=pd4 (2004/05)"
+        },
+        {
+          "label": "Table4-PanelA-Row2-Levels-WithDemog",
+          "outcome_var": "DIFFNOX",
+          "treatment_var": "dumreclaim",
+          "matching_vars": ["PRENOX", "income1", "pctminor1"],
+          "exact_match_vars": ["fsic", "PRENOX_Q"],
+          "bias_adj_vars": ["PRENOX"],
+          "n_matches": 3,
+          "sample": "nonattall==1, non-missing income/minority data",
+          "n_controls": 0,
+          "notes": "Levels with demographics controls added to matching; exact matching also on PRENOX quartile"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "In the matching framework, 'controls' are matching variables beyond PRENOX (income1, pctminor1). The bias adjustment always includes PRENOX. When demographics are added as matching variables, exact matching on PRENOX quartile is also added."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_log",
+          "baseline__table4_log_demog"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/add_demographics",
+          "rc/controls/add_demographics_plus_quartile",
+          "rc/sample/subset/drop_electric_utilities",
+          "rc/sample/subset/nonattainment_only",
+          "rc/sample/subset/nosc_controls",
+          "rc/sample/subset/southern_cal_only",
+          "rc/sample/subset/northern_cal_controls",
+          "rc/sample/subset/severe_nonattainment",
+          "rc/sample/subset/single_facility_firms",
+          "rc/sample/period/pre_pd2_post_pd3",
+          "rc/sample/period/pre_pd1_post_pd3",
+          "rc/form/outcome/log_emissions",
+          "rc/form/matching/n_matches_1",
+          "rc/form/matching/n_matches_2",
+          "rc/form/matching/n_matches_4",
+          "rc/form/matching/n_matches_5",
+          "rc/joint/log_drop_elec",
+          "rc/joint/log_pd2_pd3",
+          "rc/joint/levels_drop_elec",
+          "rc/joint/levels_pd2_pd3",
+          "rc/joint/log_southern_cal",
+          "rc/joint/log_severe",
+          "rc/joint/log_single_fac",
+          "rc/joint/log_nosc",
+          "rc/joint/areg_levels_nonatt",
+          "rc/joint/areg_log_nonatt",
+          "rc/joint/levels_southern_cal",
+          "rc/joint/levels_severe",
+          "rc/joint/levels_single_fac",
+          "rc/joint/levels_nosc",
+          "rc/joint/log_demog_drop_elec",
+          "rc/joint/log_demog_pd2_pd3",
+          "rc/joint/levels_demog_drop_elec",
+          "rc/joint/levels_demog_pd2_pd3",
+          "rc/joint/log_m1_nonatt",
+          "rc/joint/log_m5_nonatt",
+          "rc/joint/levels_m1_nonatt",
+          "rc/joint/levels_m5_nonatt",
+          "rc/joint/areg_levels_drop_elec",
+          "rc/joint/areg_log_drop_elec",
+          "rc/joint/log_pd1_pd3",
+          "rc/joint/levels_pd1_pd3",
+          "rc/joint/small_firms_levels",
+          "rc/joint/small_firms_log"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/nnmatch_robust/abadie_imbens",
+          "params": {"n_matches": 3},
+          "notes": "Abadie-Imbens robust variance estimator for nearest-neighbor matching, with m=3 matches. This is the paper's baseline inference method."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SE for the OLS/areg alternative estimator."
+          },
+          {
+            "spec_id": "infer/se/cluster/air_basin",
+            "params": {"cluster_var": "ab"},
+            "notes": "Cluster by air basin (ab). Used in the areg specifications in the paper."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10,
+        "notes": "Moderate budget. The control pool in the matching design is very small (0-2 demographic variables). The main variation comes from sample restrictions, period definitions, functional form (levels vs. logs), number of matches, and the estimator choice (nnmatch vs. OLS with FE)."
+      },
+      "sampling": {
+        "seed": 112517,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Only 2 optional matching variables (income1, pctminor1), so full enumeration is trivial. Main combinatorial axis is the joint variation of sample x period x form x estimator."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/pre_period_diff",
+          "scope": "baseline_group",
+          "notes": "Table 1 shows emissions by period for treated and control groups. Pre-period to mid-period change can serve as a pre-trend check."
+        },
+        {
+          "diag_spec_id": "diag/difference_in_differences/overlap/industry_balance",
+          "scope": "baseline_group",
+          "notes": "Table 2 shows overlap of pre-treatment emissions distributions by industry and treatment status."
+        }
+      ]
+    }
+  ]
+}

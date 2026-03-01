@@ -1,0 +1,169 @@
+{
+  "paper_id": "151841-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "panel_fe",
+        "randomization_unit": "individual",
+        "randomization_mechanism": "weighted_lottery",
+        "stratification": "randomization_strata_within_group",
+        "panel_unit": "Id",
+        "panel_time": "Survey_Version",
+        "fe_structure": ["Id", "Surveyor_Code", "Survey_Version", "survey_month"],
+        "cluster_vars": ["GroupNumber"],
+        "weights": "inverse_propensity_score",
+        "estimand": "heterogeneous_ITT_by_rank"
+      },
+      "claim_object": {
+        "outcome_concept": "Marginal returns to capital grants (income/profits)",
+        "treatment_concept": "Interaction of grant receipt (Winner) with peer-assessed rank of marginal returns (Quint_Rank_NS)",
+        "estimand_concept": "Heterogeneous ITT: whether higher-ranked entrepreneurs show higher marginal returns to grants",
+        "target_population": "Small-scale entrepreneurs in Kolkata, India (non-attriters, rounds 1-4)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-PanelA-Col1",
+          "outcome_var": "Trim_Income",
+          "treatment_var": "Winner_Quint_Rank_NS",
+          "controls": ["Winner"],
+          "n_controls": 0,
+          "notes": "Panel FE, no covariate controls, IPW weighted, cluster at group"
+        },
+        {
+          "label": "Table2-PanelA-Col2",
+          "outcome_var": "Trim_Income",
+          "treatment_var": "Winner_Quint_Rank_NS",
+          "controls": ["Winner", "Winner*controls(26)"],
+          "n_controls": 26,
+          "notes": "Panel FE, 26 baseline controls interacted with Winner, IPW weighted"
+        },
+        {
+          "label": "Table2-PanelA-Col3",
+          "outcome_var": "log_Income",
+          "treatment_var": "Winner_Quint_Rank_NS",
+          "controls": ["Winner"],
+          "n_controls": 0,
+          "notes": "Log outcome, no controls"
+        },
+        {
+          "label": "Table2-PanelA-Col5",
+          "outcome_var": "Trim_Profits_30Days",
+          "treatment_var": "Winner_Quint_Rank_NS",
+          "controls": ["Winner"],
+          "n_controls": 0,
+          "notes": "Trimmed profits, no controls"
+        },
+        {
+          "label": "Table2-PanelA-Col6",
+          "outcome_var": "Trim_Profits_30Days",
+          "treatment_var": "Winner_Quint_Rank_NS",
+          "controls": ["Winner", "Winner*controls(26)"],
+          "n_controls": 26,
+          "notes": "Trimmed profits, 26 controls"
+        },
+        {
+          "label": "Table2-PanelA-Col7",
+          "outcome_var": "log_Profits",
+          "treatment_var": "Winner_Quint_Rank_NS",
+          "controls": ["Winner"],
+          "n_controls": 0,
+          "notes": "Log profits, no controls"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 43,
+        "linked_adjustment": false,
+        "notes": "Controls are baseline characteristics interacted with Winner (mean-imputed, plus miss_*Winner interactions). Paper shows specs with 0 and 26 controls. Psychometric controls add 17 more = 43 max."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/ancova"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/add/psychometric_controls",
+          "rc/controls/loo/panela1_demographics",
+          "rc/controls/loo/panelb1_business_type",
+          "rc/controls/loo/panelc1_household",
+          "rc/controls/loo/paneld1_business_chars",
+          "rc/controls/subset/panela1_only",
+          "rc/controls/subset/panelb1_only",
+          "rc/controls/subset/panelc1_only",
+          "rc/controls/subset/paneld1_only",
+          "rc/controls/subset/panela1_panelb1",
+          "rc/controls/subset/panela1_panelc1",
+          "rc/controls/subset/panelc1_paneld1",
+          "rc/controls/subset/panelb1_panelc1",
+          "rc/controls/subset/panela1_panelb1_panelc1",
+          "rc/data/rank_construction/include_self_rank",
+          "rc/data/rank_construction/relative_rank",
+          "rc/data/rank_construction/median_rank",
+          "rc/data/rank_construction/sd_rank_interaction",
+          "rc/form/outcome/log_income",
+          "rc/form/outcome/log_profits",
+          "rc/form/treatment/tercile_rank",
+          "rc/sample/waves/all_5_waves",
+          "rc/sample/restriction/groups_of_5_only",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/winsorize_y_1_99",
+          "rc/weights/unweighted",
+          "rc/fe/drop_surveyor_fe",
+          "rc/fe/drop_survey_month_fe",
+          "rc/fe/strata_fe_instead_of_hh_fe",
+          "rc/joint/ancova_with_controls",
+          "rc/joint/ancova_no_controls",
+          "rc/joint/log_outcome_with_controls",
+          "rc/joint/log_outcome_no_controls",
+          "rc/joint/relative_rank_with_controls",
+          "rc/joint/relative_rank_no_controls",
+          "rc/joint/median_rank_with_controls",
+          "rc/joint/median_rank_no_controls",
+          "rc/joint/include_self_rank_with_controls",
+          "rc/joint/include_self_rank_no_controls",
+          "rc/joint/groups_of_5_with_controls",
+          "rc/joint/all_5_waves_with_controls",
+          "rc/joint/unweighted_with_controls",
+          "rc/joint/tercile_rank_no_controls",
+          "rc/joint/tercile_rank_with_controls"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/group",
+          "params": {
+            "cluster_var": "GroupNumber"
+          },
+          "notes": "Cluster SEs at randomization group level (GroupNumber), matching paper's baseline. All estimate rows use this."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust SEs without clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/hh",
+            "params": {
+              "cluster_var": "Id"
+            },
+            "notes": "Cluster at household level (finer than group)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 30
+      },
+      "sampling": {
+        "seed": 151841,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Control subsets are the four named panels (a1=demographics, b1=business type, c1=household, d1=business chars) plus selected pairwise/triple combinations. Not combinatorial; all enumerated."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "paper_id": "116224-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "later_wage_growth ~ earlier_wage_growth, OLS with HC1 SE",
+        "selection_story": "Regresses individual-level log-wage growth in a later career window on log-wage growth in an earlier career window using PSID panel data. Positive and significant slope indicates persistence in wage growth consistent with human capital accumulation through on-the-job training.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Log-wage growth later in career (slope of log real wage on experience/age over a 5-year window)",
+        "treatment_concept": "Log-wage growth earlier in career (slope of log real wage on experience/age over a 5-year window)",
+        "estimand_concept": "Predictive power of early-career wage growth for later-career wage growth, evidence for systematic human capital investment heterogeneity",
+        "target_population": "Male PSID panel respondents with valid wage, age, experience, and schooling data across multiple survey waves"
+      },
+      "baseline_specs": [
+        {
+          "label": "WageGrowthCorrelation-Age-Baseline",
+          "outcome_var": "later_wage_growth_age",
+          "treatment_var": "earlier_wage_growth_age",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "HC1",
+          "notes": "Bivariate OLS of later wage growth (age-based) on earlier wage growth, baseline window: initial_age=30, nobs=4, yearahead=5. Corresponds to wagegrowthcorrelationlog55yrahead3035.m"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 1,
+        "linked_adjustment": false,
+        "notes": "Bivariate regression; specification search varies window parameters, time variable (age vs experience), sample restrictions, and functional form."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline_experience"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/window/yearahead_1",
+          "rc/window/yearahead_2",
+          "rc/window/yearahead_3",
+          "rc/window/yearahead_5",
+          "rc/window/yearahead_7",
+          "rc/window/yearahead_10",
+          "rc/window/yearahead_12",
+          "rc/window/yearahead_15",
+          "rc/window/nobs_3",
+          "rc/window/nobs_5",
+          "rc/window/nobs_6",
+          "rc/age/init_30",
+          "rc/age/init_31",
+          "rc/age/init_32",
+          "rc/age/init_33",
+          "rc/age/init_34",
+          "rc/age/init_35",
+          "rc/sample/outlier_trim_5",
+          "rc/sample/outlier_trim_2",
+          "rc/sample/outlier_trim_1",
+          "rc/sample/outlier_trim_0.5",
+          "rc/sample/reqnobs_3",
+          "rc/sample/reqnobs_4",
+          "rc/sample/school_lt12",
+          "rc/sample/school_lt16",
+          "rc/form/level_wages",
+          "rc/controls/add_schooling"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc1",
+          "params": {},
+          "notes": "HC1 robust standard errors (bivariate OLS, no clustering needed)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc3",
+            "params": {},
+            "notes": "HC3 (jackknife-bias-corrected) robust SEs"
+          },
+          {
+            "spec_id": "infer/se/hc0",
+            "params": {},
+            "notes": "HC0 (White) robust SEs"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 116224,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "paper_id": "140161-V1",
+  "verified_at": "2026-02-24",
+  "global_notes": "Baseline group assignments match the SPECIFICATION_SURFACE.json exactly. No reassignments made. G1 has two co-equal baselines (intent-to-share outcome and behavioral action outcome) each reported twice (once per focal treatment arm: survey2=Imposed, survey3=Voluntary). G2 has one baseline (intent to share fact-check, survey3=Voluntary vs Imposed). The rc/form/outcome/share_click2 spec in G1 is numerically identical to baseline__share_action_g1 because the surface lists share_click2 as both a co-baseline and an rc/form variant (treating want_share_fb as the canonical reference). Both are valid; the functional_form block in the rc/form row correctly identifies the semantic role. All 222 rows ran successfully; no failures.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ATE of imposed and voluntary fact-checking interventions on intent/action to share alt-facts (fake news) on Facebook, among French survey participants in the main 3-arm experiment (survey < 4). Two co-equal baseline outcomes: (1) binary intent-to-share (want_share_fb), (2) behavioral sharing action (share_click2). Two focal treatment coefficients per regression: survey2=Imposed Fact-Check vs Alt-Facts control, survey3=Voluntary Fact-Check vs Alt-Facts control.",
+      "design_code": "randomized_experiment",
+      "expected_sign": "negative",
+      "expected_sign_notes": "Both fact-checking interventions are expected to reduce intent/action to share alt-facts relative to the control arm.",
+      "baseline_spec_run_ids": [
+        "140161-V1__spec__0001",
+        "140161-V1__spec__0002",
+        "140161-V1__spec__0003",
+        "140161-V1__spec__0004"
+      ],
+      "baseline_spec_ids": [
+        "baseline__intent_share_fb",
+        "baseline__intent_share_fb",
+        "baseline__share_action_g1",
+        "baseline__share_action_g1"
+      ],
+      "baseline_details": [
+        {
+          "spec_run_id": "140161-V1__spec__0001",
+          "spec_id": "baseline__intent_share_fb",
+          "focal_arm": "survey2 (Imposed Fact-Check)",
+          "outcome_var": "want_share_fb",
+          "treatment_var": "survey2 + survey3",
+          "coefficient": -0.045126,
+          "std_error": 0.016012,
+          "p_value": 0.004865,
+          "n_obs": 2537,
+          "table_ref": "Table2-PanelA-Col2 (survey2 arm)"
+        },
+        {
+          "spec_run_id": "140161-V1__spec__0002",
+          "spec_id": "baseline__intent_share_fb",
+          "focal_arm": "survey3 (Voluntary Fact-Check)",
+          "outcome_var": "want_share_fb",
+          "treatment_var": "survey2 + survey3",
+          "coefficient": -0.038034,
+          "std_error": 0.016160,
+          "p_value": 0.018672,
+          "n_obs": 2537,
+          "table_ref": "Table2-PanelA-Col2 (survey3 arm)"
+        },
+        {
+          "spec_run_id": "140161-V1__spec__0003",
+          "spec_id": "baseline__share_action_g1",
+          "focal_arm": "survey2 (Imposed Fact-Check)",
+          "outcome_var": "share_click2",
+          "treatment_var": "survey2 + survey3",
+          "coefficient": -0.020179,
+          "std_error": 0.005991,
+          "p_value": 0.000768,
+          "n_obs": 2537,
+          "table_ref": "Table2-PanelA-Col6 (survey2 arm)"
+        },
+        {
+          "spec_run_id": "140161-V1__spec__0004",
+          "spec_id": "baseline__share_action_g1",
+          "focal_arm": "survey3 (Voluntary Fact-Check)",
+          "outcome_var": "share_click2",
+          "treatment_var": "survey2 + survey3",
+          "coefficient": -0.021361,
+          "std_error": 0.005486,
+          "p_value": 0.000101,
+          "n_obs": 2537,
+          "table_ref": "Table2-PanelA-Col6 (survey3 arm)"
+        }
+      ],
+      "surface_match": "exact",
+      "surface_notes": "Surface lists baseline__intent_share_fb and baseline__share_action_g1 as co-equal baselines for G1. Both are replicated exactly. All four baseline rows have coefficient < 0, consistent with expected sign.",
+      "total_rows_in_group": 196
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ATE of voluntary vs imposed fact-checking on intent/action to share the fact-check itself on Facebook, restricted to the two fact-check arms (survey 2 and 3). Primary outcome: want_share_facts. Focal coefficient: survey3 (Voluntary vs Imposed).",
+      "design_code": "randomized_experiment",
+      "expected_sign": "negative",
+      "expected_sign_notes": "Imposed fact-check is expected to increase sharing of the fact-check relative to voluntary (or equivalently, voluntary reduces sharing vs imposed), but sign is uncertain a priori. Baseline coefficient is negative (-0.028).",
+      "baseline_spec_run_ids": [
+        "140161-V1__spec__0005"
+      ],
+      "baseline_spec_ids": [
+        "baseline__factcheck_action"
+      ],
+      "baseline_details": [
+        {
+          "spec_run_id": "140161-V1__spec__0005",
+          "spec_id": "baseline__factcheck_action",
+          "focal_arm": "survey3 (Voluntary Fact-Check vs Imposed)",
+          "outcome_var": "want_share_facts",
+          "treatment_var": "survey3",
+          "coefficient": -0.028369,
+          "std_error": 0.016002,
+          "p_value": 0.076433,
+          "n_obs": 1692,
+          "table_ref": "Table2-PanelB-Col2"
+        }
+      ],
+      "surface_match": "exact",
+      "surface_notes": "Surface lists baseline__factcheck_action as the sole G2 baseline. Replicated exactly. The p-value of 0.076 is marginally significant (not at 5% threshold); sign is negative (voluntary < imposed on fact-check sharing).",
+      "total_rows_in_group": 26
+    }
+  ]
+}

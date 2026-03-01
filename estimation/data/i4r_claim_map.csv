@@ -1,41 +1,41 @@
-paper_id,claim_description,t_orig,t_i4r,map_status,map_source,map_score,map_baseline_group_id,map_expected_sign,map_spec_id,map_outcome_var,map_treatment_var,t_stat,abs_t_stat,abs_diff_abs_t_to_i4r,needs_review
-147561-V3,City chiefs increase tax compliance in DRC,2.89,2.73,paper_missing,,,,,,,,,,,1
-140921-V1,Assortative matching at top of distribution,4.21,4.15,paper_missing,,,,,,,,,,,1
-120078-V1,Information reduces ethnic discrimination on Airbnb,2.45,2.38,paper_missing,,,,,,,,,,,1
-149481-V1,Thank-you calls increase charitable giving,1.98,1.82,paper_missing,,,,,,,,,,,1
-126722-V1,Patient demand contributes to overuse of prescriptions,3.12,2.95,paper_missing,,,,,,,,,,,1
-136741-V1,Historical lynchings affect Black voting behavior,2.67,2.51,paper_missing,,,,,,,,,,,1
-131981-V1,Mental health costs of COVID lockdowns,3.45,3.28,paper_missing,,,,,,,,,,,1
-128521-V1,"Recessions, mortality in Lancashire Cotton Famine",2.34,2.19,paper_missing,,,,,,,,,,,1
-120483-V1,Malaria immunity affects African slavery distribution,2.78,2.62,paper_missing,,,,,,,,,,,1
-140161-V1,Checking and sharing alt-facts,2.56,2.41,paper_missing,,,,,,,,,,,1
-130784-V1,Child marriage bans improve female outcomes,2.89,2.75,paper_missing,,,,,,,,,,,1
-134041-V1,Beliefs about gender wage gap affect policy demand,3.23,3.08,paper_missing,,,,,,,,,,,1
-125201-V1,"Mortality, temperature, public health in Mexico",2.45,2.32,paper_missing,,,,,,,,,,,1
-148301-V1,Multinationals profit shifting in tax havens,3.67,3.52,paper_missing,,,,,,,,,,,1
-125821-V1,School spending effects in Wisconsin,2.12,1.98,paper_missing,,,,,,,,,,,1
-149262-V2,Peer effects on student performance,2.78,2.65,paper_missing,,,,,,,,,,,1
-140121-V2,Alaska Permanent Fund labor market impacts,0.45,0.38,paper_missing,,,,,,,,,,,1
-138922-V1,Sports club vouchers long-run effects,1.56,1.42,paper_missing,,,,,,,,,,,1
-138401-V1,Measles vaccination long-term effects,2.34,2.18,paper_missing,,,,,,,,,,,1
-128143-V1,"Yellow vests, beliefs, carbon tax aversion",4.56,4.42,paper_missing,,,,,,,,,,,1
-120568-V1,Declining worker turnover patterns,5.23,5.08,paper_missing,,,,,,,,,,,1
-130141-V1,News shocks under financial frictions,2.89,2.72,paper_missing,,,,,,,,,,,1
-125321-V1,Technology solving principal-agent: China pollution,3.45,3.31,paper_missing,,,,,,,,,,,1
-180741-V1,Demand for moral commitment,2.67,2.54,paper_missing,,,,,,,,,,,1
-171681-V1,Deliberative competence in financial choice,2.12,1.98,paper_missing,,,,,,,,,,,1
-174501-V1,"Interaction, stereotypes, performance: South Africa",1.89,1.75,paper_missing,,,,,,,,,,,1
-158401-V1,Market access and quality upgrading: Uganda,2.45,2.32,paper_missing,,,,,,,,,,,1
-145141-V1,Welfare effects of shame and pride,3.78,3.65,paper_missing,,,,,,,,,,,1
-150323-V1,"Political turnover, bureaucratic turnover: Brazil",2.56,2.42,paper_missing,,,,,,,,,,,1
-151841-V1,Targeting entrepreneurs using community info,3.12,2.98,paper_missing,,,,,,,,,,,1
-150581-V1,Wage cyclicality and labor market sorting,2.89,2.75,paper_missing,,,,,,,,,,,1
-157781-V1,Rebel on the Canal: trade and conflict in China,2.34,2.18,paper_missing,,,,,,,,,,,1
-149882-V1,Reshaping gender attitudes: India school experiment,1.78,1.62,paper_missing,,,,,,,,,,,1
-181166-V1,Technological change and job loss consequences,3.45,3.32,paper_missing,,,,,,,,,,,1
-184041-V1,Common-probability auction puzzle,4.23,4.08,paper_missing,,,,,,,,,,,1
-146041-V1,Relative efficiency of skilled labor,2.67,2.54,paper_missing,,,,,,,,,,,1
-173341-V1,Vulnerability and clientelism,2.12,1.98,paper_missing,,,,,,,,,,,1
-181581-V1,Doctor supply and infant mortality,2.89,2.75,paper_missing,,,,,,,,,,,1
-139262-V1,Motivated beliefs and uncertainty resolution,2.45,2.31,paper_missing,,,,,,,,,,,1
-163822-V2,Digital addiction,3.56,3.42,paper_missing,,,,,,,,,,,1
+paper_id,claim_description,t_orig,t_i4r,map_source,map_score,map_baseline_group_id,map_expected_sign,map_spec_id,map_outcome_var,map_treatment_var,t_stat,n_obs,cluster_var,spec_tree_path,map_status,abs_t_stat,abs_diff_abs_t_to_i4r,needs_review
+184041-V1,Common-probability auction puzzle,4.23,4.08,verification_baselines,0.11538461538461539,G1,positive,baseline__tablea1_expi_nebf_medianreg,NEBF,CV,34.24317818062511,5817.0,subject,specification_tree/designs/randomized_experiment.md#median_regression,ok,34.24317818062511,30.16317818062511,1
+138922-V1,Sports club vouchers long-run effects,1.56,1.42,verification_baselines,0.05714285714285714,G1,positive (voucher intended to increase club membership),baseline__kommused,kommused,treat,20.135449463605486,13333.0,cityno,specification_tree/designs/difference_in_differences.md#baseline-required,ok,20.135449463605486,18.715449463605488,1
+140121-V2,Alaska Permanent Fund labor market impacts,0.45,0.38,verification_baselines,0.125,G1,None,baseline__hourslw,hourslw,alaska_post,-14.648619005478727,1836.0,statefip_str,designs/panel_did.md#baseline,ok,14.648619005478727,14.268619005478726,1
+180741-V1,Demand for moral commitment,2.67,2.54,heuristic_baseline_like,,,,baseline,recommendincentive,choicebefore,11.880307791505832,5908.0,,designs/randomized_experiment.md#baseline,ok,11.880307791505832,9.340307791505833,1
+120568-V1,Declining worker turnover patterns,5.23,5.08,verification_baselines,0.0,G1,None,baseline,oneqsepsrate,time_trend,-13.968801105554954,2276.0,state_str,designs/panel_time_series_ols.md#baseline,ok,13.968801105554954,8.888801105554954,1
+149882-V1,Reshaping gender attitudes: India school experiment,1.78,1.62,verification_baselines,0.11538461538461539,G1,positive,baseline,E_Sgender_index2,B_treat,9.676265020093759,13799.0,Sschool_id,specification_tree/methods/cross_sectional_ols.md,ok,9.676265020093759,8.056265020093758,1
+146041-V1,Relative efficiency of skilled labor,2.67,2.54,verification_baselines,0.0,G1,None,baseline__pooled_bilateral,l_irAQ53_blee_skti,l_y,7.1919771778978365,92.0,,specification_tree/methods/cross_sectional_ols.md,ok,7.1919771778978365,4.6519771778978365,1
+134041-V1,Beliefs about gender wage gap affect policy demand,3.23,3.08,verification_baselines,0.0,G1,None,baseline__govmore,govmore,T1,6.897172546725515,3031.0,,designs/randomized_experiment.md#baseline,ok,6.897172546725515,3.817172546725515,1
+181166-V1,Technological change and job loss consequences,3.45,3.32,verification_baselines,0.1,G1,positive,baseline__table3_col3_ft,d_ln_real_earn_win1,d_computer_2017_2007_n_s1_ft,0.25641423664596363,109.0,dwsoc4,specification_tree/designs/cross_sectional_ols.md,ok,0.25641423664596363,3.063585763354036,1
+148301-V1,Multinationals profit shifting in tax havens,3.67,3.52,verification_baselines,0.0,G1,None,baseline__table2_col8_ols_haven,ep,lfma,-0.628052255012376,479.0,iso3,specification_tree/designs/panel_fixed_effects.md,ok,0.628052255012376,2.891947744987624,1
+126722-V1,Patient demand contributes to overuse of prescriptions,3.12,2.95,verification_baselines,0.034482758620689655,G1,positive,baseline__treat_severe_mal,treat_severe_mal,patient_voucher,-0.7933340587282606,2053.0,cscomnum_OS,designs/randomized_experiment.md#baseline,ok,0.7933340587282606,2.1566659412717395,1
+163822-V2,Digital addiction,3.56,3.42,verification_baselines,0.0,G1,negative,baseline__usage_p2to5_total,PD_P2to5_Usage,B,-5.157155709359563,1933.0,,specification_tree/designs/randomized_experiment.md,ok,5.157155709359563,1.7371557093595626,1
+174501-V1,"Interaction, stereotypes, performance: South Africa",1.89,1.75,verification_baselines,0.03571428571428571,G2,positive,baseline__table4_black_pcaperf,PCAperf,mixracebas,3.187674497625363,324.0,roomnum_base,specification_tree/designs/randomized_experiment.md#baseline,ok,3.187674497625363,1.437674497625363,1
+120483-V1,Malaria immunity affects African slavery distribution,2.78,2.62,verification_baselines,0.045454545454545456,G1,positive,baseline__table1_col5,slaveratio,MAL,3.849658122460758,1955.0,state_g,specification_tree/methods/cross_sectional_ols.md,ok,3.849658122460758,1.2296581224607577,1
+138401-V1,Measles vaccination long-term effects,2.34,2.18,verification_baselines,0.0,G1,None,baseline__hrs_worked,hrs_worked,M12_exp_rate,-3.379345327580177,15932210.0,bplcohort,specification_tree/designs/difference_in_differences.md,ok,3.379345327580177,1.1993453275801769,1
+150323-V1,"Political turnover, bureaucratic turnover: Brazil",2.56,2.42,verification_baselines,0.0,G1,None,baseline__8th_grade_with_controls,both_score_indiv_8_stdComb,pX_dummy,-1.3849293610764912,96250.0,COD_MUNICIPIO,specification_tree/designs/regression_discontinuity.md,ok,1.3849293610764912,1.0350706389235087,1
+145141-V1,Welfare effects of shame and pride,3.78,3.65,verification_baselines,0.025,G3,positive,baseline__table6_col6_bu,wtp,interval_raw,2.6500174563551586,2006.0,id,specification_tree/designs/randomized_experiment.md,ok,2.6500174563551586,0.9999825436448413,1
+151841-V1,Targeting entrepreneurs using community info,3.12,2.98,verification_baselines,0.043478260869565216,G1,positive,baseline,Trim_Income,Winner_Quint_Rank_NS,2.418141012294757,645.0,GroupNumber,designs/randomized_experiment.md#panel-fe,ok,2.418141012294757,0.5618589877052429,1
+173341-V1,Vulnerability and clientelism,2.12,1.98,verification_baselines,0.037037037037037035,G1,negative,baseline__table3_col4,ask_private_stacked,treatment,-2.361469950693377,4288.0,b_clusters,specification_tree/designs/randomized_experiment.md#baseline,ok,2.361469950693377,0.38146995069337697,1
+149481-V1,Thank-you calls increase charitable giving,1.98,1.82,verification_baselines,0.1875,G1,null (paper reports null effects across all outcomes),baseline,,,,,,,missing_in_unified,,,1
+125201-V1,"Mortality, temperature, public health in Mexico",2.45,2.32,,,,,,,,,,,,paper_missing,,,1
+128143-V1,"Yellow vests, beliefs, carbon tax aversion",4.56,4.42,verification_baselines,0.10526315789473684,G2,positive,baseline__table54_col3_iv_notnoyes,outcome_initial_notno,endogenous_eff_yes,2.136555458681938,3002.0,,designs/randomized_experiment.md#baseline,ok,2.136555458681938,2.2834445413180617,0
+128521-V1,"Recessions, mortality in Lancashire Cotton Famine",2.34,2.19,verification_baselines,0.19047619047619047,G1,positive,baseline__table2_col3,census_mr_tot,cotton_dist_post,4.19050057419128,1076.0,master_name,specification_tree/designs/difference_in_differences.md#twfe,ok,4.19050057419128,2.0005005741912805,0
+149262-V2,Peer effects on student performance,2.78,2.65,heuristic_baseline_like,,,,baseline,extra2,treat1,0.6638828830852297,901.0,class1,designs/randomized_experiment.md#ancova,ok,0.6638828830852297,1.9861171169147702,0
+140921-V1,Assortative matching at top of distribution,4.21,4.15,verification_baselines,0.15384615384615385,G2,positive,baseline__table2_panelb_col3,fmissmatch,syntheticT,2.4069988742727966,260.0,byear,designs/cross_sectional_ols.md#baseline,ok,2.4069988742727966,1.7430011257272038,0
+171681-V1,Deliberative competence in financial choice,2.12,1.98,heuristic_baseline_like,,,,baseline,negAbsDiff,"Control,Full,Rule72,Rhetoric",0.5166374166623924,4510.0,id,designs/randomized_experiment.md#ols-itt,ok,0.5166374166623924,1.4633625833376076,0
+130141-V1,News shocks under financial frictions,2.89,2.72,verification_baselines,0.1111111111111111,G1,None,baseline,GDP_irf_h8,TFP_news_shock,1.3793753956029675,133.0,,modules/baseline.md,ok,1.3793753956029675,1.3406246043970327,0
+140161-V1,Checking and sharing alt-facts,2.56,2.41,verification_baselines,0.12195121951219512,G1,negative,baseline__share_action_g1,share_click2,survey2 + survey3,-3.3681131854348014,2537.0,,designs/randomized_experiment.md#baseline,ok,3.3681131854348014,0.9581131854348013,0
+181581-V1,Doctor supply and infant mortality,2.89,2.75,verification_baselines,0.07692307692307693,G1,negative,baseline__basic_controls,mort7,doctor,-1.9211023877321283,9124.0,fid,designs/randomized_experiment.md#baseline,ok,1.9211023877321283,0.8288976122678717,0
+158401-V1,Market access and quality upgrading: Uganda,2.45,2.32,verification_baselines,0.15384615384615385,G1,positive (market access increases investment in quality),baseline__t5a_col8_labor_post,expenses_labor_postharvest,buy_treatment,1.5192967660549834,482.0,ea_code,specification_tree/methods/randomized_experiment.md#ols-ancova,ok,1.5192967660549834,0.8007032339450164,0
+136741-V1,Historical lynchings affect Black voting behavior,2.67,2.51,verification_baselines,0.07407407407407407,G1,negative,baseline,Blackrate_regvoters,lynchcapitamob,-3.265727925476943,267.0,,designs/cross_sectional_ols.md#baseline,ok,3.265727925476943,0.7557279254769433,0
+147561-V3,City chiefs increase tax compliance in DRC,2.89,2.73,verification_baselines,0.10714285714285714,G1,positive,baseline__revenues,taxes_paid_amt,t_l,3.4654417524011896,27643.0,a7,designs/randomized_experiment.md#baseline,ok,3.4654417524011896,0.7354417524011896,0
+130784-V1,Child marriage bans improve female outcomes,2.89,2.75,verification_baselines,0.15789473684210525,G1,negative,baseline__employed,employed,bancohort_pcdist,-3.1859635248454583,94969.0,countryregionurban,designs/difference_in_differences.md#baseline,ok,3.1859635248454583,0.4359635248454583,0
+120078-V1,Information reduces ethnic discrimination on Airbnb,2.45,2.38,verification_baselines,0.06666666666666667,G1,positive,baseline__table5_col3,log_price,mino_x_rev100,2.6930124838061498,2026586.0,newid_int,designs/panel_fixed_effects.md#baseline,ok,2.6930124838061498,0.3130124838061499,0
+125321-V1,Technology solving principal-agent: China pollution,3.45,3.31,verification_baselines,0.05405405405405406,G1,positive,baseline__raw_pm10,pm10,T,3.0614546177482436,90578.0,code_city,designs/regression_discontinuity.md#baseline-required,ok,3.0614546177482436,0.24854538225175649,0
+157781-V1,Rebel on the Canal: trade and conflict in China,2.34,2.18,verification_baselines,0.11764705882352941,G1,positive,baseline__table3_col5,ashonset_cntypop1600,interaction1,1.9440805276313438,137812.0,OBJECTID,specification_tree/designs/difference_in_differences.md#twfe,ok,1.9440805276313438,0.2359194723686564,0
+139262-V1,Motivated beliefs and uncertainty resolution,2.45,2.31,verification_baselines,0.13333333333333333,G1,near_zero_for_bad_news_nores,baseline__res_good,belief_adjustment,bayes_belief_adjustment,2.427852090740787,50.0,,designs/randomized_experiment.md#baseline,ok,2.427852090740787,0.11785209074078695,0
+131981-V1,Mental health costs of COVID lockdowns,3.45,3.28,verification_baselines,0.07692307692307693,G1,positive,baseline__table4_col4_bw60,z_depression,before1955,3.356803568950348,1520.0,modate,designs/regression_discontinuity.md#baseline,ok,3.356803568950348,0.07680356895034812,0
+125821-V1,School spending effects in Wisconsin,2.12,1.98,verification_baselines,0.06060606060606061,G1,positive for test scores and spending; negative for dropout rate,baseline__tot_exp_mem,tot_exp_mem,op_win_prev1_through_10,1.9175681225853702,7676.0,district_code,designs/regression_discontinuity.md#baseline-required,ok,1.9175681225853702,0.062431877414629744,0
+150581-V1,Wage cyclicality and labor market sorting,2.89,2.75,verification_baselines,0.08333333333333333,G1,negative,baseline__table2_col5,lhrp2,unempl,,,ID,designs/panel_fixed_effects.md#baseline,ok,,,0

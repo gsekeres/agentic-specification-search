@@ -1,0 +1,5 @@
+paper_id,spec_run_id,spec_id,baseline_group_id,outcome_var,treatment_var,coefficient,std_error,p_value,ci_lower,ci_upper,n_obs,vcov_desc,run_success,run_error
+112785-V1,112785-V1_infer_001,infer/se/cluster/industry,G1,va_growth,nontradable,0.0025265562041105966,0.004988573670137395,0.6158949867874184,-0.007622773240236923,0.012675885648458115,748.0,cluster(industry),1,
+112785-V1,112785-V1_infer_002,infer/se/hc/hc1,G1,va_growth,nontradable,0.0025265562041105966,0.005263799770133977,0.6313813117169556,-0.007807553738052408,0.0128606661462736,748.0,HC1 robust,1,
+112785-V1,112785-V1_infer_003,infer/se/hc/hc3,G1,va_growth,nontradable,,,,,,,HC3 robust,0,HC2 and HC3 inference types are not supported for regressions with fixed effects.
+112785-V1,112785-V1_infer_004,infer/se/iid,G1,va_growth,nontradable,0.0025265562041105966,0.0057610018825189745,0.6611096273535342,-0.008783681538736491,0.013836793946957682,748.0,iid (no correction),1,

@@ -1,0 +1,58 @@
+{
+  "paper_id": "150323-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of pX_dummy on both_score_indiv_4_stdComb",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "150323-V1_spec_001",
+        "150323-V1_spec_002",
+        "150323-V1_spec_003",
+        "150323-V1_spec_004"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__4th_grade_with_controls",
+        "baseline__8th_grade_no_controls",
+        "baseline__8th_grade_with_controls"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of pX_dummy on SHhired_Mun_lead",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "150323-V1_spec_035",
+        "150323-V1_spec_036",
+        "150323-V1_spec_037",
+        "150323-V1_spec_038"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__personnel_fired",
+        "baseline__personnel_hired_after",
+        "baseline__personnel_fired_after"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Effect of pX_dummy on expthisschl_lessthan2_DPB",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "150323-V1_spec_056",
+        "150323-V1_spec_057",
+        "150323-V1_spec_058"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__headmaster_with_controls",
+        "baseline__headmaster_nonmunic"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

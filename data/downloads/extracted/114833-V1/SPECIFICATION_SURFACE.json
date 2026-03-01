@@ -1,0 +1,123 @@
+{
+  "paper_id": "114833-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "phi ~ AvMPG + [controls] [aw=Weight], robust cluster(CaseID)",
+        "selection_story": "Survey experiment (TESS) with random treatment assignment across 4 framing conditions (A/B cost difference vs total, T/Y total vs current, I/J incentive-compatible vs not, R/S rounding vs not). Within-subject variation across Q3 (second-choice vehicle) and Q4 (replacement vehicle). Key test: does the belief parameter phi vary with average MPG of the vehicle pair, indicating MPG Illusion?",
+        "fe_structure": [],
+        "cluster_vars": ["CaseID"]
+      },
+      "claim_object": {
+        "outcome_concept": "phi: ratio of perceived to true fuel cost difference between own and alternative vehicle",
+        "treatment_concept": "AvMPG: harmonic mean of own and alternative vehicle MPG (continuous)",
+        "estimand_concept": "Slope of phi on AvMPG: if positive, consumers exhibit MPG Illusion (thinking linearly in MPG rather than GPM)",
+        "target_population": "US adult vehicle owners (nationally representative via TESS/Knowledge Networks survey weights)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col1-MPGIllusion-All",
+          "outcome_var": "phi",
+          "treatment_var": "AvMPG",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "cluster_CaseID",
+          "notes": "Weighted OLS, cluster(CaseID), analytic weights from survey. Sample restricted to non-flagged observations (AnnGasCost_flag==0 & ImpliedVMT_flag==0)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 10,
+        "linked_adjustment": false,
+        "notes": "Paper shows regressions both with and without treatment group indicators, demographics, and other controls. Core result is bivariate (phi on AvMPG) but robustness adds TG indicators, Q3 dummy, demographics, state FE, etc."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__with_Q3_interaction"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/treatment_groups",
+          "rc/controls/sets/tg_plus_Q3",
+          "rc/controls/sets/demographics",
+          "rc/controls/sets/tg_demographics",
+          "rc/controls/sets/full_robustness",
+          "rc/controls/loo/drop_lIncome",
+          "rc/controls/loo/drop_Educ",
+          "rc/controls/loo/drop_Age",
+          "rc/controls/loo/drop_Male",
+          "rc/controls/loo/drop_HHSize",
+          "rc/controls/loo/drop_Liberal",
+          "rc/controls/loo/drop_Rural",
+          "rc/controls/loo/drop_Q1YearsOwned",
+          "rc/controls/loo/drop_absMPGDiff",
+          "rc/controls/loo/drop_lnQ1VehPrice",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/tg_only",
+          "rc/controls/progression/tg_Q3",
+          "rc/controls/progression/tg_Q3_demo",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/Q3_only",
+          "rc/sample/Q4_only",
+          "rc/sample/large_GPMDiff",
+          "rc/sample/small_GPMDiff",
+          "rc/sample/outliers/trim_phi_1_99",
+          "rc/sample/outliers/trim_phi_5_95",
+          "rc/sample/outliers/winsor_phi_1_99",
+          "rc/sample/unweighted",
+          "rc/form/outcome/phi_R",
+          "rc/form/outcome/phi_1",
+          "rc/form/outcome/absPctError",
+          "rc/form/outcome/Error",
+          "rc/form/treatment/GPMDiff",
+          "rc/form/treatment/absMPGDiff",
+          "rc/form/estimator/quantile_median"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/CaseID",
+          "params": {"cluster_var": "CaseID"},
+          "notes": "Cluster at individual (CaseID) level because each person contributes two observations (Q3 and Q4)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering"
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 SEs without clustering"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 114833,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

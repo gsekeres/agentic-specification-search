@@ -1,0 +1,38 @@
+{
+  "paper_id": "113893-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of radio1 on Nazi_share",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113893-V1_run_001",
+        "113893-V1_run_002",
+        "113893-V1_run_003",
+        "113893-V1_run_004",
+        "113893-V1_run_005"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table3_ols_long_controls",
+        "baseline__table3_ols_short_controls",
+        "baseline__table3_rf_short_controls",
+        "baseline__table3_rf_geography_only",
+        "baseline__table3_rf_long_controls"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of radio1 on graffiti",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113893-V1_run_062"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table5_lpm_radio1_controls_long"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

@@ -7,7 +7,7 @@ Compute counterfactual screening under cost shift.
 
 Given:
 - Mixture parameters (pi_k, mu_k, sigma_k) for k in {N, H, L}
-  using sigma=1 fixed truncated-normal mixture
+  using sigma=1 fixed folded-normal mixture (mu_free)
 - Dependence parameter phi (hence Delta = 1 - phi) from AR(1) under by_category ordering
 - Cost ratio lambda = gamma^new / gamma^old from timing data
 
@@ -125,18 +125,18 @@ def load_lambda_from_timing() -> tuple[float, dict]:
 # Parameter loading
 # ---------------------------------------------------------------------------
 def load_parameters():
-    """Load mixture (sigma=1 fixed) and dependence parameters."""
-    # Load sigma=1 fixed mixture params (preferred)
+    """Load mixture (sigma=1 fixed, folded normal) and dependence parameters."""
+    # Load folded-normal sigma=1 mixture params (preferred)
     if not MIXTURE_FILE.exists():
         raise RuntimeError(f"Mixture file not found: {MIXTURE_FILE}")
 
     with open(MIXTURE_FILE, 'r') as f:
         mixture_all = json.load(f)
 
-    params = mixture_all.get("spec_level", {}).get("baseline_only_sigma_fixed_1")
+    params = mixture_all.get("mu_free_sigma1_comparison", {}).get("foldnorm_K=3_full")
     if params is None:
-        raise RuntimeError("baseline_only_sigma_fixed_1 mixture params not found in mixture_params_abs_t.json")
-    mixture_source = "spec_level:baseline_only_sigma_fixed_1"
+        raise RuntimeError("foldnorm_K=3_full mixture params not found in mixture_params_abs_t.json")
+    mixture_source = "mu_free_sigma1_comparison:foldnorm_K=3_full"
 
     # Load dependence params
     if not DEPENDENCE_FILE.exists():
@@ -207,6 +207,20 @@ def compute_pass_probabilities(B, params):
 
             cdf_hi = tcdf(z_hi)
             cdf_lo = 0.0 if (z_lo is None or float(z_lo) <= lo) else tcdf(z_lo)
+            p_k = float(max(0.0, min(1.0, cdf_hi - cdf_lo)))
+        elif dist == "foldnorm":
+            # Folded normal: |X| where X ~ N(mu, sigma^2)
+            # CDF: F(x) = Phi((x - mu)/sigma) - Phi((-x - mu)/sigma)  for x >= 0
+            def fncdf(x):
+                if x is None or not np.isfinite(x):
+                    return 1.0
+                x = float(x)
+                if x <= 0:
+                    return 0.0
+                return float(stats.norm.cdf((x - mu_k) / sigma_k) - stats.norm.cdf((-x - mu_k) / sigma_k))
+
+            cdf_hi = fncdf(z_hi)
+            cdf_lo = fncdf(z_lo) if z_lo is not None else 0.0
             p_k = float(max(0.0, min(1.0, cdf_hi - cdf_lo)))
         else:
             cdf_hi = 1.0 if (z_hi is None or (isinstance(z_hi, float) and not np.isfinite(z_hi))) else float(stats.norm.cdf((float(z_hi) - mu_k) / sigma_k))
@@ -653,14 +667,19 @@ def main():
     # Build main results CSV
     # ------------------------------------------------------------------
     results_rows = []
+    # Compute old_sol once (it's the same for all lambdas)
+    old_sol = find_min_m(N_eff_old, p_pass, params, FDR_TARGET)
+    if old_sol is None:
+        print(f"  ERROR: FDR target {FDR_TARGET} infeasible at N_eff_old={N_eff_old}.")
+        print(f"  Check mixture params — means may be too large. Current: {params['mu']}")
+        return
+
     for lam_entry in lambda_sens:
         lam = lam_entry['lambda']
         n_eff_new_l = int(np.ceil(N_eff_old / lam))
 
-        # Find m for old and new at this lambda
-        old_sol = find_min_m(N_eff_old, p_pass, params, FDR_TARGET)
         new_sol_l = find_min_m(n_eff_new_l, p_pass, params, FDR_TARGET)
-        if old_sol is None or new_sol_l is None:
+        if new_sol_l is None:
             continue
 
         fdr_deg, _, _ = fdr_null_only(n_eff_new_l, old_sol['m'], p_pass, params)

@@ -1,0 +1,52 @@
+{
+  "paper_id": "134041-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of T1 on z_mani_index",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "S001",
+        "S002",
+        "S003",
+        "S004",
+        "S005",
+        "S006"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__posterior",
+        "baseline__zposterior",
+        "baseline__large",
+        "baseline__problem",
+        "baseline__govmore"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of T1 on z_lmpolicy_index",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "S045",
+        "S046",
+        "S047",
+        "S048",
+        "S049",
+        "S050",
+        "S051"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__quotaanchor",
+        "baseline__AAanchor",
+        "baseline__legislationanchor",
+        "baseline__UKtool",
+        "baseline__childcare",
+        "baseline__transparencyanchor"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

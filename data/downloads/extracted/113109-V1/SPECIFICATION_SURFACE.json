@@ -1,0 +1,205 @@
+{
+  "paper_id": "113109-V1",
+  "created_at": "2026-02-25",
+  "notes": "Charles, Hurst, & Notowidigdo (2018), 'Housing Booms and Busts, Labor Market Outcomes, and College Attendance'. Cross-sectional IV at MSA level. Housing demand shock (hp_growth_real_00_06 = deltaP + units_growth, 2000-2006 housing boom) instrumented by housing supply elasticity (Saiz instrument, variable 'iv'). Multiple outcome categories: employment (Table 1), wages (Table 2), college enrollment (Table 3). Controls: college_share_2000, female_employed_share_2000, pop_prev, share_foreign_18_55_2000. Weighted by MSA population. Clustered at state level.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endogenous_var": "hp_growth_real_00_06",
+        "instruments": ["iv"],
+        "instrument_description": "Saiz housing supply elasticity",
+        "fe_structure": [],
+        "cluster_vars": ["statefip"],
+        "weights": "msa_total_emp_all_2000 (Table 1) or pop_18_33_00 (Table 3)",
+        "notes": "ivreg2 depvar (hp_growth_real_00_06 = iv) controls [aw=weight], cluster(statefip). Cross-sectional (not panel). MSA-level long differences 2000-2006. First-stage F-stat (Kleibergen-Paap) reported."
+      },
+      "claim_object": {
+        "outcome_concept": "Change in employment-to-population ratio for young men (18-25) during the housing boom (2000-2006)",
+        "treatment_concept": "Housing demand shock (combined house price growth + housing units growth, 2000-2006), instrumented by housing supply elasticity",
+        "estimand_concept": "LATE of housing boom on employment, identified via variation in housing supply elasticity across MSAs",
+        "target_population": "US Metropolitan Statistical Areas (MSAs), 2000-2006 changes"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-IV-Employment",
+          "outcome_var": "d_emp_18_25_le",
+          "treatment_var": "hp_growth_real_00_06",
+          "controls": ["college_share_2000", "female_employed_share_2000", "pop_prev", "share_foreign_18_55_2000"],
+          "n_controls": 4,
+          "notes": "Table 1, IV column. Change in employment-pop ratio for 18-25 year-olds, both sexes. Weighted by MSA employment, clustered by state."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": true,
+        "linked_components": ["first_stage", "second_stage"],
+        "mandatory_controls": [],
+        "notes": "Controls are used in both first and second stage (linked). Baseline controls: college_share_2000, female_employed_share_2000, pop_prev, share_foreign_18_55_2000. Robustness table adds region FE, manuf_18_55_2000, routine_share_2000, unemp_18_55_2000."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_college_share",
+          "rc/controls/loo/drop_female_employed",
+          "rc/controls/loo/drop_pop_prev",
+          "rc/controls/loo/drop_share_foreign",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/baseline_plus_region_fe",
+          "rc/controls/sets/baseline_plus_manuf",
+          "rc/controls/sets/baseline_plus_routine",
+          "rc/controls/sets/baseline_plus_unemp",
+          "rc/controls/sets/baseline_plus_all_extra",
+          "rc/controls/sets/region_fe_only",
+          "rc/controls/sets/full_with_region_fe",
+          "rc/controls/subset/random_*",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/trim_x_1_99",
+          "rc/sample/subset/drop_extreme_elasticity",
+          "rc/sample/subset/drop_small_msas",
+          "rc/form/treatment/deltaP_only",
+          "rc/form/treatment/deltaP_scaled",
+          "rc/data/instrument/iv_sig",
+          "rc/data/instrument/iv_sig2",
+          "rc/data/instrument/iv2_poly3",
+          "rc/data/instrument/price_rent_ratio",
+          "rc/weights/unweighted",
+          "rc/weights/pop_weights",
+          "rc/joint/controls_instrument/*",
+          "rc/joint/controls_sample/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/state",
+          "params": {"cluster_var": "statefip"},
+          "notes": "Cluster-robust SE at state level, matching the paper."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."},
+          {"spec_id": "infer/se/hc/hc2", "params": {}, "notes": "HC2 for small-sample correction."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 20
+      },
+      "sampling": {
+        "seed": 113109,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "4 baseline controls + 4 additional (manuf, routine, unemp, region FE). Full build-up matching the paper's robustness table, plus random subsets."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/strength/first_stage_f",
+          "scope": "spec",
+          "linkage": "Computed for each IV spec via Kleibergen-Paap F-stat from ivreg2"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endogenous_var": "hp_growth_real_00_06",
+        "instruments": ["iv"],
+        "instrument_description": "Saiz housing supply elasticity",
+        "fe_structure": [],
+        "cluster_vars": ["statefip"],
+        "weights": "pop_18_33_00",
+        "notes": "Same IV setup as G1 but for college enrollment outcomes. Weighted by population (not employment)."
+      },
+      "claim_object": {
+        "outcome_concept": "Change in college enrollment rate for young people (18-25) during the housing boom (2000-2007)",
+        "treatment_concept": "Housing demand shock (2000-2006), instrumented by housing supply elasticity",
+        "estimand_concept": "LATE of housing boom on college enrollment, identified via variation in housing supply elasticity",
+        "target_population": "US MSAs, 2000-2007 changes in education attainment"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-IV-AnyCollege-18-25",
+          "outcome_var": "d_any_18_25_a1",
+          "treatment_var": "housing_demand_shock",
+          "controls": ["college_share_2000", "female_employed_share_2000", "pop_prev", "share_foreign_18_55_2000"],
+          "n_controls": 4,
+          "notes": "Table 3, IV column. Change in any-college rate for 18-25 year-olds. Weighted by population."
+        },
+        {
+          "label": "Table3-IV-Bachelor-18-25",
+          "outcome_var": "d_bachelor_18_25_a1",
+          "treatment_var": "housing_demand_shock",
+          "controls": ["college_share_2000", "female_employed_share_2000", "pop_prev", "share_foreign_18_55_2000"],
+          "n_controls": 4,
+          "notes": "Table 3, IV column. Change in bachelor's rate for 18-25 year-olds."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": true,
+        "linked_components": ["first_stage", "second_stage"]
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_bachelor_18_25"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_college_share",
+          "rc/controls/loo/drop_female_employed",
+          "rc/controls/loo/drop_pop_prev",
+          "rc/controls/loo/drop_share_foreign",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/baseline_plus_region_fe",
+          "rc/controls/sets/full_with_region_fe",
+          "rc/controls/subset/random_*",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/subset/drop_extreme_elasticity",
+          "rc/form/outcome/associate_degree",
+          "rc/form/outcome/older_age_group_26_33",
+          "rc/data/instrument/iv_sig",
+          "rc/data/instrument/iv_sig2",
+          "rc/data/instrument/iv2_poly3",
+          "rc/data/instrument/price_rent_ratio",
+          "rc/weights/unweighted",
+          "rc/joint/controls_instrument/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/state",
+          "params": {"cluster_var": "statefip"},
+          "notes": "Cluster-robust SE at state level."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 113109,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/strength/first_stage_f",
+          "scope": "spec",
+          "linkage": "Computed for each IV spec"
+        }
+      ]
+    }
+  ]
+}

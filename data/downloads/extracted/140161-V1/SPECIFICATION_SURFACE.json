@@ -1,0 +1,291 @@
+{
+  "paper_id": "140161-V1",
+  "created_at": "2026-02-24",
+  "revised_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_treatment_dummies",
+        "randomization_unit": "individual",
+        "treatment_arms": 3,
+        "treatment_arm_labels": ["Alt-Facts (survey==1)", "Imposed Fact-Check (survey==2)", "Voluntary Fact-Check (survey==3)"],
+        "stratification_vars": ["male", "low_educ", "mid_educ"],
+        "sample_filter": "survey < 4",
+        "cluster_vars": [],
+        "se_type": "HC1",
+        "notes": "Individual-level randomization, no clustering. Duration filter (>=250s) and gc==1 quality filter applied at data construction stage and cannot be varied post-hoc."
+      },
+      "claim_object": {
+        "outcome_concept": "Intent to share alt-facts (fake news) on Facebook",
+        "treatment_concept": "Fact-checking interventions (imposed vs. voluntary) relative to alt-facts-only control",
+        "estimand_concept": "Average Treatment Effect (ITT) of fact-checking on desire to share alt-facts",
+        "target_population": "French Facebook users recruited via survey company for 2019 EU election experiment"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-PanelA-Col2",
+          "outcome_var": "want_share_fb",
+          "treatment_var": "i.survey",
+          "focal_coefficients": ["2.survey", "3.survey"],
+          "controls": ["male", "low_educ", "mid_educ"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "hetero",
+          "sample_filter": "survey < 4",
+          "notes": "Preferred spec with stratification controls only. Column 1 is no controls, col 2 adds strata (male + low_educ + mid_educ), col 3 adds strata+socio+vote+fb+i.educ, col 4 adds all. Col 2 is baseline."
+        },
+        {
+          "label": "Table2-PanelA-Col6",
+          "outcome_var": "share_click2",
+          "treatment_var": "i.survey",
+          "focal_coefficients": ["2.survey", "3.survey"],
+          "controls": ["male", "low_educ", "mid_educ"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "hetero",
+          "sample_filter": "survey < 4",
+          "notes": "Co-equal baseline using behavioral action outcome (2nd click: navigating to FB sharing page, tracked via Google Analytics). Columns 5-8 of Table 2 Panel A parallel Columns 1-4 with this outcome. Added as co-baseline by verifier to ensure equal robustness coverage for the action-level measure."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 30,
+        "linked_adjustment": false,
+        "notes": "Paper shows 4 control progressions from 0 to ~30 controls (full set includes strata+socio+vote+fb+behavioral+reported+all pre-treatment vars). Upper bound is approximate due to education dummies in i.educ. Strata controls (male, low_educ, mid_educ) are mandatory in all specs EXCEPT the pure diff-in-means design variant, as is standard for stratified RCTs. Sample filter (duration>=250s, gc==1) is baked into surveys.dta and cannot be varied post-hoc."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__intent_share_fb",
+          "baseline__share_action_g1"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/strata_only",
+          "rc/controls/sets/strata_socio_vote_fb",
+          "rc/controls/sets/full",
+          "rc/controls/progression/strata",
+          "rc/controls/progression/strata_socio",
+          "rc/controls/progression/strata_socio_vote",
+          "rc/controls/progression/strata_socio_vote_fb",
+          "rc/controls/progression/strata_socio_vote_fb_behavioral",
+          "rc/controls/progression/strata_socio_vote_fb_behavioral_reported",
+          "rc/controls/loo/drop_male",
+          "rc/controls/loo/drop_low_educ",
+          "rc/controls/loo/drop_mid_educ",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_income",
+          "rc/controls/loo/drop_married",
+          "rc/controls/loo/drop_single",
+          "rc/controls/loo/drop_village",
+          "rc/controls/loo/drop_town",
+          "rc/controls/loo/drop_children",
+          "rc/controls/loo/drop_catholic",
+          "rc/controls/loo/drop_muslim",
+          "rc/controls/loo/drop_no_religion",
+          "rc/controls/loo/drop_religious",
+          "rc/controls/loo/drop_use_FB",
+          "rc/controls/loo/drop_often_share_fb",
+          "rc/controls/loo/drop_log_nb_friends_fb",
+          "rc/controls/loo/drop_second_mlp",
+          "rc/controls/loo/drop_negative_image_UE",
+          "rc/controls/loo/drop_altruism",
+          "rc/controls/loo/drop_reciprocity",
+          "rc/controls/loo/drop_image",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/treatment/pairwise/imposed_vs_control",
+          "rc/treatment/pairwise/voluntary_vs_control",
+          "rc/treatment/pairwise/imposed_vs_voluntary",
+          "rc/treatment/binary/any_factcheck_vs_control",
+          "rc/form/outcome/share_click2",
+          "rc/form/outcome/share_click3"
+        ],
+        "removed_rc_spec_ids": [
+          "rc/sample/duration_filter/trim_300",
+          "rc/sample/duration_filter/trim_200"
+        ],
+        "removed_rc_rationale": "Duration filter (>=250s) is applied during data construction in 1.infile_data.do before the durationinseconds variable is converted to minutes and the surveys.dta dataset is saved. The variable in the final dataset is in minutes with all sub-250s observations already excluded. Trim_300 cannot be applied post-hoc (requires re-running infile script from raw CSVs), and trim_200 would expand the sample beyond the already-applied 250s cutoff, which is also not possible from the generated data."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust HC1 SEs matching Stata robust option used throughout the paper."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 small-sample correction as stress test."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 140161,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Paper reports Table 1 balance and Table A1 omnibus mlogit test."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_treatment_dummies",
+        "randomization_unit": "individual",
+        "treatment_arms": 2,
+        "treatment_arm_labels": ["Imposed Fact-Check (survey==2)", "Voluntary Fact-Check (survey==3)"],
+        "stratification_vars": ["male", "low_educ", "mid_educ"],
+        "sample_filter": "survey > 1 & survey < 4",
+        "cluster_vars": [],
+        "se_type": "HC1"
+      },
+      "claim_object": {
+        "outcome_concept": "Intent to share fact-check on Facebook",
+        "treatment_concept": "Voluntary vs. imposed fact-check on willingness to share the fact-check itself",
+        "estimand_concept": "Average Treatment Effect (ITT) of voluntary vs imposed fact-check on fact-check sharing",
+        "target_population": "French Facebook users in the imposed and voluntary fact-check treatment arms"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-PanelB-Col2",
+          "outcome_var": "want_share_facts",
+          "treatment_var": "i.survey",
+          "focal_coefficients": ["3.survey"],
+          "controls": ["male", "low_educ", "mid_educ"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "hetero",
+          "sample_filter": "survey > 1 & survey < 4",
+          "notes": "Sample restricted to surveys 2 and 3 (both fact-check arms). Coefficient on 3.survey is the treatment effect of voluntary vs imposed."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 30,
+        "linked_adjustment": false,
+        "notes": "Strata controls (male, low_educ, mid_educ) are mandatory in all specs EXCEPT the pure diff-in-means design variant, as is standard for stratified RCTs. Sample filter (duration>=250s, gc==1) is baked into surveys.dta and cannot be varied post-hoc."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__factcheck_action"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/strata_only",
+          "rc/controls/sets/strata_socio_vote_fb",
+          "rc/controls/sets/full",
+          "rc/controls/progression/strata",
+          "rc/controls/progression/strata_socio",
+          "rc/controls/progression/strata_socio_vote",
+          "rc/controls/progression/strata_socio_vote_fb",
+          "rc/controls/loo/drop_male",
+          "rc/controls/loo/drop_low_educ",
+          "rc/controls/loo/drop_mid_educ",
+          "rc/controls/loo/drop_religious",
+          "rc/controls/loo/drop_second_mlp",
+          "rc/controls/loo/drop_negative_image_UE",
+          "rc/controls/loo/drop_use_FB",
+          "rc/controls/loo/drop_log_nb_friends_fb",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/form/outcome/share_facts_click2",
+          "rc/form/outcome/share_fact_click3"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust HC1 SEs matching paper."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 small-sample correction as stress test."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 5
+      },
+      "sampling": {
+        "seed": 140162,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance between survey 2 and 3 arms from Table 1."
+        }
+      ]
+    }
+  ],
+  "variable_definitions": {
+    "treatment_var": {
+      "survey": "Treatment arm indicator: 1=Alt-Facts only, 2=Imposed Fact-Check, 3=Voluntary Fact-Check (main experiment). Values 4-6 are follow-up experiment, not used.",
+      "survey2": "Dummy for Imposed Fact-Check (survey==2) vs Alt-Facts (survey==1) or Voluntary (survey==3)",
+      "survey3": "Dummy for Voluntary Fact-Check (survey==3) vs Alt-Facts (survey==1) or Imposed (survey==2)"
+    },
+    "outcome_vars": {
+      "want_share_fb": "Binary: intent to share alt-facts on Facebook (1 click). Constructed from q29==1 (renamed from q34 in infile). Zero-filled for non-responders.",
+      "share_click2": "Continuous [0,1]: action of sharing alt-facts on Facebook (2 clicks, tracked via Google Analytics page view). Constructed as prob_view_fake = uniquepageviews/total_participants_fake, merged from GA_hours.dta. Zero-filled when missing.",
+      "share_click3": "Continuous [0,1]: reconfirm sharing alt-facts on Facebook (3 clicks, tracked via Google Analytics share count). Constructed as prob_share_GA_fake. Zero-filled when missing.",
+      "want_share_facts": "Binary: intent to share fact-check on Facebook (1 click). Constructed from q31==1 (renamed from q41). Zero-filled.",
+      "share_facts_click2": "Continuous [0,1]: action of sharing fact-check on Facebook (2 clicks, tracked via Google Analytics). Constructed as prob_view_fact. Zero-filled when missing. NOTE: use share_facts_click2 (not share_fact_click2) in regressions — the analysis code uses share_facts_click2 in Table 2 Panel B.",
+      "share_fact_click3": "Continuous [0,1]: reconfirm sharing fact-check on Facebook (3 clicks, tracked via Google Analytics share count). Constructed as prob_share_GA_fact. Zero-filled when missing.",
+      "want_share_others": "Binary: intent to share alt-facts with 100 other participants (not on Facebook). Constructed from q30==1. Used only in Table 3 panel FE analysis."
+    },
+    "control_sets": {
+      "strata": ["male"],
+      "strata1": ["low_educ", "mid_educ"],
+      "strata_combined": ["male", "low_educ", "mid_educ"],
+      "socio": ["age", "age_sqrd", "income", "married", "single", "village", "town", "children", "catholic", "muslim", "no_religion", "educ", "religious"],
+      "socio_notes": "The 'educ' variable (education level 1-9) is used as i.educ (factor/categorical) in column 3+ regressions, expanding to 8 dummies. age_sqrd = age*age. Drop 'age' in LOO specs means dropping both age and age_sqrd.",
+      "fb": ["use_FB", "often_share_fb", "log_nb_friends_fb"],
+      "vote": ["second_mlp", "negative_image_UE"],
+      "behavioral": ["altruism", "reciprocity", "image"],
+      "reported": ["share_interest", "share_influence", "share_image", "share_reciprocity"]
+    },
+    "sample_filters": {
+      "main_experiment": "survey < 4",
+      "factcheck_arms": "survey > 1 & survey < 4",
+      "duration_250": "durationinseconds >= 250 (applied at raw CSV import in 1.infile_data.do; CANNOT be varied post-hoc from surveys.dta — variable is subsequently converted to minutes and sub-250s obs are excluded before saving)",
+      "gc_filter": "gc == 1 (applied at raw CSV import in 1.infile_data.do; CANNOT be varied post-hoc from surveys.dta)"
+    }
+  }
+}

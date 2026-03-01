@@ -1,0 +1,91 @@
+{
+  "paper_id": "113513-V1",
+  "created_at": "2026-02-25",
+  "notes": "Descriptive paper examining trends in economics undergraduate majors by demographics (sex, race) using IPEDS aggregate data (2000-2015). Regressions are bivariate time-series OLS of economics major share on other discipline shares + year. No causal identification. Very small N (collapsed to ~16 year-level observations). The regression content is limited: Table 1 regressions of econshare on each discipline's share individually, with robust SEs. Purely descriptive/correlational.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "outcome_var": "econshare",
+        "treatment_var": "level_d{j}",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "hc1",
+        "selection_story": "Descriptive correlation (no causal claim)",
+        "notes": "Bivariate OLS: econshare ~ level_d{j} + year, robust SEs. Each regression uses one other discipline's share as the sole covariate (plus year). Data collapsed to year level (~16 obs). Repeated for 11 disciplines (d2-d12), separately for all students, females, and nonwhites."
+      },
+      "claim_object": {
+        "outcome_concept": "Share of economics BA majors among all BA majors",
+        "treatment_concept": "Share of another discipline (e.g., business, poli sci, psych, etc.) among all BA majors",
+        "estimand_concept": "Descriptive partial correlation between economics share and other discipline share, conditional on year trend",
+        "target_population": "All US undergraduate degree completions (IPEDS data, 2000-2015)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-AllStudents-BusMgmt",
+          "outcome_var": "econshare",
+          "treatment_var": "level_d2",
+          "controls": ["year"],
+          "n_controls": 1,
+          "notes": "regress econshare level_d2 year, robust. Business/management share is the most commonly reported comparison discipline."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 1,
+        "linked_adjustment": false,
+        "notes": "All regressions include exactly one discipline share + year. The paper never uses multiple discipline shares simultaneously. Year is always included."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__allstudents_polisci",
+          "baseline__allstudents_psych",
+          "baseline__allstudents_otherss",
+          "baseline__allstudents_mathengcs",
+          "baseline__allstudents_physci",
+          "baseline__allstudents_lifesci",
+          "baseline__allstudents_artsarch",
+          "baseline__allstudents_education",
+          "baseline__allstudents_humanities",
+          "baseline__allstudents_other"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/sample/restriction/females_only",
+          "rc/sample/restriction/nonwhites_only",
+          "rc/form/outcome/second_major_share",
+          "rc/sample/time/drop_first_year",
+          "rc/sample/time/drop_last_year",
+          "rc/sample/time/pre_2008",
+          "rc/sample/time/post_2008",
+          "rc/controls/single/add_year_squared",
+          "rc/form/model/no_year_control"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs, matching the paper's 'robust' option."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hac/nw_auto", "params": {}, "notes": "Newey-West HAC SEs (time series, potential serial correlation with ~16 obs)."},
+          {"spec_id": "infer/se/classical/ols", "params": {}, "notes": "Classical OLS SEs for comparison."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 0,
+        "notes": "The specification space is naturally small: 11 discipline shares x ~5 sample/form variants. No controls multiverse since each regression uses exactly one discipline share. Budget reflects the many baseline variants (one per discipline) plus sample/form RC."
+      },
+      "sampling": {
+        "seed": 113513,
+        "controls_subset_sampler": "none",
+        "notes": "Full enumeration feasible. No control subset sampling needed."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

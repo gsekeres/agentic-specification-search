@@ -1,0 +1,113 @@
+{
+  "paper_id": "163241-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "treatment_timing": "Staggered adoption of pay transparency legislation across Canadian provinces",
+        "estimand": "ATT of pay transparency on gender wage gap",
+        "comparison_groups": "Provinces without transparency laws (never-treated) and provinces before adoption (not-yet-treated)",
+        "panel_unit": "id3 (individual identifier)",
+        "panel_time": "year",
+        "fe_structure": ["id3", "prov_year_sex"],
+        "cluster_vars": ["inst"],
+        "cohorts": "Ontario 1996, Manitoba 1997, British Columbia 2001, Prince Edward Island 2005, Nova Scotia 2008, Newfoundland 2009",
+        "notes": "Treatment is binary: treated=1 if province has transparency law AND individual's peers had salary revealed. Two peer group definitions: Inst-Dept and Inst-Dept-Rank."
+      },
+      "claim_object": {
+        "outcome_concept": "Log annual salary rate of university faculty",
+        "treatment_concept": "Exposure to pay transparency legislation (treated: province adopted law AND peer salary revealed)",
+        "estimand_concept": "Effect of pay transparency on gender wage gap (female#treated interaction coefficient)",
+        "target_population": "Canadian university faculty (UCASS data, full-time tenured/tenure-track)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col2-InstDept",
+          "outcome_var": "ln_salary_annual_rate",
+          "treatment_var": "treated",
+          "focal_coefficient": "1.female#1.treated",
+          "controls": [
+            "has_responsibilities"
+          ],
+          "n_controls": 1,
+          "fixed_effects": ["id3", "prov_year_sex"],
+          "vcov": "cluster(inst)",
+          "peer_group": "Inst-Dept",
+          "notes": "N=378,890, R2=0.938, coef on female#treated=0.0197 (SE=0.0059)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "The baseline spec with individual FE has very few time-varying controls. The cross-sectional spec (Table 4 Col 1) adds experience measures. Controls count ranges from 1 (has_responsibilities) to 3 (has_responsibilities + appoint_inst_numyears + degree_high_numyears)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__inst_dept_rank"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_has_responsibilities",
+          "rc/controls/add/appoint_inst_numyears",
+          "rc/controls/add/degree_high_numyears",
+          "rc/controls/sets/cross_sectional_spec",
+          "rc/sample/restriction/balanced_institutions",
+          "rc/sample/restriction/min_10_obs_per_individual",
+          "rc/sample/subgroup/rank_assistant",
+          "rc/sample/subgroup/rank_associate",
+          "rc/sample/subgroup/rank_full",
+          "rc/sample/restriction/nfdp_only",
+          "rc/sample/outliers/trim_salary_1_99",
+          "rc/fe/swap/id3_to_inst_subject",
+          "rc/fe/add/inst_subj_sex_trend",
+          "rc/data/peer_group/inst_dept",
+          "rc/data/peer_group/inst_dept_rank",
+          "rc/data/treatment_alt/provincial_only",
+          "rc/data/outcome_alt/salary_adj_ontario",
+          "rc/form/outcome/level_salary",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/inst",
+          "params": {"cluster_var": "inst"},
+          "notes": "Cluster SEs at institution level (~49 clusters), matching Stata cl(inst)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering) -- Table 5 Col 4 uses vce(robust) with dept-gender trends"
+          },
+          {
+            "spec_id": "infer/se/cluster/prov",
+            "params": {"cluster_var": "prov"},
+            "notes": "Cluster at province level (~10 clusters) -- very few clusters, but natural treatment variation level"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 163241,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/joint_test",
+          "scope": "baseline_group",
+          "notes": "Event study figures (Fig 4, Fig 5) serve as pre-trends checks"
+        }
+      ]
+    }
+  ]
+}

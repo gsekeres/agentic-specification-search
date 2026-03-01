@@ -1,0 +1,99 @@
+{
+  "paper_id": "113744-V1",
+  "created_at": "2026-02-25",
+  "notes": "Wisdom, Downs, and Loewenstein (2010) 'Promoting Healthy Choices: Information vs. Convenience'. Field experiment at Subway restaurants testing effects of calorie information and menu ordering on food choices. N=638 across two studies. Random assignment to CalInfo, CalRef, HealthyMenu, UnhealthyMenu conditions.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "individual",
+        "randomization_level": "customer",
+        "assignment_vars": ["CalInfo", "CalRef", "HealthyMenu", "UnhealthyMenu"],
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "robust",
+        "notes": "Individual-level randomization of Subway customers to information and menu-ordering conditions. OLS with treatment indicators and demographic controls. No clustering in baseline."
+      },
+      "claim_object": {
+        "outcome_concept": "Total meal calories (TotalCal)",
+        "treatment_concept": "Menu ordering and calorie information interventions (CalInfo, CalRef, HealthyMenu, UnhealthyMenu)",
+        "estimand_concept": "ATE of each treatment condition on total caloric intake",
+        "target_population": "Subway restaurant customers (two studies)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-TotalCal-AllTreatments",
+          "outcome_var": "TotalCal",
+          "treatment_var": "CalInfo CalRef HealthyMenu UnhealthyMenu",
+          "controls": ["Age", "Female", "AfrAmer"],
+          "n_controls": 3
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 10,
+        "linked_adjustment": false,
+        "notes": "Baseline uses 3 demographic controls (Age, Female, AfrAmer). Additional available controls include Hunger, ChainFreq, DailyCal, Dieting, Overweight, Weight, Height. Max envelope set at 10 to allow modest expansion beyond baseline. Being an experiment, no controls are strictly required."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_sandwich_cal",
+          "baseline__table3_non_sandwich_cal"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/pooling/study2_only",
+          "design/randomized_experiment/pooling/study1_only",
+          "design/randomized_experiment/pooling/pooled_with_study_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_Age",
+          "rc/controls/loo/drop_Female",
+          "rc/controls/loo/drop_AfrAmer",
+          "rc/controls/add/Hunger",
+          "rc/controls/add/ChainFreq",
+          "rc/controls/add/DailyCal",
+          "rc/controls/add/Dieting",
+          "rc/controls/add/Overweight",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/demographics_plus_eating",
+          "rc/controls/sets/full",
+          "rc/controls/subset/random_*",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/opened_seal_only",
+          "rc/sample/restriction/non_dieters",
+          "rc/form/outcome/log_TotalCal",
+          "rc/form/outcome/asinh_TotalCal",
+          "rc/preprocess/outcome/winsor_1_99"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Robust (HC1) standard errors. The SPSS syntax in the paper does not specify clustering; OLS with robust SE is the standard for individual-level experiments."
+        },
+        "variants": [
+          {"spec_id": "infer/se/classical/ols", "params": {}, "notes": "Classical OLS SE (homoskedastic)."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 for small-sample robustness."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 65,
+        "max_specs_controls_subset": 20,
+        "notes": "Moderate budget. Control pool has ~7 optional variables beyond the 3 baseline controls. Subset sampling for combinatorial control sets."
+      },
+      "sampling": {
+        "seed": 113744,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "7 optional controls. Exhaustive for single additions; stratified random for multi-control subsets."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/joint_f_test", "scope": "baseline_group", "notes": "Balance check across treatment arms on observables."}
+      ]
+    }
+  ]
+}

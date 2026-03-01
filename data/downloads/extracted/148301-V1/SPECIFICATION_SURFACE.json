@@ -1,0 +1,208 @@
+{
+  "paper_id": "148301-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "glm_fractional_logit",
+        "panel_unit": "iso3 (country)",
+        "panel_time": "year",
+        "fe_structure": ["sector_x_year (kt)"],
+        "cluster_vars": ["i (country)"],
+        "link": "logit",
+        "family": "binomial",
+        "marginal_effects": "dydx reported"
+      },
+      "claim_object": {
+        "outcome_concept": "Export platform share (ep) -- ratio of foreign + US sales to total sales of US MNE affiliates",
+        "treatment_concept": "Log foreign market access (lfma) of host country",
+        "estimand_concept": "Marginal effect of foreign market access on export platform intensity, conditional on tax rates and controls",
+        "target_population": "US multinational enterprise affiliates abroad, BEA data 1999-2013, 11 sectors (excl. finance)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col4",
+          "outcome_var": "ep",
+          "treatment_var": "lfma",
+          "controls": ["taxr", "haven", "eoi_enf", "dtc_enf", "lrgdp", "dtc_num"],
+          "n_controls": 6,
+          "fixed_effects": ["kt"],
+          "vcov": "cluster(i)",
+          "estimator": "glm_fractional_logit",
+          "notes": "GLM fractional logit with sector-year FE, clustered at country level. Table 2 Col 4 is the preferred specification with haven indicator."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "max_fe_dimensions": 1,
+        "notes": "Table 2 columns progress from 1 control (lrgdp) to 6 controls. All columns include sector-year FE. The fractional logit is the primary estimator; OLS (reghdfe) appears as a robustness check in Table 2 cols 7-8."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col3",
+          "baseline__table2_col5_nohaven",
+          "baseline__table2_col6_haven",
+          "baseline__table2_col7_ols_nohaven",
+          "baseline__table2_col8_ols_haven"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_taxr",
+          "rc/controls/loo/drop_haven",
+          "rc/controls/loo/drop_eoi_enf",
+          "rc/controls/loo/drop_dtc_enf",
+          "rc/controls/loo/drop_lrgdp",
+          "rc/controls/loo/drop_dtc_num",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/control1_lrgdp_only",
+          "rc/controls/sets/control2_lrgdp_taxr",
+          "rc/controls/sets/full_with_haven",
+          "rc/controls/progression/col1_to_col4",
+          "rc/controls/add/lemp",
+          "rc/controls/add/leqpmt",
+          "rc/controls/add/lemp_leqpmt",
+          "rc/sample/subgroup/manufacturing_only",
+          "rc/sample/subgroup/services_only",
+          "rc/sample/subgroup/non_haven_only",
+          "rc/sample/subgroup/haven_only",
+          "rc/sample/subgroup/big5_havens",
+          "rc/sample/subgroup/caribbean_havens",
+          "rc/sample/restriction/drop_imputed_ep",
+          "rc/sample/restriction/drop_imputed_profits",
+          "rc/sample/outliers/trim_ep_1_99",
+          "rc/sample/outliers/trim_ep_5_95",
+          "rc/fe/alt/country_year",
+          "rc/fe/alt/sector_only",
+          "rc/fe/alt/year_only",
+          "rc/fe/add/country",
+          "rc/form/estimator/ols_reghdfe",
+          "rc/form/estimator/ols_robust",
+          "rc/form/outcome/ep_no_us_sales",
+          "rc/form/treatment/haven_split_big5_other",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/country",
+          "params": {"cluster_var": "i"},
+          "notes": "Clustered at the country level, matching the paper's baseline inference for all GLM and reghdfe specifications."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/country_sector",
+            "params": {"cluster_var": ["iso3", "k"]},
+            "notes": "Two-way clustering at country and sector level as a stress test."
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering) as a comparison."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 148301,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Control pool is small (6 controls), so most subsets can be enumerated. Random subset draws supplement the structured LOO and progression specs."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "ols_reghdfe",
+        "panel_unit": "iso3 (country)",
+        "panel_time": "year",
+        "fe_structure": ["sector_x_year (kt)"],
+        "cluster_vars": ["i (country)"],
+        "dependent_var_transform": "log(profit)"
+      },
+      "claim_object": {
+        "outcome_concept": "Log profits (lprofit) of US MNE affiliates",
+        "treatment_concept": "Export platform share interacted with tax haven status (ep_haven)",
+        "estimand_concept": "Effect of export platform activity in tax havens on MNE affiliate profits",
+        "target_population": "US multinational enterprise affiliates abroad with non-imputed profits, BEA data 1999-2013"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1",
+          "outcome_var": "lprofit",
+          "treatment_var": "ep_haven",
+          "controls": ["lfma", "ep", "taxr", "haven", "eoi_enf", "dtc_enf", "dtc_num", "lrgdp", "lemp", "leqpmt"],
+          "n_controls": 10,
+          "fixed_effects": ["kt"],
+          "vcov": "cluster(i)",
+          "estimator": "reghdfe",
+          "notes": "OLS with sector-year FE. Focal parameter is coefficient on ep_haven. Table 4 Col 1."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 10,
+        "controls_count_max": 10,
+        "linked_adjustment": false,
+        "notes": "The profit equation has a single main specification. The control set is fixed across columns. Robustness comes from alternative outcome transforms (GPML, cube root)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__gpml_profit",
+          "baseline__cube_root_profit"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_lemp",
+          "rc/controls/loo/drop_leqpmt",
+          "rc/controls/loo/drop_lfma",
+          "rc/controls/loo/drop_eoi_enf",
+          "rc/controls/loo/drop_dtc_enf",
+          "rc/controls/loo/drop_dtc_num",
+          "rc/controls/loo/drop_lrgdp",
+          "rc/sample/subgroup/positive_profit_only",
+          "rc/sample/restriction/drop_imputed_profits",
+          "rc/sample/outliers/trim_profit_1_99",
+          "rc/form/outcome/cube_root_profit",
+          "rc/form/outcome/gpml_poisson",
+          "rc/form/outcome/level_profit",
+          "rc/fe/add/country"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/country",
+          "params": {"cluster_var": "i"},
+          "notes": "Clustered at country level, matching the paper."
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 148302,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

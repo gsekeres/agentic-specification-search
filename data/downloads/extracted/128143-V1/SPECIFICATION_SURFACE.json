@@ -1,0 +1,243 @@
+{
+  "paper_id": "128143-V1",
+  "created_at": "2026-02-25",
+  "verified_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "manual_2sls_lpm",
+        "randomization_unit": "individual",
+        "strata_or_blocks": "Stratified RCT: quota-based sampling on age, sex, region, education, town size, employment status",
+        "estimand": "ITT_via_IV",
+        "experiment_type": "survey_experiment",
+        "platform": "Qualtrics (via Bilendi survey company)",
+        "se_type": "ols_default",
+        "weights": "survey weights (s$weight)",
+        "instrument": "traite_cible (random assignment of income threshold for dividend eligibility) interacted with traite_cible_conjoint",
+        "endogenous_var": "gagnant_cible_categorie!='Perdant' (believes does not lose from targeted dividend)",
+        "n_obs_full": "~3000 survey respondents",
+        "n_obs_subsample": "percentile_revenu in [10,60] (respondents near income threshold where instrument bites)",
+        "notes": "2SLS implemented manually: first-stage LPM predicts non_perdant from random treatment, second-stage LPM regresses acceptance on predicted beliefs. ivreg also run for F-statistics but does not support survey weights."
+      },
+      "claim_object": {
+        "outcome_concept": "Carbon tax acceptance: taxe_cible_approbation!='Non' (not opposed to targeted tax+dividend policy)",
+        "treatment_concept": "Self-interest belief: believing one does not lose from the carbon tax+dividend (gagnant_cible_categorie!='Perdant')",
+        "estimand_concept": "LATE/IV: causal effect of self-interest beliefs on carbon tax acceptance, using random eligibility to dividend as instrument for beliefs",
+        "target_population": "French adult respondents in representative online survey (stratified RCT)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5.2-Col1-IV-p10p60",
+          "description": "2SLS (manual): acceptance ~ non_perdant + controls, where non_perdant instrumented by traite_cible*traite_cible_conjoint. Sub-sample: percentile_revenu in [10,60]. Survey weights.",
+          "outcome_var": "taxe_cible_approbation!='Non'",
+          "treatment_var": "non_perdant",
+          "controls": ["variables_reg_self_interest (prog_na, Simule_gain, Simule_gain2, taxe_efficace, single, hausse_depenses_par_uc, demographics, piecewise income percentiles)", "cible", "I(taxe_approbation=='NSP')", "tax_acceptance"],
+          "n_controls": 32,
+          "sample_filter": "(percentile_revenu <= 60 & percentile_revenu >= 10) | (percentile_revenu_conjoint <= 60 & percentile_revenu_conjoint >= 10)",
+          "notes": "Main identification: sub-sample near income threshold where random assignment of dividend eligibility shifts beliefs. 53 p.p. effect. variables_reg_self_interest = 6 named (prog_na, Simule_gain, Simule_gain2, taxe_efficace, single, hausse_depenses_par_uc) + 17 from variables_demo (21 minus revenu/rev_tot/age/age_65_plus) + 6 piecewise income spline terms + 3 second-stage extras (cible, I(taxe_approbation=='NSP'), tax_acceptance)."
+        },
+        {
+          "label": "Table5.2-Col2-IV-fullsample",
+          "description": "2SLS on full sample (no income restriction). Same controls and instruments.",
+          "outcome_var": "taxe_cible_approbation!='Non'",
+          "treatment_var": "non_perdant",
+          "controls": ["variables_reg_self_interest", "cible", "I(taxe_approbation=='NSP')", "tax_acceptance", "single"],
+          "n_controls": 33,
+          "sample_filter": "none (full sample)",
+          "notes": "46 p.p. effect. Full-sample version adds extra 'single' control in second stage. Same variables_reg_self_interest + cible + I(taxe_approbation=='NSP') + tax_acceptance + single."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 29,
+        "controls_count_max": 33,
+        "linked_adjustment": true,
+        "notes": "Bundled IV estimator: the same control set appears in both first and second stage. The instrument set (traite_cible, traite_cible_conjoint, interaction) is structurally determined by the experimental design and cannot be varied. The control set includes piecewise-linear income (knots at p20, p70), 17 demographics, estimated gains (Simule_gain quadratic), tax efficacy belief, and several other covariates (~29-33 total). Controls should vary jointly across stages. Manual 2SLS SEs do not correct for generated-regressor uncertainty."
+      },
+      "explore_universe": [
+        {
+          "spec_id": "explore/alternative_estimands/ols_instead_of_iv",
+          "description": "Table 5.2 Col 3: simple OLS with non_perdant as explanatory variable (no IV). Changes identification from LATE to OLS association, fundamentally different estimand."
+        },
+        {
+          "spec_id": "explore/alternative_estimands/feedback_subsample",
+          "description": "Table 5.2 Col 4: feedback sub-experiment (variante_taxe_info=='f', |simule_gain|<50) with simule_gagnant as instrument. Uses different sub-experiment, different instrument set, and different outcome (taxe_feedback_approbation)."
+        }
+      ],
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table52_col2_iv_fullsample"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/form/outcome_approval_yes",
+          "rc/controls/loo/taxe_efficace",
+          "rc/controls/loo/tax_acceptance",
+          "rc/controls/loo/piecewise_income",
+          "rc/controls/loo/demographics",
+          "rc/controls/loo/hausse_depenses_par_uc",
+          "rc/controls/loo/simule_gain",
+          "rc/controls/loo/prog_na",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/ols_default",
+          "params": {},
+          "notes": "Paper uses default OLS standard errors from lm() in R (classical, not HC). Manual 2SLS means SEs do not account for generated-regressor uncertainty. Survey weights applied via weights argument."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SEs as a stress test on heteroskedasticity."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 robust SEs."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 30
+      },
+      "sampling": {
+        "seed": 128143,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Control set is large (~20 variables). LOO by conceptual blocks (income, demographics, estimated gains, political, tax-related) is feasible. Subset sampling within blocks may be needed for full combinatorial exploration."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Appendix A: t-tests for representativeness on sex, age, CSP, education, town size, region."
+        },
+        {
+          "diag_spec_id": "diag/instrumental_variables/first_stage_strength",
+          "scope": "spec",
+          "notes": "First-stage F-statistics reported for each IV specification. Effective F-stats from ivreg diagnostics."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "manual_2sls_lpm",
+        "randomization_unit": "individual",
+        "strata_or_blocks": "Stratified RCT: information treatments randomly assigned",
+        "estimand": "ITT_via_IV",
+        "experiment_type": "survey_experiment",
+        "platform": "Qualtrics",
+        "se_type": "ols_default",
+        "weights": "survey weights (s$weight)",
+        "instrument": "apres_modifs (info on environmental effectiveness) + info_CC (info on climate change)",
+        "endogenous_var": "taxe_efficace=='Oui' (believes carbon tax is environmentally effective)",
+        "n_obs_full": "~3000",
+        "notes": "Instruments are randomly assigned information treatments about environmental effectiveness of carbon taxation and climate change. Sargan overid test does not reject (p=0.93)."
+      },
+      "claim_object": {
+        "outcome_concept": "Carbon tax approval: taxe_approbation=='Oui' (approves initial tax+dividend policy)",
+        "treatment_concept": "Belief in environmental effectiveness of carbon tax (taxe_efficace=='Oui')",
+        "estimand_concept": "LATE/IV: causal effect of environmental effectiveness belief on tax approval, using random information treatment as instrument",
+        "target_population": "French adult respondents in representative online survey"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5.4-Col1-IV-YesYes",
+          "description": "2SLS: approval(Yes) ~ effectiveness(Yes), instrumented by info_EE + info_CC. Full controls.",
+          "outcome_var": "taxe_approbation=='Oui'",
+          "treatment_var": "taxe_efficace.hat",
+          "controls": ["variables_reg_ee (Revenu, Revenu2, Revenu_conjoint, Revenu_conjoint2, single, Simule_gain, Simule_gain2, gagnant_categorie, 17 demographic vars from variables_demo minus revenu/rev_tot/age/age_65_plus)"],
+          "n_controls": 25,
+          "sample_filter": "none (full sample)",
+          "notes": "42 p.p. effect. Instruments: apres_modifs + info_CC. variables_reg_ee = 8 named + 17 demographics."
+        },
+        {
+          "label": "Table5.4-Col3-IV-NotNoYes",
+          "description": "2SLS: acceptance(not No) ~ effectiveness(Yes), same instruments and controls.",
+          "outcome_var": "taxe_approbation!='Non'",
+          "treatment_var": "taxe_efficace.hat",
+          "controls": ["variables_reg_ee"],
+          "n_controls": 25,
+          "sample_filter": "none (full sample)",
+          "notes": "50 p.p. effect. Same first stage as Col 1. Same control set as Col 1."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 20,
+        "controls_count_max": 25,
+        "linked_adjustment": true,
+        "notes": "Bundled IV: same control set in first and second stage. Instrument set (apres_modifs + info_CC) is experimentally determined and fixed. The control set variables_reg_ee = 8 named vars + 17 demographics = ~25 total. Controls should vary jointly across stages."
+      },
+      "explore_universe": [
+        {
+          "spec_id": "explore/alternative_estimands/ols_instead_of_iv",
+          "description": "Table 5.4 Col 2: OLS with taxe_efficace as explanatory variable (no IV). Changes identification from LATE to OLS association."
+        },
+        {
+          "spec_id": "explore/variable_definitions/endogenous_not_no",
+          "description": "Appendix A4: endogenous variable is taxe_efficace!='Non' instead of taxe_efficace=='Oui'. Changes the belief being instrumented (not disbelieving vs actively believing), which is a different claim object."
+        }
+      ],
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table54_col3_iv_notnoyes"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/form/outcome_approval_yes",
+          "rc/controls/loo/income_quadratic",
+          "rc/controls/loo/estimated_gains",
+          "rc/controls/loo/gagnant_categorie",
+          "rc/controls/loo/demographics",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/ols_default",
+          "params": {},
+          "notes": "Default OLS SEs from lm() in R (classical, not HC). Manual 2SLS means SEs do not account for generated-regressor uncertainty. Survey weights applied."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SEs."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 robust SEs."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 25
+      },
+      "sampling": {
+        "seed": 128143,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Control set is moderately large (~15 variables). LOO by conceptual blocks is feasible."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/first_stage_strength",
+          "scope": "spec",
+          "notes": "Effective F-statistics from ivreg. Table D.5 shows first-stage reduced-form effects of information treatments on beliefs."
+        },
+        {
+          "diag_spec_id": "diag/instrumental_variables/overid/sargan",
+          "scope": "baseline_group",
+          "notes": "Sargan test for overidentification (2 instruments, 1 endogenous). Paper reports p=0.93."
+        }
+      ]
+    }
+  ]
+}

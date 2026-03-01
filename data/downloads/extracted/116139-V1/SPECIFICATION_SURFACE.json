@@ -1,0 +1,214 @@
+{
+  "paper_id": "116139-V1",
+  "created_at": "2026-02-25",
+  "notes": "Kosfeld and Rustagi (2015 AER) 'Leader Punishment and Cooperation in Groups: Experimental Field Evidence from Ethiopia'. Field experiment in Ethiopian forest commons. Leaders of forest user groups are classified into behavioral types (conditional cooperators [leq], conditional cooperators with efficiency concerns [leqef], and selfish [las]) based on lab-in-the-field games. Table 6 is the main cross-sectional analysis: OLS regression of group cooperation (pct = forest condition) on leader type dummies with group-level controls and village FE. Table 3 is the experimental punishment analysis using Poisson regression. We define two baseline groups: G1 for the cooperation-leader-type relationship (Table 6, primary claim), and G2 for leader punishment behavior (Table 3). Table 7 (panel FE within leader type over time) is treated as a robustness extension of G1.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_covariates",
+        "randomization_unit": "individual (leader classification from experimental game)",
+        "strata_or_blocks": "village (5 villages)",
+        "estimand": "ATE of leader behavioral type on group cooperation",
+        "n_clusters": 5,
+        "notes": "Leader types are determined by behavior in a one-shot public goods game (exogenous revelation of type). The paper treats these as quasi-random conditional on village: leaders are elected but their experimental type is not known to group members. OLS with robust SE (not clustered). Village FE absorb village-level confounders. Table A7 shows alternative inference including village-clustered SE and wild bootstrap. Dataset has 53 groups total, 51 with non-missing lcode. Analysis sample depends on controls/outcome missingness."
+      },
+      "claim_object": {
+        "outcome_concept": "Group cooperation level (forest condition percentage, pct)",
+        "treatment_concept": "Leader behavioral type (leq = conditional cooperator, leqef = conditional cooperator with efficiency concerns, las = selfish), classified via experimental public goods game",
+        "estimand_concept": "Average effect of having a conditional cooperator (vs selfish/other) leader on group cooperation, conditional on group characteristics and village FE",
+        "target_population": "Forest user groups in the Bale region of Ethiopia"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table6-Col3",
+          "outcome_var": "pct",
+          "treatment_var": "leq",
+          "additional_treatment_vars": ["leqef", "las"],
+          "controls": ["ccs", "ed", "pp", "gs", "wmk", "time", "fem", "ginic"],
+          "fixed_effects": ["i.vcode"],
+          "n_controls": 8,
+          "se_type": "robust",
+          "notes": "Three leader type dummies (leq, leqef, las) entered jointly; omitted category is non-punishment type. Village FE (i.vcode) with 5 villages. Robust SE."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 14,
+        "linked_adjustment": false,
+        "notes": "Paper reveals a progression from 0 controls (Col 1) to 8 (Cols 2-3) to 14 controls (Col 9, adding chet, shet, ginil, lage, ledu, lclanp). The control-count envelope spans this range. Controls are group-level characteristics (common property structure, demographics, economic variables, leader demographics). NOTE: The do-file references 'lclan' but in Leader_Group_AER_2014.dta the actual variable name is 'lclanp'. Stata abbreviation matching resolves this, but Python code must use 'lclanp' explicitly."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table6_col1",
+          "baseline__table6_col2",
+          "baseline__table6_col8",
+          "baseline__table6_col9"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/ccs",
+          "rc/controls/loo/ed",
+          "rc/controls/loo/pp",
+          "rc/controls/loo/gs",
+          "rc/controls/loo/wmk",
+          "rc/controls/loo/time",
+          "rc/controls/loo/fem",
+          "rc/controls/loo/ginic",
+          "rc/controls/single/add_chet",
+          "rc/controls/single/add_shet",
+          "rc/controls/single/add_ginil",
+          "rc/controls/single/add_lage",
+          "rc/controls/single/add_ledu",
+          "rc/controls/single/add_lclanp",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/group_only",
+          "rc/controls/sets/group_plus_leader",
+          "rc/controls/sets/full_plus_heterogeneity",
+          "rc/controls/progression/build_up",
+          "rc/controls/subset/random_*",
+          "rc/fe/drop_village_fe",
+          "rc/fe/village_fe_only",
+          "rc/form/treatment/lcode_dummy",
+          "rc/form/treatment/lpun_continuous",
+          "rc/form/outcome/pct2",
+          "rc/sample/outliers/drop_influential_2",
+          "rc/sample/outliers/drop_influential_4",
+          "rc/sample/subset/drop_vice_leaders",
+          "rc/sample/subset/drop_lnp_leaders",
+          "rc/controls/single/add_turnover",
+          "rc/controls/single/add_leaderskill",
+          "rc/controls/single/add_clan1",
+          "rc/controls/single/add_clan2",
+          "rc/controls/single/add_clan3",
+          "rc/controls/single/add_peren",
+          "rc/controls/single/add_seas",
+          "rc/controls/single/add_slope",
+          "rc/joint/controls_sample/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/robust",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SE, matching the paper's Table 6: reg ... , robust. Table A7 Col 1 confirms this is the baseline."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/village",
+            "params": {"cluster_var": "vcode"},
+            "notes": "Clustered at village level (5 villages). Table A7 Col 2 shows this alternative. Very few clusters."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 standard errors (small-sample corrected)."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 standard errors (jackknife-based, most conservative)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 20,
+        "notes": "14 optional controls (8 baseline + 6 extended). LOO from 8 = 8 specs. Single additions of 6 extended controls = 6 specs. ~4 predefined control sets. 20 random subset draws. Plus sample, form, FE, and joint variations."
+      },
+      "sampling": {
+        "seed": 116139,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "14 total optional controls in 3 blocks: group_characteristics (ccs, ed, pp, gs, wmk, time, fem, ginic), heterogeneity (chet, shet, ginil), leader_demographics (lage, ledu, lclanp). Random subsets stratified by size (5-12 controls), drawing from the full pool."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Table A3 reports balance across leader types. Reproduce the ANOVA tests."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "poisson",
+        "randomization_unit": "individual (experimental game participant)",
+        "strata_or_blocks": "session (fcode)",
+        "estimand": "Treatment effect of experimental condition on leader punishment count",
+        "notes": "Poisson regression of punishment count (pi) on experimental condition dummies (i.cd1), SE clustered at session level (fcode). The experimental conditions vary whether the leader can punish free-riders (efficiency conditions) or unequal contributors (inequality conditions)."
+      },
+      "claim_object": {
+        "outcome_concept": "Number of punishment points assigned by leader",
+        "treatment_concept": "Experimental condition (efficiency vs inequality frames, varying contribution levels of group members)",
+        "estimand_concept": "Effect of experimental condition on leader punishment behavior (Poisson count model)",
+        "target_population": "Leaders in the experimental punishment game (Ethiopian forest user groups)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Poisson",
+          "outcome_var": "pi",
+          "treatment_var": "i.cd1",
+          "controls": [],
+          "n_controls": 0,
+          "cluster_var": "fcode",
+          "model": "poisson",
+          "notes": "Poisson regression of punishment count on 9 condition dummies (cd1 = 2..10, with cd1=1 as base). SE clustered at session/group level (fcode)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "Footnote 22 adds lage, ledu, lclan as controls. Maximum 3 additional controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/form/model/nbreg",
+          "rc/form/model/ols_lpm",
+          "rc/controls/single/add_lage",
+          "rc/controls/single/add_ledu",
+          "rc/controls/single/add_lclan",
+          "rc/controls/sets/leader_demographics",
+          "rc/form/outcome/pj",
+          "rc/sample/subset/lcode_0_only",
+          "rc/sample/subset/lcode_1_only",
+          "rc/sample/subset/lcode_3_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/session",
+          "params": {"cluster_var": "fcode"},
+          "notes": "Clustered at session/group level (fcode), matching the paper: vce(cluster fcode)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/robust",
+            "params": {},
+            "notes": "Robust SE without clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 20,
+        "max_specs_controls_subset": 0,
+        "notes": "Secondary claim. Fewer variations. The Poisson model limits some RC axes."
+      },
+      "sampling": {
+        "seed": 116139,
+        "controls_subset_sampler": "not_applicable"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

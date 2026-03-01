@@ -1,89 +1,75 @@
 # Specification Surface: 112749-V1
 
-## Paper
-Hornbeck, R. & Naidu, S. (2014). "When the Levee Breaks: Black Migration and Economic Development in the American South." *AER*, 104(3): 963-990.
+## Paper: "When the Levee Breaks: Black Migration and Economic Development in the American South"
+**Authors**: Hornbeck & Naidu, AER 2014
 
 ## Design Classification
-**Primary**: Difference-in-differences (continuous treatment intensity)
-**Secondary**: Panel fixed effects
+**Primary**: `panel_fixed_effects` (county panel 1900-1970 with county FE, state-year FE)
+
+The paper exploits the Great Mississippi Flood of 1927 as a natural experiment. Counties with more area flooded experienced larger Black out-migration, which in turn affected agricultural technology adoption. The main specification is a panel FE regression with flood intensity x year dummies as treatment variables.
 
 ## Baseline Groups
 
-### G1: Black Population Share (Table 2)
-- **Outcome**: lnfrac_black (log Black population share)
-- **Treatment**: f_int_{year} (flood intensity x post-flood year dummies)
-- **Estimand**: Within-county change in Black population share caused by 1927 flood, at each post-flood decade
-- **Population**: Southern cotton-belt counties (>=10% Black, >=15% cotton in 1920)
-- **Baseline spec**: Table 2 Col 1, coef(f_int_1930) = -0.156, se = 0.032, N = 2604
-- **Focal parameter**: f_int_1930 coefficient (immediate post-flood decade effect)
-- **Additional baseline focal outputs**: f_int_1950 (emitted as `spec_id=baseline__f_int_1950`)
+### G1: Black Labor / Population Outcomes (Table 2)
+- **Claim**: Flooded counties experienced larger declines in Black population share and Black population after the flood
+- **Outcome variables**: `lnfrac_black`, `lnpopulation_black`, `lnpopulation`, `lnfracfarms_nonwhite`
+- **Treatment**: `f_int_YEAR` (flood_intensity x year dummies for 1930, 1940, 1950, 1960, 1970)
+- **Key controls**: State-year FE (d_sy_*), crop suitability x year, distance to MS x year, lat/lon x year, ruggedness x year, lagged DV values (1920, 1910, 1900)
+- **FE**: County (fips), absorbed via `areg`
+- **Clustering**: County (fips)
+- **Weights**: County area (county_w = county_acres in 1920)
 
-### G2: Farm Equipment Value (Table 4)
-- **Outcome**: lnvalue_equipment (log value of farm equipment)
-- **Treatment**: f_int_{year} (flood intensity x post-flood year dummies)
-- **Estimand**: Within-county change in farm capital intensity caused by flood-induced Black out-migration
-- **Population**: Same cotton-belt sample
-- **Baseline spec**: Table 4 Col 2, coef(f_int_1940) = 0.440, se = 0.099, N = 2170
-- **Focal parameter**: f_int_1940 coefficient (expected peak mechanization response)
-- **Additional baseline focal outputs**: f_int_1930 and f_int_1970 (emitted as `spec_id=baseline__f_int_1930` and `spec_id=baseline__f_int_1970`)
+### G2: Agricultural Capital Outcomes (Table 4)
+- **Claim**: Flooded counties experienced shifts in agricultural technology -- larger farms, more tractors/equipment, fewer mules/horses
+- **Outcome variables**: `lnavfarmsize`, `lnvalue_equipment`, `lntractors`, `lnmules_horses`
+- **Treatment**: Same as G1 but for ag census years (1930, 1935, 1940, 1945, 1950, 1954, 1960, 1964, 1970)
 
-## Why Two Baseline Groups
-The paper makes two distinct headline claims:
-1. The flood caused persistent Black out-migration (G1, Table 2)
-2. The resulting labor scarcity led to agricultural mechanization (G2, Table 4)
+## Specification Axes
 
-Tables 3 and 5 are secondary analyses (alternative outcomes like tractors, mules/horses, farmland) that we treat as exploration, not separate baseline groups.
+### Controls variation
+1. **Baseline**: State-year FE + geography (crop suitability, distance, lat/lon, ruggedness) + lagged DVs
+2. **Add New Deal spending**: +lnpcpubwor_*, lnpcaaa_*, lnpcrelief_*, lnpcndloan_*, lnpcndins_*
+3. **Add tenancy/manufacturing**: +lag*_lnfarms_nonwhite_t_*, lag*_lnmfgestab_*, lag*_lnmfgavewages_*
+4. **Add plantation interaction**: +plantation_*
+5. **Add propensity score**: +prop_plant_flstate_*
+6. **Drop geography**: Remove cotton_s_*, corn_s_*, ld_*, dx_*, dy_*, rug_*
+7. **Drop lagged DVs**: Remove lag2_*, lag3_*, lag4_*
+8. **Lagged DVs only (no geography)**: State-year FE + lagged DVs only
 
-## What Is Included
+### Treatment variation
+1. **Baseline**: flood_intensity = flooded_share x flood indicator
+2. **Red Cross acreage**: Alternative flood measure based on Red Cross flooded acres/county area
+3. **Red Cross population**: Alternative based on pop_affected/population
+4. **Red Cross agricultural**: Alternative based on agricultural_flooded_acres/farmland
 
-### Control Progression (both groups)
-The paper's control structure has clear semantic blocks:
-- **Bivariate**: Treatment only (+ county FE)
-- **Geography**: State-year FE + geographic controls (crop suitability x year, distance to MS river x year, coordinates x year, ruggedness x year)
-- **Lags**: + lagged outcome variables (up to 4 lags)
-- **New Deal**: + New Deal spending controls
-- **Full**: Geography + Lags + New Deal (= paper's extended specification)
+### Sample variation
+1. **Baseline**: Main sample (MS River counties, frac_black >= 0.10, cotton >= 0.15 in 1920)
+2. **Flood counties only**: Keep only counties with percent_flood > 0
+3. **Drop outliers**: Trim extreme flood_intensity values
 
-We run: bivariate (no controls), geography only, lags only, new deal, baseline (geo+lags), extended (geo+lags+ND).
-
-### Fixed Effects Variations
-- Baseline: county FE + state-year FE (via dummies in controls)
-- Drop state-year FE: county FE only
-
-### Sample Variations
-- Drop first post-flood period (1930): tests whether immediate effect drives results
-- Drop last period (1970): tests sensitivity to long-run extrapolation
-- Short window (1930-1950 for G1): concentration on immediate post-flood decades
-- Outcome trimming at 1/99 percentiles
-
-### Functional Form
-- Level outcome (instead of log): tests whether log transformation drives results
-- Binary flood indicator (instead of continuous intensity): `flood_any = 1[flooded_share > 0]` where `flooded_share` is a share (0–1); tests dose-response linearity / extensive-margin effects
+### Functional form
+1. **Baseline**: Log outcomes
+2. **Level outcomes**: Use level instead of log
 
 ### Weights
-- Unweighted (baseline uses county area weights)
-- Population-weighted (1920 population as alternative to area)
+1. **Baseline**: county_w (area-weighted)
+2. **Unweighted**: No weights
 
-### Inference Variants (separate table)
-- HC1 robust SE (no clustering)
-- State-level clustering (coarser than county)
+### Inference
+1. **Canonical**: Cluster at county (fips)
+2. **Robust (HC1)**: Heteroskedasticity-robust without clustering
+3. **State cluster**: Cluster at state level
 
-## What Is Excluded (and Why)
-- **Tables 3, 5**: Alternative outcomes (tractors, mules/horses, farmland, land values). These change the outcome concept and are exploration, not core robustness for G1 or G2.
-- **Table 1**: Cross-sectional pre-differences. These are balance checks / first-stage evidence, not DiD estimates.
-- **Conley spatial SE**: The paper uses Conley (1999) spatial SE in some specifications. We do not have the spatial SE package available, so these are omitted.
-- **DML/DR-DiD**: Not used in the paper; not applicable here.
-- **Staggered DiD estimators**: Treatment timing is not staggered (all treatment from a single event in 1927), so modern staggered-adoption estimators are not relevant.
+## Budget
+- Target: 50-60 specifications across both baseline groups
+- G1 (labor): ~35 specs
+- G2 (capital): ~20 specs
+- Full enumeration of the revealed control/treatment/sample/weight axes
 
-## Budgets and Sampling
-- Target: 50+ specifications across both groups
-- G1: ~30 core specs (baseline + ~14 RC variants x 1-2 focal params)
-- G2: ~30 core specs (baseline + ~14 RC variants x 1-2 focal params)
-- Full enumeration: feasible (no combinatorial control-subset search needed)
-- Seed: 112749
-
-## Key Linkage Constraints
-- County FE are always included (defining feature of within-county DiD)
-- When state-year FE are included, they are via dummy variables in the control set (not absorbed separately)
-- Treatment variables (f_int_{year}) are always included as a block for the relevant years
-- Weights are area weights by default (county_w = 1920 county area in acres)
+## What is excluded
+- Table 1 (pre-differences) -- balance checks, not main estimates
+- Table 3 (migration) -- uses different individual-level data
+- Tables 6-7 (other Southern rivers, non-flooded distance) -- different samples/treatment variables
+- Robustness Tables (RefTable 1-4) -- supplementary, covered by our specification axes
+- Conley SE section -- spatial SE as inference variant only
+- Plantation interaction regressions -- covered as an rc axis

@@ -1,0 +1,120 @@
+{
+  "paper_id": "112785-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "va_growth ~ nontradable | year_FE, cluster(industry)",
+        "selection_story": "Industry-year panel exploiting cross-sectional variation in tradable/nontradable classification; year FE absorbs common time shocks, nontradable dummy captures average growth differential between sectors. Industry FE would absorb the time-invariant treatment.",
+        "fe_structure": ["year"],
+        "cluster_vars": ["industry"]
+      },
+      "claim_object": {
+        "outcome_concept": "Real value added growth (annual log-change in billions of chained dollars)",
+        "treatment_concept": "Nontradable sector classification (1=nontradable, 0=tradable)",
+        "estimand_concept": "Average differential in annual real value added growth between nontradable and tradable US industries over 1990-2012",
+        "target_population": "US industries classified into tradable/nontradable based on BLS CPS and BEA industry data"
+      },
+      "baseline_specs": [
+        {
+          "label": "VA-growth-NT-vs-T-year-FE",
+          "outcome_var": "va_growth",
+          "treatment_var": "nontradable",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["year"],
+          "vcov": "cluster_industry"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "Paper is primarily descriptive with accounting decompositions. Regressions formalize the tradable/nontradable growth differential using industry-year panel. Controls include base-period size and crisis dummies. Year FE absorbs common shocks; nontradable is time-invariant so cannot use industry FE directly."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__emp_growth",
+          "baseline__va_level"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/sets/none_no_fe",
+          "rc/controls/sets/year_trend",
+          "rc/controls/sets/year_trend_size",
+          "rc/controls/sets/year_fe_size",
+          "rc/controls/sets/full",
+          "rc/controls/progression/no_controls",
+          "rc/controls/progression/yearfe_only",
+          "rc/controls/progression/yearfe_size",
+          "rc/controls/progression/yearfe_crisis_size",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/period/pre2000",
+          "rc/sample/period/post2000",
+          "rc/sample/period/pre_crisis_1990_2007",
+          "rc/sample/period/post_crisis_2009_2012",
+          "rc/sample/period/1990_2000",
+          "rc/sample/period/2000_2007",
+          "rc/sample/period/2007_2012",
+          "rc/sample/outliers/drop_government",
+          "rc/sample/outliers/drop_realestate",
+          "rc/sample/outliers/drop_finance",
+          "rc/fe/swap/trend_for_yearfe",
+          "rc/fe/drop/all",
+          "rc/form/outcome/va_level",
+          "rc/form/outcome/emp_growth",
+          "rc/form/outcome/emp_level",
+          "rc/form/outcome/log_va",
+          "rc/form/outcome/log_emp",
+          "rc/form/outcome/va_change",
+          "rc/form/outcome/emp_change",
+          "rc/form/treatment/tradable_dummy",
+          "rc/form/estimator/weighted_by_base_va",
+          "rc/form/estimator/weighted_by_base_emp",
+          "rc/form/interaction/nt_x_post2000",
+          "rc/form/interaction/nt_trend_industry_fe"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/industry",
+          "params": {"cluster_var": "industry_id"},
+          "notes": "Industry-level clustering for panel data"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering"
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 robust SEs"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112785,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

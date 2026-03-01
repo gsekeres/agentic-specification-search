@@ -1,0 +1,128 @@
+{
+  "paper_id": "112629-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "logit",
+        "model_formula": "visityrno_c ~ forcit_pc + forncit_pc + controls + i.year + i.region, svy psu-clustered",
+        "selection_story": "Selection on observables: parental immigration/citizenship status associated with children's healthcare utilization after controlling for demographics, insurance, and socioeconomic characteristics",
+        "reported_object": "ame",
+        "survey_design": {
+          "weight_var": "sampweight",
+          "psu_var": "psu",
+          "strata_var": "strata"
+        }
+      },
+      "claim_object": {
+        "outcome_concept": "Child visited doctor in last year (binary)",
+        "treatment_concept": "Parental foreign-born status interacted with child citizenship (forcit_pc: foreign parent/citizen child; forncit_pc: foreign parent/non-citizen child)",
+        "estimand_concept": "Average marginal effect of parental immigration status on child healthcare utilization, conditional on observables",
+        "target_population": "Children in US households, IHIS survey data"
+      },
+      "baseline_specs": [
+        {
+          "label": "logitcluster-full-model-race",
+          "outcome_var": "visityrno_c",
+          "treatment_var": "forcit_pc",
+          "controls": [
+            "ag2", "ag3", "female_c", "forncit_pc",
+            "medicaid_c", "uninsured_c", "grandchild", "nusualpl", "famsize",
+            "hispanic_c", "asian_c", "black_c", "orace_c",
+            "unmarried", "aage_p", "pov1", "pov2",
+            "emp_p2", "emp_p3",
+            "eHSD_p", "eSCE_p", "eCED_p", "eGSE_p"
+          ],
+          "n_controls": 23,
+          "fixed_effects": ["year", "region"],
+          "vcov": "survey_psu_cluster"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 23,
+        "linked_adjustment": false,
+        "functional_form_policy": "logit is baseline; LPM preserves claim object but changes interpretation from AME to linear coefficient"
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__goodhealth",
+          "baseline__usualplace"
+        ],
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_medicaid_c",
+          "rc/controls/loo/drop_uninsured_c",
+          "rc/controls/loo/drop_grandchild",
+          "rc/controls/loo/drop_nusualpl",
+          "rc/controls/loo/drop_famsize",
+          "rc/controls/loo/drop_unmarried",
+          "rc/controls/loo/drop_aage_p",
+          "rc/controls/loo/drop_poverty",
+          "rc/controls/loo/drop_employment",
+          "rc/controls/loo/drop_education",
+          "rc/controls/loo/drop_race",
+          "rc/controls/sets/none",
+          "rc/controls/sets/basic",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/insurance_only",
+          "rc/controls/sets/full_no_race",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/age_gender",
+          "rc/controls/progression/insurance",
+          "rc/controls/progression/household",
+          "rc/controls/progression/socioeconomic",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/data/treatment/foreign_p_only",
+          "rc/data/treatment/foreign_x_ncitizen",
+          "rc/data/treatment/region_of_birth",
+          "rc/weights/unweighted",
+          "rc/fe/drop/year",
+          "rc/fe/drop/region"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/psu",
+          "params": {"cluster_var": "psu", "weight_var": "sampweight", "strata_var": "strata"},
+          "notes": "Survey-design SEs with PSU clustering and survey weights, matching svy: logit"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/psu_no_strata",
+            "params": {"cluster_var": "psu", "weight_var": "sampweight"},
+            "notes": "PSU clustering without strata specification"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {"weight_var": "sampweight"},
+            "notes": "Robust SEs with weights but no clustering"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112629,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

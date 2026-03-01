@@ -253,8 +253,7 @@ def main() -> None:
     base_dir = Path(__file__).resolve().parents[2]
     results_dir = base_dir / "estimation" / "results"
     out_dirs = [
-        base_dir / "overleaf" / "tex" / "v8_tables",
-        base_dir / "scientific-competition-overleaf" / "tex" / "v8_tables",
+        base_dir.parent / "overleaf" / "tex" / "v8_tables",
     ]
     for d in out_dirs:
         d.mkdir(parents=True, exist_ok=True)

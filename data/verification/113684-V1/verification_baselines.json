@@ -1,0 +1,18 @@
+{
+  "paper_id": "113684-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of first_fedcon_F6,first_fedcon_F5,first_fedcon_F4...first_fedcon_L5,first_fedcon_L6 on f_black",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113684-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

@@ -781,6 +781,11 @@ preanalysis_post1930 = panel[panel['year'] >= 1920].copy()
 print(f"Preanalysis: {preanalysis.fips.nunique()} counties, {len(preanalysis)} obs")
 print(f"Post-1930: {preanalysis_post1930.fips.nunique()} counties, {len(preanalysis_post1930)} obs")
 
+# Save data for specification search
+preanalysis.to_pickle(f'{OUT_DIR}/preanalysis.pkl')
+preanalysis_post1930.to_pickle(f'{OUT_DIR}/preanalysis_post1930.pkl')
+print("Saved preanalysis.pkl and preanalysis_post1930.pkl")
+
 # =============================================================================
 # REGRESSIONS
 # =============================================================================
@@ -929,7 +934,25 @@ print(f"Wrote report to {report_path}")
 
 # Tracking
 tracking_path = f'{BASE_DIR}/data/tracking/replication_tracking.jsonl'
-tracking_entry = {'paper_id': PAPER_ID, 'title': 'When the Levee Breaks: Black Migration and Economic Development in the American South', 'authors': ['Richard Hornbeck', 'Suresh Naidu'], 'journal': 'American Economic Review', 'year': 2014, 'total_regressions_in_dofiles': 151, 'in_scope_regressions': len(df_results), 'tables_replicated': 'Tables 1-5', 'match_summary': dict(df_results['match_status'].value_counts()), 'notes': 'Complex panel county data 1900-1970 with boundary adjustments.'}
+match_counts = df_results['match_status'].value_counts().to_dict()
+match_counts = {str(k): int(v) for k, v in match_counts.items()}
+tracking_entry = {
+    'paper_id': PAPER_ID,
+    'doi': '10.1257/aer.104.3.963',
+    'title': 'When the Levee Breaks: Black Migration and Economic Development in the American South',
+    'journal': 'American Economic Review',
+    'year': 2014,
+    'replication': 'small errors',
+    'original_specifications': 151,
+    'replicated_specifications': int(len(df_results)),
+    'exact_matches': int(match_counts.get('exact', 0)),
+    'close_matches': int(match_counts.get('close', 0)),
+    'discrepant': int(match_counts.get('discrepant', 0)),
+    'failed': int(match_counts.get('failed', 0)),
+    'original_language': 'stata',
+    'replication_language': 'python',
+    'timestamp': pd.Timestamp.now().isoformat()
+}
 with open(tracking_path, 'a') as f:
     f.write(json.dumps(tracking_entry) + '\n')
 print(f"Appended tracking to {tracking_path}")

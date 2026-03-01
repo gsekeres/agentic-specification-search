@@ -1,0 +1,169 @@
+{
+  "paper_id": "114747-V1",
+  "created_at": "2026-02-25",
+  "notes": "Dranove, Hughes, and Meltzer (2003/2012) 'Incentives and Promotion for Adverse Drug Reactions'. Panel FE analysis of pharmaceutical advertising and adverse drug reactions at drug-month level. Uses Poisson count models with drug FE and year-month dummies. The provided .dta only contains outcome variables (veryserious, any_fda) and limited controls (Dappr_cats) -- promotion expenditure variables (q1totalexp, q2q4totalexp, etc.) and demographic shares are referenced in code but NOT in the provided dataset. This severely limits executable specifications.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "poisson",
+        "panel_unit": "mastername",
+        "panel_time": "yearmo",
+        "fe_structure": ["drug", "year_month"],
+        "cluster_vars": [],
+        "se_type": "robust",
+        "exposure_var": "permonths",
+        "notes": "Poisson regression with drug FE (drug*) and year-month dummies ($yrm). Exposure variable is person-months. Estimated separately by condition (4 therapeutic areas). Robust SE. The provided data is missing key treatment variables (promotion expenditures) and most controls -- only drug identifiers, ADR counts, FDA labeling changes, and drug approval dummies are included."
+      },
+      "claim_object": {
+        "outcome_concept": "Serious adverse drug reactions (veryserious count)",
+        "treatment_concept": "Pharmaceutical promotion and advertising expenditures (total, professional, DTCA, cost-of-contact)",
+        "estimand_concept": "Effect of promotion spending on ADR reporting rates, conditional on drug and time FE",
+        "target_population": "FDA Adverse Event Reporting System (AERS) drug-month observations, 2003-2004, across 4 therapeutic conditions"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Condition3-Arthritis-Col1",
+          "outcome_var": "veryserious",
+          "treatment_var": "q1totalexp q2q4totalexp",
+          "controls": ["generic", "sh_countSMO", "sh_countPREH", "sh_countHYP1", "sh_countHYP2", "sh_countGOV", "sh_countASI", "sh_countBLA", "sh_countHIS", "Dappr_cats_1", "Dappr_cats_2", "Dappr_cats_3", "Dappr_cats_4", "sh_countFE_40to64", "sh_countFE_65up", "sh_countMA_40to64", "sh_countMA_65up"],
+          "n_controls": 17,
+          "notes": "Poisson: veryserious ~ q1totalexp + q2q4totalexp + generic + $char + $dapp + $age + $yrm + drug* if condition==3, exp(permonths) robust. NOTE: q1totalexp, q2q4totalexp, and most controls are NOT in the provided .dta file."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 4,
+        "controls_count_max": 17,
+        "linked_adjustment": false,
+        "notes": "Paper uses a fixed set of controls across all condition-specific regressions: generic indicator, patient characteristic shares ($char = 8 vars), drug approval age dummies ($dapp = 4 vars), age-gender shares ($age = 4 vars). Treatment variables vary (total expenditure, professional promo, DTCA, cost-of-contact). Most of these variables are NOT in the provided dataset."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_condition1_cholesterol",
+          "baseline__table3_condition2_allergies",
+          "baseline__table3_condition4_depression",
+          "baseline__table4_condition3_col2_promo_dtca",
+          "baseline__table4_condition3_col3_contact_dtca"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/negative_binomial",
+          "design/panel_fixed_effects/estimator/ols_log_rate",
+          "design/panel_fixed_effects/pooling/pooled_conditions",
+          "design/panel_fixed_effects/condition/condition_specific"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_generic",
+          "rc/controls/block/drop_char",
+          "rc/controls/block/drop_age",
+          "rc/controls/block/drop_dapp",
+          "rc/controls/sets/minimal_generic_only",
+          "rc/controls/sets/full",
+          "rc/sample/restriction/exclude_rofecoxib",
+          "rc/sample/restriction/exclude_valdecoxib",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/form/outcome/log_rate",
+          "rc/form/treatment/lagged_expenditure",
+          "rc/fe/alt/drug_plus_year",
+          "rc/fe/alt/condition_plus_drug_plus_yearmonth"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/robust/sandwich",
+          "params": {},
+          "notes": "Robust (sandwich) standard errors for Poisson, matching the paper's 'robust' option."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/drug", "params": {"cluster_var": "mastername"}, "notes": "Cluster at drug level."},
+          {"spec_id": "infer/se/cluster/condition", "params": {"cluster_var": "condition"}, "notes": "Cluster at condition level (4 clusters -- likely too few)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 15,
+        "notes": "Moderate budget. Major constraint: most treatment and control variables are NOT in the provided dataset. Executable specs may be limited to those using only the available variables."
+      },
+      "sampling": {
+        "seed": 114747,
+        "controls_subset_sampler": "stratified_block",
+        "notes": "Controls organized into blocks: drug characteristics ($char = 8), drug approval age ($dapp = 4), age-gender demographics ($age = 4), generic indicator (1). Block-level removal and random within-block sampling."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/panel_fixed_effects/overdispersion/pearson_dispersion", "scope": "baseline_group", "notes": "Check for overdispersion in Poisson model (motivates negative binomial alternative)."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "logit",
+        "panel_unit": "mastername",
+        "panel_time": "yearmo",
+        "fe_structure": ["year_month"],
+        "cluster_vars": [],
+        "notes": "Logit model predicting any_fda labeling change from ADR counts (veryserious interacted with condition dummies). Condition dummies (c1-c3), year-month dummies, and controls. Cross-sectional logit (not conditional/fixed-effect logit due to drug FE separation issues)."
+      },
+      "claim_object": {
+        "outcome_concept": "FDA labeling change (any_fda binary indicator)",
+        "treatment_concept": "Serious adverse drug reactions (veryserious, v_3, v_12 -- contemporaneous, 3-month, 12-month cumulative)",
+        "estimand_concept": "Association between ADR reporting and FDA regulatory action (labeling changes)",
+        "target_population": "Drug-month observations across 4 conditions, 2003-2004"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Logit-Contemporaneous",
+          "outcome_var": "any_fda",
+          "treatment_var": "v1 v2 v3 v4",
+          "controls": ["c1", "c2", "c3", "generic", "sh_countSMO", "sh_countPREH", "sh_countHYP1", "sh_countHYP2", "sh_countGOV", "sh_countASI", "sh_countBLA", "sh_countHIS", "Dappr_cats_1", "Dappr_cats_2", "Dappr_cats_3", "Dappr_cats_4", "sh_countFE_40to64", "sh_countFE_65up", "sh_countMA_40to64", "sh_countMA_65up"],
+          "n_controls": 20,
+          "notes": "Logit: any_fda ~ c1 c2 c3 v1 v2 v3 v4 + generic + $char + $dapp + $age + $yrm. NOTE: Most controls not in provided data."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 3,
+        "controls_count_max": 20,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_logit_3month",
+          "baseline__table2_logit_12month",
+          "baseline__table2_duration_contemporaneous"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/lpm",
+          "design/panel_fixed_effects/estimator/probit"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/block/drop_char",
+          "rc/controls/block/drop_age",
+          "rc/controls/sets/condition_dummies_only",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/form/treatment/cumulative_3month",
+          "rc/form/treatment/cumulative_12month"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/robust/sandwich",
+          "params": {},
+          "notes": "Robust standard errors for logit (default in Stata logit with mfx)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/drug", "params": {"cluster_var": "mastername"}, "notes": "Cluster at drug level."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 25,
+        "max_specs_controls_subset": 8,
+        "notes": "Smaller budget for the FDA labeling outcome. Data limitations constrain executable specs."
+      },
+      "sampling": {
+        "seed": 114747,
+        "controls_subset_sampler": "stratified_block"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

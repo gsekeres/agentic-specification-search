@@ -1,0 +1,140 @@
+{
+  "paper_id": "150581-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within (reghdfe)",
+        "model_formula": "lhrp2 ~ unempl + unempl#dummy1 + unempl#dummy2 + unempl#mismatch1w + unempl#dummy1#mismatch1w + unempl#dummy2#mismatch1w + mismatch1w#dummy1 + mismatch1w#dummy2 + mismatch1w + dummy1 + dummy2 + age + agesq + dummy_educ + time + time^2 + time_trend + month | ID + industry#year + occupation_agg#year",
+        "panel_unit": "ID",
+        "panel_time": "year-month (monthly panel)",
+        "fe_structure": ["ID", "industry#year", "occupation_agg#year"],
+        "cluster_vars": ["ID"],
+        "selection_story": "Within-individual wage variation over the business cycle; individual FE absorb time-invariant ability; industry-year and occupation-year FE absorb sector-specific cyclicality"
+      },
+      "claim_object": {
+        "outcome_concept": "Log hourly wage (lhrp2)",
+        "treatment_concept": "Unemployment rate interacted with job transition dummies and skill mismatch",
+        "estimand_concept": "Wage semi-elasticity to unemployment, and how it varies with job transitions (EE/UE) and skill mismatch",
+        "target_population": "Male workers in NLSY79 (1979-2016), age >= 20, working >= 75 hours per month"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col4",
+          "outcome_var": "lhrp2",
+          "treatment_var": "unempl",
+          "key_interactions": [
+            "c.unempl#i.dummy1",
+            "c.unempl#i.dummy2",
+            "c.mismatch1w#c.unempl",
+            "c.unempl#i.dummy1#c.mismatch1w",
+            "c.unempl#i.dummy2#c.mismatch1w"
+          ],
+          "controls": [
+            "mismatch1w",
+            "dummy1",
+            "dummy2",
+            "c.mismatch1w#i.dummy1",
+            "c.mismatch1w#i.dummy2",
+            "age",
+            "agesq",
+            "dummy_educ",
+            "time",
+            "time_sq",
+            "time_trend",
+            "month_dummies"
+          ],
+          "n_controls": 12,
+          "fixed_effects": ["ID", "industry#year", "occupation_agg#year"],
+          "vcov": "cluster(ID)",
+          "sample_restriction": "HOURSM >= 75 & age >= 20",
+          "notes": "Table 2 Col 4 is the main specification with mismatch interactions. Focal parameters are the unempl x transition x mismatch triple interactions."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 6,
+        "controls_count_max": 14,
+        "linked_adjustment": false,
+        "functional_form_policy": "The interaction structure (unempl x transition x mismatch) is the core model specification. Robustness checks should preserve this triple-interaction structure while varying other controls and definitions.",
+        "sample_note": "Sample always restricted to HOURSM >= 75 & age >= 20. Unemployment rate is divided by 100 before regressions.",
+        "regional_unempl_note": "When using regional unemployment (rc/data/unemployment/regional_unempl), the code also interacts time_trend with regionfe dummies (c.time_trend#i.regionfe); this is a joint data/controls change."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col1",
+          "baseline__table2_col2",
+          "baseline__table2_col3",
+          "baseline__table2_col5"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_age_agesq",
+          "rc/controls/loo/drop_dummy_educ",
+          "rc/controls/loo/drop_time_polynomial",
+          "rc/controls/loo/drop_time_trend",
+          "rc/controls/loo/drop_month_dummies",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/baseline_col4",
+          "rc/controls/sets/extended_occ_tenure",
+          "rc/controls/sets/extended_cum_mismatch",
+          "rc/controls/sets/extended_occ_skill_req",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/transition_only",
+          "rc/controls/progression/transition_mismatch",
+          "rc/controls/progression/full_with_interactions",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/restriction/hoursm_100",
+          "rc/sample/restriction/age_25plus",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/drop/industry_year",
+          "rc/fe/drop/occupation_year",
+          "rc/fe/swap/year_for_industry_year",
+          "rc/data/mismatch/alt_transition_3month",
+          "rc/data/mismatch/alt_transition_recalls",
+          "rc/data/mismatch/weighted_mismatch",
+          "rc/data/unemployment/regional_unempl"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/ID",
+          "params": {"cluster_var": "ID"},
+          "notes": "Cluster at individual level, matching paper's cluster(ID)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering)"
+          },
+          {
+            "spec_id": "infer/se/cluster/two_way_ID_year",
+            "params": {"cluster_vars": ["ID", "year"]},
+            "notes": "Two-way clustering by individual and year"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 150581,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

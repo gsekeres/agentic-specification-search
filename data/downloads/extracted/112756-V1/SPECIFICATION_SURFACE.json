@@ -1,0 +1,138 @@
+{
+  "paper_id": "112756-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "GolkarFirst ~ kelurDum + geography + religion + facilities | kab_FE, cluster(kab)",
+        "selection_story": "Kelurahan (appointed) vs desa (elected) village head status is quasi-exogenous conditional on district FE and observable village characteristics; identification exploits within-district variation in administrative classification",
+        "fe_structure": ["kab"],
+        "cluster_vars": ["kab"]
+      },
+      "claim_object": {
+        "outcome_concept": "Golkar party vote share in first democratic election (1999)",
+        "treatment_concept": "Kelurahan status (appointed village head) vs desa (elected village head)",
+        "estimand_concept": "Effect of having an appointed (vs elected) village head on incumbent party (Golkar) vote share in democratic transition",
+        "target_population": "Indonesian villages matched across PODES 1996/2000/2003 waves, excluding districts with <5 kelurahan or <5 desa"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col5-OLS-full",
+          "outcome_var": "GolkarFirst",
+          "treatment_var": "kelurDum",
+          "controls": [
+            "urbDum_1996", "perc_ruralHH_1996", "perc_ruralHH_1996_2",
+            "perc_ruralHH_1996_3", "perc_ruralHH_1996_4",
+            "ShareRurLand_1996", "altitude_high_1996",
+            "lpopulation_1996", "popdensity_1996",
+            "dist_kecoffice_2000", "dist_kab_kotacapital_2000",
+            "mosqueph_1996", "prayerhouseph_1996",
+            "churchesph_1996", "viharaph_1996",
+            "num_TVs_1996_pc", "num_hospitals_1996_pc",
+            "num_maternhosp_1996_pc", "num_polyclinic_1996_pc",
+            "num_puskesmas_1996_pc", "num_kindgarden_1996_pc",
+            "num_primarysch_1996_pc", "num_HS_1996_pc"
+          ],
+          "n_controls": 23,
+          "fixed_effects": ["kab"],
+          "vcov": "cluster_kab"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 23,
+        "linked_adjustment": false,
+        "notes": "Paper shows progression from no controls to full controls in Table 2 columns 1-5 (OLS) and 6-9 (probit). Controls are grouped: geography, religion, facilities."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__probit_full"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_urbDum",
+          "rc/controls/loo/drop_ruralHH_poly",
+          "rc/controls/loo/drop_ShareRurLand",
+          "rc/controls/loo/drop_altitude",
+          "rc/controls/loo/drop_lpopulation",
+          "rc/controls/loo/drop_popdensity",
+          "rc/controls/loo/drop_dist_kecoffice",
+          "rc/controls/loo/drop_dist_kabcapital",
+          "rc/controls/loo/drop_mosques",
+          "rc/controls/loo/drop_prayerhouse",
+          "rc/controls/loo/drop_churches",
+          "rc/controls/loo/drop_vihara",
+          "rc/controls/loo/drop_TVs",
+          "rc/controls/loo/drop_hospitals",
+          "rc/controls/loo/drop_maternhosp",
+          "rc/controls/loo/drop_polyclinic",
+          "rc/controls/loo/drop_puskesmas",
+          "rc/controls/loo/drop_kindergarten",
+          "rc/controls/loo/drop_primarysch",
+          "rc/controls/loo/drop_HS",
+          "rc/controls/sets/none",
+          "rc/controls/sets/geography_only",
+          "rc/controls/sets/geo_religion",
+          "rc/controls/sets/full",
+          "rc/controls/progression/raw_diff",
+          "rc/controls/progression/fe_only",
+          "rc/controls/progression/geo",
+          "rc/controls/progression/geo_religion",
+          "rc/controls/progression/geo_religion_facilities",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/controls/subset/random_011",
+          "rc/controls/subset/random_012",
+          "rc/controls/subset/random_013",
+          "rc/controls/subset/random_014",
+          "rc/controls/subset/random_015",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/drop/kab",
+          "rc/fe/add/kec",
+          "rc/form/outcome/golkar_voteshare_continuous",
+          "rc/form/estimator/probit"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/kab",
+          "params": {"cluster_var": "kab"},
+          "notes": "District-level clustering matching paper's vce(cluster kab)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering"
+          },
+          {
+            "spec_id": "infer/se/cluster/kec",
+            "params": {"cluster_var": "kec"},
+            "notes": "Sub-district clustering (finer than district)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 112756,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -2,44 +2,52 @@
 
 ## Summary
 
-The surface defines four baseline groups (G1-G4) for the four headline outcome measures among white respondents. This is appropriate: the paper treats all four outcomes as independent main results in Tables 4-5, and each represents a conceptually distinct measure of generosity.
+The surface defines one baseline group (G1) for the effect of racial picture priming (picshowblack) on dictator-game giving, estimated via WLS with robust SEs. This is appropriate: the paper's headline result is the ITT effect on giving for all respondents.
 
-## Checklist
+## Checklist Assessment
 
-### A) Baseline groups
-- **Correct**: Each group maps to one outcome x one treatment x one population.
-- **No missing groups**: The paper's main claims are about white respondents. Full-sample and Black-respondent results are secondary/mechanism analysis.
-- **No spurious groups**: Table 3 perception outcomes and Table 6 interaction effects are correctly excluded as exploration/mechanism.
+### A) Baseline Groups
+- **G1 is well-defined**: one outcome (giving), one treatment (picshowblack), one estimand (ITT), one population (all respondents). Correct.
+- **No missing baseline groups**: The paper presents alternative outcomes (hypothetical giving, charity/govt support) and subsamples (white, black) in Tables 4-6, but these are extensions/heterogeneity, not separate headline claims. The paper's abstract and introduction focus on giving as the main outcome.
+- **No exploration leaking into core**: Table 6 interactions with racial attitudes are correctly excluded as they change the estimand.
 
-### B) Design selection
-- **Correct**: `randomized_experiment` is the right design. This is a pure survey experiment with random assignment.
+### B) Design Selection
+- **design_code = randomized_experiment**: Correct. This is a lab-in-the-field experiment with random assignment of picture treatments.
+- **design_audit**: Present and adequate. Includes randomization unit (individual), estimand (ITT), treatment arms, and weights.
+- **Design variants**: Only `diff_in_means` included, which is appropriate for checking whether controls matter. No over-expansion.
 
-### C) RC axes
-- **Controls**: Appropriate. Block-level LOO is more informative than individual-variable LOO given 29+ controls. The progression from bivariate to full is well-structured.
-- **Sample**: All four sample restrictions from Table 5 are included (main variant, Slidell, Biloxi, race-shown).
-- **Weights**: Weighted vs unweighted comparison matches the paper's own robustness.
-- **Functional form**: Topcode variant for G1 (giving) is a reasonable addition given the censoring structure. G2 already uses topcoded outcome. G3/G4 are ordinal scales where functional form RC is less relevant.
-- **Missing high-value axis**: No preprocessing/coding RC was included. However, the data construction is straightforward for this experiment (no complex variable coding choices), so this omission is acceptable.
+### C) RC Axes
+- **Controls**: LOO (20 specs), control sets (4), progression (5). Comprehensive and appropriate.
+- **Sample**: Main survey only, city subsample, race-shown only. These are revealed by Table 5. Added outlier trimming (not in paper) as a standard stress test. Appropriate.
+- **Functional form**: log(1+y), asinh, binary. The paper uses censored regression (cnreg) and ordered probit (oprob), which are hard to replicate exactly. Using log/asinh/binary as approximations is reasonable for the specification search purpose.
+- **Weights**: Unweighted and mweight. Appropriate since the paper uses tweight throughout.
 
-### D) Controls multiverse policy
-- **Mandatory controls**: picraceb and picobscur are correctly marked mandatory -- they capture the other randomly assigned photo conditions and must always be included.
-- **Count envelope**: min=10, max=34 is reasonable given the baseline has 29-31 controls and the extended set adds 3 more.
+**Issue found**: The `rc/form/treatment/nraudworthy_composite` spec changes the coding of manipulation controls (aggregating worthiness dummies into a single index). This is a control-coding change, not a treatment transformation. **Changed**: Moved to `rc/controls/sets/nraudworthy` -- this is effectively a control-set variant where worthiness manipulation dummies are replaced by a composite variable.
 
-### E) Inference plan
-- **Canonical**: HC1 matches the paper's `robust` option. Correct.
-- **Variant**: HC3 for G1 only is a reasonable stress test. The sample sizes (~900 for white respondents) are large enough that HC1 vs HC3 differences should be minimal.
+**Issue found**: `rc/sample/outliers/topcode_giving_90` -- giving is already bounded [0,100] by the dictator game design. Topcoding at 90 makes limited sense. **Changed**: Removed this spec and replaced with `rc/sample/outliers/drop_extreme` (drop giving==0 and giving==100, i.e., only interior choices).
 
-### F) Budgets + sampling
-- Total ~87 specs across 4 groups. This comfortably exceeds the 50-spec target.
-- No combinatorial subset sampling needed -- block-level LOO and progression provide adequate coverage.
+### D) Controls Multiverse Policy
+- **controls_count_min = 13, max = 37**: Verified. The paper's "no demographics" spec (Table 5 row 5) has ~13 controls (pic vars + manipulation vars + black + other). The extended spec (Table 5 row 6) adds 3 extra controls to the ~34 baseline controls = 37.
+- **Mandatory controls**: The treatment variables (picshowblack, picraceb, picobscur) must always be included. The manipulation audio dummies should be included in all specs except the "none" and "bivariate" specs, as they are part of the experimental design.
+- **No bundled estimator**: Correct. Simple OLS/WLS.
 
-### G) Diagnostics
-- No diagnostics planned. This is acceptable for a clean RCT where randomization is the identification strategy.
+### E) Inference Plan
+- **Canonical = HC1**: Correct. The paper uses `robust` throughout, which is HC1 in Stata.
+- **No clustering**: Correct. Randomization is at the individual level, not clustered.
+- **Variants**: Classical, HC2, HC3. Appropriate small set of inference-only alternatives.
 
-## Changes Made
+### F) Budgets + Sampling
+- **Budget = 60 specs**: The enumerated core universe has ~55 specs. Full enumeration is feasible. No random sampling needed. Appropriate.
 
-1. No changes to the surface JSON were needed. The surface is well-structured and faithful to the revealed search space.
+### G) Diagnostics Plan
+- **Empty**: Acceptable for this paper. Standard RCT diagnostics (balance checks, attrition) could be added but are not part of the specification search pipeline.
+
+## Changes Made to Surface
+
+1. Removed `rc/form/treatment/nraudworthy_composite` from rc_spec_ids (this is a control-set variant, not a functional form change). Replaced with `rc/controls/sets/nraudworthy`.
+2. Removed `rc/sample/outliers/topcode_giving_90` (giving is already bounded 0-100). Replaced with `rc/sample/outliers/drop_extreme_choices`.
+3. No other blocking issues.
 
 ## Final Assessment
 
-**Approved to run.** The surface is conceptually coherent, statistically principled, faithful to the manuscript, and auditable.
+**APPROVED TO RUN.** The surface is conceptually coherent, faithfully reflects the paper's revealed search space, and the budget is feasible for full enumeration. The core universe of ~55 specifications provides good coverage across controls, sample, functional form, and weights dimensions.

@@ -1,0 +1,209 @@
+{
+  "paper_id": "113407-V1",
+  "created_at": "2026-02-25",
+  "notes": "Hoynes (2014 AER P&P) 'Living Arrangements, Doubling Up, and the Great Recession'. State-year panel from March CPS 1980-2013, examining how living arrangements respond to state unemployment rate fluctuations. Panel A (Table 1) regresses living arrangement measures on the state unemployment rate with state and year FE, weighted by population, SE clustered at state level. Panel B allows recession-period-specific coefficients. Two headline outcomes are household size and fraction living alone (young adults 18-30). We focus on the 18-30 young adult living-alone outcome as the main baseline claim since it is the paper's central finding, with household size as a second baseline group.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within",
+        "panel_unit": "stfips",
+        "panel_time": "calyear",
+        "fe_structure": ["state", "year"],
+        "cluster_vars": ["stfips"],
+        "weights": "analytic_weights (population)",
+        "weight_var": "weight_1830",
+        "notes": "State-year panel with state and year FE, analytic weights from CPS population counts, SE clustered at state level. The raw data column is 'statefip'; the do-file renames it to 'stfips'. In pyfixest, use 'statefip' as the panel unit (or rename in preprocessing to match the do-file)."
+      },
+      "claim_object": {
+        "outcome_concept": "Fraction of young adults (18-30) living alone (not doubled up)",
+        "treatment_concept": "State unemployment rate (continuous)",
+        "estimand_concept": "Effect of a 1-percentage-point increase in state unemployment rate on fraction living alone, conditional on state and year FE",
+        "target_population": "Young adults aged 18-30 across US states, 1980-2013"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-PanelA-Col3",
+          "outcome_var": "myadult_aloneall_1830",
+          "treatment_var": "urate",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["i.calyear", "i.stfips"],
+          "weight_var": "weight_1830",
+          "cluster_var": "stfips"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "The paper uses no additional controls beyond state and year FE. The only variation is in the treatment variable specification (pooled vs recession-period-specific) and outcome/sample definitions. No control pool to vary."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table1_panA_col4",
+          "baseline__table1_panA_col5"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/first_difference"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/age_group/18_24",
+          "rc/sample/age_group/25_30",
+          "rc/form/outcome/level",
+          "rc/form/outcome/log",
+          "rc/form/treatment/log_urate",
+          "rc/form/treatment/recession_specific",
+          "rc/form/treatment/urate_80",
+          "rc/form/treatment/urate_rest",
+          "rc/form/treatment/urate_07",
+          "rc/fe/drop_state_fe",
+          "rc/fe/add_state_trend",
+          "rc/fe/add_region_year",
+          "rc/fe/add_division_year",
+          "rc/weights/unweighted",
+          "rc/sample/time/pre_2007",
+          "rc/sample/time/post_1990",
+          "rc/sample/time/1990_2013",
+          "rc/sample/time/drop_recession_years",
+          "rc/sample/outliers/trim_urate_1_99",
+          "rc/sample/outliers/drop_high_urate_states",
+          "rc/sample/outliers/drop_small_states",
+          "rc/joint/outcome_age/*",
+          "rc/joint/form_time/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/state",
+          "params": {"cluster_var": "stfips"},
+          "notes": "Clustered at state level, matching the paper's baseline: vce(cluster stfips)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust without clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/region",
+            "params": {"cluster_var": "region"},
+            "notes": "Coarser clustering at Census region level (few clusters stress test). NOTE: 'region' must be constructed from state FIPS codes (statefip) -- it does not exist in the data. Use Census region definitions (Northeast=1, Midwest=2, South=3, West=4)."
+          },
+          {
+            "spec_id": "infer/se/hac/driscoll_kraay",
+            "params": {"maxlag": 3},
+            "notes": "Driscoll-Kraay SEs for cross-sectional dependence in state panels."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 0,
+        "notes": "No control pool to sample from. Variation comes from outcome definitions, sample restrictions, functional form, FE structure, weighting, and time periods. Full enumeration feasible."
+      },
+      "sampling": {
+        "seed": 113407,
+        "controls_subset_sampler": "not_applicable",
+        "notes": "Full enumeration. No controls to sample."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/wooldridge",
+          "scope": "baseline_group"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within",
+        "panel_unit": "stfips",
+        "panel_time": "calyear",
+        "fe_structure": ["state", "year"],
+        "cluster_vars": ["stfips"],
+        "weights": "analytic_weights (population)",
+        "weight_var": "weight_noneld",
+        "notes": "State-year panel with state and year FE, analytic weights, SE clustered at state level."
+      },
+      "claim_object": {
+        "outcome_concept": "Average household size (non-elderly)",
+        "treatment_concept": "State unemployment rate (continuous)",
+        "estimand_concept": "Effect of a 1-percentage-point increase in state unemployment rate on average household size, conditional on state and year FE",
+        "target_population": "Non-elderly population across US states, 1980-2013"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-PanelA-Col1",
+          "outcome_var": "h_numpers_noneld",
+          "treatment_var": "urate",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["i.calyear", "i.stfips"],
+          "weight_var": "weight_noneld",
+          "cluster_var": "stfips"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "No additional controls beyond state and year FE."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table1_panA_col2"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/first_difference"
+        ],
+        "rc_spec_ids": [
+          "rc/form/outcome/h_numfams_noneld",
+          "rc/form/treatment/recession_specific",
+          "rc/form/treatment/log_urate",
+          "rc/form/outcome/log",
+          "rc/fe/drop_state_fe",
+          "rc/fe/add_state_trend",
+          "rc/fe/add_region_year",
+          "rc/weights/unweighted",
+          "rc/sample/time/pre_2007",
+          "rc/sample/time/post_1990",
+          "rc/sample/time/drop_recession_years",
+          "rc/sample/outliers/trim_urate_1_99",
+          "rc/sample/outliers/drop_high_urate_states"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/state",
+          "params": {"cluster_var": "stfips"},
+          "notes": "Clustered at state level, matching the paper's baseline."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust without clustering."
+          },
+          {
+            "spec_id": "infer/se/hac/driscoll_kraay",
+            "params": {"maxlag": 3},
+            "notes": "Driscoll-Kraay SEs for cross-sectional dependence."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 25,
+        "max_specs_controls_subset": 0,
+        "notes": "Secondary claim; fewer specs than G1. Full enumeration feasible."
+      },
+      "sampling": {
+        "seed": 113407,
+        "controls_subset_sampler": "not_applicable"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

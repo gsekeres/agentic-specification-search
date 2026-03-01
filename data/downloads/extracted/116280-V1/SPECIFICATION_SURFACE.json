@@ -1,0 +1,128 @@
+{
+  "paper_id": "116280-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "logit",
+        "reported_object": "index_coef",
+        "model_formula": "mutual ~ mlaw + slaw + regulate + nfc + reform + refmlaw + refslaw + refregulate + refnfc + ten2 + ten3 + ten4 + ten5, cluster(state)",
+        "selection_story": "Cross-sectional variation in state insurance regulation explains organizational form choice (mutual vs stock) of insurance companies formed 1900-1949",
+        "n_clusters": 47
+      },
+      "claim_object": {
+        "outcome_concept": "Insurance company organizational form (mutual=1, stock=0)",
+        "treatment_concept": "State regulatory environment: mutual financial requirement (mlaw), stock financial requirement (slaw), and regulatory dummies (regulate, nfc) plus reform interactions",
+        "estimand_concept": "Association between state regulation variables and probability of mutual organizational form, conditional on decade effects",
+        "target_population": "Insurance companies formed in the United States, 1900-1949 (N=881)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "outcome_var": "mutual",
+          "treatment_var": "mlaw",
+          "controls": ["slaw", "regulate", "nfc", "reform", "refmlaw", "refslaw", "refregulate", "refnfc", "ten2", "ten3", "ten4", "ten5"],
+          "n_controls": 12,
+          "fixed_effects": [],
+          "vcov": "cluster(state)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 4,
+        "controls_count_max": 14,
+        "linked_adjustment": false,
+        "functional_form_note": "Baseline uses logit; LPM is a natural robustness check that preserves the claim object",
+        "linkage_notes": [
+          "Reform interaction terms (refmlaw, refslaw, refregulate, refnfc) mechanically linked to reform -- dropping reform while keeping interactions is incoherent",
+          "Favor specs replace mlaw/slaw with favor and use reffavor instead of refmlaw/refslaw -- these are substitute treatment measures",
+          "Decade dummies (ten2-ten5) and rcorp serve similar time-control roles; paper uses one or the other",
+          "clogit with group(state) automatically drops 13 states (131 obs) with all-stock or all-mutual outcomes"
+        ],
+        "excluded_from_core": [
+          "explore/form/treatment/mlaw_binary -- dichotomizing continuous mlaw at median changes coefficient interpretation",
+          "explore/form/treatment/slaw_binary -- dichotomizing continuous slaw at median changes coefficient interpretation",
+          "explore/form/treatment/favor_binary -- dichotomizing favor changes coefficient interpretation"
+        ]
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__favor_spec",
+          "baseline__rcorp_spec"
+        ],
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_slaw",
+          "rc/controls/loo/drop_regulate",
+          "rc/controls/loo/drop_nfc",
+          "rc/controls/loo/drop_reform",
+          "rc/controls/loo/drop_refmlaw",
+          "rc/controls/loo/drop_refslaw",
+          "rc/controls/loo/drop_refregulate",
+          "rc/controls/loo/drop_refnfc",
+          "rc/controls/sets/no_decade_dummies",
+          "rc/controls/sets/add_rcorp",
+          "rc/controls/sets/add_favor",
+          "rc/controls/sets/favor_instead_of_mlaw_slaw",
+          "rc/controls/sets/favor_spec_with_rcorp",
+          "rc/controls/sets/full_with_rcorp",
+          "rc/controls/sets/minimal_financial_only",
+          "rc/controls/sets/minimal_regulatory_only",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/financial_reqs_only",
+          "rc/controls/progression/regulatory_only",
+          "rc/controls/progression/financial_plus_reform",
+          "rc/controls/progression/full_no_interactions",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_mlaw_1_99",
+          "rc/sample/restriction/exclude_states_no_mutuals",
+          "rc/fe/add/state",
+          "rc/form/estimator/lpm",
+          "rc/form/estimator/probit",
+          "rc/form/estimator/clogit_state",
+          "rc/form/outcome/lpm_with_decade_fe",
+          "rc/form/treatment/favor_as_treatment",
+          "rc/sample/restriction/pre_1930_only",
+          "rc/sample/restriction/post_1920_only",
+          "rc/sample/outliers/trim_slaw_1_99",
+          "rc/controls/loo/drop_ten2",
+          "rc/controls/loo/drop_ten3",
+          "rc/controls/loo/drop_ten4",
+          "rc/controls/loo/drop_ten5"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/state",
+          "params": {"cluster_var": "state"},
+          "notes": "Cluster-robust SEs at state level (47 clusters), matching the paper's baseline inference"
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust HC1 SEs without clustering"},
+          {"spec_id": "infer/se/iid", "params": {}, "notes": "Conventional (non-robust) standard errors for comparison"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 116280,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

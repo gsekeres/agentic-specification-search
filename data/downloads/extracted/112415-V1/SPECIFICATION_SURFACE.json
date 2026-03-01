@@ -1,0 +1,93 @@
+{
+  "paper_id": "112415-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "diff_in_means",
+        "randomization_unit": "within_subject",
+        "strata_or_blocks": "subject (within-subject design: each subject faces all set sizes)",
+        "estimand": "ITT",
+        "n_subjects": 39,
+        "experimental_conditions": "Set sizes: 4, 9, 16 alternatives"
+      },
+      "claim_object": {
+        "outcome_concept": "Fixation efficiency (quality of attention allocation to higher-rated items)",
+        "treatment_concept": "Set size of choice alternatives (4 vs 9 vs 16 items)",
+        "estimand_concept": "Effect of choice set size on efficiency of initial fixations",
+        "target_population": "Laboratory subjects in eye-tracking snack food choice experiment"
+      },
+      "baseline_specs": [
+        {
+          "label": "Stats-2A-efficiency-by-setsize",
+          "outcome_var": "efficiency",
+          "treatment_var": "numalt",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "paired_ttest",
+          "notes": "Within-subject means collapsed by (subject, numalt), then paired t-test across conditions"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "Within-subject experimental design with no controls. All variation is within-subject across randomized conditions."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__stopping_prob",
+          "baseline__fixation_duration",
+          "baseline__choice_quality"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/outliers/trim_rt_2000",
+          "rc/sample/outliers/trim_rt_1500",
+          "rc/sample/outliers/drop_refixations",
+          "rc/sample/outliers/keep_all_fixations",
+          "rc/data/outcome/efficiency_new_vs_old",
+          "rc/data/outcome/curfix_ef_vs_efficiency",
+          "rc/form/outcome/rank_efficiency",
+          "rc/sample/conditions/4_vs_9",
+          "rc/sample/conditions/9_vs_16",
+          "rc/sample/conditions/4_vs_16"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/paired_ttest",
+          "params": {},
+          "notes": "Paired t-test on within-subject condition means, matching the paper's analysis"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/subject",
+            "params": {"cluster_var": "subject"},
+            "notes": "OLS with subject-clustered SEs as alternative to paired t-test"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs on pooled regression (ignoring within-subject correlation)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 112415,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

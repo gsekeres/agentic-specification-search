@@ -1,0 +1,22 @@
+{
+  "paper_id": "113592-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of grant_eligible_0_X on col_enrol",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "spec_0001",
+        "spec_0002",
+        "spec_0003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline",
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

@@ -1,198 +1,192 @@
 {
   "paper_id": "112749-V1",
-  "created_at": "2026-02-15",
+  "created_at": "2026-02-22",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "design_code": "difference_in_differences",
+      "design_code": "panel_fixed_effects",
       "design_audit": {
-        "estimator": "twfe",
+        "estimator": "areg_within",
         "panel_unit": "fips",
-        "panel_time": "decade",
-        "fe_structure": [
-          "fips",
-          "state:decade"
-        ],
-        "cluster_vars": [
-          "fips"
-        ],
+        "panel_time": "year",
+        "fe_structure": ["fips"],
+        "cluster_vars": ["fips"],
         "weights": "county_w",
-        "treatment_timing": "post-1927 decades interacted with flood intensity (f_int_{decade})",
-        "estimand": "event_time_path",
-        "comparison_groups": "within-sample less-exposed counties (continuous intensity)"
+        "treatment_type": "continuous_time_varying",
+        "treatment_description": "flood_intensity x year_dummies (share of county area flooded, interacted with year indicators)",
+        "additional_controls": "state-year FE, crop suitability x year, distance to MS x year, lat/lon x year, ruggedness x year, lagged DVs"
       },
       "claim_object": {
-        "outcome_concept": "Black population share (fraction of county population that is Black)",
-        "treatment_concept": "1927 Mississippi flood intensity (share of county area flooded)",
-        "estimand_concept": "DiD: within-county change in log Black population share caused by flood exposure, at each post-flood decade (dynamic treatment effects)",
-        "target_population": "Southern US counties with >=10% Black pop share and >=15% cotton acreage in 1920 (main cotton-belt sample)"
+        "outcome_concept": "Black labor share and Black population",
+        "treatment_concept": "Great Mississippi Flood of 1927 intensity (share of county flooded)",
+        "estimand_concept": "Effect of exogenous labor supply shock on racial composition and agricultural development",
+        "target_population": "Southern US counties in cotton-producing, majority-Black areas (1930-1970)"
       },
       "baseline_specs": [
         {
-          "label": "Table2-Col1-f_int_1930",
+          "label": "Table2-Col1-lnfrac_black",
           "outcome_var": "lnfrac_black",
-          "treatment_var": "f_int_1930",
+          "treatment_var": "f_int_YEAR",
           "controls": ["d_sy_*", "cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag2_lnfrac_black_*", "lag3_lnfrac_black_*", "lag4_lnfrac_black_*"],
-          "n_controls_approx": 130,
-          "fixed_effects": "fips",
-          "cluster_var": "fips",
-          "weight_var": "county_w",
-          "focal_treatment": "f_int_1930",
-          "notes": "Replication coefficient: -0.156, se=0.032, N=2604"
+          "n_controls_approx": 80,
+          "fe": "fips",
+          "cluster": "fips",
+          "weights": "county_w"
+        },
+        {
+          "label": "Table2-Col3-lnpopulation_black",
+          "outcome_var": "lnpopulation_black",
+          "treatment_var": "f_int_YEAR",
+          "controls": ["d_sy_*", "cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag2_lnpopulation_black_*", "lag3_lnpopulation_black_*", "lag4_lnpopulation_black_*"],
+          "n_controls_approx": 80,
+          "fe": "fips",
+          "cluster": "fips",
+          "weights": "county_w"
         }
       ],
       "constraints": {
-        "controls_count_min": 0,
-        "controls_count_max": 200,
+        "controls_count_min": 10,
+        "controls_count_max": 120,
         "linked_adjustment": false,
-        "notes": "Controls are large vectors of year-interacted geographic/suitability variables plus lagged outcomes. Blocks are: state-year FE (d_sy), geographic controls (cotton_s, corn_s, ld, dx, dy, rug), outcome lags (lag2-lag4), New Deal controls (lnpcpubwor, lnpcaaa, lnpcrelief, lnpcndloan, lnpcndins)."
+        "notes": "Controls are time-interacted geographic/soil characteristics and lagged dependent variables. The main variation in control sets is adding/dropping New Deal spending controls, geography, tenancy, manufacturing, plantation interactions, propensity scores."
       },
       "core_universe": {
         "baseline_spec_ids": [
-          "baseline__f_int_1950"
+          "baseline__t2_lnfrac_black",
+          "baseline__t2_lnfrac_black_nd",
+          "baseline__t2_lnpop_black",
+          "baseline__t2_lnpop_black_nd",
+          "baseline__t2_lnpopulation",
+          "baseline__t2_lnpopulation_nd",
+          "baseline__t2_lnfracfarms_nw",
+          "baseline__t2_lnfracfarms_nw_nd"
         ],
         "design_spec_ids": [
-          "design/difference_in_differences/estimator/twfe"
+          "design/panel_fixed_effects/estimator/within",
+          "design/panel_fixed_effects/estimator/long_difference"
         ],
         "rc_spec_ids": [
-          "rc/controls/sets/none",
-          "rc/controls/sets/minimal",
-          "rc/controls/sets/baseline",
-          "rc/controls/sets/extended",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/geography",
-          "rc/controls/progression/lags",
-          "rc/controls/progression/new_deal",
-          "rc/controls/progression/full",
-          "rc/fe/drop/state_year",
-          "rc/sample/time/drop_1930",
-          "rc/sample/time/drop_1970",
-          "rc/sample/time/short_window_1930_1950",
-          "rc/sample/outliers/trim_y_1_99",
-          "rc/form/outcome/level",
-          "rc/form/treatment/binary_flood",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/population_1920",
-          "rc/weights/main/unweighted__f_int_1950",
-          "rc/controls/sets/extended__f_int_1950",
-          "rc/controls/sets/none__f_int_1950",
-          "rc/form/outcome/alt_pop_black"
+          "rc/controls/add/new_deal_spending",
+          "rc/controls/add/plantation_interaction",
+          "rc/controls/add/tenancy_manufacturing",
+          "rc/controls/add/propensity_score",
+          "rc/controls/loo/geography",
+          "rc/controls/loo/lagged_dvs",
+          "rc/controls/loo/crop_suitability",
+          "rc/sample/restrict/flood_counties_only",
+          "rc/sample/restrict/balanced_panel",
+          "rc/sample/restrict/drop_outlier_counties",
+          "rc/fixed_effects/add/state_x_year",
+          "rc/fixed_effects/drop/county_fe",
+          "rc/functional_form/outcome/level_instead_log",
+          "rc/weights/unweighted",
+          "rc/preprocessing/treatment/alt_flood_measure_redcross_acres",
+          "rc/preprocessing/treatment/alt_flood_measure_redcross_people",
+          "rc/preprocessing/treatment/alt_flood_measure_redcross_ag"
         ]
       },
       "inference_plan": {
         "canonical": {
-          "spec_id": "infer/se/cluster/county",
+          "spec_id": "infer/se/cluster/fips",
           "params": {"cluster_var": "fips"},
-          "notes": "Matches the paper's baseline inference: clustering at the county (fips) level."
+          "notes": "Paper clusters at county (fips) level throughout."
         },
         "variants": [
-          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust only (no clustering)."},
-          {"spec_id": "infer/se/cluster/state", "params": {"cluster_var": "statefips"}, "notes": "Coarser clustering at state level as stress test."}
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."},
+          {"spec_id": "infer/se/cluster/statefips", "params": {"cluster_var": "statefips"}, "notes": "State-level clustering as stress test."}
         ]
       },
       "budgets": {
-        "max_specs_core_total": 80
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 30
       },
       "sampling": {
-        "seed": 112749,
-        "notes": "Full enumeration feasible for planned specs."
-      }
+        "seed": 42,
+        "controls_subset_sampler": "full_enumeration"
+      },
+      "diagnostics_plan": []
     },
     {
       "baseline_group_id": "G2",
-      "design_code": "difference_in_differences",
+      "design_code": "panel_fixed_effects",
       "design_audit": {
-        "estimator": "twfe",
+        "estimator": "areg_within",
         "panel_unit": "fips",
-        "panel_time": "decade",
-        "fe_structure": [
-          "fips",
-          "state:decade"
-        ],
-        "cluster_vars": [
-          "fips"
-        ],
+        "panel_time": "year",
+        "fe_structure": ["fips"],
+        "cluster_vars": ["fips"],
         "weights": "county_w",
-        "treatment_timing": "post-1927 decades interacted with flood intensity (f_int_{decade})",
-        "estimand": "event_time_path",
-        "comparison_groups": "within-sample less-exposed counties (continuous intensity)"
+        "treatment_type": "continuous_time_varying"
       },
       "claim_object": {
-        "outcome_concept": "Farm capital intensity (value of farm equipment per county)",
-        "treatment_concept": "1927 Mississippi flood intensity (share of county area flooded)",
-        "estimand_concept": "DiD: within-county change in log farm equipment value caused by flood exposure, at each post-flood period (dynamic treatment effects)",
-        "target_population": "Southern US counties with >=10% Black pop share and >=15% cotton acreage in 1920 (main cotton-belt sample)"
+        "outcome_concept": "Agricultural capital intensity (farm size, equipment value, tractors, mules/horses)",
+        "treatment_concept": "Great Mississippi Flood of 1927 intensity",
+        "estimand_concept": "Effect of Black out-migration (induced by flood) on agricultural capital substitution",
+        "target_population": "Southern US counties in cotton-producing areas (1930-1970)"
       },
       "baseline_specs": [
         {
-          "label": "Table4-Col2-f_int_1940",
+          "label": "Table4-Col1-lnavfarmsize",
+          "outcome_var": "lnavfarmsize",
+          "treatment_var": "f_int_YEAR",
+          "controls": ["d_sy_*", "cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag1-4_lnavfarmsize_*"],
+          "n_controls_approx": 90,
+          "fe": "fips",
+          "cluster": "fips",
+          "weights": "county_w"
+        },
+        {
+          "label": "Table4-Col3-lnvalue_equipment",
           "outcome_var": "lnvalue_equipment",
-          "treatment_var": "f_int_1940",
-          "controls": ["d_sy_*", "cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag1_lnvalue_equipment_*", "lag2_lnvalue_equipment_*", "lag3_lnvalue_equipment_*", "lag4_lnvalue_equipment_*"],
-          "n_controls_approx": 150,
-          "fixed_effects": "fips",
-          "cluster_var": "fips",
-          "weight_var": "county_w",
-          "focal_treatment": "f_int_1940",
-          "notes": "Replication coefficient: 0.440, se=0.099, N=2170. Equipment is available 1900-1940, 1970 only."
+          "treatment_var": "f_int_YEAR",
+          "controls": ["d_sy_*", "cotton_s_*", "corn_s_*", "ld_*", "dx_*", "dy_*", "rug_*", "lag1-4_lnvalue_equipment_*"],
+          "n_controls_approx": 90,
+          "fe": "fips",
+          "cluster": "fips",
+          "weights": "county_w"
         }
       ],
       "constraints": {
-        "controls_count_min": 0,
-        "controls_count_max": 200,
-        "linked_adjustment": false,
-        "notes": "Same control block structure as G1 but with 4 lags for equipment (lag1=1925, lag2=1920, lag3=1910, lag4=1900). Treatment vars differ: Table 4 uses f_int for all years including agriculture census years (1925, 1935, 1945, 1954, 1964)."
+        "controls_count_min": 10,
+        "controls_count_max": 120,
+        "linked_adjustment": false
       },
       "core_universe": {
         "baseline_spec_ids": [
-          "baseline__f_int_1930",
-          "baseline__f_int_1970"
+          "baseline__t4_lnavfarmsize",
+          "baseline__t4_lnavfarmsize_nd",
+          "baseline__t4_lnvalue_equipment",
+          "baseline__t4_lnvalue_equipment_nd",
+          "baseline__t4_lntractors",
+          "baseline__t4_lntractors_nd",
+          "baseline__t4_lnmules_horses",
+          "baseline__t4_lnmules_horses_nd"
         ],
-        "design_spec_ids": [
-          "design/difference_in_differences/estimator/twfe"
-        ],
+        "design_spec_ids": [],
         "rc_spec_ids": [
-          "rc/controls/sets/none",
-          "rc/controls/sets/minimal",
-          "rc/controls/sets/baseline",
-          "rc/controls/sets/extended",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/geography",
-          "rc/controls/progression/lags",
-          "rc/controls/progression/new_deal",
-          "rc/controls/progression/full",
-          "rc/fe/drop/state_year",
-          "rc/sample/time/drop_first_post",
-          "rc/sample/time/short_window",
-          "rc/sample/outliers/trim_y_1_99",
-          "rc/form/outcome/level",
-          "rc/form/treatment/binary_flood",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/population_1920",
-          "rc/weights/main/unweighted__f_int_1970",
-          "rc/controls/sets/extended__f_int_1970",
-          "rc/controls/sets/none__f_int_1970",
-          "rc/form/outcome/alt_tractors"
+          "rc/controls/add/new_deal_spending",
+          "rc/controls/add/tenancy_manufacturing",
+          "rc/controls/loo/geography",
+          "rc/controls/loo/lagged_dvs",
+          "rc/weights/unweighted",
+          "rc/preprocessing/treatment/alt_flood_measure_redcross_acres"
         ]
       },
       "inference_plan": {
         "canonical": {
-          "spec_id": "infer/se/cluster/county",
-          "params": {"cluster_var": "fips"},
-          "notes": "Matches the paper's baseline inference: clustering at the county (fips) level."
+          "spec_id": "infer/se/cluster/fips",
+          "params": {"cluster_var": "fips"}
         },
-        "variants": [
-          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust only (no clustering)."},
-          {"spec_id": "infer/se/cluster/state", "params": {"cluster_var": "statefips"}, "notes": "Coarser clustering at state level as stress test."}
-        ]
+        "variants": []
       },
       "budgets": {
-        "max_specs_core_total": 80
+        "max_specs_core_total": 30
       },
       "sampling": {
-        "seed": 112749,
-        "notes": "Full enumeration feasible for planned specs."
-      }
+        "seed": 42,
+        "controls_subset_sampler": "full_enumeration"
+      },
+      "diagnostics_plan": []
     }
   ]
 }

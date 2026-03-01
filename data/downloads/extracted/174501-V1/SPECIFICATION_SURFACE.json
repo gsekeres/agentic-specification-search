@@ -1,0 +1,440 @@
+{
+  "paper_id": "174501-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "room",
+        "randomization_scheme": "University of Cape Town policy randomly allocates roommates to rooms within residence halls. Treatment is having a roommate of a different race (mixracebas). Randomization occurs within residence (Res_base) x race strata.",
+        "experiment_type": "natural_experiment_roommate_assignment",
+        "strata_variable": "Res_base (residence building at baseline)",
+        "interaction_with_race": "Race x Residence FE (blackRes, whiteRes) included in full-sample specs",
+        "se_type": "cluster_robust",
+        "cluster_var": "roomnum_base",
+        "sample_restriction": "round==2 (endline), balanced panel (uctdata_balanced.dta), subsample by race (white==1 or black==1)"
+      },
+      "claim_object": {
+        "outcome_concept": "Racial stereotypes as measured by Implicit Association Test (Race IAT D-score), where higher values indicate less prejudice against Black students",
+        "treatment_concept": "Randomly assigned to a mixed-race room at baseline (mixracebas=1 vs 0)",
+        "estimand_concept": "ITT effect of inter-racial roommate exposure on racial stereotypes at endline, controlling for baseline IAT (ANCOVA)",
+        "target_population": "White students in UCT residences with random roommate assignment (primary); Black students (secondary)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col1-White-RaceIAT",
+          "description": "Effect of mixed-race room on White students' Race IAT at endline, with lagged outcome, own and roommate controls, residence FE",
+          "outcome_var": "DscoreraceIAT",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "L.DscoreraceIAT",
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base"],
+          "n_controls": 22,
+          "sample_filter": "round==2 & white==1",
+          "vcov": "cluster(roomnum_base)"
+        },
+        {
+          "label": "Table3-Col2-Black-RaceIAT",
+          "description": "Effect of mixed-race room on Black students' Race IAT at endline, with lagged outcome, own and roommate controls, residence FE",
+          "outcome_var": "DscoreraceIAT",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "L.DscoreraceIAT",
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base"],
+          "n_controls": 22,
+          "sample_filter": "round==2 & black==1",
+          "vcov": "cluster(roomnum_base)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 12,
+        "controls_count_max": 22,
+        "mandatory_controls": ["L.DscoreraceIAT"],
+        "linked_adjustment": false,
+        "notes": "Minimum is 12: own controls only (11 from controls_subsample) + mandatory lagged outcome (L.DscoreraceIAT), as shown in Table A7 (no roommate controls robustness). Maximum is 22: own (11) + roommate (10) + lagged outcome (1), as in baseline Table 3. Lagged outcome is mandatory for ANCOVA structure and must not be dropped. Race dummies (white, coloured, Else) only used in full-sample specifications, not race subsamples."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col2_black_raceiat"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/ancova",
+          "design/randomized_experiment/estimator/with_covariates",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/drop_roommate_controls",
+          "rc/controls/loo/Female",
+          "rc/controls/loo/Falseuct2012",
+          "rc/controls/loo/Foreign",
+          "rc/controls/loo/privateschool_nomiss",
+          "rc/controls/loo/durpcabas_nomiss",
+          "rc/controls/loo/consbas_nomiss",
+          "rc/controls/loo/roFalseuct2012",
+          "rc/controls/loo/roForeign_bas",
+          "rc/controls/loo/roprivschool_nomiss",
+          "rc/controls/loo/rodurpcabas_nomiss",
+          "rc/controls/loo/roconsbas_nomiss",
+          "rc/sample/full_sample_with_race_fe",
+          "rc/sample/restrict_white_black_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/room",
+          "params": {"cluster_var": "roomnum_base"},
+          "notes": "Paper clusters at the room level (roomnum_base) throughout, which is the randomization unit."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/residence",
+            "params": {"cluster_var": "Res_base"},
+            "notes": "Cluster at residence level as a stress test (coarser clustering)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 30
+      },
+      "sampling": {
+        "seed": 174501,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "LOO over own controls (6 variable groups with missingness indicators counted as pairs) and roommate controls (5 variable groups). Plus the revealed drop-all-roommate-controls variant. Full enumeration is feasible."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Table 1 / Table 2 Panel A: Balance tests of baseline IAT, demographics on mixracebas, controlling for residence FE."
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "notes": "Table A1: Correlates of attrition by treatment status."
+        }
+      ],
+      "exploration_notes": [
+        "explore/outcome/academic_iat: DscoreacaIAT outcome (Table 3 cols 3-4) changes outcome concept from Race IAT to Academic IAT -- moved from rc/form/academic_iat_outcome.",
+        "rc/sample/balanced_panel_only removed: the data file used (uctdata_balanced.dta) IS the balanced panel, so this is the default, not an RC variant."
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "room",
+        "randomization_scheme": "Same as G1: UCT policy randomly allocates roommates within residence halls.",
+        "experiment_type": "natural_experiment_roommate_assignment",
+        "strata_variable": "Res_base",
+        "se_type": "cluster_robust",
+        "cluster_var": "roomnum_base",
+        "sample_restriction": "round==2 (endline), balanced panel, subsample by race"
+      },
+      "claim_object": {
+        "outcome_concept": "Academic performance (GPA, exams passed, continuation/non-dropout, PCA performance index) at end of first year",
+        "treatment_concept": "Randomly assigned to a mixed-race room at baseline (mixracebas=1 vs 0)",
+        "estimand_concept": "ITT effect of inter-racial roommate exposure on academic outcomes",
+        "target_population": "Black students in UCT residences (primary claim: Black students improve); White students and full sample (secondary)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Black-GPA",
+          "description": "Effect of mixed-race room on Black students' GPA, with own + roommate controls, residence FE and program FE",
+          "outcome_var": "GPA",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base", "regprogram"],
+          "n_controls": 21,
+          "sample_filter": "round==2 & black==1",
+          "vcov": "cluster(roomnum_base)"
+        },
+        {
+          "label": "Table4-Black-ExamsPassed",
+          "description": "Effect of mixed-race room on Black students' exams passed",
+          "outcome_var": "examspassed",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base", "regprogram"],
+          "n_controls": 21,
+          "sample_filter": "round==2 & black==1",
+          "vcov": "cluster(roomnum_base)"
+        },
+        {
+          "label": "Table4-Black-Continue",
+          "description": "Effect of mixed-race room on Black students' continuation (non-dropout)",
+          "outcome_var": "continue",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base", "regprogram"],
+          "n_controls": 21,
+          "sample_filter": "round==2 & black==1",
+          "vcov": "cluster(roomnum_base)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 11,
+        "controls_count_max": 21,
+        "linked_adjustment": false,
+        "notes": "Minimum is own controls only (11 controls_subsample) from Table A9 (no roommate controls robustness). Maximum is own + roommate controls (21). No lagged outcome in academic specs. Program FE (regprogram) is mandatory for academic outcomes."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_black_examspassed",
+          "baseline__table4_black_continue",
+          "baseline__table4_black_pcaperf"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/drop_roommate_controls",
+          "rc/controls/loo/Female",
+          "rc/controls/loo/Falseuct2012",
+          "rc/controls/loo/Foreign",
+          "rc/controls/loo/privateschool_nomiss",
+          "rc/controls/loo/durpcabas_nomiss",
+          "rc/controls/loo/consbas_nomiss",
+          "rc/controls/loo/roFalseuct2012",
+          "rc/controls/loo/roForeign_bas",
+          "rc/controls/loo/roprivschool_nomiss",
+          "rc/controls/loo/rodurpcabas_nomiss",
+          "rc/controls/loo/roconsbas_nomiss",
+          "rc/sample/full_sample_with_race_fe",
+          "rc/sample/restrict_white_black_only",
+          "rc/fe/drop_program_fe",
+          "rc/form/pca_performance_index",
+          "rc/form/second_year_outcomes"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/room",
+          "params": {"cluster_var": "roomnum_base"},
+          "notes": "Paper clusters at the room level throughout."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/residence",
+            "params": {"cluster_var": "Res_base"},
+            "notes": "Cluster at residence level."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 40
+      },
+      "sampling": {
+        "seed": 174501,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Multiple outcome variables (GPA, examspassed, continue, PCAperf) generate specs multiplicatively with control variations. LOO + major revealed variants enumerable."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Table 1: Balance tests by race subsample."
+        }
+      ],
+      "exploration_notes": [
+        "explore/population/white: Table4-White-GPA moved from baseline_spec_ids -- changes target population from Black to White students.",
+        "explore/population/full_sample: Table4-Full-GPA moved from baseline_spec_ids -- changes target population from Black to all students.",
+        "explore/mechanism/same_faculty_interaction: rc/controls/add_interaction_mixsamefaculty (Table A11) moved from rc_spec_ids -- adds mixsamefaculty and samefaculty interaction, which changes the treatment concept (decomposing by faculty overlap).",
+        "rc/fe/add_program_fe removed: redundant since baseline already includes i.regprogram.",
+        "rc/sample/restrict_white_only removed: changes target population, belongs in explore/population/white."
+      ]
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "room",
+        "randomization_scheme": "Same as G1/G2.",
+        "experiment_type": "natural_experiment_roommate_assignment",
+        "strata_variable": "Res_base",
+        "se_type": "cluster_robust",
+        "cluster_var": "roomnum_base",
+        "sample_restriction": "round==2 (endline), balanced panel, subsample by race"
+      },
+      "claim_object": {
+        "outcome_concept": "Social outcomes: friendships with different-race peers (PCAfriend), racial attitudes (PCAattitude), communication across races (PCAcomm), pro-social behavior (PCAsocial)",
+        "treatment_concept": "Randomly assigned to a mixed-race room at baseline (mixracebas=1 vs 0)",
+        "estimand_concept": "ITT effect of inter-racial roommate exposure on social/attitudinal outcomes",
+        "target_population": "White students (primary for friendships/attitudes); Black students and full sample (secondary)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-White-PCAfriend",
+          "description": "Effect of mixed-race room on White students' cross-racial friendships PCA index",
+          "outcome_var": "PCAfriend",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base"],
+          "n_controls": 21,
+          "sample_filter": "round==2 & white==1",
+          "vcov": "cluster(roomnum_base)"
+        },
+        {
+          "label": "Table5-White-PCAattitude",
+          "description": "Effect of mixed-race room on White students' racial attitudes PCA index",
+          "outcome_var": "PCAattitude",
+          "treatment_var": "mixracebas",
+          "controls": [
+            "Female", "Falseuct2012", "missfalse", "Foreign", "foreign_missing",
+            "privateschool_nomiss", "privateschool_miss",
+            "durpcabas_nomiss", "durpcabas_miss",
+            "consbas_nomiss", "consbas_miss",
+            "roFalseuct2012", "missrofalse", "roForeign_bas", "roforeign_missingbas",
+            "roprivschool_nomiss", "roprivschool_miss",
+            "rodurpcabas_nomiss", "rodurpcabas_miss",
+            "roconsbas_nomiss", "roconsbas_miss"
+          ],
+          "fixed_effects": ["Res_base"],
+          "n_controls": 21,
+          "sample_filter": "round==2 & white==1",
+          "vcov": "cluster(roomnum_base)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 11,
+        "controls_count_max": 21,
+        "linked_adjustment": false,
+        "notes": "Same control structure as G1/G2. No lagged outcome control (unlike IAT specs). Table A15 shows robustness with no-missing versions of PCA indices."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table5_white_pcaattitude",
+          "baseline__table5_white_pcacomm",
+          "baseline__table5_white_pcasocial"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/drop_roommate_controls",
+          "rc/controls/loo/Female",
+          "rc/controls/loo/Falseuct2012",
+          "rc/controls/loo/Foreign",
+          "rc/controls/loo/privateschool_nomiss",
+          "rc/controls/loo/durpcabas_nomiss",
+          "rc/controls/loo/consbas_nomiss",
+          "rc/controls/loo/roFalseuct2012",
+          "rc/controls/loo/roForeign_bas",
+          "rc/controls/loo/roprivschool_nomiss",
+          "rc/controls/loo/rodurpcabas_nomiss",
+          "rc/controls/loo/roconsbas_nomiss",
+          "rc/sample/full_sample_with_race_fe",
+          "rc/sample/restrict_black_only",
+          "rc/form/nomiss_pca_indices"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/room",
+          "params": {"cluster_var": "roomnum_base"},
+          "notes": "Paper clusters at the room level throughout."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/residence",
+            "params": {"cluster_var": "Res_base"},
+            "notes": "Cluster at residence level."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 30
+      },
+      "sampling": {
+        "seed": 174501,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Multiple outcome variables (PCAfriend, PCAattitude, PCAcomm, PCAsocial) times control/sample variants. Enumerable."
+      },
+      "diagnostics_plan": [],
+      "exploration_notes": [
+        "explore/population/black: Table5-Black-PCAfriend moved from baseline_spec_ids -- changes target population from White to Black students.",
+        "explore/population/full_sample: Table5-Full-PCAfriend moved from baseline_spec_ids -- changes target population from White to all students."
+      ]
+    }
+  ]
+}

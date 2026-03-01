@@ -1,24 +1,25 @@
 {
   "paper_id": "111185-V1",
-  "created_at": "2026-02-15",
+  "created_at": "2026-02-22",
+  "notes": "This is primarily a structural/computational paper (Julia, dynamic programming). The only regression-type content is a single OLS estimating damage function parameters (Table 1). The specification surface covers only this OLS regression. The broader structural model results (Tables 2-3, A1, A4; Figures 5-8, A1-A2) are not amenable to regression-based specification analysis.",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
       "design_audit": {
         "estimator": "ols",
-        "unit_of_observation": "study estimate",
-        "model_formula": "log_correct ~ logt",
-        "fixed_effects": [],
+        "outcome_var": "log_correct",
+        "treatment_var": "logt",
+        "fe_structure": [],
         "cluster_vars": [],
-        "weights": null,
-        "selection_story": "descriptive association (meta-regression)"
+        "se_type": "classical",
+        "notes": "Bivariate OLS from Stata `reg log_correct logt`. No FE, no clustering, no controls. Estimates power-law damage function parameters."
       },
       "claim_object": {
-        "outcome_concept": "Log climate damages (log of corrected damage fraction)",
-        "treatment_concept": "Log temperature increase (log degrees Celsius)",
-        "estimand_concept": "Elasticity of damages with respect to temperature (damage exponent d2 in power-law damage function)",
-        "target_population": "Howard & Sterner (2017) meta-analysis of global climate damage estimates (49 studies, 43 with positive damages)"
+        "outcome_concept": "Log of climate damage (corrected damage function, D(T) = GDP_loss/(1-GDP_loss))",
+        "treatment_concept": "Log of temperature increase (degrees C above preindustrial)",
+        "estimand_concept": "Power-law exponent d2 in the damage function D(T) = d1 * T^d2, estimated via log-log regression",
+        "target_population": "Meta-analysis sample of climate damage estimates from Howard & Sterner (2017)"
       },
       "baseline_specs": [
         {
@@ -26,40 +27,26 @@
           "outcome_var": "log_correct",
           "treatment_var": "logt",
           "controls": [],
-          "n_controls": 0,
-          "estimator": "OLS",
-          "se_type": "classical",
-          "n_obs": 43,
-          "notes": "Bivariate OLS: reg log_correct logt. Classical (non-robust) standard errors. Coefficient 1.882, SE 0.451."
+          "n_controls": 0
         }
       ],
       "constraints": {
         "controls_count_min": 0,
-        "controls_count_max": 6,
+        "controls_count_max": 7,
         "linked_adjustment": false,
-        "notes": "Baseline has 0 controls. Max 6 controls is conservative given N=43 (adding more than ~6 risks severe overfitting). Controls are meta-analytic study characteristics from Howard & Sterner (2017) dataset."
+        "notes": "Baseline is bivariate (0 controls). Optional controls from H&S dataset include study quality indicators (Grey, Repeat_Obs, Based_On_Other), damage type indicators (Market, cat), and study design variables (Preindustrial, Year). Max 7 total optional controls."
       },
       "core_universe": {
-        "design_spec_ids": [
-          "design/cross_sectional_ols/estimator/ols"
-        ],
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
         "rc_spec_ids": [
-          "rc/controls/sets/none",
-          "rc/controls/single/add_Preindustrial",
-          "rc/controls/single/add_Market",
-          "rc/controls/single/add_Grey",
-          "rc/controls/single/add_Year",
-          "rc/controls/single/add_Repeat_Obs",
-          "rc/controls/single/add_Based_On_Other",
-          "rc/controls/single/add_cat",
+          "rc/controls/single/add_*",
           "rc/controls/sets/minimal",
           "rc/controls/sets/extended",
           "rc/controls/sets/full",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/study_quality",
-          "rc/controls/progression/damage_type",
-          "rc/controls/progression/full",
-          "rc/controls/subset/*",
+          "rc/controls/progression/*",
+          "rc/controls/subset/block_*",
+          "rc/controls/subset/random_*",
           "rc/sample/outliers/trim_y_1_99",
           "rc/sample/outliers/trim_y_5_95",
           "rc/sample/outliers/trim_x_1_99",
@@ -78,47 +65,43 @@
           "rc/form/model/levels_quadratic",
           "rc/preprocess/outcome/winsor_1_99",
           "rc/preprocess/treatment/winsor_1_99",
-          "rc/joint/*"
+          "rc/joint/sample_controls/*",
+          "rc/joint/form_controls/*"
         ]
-      },
-      "control_pool": {
-        "available_controls": [
-          {"var": "Preindustrial", "type": "binary", "description": "Whether temperature baseline is preindustrial (1) vs later reference year (0)", "block": "study_design"},
-          {"var": "Market", "type": "binary", "description": "Whether estimate includes only market damages (1) vs total (0)", "block": "damage_type"},
-          {"var": "Nonmarket", "type": "binary", "description": "Whether estimate includes only nonmarket damages (1) vs total (0); only 3 obs = 1 in regression sample -- low-power control", "block": "damage_type"},
-          {"var": "Grey", "type": "binary", "description": "Grey literature indicator (1 = grey, 0 = peer reviewed)", "block": "study_quality"},
-          {"var": "Repeat_Obs", "type": "binary", "description": "Whether study is a repeated/updated estimate from same author group", "block": "study_quality"},
-          {"var": "Based_On_Other", "type": "binary", "description": "Whether estimate is derived from another study's results", "block": "study_quality"},
-          {"var": "cat", "type": "binary", "description": "Catastrophic damages flag", "block": "damage_type"},
-          {"var": "Year", "type": "continuous", "description": "Publication year of underlying study", "block": "study_design"}
-        ],
-        "mandatory_controls": [],
-        "control_blocks": {
-          "study_quality": ["Grey", "Repeat_Obs", "Based_On_Other"],
-          "damage_type": ["Market", "cat"],
-          "study_design": ["Preindustrial", "Year"]
-        }
       },
       "inference_plan": {
         "canonical": {
-          "spec_id": "infer/se/hc/classical",
+          "spec_id": "infer/se/classical/ols",
           "params": {},
-          "notes": "Paper uses classical (non-robust) OLS standard errors. Stata default: reg log_correct logt (no robust option)."
+          "notes": "Classical (non-robust) OLS standard errors, matching the paper's baseline Stata `reg` command."
         },
         "variants": [
-          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "HC1 (Stata robust) -- standard robustness check for heteroskedasticity."},
-          {"spec_id": "infer/se/hc/hc2", "params": {}, "notes": "HC2 -- better small-sample properties for N=43."},
-          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 -- most conservative heteroskedasticity-robust SE for small samples."}
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) standard errors."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 standard errors (small-sample corrected)."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 standard errors (jackknife-based, most conservative)."
+          }
         ]
       },
       "budgets": {
-        "max_specs_core_total": 80,
-        "max_specs_controls_subset": 32,
-        "notes": "With 3 control blocks (study_quality, damage_type, study_design), exhaustive block combinations = 2^3 = 8. Variable-level subsets add more. Total budget allows for ~80 specs across all axes."
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 25,
+        "notes": "Small dataset (N=43) with limited regression content. Budget is modest."
       },
       "sampling": {
         "seed": 111185,
-        "controls_subset_sampler": "exhaustive_blocks_then_stratified_size"
+        "controls_subset_sampler": "exhaustive_blocks_plus_random_variable_level",
+        "notes": "7 optional controls organized into 3 blocks (study_quality, damage_type, study_design). Exhaustive block combinations (2^3-1=7) plus 15 random variable-level subsets."
       },
       "diagnostics_plan": []
     }

@@ -1,0 +1,137 @@
+{
+  "paper_id": "181166-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols (reghdfe with absorbed FE)",
+        "model_formula": "d_ln_real_earn_win1 ~ d_computer_2017_2007_n_s1 + d_share_emp_2017_2007_n_s1 + i_computer_2007_n_s1 + i_male + controls [aw=dwsuppwt] | year + year_job_loss, cluster(dwsoc4)",
+        "fe_structure": ["year", "year_job_loss"],
+        "cluster_vars": ["dwsoc4"],
+        "weights": "dwsuppwt (DWS supplement sampling weights)",
+        "selection_story": "Cross-occupation variation in technological change (measured by changes in computer/software requirements in job postings from Burning Glass 2007-2017) predicts earnings losses among displaced workers"
+      },
+      "claim_object": {
+        "outcome_concept": "Change in log real weekly earnings after displacement (winsorized at 2.5th/97.5th percentile)",
+        "treatment_concept": "Occupation-level change in computer and software requirements (d_computer_2017_2007), normalized to standard-deviation units",
+        "estimand_concept": "Effect of occupation-level technological change on post-displacement earnings losses",
+        "target_population": "Displaced workers in CPS Displaced Worker Supplement (2010-2018), age 25-65, with real earnings >= $100 at both pre- and post-displacement jobs, not top-coded"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col2-SOC4",
+          "outcome_var": "d_ln_real_earn_win1",
+          "treatment_var": "d_computer_2017_2007_n_s1",
+          "controls": [
+            "d_share_emp_2017_2007_n_s1",
+            "i_computer_2007_n_s1",
+            "i_male",
+            "ln_unemp_dur",
+            "tenure_lost_job",
+            "i_ft_current_job",
+            "i_ft_lost_job",
+            "educ_num",
+            "age"
+          ],
+          "n_controls": 9,
+          "fixed_effects": ["year", "year_job_loss"],
+          "vcov": "cluster(dwsoc4)",
+          "weights": "dwsuppwt",
+          "sample_restriction": "samp_1 == 1 (employed sample, age 25-65, earnings >= 100, not top-coded, job loss year >= 2007)",
+          "notes": "Table 3 Column 2 (normalized, with employment share control). Key treatment variable is d_computer_2017_2007_n_s1 (change in computer/software requirements, 2007-2017, normalized). SOC-4 digit occupation codes."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "functional_form_policy": "Treatment variable is normalized to SD units. Outcome is winsorized change in log real earnings. The winsorization at 2.5% is part of the data construction; alternative winsorization percentiles are a natural robustness check.",
+        "occupation_code_note": "Paper uses two occupation classification systems: SOC-4 digit and Autor-Dorn (AD). The AD codes are an alternative coding of the same data. AD regressions use different treatment/control variables (d_computer_2017_2007_AD_n_s1, d_share_emp_2017_2007_AD_n_s1, i_computer_AD_2007_n_s1) and cluster at dwocc1990dd instead of dwsoc4. The normalization is also recomputed within the AD sample.",
+        "normalization_note": "Treatment and occupation-level controls are normalized to SD units within the analysis sample (samp_1). For full-time-only specs (Table 3 Col 3), normalization is recomputed within the full-time subsample (_n_s1_ft suffix). The runner must replicate this sample-specific normalization.",
+        "winsorization_note": "Outcome d_ln_real_earn_win1 is winsorized at 2.5th/97.5th percentile within samp_1 using Stata's winsor command. Alternative winsorization rc specs should also winsorize within the analysis sample."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col1_soc4",
+          "baseline__table3_col3_ft",
+          "baseline__table3_col4_AD",
+          "baseline__table3_col5_AD_ft"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_i_male",
+          "rc/controls/loo/drop_ln_unemp_dur",
+          "rc/controls/loo/drop_tenure_lost_job",
+          "rc/controls/loo/drop_i_ft_current_job",
+          "rc/controls/loo/drop_i_ft_lost_job",
+          "rc/controls/loo/drop_educ_num",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_d_share_emp",
+          "rc/controls/loo/drop_i_computer_2007",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/job_chars_only",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/demographics",
+          "rc/controls/progression/demographics_job",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/restriction/fulltime_only",
+          "rc/sample/restriction/age_25_44",
+          "rc/sample/restriction/age_45_65",
+          "rc/sample/restriction/college",
+          "rc/sample/restriction/no_college",
+          "rc/sample/restriction/male_only",
+          "rc/sample/outliers/winsor_1_99",
+          "rc/sample/outliers/winsor_5_95",
+          "rc/fe/drop/year_job_loss",
+          "rc/fe/drop/year",
+          "rc/data/treatment/unnormalized",
+          "rc/data/treatment/AD_occ_codes",
+          "rc/data/treatment/d_computer_2017_2010",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/dwsoc4",
+          "params": {"cluster_var": "dwsoc4"},
+          "notes": "Cluster at 4-digit SOC occupation level, matching paper's vce(cluster dwsoc4)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no occupation clustering)"
+          },
+          {
+            "spec_id": "infer/se/cluster/dwsoc2",
+            "params": {"cluster_var": "dwsoc2"},
+            "notes": "Cluster at 2-digit SOC occupation level (coarser)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 75,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 181166,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

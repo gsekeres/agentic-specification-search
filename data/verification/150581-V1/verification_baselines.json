@@ -1,0 +1,26 @@
+{
+  "paper_id": "150581-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Wage semi-elasticity to unemployment varies with job transitions (EE/UE) and skill mismatch, estimated from within-individual panel variation with industry-year and occupation-year FE",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "150581-V1_run_001",
+        "150581-V1_run_002",
+        "150581-V1_run_003",
+        "150581-V1_run_004",
+        "150581-V1_run_005"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table2_col1",
+        "baseline__table2_col2",
+        "baseline__table2_col3",
+        "baseline__table2_col5"
+      ],
+      "notes": "Panel FE (within estimator) with individual, industry-year, and occupation-year FE. All 40 rows have run_success=0 because the raw NLSY79 data requires Stata for construction. No estimates are available."
+    }
+  ],
+  "global_notes": "Complete run failure. All 40 specifications failed because the replication package provides raw NLSY .dct files that require Stata-specific data construction steps (weekly-to-monthly panel conversion, job transition coding, skill mismatch computation). The Python runner cannot execute these steps. The surface plan and spec_id assignments are coherent with the pre-run surface, but no numerical results exist to verify."
+}

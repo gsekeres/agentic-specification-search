@@ -1,0 +1,150 @@
+{
+  "paper_id": "139262-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "individual",
+        "randomization_type": "between_subject",
+        "treatment_var": "resolution",
+        "treatment_values": {"control": 0, "treated": 1},
+        "blocking_stratification": "session",
+        "n_sessions": 10,
+        "n_subjects": 200,
+        "setting": "laboratory_experiment_ztree"
+      },
+      "claim_object": {
+        "outcome_concept": "Asymmetric belief updating (motivated reasoning): subjects in the No-Resolution treatment underreact to bad news relative to Bayesian benchmark, indicating motivated beliefs when future uncertainty will not be resolved",
+        "treatment_concept": "Comparison of belief updating slopes (good vs bad news) across Resolution vs No-Resolution treatments. The focal coefficient is the slope of belief_adjustment on bayes_belief_adjustment for bad news in the No-Resolution treatment.",
+        "estimand_concept": "OLS coefficient of belief_adjustment on bayes_belief_adjustment, measuring responsiveness to Bayesian updating benchmark, split by treatment and signal type",
+        "target_population": "Laboratory subjects (200 university students) in a between-subject IQ-test belief experiment"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col2-NoRes-Bad",
+          "outcome_var": "belief_adjustment",
+          "treatment_var": "bayes_belief_adjustment",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "resolution==0 & signal==0",
+          "notes": "Main claim: coefficient near zero = underreaction to bad news in No-Resolution"
+        },
+        {
+          "label": "Table2-Col3-NoRes-DiD",
+          "outcome_var": "belief_adjustment",
+          "treatment_var": "bayes_belief_adjustment",
+          "controls": ["signal", "signal_bayesbeliefadj"],
+          "n_controls": 2,
+          "sample_filter": "resolution==0",
+          "notes": "Diff-in-diff within No-Resolution: interaction captures asymmetry"
+        },
+        {
+          "label": "Table2-Col1-NoRes-Good",
+          "outcome_var": "belief_adjustment",
+          "treatment_var": "bayes_belief_adjustment",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "resolution==0 & signal==1",
+          "notes": "Good news benchmark in No-Resolution"
+        },
+        {
+          "label": "Table2-Col5-Res-Bad",
+          "outcome_var": "belief_adjustment",
+          "treatment_var": "bayes_belief_adjustment",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "resolution==1 & signal==0",
+          "notes": "Bad news in Resolution (contrast to No-Resolution bad news)"
+        },
+        {
+          "label": "Table2-Col6-Res-DiD",
+          "outcome_var": "belief_adjustment",
+          "treatment_var": "bayes_belief_adjustment",
+          "controls": ["signal", "signal_bayesbeliefadj"],
+          "n_controls": 2,
+          "sample_filter": "resolution==1",
+          "notes": "Diff-in-diff within Resolution"
+        },
+        {
+          "label": "Table2-Col4-Res-Good",
+          "outcome_var": "belief_adjustment",
+          "treatment_var": "bayes_belief_adjustment",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "resolution==1 & signal==1",
+          "notes": "Good news in Resolution"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 4,
+        "linked_adjustment": false,
+        "notes": "Baseline uses 0 controls for single-signal regressions and 2 for DiD. Additional controls are pre-treatment covariates (rank, sumpoints, age, gender, prior, session) and serve only for precision, not identification, given randomization."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline",
+          "baseline__nores_did",
+          "baseline__nores_good",
+          "baseline__res_bad",
+          "baseline__res_did",
+          "baseline__res_good"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/single/add_rank",
+          "rc/controls/single/add_sumpoints",
+          "rc/controls/single/add_age",
+          "rc/controls/single/add_gender",
+          "rc/controls/single/add_prior",
+          "rc/controls/sets/full",
+          "rc/sample/quality/exclude_wrong_adjustments",
+          "rc/sample/quality/exclude_wrong_and_zero_adjustments",
+          "rc/sample/quality/exclude_extreme_ranks",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/session",
+          "rc/joint/controls_fe/full_plus_session"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Paper uses robust (HC1) standard errors throughout. No clustering."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/classical",
+            "params": {},
+            "notes": "Classical (homoskedastic) SEs as a reference."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 small-sample leverage correction, useful with N=50 per cell."
+          },
+          {
+            "spec_id": "infer/se/cluster/session",
+            "params": {"cluster_var": "session"},
+            "notes": "Cluster at session level (randomization unit is session-level treatment assignment)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "notes": "Full enumeration feasible. 6 baselines x (1 baseline + ~12 RC variants) + 2 design variants x 6 cells = ~84 specs."
+      },
+      "sampling": {
+        "seed": 139262,
+        "notes": "Full enumeration; no sampling needed."
+      }
+    }
+  ]
+}

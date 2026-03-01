@@ -34,7 +34,7 @@ from scipy.stats import binom, norm
 # ---------------------------------------------------------------------------
 BASE_DIR = Path(__file__).parent.parent.parent
 RESULTS_DIR = BASE_DIR / "estimation" / "results"
-OL_TABLE_DIR = BASE_DIR / "overleaf" / "tex" / "v8_tables"
+OL_TABLE_DIR = BASE_DIR.parent / "overleaf" / "tex" / "v8_tables"
 
 
 def load_json(path: Path) -> dict:
@@ -125,8 +125,8 @@ def main() -> None:
     # Percentiles of author-reported n_regressions_original (95 in-sample papers):
     # P5=0, P10=1, P25=20, P50=50, P75=108, P90=201
     # P5=0 is not meaningful for disclosure; mark the rest on table rows
-    percentile_m = {1: "P10", 20: "P25", 50: "P50", 108: "P75", 201: "P90"}
-    m_old_values = sorted(set([1, 2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    percentile_m = {20: "P25", 50: "P50", 108: "P75", 201: "P90"}
+    m_old_values = sorted(set([2, 3, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
                                + [108, 201]))
     highlight_m = 50
 

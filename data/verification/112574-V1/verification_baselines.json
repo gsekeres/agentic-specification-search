@@ -1,0 +1,18 @@
+{
+  "paper_id": "112574-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Differential effect of UN General Assembly voting alignment on ODA commitments during recipient-country election years vs. non-election years (p_unvotes_elecex = unvotes * i_elecex), using panel FE with 3-way clustering (donor, recipient, year).",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["112574-V1_run_001", "112574-V1_run_002", "112574-V1_run_003"],
+      "baseline_spec_ids": ["baseline", "baseline__main_colV", "baseline__main_colVI"],
+      "baseline_coefficient": 45.457828078799686,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.0169711759287882,
+      "baseline_n_obs": 15315,
+      "notes": "Main table Column IV is the preferred baseline (pair + year FE, no controls). Columns V (pair + donor-year FE) and VI (pair FE + macro controls) are alternative FE structures for the same claim. All three are significant at 5%. Columns VII-IX (run_004, run_005, run_006) use a different treatment variable (p_unvotes_rt_elecex = real-time UN votes decomposition) and are classified as noncore_alt_treatment despite being labeled as baseline specs in the surface."
+    }
+  ],
+  "global_notes": "Baseline group assignment is adjusted relative to the surface. The surface listed baseline__main_colVII, colVIII, colIX as baseline specs, but these use p_unvotes_rt_elecex (real-time unvotes decomposition interacted with elections) as the treatment variable rather than p_unvotes_elecex (standard unvotes interacted with elections). Since the treatment concept changes, these three are reclassified as noncore_alt_treatment. This is consistent with the surface's own explore/treatment/decompose_unvotes_rt_resid specification. Three specs duplicate the baseline identically (rc/fe/pair_plus_year, rc/sample/subset/balanced_panel, rc/joint/balanced_panel_pair_year) because the baseline already uses pair+year FE and the panel is already balanced."
+}

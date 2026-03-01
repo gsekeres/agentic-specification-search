@@ -1,0 +1,214 @@
+{
+  "paper_id": "149262-V2",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ancova_ols",
+        "randomization_unit": "class1",
+        "randomization_level": "classroom",
+        "strata_blocking": "grade1",
+        "n_clusters": 36,
+        "n_students": 1802,
+        "treatment_arms": ["treat1 (MS)", "treat2 (MSR)", "control"],
+        "sample_restriction": "hsco==0 (lower track)",
+        "fe_structure": ["grade1"],
+        "cluster_vars": ["class1"]
+      },
+      "claim_object": {
+        "outcome_concept": "Endline academic performance (standardized average of Chinese and math scores)",
+        "treatment_concept": "Mixed-ability seating (MS) vs. traditional same-ability seating (control)",
+        "estimand_concept": "ITT effect of mixed-ability seating on lower-track students' academic performance",
+        "target_population": "Lower-track elementary school students in Longhui county, China (grades 3-5)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-PanelA-Col2",
+          "outcome_var": "ave3",
+          "treatment_var": "treat1",
+          "baseline_outcome_var": "ave1",
+          "additional_treatment_var": "treat2",
+          "controls": ["gender", "age", "height", "hukou_rd1", "nationality_rd1", "health", "sib", "fa_eduy", "mo_eduy", "pc", "car"],
+          "fixed_effects": ["grade1"],
+          "n_controls": 11,
+          "sample_filter": "hsco==0",
+          "vcov": "cluster(class1)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 12,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_pA_col1",
+          "baseline__table3_pA_col4_chn",
+          "baseline__table3_pA_col6_math",
+          "baseline__table3_pB_col2_upper"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/ancova",
+          "design/randomized_experiment/estimator/with_covariates",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_gender",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_height",
+          "rc/controls/loo/drop_hukou_rd1",
+          "rc/controls/loo/drop_nationality_rd1",
+          "rc/controls/loo/drop_health",
+          "rc/controls/loo/drop_sib",
+          "rc/controls/loo/drop_fa_eduy",
+          "rc/controls/loo/drop_mo_eduy",
+          "rc/controls/loo/drop_pc",
+          "rc/controls/loo/drop_car",
+          "rc/controls/sets/none",
+          "rc/controls/sets/minimal_demographics",
+          "rc/controls/sets/family_ses",
+          "rc/controls/sets/full_no_fe",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/baseline_only",
+          "rc/controls/progression/demographics",
+          "rc/controls/progression/full",
+          "rc/sample/pooled_tracks",
+          "rc/sample/exclude_noncompliers",
+          "rc/sample/pre_attrition",
+          "rc/outcome/tchn3",
+          "rc/outcome/tmath3",
+          "rc/outcome/ave2_midterm",
+          "rc/outcome/chn3_raw",
+          "rc/outcome/math3_raw",
+          "rc/treatment/treat2_focal",
+          "rc/treatment/pooled_treatment",
+          "rc/fe/drop/grade1",
+          "rc/fe/add/school"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/class1",
+          "params": {"cluster_var": "class1"},
+          "notes": "Cluster at classroom level (randomization unit)"
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE (no clustering)"},
+          {"spec_id": "infer/se/cluster/grade1", "params": {"cluster_var": "grade1"}, "notes": "Cluster at strata level"},
+          {"spec_id": "infer/ri/randomization_inference", "params": {"strata": "grade1", "reps": 500, "seed": 4}, "notes": "Randomization inference"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 149262,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ancova_ols",
+        "randomization_unit": "class1",
+        "randomization_level": "classroom",
+        "strata_blocking": "grade1",
+        "n_clusters": 36,
+        "n_students": 1802,
+        "treatment_arms": ["treat1 (MS)", "treat2 (MSR)", "control"],
+        "sample_restriction": "hsco==0 (lower track)",
+        "fe_structure": ["grade1"],
+        "cluster_vars": ["class1"]
+      },
+      "claim_object": {
+        "outcome_concept": "Endline Big Five personality traits (extraversion, agreeableness, openness, neuroticism, conscientiousness)",
+        "treatment_concept": "Mixed-ability seating (MS) vs. traditional same-ability seating (control)",
+        "estimand_concept": "ITT effect of mixed-ability seating on lower-track students' noncognitive skills",
+        "target_population": "Lower-track elementary school students in Longhui county, China (grades 3-5)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-PanelA-Col1_extra",
+          "outcome_var": "extra2",
+          "treatment_var": "treat1",
+          "baseline_outcome_var": "extra1",
+          "additional_treatment_var": "treat2",
+          "controls": ["gender", "age", "height", "hukou_rd1", "nationality_rd1", "health", "sib", "fa_eduy", "mo_eduy", "pc", "car"],
+          "fixed_effects": ["grade1"],
+          "n_controls": 11,
+          "sample_filter": "hsco==0",
+          "vcov": "cluster(class1)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 10,
+        "controls_count_max": 12,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_pA_agree",
+          "baseline__table4_pA_open",
+          "baseline__table4_pA_neur",
+          "baseline__table4_pA_cons",
+          "baseline__table4_pB_extra_upper",
+          "baseline__table4_pB_agree_upper",
+          "baseline__table4_pB_open_upper",
+          "baseline__table4_pB_neur_upper",
+          "baseline__table4_pB_cons_upper"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/ancova",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_gender",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_height",
+          "rc/controls/loo/drop_hukou_rd1",
+          "rc/controls/loo/drop_nationality_rd1",
+          "rc/controls/loo/drop_health",
+          "rc/controls/loo/drop_sib",
+          "rc/controls/loo/drop_fa_eduy",
+          "rc/controls/loo/drop_mo_eduy",
+          "rc/controls/loo/drop_pc",
+          "rc/controls/loo/drop_car",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/family_ses_only",
+          "rc/sample/pooled_tracks",
+          "rc/sample/exclude_noncompliers",
+          "rc/treatment/treat2_focal",
+          "rc/treatment/pooled_treatment",
+          "rc/fe/drop/grade1"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/class1",
+          "params": {"cluster_var": "class1"},
+          "notes": "Cluster at classroom level (randomization unit)"
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE (no clustering)"},
+          {"spec_id": "infer/ri/randomization_inference", "params": {"strata": "grade1", "reps": 500, "seed": 4}, "notes": "Randomization inference"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 149262,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "paper_id": "112973-V1",
+  "created_at": "2026-02-25",
+  "notes": "Muehlenbachs, Spiller, & Timmins (2015), 'The Housing Market Impacts of Shale Gas Development'. DiD design exploiting timing of shale gas well drilling near properties in Pennsylvania. Property FE with repeat sales, county-by-year FE, quarter FE. Treatment heterogeneity by groundwater dependence (GW interaction). Multiple distance radii (K=1km, 1.5km, 2km, 2.5km, 3km). Full sample and boundary sample (narrow band around public water service area border).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "property (apn)",
+        "panel_time": "sale date (year/quarter)",
+        "fe_structure": ["property", "county_x_year", "quarter"],
+        "cluster_vars": ["censustractstatecounty"],
+        "treatment_timing": "Shale gas well pad drilling (spud date), varies by property-well pair",
+        "distance_radius": "K=2km (baseline; paper also shows 1km, 1.5km, 2.5km, 3km)",
+        "sample_restriction": "Repeat sales in Marcellus Shale region of PA, excluding new construction and sales in year built",
+        "notes": "xtreg logprice2012 post postGW npads npadsGW _IyeaXcou_* dq_2 dq_3 dq_4, i(property) fe robust cluster(censustractstatecounty). Treatment is `post` (well pads drilled within K km before sale), interacted with `GW` (groundwater dependence). `npads` controls for well pads within 20km. Focal parameter: `postGW` (differential effect for groundwater-dependent properties) or the linear combination `post + postGW` (total GW effect)."
+      },
+      "claim_object": {
+        "outcome_concept": "Log residential property sale price (inflation-adjusted to 2012 dollars)",
+        "treatment_concept": "Proximity to shale gas well pads drilled before the sale date (within K km radius), interacted with groundwater dependence (GW)",
+        "estimand_concept": "ATT of nearby shale gas drilling on house prices, with differential effect for groundwater-dependent properties vs. those on piped water",
+        "target_population": "Repeat-sale residential properties in the Marcellus Shale region of Pennsylvania"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-PanelA-K2km-Full",
+          "outcome_var": "logprice2012",
+          "treatment_var": "postGW",
+          "controls": ["post", "npads", "npadsGW", "county_x_year_FE", "quarter_FE"],
+          "n_controls": 4,
+          "notes": "K=2km distance radius, full sample. post = pads in 2km before sale; postGW = post*GW; npads = pads in 20km; npadsGW = npads*GW. County-year and quarter FE absorbed."
+        },
+        {
+          "label": "Table2-PanelA-K2km-Boundary",
+          "outcome_var": "logprice2012",
+          "treatment_var": "postGW",
+          "controls": ["post", "npads", "npadsGW", "county_x_year_FE", "quarter_FE"],
+          "n_controls": 4,
+          "notes": "K=2km, boundary sample (band1000==1). Restricts to properties in narrow band around public water service area border."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 4,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "mandatory_controls": ["post", "npads", "npadsGW"],
+        "notes": "post, npads, npadsGW are always included. postGW is the focal treatment variable (not a control). GW itself is collinear with property FE. House characteristics are not included in the baseline (repeat-sales design absorbs them via property FE)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_k2km_boundary"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/data/construction/distance_K_1km",
+          "rc/data/construction/distance_K_1.5km",
+          "rc/data/construction/distance_K_2.5km",
+          "rc/data/construction/distance_K_3km",
+          "rc/sample/subset/full_sample",
+          "rc/sample/subset/boundary_sample",
+          "rc/sample/subset/single_well_only",
+          "rc/sample/outliers/trim_price_1_99",
+          "rc/sample/outliers/trim_price_5_95",
+          "rc/sample/period/pre_2010",
+          "rc/sample/period/post_2005",
+          "rc/controls/single/add_house_characteristics",
+          "rc/controls/loo/drop_npads",
+          "rc/controls/loo/drop_npadsGW",
+          "rc/fe/drop_county_year_to_county_plus_year",
+          "rc/fe/add_census_tract",
+          "rc/fe/add_school_district",
+          "rc/form/treatment/bore_count_instead_of_pad",
+          "rc/form/treatment/production_intensity",
+          "rc/form/treatment/permitted_undrilled",
+          "rc/form/treatment/time_decomposition",
+          "rc/preprocess/outcome/nominal_price",
+          "rc/joint/distance_sample/*",
+          "rc/joint/distance_treatment/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/census_tract",
+          "params": {"cluster_var": "censustractstatecounty"},
+          "notes": "Cluster-robust SE at census tract level, matching the paper."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/county", "params": {"cluster_var": "countycod"}, "notes": "Coarser clustering at county level."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."},
+          {"spec_id": "infer/se/cluster/property", "params": {"cluster_var": "property"}, "notes": "Cluster at property level (repeat sales)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 15,
+        "notes": "Most variation from distance radius (5 choices), sample (full/boundary/single-well), and treatment definition. Control variation is limited since property FE absorbs most cross-sectional differences."
+      },
+      "sampling": {
+        "seed": 112973,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Small control pool beyond the mandatory regressors. Full enumeration is feasible."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/permitted_undrilled",
+          "scope": "baseline_group",
+          "linkage": "Table A7 uses permitted-but-undrilled wells as a placebo treatment",
+          "notes": "Permitted but not yet drilled well pads serve as a falsification test (should show no effect if identification is valid)."
+        }
+      ]
+    }
+  ]
+}

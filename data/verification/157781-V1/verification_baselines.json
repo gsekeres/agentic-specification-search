@@ -1,0 +1,26 @@
+{
+  "paper_id": "157781-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Closure of the Grand Canal increased rebellion incidence in canal-adjacent counties relative to non-adjacent counties (DiD)",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "157781-V1_run_001",
+        "157781-V1_run_002",
+        "157781-V1_run_003",
+        "157781-V1_run_004",
+        "157781-V1_run_005"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table3_col1",
+        "baseline__table3_col2",
+        "baseline__table3_col3",
+        "baseline__table3_col4",
+        "baseline__table3_col5"
+      ],
+      "notes": "Five baseline specs corresponding to Table 3 columns 1-5. Col 4 is the preferred specification (full FE, no controls). Col 5 (full FE + all 15 controls) fails with singular matrix error. Outcome: asinh(rebellion onset per 1600 population). Treatment: interaction1 = alongcanal x reform (binary canal proximity x post-closure). Design: TWFE DiD with county and year FE, clustered at county level."
+    }
+  ],
+  "global_notes": "Surface-driven run. Single baseline group G1. All planned specs from the surface core_universe were executed (47 total). 16 failures: 4 from singular matrix (col 5 baseline + 3 LOO/set variants with all 15 controls), 11 from duplicate column names in the merged sample-restriction data, and 1 outlier-trim that also hits the duplicate-column bug. No baseline-group reassignment needed. No spurious groups found."
+}

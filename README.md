@@ -17,7 +17,7 @@ The current sample covers **99 papers** from AEA journals (AER, AEJ-Applied, AEJ
 ```
 agentic_specification_search/
 ├── README.md
-├── unified_results.csv                 
+├── unified_results.csv
 ├── unified_inference_results.csv        # Inference-only rows (infer/*), if present
 │
 ├── specification_tree/                 # Specification tree definitions
@@ -35,7 +35,12 @@ agentic_specification_search/
 │   └── 07_CLEANUP.md                   # Optional disk cleanup guidance
 │
 ├── scripts/                            # Infrastructure scripts
+│   ├── download_utils.py               # Shared constants/helpers for download pipeline
+│   ├── download_packages.py            # Authenticated openICPSR downloader (curl_cffi)
+│   ├── extract_packages.py             # ZIP extraction with cleanup
 │   ├── validate_agent_outputs.py       # Mechanical validation of agent outputs
+│   ├── normalize_agent_outputs.py      # Normalize outputs to current spec-tree schema
+│   ├── agent_output_utils.py           # Shared output helpers
 │   ├── paper_replications/             # Per-paper replication scripts (optional)
 │   │   └── {PAPER_ID}.py
 │   └── paper_analyses/                 # Per-paper surface-driven runner scripts
@@ -69,31 +74,28 @@ agentic_specification_search/
 │   │   ├── 19_sensitivity_tables.py
 │   │   └── make_figures.jl
 │   ├── data/                           # Intermediate datasets
-│   │   ├── claim_level.csv
-│   │   ├── spec_level.csv
-│   │   ├── spec_level_verified.csv
-│   │   ├── spec_level_verified_core.csv
-│   │   └── i4r_comparison.csv
-│   ├── results/                        # Estimation outputs (JSON)
-│   │   ├── mixture_params_abs_t.json
-│   │   ├── dependence.json
-│   │   ├── counterfactual_params.json
-│   │   └── ...
 │   └── figures/                        # Generated figures (PDF)
 │
 ├── data/
+│   ├── cache/                          # HTTP response cache (datacite_responses.db)
 │   ├── metadata/
-│   │   ├── aea_package_to_journal.jsonl    # Full AEA package universe
-│   │   └── ...
 │   ├── downloads/
-│   │   ├── raw_packages/               # Downloaded ZIP files
+│   │   ├── raw_packages/               # Downloaded ZIP files (gitignored)
 │   │   └── extracted/                  # Unzipped replication packages
-│   └── tracking/
-│       ├── spec_search_status.json     # Per-paper analysis status
-│       ├── completed_analyses.jsonl
-│       └── download_manifest.jsonl
+│   │       └── {PAPER_ID}/             # Per-paper directory with data + agent outputs
+│   ├── tracking/
+│   │   ├── AEA_universe.jsonl          # Full AEA package universe (4,284 packages)
+│   │   ├── build_aea_universe.py       # Universe builder (DataCite + Crossref)
+│   │   ├── download_tracking.jsonl     # Per-download attempt log
+│   │   └── replication_tracking.jsonl  # Per-paper replication status
+│   └── verification/
+│       └── {PAPER_ID}/                 # Verification reports + baselines
 │
-├── i4r/                                # I4R replication data (Sample A)
+├── i4r/                                # I4R replication data (104 papers, 41 on openICPSR)
+│   ├── paper_list.csv                  # Full I4R paper list
+│   ├── papers_with_replication_urls.csv # Papers with resolved openICPSR/Dataverse URLs
+│   └── Meta Database Public.xlsx       # Full I4R metadata
+│
 └── non-empirical-figures/              # Standalone theory figures
 ```
 
@@ -116,9 +118,57 @@ For a minimal (unpinned) environment:
 
 ```bash
 python -m pip install -r requirements.txt
+pip install curl_cffi   # needed for openICPSR downloads
 ```
 
-### Full pipeline
+### Downloading replication packages
+
+Replication packages are hosted on openICPSR behind Cloudflare. The downloader uses `curl_cffi` to impersonate Chrome's TLS fingerprint, then authenticates via Keycloak SSO.
+
+```bash
+# Set credentials (or omit to be prompted interactively)
+export ICPSR_EMAIL="your@email.com"
+export ICPSR_PASS="your_password"
+
+# Test login
+python scripts/download_packages.py --login-only
+
+# Dry run — see what would download
+python scripts/download_packages.py --sample 10 --seed 42 --dry-run
+
+# Download specific packages
+python scripts/download_packages.py --project-ids 112431 113517
+
+# Download a random sample
+python scripts/download_packages.py --sample 10 --seed 42
+
+# Filter by journal/year
+python scripts/download_packages.py --journal "American Economic Review" --year-min 2015
+
+# Skip auto-extraction
+python scripts/download_packages.py --sample 5 --seed 42 --skip-extract
+
+# Extract manually
+python scripts/extract_packages.py
+python scripts/extract_packages.py --paper-id 112431-V1
+```
+
+Key options: `--delay` (seconds between downloads, default 5), `--batch-size` (stop after N successes), `--force` (re-download existing), `--max-retries` (default 3).
+
+Downloads are tracked in `data/tracking/download_tracking.jsonl`. Packages that already exist (by paper ID in tracking + on disk) are skipped automatically.
+
+### Universe management
+
+The AEA universe (4,284 packages linking openICPSR project IDs to AEA paper DOIs) is built from DataCite + Crossref:
+
+```bash
+python data/tracking/build_aea_universe.py              # use cached data
+python data/tracking/build_aea_universe.py --force-refresh  # re-fetch DataCite
+python data/tracking/build_aea_universe.py --stats-only     # print summary
+python data/tracking/build_aea_universe.py --incremental    # only new Crossref
+```
+
+### Full estimation pipeline
 
 ```bash
 cd agentic_specification_search
@@ -150,7 +200,7 @@ python estimation/run_all.py --extensions   # Extension analyses only
 
 ### Adding new papers
 
-1. Download replication packages to `data/downloads/extracted/{PAPER_ID}/`
+1. Download replication packages: `python scripts/download_packages.py --project-ids {PID}`
 2. (Optional) Replicate baseline results / translate code (see `prompts/01_replicator.md`)
 3. Classify designs (see `prompts/02_paper_classifier.md`)
 4. Build a surface (see `prompts/03_spec_surface_builder.md`)
@@ -239,6 +289,6 @@ The data construction stage also concatenates these per-paper files into `unifie
 
 All analyses use open-source tools (no Stata):
 
-- **Python**: `pandas`, `numpy`, `statsmodels`, `linearmodels`, `pyfixest`, `scipy`
+- **Python**: `pandas`, `numpy`, `statsmodels`, `linearmodels`, `pyfixest`, `scipy`, `curl_cffi`
 - **R**: `fixest`, `plm`, `lfe`, `did`, `synthdid`
 - **Julia**: `PyPlot`, `DataFrames`, `CSV`, `JSON3`, `Distributions`, `KernelDensity`

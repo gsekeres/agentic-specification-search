@@ -1,0 +1,40 @@
+{
+  "paper_id": "173341-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of cisterns treatment on requests for private goods from politicians (clientelist behavior), in semi-arid Brazilian municipalities. Household-level RCT with municipality FE and year FE, stacked 2012-2013.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "173341-V1__G1__run001",
+        "173341-V1__G1__run002"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table3_col3",
+        "baseline__table3_col4"
+      ],
+      "baseline_coefficient": -0.0296,
+      "baseline_std_error": 0.0126,
+      "baseline_p_value": 0.0185,
+      "baseline_n_obs": 4288,
+      "notes": "Two baseline specs from Table 3: Col 3 (joint treatment + rainfall, no interaction) and Col 4 (adds treatment x rainfall interaction). Both produce nearly identical coefficients on the treatment variable (~-0.030). The focal coefficient is on 'treatment' (cistern receipt), not on rainfall. Treatment reduces private goods requests by ~3pp."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of cistern treatment exposure (share of treated in voting section) on votes for incumbent mayor, in municipalities where incumbent ran for re-election. Section-level analysis with voting location FE.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "173341-V1__G2__run046"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table4_col1"
+      ],
+      "baseline_coefficient": -0.1012,
+      "baseline_std_error": 0.0581,
+      "baseline_p_value": 0.0829,
+      "baseline_n_obs": 866,
+      "notes": "Single baseline from Table 4 Col 1. Effect of share of cistern-treated on incumbent votes is -0.101, marginally significant (p=0.083). Location FE absorbed. Small effective sample (866 section-observations, ~21 municipalities)."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified two baseline groups: G1 (individual-level clientelist behavior, Table 3) and G2 (section-level electoral outcomes, Table 4). The runner produced cross-product combinations of spec_id variations with year subsamples and engagement controls, resulting in duplicate spec_ids within G1 (45 rows vs 21 planned core specs). This is not invalid but reflects a larger-than-planned specification set. All 51 rows are valid and core."
+}

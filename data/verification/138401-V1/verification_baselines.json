@@ -1,0 +1,26 @@
+{
+  "paper_id": "138401-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of M12_exp_rate on ln_cpi_income",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "138401-V1_run_001",
+        "138401-V1_run_003",
+        "138401-V1_run_004",
+        "138401-V1_run_005",
+        "138401-V1_run_006"
+      ],
+      "baseline_spec_ids": [
+        "baseline__ln_cpi_income",
+        "baseline__cpi_incwage_no0",
+        "baseline__poverty100",
+        "baseline__employed",
+        "baseline__hrs_worked"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

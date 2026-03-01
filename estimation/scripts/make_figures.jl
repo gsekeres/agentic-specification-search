@@ -25,8 +25,8 @@ const BASE_DIR    = dirname(dirname(@__DIR__))
 const DATA_DIR    = joinpath(BASE_DIR, "estimation", "data")
 const RESULTS_DIR = joinpath(BASE_DIR, "estimation", "results")
 const FIG_DIR     = joinpath(BASE_DIR, "estimation", "figures")
-const OL_FIG_DIR  = joinpath(BASE_DIR, "overleaf", "tex", "v8_figures")
-const PAPER_FIG_DIR = joinpath(BASE_DIR, "scientific-competition-overleaf", "tex", "v8_figures")
+const OL_FIG_DIR  = joinpath(dirname(BASE_DIR), "overleaf", "tex", "v8_figures")
+const PAPER_FIG_DIR = joinpath(dirname(BASE_DIR), "scientific-competition-overleaf", "tex", "v8_figures")
 
 mkpath(FIG_DIR)
 
@@ -286,7 +286,7 @@ function fig2_mixture_fit()
     t_data = load_verified_core_abs_t()
     t_data === nothing && return @warn "SKIP: no verified-core data"
 
-    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.5)
+    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.0)
     xg = collect(range(0, xmax, length=500))
     total = [mix_pdf(x, πv, μv, σv; lo=lo) for x in xg]
     comps = [[πv[k] * tn_pdf(x, μv[k], σv[k]; lo=lo) for x in xg] for k in 1:3]
@@ -379,7 +379,7 @@ function fig_mixture_k(K::Int)
     t_data === nothing && return @warn "SKIP: no verified-core data"
     t_data = t_data[t_data .<= 10.0]
 
-    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.5)
+    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.0)
     xg = collect(range(0, xmax, length=500))
     total = [mix_pdf(x, πv, μv, σv; lo=lo) for x in xg]
     comps = [[πv[k] * tn_pdf(x, μv[k], σv[k]; lo=lo) for x in xg] for k in 1:K]
@@ -458,7 +458,7 @@ function fig_folded_k(K::Int)
     t_data === nothing && return @warn "SKIP: no verified-core data"
     t_data = t_data[t_data .<= 10.0]
 
-    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.5)
+    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.0)
     xg = collect(range(0, xmax, length=500))
     total = [fn_mix_pdf(x, πv, μv, σv) for x in xg]
     comps = [[πv[k] * fn_pdf(x, μv[k], σv[k]) for x in xg] for k in 1:K]
@@ -548,7 +548,7 @@ function fig_mu_free_comparison()
 
     for (panel_idx, (panel_title, panel_data, sample_suffix)) in enumerate(samples)
         ax = axes[panel_idx]
-        xmax = panel_idx == 1 ? 20.5 : 10.5
+        xmax = 10.0
         xg = collect(range(0, xmax, length=500))
 
         ax.hist(panel_data[panel_data .< xmax], bins=collect(range(0, xmax, step=0.3)),
@@ -640,7 +640,7 @@ function fig_mixture_constrained(trim_key::String, constraint_label::AbstractStr
     t_data === nothing && return @warn "SKIP: no verified-core data"
     t_data = t_data[t_data .<= 10.0]
 
-    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.5)
+    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.0)
     xg = collect(range(0, xmax, length=500))
     total = [mix_pdf(x, πv, μv, σv; lo=lo) for x in xg]
     comps = [[πv[k] * tn_pdf(x, μv[k], σv[k]; lo=lo) for x in xg] for k in 1:3]
@@ -751,7 +751,7 @@ function fig_systematic_grid()
                 n_obs = Int(params["n_obs"])
 
                 t_data = t_data_all
-                xmax_data = 20.5
+                xmax_data = 10.0
                 xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, xmax_data)
                 bin_step = 0.5
                 xg = collect(range(0, xmax, length=600))
@@ -833,13 +833,9 @@ function fig_foldnorm_mufree(comp_key::String, K::Int, filename::String)
 
     t_data = load_verified_core_abs_t()
     t_data === nothing && return @warn "SKIP: no verified-core data"
-    is_trimmed = occursin("trim", comp_key)
-    if is_trimmed
-        t_data = t_data[t_data .<= 10.0]
-    end
+    t_data = t_data[t_data .<= 10.0]
 
-    xmax_cap = is_trimmed ? 10.5 : 20.5
-    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, xmax_cap)
+    xmax = min(max(maximum(t_data), maximum(μv .+ 4 .* σv)) + 0.25, 10.0)
     xg = collect(range(0, xmax, length=500))
     total = [fn_mix_pdf(x, πv, μv, σv) for x in xg]
     comps = [[πv[k] * fn_pdf(x, μv[k], σv[k]) for x in xg] for k in 1:K]
@@ -1103,8 +1099,8 @@ function fig_counterfactual_nullfdr(m_old_target::Int)
     ax2 = axes[2]
 
     # Zoom very tightly around the calibration point
-    m_zoom_lo = 7250
-    m_zoom_hi = 7350
+    m_zoom_lo = 6950
+    m_zoom_hi = 7050
     n_m = 400
     m_lin = collect(range(m_zoom_lo, m_zoom_hi, length=n_m))
     m_grid = unique(round.(Int, m_lin))
@@ -1342,7 +1338,7 @@ function fig6_mixture_diagnostics()
     μv = [params["mu"][k]    for k in ["N","H","L"]]
     σv = [params["sigma"][k] for k in ["N","H","L"]]
     lo = get(params, "truncation_lo", 0.0)
-    wt = get(mix, "winsorize_threshold", 20.0)
+    wt = something(get(mix, "winsorize_threshold", nothing), 20.0)
 
     t_col = findcol(spec, "Z_abs", "Z")
     t_col === nothing && return @warn "SKIP: no Z column"
@@ -1413,7 +1409,7 @@ function fig7_k_sensitivity()
     t_data === nothing && return @warn "SKIP: no verified-core data"
     t_data = t_data[t_data .<= 10.0]
 
-    xmax = 10.5
+    xmax = 10.0
     xg = collect(range(0, xmax, length=500))
 
     # Colors and styles for each K

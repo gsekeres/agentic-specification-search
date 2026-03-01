@@ -1,0 +1,262 @@
+{
+  "paper_id": "112474-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endog_vars": ["T"],
+        "instrument_vars": ["mean_grad_new"],
+        "n_instruments": 1,
+        "overid_df": 0,
+        "fe_structure": ["dccode0"],
+        "cluster_vars": ["placecode0"],
+        "sample_restriction": "largeareas==1",
+        "bundle": {
+          "bundle_type": "iv",
+          "linked_adjustment": true,
+          "notes": "Controls and district FE are shared across first and second stages per paper code."
+        }
+      },
+      "claim_object": {
+        "outcome_concept": "Change in female employment rate (first-differenced proportion employed, 2001 minus 1996)",
+        "treatment_concept": "Community received Eskom rural electrification project between 1996 and 2001 (binary indicator T)",
+        "estimand_concept": "LATE of electrification on female employment, instrumented by land gradient",
+        "target_population": "Rural tribal communities in KwaZulu-Natal with at least 100 adults in both census years"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col9-Female",
+          "outcome_var": "d_prop_emp_f",
+          "treatment_var": "T",
+          "instrument_var": "mean_grad_new",
+          "controls": [
+            "kms_to_subs0", "baseline_hhdens0", "base_hhpovrate0",
+            "prop_head_f_a0", "sexratio0", "prop_indianwhite0",
+            "kms_to_road0", "kms_to_town0", "prop_matric_m0", "prop_matric_f0",
+            "d_prop_waterclose", "d_prop_flush"
+          ],
+          "n_controls": 12,
+          "fixed_effects": ["dccode0"],
+          "vcov": "CRV1:placecode0"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 12,
+        "linked_adjustment": true
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_col8_female",
+          "baseline__table4_col7_female"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_kms_to_subs0",
+          "rc/controls/loo/drop_baseline_hhdens0",
+          "rc/controls/loo/drop_base_hhpovrate0",
+          "rc/controls/loo/drop_prop_head_f_a0",
+          "rc/controls/loo/drop_sexratio0",
+          "rc/controls/loo/drop_prop_indianwhite0",
+          "rc/controls/loo/drop_kms_to_road0",
+          "rc/controls/loo/drop_kms_to_town0",
+          "rc/controls/loo/drop_prop_matric_m0",
+          "rc/controls/loo/drop_prop_matric_f0",
+          "rc/controls/loo/drop_d_prop_waterclose",
+          "rc/controls/loo/drop_d_prop_flush",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/geographic",
+          "rc/controls/progression/demographic",
+          "rc/controls/progression/full_no_services",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/full_sample",
+          "rc/sample/restriction/no_roads",
+          "rc/sample/restriction/no_nearby_treated_1km",
+          "rc/sample/restriction/no_nearby_treated_5km",
+          "rc/fe/drop/dccode0",
+          "rc/fe/add/hetindex_controls",
+          "rc/form/outcome/asinh",
+          "rc/estimation/ols_reduced_form"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/placecode0",
+          "params": {"cluster_var": "placecode0"},
+          "notes": "Cluster-robust SEs at the community (placecode0) level, matching the paper's baseline inference."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust HC1 SEs only (no clustering)."
+          },
+          {
+            "spec_id": "infer/se/cluster/dccode0",
+            "params": {"cluster_var": "dccode0"},
+            "notes": "Cluster at district level (10 clusters) as a stress test for coarser clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112474,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/strength/first_stage_f",
+          "scope": "baseline_group",
+          "linkage": "computed_for_baseline"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endog_vars": ["T"],
+        "instrument_vars": ["mean_grad_new"],
+        "n_instruments": 1,
+        "overid_df": 0,
+        "fe_structure": ["dccode0"],
+        "cluster_vars": ["placecode0"],
+        "sample_restriction": "largeareas==1",
+        "bundle": {
+          "bundle_type": "iv",
+          "linked_adjustment": true,
+          "notes": "Controls and district FE are shared across first and second stages per paper code."
+        }
+      },
+      "claim_object": {
+        "outcome_concept": "Change in male employment rate (first-differenced proportion employed, 2001 minus 1996)",
+        "treatment_concept": "Community received Eskom rural electrification project between 1996 and 2001 (binary indicator T)",
+        "estimand_concept": "LATE of electrification on male employment, instrumented by land gradient",
+        "target_population": "Rural tribal communities in KwaZulu-Natal with at least 100 adults in both census years"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col9-Male",
+          "outcome_var": "d_prop_emp_m",
+          "treatment_var": "T",
+          "instrument_var": "mean_grad_new",
+          "controls": [
+            "kms_to_subs0", "baseline_hhdens0", "base_hhpovrate0",
+            "prop_head_f_a0", "sexratio0", "prop_indianwhite0",
+            "kms_to_road0", "kms_to_town0", "prop_matric_m0", "prop_matric_f0",
+            "d_prop_waterclose", "d_prop_flush"
+          ],
+          "n_controls": 12,
+          "fixed_effects": ["dccode0"],
+          "vcov": "CRV1:placecode0"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 12,
+        "linked_adjustment": true
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_col8_male",
+          "baseline__table4_col7_male"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_kms_to_subs0",
+          "rc/controls/loo/drop_baseline_hhdens0",
+          "rc/controls/loo/drop_base_hhpovrate0",
+          "rc/controls/loo/drop_prop_head_f_a0",
+          "rc/controls/loo/drop_sexratio0",
+          "rc/controls/loo/drop_prop_indianwhite0",
+          "rc/controls/loo/drop_kms_to_road0",
+          "rc/controls/loo/drop_kms_to_town0",
+          "rc/controls/loo/drop_prop_matric_m0",
+          "rc/controls/loo/drop_prop_matric_f0",
+          "rc/controls/loo/drop_d_prop_waterclose",
+          "rc/controls/loo/drop_d_prop_flush",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/geographic",
+          "rc/controls/progression/demographic",
+          "rc/controls/progression/full_no_services",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/full_sample",
+          "rc/sample/restriction/no_roads",
+          "rc/sample/restriction/no_nearby_treated_1km",
+          "rc/sample/restriction/no_nearby_treated_5km",
+          "rc/fe/drop/dccode0",
+          "rc/fe/add/hetindex_controls",
+          "rc/form/outcome/asinh",
+          "rc/estimation/ols_reduced_form"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/placecode0",
+          "params": {"cluster_var": "placecode0"},
+          "notes": "Cluster-robust SEs at the community (placecode0) level, matching the paper's baseline inference."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust HC1 SEs only (no clustering)."
+          },
+          {
+            "spec_id": "infer/se/cluster/dccode0",
+            "params": {"cluster_var": "dccode0"},
+            "notes": "Cluster at district level (10 clusters) as a stress test for coarser clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112474,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/instrumental_variables/strength/first_stage_f",
+          "scope": "baseline_group",
+          "linkage": "computed_for_baseline"
+        }
+      ]
+    }
+  ]
+}

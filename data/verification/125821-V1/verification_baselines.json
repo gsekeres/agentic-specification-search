@@ -1,0 +1,78 @@
+{
+  "paper_id": "125821-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of passing an operational revenue limit referendum on student academic outcomes, averaged over 10 post-election years. Estimated via Cellini et al. (2010) one-step dynamic RD at the 50% vote share cutoff, using Wisconsin school district panel data 1996-2014.",
+      "expected_sign": "positive for test scores and spending; negative for dropout rate",
+      "baseline_spec_run_ids": [
+        "125821-V1_run0001",
+        "125821-V1_run0002",
+        "125821-V1_run0003",
+        "125821-V1_run0004",
+        "125821-V1_run0005",
+        "125821-V1_run0006"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__dropout_rate",
+        "baseline__wkce_math10",
+        "baseline__log_instate_enr",
+        "baseline__rev_lim_mem",
+        "baseline__tot_exp_mem"
+      ],
+      "baseline_estimates": {
+        "advprof_math10": {
+          "spec_run_id": "125821-V1_run0001",
+          "coefficient": 5.886,
+          "std_error": 1.685,
+          "p_value": 0.000537,
+          "n_obs": 3253,
+          "r_squared": 0.843
+        },
+        "dropout_rate": {
+          "spec_run_id": "125821-V1_run0002",
+          "coefficient": -0.105,
+          "std_error": 0.072,
+          "p_value": 0.146,
+          "n_obs": 7614,
+          "r_squared": 0.673
+        },
+        "wkce_math10": {
+          "spec_run_id": "125821-V1_run0003",
+          "coefficient": 4.529,
+          "std_error": 1.701,
+          "p_value": 0.008,
+          "n_obs": 3256,
+          "r_squared": 0.879
+        },
+        "log_instate_enr": {
+          "spec_run_id": "125821-V1_run0004",
+          "coefficient": 0.071,
+          "std_error": 0.044,
+          "p_value": 0.112,
+          "n_obs": 3580,
+          "r_squared": 0.965
+        },
+        "rev_lim_mem": {
+          "spec_run_id": "125821-V1_run0005",
+          "coefficient": 315.541,
+          "std_error": 111.876,
+          "p_value": 0.005,
+          "n_obs": 7792,
+          "r_squared": 0.831
+        },
+        "tot_exp_mem": {
+          "spec_run_id": "125821-V1_run0006",
+          "coefficient": 298.268,
+          "std_error": 155.147,
+          "p_value": 0.056,
+          "n_obs": 7792,
+          "r_squared": 0.797
+        }
+      },
+      "notes": "Six baseline outcomes span student achievement (advprof_math10, wkce_math10), dropout rate, postsecondary enrollment (log_instate_enr), and fiscal outcomes (rev_lim_mem, tot_exp_mem). The primary headline result is advprof_math10 (Table 5 Panel A Col 2). All use the Cellini one-step dynamic RD with cubic polynomial in vote share, district FE, and clustered SEs at district level. The claim object is shared: all measure the average 10-year effect of passing an operational referendum on different outcome dimensions for the same population."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified one baseline group (G1) covering six outcome variables under the same Cellini one-step dynamic RD design. The rdrobust_pre_placebo specifications (run0058-run0063) are classified as non-core because they test the null hypothesis of no pre-election effect -- these are falsification checks rather than core robustness tests of the main claim."
+}

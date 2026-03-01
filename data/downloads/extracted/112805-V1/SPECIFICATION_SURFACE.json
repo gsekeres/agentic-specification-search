@@ -1,0 +1,123 @@
+{
+  "paper_id": "112805-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "iv_fe",
+        "randomization_unit": "lottery_FE (lottery priority group)",
+        "strata_or_blocks": "lottery_FE fixed effects",
+        "estimand": "IV coefficient on VA (testing if VAM coefficient = 1)",
+        "iv_structure": "lottery assignment instruments for school VAM, conditional on lottery_FE",
+        "n_clusters": "lottery_FE groups"
+      },
+      "claim_object": {
+        "outcome_concept": "Student test score in year after lottery (testz2003, average of math and reading z-scores)",
+        "treatment_concept": "Value-added measure (VAM) of assigned school (constructed from pre-lottery cohorts)",
+        "estimand_concept": "IV estimate of the effect of school VAM on student achievement, instrumented by lottery assignment; test whether coefficient equals 1 (unbiased VAM)",
+        "target_population": "Students on the margin in CMS school choice lottery (onmargin==1), grades 4-8, Spring 2002 lottery"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Model2-AR-allpre",
+          "outcome_var": "testz2003",
+          "treatment_var": "VA (as_mod2ar_all_test)",
+          "instrument": "lott_VA (hm_mod2ar_all_test if lottery==0, ch1_mod2ar_all_test if lottery==1)",
+          "controls": [
+            "math_2002_imp", "read_2002_imp",
+            "math_2002_imp_sq", "read_2002_imp_sq",
+            "math_2002_imp_cub", "read_2002_imp_cub",
+            "math_2002_miss", "read_2002_miss"
+          ],
+          "n_controls": 8,
+          "fixed_effects": ["lottery_FE"],
+          "vcov": "bootstrap_cluster_lotteryFE",
+          "notes": "Model 2 (gains/lagged scores): average residual VA estimated on all pre-lottery years. xtivreg2 with lottery_FE FE and bootstrap(100) cluster(lottery_FE)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": true,
+        "notes": "VAM and controls are structurally linked: the VAM model (Model 1 vs 2) determines what controls are in the first-stage VAM estimation. Controls in the IV second stage (lagged test scores) are shared with the VAM construction. Cannot independently vary VAM controls and IV controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__model1_levels",
+          "baseline__model2_mix",
+          "baseline__model2_FE"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/data/vam/model1_ar_02",
+          "rc/data/vam/model1_ar_2yr",
+          "rc/data/vam/model1_ar_all",
+          "rc/data/vam/model2_ar_02",
+          "rc/data/vam/model2_ar_2yr",
+          "rc/data/vam/model2_ar_all",
+          "rc/data/vam/model1_mix_02",
+          "rc/data/vam/model1_mix_2yr",
+          "rc/data/vam/model1_mix_all",
+          "rc/data/vam/model2_mix_02",
+          "rc/data/vam/model2_mix_2yr",
+          "rc/data/vam/model2_mix_all",
+          "rc/data/vam/model1_FE_02",
+          "rc/data/vam/model1_FE_2yr",
+          "rc/data/vam/model1_FE_all",
+          "rc/data/vam/model2_FE_02",
+          "rc/data/vam/model2_FE_2yr",
+          "rc/data/vam/model2_FE_all",
+          "rc/data/counterfactual/home_school",
+          "rc/data/counterfactual/weighted_alt",
+          "rc/controls/loo/drop_lagged_scores",
+          "rc/controls/sets/no_controls",
+          "rc/sample/grade/grade_4_5",
+          "rc/sample/grade/grade_6_7_8",
+          "rc/form/outcome/math_only",
+          "rc/form/outcome/read_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/bootstrap/cluster_lotteryFE",
+          "params": {"cluster_var": "lottery_FE", "reps": 100},
+          "notes": "Bootstrap(100) clustered at lottery_FE level, matching paper's xtivreg2 bootstrap specification"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/lottery_FE",
+            "params": {"cluster_var": "lottery_FE"},
+            "notes": "Analytic clustered SEs at lottery_FE level (no bootstrap)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 112805,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check",
+          "notes": "Balance test: lottery winners vs losers on pre-treatment characteristics (Table A1)"
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/first_stage/enrollment",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check",
+          "notes": "First stage: lottery -> enrollment in first-choice school (Table A3)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "paper_id": "114633-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "structural_calibration",
+      "design_audit": {
+        "estimator": "sufficient_statistics_welfare_formula",
+        "model_formula": "dW/db = S * (L - eps_Sb + (1 + G/(Sb)) * eps_Yb); welfare gain from optimal subsidy via extrapolation",
+        "selection_story": "Model calibrates an education choice economy with liquidity constraints. Workers choose college vs no-college; college yields higher wages but requires upfront costs. Government provides tuition subsidy b financed by proportional income tax tau. Key sufficient statistics: S_hat (college attendance rate), eps_Sb (elasticity of S w.r.t. b), L_hat (liquidity constraint parameter from dS/da), ETI (elasticity of taxable income), tau_hat (tax rate). Welfare gain from moving b from current to optimal level is computed via numerical integration of dW/db.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Marginal welfare gain dW/db from increasing tuition subsidies at current policy",
+        "treatment_concept": "Tuition subsidy b relative to status quo b_hat=2 ($000s annual)",
+        "estimand_concept": "dW/db at b=b_hat, measuring net welfare effect of marginal subsidy increase incorporating fiscal externalities (eps_Yb) and liquidity constraints (L_hat)",
+        "target_population": "US economy calibrated to match aggregate education statistics (S_hat=0.388, tau_hat=0.23, etc.)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Baseline-sufficient-statistics",
+          "outcome_var": "dWdb_hat",
+          "treatment_var": "b",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "none",
+          "parameters": {
+            "b_hat": 2.0,
+            "S_hat": 0.388,
+            "g": 0.04,
+            "r": 0.12,
+            "eps_Sb": 0.2,
+            "tau_hat": 0.23,
+            "ETI": 0.4,
+            "dsda": 0.0021,
+            "w0": 34,
+            "w1_factor": 1.08,
+            "years_college": 4,
+            "years_horizon": 12,
+            "cp": 1.26,
+            "e_hat": 5.7,
+            "model_variant": "Baseline"
+          }
+        }
+      ],
+      "constraints": {
+        "eps_Sb_range": [0.05, 0.40],
+        "ETI_range": [0.1, 0.8],
+        "tau_hat_range": [0.15, 0.35],
+        "S_hat_range": [0.30, 0.50],
+        "dsda_range": [0.0, 0.005],
+        "w1_factor_range": [1.04, 1.12],
+        "r_range": [0.06, 0.18],
+        "linked_adjustment": false,
+        "notes": "Paper uses eps_Sb in {0.1, 0.2}, dsda in {0, 0.0021}. Key alternative model: NoFE (no fiscal externality) uses simpler formula dW/db = S*(L - (gamma1/(gamma1-S))*eps_Sb). Tables 3-8 present calibration and simulation results under different model variants."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [
+          "design/nofe/eps02_dsda0",
+          "design/nofe/eps02_dsda0021",
+          "design/nofe/eps01_dsda0",
+          "design/nofe/eps01_dsda0021",
+          "design/gehlt/baseline",
+          "design/ge_spillovers/baseline",
+          "design/ge_spillovers/high_sub",
+          "design/noliq/baseline"
+        ],
+        "rc_spec_ids": [
+          "rc/eps_Sb/0.10",
+          "rc/eps_Sb/0.15",
+          "rc/eps_Sb/0.25",
+          "rc/eps_Sb/0.30",
+          "rc/eps_Sb/0.35",
+          "rc/dsda/0.0000",
+          "rc/dsda/0.0010",
+          "rc/dsda/0.0030",
+          "rc/dsda/0.0040",
+          "rc/ETI/0.2",
+          "rc/ETI/0.3",
+          "rc/ETI/0.5",
+          "rc/ETI/0.6",
+          "rc/ETI/0.8",
+          "rc/tau/0.18",
+          "rc/tau/0.20",
+          "rc/tau/0.25",
+          "rc/tau/0.28",
+          "rc/tau/0.30",
+          "rc/S_hat/0.30",
+          "rc/S_hat/0.35",
+          "rc/S_hat/0.42",
+          "rc/S_hat/0.45",
+          "rc/r/0.08",
+          "rc/r/0.10",
+          "rc/r/0.15",
+          "rc/r/0.18",
+          "rc/w1_factor/1.04",
+          "rc/w1_factor/1.06",
+          "rc/w1_factor/1.10",
+          "rc/w1_factor/1.12",
+          "rc/combined/eps_Sb_low_dsda_zero",
+          "rc/combined/eps_Sb_high_ETI_high",
+          "rc/combined/tau_high_ETI_low",
+          "rc/combined/r_low_S_high",
+          "rc/combined/r_high_S_low",
+          "rc/outcome/b_opt",
+          "rc/outcome/welfare_gain_pct",
+          "rc/outcome/welfare_gain_annual_per_capita",
+          "rc/outcome/welfare_gain_gdp_pct",
+          "rc/grid/fine",
+          "rc/grid/coarse"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/calibration/baseline",
+          "params": {},
+          "notes": "Calibration model -- no statistical inference. Results are deterministic given parameters."
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114633,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

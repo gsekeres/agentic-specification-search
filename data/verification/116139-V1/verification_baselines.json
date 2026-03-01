@@ -1,0 +1,38 @@
+{
+  "paper_id": "116139-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of leq on pct",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "116139-V1__run_0001",
+        "116139-V1__run_0002",
+        "116139-V1__run_0003",
+        "116139-V1__run_0004",
+        "116139-V1__run_0005"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table6_col1",
+        "baseline__table6_col2",
+        "baseline__table6_col8",
+        "baseline__table6_col9"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of cd1 on pi",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "116139-V1__run_0070"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

@@ -1,0 +1,134 @@
+{
+  "paper_id": "112746-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fe",
+      "design_audit": {
+        "estimator": "iv_2sls",
+        "model_formula": "Exp_adeq ~ Carbs_adeq + Prot_md + Prot_p + Prot_veg + Fat_md + Fat_p + Fat_veg + catXqtr_dummies | hhcat_FE, cluster(hhcat)",
+        "selection_story": "Household food demand estimation: expenditure per adult equivalent regressed on nutrient quantities (carbs, protein by meat-dairy/prepared/other, fat by same groups) with household-by-category FE and category-by-quarter dummies. IV uses neighborhood average nutrient attributes as instruments for endogenous nutrient quantities.",
+        "fe_structure": ["hhcat"],
+        "cluster_vars": ["hhcat"],
+        "instruments": ["avg9Carbs", "avg9Protein_md", "avg9Protein_p", "avg9TotalFat_md", "avg9TotalFat_p"]
+      },
+      "claim_object": {
+        "outcome_concept": "Food expenditure per adult equivalent (US dollars per quarter)",
+        "treatment_concept": "Nutrient content of purchased food (carbohydrates, protein, fat in grams per adult equivalent)",
+        "estimand_concept": "Hedonic valuation of macronutrients: willingness to pay per unit of carbohydrate, protein, and fat content, allowing heterogeneity across meat-dairy, prepared, and other food categories",
+        "target_population": "US households in Nielsen Homescan panel 2005-2006, in Fresh Foods panel, purchasing in 5+ of 9 food categories per quarter"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table6-US-IV-interacted",
+          "outcome_var": "Exp_adeq",
+          "treatment_var": "Carbs_adeq",
+          "focal_vars": ["Carbs_adeq", "Prot_md", "Prot_p", "Prot_veg", "Fat_md", "Fat_p", "Fat_veg"],
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["hhcat"],
+          "category_quarter_dummies": true,
+          "vcov": "cluster_hhcat",
+          "reported_coefficients": {
+            "beta_carb": 1.517,
+            "beta_prot_meats_dairy": 19.64,
+            "beta_prot_prepared": 51.77,
+            "beta_prot_other": -1.088,
+            "beta_fat_meats_dairy": 1.113,
+            "beta_fat_prepared": -2.357,
+            "beta_fat_other": 1.640
+          },
+          "notes": "Coefficients from coef_us.out parameter file; Table 6 column IV9 in paper. Protein and fat coefficients are interacted with category indicators: meats-dairy (C4,C5), prepared (C9), other."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "No demographic controls in baseline; all variation is absorbed by HH-category FE. Specification variation comes from: (1) OLS vs IV, (2) interacted vs pooled nutrient coefficients, (3) country samples, (4) income/calorie subsamples, (5) category groupings, (6) FE structure."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__ols_interacted",
+          "baseline__iv_pooled"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/estimator/ols",
+          "rc/estimator/iv_pooled",
+          "rc/nutrients/carb_only",
+          "rc/nutrients/prot_only",
+          "rc/nutrients/fat_only",
+          "rc/nutrients/carb_prot",
+          "rc/nutrients/carb_fat",
+          "rc/nutrients/prot_fat",
+          "rc/nutrients/no_interaction",
+          "rc/sample/drop_cat1",
+          "rc/sample/drop_cat2",
+          "rc/sample/drop_cat3",
+          "rc/sample/drop_cat4",
+          "rc/sample/drop_cat5",
+          "rc/sample/drop_cat6",
+          "rc/sample/drop_cat7",
+          "rc/sample/drop_cat8",
+          "rc/sample/drop_cat9",
+          "rc/fe/no_catqtr_dummies",
+          "rc/fe/qtr_only_dummies",
+          "rc/fe/cat_only_dummies"
+        ],
+        "inference_spec_ids": [
+          "infer/se/robust",
+          "infer/se/cluster_cat"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster_hhcat",
+          "method": "cluster",
+          "cluster_vars": ["hhcat"]
+        },
+        "robustness": [
+          {
+            "spec_id": "infer/se/robust",
+            "method": "HC1"
+          },
+          {
+            "spec_id": "infer/se/cluster_cat",
+            "method": "cluster",
+            "cluster_vars": ["Cat"]
+          }
+        ]
+      }
+    }
+  ],
+  "data_sources": {
+    "primary": "Nielsen Homescan US 2005-2006 (proprietary, not included)",
+    "secondary": ["TNS UK Kantar Worldpanel (proprietary)", "TNS France (proprietary)"],
+    "included_data": "Only estimated parameter files (.out) are included in the replication package. No micro data.",
+    "synthetic_required": true,
+    "calibration_sources": {
+      "coefficients": "DoFiles/Simulations/parameters/coef_us.out (7 beta coefficients from US IV regression)",
+      "category_means": {
+        "quantities": "DoFiles/Simulations/parameters/q_US.out (9 category mean quantities)",
+        "prices": "DoFiles/Simulations/parameters/price_US.out (9 category mean prices)",
+        "carb_attributes": "DoFiles/Simulations/parameters/a_carb_US.out",
+        "protein_attributes": "DoFiles/Simulations/parameters/a_prot_US.out",
+        "fat_attributes": "DoFiles/Simulations/parameters/a_fats_US.out",
+        "sigma": "DoFiles/Simulations/parameters/sigma_US.out (residual expenditure by category)"
+      }
+    }
+  },
+  "categories": {
+    "1": "Fruits",
+    "2": "Vegetables",
+    "3": "Grain",
+    "4": "Dairy",
+    "5": "Meats",
+    "6": "Oils",
+    "7": "Sweeteners",
+    "8": "Drinks",
+    "9": "Prepared"
+  },
+  "notes": "This paper estimates a structural food demand model. The replication package contains only do-files and estimated parameter outputs, not the proprietary scanner data. Synthetic panel data is constructed calibrated to the reported category-level means and estimated coefficients. The specification search varies: OLS vs IV, nutrient subsets, category interactions, sample restrictions (dropping categories), and FE/clustering."
+}

@@ -1,0 +1,30 @@
+{
+  "paper_id": "113577-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1_math",
+      "claim_summary": "Effect of peer_tfx_m on m_growth",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113577-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G1_reading",
+      "claim_summary": "Effect of peer_tfx_r on r_growth",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113577-V1_run_032"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

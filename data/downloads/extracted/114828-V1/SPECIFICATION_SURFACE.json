@@ -1,0 +1,150 @@
+{
+  "paper_id": "114828-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "distance (km to Pale of Settlement boundary)",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": 60,
+        "kernel": "triangular (nonparametric rd command default)",
+        "poly_order": 1,
+        "bias_correction": "none",
+        "estimator": "local_linear_nonparametric",
+        "spatial_rd": true,
+        "geographic_boundary": "Pale of Settlement (historical Jewish settlement area)"
+      },
+      "claim_object": {
+        "outcome_concept": "Pro-market attitudes and trust (prefer_market, prefer_democracy, selfemp, trust_d)",
+        "treatment_concept": "Historical residence inside the Pale of Settlement boundary",
+        "estimand_concept": "Discontinuity in attitudes/trust at the Pale boundary (LATE for urban respondents)",
+        "target_population": "Urban respondents in Russia, Ukraine, and Latvia within 60km of the Pale boundary (LITS 2006 survey)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Nonparametric-Urban-BW60",
+          "outcome_var": "prefer_market",
+          "treatment_var": "in_pale (distance < 0)",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "cluster(psu1)"
+        },
+        {
+          "label": "Table3-Parametric-Urban-BW60",
+          "outcome_var": "prefer_market",
+          "treatment_var": "in_pale_nonrural",
+          "controls": ["lat_north", "lon_east", "plc", "genderB", "ageB", "ageBsquared", "christian", "muslim", "jewish", "rural", "metropolitan", "Latvia", "Ukraine", "l_elev", "distance", "in_pale_distance", "distance_rural", "in_pale_distance_rural"],
+          "n_controls": 18,
+          "fixed_effects": [],
+          "vcov": "cluster(psu1)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 18,
+        "linked_adjustment": false,
+        "notes": "Nonparametric RD has no controls; parametric adds control function + covariates"
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__prefer_democracy",
+          "baseline__selfemp",
+          "baseline__trust_d"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/half_baseline",
+          "design/regression_discontinuity/bandwidth/double_baseline",
+          "design/regression_discontinuity/poly/local_linear",
+          "design/regression_discontinuity/poly/local_quadratic",
+          "design/regression_discontinuity/kernel/triangular",
+          "design/regression_discontinuity/kernel/uniform",
+          "design/regression_discontinuity/procedure/conventional",
+          "design/regression_discontinuity/procedure/robust_bias_corrected"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_lat_north",
+          "rc/controls/loo/drop_lon_east",
+          "rc/controls/loo/drop_plc",
+          "rc/controls/loo/drop_genderB",
+          "rc/controls/loo/drop_ageB",
+          "rc/controls/loo/drop_christian",
+          "rc/controls/loo/drop_muslim",
+          "rc/controls/loo/drop_jewish",
+          "rc/controls/loo/drop_metropolitan",
+          "rc/controls/loo/drop_l_elev",
+          "rc/controls/sets/none",
+          "rc/controls/sets/geographic_only",
+          "rc/controls/sets/demographic_only",
+          "rc/controls/sets/full_parametric",
+          "rc/sample/bandwidth/bw_30",
+          "rc/sample/bandwidth/bw_90",
+          "rc/sample/bandwidth/bw_120",
+          "rc/sample/restrict/urban_only",
+          "rc/sample/restrict/rural_only",
+          "rc/sample/restrict/russia_only",
+          "rc/sample/restrict/ukraine_only",
+          "rc/sample/restrict/latvia_only",
+          "rc/sample/restrict/russia_ukraine_only",
+          "rc/sample/restrict/russian_empire_only",
+          "rc/sample/donut/exclude_5km",
+          "rc/sample/donut/exclude_10km",
+          "rc/sample/donut/exclude_15km",
+          "rc/sample/donut/exclude_20km",
+          "rc/controls/add/east_psu",
+          "rc/controls/add/tmp",
+          "rc/controls/add/prc",
+          "rc/controls/add/Russia",
+          "rc/controls/sets/baseline_only",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/geographic_only",
+          "rc/controls/progression/geographic_demographic",
+          "rc/controls/progression/geographic_demographic_religion",
+          "rc/controls/progression/full_with_extended"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/psu",
+          "params": {"cluster_var": "psu1"},
+          "notes": "Cluster at PSU level, matching baseline Stata code"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust-only (no clustering)"
+          },
+          {
+            "spec_id": "infer/se/cluster/country",
+            "params": {"cluster_var": "country"},
+            "notes": "Coarser clustering at country level (very few clusters -- caveat)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114828,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check"
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check"
+        }
+      ]
+    }
+  ]
+}

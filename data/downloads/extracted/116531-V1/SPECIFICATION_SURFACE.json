@@ -1,0 +1,239 @@
+{
+  "paper_id": "116531-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "iv_2sls",
+        "randomization_unit": "individual (within strata)",
+        "strata_or_blocks": "stratum_code (stratified random assignment)",
+        "estimand": "LATE of loan offer on borrowing",
+        "instrument": "package (random assignment to treatment group)",
+        "endogenous_var": "offered (whether student was offered a loan)",
+        "n_clusters_approx": 46,
+        "notes": "Stratified RCT at community college; IV uses random assignment (package) as instrument for loan offer (offered)"
+      },
+      "claim_object": {
+        "outcome_concept": "Student borrowing behavior (borrowed indicator, accepted amount)",
+        "treatment_concept": "Receiving a nonzero student loan offer (instrumented by random assignment)",
+        "estimand_concept": "LATE of loan offer on borrowing (complier average effect)",
+        "target_population": "Community college students eligible for federal loans (2015-16 academic year)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col2-borrowed",
+          "outcome_var": "borrowed",
+          "treatment_var": "offered",
+          "instrument": "package",
+          "controls": [
+            "i.month_packaged",
+            "Prmry_EFC",
+            "CumulativeGPA",
+            "CumulativeEarnedHours",
+            "pell_elig",
+            "indep",
+            "has_outstanding"
+          ],
+          "n_controls": 7,
+          "fixed_effects": ["stratum_code"],
+          "vcov": "cluster(stratum_code)"
+        },
+        {
+          "label": "Table4-Col3-AcceptedAmount",
+          "outcome_var": "AcceptedAmount",
+          "treatment_var": "offered",
+          "instrument": "package",
+          "controls": [
+            "i.month_packaged",
+            "Prmry_EFC",
+            "CumulativeGPA",
+            "CumulativeEarnedHours",
+            "pell_elig",
+            "indep",
+            "has_outstanding"
+          ],
+          "n_controls": 7,
+          "fixed_effects": ["stratum_code"],
+          "vcov": "cluster(stratum_code)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 7,
+        "linked_adjustment": true,
+        "notes": "IV estimation: same controls appear in both first and second stage (partialled out). Controls are pre-treatment covariates for precision, not identification."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__accepted_amount"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_Prmry_EFC",
+          "rc/controls/loo/drop_CumulativeGPA",
+          "rc/controls/loo/drop_CumulativeEarnedHours",
+          "rc/controls/loo/drop_pell_elig",
+          "rc/controls/loo/drop_indep",
+          "rc/controls/loo/drop_has_outstanding",
+          "rc/controls/loo/drop_month_packaged",
+          "rc/controls/sets/none",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/demographics_only",
+          "rc/controls/progression/academic_only",
+          "rc/controls/progression/financial_only",
+          "rc/controls/progression/all_controls",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/drop/stratum",
+          "rc/form/outcome/log1p_amount"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/stratum",
+          "params": {"cluster_var": "stratum_code"},
+          "notes": "Cluster SEs at stratum level, matching original xtivreg2 cluster(stratum_code)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 116531,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group"
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/noncompliance/first_stage",
+          "scope": "baseline_group"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "itt_ols",
+        "randomization_unit": "individual (within strata)",
+        "strata_or_blocks": "stratum_code",
+        "estimand": "ITT",
+        "notes": "Reduced-form ITT effect of random assignment on educational attainment"
+      },
+      "claim_object": {
+        "outcome_concept": "Educational attainment (credits attempted, credits earned, GPA, degree completion)",
+        "treatment_concept": "Random assignment to loan offer group (package indicator)",
+        "estimand_concept": "ITT effect of loan offer assignment on educational attainment",
+        "target_population": "Community college students enrolled in Fall 2015"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table7-PanelA-crdattm_total",
+          "outcome_var": "crdattm_total",
+          "treatment_var": "package",
+          "controls": [
+            "i.month_packaged",
+            "Prmry_EFC",
+            "CumulativeGPA",
+            "CumulativeEarnedHours",
+            "pell_elig",
+            "indep",
+            "has_outstanding"
+          ],
+          "n_controls": 7,
+          "fixed_effects": ["stratum_code"],
+          "vcov": "cluster(stratum_code)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 7,
+        "linked_adjustment": false,
+        "notes": "Single-equation OLS (ITT reduced form). Controls are pre-treatment precision enhancers."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__credits_total",
+          "baseline__gpa_total",
+          "baseline__anydeg"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_Prmry_EFC",
+          "rc/controls/loo/drop_CumulativeGPA",
+          "rc/controls/loo/drop_CumulativeEarnedHours",
+          "rc/controls/loo/drop_pell_elig",
+          "rc/controls/loo/drop_indep",
+          "rc/controls/loo/drop_has_outstanding",
+          "rc/controls/loo/drop_month_packaged",
+          "rc/controls/sets/none",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/all_controls",
+          "rc/sample/restriction/enrolled_fall",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/fe/drop/stratum"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/stratum",
+          "params": {"cluster_var": "stratum_code"},
+          "notes": "Cluster SEs at stratum level"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SEs"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 116531,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "paper_id": "112466-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "Price ~ Turnover + Volatility + Volume + Days_remaining, HAC(Newey-West, 5)",
+        "selection_story": "Cross-sectional average warrant data aggregated by days remaining to maturity; tests whether bubble magnitude (average warrant price near expiration) covaries with turnover, volatility, and volume as predicted by resale option theory",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "HAC_Newey_West_5"
+      },
+      "claim_object": {
+        "outcome_concept": "Average put warrant closing price (Chinese Yuan) by days to maturity",
+        "treatment_concept": "Turnover rate (daily trading volume / shares outstanding)",
+        "estimand_concept": "Association between warrant price bubble and trading intensity (turnover), controlling for volatility, volume, and time to maturity",
+        "target_population": "Chinese put warrants in zero-fundamental period (2005-2008), cross-sectional averages by days remaining"
+      },
+      "baseline_specs": [
+        {
+          "label": "Maturity-full-controls",
+          "outcome_var": "Price",
+          "treatment_var": "Turnover",
+          "controls": ["Volatility", "Volume", "Days_remaining"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "HAC_NW_5"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "Paper regresses average warrant price on turnover, volatility, volume, and days remaining. Controls are trading activity measures and maturity."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_Volatility",
+          "rc/controls/loo/drop_Volume",
+          "rc/controls/loo/drop_Days_remaining",
+          "rc/controls/sets/none",
+          "rc/controls/sets/turnover_days",
+          "rc/controls/sets/turnover_volatility",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/plus_days",
+          "rc/controls/progression/plus_volatility",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/trim_y_10_90",
+          "rc/sample/drop_last_5_days",
+          "rc/sample/drop_first_10_days",
+          "rc/form/outcome/log_price",
+          "rc/form/outcome/price_sq"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hac/nw5",
+          "params": {"maxlags": 5},
+          "notes": "Newey-West HAC standard errors with 5 lags, appropriate for time-series structure of maturity-ordered data"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hac/nw10",
+            "params": {"maxlags": 10},
+            "notes": "Newey-West with 10 lags"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust standard errors (no autocorrelation correction)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112466,
+        "controls_subset_sampler": "stratified_size"
+      }
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "Warrant_price ~ Turnover + Volatility + Volume + days_to_exp, HAC(Newey-West, 5)",
+        "selection_story": "Daily time-series for warrant 38004 (April 2006 - March 2008); regresses daily warrant price on turnover, volatility, volume, and days to expiration to test resale option theory predictions",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "HAC_Newey_West_5"
+      },
+      "claim_object": {
+        "outcome_concept": "Daily warrant closing price (Chinese Yuan)",
+        "treatment_concept": "Turnover rate (daily trading volume / shares outstanding)",
+        "estimand_concept": "Association between daily warrant price and trading intensity, controlling for volatility, volume, and maturity",
+        "target_population": "Warrant 38004 daily observations, April 2006 - March 2008 (468 trading days)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Daily-full-controls",
+          "outcome_var": "Warrant_price",
+          "treatment_var": "Turnover",
+          "controls": ["Volatility", "Volume", "days_to_exp"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "HAC_NW_5"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "Daily panel regression of warrant price on trading activity and maturity. Additional controls from data: Stock_price, Strike_price, Fundamental_upperbound, Black_Scholes_price, moneyness."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_Volatility",
+          "rc/controls/loo/drop_Volume",
+          "rc/controls/loo/drop_days_to_exp",
+          "rc/controls/sets/none",
+          "rc/controls/sets/turnover_days",
+          "rc/controls/sets/turnover_volatility",
+          "rc/controls/sets/all_plus_moneyness",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/plus_days",
+          "rc/controls/progression/plus_volatility",
+          "rc/controls/progression/plus_volume",
+          "rc/controls/progression/plus_moneyness",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/drop_last_month",
+          "rc/sample/drop_first_month",
+          "rc/sample/zero_fund_only",
+          "rc/form/outcome/log_price",
+          "rc/form/outcome/bubble_component"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hac/nw5",
+          "params": {"maxlags": 5},
+          "notes": "Newey-West HAC standard errors with 5 lags for time-series daily data"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hac/nw10",
+            "params": {"maxlags": 10},
+            "notes": "Newey-West with 10 lags"
+          },
+          {
+            "spec_id": "infer/se/hac/nw20",
+            "params": {"maxlags": 20},
+            "notes": "Newey-West with 20 lags"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust standard errors (no autocorrelation correction)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 5
+      },
+      "sampling": {
+        "seed": 112466,
+        "controls_subset_sampler": "stratified_size"
+      }
+    }
+  ]
+}

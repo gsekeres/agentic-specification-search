@@ -1,44 +1,60 @@
 {
   "paper_id": "113561-V1",
-  "created_at": "2026-02-15",
+  "created_at": "2026-02-22",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
       "design_code": "randomized_experiment",
       "design_audit": {
-        "estimator": "wls",
-        "randomization_unit": "respondent",
+        "estimator": "ols_wls",
+        "randomization_unit": "individual_respondent",
+        "strata_or_blocks": "none_explicit",
         "estimand": "ITT",
-        "assignment_mechanism": "randomized photo race shown (picshowblack)",
-        "weights": "tweight",
-        "cluster_vars": [],
-        "strata_or_blocks": null
+        "treatment_arms": ["picshowblack (race of victims shown)", "picobscur (race obscured)", "picraceb (any black picture)", "audio manipulations (aud_*)"],
+        "n_treatment_arms_focal": 3,
+        "weights": "tweight (oversampling correction for black respondents)"
       },
       "claim_object": {
-        "outcome_concept": "Actual charitable giving to Hurricane Katrina victims (dollars, 0-100 scale)",
-        "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
-        "estimand_concept": "ITT effect of showing Black victims on giving among white respondents",
-        "target_population": "White respondents in KN survey experiment who passed soundcheck"
+        "outcome_concept": "Charitable giving to Hurricane Katrina victims (dictator game, $0-$100)",
+        "treatment_concept": "Racial priming via pictures showing black vs white Hurricane Katrina victims",
+        "estimand_concept": "ITT effect of showing black victims (picshowblack) on giving, controlling for other experimental manipulations and demographics",
+        "target_population": "US adult internet panel respondents (Knowledge Networks), all races"
       },
       "baseline_specs": [
         {
-          "label": "Tab4-Panel1-White",
+          "label": "Table3-Col2",
+          "outcome_var": "giving",
+          "treatment_var": "picshowblack",
+          "controls": ["picraceb", "picobscur", "aud_republ", "aud_econdis", "aud_govtben", "aud_prephur", "aud_church", "aud_crime", "aud_helpoth", "aud_contrib", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
+          "n_controls": 34,
+          "weight_var": "tweight",
+          "sample_filter": "all respondents (soundcheck==3, giving not missing)",
+          "estimator": "OLS/WLS",
+          "vcov": "HC1"
+        },
+        {
+          "label": "Table4-Panel1-All",
           "outcome_var": "giving",
           "treatment_var": "picshowblack",
           "controls": ["picraceb", "picobscur", "aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "black", "other", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
           "n_controls": 31,
           "weight_var": "tweight",
-          "sample": "white respondents",
-          "estimator": "WLS",
-          "inference": "HC1"
+          "sample_filter": "all respondents",
+          "estimator": "OLS/WLS",
+          "vcov": "HC1",
+          "notes": "Uses nraudworthy (composite) instead of individual worthiness audio dummies"
         }
       ],
       "constraints": {
-        "controls_count_min": 10,
-        "controls_count_max": 34,
-        "linked_adjustment": false
+        "controls_count_min": 13,
+        "controls_count_max": 37,
+        "linked_adjustment": false,
+        "notes": "Minimum: treatment + experimental manipulation controls only (13 vars: pic vars + audio + city + survey variant). Maximum: full demographics + prior giving + extra controls (37). The paper reveals specs with 13 controls (no demographics, Table 5 row 5) to 37 controls (extra controls, Table 5 row 6)."
       },
       "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_panel1_all"
+        ],
         "design_spec_ids": [
           "design/randomized_experiment/estimator/diff_in_means"
         ],
@@ -47,284 +63,74 @@
           "rc/controls/sets/minimal",
           "rc/controls/sets/baseline",
           "rc/controls/sets/extended",
-          "rc/controls/loo/drop_age_block",
-          "rc/controls/loo/drop_education_block",
-          "rc/controls/loo/drop_income_block",
-          "rc/controls/loo/drop_labor_block",
-          "rc/controls/loo/drop_charitable_block",
-          "rc/controls/loo/drop_geography_block",
-          "rc/controls/loo/drop_marital_block",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_age2",
+          "rc/controls/loo/drop_black",
+          "rc/controls/loo/drop_other",
+          "rc/controls/loo/drop_edudo",
+          "rc/controls/loo/drop_edusc",
+          "rc/controls/loo/drop_educp",
+          "rc/controls/loo/drop_lnhhinc",
+          "rc/controls/loo/drop_dualin",
+          "rc/controls/loo/drop_married",
+          "rc/controls/loo/drop_male",
+          "rc/controls/loo/drop_singlemale",
+          "rc/controls/loo/drop_south",
+          "rc/controls/loo/drop_work",
+          "rc/controls/loo/drop_disabled",
+          "rc/controls/loo/drop_retired",
+          "rc/controls/loo/drop_dcharkatrina",
+          "rc/controls/loo/drop_lcharkatrina",
+          "rc/controls/loo/drop_dchartot2005",
+          "rc/controls/loo/drop_lchartot2005",
           "rc/controls/progression/bivariate",
-          "rc/controls/progression/manipulation_only",
-          "rc/controls/progression/manipulation_plus_demographics",
+          "rc/controls/progression/manip_only",
+          "rc/controls/progression/manip_demographics",
+          "rc/controls/progression/manip_demographics_giving",
           "rc/controls/progression/full",
-          "rc/sample/restriction/main_survey_only",
-          "rc/sample/restriction/slidell_only",
-          "rc/sample/restriction/biloxi_only",
-          "rc/sample/restriction/race_shown_only",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/paper_weights",
-          "rc/form/outcome/topcode_giving_at_50"
+          "rc/sample/subvariant/main_survey_only",
+          "rc/sample/subvariant/slidell_only",
+          "rc/sample/subvariant/biloxi_only",
+          "rc/sample/subvariant/race_shown_only",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/drop_extreme_choices",
+          "rc/controls/sets/nraudworthy",
+          "rc/form/outcome/log1p",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/binary_any_giving",
+          "rc/controls/subset/demographics_only",
+          "rc/controls/subset/giving_history_only",
+          "rc/controls/subset/manip_giving",
+          "rc/controls/subset/demographics_giving",
+          "rc/controls/subset/core_ses",
+          "rc/controls/subset/race_gender",
+          "rc/sample/quality/engaged_respondents",
+          "rc/sample/quality/not_fast_completers",
+          "rc/weights/unweighted",
+          "rc/weights/mweight"
         ]
       },
       "inference_plan": {
         "canonical": {
           "spec_id": "infer/se/hc/hc1",
-          "params": {},
-          "notes": "HC1 robust SE, matching paper's baseline (reg ... , robust)."
+          "params": {"vcov": "hetero"},
+          "notes": "Matches paper's baseline: reg ... , robust (HC1). No clustering since randomization is at individual level."
         },
         "variants": [
-          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 small-sample robust SE as stress test."}
+          {"spec_id": "infer/se/hc/classical", "params": {}, "notes": "Classical (homoskedastic) SE."},
+          {"spec_id": "infer/se/hc/hc2", "params": {}, "notes": "HC2 (leverage-corrected)."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 (small-sample leverage correction)."}
         ]
       },
       "budgets": {
-        "max_specs_core_total": 25
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
       },
       "sampling": {
         "seed": 113561,
-        "controls_subset_sampler": "block_enumeration"
-      }
-    },
-    {
-      "baseline_group_id": "G2",
-      "design_code": "randomized_experiment",
-      "design_audit": {
-        "estimator": "wls",
-        "randomization_unit": "respondent",
-        "estimand": "ITT",
-        "assignment_mechanism": "randomized photo race shown (picshowblack)",
-        "weights": "tweight",
-        "cluster_vars": [],
-        "strata_or_blocks": null
+        "notes": "Full enumeration of planned specs (under 60 total). No random sampling needed."
       },
-      "claim_object": {
-        "outcome_concept": "Hypothetical giving to Hurricane Katrina victims (dollars, topcoded at 500)",
-        "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
-        "estimand_concept": "ITT effect of showing Black victims on hypothetical giving among white respondents",
-        "target_population": "White respondents in KN survey experiment who passed soundcheck"
-      },
-      "baseline_specs": [
-        {
-          "label": "Tab4-Panel2-White",
-          "outcome_var": "hypgiv_tc500",
-          "treatment_var": "picshowblack",
-          "controls": ["picraceb", "picobscur", "aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
-          "n_controls": 29,
-          "weight_var": "tweight",
-          "sample": "white respondents",
-          "estimator": "WLS",
-          "inference": "HC1"
-        }
-      ],
-      "constraints": {
-        "controls_count_min": 10,
-        "controls_count_max": 32,
-        "linked_adjustment": false
-      },
-      "core_universe": {
-        "design_spec_ids": [
-          "design/randomized_experiment/estimator/diff_in_means"
-        ],
-        "rc_spec_ids": [
-          "rc/controls/sets/none",
-          "rc/controls/sets/minimal",
-          "rc/controls/sets/extended",
-          "rc/controls/loo/drop_age_block",
-          "rc/controls/loo/drop_education_block",
-          "rc/controls/loo/drop_income_block",
-          "rc/controls/loo/drop_labor_block",
-          "rc/controls/loo/drop_charitable_block",
-          "rc/controls/loo/drop_geography_block",
-          "rc/controls/loo/drop_marital_block",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/manipulation_only",
-          "rc/controls/progression/manipulation_plus_demographics",
-          "rc/controls/progression/full",
-          "rc/sample/restriction/main_survey_only",
-          "rc/sample/restriction/slidell_only",
-          "rc/sample/restriction/biloxi_only",
-          "rc/sample/restriction/race_shown_only",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/paper_weights",
-          "rc/form/outcome/topcode_hypgiv_at_200"
-        ]
-      },
-      "inference_plan": {
-        "canonical": {
-          "spec_id": "infer/se/hc/hc1",
-          "params": {},
-          "notes": "HC1 robust SE."
-        },
-        "variants": []
-      },
-      "budgets": {
-        "max_specs_core_total": 22
-      }
-    },
-    {
-      "baseline_group_id": "G3",
-      "design_code": "randomized_experiment",
-      "design_audit": {
-        "estimator": "wls",
-        "randomization_unit": "respondent",
-        "estimand": "ITT",
-        "assignment_mechanism": "randomized photo race shown (picshowblack)",
-        "weights": "tweight",
-        "cluster_vars": [],
-        "strata_or_blocks": null
-      },
-      "claim_object": {
-        "outcome_concept": "Subjective support for charitable organizations helping Katrina victims (1-7 scale)",
-        "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
-        "estimand_concept": "ITT effect of showing Black victims on charity support among white respondents",
-        "target_population": "White respondents in KN survey experiment who passed soundcheck"
-      },
-      "baseline_specs": [
-        {
-          "label": "Tab4-Panel3-White",
-          "outcome_var": "subjsupchar",
-          "treatment_var": "picshowblack",
-          "controls": ["picraceb", "picobscur", "aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
-          "n_controls": 29,
-          "weight_var": "tweight",
-          "sample": "white respondents",
-          "estimator": "WLS",
-          "inference": "HC1"
-        }
-      ],
-      "constraints": {
-        "controls_count_min": 10,
-        "controls_count_max": 32,
-        "linked_adjustment": false
-      },
-      "core_universe": {
-        "design_spec_ids": [
-          "design/randomized_experiment/estimator/diff_in_means"
-        ],
-        "rc_spec_ids": [
-          "rc/controls/sets/none",
-          "rc/controls/sets/minimal",
-          "rc/controls/sets/extended",
-          "rc/controls/loo/drop_age_block",
-          "rc/controls/loo/drop_education_block",
-          "rc/controls/loo/drop_income_block",
-          "rc/controls/loo/drop_labor_block",
-          "rc/controls/loo/drop_charitable_block",
-          "rc/controls/loo/drop_geography_block",
-          "rc/controls/loo/drop_marital_block",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/manipulation_only",
-          "rc/controls/progression/manipulation_plus_demographics",
-          "rc/controls/progression/full",
-          "rc/sample/restriction/main_survey_only",
-          "rc/sample/restriction/slidell_only",
-          "rc/sample/restriction/biloxi_only",
-          "rc/sample/restriction/race_shown_only",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/paper_weights"
-        ]
-      },
-      "inference_plan": {
-        "canonical": {
-          "spec_id": "infer/se/hc/hc1",
-          "params": {},
-          "notes": "HC1 robust SE."
-        },
-        "variants": []
-      },
-      "budgets": {
-        "max_specs_core_total": 22
-      }
-    },
-    {
-      "baseline_group_id": "G4",
-      "design_code": "randomized_experiment",
-      "design_audit": {
-        "estimator": "wls",
-        "randomization_unit": "respondent",
-        "estimand": "ITT",
-        "assignment_mechanism": "randomized photo race shown (picshowblack)",
-        "weights": "tweight",
-        "cluster_vars": [],
-        "strata_or_blocks": null
-      },
-      "claim_object": {
-        "outcome_concept": "Subjective support for government aid to Katrina victims (1-7 scale)",
-        "treatment_concept": "Randomly shown photo of Black hurricane victims (picshowblack=1 vs picshowblack=0)",
-        "estimand_concept": "ITT effect of showing Black victims on government support among white respondents",
-        "target_population": "White respondents in KN survey experiment who passed soundcheck"
-      },
-      "baseline_specs": [
-        {
-          "label": "Tab4-Panel4-White",
-          "outcome_var": "subjsupgov",
-          "treatment_var": "picshowblack",
-          "controls": ["picraceb", "picobscur", "aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell", "var_fullstakes", "var_racesalient", "age", "age2", "edudo", "edusc", "educp", "lnhhinc", "dualin", "married", "male", "singlemale", "south", "work", "disabled", "retired", "dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
-          "n_controls": 29,
-          "weight_var": "tweight",
-          "sample": "white respondents",
-          "estimator": "WLS",
-          "inference": "HC1"
-        }
-      ],
-      "constraints": {
-        "controls_count_min": 10,
-        "controls_count_max": 32,
-        "linked_adjustment": false
-      },
-      "core_universe": {
-        "design_spec_ids": [
-          "design/randomized_experiment/estimator/diff_in_means"
-        ],
-        "rc_spec_ids": [
-          "rc/controls/sets/none",
-          "rc/controls/sets/minimal",
-          "rc/controls/sets/extended",
-          "rc/controls/loo/drop_age_block",
-          "rc/controls/loo/drop_education_block",
-          "rc/controls/loo/drop_income_block",
-          "rc/controls/loo/drop_labor_block",
-          "rc/controls/loo/drop_charitable_block",
-          "rc/controls/loo/drop_geography_block",
-          "rc/controls/loo/drop_marital_block",
-          "rc/controls/progression/bivariate",
-          "rc/controls/progression/manipulation_only",
-          "rc/controls/progression/manipulation_plus_demographics",
-          "rc/controls/progression/full",
-          "rc/sample/restriction/main_survey_only",
-          "rc/sample/restriction/slidell_only",
-          "rc/sample/restriction/biloxi_only",
-          "rc/sample/restriction/race_shown_only",
-          "rc/weights/main/unweighted",
-          "rc/weights/main/paper_weights"
-        ]
-      },
-      "inference_plan": {
-        "canonical": {
-          "spec_id": "infer/se/hc/hc1",
-          "params": {},
-          "notes": "HC1 robust SE."
-        },
-        "variants": []
-      },
-      "budgets": {
-        "max_specs_core_total": 22
-      }
+      "diagnostics_plan": []
     }
-  ],
-  "control_blocks": {
-    "pic_controls": ["picraceb", "picobscur"],
-    "manipulation_audio": ["aud_econdis", "nraudworthy", "aud_republ", "aud_govtben", "aud_church", "aud_loot", "cityslidell"],
-    "survey_variant": ["var_fullstakes", "var_racesalient"],
-    "demographics_age": ["age", "age2"],
-    "demographics_education": ["edudo", "edusc", "educp"],
-    "demographics_income": ["lnhhinc", "dualin"],
-    "demographics_marital": ["married", "male", "singlemale"],
-    "demographics_geography": ["south"],
-    "demographics_labor": ["work", "disabled", "retired"],
-    "charitable_giving": ["dcharkatrina", "lcharkatrina", "dchartot2005", "lchartot2005"],
-    "extra_controls": ["hfh_effective", "lifepriorities_help", "lifepriorities_mony"]
-  },
-  "mandatory_controls": ["picraceb", "picobscur"],
-  "notes": "The paper uses 4 outcomes as headline results for white respondents (Table 4, col b). Table 5 reveals the robustness surface: main survey variant only, Slidell/Biloxi subsample splits, no demographics, extra controls, censored normal regression / ordered probit, race-shown subsample. The treatment picshowblack is randomized so controls primarily increase precision. pic_controls (picraceb, picobscur) are mandatory since they capture the other treatment arms."
+  ]
 }

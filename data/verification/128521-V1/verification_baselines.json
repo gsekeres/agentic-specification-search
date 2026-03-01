@@ -1,0 +1,47 @@
+{
+  "paper_id": "128521-V1",
+  "verification_date": "2026-02-25",
+  "global_notes": "Surface baseline groups G1 and G2 match results exactly. G1: total mortality rate (DiD). G2: age-specific mortality rates (7 age groups). run_026 and run_030 are near-duplicates (same results, different base_col label in cvj); both valid but flagged. No reassignment needed.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ATT: Effect of Lancashire Cotton Famine exposure on total mortality rate in cotton-dependent vs non-cotton districts. TWFE DiD with district and period FE, population weights, clustered at district.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "128521-V1_run_001",
+        "128521-V1_run_002",
+        "128521-V1_run_003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table2_col2",
+        "baseline__table2_col3"
+      ],
+      "notes": "run_001 = Table 2 Col 1 (no controls), run_002 = Col 2 (density, pop shares, region x period FE), run_003 = Col 3 (adds nearby district spillover rings). All positive and significant. Coefficients ~2.0-2.5 deaths per 1000."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ATT: Age-decomposed effect of Cotton Famine on mortality by age group. TWFE DiD with full controls, population weights by age group, clustered at district.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "128521-V1_run_035",
+        "128521-V1_run_038",
+        "128521-V1_run_041",
+        "128521-V1_run_044",
+        "128521-V1_run_047",
+        "128521-V1_run_050",
+        "128521-V1_run_053"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline"
+      ],
+      "notes": "7 baselines for age groups: under15 (coef=0.22, p=0.84, NS), 15-24 (coef=0.17, p=0.76, NS), 25-34 (coef=0.89, p=0.19, NS), 35-44 (coef=1.51, p=0.11, NS), 45-54 (coef=3.07, p=0.005, sig), 55-64 (coef=6.74, p<0.001, sig), over64 (coef=13.48, p<0.001, sig). Monotonically increasing with age."
+    }
+  ]
+}

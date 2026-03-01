@@ -1,0 +1,123 @@
+{
+  "paper_id": "113229-V1",
+  "created_at": "2026-02-25",
+  "notes": "Lab experiment studying betrayal aversion across six countries. Subjects play trust games under three game types (DP=dictator-principal, RDG=risky dictator game, TG=trust game). Main claim: minimum acceptable probability (MAP) differs across game types, indicating betrayal aversion. Table 2 OLS regressions are the main regression-based analysis. Table 1 uses rank-sum tests (non-parametric). Data is individual-level from lab sessions.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "individual_within_session",
+        "strata_or_blocks": "none_explicit",
+        "estimand": "ITT",
+        "outcome_var": "map",
+        "treatment_vars": ["tg", "dp"],
+        "fe_structure": [],
+        "cluster_vars": ["session"],
+        "notes": "Three game types (DP, RDG, TG) randomly assigned within sessions. Baseline OLS: map ~ tg + dp, clustered by session. RDG is omitted category. Sample restricted to movers (mover==1)."
+      },
+      "claim_object": {
+        "outcome_concept": "Minimum acceptable probability (MAP) in a trust/dictator game",
+        "treatment_concept": "Game type: Trust Game (TG) vs Risky Dictator Game (RDG) vs Dictator-Principal (DP)",
+        "estimand_concept": "ITT effect of game type assignment on MAP, indicating betrayal aversion (TG coefficient) and strategic uncertainty aversion (DP coefficient)",
+        "target_population": "Lab experiment participants across 6 countries (Brazil, China, Oman, Switzerland, Turkey, US)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "outcome_var": "map",
+          "treatment_var": "tg",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "reg map tg dp if mover==1, cl(session). Focal coefficient is on tg (betrayal aversion). No controls."
+        },
+        {
+          "label": "Table2-Col2",
+          "outcome_var": "map",
+          "treatment_var": "tg",
+          "controls": ["female", "age", "income", "econmajor", "brazil", "china", "oman", "swiss", "turk"],
+          "n_controls": 9,
+          "notes": "Same regression with demographic and country controls added."
+        },
+        {
+          "label": "Table2-Col3",
+          "outcome_var": "map",
+          "treatment_var": "tg",
+          "controls": ["female", "age", "income", "econmajor", "brazil", "china", "oman", "swiss", "turk", "female_tg", "female_dp", "oman_tg", "oman_dp"],
+          "n_controls": 14,
+          "notes": "Col2 plus gender and Oman interactions with treatment."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 14,
+        "linked_adjustment": false,
+        "notes": "Baseline is no controls (Col1). Max is 14 controls (Col3 with interactions). All regressions include both tg and dp as treatment indicators with RDG as omitted category."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2",
+          "baseline__table2_col3"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_female",
+          "rc/controls/single/add_age",
+          "rc/controls/single/add_income",
+          "rc/controls/single/add_econmajor",
+          "rc/controls/sets/demographics",
+          "rc/controls/sets/country_dummies",
+          "rc/controls/sets/demographics_plus_country",
+          "rc/controls/progression/*",
+          "rc/controls/subset/random_*",
+          "rc/sample/restriction/drop_country_brazil",
+          "rc/sample/restriction/drop_country_china",
+          "rc/sample/restriction/drop_country_oman",
+          "rc/sample/restriction/drop_country_switzerland",
+          "rc/sample/restriction/drop_country_turkey",
+          "rc/sample/restriction/drop_country_us",
+          "rc/sample/restriction/women_only",
+          "rc/sample/restriction/men_only",
+          "rc/sample/outliers/trim_map_1_99",
+          "rc/sample/outliers/trim_map_5_95",
+          "rc/preprocess/missing/complete_cases_only",
+          "rc/form/outcome/logit_map",
+          "rc/form/treatment/tg_only_vs_rdg",
+          "rc/form/treatment/dp_only_vs_rdg"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/session",
+          "params": {"cluster_var": "session"},
+          "notes": "Clustered SEs at session level, matching the paper's baseline cl(session)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust (no clustering)."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 jackknife-based robust SE."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 15,
+        "notes": "Moderate budget. Controls pool is small (9 non-interaction controls + 5 interactions). Country-level sample restrictions add ~6 specs per subsample variant."
+      },
+      "sampling": {
+        "seed": 113229,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "9 optional non-interaction controls organized into 2 blocks (demographics: female/age/income/econmajor; country dummies: brazil/china/oman/swiss/turk). Exhaustive block combos plus random variable-level subsets."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance check: test whether demographics/country differ across game types."
+        }
+      ]
+    }
+  ]
+}

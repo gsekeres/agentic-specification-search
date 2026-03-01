@@ -1,0 +1,468 @@
+{
+  "paper_id": "180741-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_lpm",
+        "randomization_unit": "individual",
+        "randomization_scheme": "In Choice experiments, advisors first state preference for information order (choicebefore), then are randomly assigned to see incentive first (getbefore=1) or quality first (getbefore=0). In NoChoice, assignment is purely random (seeincentivefirst).",
+        "experiment_type": "online_experiment",
+        "platform": "CloudResearch/Prolific/MTurk",
+        "se_type": "HC3",
+        "sample_restriction": "Highx10==0 & Highx100==0 (baseline stakes), attentive participants (alphavaluefinal!=.)"
+      },
+      "claim_object": {
+        "outcome_concept": "Advisor recommends the incentivized product (binary)",
+        "treatment_concept": "Advisor preference to see incentive first (choicebefore) and interaction with assignment/no-conflict",
+        "estimand_concept": "Average treatment effect (ITT) of preference for information order on biased recommendations",
+        "target_population": "Online experimental participants (advisors) in Choice experiment pooled across ChoiceFree, ChoiceFree_Professionals, PayBefore, PayAfter treatments"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col1",
+          "description": "Recommendations among those assigned their preferred order (getyourchoice==1)",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "choicebefore",
+          "controls": [
+            "choicebeforenoconflict",
+            "noconflict",
+            "incentiveB",
+            "professionalsfree",
+            "seeincentivecostly",
+            "seequalitycostly",
+            "wave2",
+            "wave3",
+            "professionalscloudresearch",
+            "incentiveshigh",
+            "incentiveleft",
+            "incentiveshigh_incentiveleft",
+            "age",
+            "female"
+          ],
+          "n_controls": 14,
+          "sample_filter": "Highx10==0 & Highx100==0 & getyourchoice==1",
+          "vcov": "HC3"
+        },
+        {
+          "label": "Table3-Col2",
+          "description": "Recommendations among those NOT assigned their preferred order (getyourchoice==0)",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "choicebefore",
+          "controls": [
+            "choicebeforenoconflict",
+            "noconflict",
+            "incentiveB",
+            "professionalsfree",
+            "seeincentivecostly",
+            "seequalitycostly",
+            "wave2",
+            "wave3",
+            "professionalscloudresearch",
+            "incentiveshigh",
+            "incentiveleft",
+            "incentiveshigh_incentiveleft",
+            "age",
+            "female"
+          ],
+          "n_controls": 14,
+          "sample_filter": "Highx10==0 & Highx100==0 & getyourchoice==0",
+          "vcov": "HC3"
+        },
+        {
+          "label": "Table3-Col3",
+          "description": "Recommendations pooled (both assigned-preference and not-assigned-preference)",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "choicebefore",
+          "controls": [
+            "choicebeforenoconflict",
+            "noconflict",
+            "notgetyourchoice",
+            "choicebeforenotgetyourchoice",
+            "notgetyourchoicenoconflict",
+            "incentiveB",
+            "professionalsfree",
+            "seeincentivecostly",
+            "seequalitycostly",
+            "wave2",
+            "wave3",
+            "professionalscloudresearch",
+            "incentiveshigh",
+            "incentiveleft",
+            "incentiveshigh_incentiveleft",
+            "age",
+            "female"
+          ],
+          "n_controls": 17,
+          "sample_filter": "Highx10==0 & Highx100==0",
+          "vcov": "HC3"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 14,
+        "controls_count_max": 18,
+        "linked_adjustment": false,
+        "notes": "Control sets differ between Col1/Col2 (14 controls) and Col3 (17 controls with notgetyourchoice interactions). The treatment indicators (choicebeforenoconflict, noconflict) are structural interactions, not optional controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col1",
+          "baseline__table3_col2",
+          "baseline__table3_col3"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/incentiveB",
+          "rc/controls/loo/professionalsfree",
+          "rc/controls/loo/seeincentivecostly",
+          "rc/controls/loo/seequalitycostly",
+          "rc/controls/loo/wave2",
+          "rc/controls/loo/wave3",
+          "rc/controls/loo/professionalscloudresearch",
+          "rc/controls/loo/incentiveshigh",
+          "rc/controls/loo/incentiveleft",
+          "rc/controls/loo/incentiveshigh_incentiveleft",
+          "rc/controls/loo/age",
+          "rc/controls/loo/female",
+          "rc/controls/add/stdalpha",
+          "rc/controls/add/selfishseeincentivecostly",
+          "rc/controls/add/selfishseequalitycostly",
+          "rc/sample/include_inattentive",
+          "rc/sample/include_high_stakes_10x",
+          "rc/sample/include_high_stakes_100x",
+          "rc/sample/restrict_choicefree_only",
+          "rc/sample/restrict_professionals_only",
+          "rc/sample/restrict_incentiveA_only",
+          "rc/sample/restrict_incentiveB_only",
+          "rc/outcome/probit",
+          "rc/outcome/logit"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc3",
+          "params": {},
+          "notes": "Paper uses HC3 robust SEs throughout. No clustering since randomization is at individual level."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SEs as an alternative."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 robust SEs as an alternative."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 30
+      },
+      "sampling": {
+        "seed": 180741,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "LOO is feasible because control pool is moderate (12 optional controls). Full enumeration of LOO + additions."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Check balance of age, female across treatment assignment (getbefore)"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_lpm",
+        "randomization_unit": "individual",
+        "randomization_scheme": "Advisors randomly assigned to see incentive first (seeincentivefirst=1) or quality first (seeincentivefirst=0)",
+        "experiment_type": "online_experiment",
+        "platform": "MTurk/CloudResearch",
+        "se_type": "HC3",
+        "sample_restriction": "missingalpha==0 (attentive participants only), conflict==1 subsample for main test"
+      },
+      "claim_object": {
+        "outcome_concept": "Advisor recommends the incentivized product (binary)",
+        "treatment_concept": "Randomly assigned to see incentive first (seeincentivefirst)",
+        "estimand_concept": "Average treatment effect (ITT) of seeing incentive information first on biased recommendations",
+        "target_population": "Online experimental participants (advisors) in NoChoice experiment"
+      },
+      "baseline_specs": [
+        {
+          "label": "TableC1-Col1",
+          "description": "NoChoice recommendations, conflict subsample (Table C.1 Col 1)",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "seeincentivefirst",
+          "controls": [
+            "noconflict",
+            "incentiveB",
+            "female",
+            "age",
+            "stdalpha"
+          ],
+          "n_controls": 5,
+          "sample_filter": "missingalpha==0 & conflict==1",
+          "vcov": "HC3"
+        },
+        {
+          "label": "TableC1-Col2",
+          "description": "NoChoice recommendations, no-conflict subsample (Table C.1 Col 2)",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "seeincentivefirst",
+          "controls": [
+            "noconflict",
+            "incentiveB",
+            "female",
+            "age",
+            "stdalpha"
+          ],
+          "n_controls": 5,
+          "sample_filter": "missingalpha==0 & conflict==0",
+          "vcov": "HC3"
+        },
+        {
+          "label": "TableC1-Col3",
+          "description": "NoChoice recommendations, full sample with interaction (Table C.1 Col 3)",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "seeincentivefirst",
+          "controls": [
+            "noconflict",
+            "seeincentivefirst_noconflict",
+            "incentiveB",
+            "female",
+            "age",
+            "stdalpha"
+          ],
+          "n_controls": 6,
+          "sample_filter": "missingalpha==0",
+          "vcov": "HC3"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 4,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Minimum 4 controls: noconflict + incentiveB + female + age (stdalpha can be dropped as it is an optional addition). seeincentivefirst_noconflict is a structural interaction term for the full-sample specification and is not dropped in LOO."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__tablec1_col1",
+          "baseline__tablec1_col2",
+          "baseline__tablec1_col3"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/incentiveB",
+          "rc/controls/loo/female",
+          "rc/controls/loo/age",
+          "rc/controls/loo/stdalpha",
+          "rc/controls/minimal_nodemog",
+          "rc/sample/include_inattentive",
+          "rc/sample/restrict_conflict_only",
+          "rc/sample/restrict_noconflict_only",
+          "rc/sample/restrict_incentiveA_only",
+          "rc/sample/restrict_incentiveB_only",
+          "rc/outcome/probit",
+          "rc/outcome/logit"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc3",
+          "params": {},
+          "notes": "Paper uses HC3 robust SEs throughout."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SEs."
+          },
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 robust SEs."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 180741,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Very small control pool (4 optional controls beyond structural terms). Full enumeration is trivial."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Check balance of age, female, incentiveB across seeincentivefirst assignment"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_lpm",
+        "randomization_unit": "individual",
+        "randomization_scheme": "Advisors choose preferred order then are randomly assigned (getbefore). Outcome is preference itself (choicebefore) as a function of treatment condition indicators.",
+        "experiment_type": "online_experiment",
+        "platform": "CloudResearch/Prolific/MTurk",
+        "se_type": "HC3",
+        "sample_restriction": "Highx10==0 & Highx100==0 (baseline stakes only), professionals excluded from some specs"
+      },
+      "claim_object": {
+        "outcome_concept": "Advisor prefers to see incentive information first (binary)",
+        "treatment_concept": "Treatment condition (costly vs free choice) and individual characteristics",
+        "estimand_concept": "Average treatment effect of costly-choice conditions on preference for information order",
+        "target_population": "Online experimental participants (advisors) in Choice experiment, baseline stakes"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "description": "Preferences for information order, full covariates (Table 2 Col 1)",
+          "outcome_var": "choicebefore",
+          "treatment_var": "seeincentivecostly",
+          "controls": [
+            "seequalitycostly",
+            "professionalsfree",
+            "wave2",
+            "wave3",
+            "professionalscloudresearch",
+            "incentiveshigh",
+            "incentiveleft",
+            "incentiveshigh_incentiveleft",
+            "age",
+            "female"
+          ],
+          "n_controls": 10,
+          "sample_filter": "Highx10==0 & Highx100==0",
+          "vcov": "HC3"
+        },
+        {
+          "label": "Table2-Col2",
+          "description": "Preferences adding selfishness, non-professionals (Table 2 Col 2)",
+          "outcome_var": "choicebefore",
+          "treatment_var": "seeincentivecostly",
+          "controls": [
+            "seequalitycostly",
+            "professionalsfree",
+            "stdalpha",
+            "wave2",
+            "wave3",
+            "professionalscloudresearch",
+            "incentiveshigh",
+            "incentiveleft",
+            "incentiveshigh_incentiveleft",
+            "age",
+            "female"
+          ],
+          "n_controls": 11,
+          "sample_filter": "Highx10==0 & Highx100==0 & professionals==0",
+          "vcov": "HC3"
+        },
+        {
+          "label": "Table2-Col3",
+          "description": "Preferences adding selfishness and selfishness-treatment interactions, full sample (Table 2 Col 3)",
+          "outcome_var": "choicebefore",
+          "treatment_var": "seeincentivecostly",
+          "controls": [
+            "seequalitycostly",
+            "professionalsfree",
+            "stdalpha",
+            "selfishseeincentivecostly",
+            "selfishseequalitycostly",
+            "wave2",
+            "wave3",
+            "professionalscloudresearch",
+            "incentiveshigh",
+            "incentiveleft",
+            "incentiveshigh_incentiveleft",
+            "age",
+            "female"
+          ],
+          "n_controls": 13,
+          "sample_filter": "Highx10==0 & Highx100==0",
+          "vcov": "HC3"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 10,
+        "controls_count_max": 13,
+        "linked_adjustment": false,
+        "notes": "seequalitycostly and other treatment indicators are structural, not optional. Optional controls are demographics (age, female), wave indicators, design parameters (incentiveshigh, incentiveleft), and selfishness measure."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col1",
+          "baseline__table2_col2",
+          "baseline__table2_col3"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/professionalsfree",
+          "rc/controls/loo/wave2",
+          "rc/controls/loo/wave3",
+          "rc/controls/loo/professionalscloudresearch",
+          "rc/controls/loo/incentiveshigh",
+          "rc/controls/loo/incentiveleft",
+          "rc/controls/loo/incentiveshigh_incentiveleft",
+          "rc/controls/loo/age",
+          "rc/controls/loo/female",
+          "rc/controls/add/stdalpha",
+          "rc/controls/add/selfishseeincentivecostly",
+          "rc/controls/add/selfishseequalitycostly",
+          "rc/sample/include_inattentive",
+          "rc/sample/include_high_stakes_10x",
+          "rc/sample/include_high_stakes_100x",
+          "rc/sample/restrict_nonprofessionals_only",
+          "rc/outcome/probit",
+          "rc/outcome/logit"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc3",
+          "params": {},
+          "notes": "Paper uses HC3 robust SEs throughout."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SEs."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 180741,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Moderate control pool. Full enumeration of LOO + additions is feasible."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

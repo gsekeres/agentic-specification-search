@@ -1,0 +1,24 @@
+{
+  "paper_id": "130784-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Child marriage bans (cohort exposure x regional pre-ban intensity) reduce child marriage rates in 17 low- and middle-income countries",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "130784-V1__baseline__001",
+        "130784-V1__baseline__marriage_age__002",
+        "130784-V1__baseline__educ__003",
+        "130784-V1__baseline__employed__004"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__marriage_age",
+        "baseline__educ",
+        "baseline__employed"
+      ],
+      "notes": "Generalized DiD (TWFE) with countryage + countryregionurban FE, CRV1 clustered at countryregionurban. Primary baseline is childmarriage outcome (Table4-PanelA-Col1, coef=-0.0077, p=0.003). Three additional baselines use alternative outcomes from same table: marriage_age (Col2, coef=+0.123, p=0.009), educ (Col4, coef=+0.045, p=0.023), employed (Col5, coef=-0.009, p=0.002). All four are explicitly listed in the surface as baseline specs. The alternative-outcome baselines change the outcome concept but are part of the paper's multi-outcome claim object."
+    }
+  ],
+  "global_notes": "Surface-driven run. One baseline group (G1) matching the pre-run surface. One surface-planned spec was not executed: rc/controls/add/interviewyear_banyear_fe. No spurious groups or baseline-group reassignments needed. All 50 rows succeeded. Inference variants (8 rows) correctly placed in inference_results.csv, not in specification_results.csv."
+}

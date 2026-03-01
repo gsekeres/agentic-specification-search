@@ -1,0 +1,18 @@
+{
+  "paper_id": "125321-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Sharp RD estimate of effect of automating air pollution monitoring stations on reported PM10 levels in China. Running variable is days from automation date (T). Outcome is residualized PM10 (station FE + month FE + weather controls absorbed via reghdfe, then rdrobust applied to residuals). Clustered at city level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["125321-V1_run_001", "125321-V1_run_002"],
+      "baseline_spec_ids": ["baseline", "baseline__raw_pm10"],
+      "baseline_coefficient": 34.917697247526874,
+      "baseline_std_error": 6.532168103305631,
+      "baseline_p_value": 1.812871056438327e-08,
+      "baseline_n_obs": 231511,
+      "notes": "Primary baseline is residualized PM10 (Table 1A Row 1 Col 2). baseline__raw_pm10 is the unresidualized RD (Table 1A Row 1 Col 1) with raw PM10 as outcome. Both show a large positive discontinuity: automation leads to higher reported PM10 (suggesting pre-automation manual reporting underreported pollution). R2 is not reported for RD designs. The robust bias-corrected procedure is the canonical inference method."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified one baseline group (G1) covering the sharp RD on PM10 at the automation date. All 23 specifications maintain the same treatment concept (automation indicator T) and broadly the same outcome concept (PM10 or transformations thereof). Some outcome variable names differ (resid_pm10_smw, pm10, resid_log_pm10, resid_pm10_sym, resid_pm10_weather_only, resid_pm10_monthly) but all measure PM10 pollution levels or residualized versions thereof -- these are functional form or data construction variants, not outcome concept changes. The diagnostics_results.csv contains 6 diagnostic rows (manipulation test, balance checks, placebo outcomes) properly separated from the main specification_results.csv."
+}

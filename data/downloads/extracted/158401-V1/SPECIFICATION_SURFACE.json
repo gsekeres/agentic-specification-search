@@ -1,0 +1,399 @@
+{
+  "paper_id": "158401-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "label": "Market Access -> Investment (Table 5)",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_ancova",
+        "estimand": "ITT",
+        "randomization_unit": "village (ea_code)",
+        "randomization_design": "12 treatment villages out of 20 total",
+        "n_clusters": 20,
+        "panel_unit": "hhh_id",
+        "panel_time": "survey_season",
+        "fe_structure": ["survey_season"],
+        "cluster_vars": ["ea_code"],
+        "ancova_control": "baseline_outcome_mean (var_p3 = mean at last baseline season, fallback to pooled baseline)",
+        "sample_filter": "group==1 & season_post==1",
+        "post_treatment_seasons": [4, 5, 6, 7],
+        "post_treatment_labels": ["fall2018", "spring2019", "fall2019", "spring2020"]
+      },
+      "claim_object": {
+        "outcome_concept": "Farmer investment in maize quality (expenses on seeds/fertilizer, input expenses, post-harvest handling practices and expenses)",
+        "treatment_concept": "Access to a market for quality maize (buy_treatment): village-level random assignment to an agro-trading company buying high-quality maize",
+        "estimand_concept": "Intent-to-Treat (ITT) average effect of market access assignment on investment outcomes",
+        "target_population": "Maize farming households in 20 experimental villages (sample frame 1) in Uganda, post-treatment seasons"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-PanelA-Col1",
+          "outcome_var": "expenses_fert_seeds",
+          "treatment_var": "buy_treatment",
+          "controls": ["expenses_fert_seeds_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Expenses on seeds and fertilizer; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table5-PanelA-Col2",
+          "outcome_var": "expenses_inputs",
+          "treatment_var": "buy_treatment",
+          "controls": ["expenses_inputs_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Expenses on all inputs; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table5-PanelA-Col3",
+          "outcome_var": "tarpaulin_d",
+          "treatment_var": "buy_treatment",
+          "controls": ["tarpaulin_d_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Proper drying dummy; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table5-PanelA-Col4",
+          "outcome_var": "sort_d",
+          "treatment_var": "buy_treatment",
+          "controls": [],
+          "fe": ["survey_season"],
+          "n_controls": 0,
+          "notes": "Sorting dummy; NO ANCOVA (post-harvest activity not measured at baseline)"
+        },
+        {
+          "label": "Table5-PanelA-Col5",
+          "outcome_var": "winnow_d",
+          "treatment_var": "buy_treatment",
+          "controls": [],
+          "fe": ["survey_season"],
+          "n_controls": 0,
+          "notes": "Winnowing dummy; NO ANCOVA (post-harvest activity not measured at baseline)"
+        },
+        {
+          "label": "Table5-PanelA-Col6",
+          "outcome_var": "expenses_labor_preharvest",
+          "treatment_var": "buy_treatment",
+          "controls": ["expenses_labor_preharvest_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Pre-harvest labor expenses; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table5-PanelA-Col7",
+          "outcome_var": "expenses_postharvest",
+          "treatment_var": "buy_treatment",
+          "controls": ["expenses_postharvest_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Post-harvest expenses; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table5-PanelA-Col8",
+          "outcome_var": "expenses_labor_postharvest",
+          "treatment_var": "buy_treatment",
+          "controls": ["expenses_labor_postharvest_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Post-harvest labor expenses; ANCOVA with baseline outcome mean"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Baseline uses ANCOVA (0-1 controls). Extended sets add pre-treatment household covariates. Max 6 = ANCOVA + 5 household chars."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__t5a_col1_fert_seeds",
+          "baseline__t5a_col2_inputs",
+          "baseline__t5a_col3_tarpaulin",
+          "baseline__t5a_col4_sort",
+          "baseline__t5a_col5_winnow",
+          "baseline__t5a_col6_labor_pre",
+          "baseline__t5a_col7_postharvest",
+          "baseline__t5a_col8_labor_post"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/extended_hh_chars",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/time/drop_first_post_season",
+          "rc/sample/time/drop_last_post_season",
+          "rc/sample/panel/balanced_only",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p"
+        ],
+        "rc_notes": {
+          "rc/controls/loo/drop_ancova": "REMOVED: redundant with rc/controls/sets/none for outcomes with ANCOVA, and a no-op for sort_d/winnow_d which have no ANCOVA control.",
+          "rc/form/outcome/asinh": "Apply ONLY to continuous monetary outcomes (expenses_fert_seeds, expenses_inputs, expenses_labor_preharvest, expenses_postharvest, expenses_labor_postharvest). NOT to binary outcomes (tarpaulin_d, sort_d, winnow_d).",
+          "rc/form/outcome/log1p": "Same restriction as asinh: continuous monetary outcomes only.",
+          "rc/sample/outliers/trim_y_1_99": "Analyst-added for G1 (paper only trims Table 6 outcomes in Appendix Table 11). Apply only to continuous monetary outcomes, not binary."
+        }
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/village",
+          "params": {"cluster_var": "ea_code"},
+          "notes": "Clustered SE at the village level, matching the paper's baseline inference. Village is the randomization unit (20 villages: 12T, 8C)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust SE without clustering (stress test given only 20 clusters)."
+          },
+          {
+            "spec_id": "infer/ri/fisher/permutation",
+            "params": {"n_permutations": 10000, "seed": 760130},
+            "notes": "Fisher randomization inference with 10,000 permutations of village-level treatment assignment, matching the paper exactly. Seed 760130 from permutations.do for group 1."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 64,
+        "notes": "8 baseline + 3 focal x (2 design + 2 controls + 4 sample + 2 form) = 8 + 30 = 38 for G1. Budget set at 64 to allow headroom. See spec_enumeration for precise breakdown."
+      },
+      "sampling": {
+        "seed": 158401,
+        "notes": "Full enumeration is feasible; no sampling needed."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance test for household characteristics and baseline outcomes (replicates Table 3)."
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "notes": "Differential attrition test between treatment and control (replicates Appendix Table 6)."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "label": "Market Access -> Productivity/Income (Table 6)",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_ancova",
+        "estimand": "ITT",
+        "randomization_unit": "village (ea_code)",
+        "randomization_design": "12 treatment villages out of 20 total",
+        "n_clusters": 20,
+        "panel_unit": "hhh_id",
+        "panel_time": "survey_season",
+        "fe_structure": ["survey_season"],
+        "cluster_vars": ["ea_code"],
+        "ancova_control": "baseline_outcome_mean (var_p3 = mean at last baseline season, fallback to pooled baseline)",
+        "sample_filter": "group==1 & season_post==1",
+        "post_treatment_seasons": [4, 5, 6, 7],
+        "post_treatment_labels": ["fall2018", "spring2019", "fall2019", "spring2020"]
+      },
+      "claim_object": {
+        "outcome_concept": "Farmer productivity and income (price, acreage, harvest, yield, harvest value, expenses, profit monetary, profit including own hours)",
+        "treatment_concept": "Access to a market for quality maize (buy_treatment): village-level random assignment to an agro-trading company buying high-quality maize",
+        "estimand_concept": "Intent-to-Treat (ITT) average effect of market access assignment on productivity and income outcomes",
+        "target_population": "Maize farming households in 20 experimental villages (sample frame 1) in Uganda, post-treatment seasons"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table6-PanelA-Col1",
+          "outcome_var": "price",
+          "treatment_var": "buy_treatment",
+          "controls": ["price_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Price per kg (USD); ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col2",
+          "outcome_var": "acreage",
+          "treatment_var": "buy_treatment",
+          "controls": ["acreage_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Maize acreage; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col3",
+          "outcome_var": "harvest_kg_tot",
+          "treatment_var": "buy_treatment",
+          "controls": ["harvest_kg_tot_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Harvest in kg; ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col4",
+          "outcome_var": "yield",
+          "treatment_var": "buy_treatment",
+          "controls": ["yield_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Yield (kg/acre); ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col5",
+          "outcome_var": "harvest_value",
+          "treatment_var": "buy_treatment",
+          "controls": ["harvest_value_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Harvest value (USD); ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col6",
+          "outcome_var": "expenses",
+          "treatment_var": "buy_treatment",
+          "controls": ["expenses_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Total monetary expenses (USD); ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col7",
+          "outcome_var": "surplus",
+          "treatment_var": "buy_treatment",
+          "controls": ["surplus_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Profit = harvest value - monetary expenses (USD); ANCOVA with baseline outcome mean"
+        },
+        {
+          "label": "Table6-PanelA-Col8",
+          "outcome_var": "surplus_hrs",
+          "treatment_var": "buy_treatment",
+          "controls": ["surplus_hrs_p3"],
+          "fe": ["survey_season"],
+          "n_controls": 1,
+          "notes": "Profit incl. own hours (USD); ANCOVA with baseline outcome mean"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Same as G1. ANCOVA (0-1 controls), extended adds pre-treatment household covariates."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__t6a_col1_price",
+          "baseline__t6a_col2_acreage",
+          "baseline__t6a_col3_harvest",
+          "baseline__t6a_col4_yield",
+          "baseline__t6a_col5_harvest_value",
+          "baseline__t6a_col6_expenses",
+          "baseline__t6a_col7_surplus",
+          "baseline__t6a_col8_surplus_hrs"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/extended_hh_chars",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/time/drop_first_post_season",
+          "rc/sample/time/drop_last_post_season",
+          "rc/sample/panel/balanced_only",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p"
+        ],
+        "rc_notes": {
+          "rc/controls/loo/drop_ancova": "REMOVED: redundant with rc/controls/sets/none. All G2 outcomes have ANCOVA, and dropping ANCOVA is the same as sets/none.",
+          "rc/form/outcome/asinh": "Apply to continuous monetary/quantity outcomes (price, harvest_kg_tot, harvest_value, expenses, surplus, surplus_hrs). NOT to acreage or yield where level interpretation is natural.",
+          "rc/form/outcome/log1p": "Same restriction as asinh.",
+          "rc/sample/outliers/trim_y_1_99": "Replicates Appendix Table 11 exactly: non-negative continuous variables trimmed at top 1% per season; surplus/surplus_hrs trimmed at top and bottom 1% per season."
+        }
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/village",
+          "params": {"cluster_var": "ea_code"},
+          "notes": "Clustered SE at the village level, matching the paper's baseline inference. Village is the randomization unit (20 villages: 12T, 8C)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust SE without clustering."
+          },
+          {
+            "spec_id": "infer/ri/fisher/permutation",
+            "params": {"n_permutations": 10000, "seed": 760130},
+            "notes": "Fisher randomization inference with 10,000 permutations. Note: permutations.do uses seed 760130 for group 1 (same experiment for both G1 and G2)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 64,
+        "notes": "8 baseline + 3 focal x (2 design + 2 controls + 4 sample + 2 form) = 8 + 30 = 38 for G2. Budget set at 64 to allow headroom."
+      },
+      "sampling": {
+        "seed": 158402,
+        "notes": "Full enumeration is feasible; no sampling needed."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Same balance test as G1 (same experiment, same sample)."
+        }
+      ]
+    }
+  ],
+  "focal_outcomes": {
+    "G1_primary": "expenses_fert_seeds",
+    "G1_notes": "Expenses on seeds and fertilizer is the first-listed investment outcome in Table 5, representing the core quality-upgrading investment channel.",
+    "G2_primary": "surplus",
+    "G2_notes": "Profit (monetary expenses) is the primary welfare outcome in Table 6 capturing net income effects."
+  },
+  "available_covariates": {
+    "household_characteristics": [
+      "mdm_female",
+      "mdm_primary",
+      "hhr_n",
+      "distance_kakumiro",
+      "main_road_min"
+    ],
+    "notes": "These 5 pre-treatment household characteristics are used in Table 3 balance tests. They are available as additional controls for the extended covariate set."
+  },
+  "spec_enumeration": {
+    "total_target": 71,
+    "enumeration_plan": {
+      "G1_baseline": 8,
+      "G1_design_diff_in_means": 3,
+      "G1_design_with_covariates": 3,
+      "G1_rc_controls_none": 3,
+      "G1_rc_controls_extended": 3,
+      "G1_rc_sample_trim": 2,
+      "G1_rc_sample_drop_first_season": 3,
+      "G1_rc_sample_drop_last_season": 3,
+      "G1_rc_sample_balanced": 3,
+      "G1_rc_form_asinh": 2,
+      "G1_rc_form_log1p": 2,
+      "G2_baseline": 8,
+      "G2_design_diff_in_means": 3,
+      "G2_design_with_covariates": 3,
+      "G2_rc_controls_none": 3,
+      "G2_rc_controls_extended": 3,
+      "G2_rc_sample_trim": 3,
+      "G2_rc_sample_drop_first_season": 3,
+      "G2_rc_sample_drop_last_season": 3,
+      "G2_rc_sample_balanced": 3,
+      "G2_rc_form_asinh": 2,
+      "G2_rc_form_log1p": 2,
+      "notes": "For RC/design specs, we run 3 focal outcomes per group: expenses_fert_seeds, tarpaulin_d, expenses_postharvest for G1; surplus, harvest_value, yield for G2. Functional form transforms (asinh/log1p) run on 2 continuous monetary focal outcomes only (excluding binary tarpaulin_d for G1 and yield for G2). Trimming for G1 runs on 2 continuous monetary focal outcomes only (excluding binary tarpaulin_d). All time/panel sample specs run on all 3 focal outcomes."
+    }
+  }
+}

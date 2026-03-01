@@ -1,0 +1,13 @@
+paper_id,spec_run_id,diagnostic_run_id,relationship
+125821-V1,125821-V1_run0001,125821-V1_diag0001,shared_invariant_check
+125821-V1,125821-V1_run0001,125821-V1_diag0002,shared_invariant_check
+125821-V1,125821-V1_run0002,125821-V1_diag0001,shared_invariant_check
+125821-V1,125821-V1_run0002,125821-V1_diag0002,shared_invariant_check
+125821-V1,125821-V1_run0003,125821-V1_diag0001,shared_invariant_check
+125821-V1,125821-V1_run0003,125821-V1_diag0002,shared_invariant_check
+125821-V1,125821-V1_run0004,125821-V1_diag0001,shared_invariant_check
+125821-V1,125821-V1_run0004,125821-V1_diag0002,shared_invariant_check
+125821-V1,125821-V1_run0005,125821-V1_diag0001,shared_invariant_check
+125821-V1,125821-V1_run0005,125821-V1_diag0002,shared_invariant_check
+125821-V1,125821-V1_run0006,125821-V1_diag0001,shared_invariant_check
+125821-V1,125821-V1_run0006,125821-V1_diag0002,shared_invariant_check

@@ -1,0 +1,93 @@
+{
+  "paper_id": "112370-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "probit",
+        "model_formula": "y_exe_left ~ democ + lgrgdpwork + dffo12_X_lagfdi_gdp, vce(robust)",
+        "selection_story": "Cross-country probit of leftist election outcomes on democracy, GDP growth, and capital flow interactions",
+        "reported_object": "index_coef",
+        "sample_restriction": "Latin American countries with election years, 1976-2004"
+      },
+      "claim_object": {
+        "outcome_concept": "Leftist party wins executive election (shift to left)",
+        "treatment_concept": "Interaction of change in federal funds rate with lagged net FDI/GDP (capital flow shock x financial openness)",
+        "estimand_concept": "Effect of capital flow disruptions (proxied by US interest rate changes interacted with FDI exposure) on probability of leftist election victory",
+        "target_population": "Latin American countries election-year observations (18 countries, 1976-2004)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col2-strict",
+          "outcome_var": "y_exe_left",
+          "treatment_var": "dffo12_X_lagfdi_gdp",
+          "controls": ["democ", "lgrgdpwork"],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "robust"
+        },
+        {
+          "label": "Table1-Col2-broad",
+          "outcome_var": "_y_exec_left",
+          "treatment_var": "dffo12_X_lagfdi_gdp",
+          "controls": ["democ", "lgrgdpwork"],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "robust"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "Paper uses only 2 controls in all specifications. N=101. Very constrained search space."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__broad_left"
+        ],
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_democ",
+          "rc/controls/loo/drop_lgrgdpwork",
+          "rc/controls/sets/none",
+          "rc/controls/sets/add_dffo12",
+          "rc/sample/outliers/drop_country_venezuela",
+          "rc/sample/outliers/drop_country_haiti",
+          "rc/sample/time_window/post_1985",
+          "rc/sample/time_window/post_1990",
+          "rc/form/treatment/dffo12_only",
+          "rc/form/treatment/lagfdi_only",
+          "rc/data/outcome/broad_vs_strict"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Robust SEs matching Stata vce(robust) on probit"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/country",
+            "params": {"cluster_var": "cntr"},
+            "notes": "Cluster at country level (18 clusters - very small)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 112370,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

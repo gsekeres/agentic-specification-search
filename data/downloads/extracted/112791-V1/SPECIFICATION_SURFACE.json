@@ -1,0 +1,246 @@
+{
+  "paper_id": "112791-V1",
+  "created_at": "2026-02-25",
+  "notes": "Baicker et al. (2014) 'The Impact of Medicaid on Labor Market Activity and Program Participation: Evidence from the Oregon Health Insurance Experiment.' AER P&P. Uses the Oregon Health Insurance Experiment lottery as random assignment. ITT regressions of treatment (lottery selection) on labor/benefit outcomes with lottery-draw FE (nnn*) controls and optional lagged outcome controls, clustered at household (reservation_id). IV/LATE estimated using 2SLS where lottery is instrument for actual Medicaid enrollment. Data not publicly available (SSA administrative records).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "household (reservation_id)",
+        "strata_or_blocks": "lottery draw indicators (nnn*)",
+        "estimand": "ITT",
+        "weights": "weight_ssa_admin (sampling/nonresponse weights for post-lottery-period outcomes)",
+        "cluster_var": "reservation_id",
+        "sample_condition": "sample_ssa==1 (matched to SSA, in analysis sample)"
+      },
+      "claim_object": {
+        "outcome_concept": "Employment and earnings (any earnings indicator, total earnings, earnings above FPL)",
+        "treatment_concept": "Lottery selection for Medicaid (treatment indicator)",
+        "estimand_concept": "Intent-to-treat effect of Medicaid lottery selection on labor force participation and earnings",
+        "target_population": "Low-income uninsured adults in Oregon who signed up for Medicaid lottery, matched to SSA administrative data"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-AnyEarn",
+          "outcome_var": "any_earn2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "any_earn2007"],
+          "n_controls_fixed": "nnn* (lottery draw dummies, ~8)",
+          "n_controls_lagged": 1,
+          "notes": "ITT: reg any_earn2009 treatment nnn* any_earn2007 [pw=weight_ssa_admin], cluster(reservation_id)"
+        },
+        {
+          "label": "Table1-Earn",
+          "outcome_var": "earn2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "earn2007"],
+          "n_controls_fixed": "nnn* (lottery draw dummies, ~8)",
+          "n_controls_lagged": 1,
+          "notes": "ITT: reg earn2009 treatment nnn* earn2007 [pw=weight_ssa_admin], cluster(reservation_id)"
+        },
+        {
+          "label": "Table1-EarnAboveFPL",
+          "outcome_var": "earn_ab_fpl_adj_2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "earn_ab_fpl_adj_2007"],
+          "n_controls_fixed": "nnn* (lottery draw dummies, ~8)",
+          "n_controls_lagged": 1,
+          "notes": "ITT: reg earn_ab_fpl_adj_2009 treatment nnn* earn_ab_fpl_adj_2007 [pw=weight_ssa_admin], cluster(reservation_id)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 8,
+        "controls_count_max": 18,
+        "linked_adjustment": false,
+        "notes": "Minimum controls = nnn* lottery draw dummies (8, always required for design integrity). Maximum is nnn* + lagged outcome + lottery_list covariates (8 + 1 + 9 = 18). The paper's robustness checks run: (1) nnn* only (no lagged outcome), (2) nnn* + lagged outcome (baseline), (3) nnn* + lagged outcome + lottery_list demographics. Lottery draw dummies (nnn*) are mandatory for RCT design integrity."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table1_earn",
+          "baseline__table1_earn_above_fpl"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_lagged_outcome",
+          "rc/controls/add/lottery_list_demographics",
+          "rc/sample/time/year_2008",
+          "rc/sample/time/years_0809",
+          "rc/weights/unweighted",
+          "rc/outcome/alternative/wage2009",
+          "rc/outcome/alternative/se2009",
+          "rc/outcome/alternative/any_wage2009",
+          "rc/outcome/alternative/any_se2009"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/household",
+          "params": {"cluster_var": "reservation_id"},
+          "notes": "Cluster at the household (reservation_id) -- the randomization unit. Matches paper baseline."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust without clustering."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 jackknife-based SEs."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 15,
+        "notes": "Data not publicly available (SSA admin data). Core specs are primarily across outcomes, time periods, and control sets. Budget is moderate because the control pool is small and well-structured."
+      },
+      "sampling": {
+        "seed": 112791,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Small control pool (lottery draw FE mandatory, optional: lagged outcome, lottery_list demographics). Full enumeration is feasible."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group", "notes": "Balance of lottery_list characteristics across treatment and control (Table A3)."},
+        {"diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff", "scope": "baseline_group", "notes": "Match rate differential between treatment and control (Table A3 row 1)."},
+        {"diag_spec_id": "diag/randomized_experiment/noncompliance/first_stage", "scope": "baseline_group", "notes": "First stage: treatment -> ohp_all_ever_ssa. Reported in Table A5."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "household (reservation_id)",
+        "strata_or_blocks": "lottery draw indicators (nnn*)",
+        "estimand": "ITT",
+        "weights": "weight_ssa_admin",
+        "cluster_var": "reservation_id",
+        "sample_condition": "sample_ssa==1"
+      },
+      "claim_object": {
+        "outcome_concept": "Government benefit receipt (SNAP, TANF, SSI, SSDI indicators and amounts)",
+        "treatment_concept": "Lottery selection for Medicaid (treatment indicator)",
+        "estimand_concept": "Intent-to-treat effect of Medicaid lottery selection on government benefit receipt",
+        "target_population": "Low-income uninsured adults in Oregon who signed up for Medicaid lottery, matched to SSA administrative data"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-AnySnap",
+          "outcome_var": "any_snapamt2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "any_snapamt2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-AnyTanf",
+          "outcome_var": "any_tanfamt2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "any_tanfamt2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-AnySsi",
+          "outcome_var": "any_ssiben2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "any_ssiben2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-AnyDi",
+          "outcome_var": "any_diben2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "any_diben2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-SnapAmt",
+          "outcome_var": "snapamt2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "snapamt2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-TanfAmt",
+          "outcome_var": "tanfamt2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "tanfamt2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-SsiAmt",
+          "outcome_var": "ssiben2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "ssiben2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        },
+        {
+          "label": "Table2-DiAmt",
+          "outcome_var": "diben2009",
+          "treatment_var": "treatment",
+          "controls": ["nnn*", "diben2007"],
+          "n_controls_fixed": "nnn* (~8)",
+          "n_controls_lagged": 1
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 8,
+        "controls_count_max": 18,
+        "linked_adjustment": false,
+        "notes": "Same control structure as G1. Lottery draw FE always mandatory (8 dummies). Optional: lagged outcome (1), lottery_list demographics (9). Max = 18."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_any_tanf",
+          "baseline__table2_any_ssi",
+          "baseline__table2_any_di",
+          "baseline__table2_snap_amt",
+          "baseline__table2_tanf_amt",
+          "baseline__table2_ssi_amt",
+          "baseline__table2_di_amt"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_lagged_outcome",
+          "rc/controls/add/lottery_list_demographics",
+          "rc/sample/time/year_2008",
+          "rc/sample/time/years_0809",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/household",
+          "params": {"cluster_var": "reservation_id"},
+          "notes": "Cluster at the household (reservation_id). Matches paper."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SEs without clustering."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 jackknife SEs."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 15,
+        "notes": "More outcome variables than G1 (8 vs 3), but same control structure. Budget is moderate."
+      },
+      "sampling": {
+        "seed": 112791,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Same as G1: small control pool, exhaustive enumeration."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group"},
+        {"diag_spec_id": "diag/randomized_experiment/noncompliance/first_stage", "scope": "baseline_group"}
+      ]
+    }
+  ]
+}

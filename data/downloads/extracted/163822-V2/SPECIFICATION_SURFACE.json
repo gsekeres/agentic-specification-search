@@ -1,0 +1,199 @@
+{
+  "paper_id": "163822-V2",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_strata_fe",
+        "model_formula": "PD_P2_UsageFITSBY ~ B + L + i.Stratifier + PD_P1_UsageFITSBY, robust",
+        "randomization_unit": "individual (UserID)",
+        "stratification_var": "Stratifier",
+        "treatment_arms": ["Bonus (B = S3_Bonus)", "Limit (L = S2_LimitType != 0)"],
+        "baseline_outcome_control": "PD_P1_UsageFITSBY"
+      },
+      "claim_object": {
+        "outcome_concept": "Daily screen time on FITSBY apps (Facebook, Instagram, Twitter, Snapchat, Browser, YouTube) in minutes/day",
+        "treatment_concept": "Randomly assigned screen-time bonus (financial incentive to reduce use) and/or screen-time limit (commitment device)",
+        "estimand_concept": "ITT effect of bonus/limit treatments on phone usage (FITSBY apps)",
+        "target_population": "Android phone users recruited via Phone Dashboard app (2020, during COVID-19)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Usage-P2-FITSBY-Simple",
+          "outcome_var": "PD_P2_UsageFITSBY",
+          "treatment_var": "B",
+          "second_treatment_var": "L",
+          "controls": [
+            "Stratifier",
+            "PD_P1_UsageFITSBY"
+          ],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "robust (HC1)",
+          "notes": "Simple treatment specification: B (bonus indicator = S3_Bonus) and L (any limit indicator = S2_LimitType != 0). Control for stratification dummies and baseline usage. The reg_treatment ado applies: reg yvar B L $STRATA baseline, robust."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "functional_form_policy": "In an RCT, controls are for precision, not identification. The baseline outcome (PD_P1_UsageFITSBY) is the primary precision control. Stratification dummies match the randomization design.",
+        "treatment_structure_note": "Two orthogonal treatments: Bonus (B) and Limit (L). Both should always be included. The paper also reports specs with detailed limit types (L_1 through L_5 for different snooze options) but the simple specification is the main one.",
+        "g2_stacking_note": "G2 regressions use stacked survey waves (S3/S4). The code reshapes data to long format with a survey indicator S, then includes i.S and interactions i.S#$STRATA and i.S#c.baseline_outcome. The runner must replicate this stacking structure for G2 specs."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__usage_p3_fitsby",
+          "baseline__usage_p4_fitsby",
+          "baseline__usage_p5_fitsby",
+          "baseline__usage_p2to5_fitsby",
+          "baseline__usage_p2_total",
+          "baseline__usage_p2to5_total"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_baseline_usage",
+          "rc/controls/loo/drop_strata",
+          "rc/controls/sets/none",
+          "rc/controls/sets/baseline_only",
+          "rc/controls/sets/strata_only",
+          "rc/controls/sets/baseline_plus_strata",
+          "rc/controls/progression/no_controls",
+          "rc/controls/progression/strata_only",
+          "rc/controls/progression/baseline_usage_only",
+          "rc/controls/progression/full",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/balanced_panel_p2p3",
+          "rc/sample/restriction/balanced_panel_all",
+          "rc/data/outcome/total_usage_not_fitsby",
+          "rc/data/outcome/usage_hours",
+          "rc/data/treatment/detailed_limit_types",
+          "rc/form/outcome/log1p",
+          "rc/form/outcome/asinh"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust HC1 SEs, matching paper's 'robust' option"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc2",
+            "params": {},
+            "notes": "HC2 SEs for small-sample correction"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 163822,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check"
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_strata_fe",
+        "model_formula": "SWBIndex_N ~ B + B4 + L + i.S + i.S#i.Stratifier + i.S#c.S1_SWBIndex_N, robust cluster(UserID)",
+        "randomization_unit": "individual (UserID)",
+        "stratification_var": "Stratifier",
+        "treatment_arms": ["Bonus (B)", "Limit (L)"],
+        "baseline_outcome_control": "S1_SWBIndex_N",
+        "panel_structure": "Survey waves S3, S4 stacked"
+      },
+      "claim_object": {
+        "outcome_concept": "Survey-based well-being outcomes (addiction scale, SMS addiction scale, subjective well-being, phone makes life better, ideal use change, survey index)",
+        "treatment_concept": "Randomly assigned screen-time bonus and/or screen-time limit",
+        "estimand_concept": "ITT effect of bonus/limit treatments on self-reported well-being measures",
+        "target_population": "Android phone users recruited via Phone Dashboard app (2020)"
+      },
+      "baseline_specs": [
+        {
+          "label": "FDRTable-SWBIndex",
+          "outcome_var": "index_well_N",
+          "treatment_var": "B",
+          "second_treatment_var": "L",
+          "controls": [
+            "S (survey wave dummies)",
+            "Stratifier (interacted with S)",
+            "S1_index_well_N (baseline outcome, interacted with S)"
+          ],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster(UserID)",
+          "notes": "FDR Table regression: stacked survey waves (S3/S4), with B (redefined as B4 = bonus x S4 indicator), B4, L, and survey-wave interacted strata and baseline outcome. Focal parameter: coefficient on L (limit treatment effect on well-being). Code: gen B4 = B*(S==2); replace B = B4; reg yvar B B4 L i.S i.S#$STRATA i.S#c.baseline, robust cluster(UserID). Since B is replaced by B4, they are collinear and Stata drops one."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 3,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__addiction_index",
+          "baseline__sms_index",
+          "baseline__phone_use_change",
+          "baseline__life_better",
+          "baseline__swb_index"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_baseline_outcome",
+          "rc/controls/loo/drop_strata",
+          "rc/controls/sets/none",
+          "rc/controls/sets/strata_only",
+          "rc/controls/sets/full",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/s3_only",
+          "rc/sample/restriction/s4_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/UserID",
+          "params": {"cluster_var": "UserID"},
+          "notes": "Cluster at individual level for stacked panel, matching paper's cluster(UserID)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering (single cross-section per survey)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 163822,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

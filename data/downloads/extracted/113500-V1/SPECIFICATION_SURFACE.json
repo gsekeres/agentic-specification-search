@@ -1,0 +1,281 @@
+{
+  "paper_id": "113500-V1",
+  "created_at": "2026-02-25",
+  "notes": "Babcock, Recalde, Vesterlund (2017) 'Gender Differences in the Allocation of Low-Promotability Tasks: The Role of Backlash', AER P&P. Lab experiment with two treatment conditions (treatment=='Control': no backlash; treatment=='Backlash': penalty condition). NOTE: In the raw data, treatment is categorical ('Control'/'Backlash'), female is categorical ('Female'/'Male'), and student is categorical ('Freshman'/'Sophomore'/'Junior'/'Senior'). These must be converted to numeric before analysis. Random assignment at the session level. Main analysis (Table 1) uses probit regressions of the investment decision on solicited, female, and their interaction, with individual controls. The original do-file has a clustering bug (local clust_var vs clus_var), so the published probit estimates may not actually be clustered; cgmwildboot results provide the paper's primary inference.",
+  "data_preparation_notes": {
+    "treatment": "Categorical ('Control'/'Backlash'). Create backlash = (treatment == 'Backlash') as numeric 0/1.",
+    "female": "Categorical ('Female'/'Male'). Create female_num = (female == 'Female') as numeric 0/1.",
+    "student": "Categorical ('Freshman'/'Sophomore'/'Junior'/'Senior'). Convert to numeric indicator (1 if any student status, 0 otherwise) or keep as single binary since all subjects appear to be students.",
+    "interaction_vars": "Must construct: femaleXsolicited = female_num * solicited; backlashXsolicited = backlash * solicited; femaleXbacklash = female_num * backlash; femaleXbacklashXsol = female_num * backlash * solicited"
+  },
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "probit",
+        "randomization_unit": "session (session_id)",
+        "strata_or_blocks": null,
+        "estimand": "ITT",
+        "cluster_var": "session_id",
+        "sample_condition": "invest_group > 0 & treatment=='Control' (green players in no-penalty condition)",
+        "notes": "Probit model reporting marginal effects. Interaction effect (femaleXsolicited) must be corrected for nonlinearity using inteff command. Wild cluster bootstrap (cgmwildboot) used for inference given small number of clusters. NOTE: Original do-file has clustering bug (clust_var vs clus_var macro); published probit estimates may be unclustered."
+      },
+      "claim_object": {
+        "outcome_concept": "Decision to invest in the low-promotability task (binary: 0/1)",
+        "treatment_concept": "Being solicited/asked to invest (solicited indicator) and gender (female indicator), with their interaction",
+        "estimand_concept": "Gender difference in response to solicitation for a low-promotability task (does being asked differentially affect women's willingness to volunteer?)",
+        "target_population": "Lab experiment subjects assigned to the 'green player' role (those who can invest) in the no-backlash treatment condition"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Col1-NoPenalty",
+          "outcome_var": "decision",
+          "treatment_var": "solicited",
+          "interaction_vars": ["female", "femaleXsolicited"],
+          "controls": ["period", "risk_seeking1", "social1", "age", "non_caucasian", "student", "usborn", "business", "other"],
+          "n_controls": 9,
+          "sample": "invest_group > 0 & treatment=='Control'",
+          "notes": "Probit: decision ~ solicited + female + femaleXsolicited + [controls], cluster(session_id). Reports marginal effects. The interaction effect is corrected using inteff for nonlinear model. treatment=='Control' is the no-penalty (baseline) condition."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "functional_form_policy": {
+          "probit_vs_lpm": "Both probit (paper's choice) and LPM are valid. Probit is the baseline. LPM is a design variant. For the LPM, the interaction coefficient is directly interpretable; for probit, the inteff correction is needed.",
+          "coefficient_interpretation": "Marginal effects (mfx) for probit; linear coefficients for LPM."
+        },
+        "notes": "The paper runs probit with 9 controls. The controls are all individual characteristics (demographics + risk/social preferences). Minimum controls = 0 (simple difference-in-means by solicited status and gender). Maximum = 9 (all controls). The core claim is about the solicited x female interaction, not any single control."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_period",
+          "rc/controls/loo/drop_risk_seeking1",
+          "rc/controls/loo/drop_social1",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_non_caucasian",
+          "rc/controls/loo/drop_student",
+          "rc/controls/loo/drop_usborn",
+          "rc/controls/loo/drop_business",
+          "rc/controls/loo/drop_other",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/preferences_only",
+          "rc/form/estimator/lpm",
+          "rc/form/estimator/logit",
+          "rc/sample/period/first_half",
+          "rc/sample/period/second_half",
+          "rc/sample/period/first_period_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/session",
+          "params": {"cluster_var": "session_id"},
+          "notes": "Cluster at the session level (randomization unit). The paper uses cgmwildboot for wild cluster bootstrap inference due to the small number of clusters."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/subject", "params": {"cluster_var": "unique_subjectid"}, "notes": "Cluster at the individual level (repeated observations across periods)."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SEs without clustering."},
+          {"spec_id": "infer/bootstrap/wild_cluster/session", "params": {"cluster_var": "session_id", "seed": 999}, "notes": "Wild cluster bootstrap at session level, matching the paper's cgmwildboot approach."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 20,
+        "notes": "9 LOO control drops + 3 control sets + 3 functional form variants + 3 sample/period splits + design variants. Moderate budget."
+      },
+      "sampling": {
+        "seed": 113500,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "9 controls with structured LOO drops and grouped subsets. Full enumeration is feasible."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group", "notes": "Balance of demographics across sessions/treatments."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "probit",
+        "randomization_unit": "session (session_id)",
+        "strata_or_blocks": null,
+        "estimand": "ITT",
+        "cluster_var": "session_id",
+        "sample_condition": "invest_group > 0 & treatment=='Backlash' (green players in backlash/penalty condition)",
+        "notes": "Same model structure as G1 but for the backlash/penalty treatment condition. treatment=='Backlash' in raw data."
+      },
+      "claim_object": {
+        "outcome_concept": "Decision to invest in the low-promotability task (binary: 0/1)",
+        "treatment_concept": "Being solicited/asked to invest (solicited indicator) and gender (female indicator), with their interaction",
+        "estimand_concept": "Gender difference in response to solicitation under the backlash/penalty condition (does the threat of punishment for not volunteering differentially affect women?)",
+        "target_population": "Lab experiment subjects assigned to the 'green player' role in the backlash/penalty treatment condition (treatment=='Backlash')"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Col2-Penalty",
+          "outcome_var": "decision",
+          "treatment_var": "solicited",
+          "interaction_vars": ["female", "femaleXsolicited"],
+          "controls": ["period", "risk_seeking1", "social1", "age", "non_caucasian", "student", "usborn", "business", "other"],
+          "n_controls": 9,
+          "sample": "invest_group > 0 & treatment=='Backlash'",
+          "notes": "Same model as G1 Col1 but for treatment=='Backlash' (penalty/backlash condition)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "notes": "Same control structure as G1."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_period",
+          "rc/controls/loo/drop_risk_seeking1",
+          "rc/controls/loo/drop_social1",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_non_caucasian",
+          "rc/controls/loo/drop_student",
+          "rc/controls/loo/drop_usborn",
+          "rc/controls/loo/drop_business",
+          "rc/controls/loo/drop_other",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/preferences_only",
+          "rc/form/estimator/lpm",
+          "rc/form/estimator/logit",
+          "rc/sample/period/first_half",
+          "rc/sample/period/second_half",
+          "rc/sample/period/first_period_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/session",
+          "params": {"cluster_var": "session_id"},
+          "notes": "Cluster at the session level. Wild cluster bootstrap (cgmwildboot) for inference."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/subject", "params": {"cluster_var": "unique_subjectid"}, "notes": "Cluster at individual."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust without clustering."},
+          {"spec_id": "infer/bootstrap/wild_cluster/session", "params": {"cluster_var": "session_id", "seed": 999}, "notes": "Wild cluster bootstrap at session level."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 20,
+        "notes": "Same structure as G1."
+      },
+      "sampling": {
+        "seed": 113500,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Same as G1."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group"}
+      ]
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "probit",
+        "randomization_unit": "session (session_id)",
+        "strata_or_blocks": null,
+        "estimand": "ITT",
+        "cluster_var": "session_id",
+        "sample_condition": "invest_group > 0 (all green players, both treatments pooled)",
+        "notes": "Pooled specification with triple interaction: female x backlash x solicited. Tests whether the backlash treatment differentially changes the gender gap in response to solicitation."
+      },
+      "claim_object": {
+        "outcome_concept": "Decision to invest in the low-promotability task (binary: 0/1)",
+        "treatment_concept": "Triple interaction of solicited x female x backlash (treatment condition) -- the difference-in-difference-in-differences estimand",
+        "estimand_concept": "Whether the gender difference in response to solicitation changes under the backlash/penalty condition relative to the baseline condition",
+        "target_population": "All lab experiment subjects assigned to the green player role (both treatment conditions pooled)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Col3-Pooled",
+          "outcome_var": "decision",
+          "treatment_var": "solicited",
+          "interaction_vars": ["female", "backlash", "femaleXsolicited", "backlashXsolicited", "femaleXbacklash", "femaleXbacklashXsol"],
+          "controls": ["period", "risk_seeking1", "social1", "age", "non_caucasian", "student", "usborn", "business", "other"],
+          "n_controls": 9,
+          "sample": "invest_group > 0",
+          "notes": "Probit with full triple interaction: decision ~ solicited + female + backlash + femaleXsolicited + backlashXsolicited + femaleXbacklash + femaleXbacklashXsol + [controls], cluster(session_id). Triple interaction marginal effect corrected using inteff3."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "notes": "Same control pool as G1/G2. The triple interaction terms are mandatory for the estimand."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_period",
+          "rc/controls/loo/drop_risk_seeking1",
+          "rc/controls/loo/drop_social1",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_non_caucasian",
+          "rc/controls/loo/drop_student",
+          "rc/controls/loo/drop_usborn",
+          "rc/controls/loo/drop_business",
+          "rc/controls/loo/drop_other",
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/preferences_only",
+          "rc/form/estimator/lpm",
+          "rc/form/estimator/logit",
+          "rc/sample/period/first_half",
+          "rc/sample/period/second_half",
+          "rc/sample/period/first_period_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/session",
+          "params": {"cluster_var": "session_id"},
+          "notes": "Cluster at session level."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/subject", "params": {"cluster_var": "unique_subjectid"}, "notes": "Cluster at individual."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust without clustering."},
+          {"spec_id": "infer/bootstrap/wild_cluster/session", "params": {"cluster_var": "session_id", "seed": 999}, "notes": "Wild cluster bootstrap."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 20,
+        "notes": "Same structure as G1/G2."
+      },
+      "sampling": {
+        "seed": 113500,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Same as G1/G2."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group"}
+      ]
+    }
+  ]
+}

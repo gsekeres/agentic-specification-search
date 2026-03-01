@@ -1,0 +1,145 @@
+{
+  "paper_id": "114879-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "household-by-calendar-month (hhXm = rpu x copy x moy)",
+        "panel_time": "month (month-of-sample)",
+        "fe_structure": ["household_x_calendar_month", "county_x_month"],
+        "cluster_vars": ["county"],
+        "treatment_timing": "staggered adoption (appliance replacement dates vary)",
+        "estimand": "ATT",
+        "comparison_groups": "random control group of non-participants",
+        "double_demeaning": "reg2hdfe algorithm"
+      },
+      "claim_object": {
+        "outcome_concept": "Household electricity consumption (kWh per billing period)",
+        "treatment_concept": "Refrigerator replacement through Cash-for-Coolers program",
+        "estimand_concept": "ATT of refrigerator replacement on electricity consumption",
+        "target_population": "Mexican households participating in appliance replacement program and matched controls"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col2-Random",
+          "outcome_var": "usage",
+          "treatment_var": "rrefr",
+          "controls": ["rAC"],
+          "n_controls": 1,
+          "fixed_effects": ["hhXm (household x calendar month)", "CxM (county x month-of-sample)"],
+          "vcov": "cluster(county)"
+        },
+        {
+          "label": "Table3-Col3-Random",
+          "outcome_var": "usage",
+          "treatment_var": "rrefr",
+          "controls": ["rAC", "rAC_summer"],
+          "n_controls": 2,
+          "fixed_effects": ["hhXm (household x calendar month)", "CxM (county x month-of-sample)"],
+          "vcov": "cluster(county)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "Very few time-varying controls beyond the AC replacement indicator. rAC (AC replacement indicator) and rAC_summer (AC x summer interaction) are the only regressors besides the focal treatment rrefr."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__col1_simple_fe",
+          "baseline__col3_ac_summer",
+          "baseline__location_matched",
+          "baseline__usage_matched"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_rAC",
+          "rc/controls/loo/drop_rAC_summer",
+          "rc/controls/sets/none_beyond_fe",
+          "rc/controls/sets/with_ac",
+          "rc/controls/sets/with_ac_summer",
+          "rc/fe/structure/hhXm_month",
+          "rc/fe/structure/hhXm_CxM",
+          "rc/sample/restrict/matched_controls",
+          "rc/sample/restrict/location_matched",
+          "rc/sample/restrict/usage_matched",
+          "rc/sample/restrict/no_control_hh",
+          "rc/sample/restrict/drop_transition_month",
+          "rc/sample/outliers/trim_usage_1_99",
+          "rc/sample/outliers/trim_usage_5_95",
+          "rc/sample/outliers/drop_usage_gt_200000",
+          "rc/sample/restrict/summer_months_only",
+          "rc/sample/restrict/winter_months_only",
+          "rc/form/outcome/log_usage",
+          "rc/form/outcome/asinh_usage",
+          "rc/data/control_group/random",
+          "rc/data/control_group/location_matched",
+          "rc/data/control_group/usage_matched",
+          "rc/joint/random_hhXm_month",
+          "rc/joint/random_hhXm_CxM",
+          "rc/joint/random_hhXm_CxM_acSummer",
+          "rc/joint/location_hhXm_month",
+          "rc/joint/location_hhXm_CxM",
+          "rc/joint/location_hhXm_CxM_acSummer",
+          "rc/joint/usage_hhXm_month",
+          "rc/joint/usage_hhXm_CxM",
+          "rc/joint/usage_hhXm_CxM_acSummer",
+          "rc/joint/random_no_controls_hhXm_CxM",
+          "rc/joint/random_drop_transition_hhXm_CxM",
+          "rc/joint/location_drop_transition_hhXm_CxM",
+          "rc/joint/random_no_control_hh_hhXm_CxM",
+          "rc/joint/random_no_control_hh_no_transition",
+          "rc/sample/restrict/pre_treatment_only",
+          "rc/sample/restrict/post_treatment_only",
+          "rc/sample/restrict/high_usage_tercile",
+          "rc/sample/restrict/low_usage_tercile",
+          "rc/sample/restrict/exclude_agency_outliers",
+          "rc/sample/outliers/trim_usage_2_98",
+          "rc/form/outcome/log1p_usage",
+          "rc/form/outcome/usage_per_day"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/county",
+          "params": {"cluster_var": "county"},
+          "notes": "Cluster at county level, matching baseline reg2hdfe code"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/state",
+            "params": {"cluster_var": "state"},
+            "notes": "Coarser clustering at state level"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust-only (no clustering)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114879,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/linear_trend_test",
+          "scope": "spec",
+          "linkage": "computed_for_each_core_spec",
+          "notes": "Paper includes pretreatmenttrend test in code"
+        }
+      ]
+    }
+  ]
+}

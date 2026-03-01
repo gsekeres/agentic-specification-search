@@ -1,0 +1,214 @@
+{
+  "paper_id": "128521-V1",
+  "created_at": "2026-02-25",
+  "verified_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "master_name",
+        "panel_time": "period",
+        "fe_structure": ["master_name", "period"],
+        "cluster_vars": ["master_name"],
+        "treatment_timing": "Cotton Famine onset 1861 (post = period 1861-1865 vs pre = 1851-1855)",
+        "treatment_var": "cotton_dist_post",
+        "treatment_definition": "cotton_dist x post: binary indicator for cotton-dependent registration district interacted with post-famine period",
+        "comparison_groups": "Non-cotton districts serve as controls; nearby districts (0-25km, 25-50km, 50-75km) included as separate treatment intensities",
+        "estimand": "ATT",
+        "weights": "aweight=pop_census_tot (population weights)",
+        "n_districts": 538,
+        "n_periods": 2
+      },
+      "claim_object": {
+        "outcome_concept": "Standardized total mortality rate (census_mr_tot): linked deaths per 1000 persons per year, scaled by age-reweighting lambda",
+        "treatment_concept": "Exposure to the Lancashire Cotton Famine (cotton district x post-1861 interaction)",
+        "estimand_concept": "ATT: effect of cotton famine exposure on mortality in cotton-dependent districts relative to non-cotton districts",
+        "target_population": "Registration districts in England and Wales with linkable death records, 1851-1865"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "description": "Baseline DD: census_mr_tot ~ cotton_dist_post | master_name + period, aweight=pop_census_tot, cluster(master_name)",
+          "outcome_var": "census_mr_tot",
+          "treatment_var": "cotton_dist_post",
+          "controls": [],
+          "n_controls": 0
+        },
+        {
+          "label": "Table2-Col2",
+          "description": "Add density, pop shares, region x period FE",
+          "outcome_var": "census_mr_tot",
+          "treatment_var": "cotton_dist_post",
+          "controls": ["ln_popdensity_census", "linkable_shr_tot", "under_15_shr_census", "elderly_shr_census", "_IregXpost_*"],
+          "n_controls": 5,
+          "notes": "_IregXpost_* expands to multiple region x post interactions via xi i.region*post"
+        },
+        {
+          "label": "Table2-Col3",
+          "description": "Add nearby district controls (spillover rings)",
+          "outcome_var": "census_mr_tot",
+          "treatment_var": "cotton_dist_post",
+          "controls": ["nearby_post_25", "nearby_post_50", "nearby_post_75", "ln_popdensity_census", "linkable_shr_tot", "under_15_shr_census", "elderly_shr_census", "_IregXpost_*"],
+          "n_controls": 8
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": false,
+        "notes": "Controls build up incrementally across Table 2 columns: Col 1 has none, Col 2 adds demographics + density + region x period FE, Col 3 adds nearby district spillover rings. Col 4 (continuous treatment) moved to explore/* because it changes the treatment variable. Region x period FE (_IregXpost_*) count as a single conceptual block. Note: population weights (aweight=pop_census_tot) and mortality rate denominator are mechanically linked -- the same pop variable enters both."
+      },
+      "explore_universe": [
+        {
+          "spec_id": "explore/variable_definitions/treatment/continuous_cotton_eshr",
+          "description": "Table 2 Col 4: uses continuous cotton employment share (cotton_eshr_post) instead of binary cotton district indicator. Changes the treatment concept from binary to dose-response.",
+          "treatment_var": "cotton_eshr_post"
+        }
+      ],
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2",
+          "baseline__table2_col3"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/ln_popdensity",
+          "rc/controls/loo/linkable_shr",
+          "rc/controls/loo/age_shares",
+          "rc/controls/loo/region_x_period",
+          "rc/controls/loo/nearby_rings",
+          "rc/sample/exclude_manchester",
+          "rc/sample/exclude_manchester_liverpool_leeds",
+          "rc/weights/unweighted",
+          "rc/data/no_foreign_born_links",
+          "rc/data/linking_restriction/unique_nlast",
+          "rc/data/linking_restriction/unique_nlast_nfirst",
+          "rc/data/linking_restriction/dist_lt_200",
+          "rc/data/linking_restriction/dist_lt_100",
+          "rc/data/linking_restriction/dist_lt_50",
+          "rc/data/linking_restriction/dist_exact"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/district",
+          "params": {"cluster_var": "master_name"},
+          "notes": "Paper's baseline clusters at district (master_name) level."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/county",
+            "params": {"cluster_var": "county"},
+            "notes": "County-level clustering (Table 2 county panel). Coarser than district."
+          },
+          {
+            "spec_id": "infer/se/hc/robust",
+            "params": {},
+            "notes": "Robust SEs without clustering (used in permutation exercise)."
+          },
+          {
+            "spec_id": "infer/permutation/spatial",
+            "params": {"n_permutations": 538},
+            "notes": "Permutation test: reassigns treatment to each district based on spatial distance structure. P-values reported in T2_Pvalues.csv."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 30
+      },
+      "sampling": {
+        "seed": 128521,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Control set is small (5 conceptual blocks). LOO over blocks is feasible. Data construction variants (linking restrictions) add 6 specs. Sample exclusion variants add 2. Weights variant adds 1. Total well within budget."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/population_trends",
+          "scope": "baseline_group",
+          "notes": "Figure 4: Population trends in cotton vs non-cotton vs nearby districts across census years."
+        },
+        {
+          "diag_spec_id": "diag/difference_in_differences/placebo/pre_period",
+          "scope": "baseline_group",
+          "notes": "Table 12 (AppendixD3): Placebo test using 1856-1860 vs 1851-1855 with BMD data."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "master_name",
+        "panel_time": "period",
+        "fe_structure": ["master_name", "period"],
+        "cluster_vars": ["master_name"],
+        "treatment_timing": "Cotton Famine onset 1861",
+        "treatment_var": "cotton_dist_post",
+        "comparison_groups": "Non-cotton districts",
+        "estimand": "ATT",
+        "weights": "aweight=pop_census{age_group}",
+        "n_districts": 538,
+        "n_periods": 2
+      },
+      "claim_object": {
+        "outcome_concept": "Age-specific mortality rates (census_mr_{age_group}): under-15, 15-24, 25-34, 35-44, 45-54, 55-64, over-64",
+        "treatment_concept": "Exposure to the Lancashire Cotton Famine",
+        "estimand_concept": "ATT: age-decomposed effect of cotton famine on mortality by age group",
+        "target_population": "Registration districts in England and Wales, 1851-1865, by age group"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-AgeGroups",
+          "description": "Seven age-group DD regressions (under15, 15-24, 25-34, 35-44, 45-54, 55-64, over64) with full controls, nearby ring indicators, region x period FE, population weights by age group, cluster(master_name)",
+          "outcome_var": "census_mr_{age_group}",
+          "treatment_var": "cotton_dist_post",
+          "controls": ["nearby_post_*", "ln_popdensity_census*", "linkable_shr{age_group}*", "_IregXpost_*"],
+          "n_controls": 8,
+          "notes": "Each age group is a separate regression with age-group-specific controls (linkable share, pop density). 7 parallel regressions."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 8,
+        "controls_count_max": 8,
+        "linked_adjustment": false,
+        "notes": "Table 3 uses the preferred specification (matching Table 2 Col 3) for each age group. Control set is fixed."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/sample/exclude_manchester",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/district",
+          "params": {"cluster_var": "master_name"},
+          "notes": "Matches paper baseline."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/permutation/spatial",
+            "params": {"n_permutations": 538},
+            "notes": "Permutation test for age-specific results (Table 3 p-values)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 128521,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "7 age groups x (1 baseline + 2 RC) = 21 core specs. Within budget."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

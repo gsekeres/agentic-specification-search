@@ -1,50 +1,52 @@
 # Specification Surface Review: 112749-V1
 
-## Summary of Baseline Groups
+## Summary
 
-### G1: Black Population Share (lnfrac_black)
-- Claim object well-defined: log Black population share, flood intensity DiD, cotton-belt counties
-- Baseline spec matches Table 2 Col 1 replication (coef = -0.156, se = 0.032, N = 2604)
-- **Approved**: coherent and faithful to the paper's main claim
+The specification surface for Hornbeck & Naidu (2014) defines two baseline groups:
+- **G1**: Black labor/population outcomes (Table 2) -- the paper's central finding
+- **G2**: Agricultural capital outcomes (Table 4) -- the mechanism/consequence channel
 
-### G2: Farm Equipment Value (lnvalue_equipment)
-- Claim object well-defined: log farm equipment value, flood intensity DiD, cotton-belt counties
-- Baseline spec matches Table 4 Col 2 replication (coef = 0.440, se = 0.099, N = 2170)
-- **Approved**: coherent and faithful to the paper's second main claim
+Both use panel FE with county FE, state-year FE, and geographic/historical controls.
 
-No additional baseline groups needed. Tables 3 and 5 are correctly classified as exploration (alternative outcomes).
+## Verification Results
 
-## Key Constraints and Linkage Rules
+### A) Baseline Groups -- PASS
+- G1 and G2 correspond to distinct claim objects (labor composition vs. capital substitution).
+- Table 5 (farmland/land values) could be a third group but is closely related to G2 and omitting it keeps the budget reasonable.
+- Table 1 (pre-differences) is correctly excluded as balance checks.
+- Tables 3, 6, 7 are correctly excluded as alternative samples/treatments.
 
-1. **County FE always included**: The DiD identification relies on within-county variation. Dropping county FE would fundamentally change the estimand. Surface correctly treats county FE as mandatory.
+### B) Design Selection -- PASS
+- `panel_fixed_effects` is the correct design code. The paper uses county FE with time-varying treatment intensity (not a standard DiD with a binary treatment-post interaction).
+- The `design_audit` blocks are adequate, capturing estimator, FE structure, clustering, and weights.
+- The long-difference design variant is appropriate for this setting.
 
-2. **State-year FE**: Implemented via dummy variables (d_sy_*) rather than absorbed FE. This is because the paper uses `areg` with `absorb(fips)` and includes state-year dummies as explicit regressors. The surface correctly includes "drop state-year FE" as an RC variant.
+### C) RC Axes -- PASS with minor notes
+- Control variation axes (add/drop New Deal, geography, tenancy, plantation, propensity score) match the paper's revealed robustness structure from RefTables 1-3.
+- Alternative flood measures (Red Cross data) are included, matching the paper's RobustnessMeasures tables.
+- Sample restrictions are reasonable.
+- **Note**: The `rc/functional_form/outcome/level_instead_log` axis changes coefficient interpretation (elasticity vs. level effect) but is a standard check. Acceptable.
 
-3. **Weights**: Paper uses analytic weights by county area (county_w). The surface includes unweighted and population-weighted alternatives, which is appropriate.
+### D) Controls Multiverse -- PASS
+- The control count envelope (10-120) is wide enough to accommodate the variety of specifications in the paper.
+- Controls are not linked across equations (each outcome has its own lagged DVs). This is correct.
+- Mandatory controls: State-year FE should always be included (they are the paper's identification strategy anchor).
 
-4. **Treatment block**: The f_int_{year} variables must always be included as a complete block for the relevant post-flood years. The surface correctly treats this as invariant.
+### E) Inference Plan -- PASS
+- Canonical: county-level clustering matches the paper exactly.
+- Variants: HC1 and state-level clustering are reasonable stress tests.
+- Conley spatial SEs from the paper are not included as a variant (too complex to implement). This is acceptable.
 
-5. **Control blocks are independent**: Geography controls, outcome lags, and New Deal controls are independent blocks that can be varied separately. No linkage constraint needed.
+### F) Budgets and Sampling -- PASS
+- Target of 50-60 specs is adequate for this paper.
+- Full enumeration is feasible given the discrete axes.
 
-## Budget and Sampling Assessment
+### G) Diagnostics -- N/A
+- No diagnostics planned. This is acceptable for a panel FE design where the key identification assumption (exogeneity of flood) is not formally testable through standard diagnostics.
 
-- Target of 50+ specifications is achievable with the planned RC axes
-- Full enumeration is feasible (no combinatorial explosion)
-- The surface defines approximately 15 RC variants per group, which with baseline gives ~30-35 specs per group and 60-70 total. This exceeds the 50-spec target.
+## Changes Made
+- No changes to the surface. The surface is well-structured and ready to run.
 
-## Changes Made to Surface
+## Decision: APPROVED TO RUN
 
-1. **No structural changes**: The surface is well-designed and faithful to the paper.
-2. **Minor clarification**: Added note that the focal parameter for G1 is f_int_1930 (immediate post-flood effect) and for G2 is f_int_1940 (peak mechanization response), which are the most important coefficients from the paper's argument.
-
-## What's Missing (Minor)
-
-1. **Placebo/pre-trend test**: Not included as a core spec (correctly classified as diagnostic). Could be added to diagnostics_plan if needed.
-2. **Alternative treatment definitions**: Could explore flood_intensity vs binary flood indicator vs pop_affected. The binary flood indicator is included; pop_affected is not (would change the treatment concept).
-3. **Conley spatial SE**: Not available in Python environment. Noted as excluded.
-
-## Final Assessment
-
-**APPROVED TO RUN**
-
-The surface is conceptually coherent, statistically principled, faithful to the revealed manuscript surface, and auditable. The two baseline groups correctly capture the paper's two main claims. The RC axes are well-chosen and cover the most important degrees of freedom (controls, FE, sample, functional form, weights).
+The surface is coherent, faithful to the manuscript's revealed search space, and properly budgeted. Proceed to Stage 5.

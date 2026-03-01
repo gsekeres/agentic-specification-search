@@ -1,31 +1,63 @@
 {
   "paper_id": "112749-V1",
-  "verified_at": "2026-02-15",
+  "verified_at": "2026-02-22",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "The 1927 Mississippi flood caused a persistent decline in Black population share in affected Southern counties, consistent with flood-induced out-migration of Black workers.",
+      "claim_summary": "The 1927 Mississippi flood caused a persistent decline in Black population share and Black population in affected Southern US counties, consistent with flood-induced out-migration of Black agricultural workers.",
       "expected_sign": "negative",
-      "baseline_spec_run_ids": ["112749-V1__G1__001"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": -0.156254,
-      "baseline_std_error": 0.032131,
-      "baseline_p_value": 2e-06,
+      "baseline_spec_run_ids": [
+        "112749-V1_run_0001",
+        "112749-V1_run_0002",
+        "112749-V1_run_0007",
+        "112749-V1_run_0008",
+        "112749-V1_run_0025",
+        "112749-V1_run_0026",
+        "112749-V1_run_0027",
+        "112749-V1_run_0028",
+        "112749-V1_run_0029",
+        "112749-V1_run_0030"
+      ],
+      "baseline_spec_ids": [
+        "baseline__t2_lnfrac_black",
+        "baseline__t2_lnfrac_black_nd",
+        "baseline__t2_lnpopulation_black",
+        "baseline__t2_lnpopulation_black_nd",
+        "baseline__t1_lnfrac_black_noGeo",
+        "baseline__t1_lnfrac_black_Geo",
+        "baseline__t1_lnpopulation_black_noGeo",
+        "baseline__t1_lnpopulation_black_Geo",
+        "baseline__t1_lnpopulation_noGeo",
+        "baseline__t1_lnpopulation_Geo"
+      ],
+      "baseline_coefficient": -0.1563,
+      "baseline_std_error": 0.0464,
+      "baseline_p_value": 0.000819,
       "baseline_n_obs": 2604,
-      "notes": "Table 2 Column 1. DiD with county FE (absorbed), state-year FE + geographic controls + lagged outcomes as explicit regressors, clustered SE at county level, weighted by county area. Focal parameter is f_int_1930 (first post-flood decade). Additional baseline variants at f_int_1950 (row 019) also recorded."
+      "notes": "Primary baseline is Table 2 Column 1 (run_0001): lnfrac_black ~ f_int_YEAR panel DiD with county FE, state-year FE, geography controls, lagged DVs, clustered at fips, weighted by county_w. Focal coefficient is f_int_1930. Additional baselines include New Deal controls variant (run_0002), alternative outcome lnpopulation_black (runs 0007-0008), and Table 1 cross-sectional long-difference baselines (runs 0025-0030) which use flood_intensity as treatment in a cross-sectional design. The failed baselines for lnpopulation (run_0013) and lnfracfarms_nonwhite (runs 0019-0020) are due to matrix singularity."
     },
     {
       "baseline_group_id": "G2",
-      "claim_summary": "The 1927 Mississippi flood caused an increase in farm equipment value (mechanization) in affected Southern counties, consistent with labor scarcity inducing capital-labor substitution.",
+      "claim_summary": "The 1927 Mississippi flood caused increases in agricultural capital intensity (farm size, equipment value, tractors) in affected Southern US counties, consistent with labor-scarcity-induced mechanization.",
       "expected_sign": "positive",
-      "baseline_spec_run_ids": ["112749-V1__G2__024"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": 0.439642,
-      "baseline_std_error": 0.099482,
-      "baseline_p_value": 1.3e-05,
-      "baseline_n_obs": 2170,
-      "notes": "Table 4 Column 2. DiD with county FE (absorbed), state-year FE + geographic controls + lagged equipment values as explicit regressors, clustered SE at county level, weighted by county area. Focal parameter is f_int_1940 (peak mechanization response). Additional baseline variants at f_int_1930 (row 041, pre-trend) and f_int_1970 (row 042, long-run) also recorded."
+      "baseline_spec_run_ids": [
+        "112749-V1_run_0037",
+        "112749-V1_run_0041",
+        "112749-V1_run_0042",
+        "112749-V1_run_0046"
+      ],
+      "baseline_spec_ids": [
+        "baseline__t4_lnvalue_equipment_nd",
+        "baseline__t4_lntractors",
+        "baseline__t4_lntractors_nd",
+        "baseline__t4_lnmules_horses"
+      ],
+      "baseline_coefficient": -0.0006,
+      "baseline_std_error": 0.0862,
+      "baseline_p_value": 0.994,
+      "baseline_n_obs": 2135,
+      "notes": "Multiple baseline outcomes: lnvalue_equipment (runs 0036-0037, only _nd variant succeeds), lntractors (runs 0041-0042), lnmules_horses (runs 0046-0047, only base succeeds), lnavfarmsize (runs 0031-0032, both fail), lnfarmland_a (runs 0051-0052, both fail), lnlandbuildingvalue(f) (runs 0053-0056, all fail). High failure rate (14 of 26 specs) due to matrix singularity in sparse agricultural census panel. The lntractors outcome shows the strongest positive result (coef=0.51, p=0.001). Equipment value baseline (_nd variant, run_0037) has near-zero coefficient (coef=-0.0006, p=0.994), suggesting this outcome is not robust."
     }
   ],
-  "global_notes": "Surface defined two baseline groups matching the paper's two main claims: (G1) flood reduced Black population share, (G2) flood increased farm mechanization. No changes to baseline group assignments from the pre-run surface. 46 specifications were planned (23 per group). 36 succeeded and 10 failed due to matrix singularity, primarily in G2 where the sparser agricultural census panel creates collinearity issues. All successful G1 specs yield negative coefficients. All successful G2 specs with f_int_1940 focal yield positive coefficients. The G2 f_int_1930 pre-trend check is correctly null (p=0.796). Inference variants (HC1 robust and state-level clustering) all succeed and preserve significance for both groups."
+  "global_notes": "Surface defined two baseline groups: G1 (labor/population outcomes) and G2 (capital/agricultural outcomes). No changes to baseline-group assignments from the surface. 56 specifications total (30 G1, 26 G2). 31 succeeded and 25 failed, all due to matrix singularity from collinear time-interacted controls. G1 results are strongly robust with consistent negative coefficients for Black population share. G2 results are mixed: tractor adoption shows strong positive effects, but equipment value and other capital measures show weak or null effects. The rc/inference/hc1_* specs (runs 0006, 0012, 0018, 0024) are effectively inference variants placed in specification_results.csv rather than inference_results.csv; they duplicate the coefficient from their corresponding baseline but with HC1 robust SEs. The Table 1 cross-sectional baselines (runs 0025-0030) use a different design (long difference, cross-sectional) from the main panel specifications."
 }

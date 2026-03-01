@@ -1,0 +1,128 @@
+{
+  "paper_id": "113566-V1",
+  "created_at": "2026-02-25",
+  "notes": "Fuzzy regression discontinuity design studying the effect of grade retention on high school dropout in Chicago Public Schools. Uses test score cutoffs for promotional gates as instruments for retention. Running variable is normalized distance from promotional test score cutoff ('index'). Treatment is actual retention (dret2), instrumented by passage of the cutoff. Multiple experiments (grade 6, 8, and older 8th graders coded as newgrade=9) with year and failure-type variation. Main results in Table 2 (baseline RD) and Table 3 (robustness).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "index",
+        "cutoff": 0,
+        "rd_type": "fuzzy",
+        "bandwidth": "samp_m10p5 (index in [-1.0, 0.5])",
+        "kernel": "uniform (implicit from parametric specification)",
+        "poly_order": "spline with experiment-specific knots",
+        "bias_correction": "none",
+        "estimator": "2sls_ivreg2",
+        "instruments": "gpmarg* gpind4_index_above* (experiment-specific spline instruments)",
+        "cluster_vars": ["gp"],
+        "fe_structure": ["experiment_group (gp_*)"],
+        "notes": "Fuzzy RD via 2SLS. The running variable 'index' is the normalized test score relative to the promotional cutoff. Instruments are experiment-specific splines in the running variable that create discontinuities at the cutoff. Covariates include experiment group dummies, experiment-specific index polynomials, non-index score interactions, and demographic covariates. Clustered at the index*experiment cell level."
+      },
+      "claim_object": {
+        "outcome_concept": "High school dropout by Fall 2005 (dropF2005)",
+        "treatment_concept": "Grade retention (dret2) in 6th or 8th grade under Chicago's promotional gate policy",
+        "estimand_concept": "Local average treatment effect (LATE/complier effect) of grade retention on dropout, at the test score cutoff",
+        "target_population": "Students near the promotional test score cutoff in Chicago Public Schools, grades 6 and 8, cohorts 1997-1999"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-IV-FlexKnots-FullControls-Grade6",
+          "outcome_var": "dropF2005",
+          "treatment_var": "dret2",
+          "controls": ["gp_*", "gpind_*", "gpnonind_*", "gpnonind2_*", "gpcov1_*", "gpcov2_*"],
+          "n_controls": "many (experiment-group-interacted covariates)",
+          "notes": "ivreg2 dropF2005 (dret2 = gpmarg* gpind4_index_above*) gp_* gpind_* gpnonind_* gpnonind2_* gpcov1_* gpcov2_* if newgrade==6 & samp_m10p5==1, cl(gp). This is the preferred specification with flexible knots and full covariates."
+        },
+        {
+          "label": "Table2-IV-FlexKnots-FullControls-Grade8",
+          "outcome_var": "dropF2005",
+          "treatment_var": "dret2",
+          "controls": ["gp_*", "gpind_*", "gpnonind_*", "gpnonind2_*", "gpcov1_*", "gpcov2_*"],
+          "n_controls": "many",
+          "notes": "Same specification for newgrade==8."
+        },
+        {
+          "label": "Table2-IV-FlexKnots-FullControls-OlderGrade8",
+          "outcome_var": "dropF2005",
+          "treatment_var": "dret2",
+          "controls": ["gp_*", "gpind_*", "gpnonind_*", "gpnonind2_*", "gpcov1_*", "gpcov2_*"],
+          "n_controls": "many",
+          "notes": "Same specification for newgrade==9 (older 8th graders sent to transition centers)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": "many (experiment-interacted)",
+        "linked_adjustment": true,
+        "notes": "The IV structure is bundled: instruments and controls are both experiment-specific functions of the running variable. Adjustment is linked across first stage and reduced form. The paper varies: (a) bandwidth/sample, (b) polynomial order, (c) instrument set, (d) control set richness -- but always maintains the spline-IV structure."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_grade8",
+          "baseline__table2_older_grade8"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/samp_m15p10",
+          "design/regression_discontinuity/bandwidth/samp_m20p15",
+          "design/regression_discontinuity/bandwidth/samp_m8p3",
+          "design/regression_discontinuity/poly/with_index_quadratic",
+          "design/regression_discontinuity/poly/with_index_cubic",
+          "design/regression_discontinuity/poly/with_index_cubic_split",
+          "design/regression_discontinuity/procedure/fixed_knots",
+          "design/regression_discontinuity/procedure/pass_dummy_iv",
+          "design/regression_discontinuity/procedure/experiment_pass_dummies_iv",
+          "design/regression_discontinuity/procedure/marginal_area_only_iv"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/group_only",
+          "rc/controls/sets/group_plus_index",
+          "rc/controls/sets/full_covariates",
+          "rc/sample/restriction/grade6_only",
+          "rc/sample/restriction/grade8_only",
+          "rc/sample/restriction/older_grade8_only",
+          "rc/sample/restriction/cohort_1997",
+          "rc/sample/restriction/cohort_1998",
+          "rc/sample/restriction/cohort_1999",
+          "rc/sample/restriction/failread_only",
+          "rc/sample/restriction/failmath_only",
+          "rc/sample/restriction/failboth_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/gp",
+          "params": {"cluster_var": "gp"},
+          "notes": "Clustered at the index*experiment cell level, matching the paper's cl(gp)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust (no clustering)."},
+          {"spec_id": "infer/se/classical/iid", "params": {}, "notes": "Classical (no clustering, no robust). Paper reports these as a check."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 0,
+        "notes": "No controls subset sampling. The control sets are bundled (experiment-interacted blocks). The specification surface varies bandwidth, polynomial order, instrument set, and control-set richness -- all discretely enumerated. Budget covers: 3 baselines + ~10 design variants x 3 grades + ~12 sample restrictions."
+      },
+      "sampling": {
+        "seed": 113566,
+        "controls_subset_sampler": "none",
+        "notes": "The controls are experiment-interacted blocks, not a standard covariate pool. The paper varies control richness in 3 discrete levels (group only, group+index, full). Full enumeration of all design x sample combinations."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "notes": "Test for manipulation of the running variable at the cutoff."
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "notes": "The paper tests whether instruments predict covariates (Table in online appendix)."
+        }
+      ]
+    }
+  ]
+}

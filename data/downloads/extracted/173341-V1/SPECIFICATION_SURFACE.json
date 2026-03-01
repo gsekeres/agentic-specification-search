@@ -1,0 +1,225 @@
+{
+  "paper_id": "173341-V1",
+  "created_at": "2026-02-24",
+  "verified_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_fe",
+        "randomization_unit": "household",
+        "strata_or_blocks": "municipality (mun_id)",
+        "estimand": "ITT",
+        "treatment_arms": ["treatment (cistern receipt)", "rainfall_std_stacked (standardized rainfall shock)"],
+        "n_treatment_arms_focal": 2,
+        "cluster_var": "b_clusters (neighborhood)",
+        "weights": "none",
+        "panel_structure": "stacked_cross_section_2012_2013",
+        "fe_structure": ["municipality (i.mun_id)", "year (year2012)"],
+        "notes": "Household-level RCT with municipality stratification. Rainfall is natural variation (non-experimental). Stacking pools 2012 and 2013 cross-sections with year FE."
+      },
+      "claim_object": {
+        "outcome_concept": "Request any private good from politician (binary, stacked 2012-2013; ask_private_stacked)",
+        "treatment_concept": "Cisterns treatment (randomized household-level infrastructure program) AND rainfall shocks (standardized annual rainfall deviation)",
+        "estimand_concept": "Joint ITT effects of cisterns treatment and rainfall vulnerability shocks on clientelist requests for private goods, with municipality FE and year FE",
+        "target_population": "Individuals in semi-arid municipalities of northeastern Brazil enrolled in cistern program"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col3",
+          "outcome_var": "ask_private_stacked",
+          "treatment_var": "treatment",
+          "additional_treatments": ["rainfall_std_stacked"],
+          "controls": ["i.mun_id", "year2012"],
+          "controls_description": "Municipality FE + year indicator. No individual-level controls.",
+          "n_controls_non_fe": 1,
+          "n_fe_groups": 1,
+          "sample_filter": "stacked individual data (2012 and 2013 pooled)",
+          "estimator": "OLS",
+          "vcov": "cluster(b_clusters)",
+          "notes": "Table 3 Col 3: joint specification with both treatment and rainfall, no interaction."
+        },
+        {
+          "label": "Table3-Col4",
+          "outcome_var": "ask_private_stacked",
+          "treatment_var": "treatment",
+          "additional_treatments": ["rainfall_std_stacked", "treat_rain_std"],
+          "controls": ["i.mun_id", "year2012"],
+          "controls_description": "Municipality FE + year indicator + treatment x rainfall interaction.",
+          "n_controls_non_fe": 1,
+          "n_fe_groups": 1,
+          "sample_filter": "stacked individual data (2012 and 2013 pooled)",
+          "estimator": "OLS",
+          "vcov": "cluster(b_clusters)",
+          "notes": "Table 3 Col 4: adds cisterns x rainfall interaction. Extends Col 3 baseline."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "mandatory_controls": [],
+        "optional_pool_engagement": ["mem_assoc", "treat_mem_assoc", "rain_std_mem_assoc", "pres_assoc", "treat_pres_assoc", "rain_std_pres_assoc", "b_voted", "treat_voted", "rain_std_voted"],
+        "notes": "Minimum: no controls beyond treatment (bivariate). Maximum: municipality FE + year FE + engagement controls with treatment/rainfall interactions (Appendix Table A7, Col 4 adds 9 additional regressors as 3 bundles of level+treat_interaction+rain_interaction). The paper's main specs use only municipality FE and year indicator. Engagement controls must be added as level+interaction bundles (not componentwise)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col3",
+          "baseline__table3_col4"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/mun_fe_only",
+          "rc/controls/sets/mun_fe_year",
+          "rc/controls/sets/mun_fe_year_engagement_assoc",
+          "rc/controls/sets/mun_fe_year_engagement_pres",
+          "rc/controls/sets/mun_fe_year_engagement_voted",
+          "rc/controls/sets/mun_fe_year_engagement_all",
+          "rc/form/treatment/cisterns_only",
+          "rc/form/treatment/rainfall_only",
+          "rc/form/treatment/treatment_by_year",
+          "rc/form/treatment/rainfall_by_year",
+          "rc/form/treatment/treatment_x_rainfall",
+          "rc/sample/subvariant/year_2012_only",
+          "rc/sample/subvariant/year_2013_only",
+          "rc/sample/outliers/winsorize_y_1_99",
+          "rc/form/outcome/ask_nowater_private",
+          "rc/fe/no_municipality_fe",
+          "rc/fe/municipality_fe_only"
+        ]
+      },
+      "explore_universe": {
+        "explore_spec_ids": [
+          "explore/outcome/ask_public",
+          "explore/outcome/askrec_private",
+          "explore/heterogeneity/clientelist_relationship_cisterns",
+          "explore/heterogeneity/clientelist_relationship_rainfall",
+          "explore/heterogeneity/clientelist_relationship_joint",
+          "explore/data_level/household_level"
+        ],
+        "notes": "ask_public (public goods requests) is a placebo/diagnostic outcome, not the same claim object. askrec_private (request AND receive) changes the outcome concept. Table 5 heterogeneity by clientelist relationship changes the estimand to CHET. Household-level aggregation changes the population concept."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/neighborhood",
+          "params": {"cluster_var": "b_clusters"},
+          "notes": "Matches the paper's baseline: cluster at the neighborhood level (b_clusters). This is coarser than household (randomization unit) but accounts for spatial correlation."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust (individual-level) SE."},
+          {"spec_id": "infer/se/cluster/municipality", "params": {"cluster_var": "mun_id"}, "notes": "Cluster at municipality level (coarser, few clusters ~10)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 173341,
+        "notes": "Full enumeration of planned specs. 2 baselines + 1 design + 7 control sets + 5 treatment forms + 2 year splits + 1 outcome form + 2 FE variants + 1 outlier trim = ~21 core specs."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group", "notes": "Table A2: balance table for individual and household baseline characteristics across treatment/control."},
+        {"diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff", "scope": "baseline_group", "notes": "Table A1: compliance rates and attrition differential by treatment."},
+        {"diag_spec_id": "diag/randomized_experiment/placebo/public_goods_requests", "scope": "baseline_group", "notes": "Table 3 Col 8: public goods requests as placebo (should show no treatment effect if mechanism is clientelist-specific)."},
+        {"diag_spec_id": "diag/randomized_experiment/balance/clientelism_marker", "scope": "baseline_group", "notes": "Table A6: clientelism marker (frequent_interactor) is uncorrelated with treatment assignment."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "reghdfe_with_absorbed_fe",
+        "randomization_unit": "household",
+        "strata_or_blocks": "municipality",
+        "estimand": "ITT_rescaled_to_section_level",
+        "treatment_arms": ["tot_treat_by_section_2 (share of treated in voting section)", "tot_study_2 (share of study participants in voting section)"],
+        "n_treatment_arms_focal": 1,
+        "cluster_var": "location_id (voting location)",
+        "weights": "none",
+        "fe_structure": ["location_id (voting location FE, absorbed via reghdfe)"],
+        "notes": "Electoral outcomes are at the voting-section level, not individual level. Treatment is rescaled as share of treated individuals in each voting section. This is an ecological inference design bridging household randomization to aggregate electoral outcomes."
+      },
+      "claim_object": {
+        "outcome_concept": "Votes for incumbent mayor in 2012 election (section-level; incumbent_votes_section)",
+        "treatment_concept": "Share of cistern-treated individuals in voting section (rescaled from household-level randomization)",
+        "estimand_concept": "ITT effect of cistern treatment exposure on electoral support for incumbent mayor, in municipalities where the incumbent ran for re-election",
+        "target_population": "Voting sections in 21 municipalities where the incumbent mayor ran for re-election in 2012"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1",
+          "outcome_var": "incumbent_votes_section",
+          "treatment_var": "tot_treat_by_section_2",
+          "additional_treatments": ["tot_study_2"],
+          "controls": ["eligible"],
+          "controls_description": "Voting location FE (absorbed) + eligible voters control + total study respondents. Rescaled regressors.",
+          "n_controls": 2,
+          "sample_filter": "name_match == 1 & eligible_in_2008 != . (21 municipalities where incumbent mayor ran for re-election)",
+          "estimator": "reghdfe, absorb(location_id)",
+          "vcov": "cluster(location_id)",
+          "notes": "Wild-cluster bootstrap at municipality level also reported for p-values."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "Very constrained specification. Location FE + eligible voters + study respondent share. Main variation is in sample definition (21 vs 39 municipalities)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_col1"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/subvariant/broad_incumbency_sample",
+          "rc/controls/sets/no_eligible_control",
+          "rc/controls/sets/no_study_share_control",
+          "rc/fe/no_location_fe"
+        ]
+      },
+      "explore_universe": {
+        "explore_spec_ids": [
+          "explore/outcome/challenger_votes",
+          "explore/outcome/turnout",
+          "explore/outcome/blank_null_votes",
+          "explore/outcome/PT_votes",
+          "explore/outcome/pres_coalition_votes",
+          "explore/outcome/gov_coalition_votes",
+          "explore/outcome/right_leaning_votes",
+          "explore/heterogeneity/clientelist_relationship_electoral"
+        ],
+        "notes": "Alternative electoral outcomes (Table 4 Cols 3-5, Table A8) change the outcome concept from incumbent votes. Table A8 Col 1 decomposes by clientelist relationship, changing the estimand."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/location",
+          "params": {"cluster_var": "location_id"},
+          "notes": "Matches the paper's baseline: cluster at the voting location level."
+        },
+        "variants": [
+          {"spec_id": "infer/se/wild_cluster_bootstrap/municipality", "params": {"cluster_var": "mun_id", "seed": 1234}, "notes": "Wild-cluster bootstrap at municipality level (as in paper). Few clusters (~21)."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE (no clustering)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 15,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 173341,
+        "notes": "Full enumeration. 1 baseline + 1 design + 1 sample variant + 2 control drops + 1 FE variant = ~6 core specs."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/electoral_covariates", "scope": "baseline_group", "notes": "Table A3: balance across voting sections in voters' age, schooling, gender."}
+      ]
+    }
+  ]
+}

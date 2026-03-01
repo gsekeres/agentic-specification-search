@@ -1,0 +1,54 @@
+{
+  "paper_id": "149481-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Thank-you phone calls to existing public TV station donors have no detectable effect on subsequent donation behavior",
+      "expected_sign": "null (paper reports null effects across all outcomes)",
+      "baseline_spec_run_ids": [
+        "149481-V1__run_001",
+        "149481-V1__run_002",
+        "149481-V1__run_003",
+        "149481-V1__run_004",
+        "149481-V1__run_005",
+        "149481-V1__run_006",
+        "149481-V1__run_007"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline"
+      ],
+      "notes": "Seven baseline specs spanning Table 2 (runs 001-005: diff-in-means for renewing, payment_amount3, var13, gift_cond, retention) and Table A1 (runs 006-007: OLS with strata FE and demographics for donated, gift_cond). Surface planned named IDs (baseline__t2_exp1_renewing, etc.) but runner used generic 'baseline' for all. All baselines have very small, non-significant treatment effects (all p > 0.20). N=485,767 for full sample; N=136,950 for conditional-on-donating outcomes."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Thank-you phone calls to existing national non-profit donors have no detectable effect on subsequent donation behavior",
+      "expected_sign": "null (paper reports null effects across all outcomes)",
+      "baseline_spec_run_ids": [
+        "149481-V1__run_008",
+        "149481-V1__run_009",
+        "149481-V1__run_010",
+        "149481-V1__run_011",
+        "149481-V1__run_012",
+        "149481-V1__run_013",
+        "149481-V1__run_014"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline"
+      ],
+      "notes": "Seven baseline specs for Experiment 2. Runs 008-012: diff-in-means for renewing, payment_amount3, var13, gift_cond, retention. Runs 013-014: OLS with baseline giving controls for donated, gift_cond. No strata FE (Exp 2 had no stratification). All p > 0.60. N=57,643 for full sample; N=17,862 for conditional outcomes."
+    }
+  ],
+  "global_notes": "Surface-driven run. Both baseline groups match the pre-run surface. All 87 rows succeed (run_success=1). No infer/* rows in specification_results.csv; inference variants are in inference_results.csv (16 rows). Key issues: (1) All baseline spec_ids are 'baseline' rather than the named IDs the surface planned (e.g., baseline__t2_exp1_renewing); the baselines are distinguishable by outcome_var and group. (2) The 'donated' and 'renewing' outcomes appear to be the same underlying variable (identical coefficients in diff-in-means specs), creating some redundancy. (3) The design/diff_in_means specs for renewing and donated produce identical results, confirming they are the same variable. (4) 77/87 rows use infer/se/iid (classical OLS SE) and 10/87 use infer/se/nonparametric/ranksum_chi2 (Table 2 baseline diff-in-means). This is correct: the surface canonical applies to diff-in-means specs only; OLS specs correctly use classical SE. (5) Ten diff-in-means baseline rows have missing r_squared (expected for nonparametric tests). This is a well-powered null result paper."
+}

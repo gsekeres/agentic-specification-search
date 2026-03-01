@@ -1,0 +1,160 @@
+{
+  "paper_id": "134622-V1",
+  "created_at": "2026-02-25",
+  "updated_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "log_freq_norm ~ log_firm_size + immigrant + immigrant:log_firm_size",
+        "selection_story": "The paper's central finding is that immigrant-founded firms have heavier-tailed firm size distributions (flatter power law slopes) than native-founded firms. The aggregated admin data from the Census reports log-frequency vs log-firm-size by immigrant status. The linear fit of this log-log relationship is the power law slope. The pooled regression with an immigrant interaction captures the slope difference directly as a regression coefficient.",
+        "fe_structure": [],
+        "notes": "Uses disclosure-approved aggregated Census administrative data (firm size frequency distributions). The immigrant coefficient captures the level difference in firm-formation rates; the interaction captures the slope difference (heavier tail). N=14 observations (7 firm-size bins x 2 groups). Defn1: immigrant startup = at least 1 foreign-born founder."
+      },
+      "claim_object": {
+        "outcome_concept": "Log normalized firm-formation frequency (log10 of firm count / population size)",
+        "treatment_concept": "Immigrant-founded startup indicator",
+        "estimand_concept": "Difference in power law intercept (level) and slope (tail heaviness) between immigrant- and native-founded startup size distributions",
+        "target_population": "All startups 2005-2010 (Census W-2 administrative data, aggregated)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Admin-Defn1-Pooled",
+          "outcome_var": "log_freq_norm",
+          "treatment_var": "immigrant",
+          "controls": ["log_firm_size", "immi_x_size"],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "HC1",
+          "notes": "Pooled regression replicating Figure 1 lfit lines. Treatment effect is the immigrant level shift; interaction is the slope difference."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "Aggregated data with small N (7 bins x 2 groups = 14 obs). Robust SEs may not be reliable but are used for consistency."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/data/treatment_alt/defn2",
+          "rc/data/treatment_alt/defn3",
+          "rc/data/treatment_alt/oecd_vs_native",
+          "rc/data/treatment_alt/non_oecd_vs_native",
+          "rc/data/source_alt/sbo_defn1",
+          "rc/data/source_alt/sbo_defn2",
+          "rc/data/source_alt/sbo_defn3",
+          "rc/data/source_alt/fortune500_defn1",
+          "rc/data/source_alt/fortune500_defn3",
+          "rc/sample/drop_top_bin",
+          "rc/sample/drop_bottom_bin",
+          "rc/form/separate_immi_slope",
+          "rc/form/separate_native_slope",
+          "rc/form/quadratic_firm_size",
+          "rc/form/weighted_by_freq",
+          "rc/estimation/wls_by_freq_immi",
+          "rc/estimation/wls_by_freq_native"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/nonrobust",
+            "params": {},
+            "notes": "Classical OLS SEs (small N, HC1 may over-reject)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 134622,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "ln_nb_employees ~ immigrant + controls",
+        "selection_story": "Fortune 500 firm-level analysis: comparing employee counts of immigrant- vs native-founded Fortune 500 firms. This is a firm-level cross-sectional regression using the publicly available hand-collected Fortune 500 dataset.",
+        "fe_structure": [],
+        "notes": "Fortune 500 hand-collected data (N=449 firms). Immigrant = at least 1 foreign-born founder (defn1). Merged with decade-level immigrant population data."
+      },
+      "claim_object": {
+        "outcome_concept": "Log number of employees at Fortune 500 firms",
+        "treatment_concept": "Immigrant-founded firm indicator",
+        "estimand_concept": "Employee count gap between immigrant- and native-founded Fortune 500 firms, conditional on observables",
+        "target_population": "Fortune 500 firms with founder data"
+      },
+      "baseline_specs": [
+        {
+          "label": "F500-OLS-base",
+          "outcome_var": "ln_nb_employees",
+          "treatment_var": "immi",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "HC1"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/fe/add/decade",
+          "rc/controls/add/ln_inc_year",
+          "rc/controls/add/yob_impt",
+          "rc/controls/full/decade_yob",
+          "rc/data/treatment_alt/defn3_immigrant_share",
+          "rc/sample/post1970",
+          "rc/sample/pre1970",
+          "rc/form/outcome_log_revenues",
+          "rc/form/outcome_rank",
+          "rc/form/interaction_decade"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/nonrobust",
+            "params": {},
+            "notes": "Classical OLS SEs"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 134622,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

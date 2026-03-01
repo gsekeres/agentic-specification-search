@@ -1,0 +1,86 @@
+{
+  "paper_id": "126722-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_controls",
+        "randomization_unit": "clinic_day",
+        "randomization_design": "within_clinic_across_days",
+        "strata_blocking": "none_explicit",
+        "fe_structure": ["date"],
+        "cluster_vars": ["cscomnum_OS"],
+        "control_selection_method": "manual_covariates",
+        "original_method_note": "Paper uses pdslasso (double-selection LASSO) for control selection from clinic/patient pool; Python implementation uses manual covariate set as in paper Table B10 since pdslasso unavailable"
+      },
+      "claim_object": {
+        "outcome_concept": "Malaria treatment prescribed (any antimalarial)",
+        "treatment_concept": "Patient voucher vs Doctor voucher vs Control (random assignment of voucher type)",
+        "estimand_concept": "ITT: effect of voucher assignment on antimalarial prescribing/purchasing",
+        "target_population": "Patients visiting CSCom health clinics in Mali during study period, excluding screening failures (dropme!=1)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col2-RXtreat_sev_simple_mal",
+          "outcome_var": "RXtreat_sev_simple_mal",
+          "treatment_var": "patient_voucher",
+          "treatment_var_secondary": "doctor_voucher",
+          "controls": ["num_symptoms", "symptomsscreening_1", "symptomsscreening_2", "symptomsscreening_3", "symptomsscreening_4", "symptomsscreening_5", "symptomsscreening_6", "daysillness99", "agepatient", "under5", "genderpatient", "pregnancy", "MSSpregnancy", "respondent", "gender", "ethnic_bambara", "MSSethnic_bambara", "speak_french", "readwrite_fluent_french", "prischoolorless"],
+          "n_controls": 20,
+          "date_fe": "DD1-DD35",
+          "notes": "Table 3 Col 2: prescribed any antimalarial. Uses manual covariate set matching Table B10 approach."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 20,
+        "linked_adjustment": false,
+        "functional_form_policy": "Binary outcomes only; no log/asinh transforms appropriate. Level coefficients = percentage point changes."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__treat_sev_simple_mal",
+          "baseline__used_vouchers_admin",
+          "baseline__RXtreat_severe_mal",
+          "baseline__treat_severe_mal"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means*",
+          "design/randomized_experiment/estimator/with_covariates*",
+          "design/randomized_experiment/estimator/strata_fe*"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/*",
+          "rc/controls/sets/*",
+          "rc/controls/progression/*",
+          "rc/controls/subset/*",
+          "rc/sample/outliers/*",
+          "rc/sample/restriction/*",
+          "rc/fe/add/*",
+          "rc/fe/drop/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/clinic",
+          "params": {"cluster_var": "cscomnum_OS"},
+          "notes": "Robust SEs clustered at clinic level (cscomnum_OS, ~60 clinics). Matches paper's stated inference."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust (no clustering) as a stress test."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 126722,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "paper_id": "120078-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of minority host status on Airbnb listing price, interacted with review count (information accumulation). Panel FE design with listing and city-wave FE, clustered at listing level. Outcome is log_price, treatment is mino_x_rev100 (minority indicator x reviews/100).",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["120078-V1_run_001", "120078-V1_run_002", "120078-V1_run_003"],
+      "baseline_spec_ids": ["baseline", "baseline__table5_col2", "baseline__table5_col3"],
+      "baseline_coefficient": 0.0903699310007065,
+      "baseline_std_error": 0.03567005318654366,
+      "baseline_p_value": 0.011293919704876698,
+      "baseline_n_obs": 1858114,
+      "notes": "Table 5 Col 1 is the primary baseline (review<40). Col 2 (review<60) and Col 3 (review<80 with quadratic) are alternative sample baselines from the same table. The focal parameter is the coefficient on the minority x reviews/100 interaction, measuring how the ethnic price gap evolves as information accumulates."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified one baseline group (G1) covering Table 5's panel FE regressions. All 50 specifications use the same outcome (log_price) and treatment concept (mino_x_rev100). Notable observations: (1) Several LOO controls produce coefficients identical to baseline, suggesting those controls have zero partial correlation with outcome conditional on FE; these are valid but redundant. (2) FE drop/swap specs produce very large coefficients (~0.84 vs ~0.09) because removing city-wave FE removes a key source of identifying variation, making them conceptually different but mechanically valid RC. (3) The review_gt_0 sample restriction (no upper bound) produces a near-zero insignificant coefficient, showing the effect depends on the review count window."
+}

@@ -1,0 +1,18 @@
+{
+  "paper_id": "112517-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ATT of RECLAIM cap-and-trade participation on change in NOx emissions (DIFFNOX = post minus pre), estimated via nearest-neighbor matching on pre-treatment emissions with exact SIC matching, Abadie-Imbens robust variance.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": ["112517-V1_run_001", "112517-V1_run_002", "112517-V1_run_003", "112517-V1_run_004"],
+      "baseline_spec_ids": ["baseline", "baseline__table4_log", "baseline__table4_demog", "baseline__table4_log_demog"],
+      "baseline_coefficient": -24.68241947075572,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.1060208919971914,
+      "baseline_n_obs": 1745,
+      "notes": "Table 4 Panel A Row 1 (levels, no demographics) is the primary baseline. The baseline ATT is not significant at conventional levels (p=0.106). The demographics variant (run_003, p=0.019) is significant. Log variants are also provided as baselines. rc/controls/add_demographics duplicates baseline__table4_demog exactly; rc/controls/add_demographics_plus_quartile duplicates baseline__table4_log_demog. rc/sample/subset/nonattainment_only duplicates baseline (already restricted to nonattainment). rc/form/outcome/log_emissions duplicates baseline__table4_log. Two period specs (pre_pd2_post_pd3, pre_pd1_post_pd3) yield identical results."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments. The surface correctly identified one baseline group for the main RECLAIM emissions effect. Several specs are mechanical duplicates of baseline variants (noted above). Two specs (small_firms_levels, small_firms_log) use treatment variable dumreclaim_small instead of dumreclaim, changing the treatment concept to small-firm RECLAIM participation, classified as noncore_alt_treatment. All 53 specs run successfully (0 failures)."
+}

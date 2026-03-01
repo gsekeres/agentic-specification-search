@@ -1,0 +1,134 @@
+{
+  "paper_id": "112498-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "ch_r_totexp ~ ch_r_nonlabinc + ch_r_totexp_vill + l_r_wage + wt_nhh + intfreq",
+        "selection_story": "Standard test of efficient risk sharing: under full insurance, changes in individual non-labor income should not predict changes in individual consumption after controlling for aggregate (village-level) consumption changes. Panel data from ICRISAT villages in India (1975-1984) with monthly observations.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Change in real per-capita total consumption (including leisure value)",
+        "treatment_concept": "Change in real per-capita non-labor income (profit + non-labor income)",
+        "estimand_concept": "Effect of idiosyncratic income changes on household consumption changes, where a zero coefficient implies full risk sharing efficiency",
+        "target_population": "Households in ICRISAT village-level studies (VLS) in semi-arid India, village Kanzara (E), with at least 80 monthly observations over 1975-1984"
+      },
+      "baseline_specs": [
+        {
+          "label": "StandardTest-OLS-VillE",
+          "outcome_var": "ch_r_totexp",
+          "treatment_var": "ch_r_nonlabinc",
+          "controls": [
+            "ch_r_totexp_vill",
+            "l_r_wage",
+            "wt_nhh",
+            "intfreq"
+          ],
+          "n_controls": 4,
+          "fixed_effects": [],
+          "vcov": "iid"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 4,
+        "linked_adjustment": false,
+        "notes": "Paper runs OLS and IV versions on village E (Kanzara). Also runs by caste subgroups. IV instruments ch_r_nonlabinc with HH characteristics, rainfall, lagged variables, and year dummies."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__iv",
+          "baseline__ols_villA",
+          "baseline__ols_villC",
+          "baseline__by_caste"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_ch_r_totexp_vill",
+          "rc/controls/loo/drop_l_r_wage",
+          "rc/controls/loo/drop_wt_nhh",
+          "rc/controls/loo/drop_intfreq",
+          "rc/controls/sets/none",
+          "rc/controls/sets/vill_avg_only",
+          "rc/controls/sets/vill_avg_plus_wage",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/add_vill_avg",
+          "rc/controls/progression/add_wage",
+          "rc/controls/progression/add_hhsize",
+          "rc/controls/progression/full",
+          "rc/controls/add/hhsize",
+          "rc/controls/add/n_infant",
+          "rc/controls/add/m_adultage",
+          "rc/controls/add/castrk_b",
+          "rc/controls/add/rain",
+          "rc/controls/add/l_r_totexp",
+          "rc/controls/add/hhsize_n_infant_m_adultage",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/village/all_three_villages",
+          "rc/sample/village/A_only",
+          "rc/sample/village/C_only",
+          "rc/sample/min_obs/60",
+          "rc/sample/min_obs/100",
+          "rc/fe/add/hh",
+          "rc/fe/add/year",
+          "rc/fe/add/hh_year",
+          "rc/form/outcome/ch_r_food",
+          "rc/form/outcome/ch_r_grain",
+          "rc/form/outcome/ch_r_ndur",
+          "rc/form/outcome/ch_r_totexpnoleis",
+          "rc/form/treatment/ch_r_tot_inc_pc",
+          "rc/form/treatment/ch_r_wage"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/iid",
+          "params": {},
+          "notes": "OLS with default (iid) standard errors matching Stata reg command in StandardTest.do"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust SEs"
+          },
+          {
+            "spec_id": "infer/se/cluster/hh",
+            "params": {"cluster_var": "hh_num"},
+            "notes": "Clustered SEs at household level"
+          },
+          {
+            "spec_id": "infer/se/cluster/yearmonth",
+            "params": {"cluster_var": "yearmonth"},
+            "notes": "Clustered SEs at year-month level"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112498,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

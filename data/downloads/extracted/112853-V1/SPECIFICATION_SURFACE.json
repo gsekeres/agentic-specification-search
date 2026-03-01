@@ -1,0 +1,122 @@
+{
+  "paper_id": "112853-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "log(av_rel_y) ~ av_sch + controls, HC1",
+        "selection_story": "Cross-country OLS relating output per worker (relative to US) to average years of schooling and other development indicators; identification relies on cross-country variation in schooling controlling for confounders (life expectancy, TFR, education expenditure, relative capital price)",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Log output per worker relative to US (average 2003-2007)",
+        "treatment_concept": "Average years of schooling (Barro-Lee, age 25+, year 2000)",
+        "estimand_concept": "Cross-country elasticity of output per worker with respect to schooling years",
+        "target_population": "75 countries with complete data on output, schooling, life expectancy, TFR, education expenditure, and relative price of capital (PWT 8.0, Barro-Lee, World Bank, UNESCO)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-cross-country-OLS-full",
+          "outcome_var": "log_av_rel_y",
+          "treatment_var": "av_sch",
+          "controls": [
+            "av_T", "av_TFR", "av_x_s", "av_rel_pk", "IMR"
+          ],
+          "n_controls": 5,
+          "fixed_effects": [],
+          "vcov": "HC1"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 5,
+        "linked_adjustment": false,
+        "notes": "Paper uses cross-country data from Table 2 to calibrate structural model. OLS regressions are development accounting exercises. Controls include demographics (life expectancy, TFR, IMR) and economic structure (education expenditure share, relative capital price)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_av_T",
+          "rc/controls/loo/drop_av_TFR",
+          "rc/controls/loo/drop_av_x_s",
+          "rc/controls/loo/drop_av_rel_pk",
+          "rc/controls/loo/drop_IMR",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/economic_only",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/plus_lifeexp",
+          "rc/controls/progression/plus_lifeexp_tfr",
+          "rc/controls/progression/plus_lifeexp_tfr_edexp",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/controls/subset/random_011",
+          "rc/controls/subset/random_012",
+          "rc/controls/subset/random_013",
+          "rc/controls/subset/random_014",
+          "rc/controls/subset/random_015",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/trim_y_10_90",
+          "rc/sample/subgroup/drop_decile_1",
+          "rc/sample/subgroup/drop_decile_10",
+          "rc/sample/subgroup/drop_oil_adjacent",
+          "rc/sample/subgroup/drop_small_pop",
+          "rc/sample/subgroup/above_median_income",
+          "rc/sample/subgroup/below_median_income",
+          "rc/form/outcome/log_av_y_per_capita",
+          "rc/form/outcome/log_av_y",
+          "rc/form/outcome/av_rel_y_levels",
+          "rc/form/treatment/av_sch_squared",
+          "rc/form/treatment/log_av_sch",
+          "rc/form/estimator/wls_pop",
+          "rc/form/estimator/median_regression",
+          "rc/form/estimator/robust_regression"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs (HC1); cross-country data with no clustering structure"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 robust SEs (small-sample corrected)"
+          },
+          {
+            "spec_id": "infer/se/ols",
+            "params": {},
+            "notes": "Classical OLS SEs (homoskedasticity assumed)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 112853,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

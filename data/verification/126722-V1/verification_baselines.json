@@ -1,0 +1,33 @@
+{
+  "paper_id": "126722-V1",
+  "verified_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of patient voucher assignment on antimalarial prescribing/purchasing in Mali health clinics. Primary outcome: RXtreat_sev_simple_mal (prescribed any antimalarial). Secondary outcomes: treat_sev_simple_mal, used_vouchers_admin, RXtreat_severe_mal, treat_severe_mal.",
+      "expected_sign": "positive",
+      "expected_sign_note": "Positive coefficient expected for patient_voucher on RXtreat_sev_simple_mal and treat_sev_simple_mal (voucher increases antimalarial treatment). Negative expected for RXtreat_severe_mal and treat_severe_mal (substitution away from severe-only). Positive for used_vouchers_admin (take-up). Expected sign refers to the primary outcome RXtreat_sev_simple_mal.",
+      "baseline_spec_run_ids": [
+        "126722-V1_run_001",
+        "126722-V1_run_002",
+        "126722-V1_run_003",
+        "126722-V1_run_004",
+        "126722-V1_run_005"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__treat_sev_simple_mal",
+        "baseline__used_vouchers_admin",
+        "baseline__RXtreat_severe_mal",
+        "baseline__treat_severe_mal"
+      ],
+      "primary_baseline_spec_run_id": "126722-V1_run_001",
+      "primary_baseline_outcome": "RXtreat_sev_simple_mal",
+      "primary_baseline_coefficient": 0.0597,
+      "primary_baseline_p_value": 0.0234,
+      "primary_baseline_n_obs": 2053,
+      "notes": "All 5 baselines correspond to Table 3 columns in the original paper. The paper uses pdslasso for control selection; the replication uses manual covariates from Table B10 (Appendix). Coefficients are close but not identical to published values, consistent with the pdslasso approximation. Surface correctly groups all 5 outcomes under a single baseline group since the claim object (voucher effects on treatment) is unified. Design variants and RC specs also cover multiple outcomes, primarily RXtreat_sev_simple_mal and treat_sev_simple_mal."
+    }
+  ],
+  "global_notes": "No changes to baseline-group assignments relative to the surface. The surface defined one group (G1) covering all 5 Table 3 outcomes; the executed results are fully consistent with this plan. All 57 rows in specification_results.csv have run_success=1. The 5 inference variant rows are correctly placed in inference_results.csv (not in specification_results.csv). Duplicate coefficient values were found across some spec pairs (e.g., rc/controls/sets/none replicates design/diff_in_means, rc/controls/sets/extended replicates baseline, rc/fe/add/clinic replicates design/strata_fe). These are mechanically valid but represent redundant specifications."
+}

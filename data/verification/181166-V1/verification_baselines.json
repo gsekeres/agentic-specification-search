@@ -1,0 +1,22 @@
+{
+  "paper_id": "181166-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Occupation-level technological change (increase in computer/software requirements) affects post-displacement earnings losses among displaced workers",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "181166-V1_run_001",
+        "181166-V1_run_002",
+        "181166-V1_run_003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table3_col1_soc4",
+        "baseline__table3_col3_ft"
+      ],
+      "notes": "Cross-sectional OLS with year and year-of-job-loss FE, weighted by DWS supplement weights, clustered at SOC-4 digit level. Three baselines: Table 3 Col 2 (main, with employment share control), Col 1 (without employment share), Col 3 (full-time only with renormalized treatment). The surface also planned Col 4/5 (Autor-Dorn occupation codes) as baselines but these were not coded as baseline rows. All 43 specifications have p > 0.05; the baseline coefficient is small and statistically insignificant (coef=0.015, p=0.756, N=220)."
+    }
+  ],
+  "global_notes": "Surface-driven run. One baseline group (G1) matches the pre-run surface. The surface listed 4 additional baseline specs (table3_col4_AD, table3_col5_AD_ft) using Autor-Dorn occupation codes, but these were not implemented as baseline rows. The rc/data/treatment/AD_occ_codes spec from the surface is also absent, likely due to data construction complexity. Critically, the baseline result itself is not statistically significant (p=0.756), and no specification in the entire run achieves significance at 5%. This means the robustness analysis documents consistent non-significance rather than robustness of a significant finding."
+}

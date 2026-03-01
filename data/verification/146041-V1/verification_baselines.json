@@ -1,0 +1,30 @@
+{
+  "paper_id": "146041-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of l_y on l_irAQ53_dum_skti_hrs_secall",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "146041-V1__spec_001",
+        "146041-V1__spec_002",
+        "146041-V1__spec_003",
+        "146041-V1__spec_004",
+        "146041-V1__spec_005",
+        "146041-V1__spec_006",
+        "146041-V1__spec_007"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__aq_sigma_high",
+        "baseline__aq_sigma_low",
+        "baseline__wage_ratio",
+        "baseline__quantity_ratio",
+        "baseline__pooled_countries",
+        "baseline__pooled_bilateral"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

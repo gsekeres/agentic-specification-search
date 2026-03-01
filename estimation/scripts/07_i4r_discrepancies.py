@@ -43,7 +43,7 @@ def main() -> None:
     base_dir = Path(__file__).resolve().parents[2]
     data_dir = base_dir / "estimation" / "data"
     results_dir = base_dir / "estimation" / "results"
-    overleaf_tables = base_dir / "overleaf" / "tex" / "v8_tables"
+    overleaf_tables = base_dir.parent / "overleaf" / "tex" / "v8_tables"
     results_dir.mkdir(parents=True, exist_ok=True)
     overleaf_tables.mkdir(parents=True, exist_ok=True)
 

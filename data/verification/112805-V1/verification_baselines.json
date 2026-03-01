@@ -1,0 +1,24 @@
+{
+  "paper_id": "112805-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of VA on testz2003",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "112805-V1_run_001",
+        "112805-V1_run_038",
+        "112805-V1_run_039",
+        "112805-V1_run_040"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__mod1_ar",
+        "baseline__mod2_mix",
+        "baseline__mod2_FE"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

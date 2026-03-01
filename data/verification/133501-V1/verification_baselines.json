@@ -1,0 +1,22 @@
+{
+  "paper_id": "133501-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of post (agemo_mda >= 0) on cod_MVA",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "133501-V1__run001",
+        "133501-V1__run002",
+        "133501-V1__run003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__cod_any",
+        "baseline__cod_sa_poisoning"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

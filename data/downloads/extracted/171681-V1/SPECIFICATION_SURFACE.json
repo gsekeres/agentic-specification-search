@@ -1,0 +1,249 @@
+{
+  "paper_id": "171681-V1",
+  "created_at": "2026-02-24",
+  "notes": "Ambuehl, Bernheim & Lusardi, 'Evaluating Deliberative Competence'. Two online RCTs studying whether a financial literacy intervention (Rule of 72 + framing rhetoric) improves compounding knowledge and financial decision-making. Experiment A has 4 arms (Control, Full, Rule72-only, Rhetoric-only); Experiment B has 2 arms (Control, Full). Main claims: (1) treatment improves compounding test scores; (2) treatment improves financial competence (reduces valuation errors between simple vs complex frames). Data is observation-level (subject x price-list), with multiple observations per subject. SE clustered at individual (id) level. Two baseline groups map to the paper's two headline claims.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "individual (id)",
+        "stratification": "none",
+        "n_arms": 4,
+        "arms": ["Control (fined==0)", "Full (fined==1)", "Rule72 (fined==2)", "Rhetoric (fined==3)"],
+        "cluster_vars": ["id"],
+        "se_type": "cluster-robust",
+        "unit_of_observation": "individual (tag==1, one obs per subject)",
+        "notes": "Experiment A: 4-arm RCT. Baseline spec regresses score_compounding on Full treatment dummy for Full vs Control subjects. Individual-level outcome, one obs per subject (tag==1 filter). SE clustered at id."
+      },
+      "claim_object": {
+        "outcome_concept": "Compounding knowledge (score on 5 compounding test questions, 0-5 scale)",
+        "treatment_concept": "Full financial literacy intervention (Rule of 72 heuristic + framing rhetoric video)",
+        "estimand_concept": "ITT effect of full treatment on compounding test score (Full vs Control)",
+        "target_population": "Online survey participants (MTurk), Experiment A"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1-ExpA",
+          "outcome_var": "score_compounding",
+          "treatment_var": "Full",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "tag == 1 & (Full == 1 | Control == 1) & sample == 'old'",
+          "notes": "reg score_compounding Full if tag == 1 & (Full == 1 | Control == 1) & sample == 'old', cl(id). Note: multi == 0 is applied globally in data management before table regressions; all observations in the managed dataset are single-switchers."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 32,
+        "linked_adjustment": false,
+        "notes": "Baseline has 0 controls. Paper's Table D.2 (demoControl) uses full demographic control set (32 vars). Control-count envelope spans 0 to 32. Demographic controls are all pre-treatment."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_col1_expA",
+          "baseline__table4_col2_expB"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_gender",
+          "rc/controls/single/add_age",
+          "rc/controls/single/add_income",
+          "rc/controls/single/add_fl_high",
+          "rc/controls/single/add_ownStocks",
+          "rc/controls/sets/demographics_minimal",
+          "rc/controls/sets/demographics_extended",
+          "rc/controls/sets/demographics_full",
+          "rc/controls/loo/drop_gender",
+          "rc/controls/loo/drop_age",
+          "rc/controls/loo/drop_income",
+          "rc/sample/experiment/expA_only",
+          "rc/sample/experiment/expB_only",
+          "rc/sample/experiment/pooled_AB",
+          "rc/sample/attrition/include_multi_switchers__requires_remanagement",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/outcome/score_indexing",
+          "rc/outcome/score_compounding_plus_indexing",
+          "rc/outcome/fl_score_compound",
+          "rc/outcome/fl_sum_compound",
+          "rc/treatment/rule72_only_vs_control",
+          "rc/treatment/rhetoric_only_vs_control",
+          "rc/treatment/all_arms_nocons",
+          "rc/joint/expA_with_controls",
+          "rc/joint/expB_with_controls",
+          "rc/joint/pooled_with_controls"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/id",
+          "params": {"cluster_var": "id"},
+          "notes": "Cluster-robust SE at the individual level, matching the paper's cl(id)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) without clustering. Individual-level outcome so clustering at id should not matter much."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 standard errors (jackknife-based, conservative for small samples)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 35,
+        "max_specs_controls_subset": 12,
+        "notes": "Individual-level outcomes with straightforward OLS. Moderate budget."
+      },
+      "sampling": {
+        "seed": 171681,
+        "controls_subset_sampler": "curated_sets",
+        "notes": "Controls are demographic variables. Rather than combinatorial sampling, we define curated sets (minimal, extended, full) that mirror the paper's own approach."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance table across treatment arms (Table D.1 in paper)."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "individual (id)",
+        "stratification": "none",
+        "n_arms": 4,
+        "arms": ["Control (fined==0)", "Full (fined==1)", "Rule72 (fined==2)", "Rhetoric (fined==3)"],
+        "cluster_vars": ["id"],
+        "se_type": "cluster-robust",
+        "unit_of_observation": "observation-level (subject x price-list pair), multiple obs per subject",
+        "notes": "Experiment A: 4-arm RCT (primary baseline). Additional Exp B baseline uses 2 arms (contNew, fullNew). Baseline spec regresses negAbsDiff on treatment group dummies (Control, Full, Rule72, Rhetoric) with no constant for Full vs Control comparison, observation-level data. This is the paper's main behavioral competence measure (Table 7). Data has multiple obs per subject (different price lists / amounts / delays), so clustering at id is essential. Note: multi == 0 is applied globally before table regressions."
+      },
+      "claim_object": {
+        "outcome_concept": "Financial competence: negative absolute valuation difference between complex (interest-bearing) and simple frames, |discount_framed - discount_unframed|",
+        "treatment_concept": "Full financial literacy intervention (Rule of 72 heuristic + framing rhetoric video)",
+        "estimand_concept": "ITT effect of full treatment on reducing valuation errors (Full vs Control), measured as improvement in -|diff|",
+        "target_population": "Online survey participants (MTurk), Experiment A"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table7-Col1-ExpA",
+          "outcome_var": "negAbsDiff",
+          "treatment_var": ["Control", "Full", "Rule72", "Rhetoric"],
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "sample == 'old'",
+          "model_form": "nocons",
+          "focal_test": "test Full == Control",
+          "notes": "reg negAbsDiff Control Full Rule72 Rhetoric if sample == 'old', nocons cl(id). Key test: Full == Control. negAbsDiff = -absDiff = -abs(discount_framed - discount_unframed). Note: multi == 0 is applied globally in data management (keep if multi == 0, analysis.do line 107) before all table regressions; it is not a per-regression filter."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 32,
+        "linked_adjustment": false,
+        "notes": "Baseline has 0 controls. Table D.2 adds full demographic controls (32 vars). Observation-level data with clustering."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table7_col1_expA",
+          "baseline__table7_col2_expB"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_gender",
+          "rc/controls/single/add_age",
+          "rc/controls/single/add_income",
+          "rc/controls/single/add_fl_high",
+          "rc/controls/single/add_ownStocks",
+          "rc/controls/single/add_meanVsimple",
+          "rc/controls/sets/demographics_minimal",
+          "rc/controls/sets/demographics_extended",
+          "rc/controls/sets/demographics_full",
+          "rc/controls/loo/drop_gender_from_full",
+          "rc/controls/loo/drop_age_from_full",
+          "rc/controls/loo/drop_income_from_full",
+          "rc/sample/experiment/expA_only",
+          "rc/sample/experiment/expB_only",
+          "rc/sample/experiment/pooled_AB",
+          "rc/sample/delay/delay_72_only",
+          "rc/sample/delay/delay_36_only",
+          "rc/sample/attrition/include_multi_switchers__requires_remanagement",
+          "rc/sample/outliers/trim_absDiff_1_99",
+          "rc/sample/outliers/trim_absDiff_5_95",
+          "rc/outcome/negSqDiff",
+          "rc/outcome/diff",
+          "rc/outcome/discount_framed",
+          "rc/outcome/finCompCorr",
+          "rc/outcome/finCompCorrSq",
+          "rc/treatment/rule72_only_vs_control",
+          "rc/treatment/rhetoric_only_vs_control",
+          "rc/treatment/full_vs_control_with_intercept",
+          "rc/treatment/all_arms_nocons",
+          "rc/joint/expA_delay72",
+          "rc/joint/expA_delay36",
+          "rc/joint/expB_delay72",
+          "rc/joint/expB_delay36",
+          "rc/joint/pooled_with_controls",
+          "rc/joint/expA_with_controls",
+          "rc/joint/expB_with_controls",
+          "rc/form/individual_means"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/id",
+          "params": {"cluster_var": "id"},
+          "notes": "Cluster-robust SE at the individual level, matching the paper's cl(id). Essential because multiple obs per subject."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) without clustering. For comparison; likely understates uncertainty."
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 standard errors."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 45,
+        "max_specs_controls_subset": 12,
+        "notes": "Observation-level data with more outcome/sample variants than G1. Slightly larger budget."
+      },
+      "sampling": {
+        "seed": 171682,
+        "controls_subset_sampler": "curated_sets",
+        "notes": "Controls are demographic variables. Curated sets (minimal, extended, full) mirror the paper's approach in Table D.2."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance table across treatment arms (Table D.1 in paper)."
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "notes": "Attrition rates by treatment arm. Paper notes 1 subject in Treatment and 1 in Control attrited."
+        }
+      ]
+    }
+  ]
+}

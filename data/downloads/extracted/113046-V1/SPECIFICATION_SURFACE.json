@@ -1,0 +1,131 @@
+{
+  "paper_id": "113046-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "local_projection",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "lnGDP(t+h) ~ CRISIS(t) + CRISIS_lags(1-4) + lnGDP_lags(1-4) + country_FE + time_FE",
+        "selection_story": "Jorda local projection impulse response of log GDP to a new semi-annual measure of financial distress for 24 OECD countries 1967-2012. Financial distress measure is narrative-based, derived from OECD Economic Outlook real-time assessments, providing plausibly exogenous variation in crisis severity.",
+        "fe_structure": ["country", "time"],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Log real GDP (x100) at horizon h after financial distress",
+        "treatment_concept": "New semi-annual measure of financial distress (0-15 scale)",
+        "estimand_concept": "Cumulative impulse response of GDP to a one-unit increase in financial distress at various horizons",
+        "target_population": "24 advanced OECD economies, semiannual data 1967-2012"
+      },
+      "baseline_specs": [
+        {
+          "label": "Figure4-Table1-Line1-GDP-h0",
+          "outcome_var": "lnGDP_h0",
+          "treatment_var": "CRISIS",
+          "controls": ["CRISIS_L1", "CRISIS_L2", "CRISIS_L3", "CRISIS_L4",
+                       "lnGDP_L1", "lnGDP_L2", "lnGDP_L3", "lnGDP_L4"],
+          "n_controls": 8,
+          "fixed_effects": ["country", "time"],
+          "vcov": "ols_conventional"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 8,
+        "linked_adjustment": false,
+        "notes": "Controls are lagged crisis and lagged output measures. Paper varies number of lags, outcome measure (GDP/IP/Unemp), sample restrictions, FE structure, and weighting scheme."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__GDP_h0"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/outcome/IP_h0",
+          "rc/outcome/UNEMP_h0",
+          "rc/horizon/GDP_h1",
+          "rc/horizon/GDP_h2",
+          "rc/horizon/GDP_h3",
+          "rc/horizon/GDP_h4",
+          "rc/horizon/GDP_h5",
+          "rc/horizon/GDP_h7",
+          "rc/horizon/GDP_h10",
+          "rc/sample/pre_gfc",
+          "rc/sample/no_japan",
+          "rc/sample/no_greece",
+          "rc/sample/drop_country_01",
+          "rc/sample/drop_country_02",
+          "rc/sample/drop_country_03",
+          "rc/sample/drop_country_04",
+          "rc/sample/drop_country_05",
+          "rc/sample/drop_country_06",
+          "rc/sample/drop_country_07",
+          "rc/sample/drop_country_08",
+          "rc/sample/drop_country_09",
+          "rc/sample/drop_country_10",
+          "rc/sample/drop_country_11",
+          "rc/sample/drop_country_12",
+          "rc/sample/drop_country_13",
+          "rc/sample/drop_country_14",
+          "rc/sample/drop_country_15",
+          "rc/sample/drop_country_16",
+          "rc/sample/drop_country_17",
+          "rc/sample/drop_country_18",
+          "rc/sample/drop_country_19",
+          "rc/sample/drop_country_20",
+          "rc/sample/drop_country_21",
+          "rc/sample/drop_country_22",
+          "rc/sample/drop_country_23",
+          "rc/sample/drop_country_24",
+          "rc/fe/country_only",
+          "rc/fe/time_only",
+          "rc/fe/no_fe",
+          "rc/controls/lags/crisis_2_output_4",
+          "rc/controls/lags/crisis_6_output_4",
+          "rc/controls/lags/crisis_4_output_2",
+          "rc/controls/lags/crisis_4_output_6",
+          "rc/controls/lags/crisis_2_output_2",
+          "rc/weights/wls",
+          "rc/treatment/rr_systemic",
+          "rc/treatment/rr_all",
+          "rc/treatment/imf_systemic",
+          "rc/treatment/imf_all"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/ols_conventional",
+          "params": {},
+          "notes": "Paper uses conventional OLS standard errors in baseline (Table 1 Line 1). Country and time FE absorb cross-sectional and temporal correlation."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/robust",
+            "params": {},
+            "notes": "Heteroskedasticity-consistent (robust) SEs"
+          },
+          {
+            "spec_id": "infer/se/cluster/country",
+            "params": {"cluster_var": "country"},
+            "notes": "Clustered by country (only 24 clusters, interpret with caution)"
+          },
+          {
+            "spec_id": "infer/se/cluster/time",
+            "params": {"cluster_var": "time"},
+            "notes": "Clustered by time period"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 113046,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "paper_id": "112815-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "incres09 ~ cert1* + cert2* + instid*, no causal interpretation",
+        "selection_story": "Descriptive analysis characterizing online postsecondary education markets. No causal claims. Regressions test joint significance of certificate and institution indicators.",
+        "notes": "Paper is primarily descriptive (tabulations, summary statistics) with two regressions that test joint significance only. No focal coefficient or causal estimate is reported."
+      },
+      "claim_object": {
+        "outcome_concept": "Log earnings in 2009 (incres09)",
+        "treatment_concept": "Certificate attainment indicators (qfcsfct, qfcslct) and institution indicators",
+        "estimand_concept": "Joint F-test of certificate and institution effects on earnings (explicitly non-causal)",
+        "target_population": "NSPE (nonselective postsecondary education) students in BPS 2004/2009"
+      },
+      "baseline_specs": [
+        {
+          "label": "NSPE-earnings-regression",
+          "outcome_var": "incres09",
+          "treatment_var": "cert indicators (cert1*, cert2*)",
+          "controls": ["instid1-instid1279"],
+          "n_controls": 1279,
+          "fixed_effects": [],
+          "vcov": "default",
+          "notes": "This regression exists solely for the F-tests (testparm cert*; testparm instid*). No focal coefficient is reported. The paper says 'No causal interpretation.'"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 1279,
+        "linked_adjustment": false,
+        "notes": "PRIMARY CONSTRAINT: This paper is descriptive. The regressions are ancillary F-tests, not the paper's main claims. The paper's main contribution is characterizing NSPE and HSPE market segments through tabulations and summary statistics. A specification search is of very limited value."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__hspe_earnings"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/sample/institution_type/nspe_only",
+          "rc/sample/institution_type/hspe_only",
+          "rc/controls/sets/no_institution_fe",
+          "rc/controls/sets/cert_only",
+          "rc/controls/sets/instid_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Default Stata robust SEs"
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 15,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 112815,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

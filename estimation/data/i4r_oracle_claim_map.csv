@@ -1,41 +1,41 @@
-paper_id,claim_description,t_orig,t_i4r,oracle_status
-147561-V3,City chiefs increase tax compliance in DRC,2.89,2.73,missing_spec_map
-140921-V1,Assortative matching at top of distribution,4.21,4.15,missing_spec_map
-120078-V1,Information reduces ethnic discrimination on Airbnb,2.45,2.38,missing_spec_map
-149481-V1,Thank-you calls increase charitable giving,1.98,1.82,missing_spec_map
-126722-V1,Patient demand contributes to overuse of prescriptions,3.12,2.95,missing_spec_map
-136741-V1,Historical lynchings affect Black voting behavior,2.67,2.51,missing_spec_map
-131981-V1,Mental health costs of COVID lockdowns,3.45,3.28,missing_spec_map
-128521-V1,"Recessions, mortality in Lancashire Cotton Famine",2.34,2.19,missing_spec_map
-120483-V1,Malaria immunity affects African slavery distribution,2.78,2.62,missing_spec_map
-140161-V1,Checking and sharing alt-facts,2.56,2.41,missing_spec_map
-130784-V1,Child marriage bans improve female outcomes,2.89,2.75,missing_spec_map
-134041-V1,Beliefs about gender wage gap affect policy demand,3.23,3.08,missing_spec_map
-125201-V1,"Mortality, temperature, public health in Mexico",2.45,2.32,missing_spec_map
-148301-V1,Multinationals profit shifting in tax havens,3.67,3.52,missing_spec_map
-125821-V1,School spending effects in Wisconsin,2.12,1.98,missing_spec_map
-149262-V2,Peer effects on student performance,2.78,2.65,missing_spec_map
-140121-V2,Alaska Permanent Fund labor market impacts,0.45,0.38,missing_spec_map
-138922-V1,Sports club vouchers long-run effects,1.56,1.42,missing_spec_map
-138401-V1,Measles vaccination long-term effects,2.34,2.18,missing_spec_map
-128143-V1,"Yellow vests, beliefs, carbon tax aversion",4.56,4.42,missing_spec_map
-120568-V1,Declining worker turnover patterns,5.23,5.08,missing_spec_map
-130141-V1,News shocks under financial frictions,2.89,2.72,missing_spec_map
-125321-V1,Technology solving principal-agent: China pollution,3.45,3.31,missing_spec_map
-180741-V1,Demand for moral commitment,2.67,2.54,missing_spec_map
-171681-V1,Deliberative competence in financial choice,2.12,1.98,missing_spec_map
-174501-V1,"Interaction, stereotypes, performance: South Africa",1.89,1.75,missing_spec_map
-158401-V1,Market access and quality upgrading: Uganda,2.45,2.32,missing_spec_map
-145141-V1,Welfare effects of shame and pride,3.78,3.65,missing_spec_map
-150323-V1,"Political turnover, bureaucratic turnover: Brazil",2.56,2.42,missing_spec_map
-151841-V1,Targeting entrepreneurs using community info,3.12,2.98,missing_spec_map
-150581-V1,Wage cyclicality and labor market sorting,2.89,2.75,missing_spec_map
-157781-V1,Rebel on the Canal: trade and conflict in China,2.34,2.18,missing_spec_map
-149882-V1,Reshaping gender attitudes: India school experiment,1.78,1.62,missing_spec_map
-181166-V1,Technological change and job loss consequences,3.45,3.32,missing_spec_map
-184041-V1,Common-probability auction puzzle,4.23,4.08,missing_spec_map
-146041-V1,Relative efficiency of skilled labor,2.67,2.54,missing_spec_map
-173341-V1,Vulnerability and clientelism,2.12,1.98,missing_spec_map
-181581-V1,Doctor supply and infant mortality,2.89,2.75,missing_spec_map
-139262-V1,Motivated beliefs and uncertainty resolution,2.45,2.31,missing_spec_map
-163822-V2,Digital addiction,3.56,3.42,missing_spec_map
+paper_id,claim_description,t_orig,t_i4r,oracle_status,oracle_n_candidates,oracle_baseline_group_id,oracle_is_baseline,oracle_spec_id,oracle_outcome_var,oracle_treatment_var,oracle_cluster_var,oracle_spec_tree_path,oracle_t_stat,oracle_abs_t_stat,oracle_abs_diff_abs_t_to_i4r
+147561-V3,City chiefs increase tax compliance in DRC,2.89,2.73,ok,51.0,G1,0.0,rc/data/treatment/include_cli_arm__stratum_only,taxes_paid,t_l,a7,modules/robustness/data_construction.md#treatment,2.6971190358602564,2.6971190358602564,0.03288096413974362
+140921-V1,Assortative matching at top of distribution,4.21,4.15,ok,49.0,G1,0.0,rc/sample/outliers/trim_syntheticT_10_90,cOut,syntheticT,byear,modules/robustness/sample.md#outliers-and-influential-observations,3.80023795460657,3.80023795460657,0.3497620453934305
+120078-V1,Information reduces ethnic discrimination on Airbnb,2.45,2.38,ok,50.0,G1,0.0,rc/sample/outliers/trim_y_1_99,log_price,mino_x_rev100,newid_int,modules/robustness/sample.md#outlier-trimming,2.471882990352966,2.471882990352966,0.09188299035296632
+149481-V1,Thank-you calls increase charitable giving,1.98,1.82,ok,51.0,G1,0.0,rc/form/outcome/asinh,gift_cond (asinh),treat,nan,specification_tree/modules/robustness/functional_form.md,1.388109120797576,1.388109120797576,0.4318908792024241
+126722-V1,Patient demand contributes to overuse of prescriptions,3.12,2.95,ok,57.0,G1,0.0,rc/controls/progression/symptoms_only,RXtreat_sev_simple_mal,patient_voucher,cscomnum_OS,modules/robustness/controls.md#control-progression-build-up,2.6961431711061583,2.6961431711061583,0.25385682889384187
+136741-V1,Historical lynchings affect Black voting behavior,2.67,2.51,ok,52.0,G1,0.0,rc/data/treatment/lynchcapitamob1920,Blackrate_regvoters,lynchcapitamob1920,nan,modules/robustness/data_construction.md#treatment-variable-alternatives,-2.495295640244945,2.495295640244945,0.014704359755054686
+131981-V1,Mental health costs of COVID lockdowns,3.45,3.28,ok,45.0,G1,0.0,rc/sample/donut/exclude_2month,z_depression,before1955,modate,modules/robustness/sample.md#donut-hole,3.2819416641628316,3.2819416641628316,0.0019416641628318132
+128521-V1,"Recessions, mortality in Lancashire Cotton Famine",2.34,2.19,ok,39.0,G1,0.0,rc/data/linking_restriction/unique_nlast_nfirst,census_mr_tot,cotton_dist_post,master_name,specification_tree/modules/robustness/data_construction.md#linking_restriction,2.3113741808297967,2.3113741808297967,0.12137418082979679
+120483-V1,Malaria immunity affects African slavery distribution,2.78,2.62,ok,52.0,G1,0.0,rc/sample/restrict/slave_states_only,slaveratio,MAL,state_g,specification_tree/modules/robustness/sample.md#restrict,2.4620701300442254,2.4620701300442254,0.15792986995577474
+140161-V1,Checking and sharing alt-facts,2.56,2.41,ok,128.0,G1,0.0,rc/treatment/pairwise/voluntary_vs_control,want_share_fb,survey3,nan,modules/robustness/controls.md#pairwise-treatment,-2.3580337302525076,2.3580337302525076,0.05196626974749252
+130784-V1,Child marriage bans improve female outcomes,2.89,2.75,ok,47.0,G1,0.0,rc/sample/jackknife/drop_Guinea,childmarriage,bancohort_pcdist,countryregionurban,modules/robustness/sample.md#jackknife,-2.7546091530204646,2.7546091530204646,0.004609153020464607
+134041-V1,Beliefs about gender wage gap affect policy demand,3.23,3.08,ok,84.0,G2,1.0,baseline__AAanchor,AAanchor,T1,nan,designs/randomized_experiment.md#baseline,3.2795445238845975,3.2795445238845975,0.19954452388459742
+125201-V1,"Mortality, temperature, public health in Mexico",2.45,2.32,missing_spec_map,,,,,,,,,,,
+148301-V1,Multinationals profit shifting in tax havens,3.67,3.52,ok,65.0,G2,0.0,rc/controls/loo/drop_dtc_enf,lprofit,ep_haven,iso3,specification_tree/modules/robustness/controls.md#loo,3.5355084395735026,3.5355084395735026,0.015508439573502564
+125821-V1,School spending effects in Wisconsin,2.12,1.98,ok,55.0,G1,0.0,rc/sample/restrict/tried_both,dropout_rate,op_win_prev1_through_10,district_code,modules/robustness/sample.md#sample-restriction,-1.9610382628363152,1.9610382628363152,0.018961737163684766
+149262-V2,Peer effects on student performance,2.78,2.65,ok,62.0,G2,1.0,baseline__table4_pA_neur,neur2,treat1,class1,designs/randomized_experiment.md#ancova,1.3030991248096477,1.3030991248096477,1.3469008751903522
+140121-V2,Alaska Permanent Fund labor market impacts,0.45,0.38,ok,57.0,G1,0.0,rc/sample/time_window/end_2010,employed,alaska_post,statefip_str,modules/robustness/sample.md#time-window-variations,0.16231528907591558,0.16231528907591558,0.21768471092408442
+138922-V1,Sports club vouchers long-run effects,1.56,1.42,ok,47.0,G1,0.0,rc/controls/loo/drop_born_germany,sportsclub,treat,cityno,specification_tree/modules/robustness/controls.md#loo,1.3981446945398155,1.3981446945398155,0.021855305460184438
+138401-V1,Measles vaccination long-term effects,2.34,2.18,ok,46.0,G1,0.0,rc/sample/restriction/exclude_partial_exposure,ln_cpi_income,M12_exp_rate,bplcohort,specification_tree/modules/robustness/sample.md#restriction,2.3050971359027344,2.3050971359027344,0.1250971359027342
+128143-V1,"Yellow vests, beliefs, carbon tax aversion",4.56,4.42,ok,57.0,G1,0.0,rc/controls/loo/demographics,outcome_cible_notno,endogenous_non_perdant,nan,modules/robustness/controls.md#leave-one-out-controls-loo,4.379789308092023,4.379789308092023,0.040210691907977214
+120568-V1,Declining worker turnover patterns,5.23,5.08,ok,69.0,G1,0.0,rc/panel/industry,oneqsepsrate,time_trend,ind_str,modules/robustness/sample.md#disaggregation,-6.668686504380184,6.668686504380184,1.5886865043801839
+130141-V1,News shocks under financial frictions,2.89,2.72,ok,52.0,G1,0.0,rc/ident/MFEVD_GZfirst,GDP_irf_h8,financial_shock,nan,modules/robustness/identification.md,3.2717938398257838,3.2717938398257838,0.5517938398257836
+125321-V1,Technology solving principal-agent: China pollution,3.45,3.31,ok,23.0,G1,0.0,rc/sample/outliers/trim_y_5_95,resid_pm10_smw,T,code_city,modules/robustness/sample.md#b-outliers-and-influential-observations,3.3513505783496966,3.3513505783496966,0.041350578349696576
+180741-V1,Demand for moral commitment,2.67,2.54,ok,63.0,G2,0.0,design/randomized_experiment/estimator/diff_in_means,recommendincentive,seeincentivefirst,nan,designs/randomized_experiment.md#diff-in-means,2.5736529840721714,2.5736529840721714,0.03365298407217132
+171681-V1,Deliberative competence in financial choice,2.12,1.98,ok,56.0,G2,0.0,rc/sample/outliers/trim_absDiff_1_99,negAbsDiff,"Control,Full,Rule72,Rhetoric",id,modules/robustness/sample.md#outlier-trimming,1.451796715724437,1.451796715724437,0.5282032842755631
+174501-V1,"Interaction, stereotypes, performance: South Africa",1.89,1.75,ok,90.0,G3,1.0,baseline__table5_white_pcacomm,PCAcomm,mixracebas,roomnum_base,specification_tree/designs/randomized_experiment.md#baseline,1.7494791293655059,1.7494791293655059,0.0005208706344941305
+158401-V1,Market access and quality upgrading: Uganda,2.45,2.32,ok,58.0,G2,0.0,rc/sample/time/drop_last_post_season,yield,buy_treatment,ea_code,specification_tree/modules/robustness/sample.md#time-drop-period,2.3350097666149106,2.3350097666149106,0.015009766614910713
+145141-V1,Welfare effects of shame and pride,3.78,3.65,ok,58.0,G3,0.0,rc/sample/definition/close_to_beliefs_exact_ymca,wtp,visits,id,specification_tree/modules/robustness/sample.md#definition,3.321032692446727,3.321032692446727,0.3289673075532731
+150323-V1,"Political turnover, bureaucratic turnover: Brazil",2.56,2.42,ok,72.0,G1,0.0,rc/bandwidth_x_controls/4th_bw11_all_controls,both_score_indiv_4_stdComb,pX_dummy,COD_MUNICIPIO,specification_tree/designs/regression_discontinuity.md#bandwidth,-2.4723321304026067,2.4723321304026067,0.05233213040260676
+151841-V1,Targeting entrepreneurs using community info,3.12,2.98,ok,81.0,G1,0.0,rc/controls/loo/panela1_demographics,Trim_Income,Winner_Quint_Rank_NS,GroupNumber,modules/robustness/controls.md#leave-one-out-controls-loo,2.7394998729245628,2.7394998729245628,0.24050012707543722
+150581-V1,Wage cyclicality and labor market sorting,2.89,2.75,paper_missing_in_unified,,,,,,,,,,,
+157781-V1,Rebel on the Canal: trade and conflict in China,2.34,2.18,ok,31.0,G1,0.0,rc/controls/loo/drop_drought_after,ashonset_cntypop1600,interaction1,OBJECTID,specification_tree/modules/robustness/controls.md#loo,2.142982254605155,2.142982254605155,0.037017745394845036
+149882-V1,Reshaping gender attitudes: India school experiment,1.78,1.62,ok,32.0,G2,0.0,design/randomized_experiment/estimator/diff_in_means,E_Sbehavior_index2,B_treat,Sschool_id,specification_tree/designs/randomized_experiment.md#diff_in_means,3.8205847565798714,3.8205847565798714,2.2005847565798713
+181166-V1,Technological change and job loss consequences,3.45,3.32,ok,43.0,G1,0.0,rc/sample/restriction/age_45_65,d_ln_real_earn_win1,d_computer_2017_2007_n_s1,dwsoc4,specification_tree/modules/robustness/sample.md#restriction,-1.4058791424914632,1.4058791424914632,1.9141208575085367
+184041-V1,Common-probability auction puzzle,4.23,4.08,ok,23.0,G1,0.0,design/randomized_experiment/estimator/diff_in_means,BEBF,CV,subject,specification_tree/designs/randomized_experiment.md#diff_in_means,3.539667303834885,3.539667303834885,0.5403326961651151
+146041-V1,Relative efficiency of skilled labor,2.67,2.54,ok,66.0,G1,1.0,baseline__aq_sigma_high,l_irAQ53rh_dum_skti_hrs_secall,l_y,nan,specification_tree/methods/cross_sectional_ols.md,2.650690184759671,2.650690184759671,0.11069018475967107
+173341-V1,Vulnerability and clientelism,2.12,1.98,ok,27.0,G1,0.0,design/randomized_experiment/estimator/diff_in_means,ask_private_stacked,treatment,b_clusters,specification_tree/designs/randomized_experiment.md#baseline#diff_in_means,-1.8038089745653376,1.8038089745653376,0.17619102543466236
+181581-V1,Doctor supply and infant mortality,2.89,2.75,ok,45.0,G1,0.0,rc/controls/subset/random_002,mort7,doctor,fid,modules/robustness/controls.md#subset,-2.6061077124682765,2.6061077124682765,0.14389228753172345
+139262-V1,Motivated beliefs and uncertainty resolution,2.45,2.31,ok,18.0,G1,0.0,rc/fe/session,belief_adjustment,bayes_belief_adjustment,nan,modules/robustness/fixed_effects.md#additive-fe-variations-relative-to-baseline,2.3980258484353447,2.3980258484353447,0.08802584843534467
+163822-V2,Digital addiction,3.56,3.42,ok,54.0,G1,0.0,rc/form/outcome/log1p,log1p_PD_P2_UsageFITSBY,B,nan,specification_tree/modules/robustness/functional_form.md,-3.4171716712619014,3.4171716712619014,0.0028283287380985733

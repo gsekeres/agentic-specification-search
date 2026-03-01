@@ -116,7 +116,6 @@ def main():
         # Summary tables
         run_python("15_summary_statistics.py")
         run_python("16_variance_decomposition.py")
-        run_python("17_build_paper_catalog.py")
         run_python("18_mixture_comparison_table.py")
         run_python("19_sensitivity_tables.py")
 

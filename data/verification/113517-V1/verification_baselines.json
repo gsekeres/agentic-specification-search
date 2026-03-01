@@ -3,36 +3,26 @@
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "EE reallocation rate positively predicts nominal earnings growth across markets/time, even after controlling for all other labor flows. Coefficient on xee in all-flows specification is ~0.048, meaning a 1pp higher EE rate is associated with 4.8% higher nominal earnings growth.",
+      "claim_summary": "Predictive association between EE reallocation rate and wage growth",
+      "outcome_concept": "Predicted wage growth (market-time FE)",
+      "treatment_concept": "Predicted EE transition rate (market-time FE)",
+      "estimand_concept": "Cross-sectional predictive association, within-market variation",
+      "target_population": "SIPP respondents (1996-2008 panels)",
       "expected_sign": "positive",
-      "baseline_spec_run_ids": ["113517-V1_run0001"],
-      "baseline_spec_ids": ["baseline"],
-      "notes": "Baseline coefficient 0.0476 with SE 0.0008 (classical). With cluster(mkt) SE, p=0.037 -- still significant. Strong positive result for nominal earnings."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "EE reallocation rate positively predicts real earnings growth across markets/time, controlling for all other labor flows. Coefficient on xee ~0.041, similar pattern to nominal but slightly smaller.",
-      "expected_sign": "positive",
-      "baseline_spec_run_ids": ["113517-V1_run0018"],
-      "baseline_spec_ids": ["baseline"],
-      "notes": "Baseline coefficient 0.0406 with SE 0.0008 (classical). With cluster(mkt) SE, p=0.037 -- still significant. Strong positive result for real earnings."
-    },
-    {
-      "baseline_group_id": "G3",
-      "claim_summary": "EE reallocation rate has a near-zero and statistically insignificant effect on nominal hourly wage growth in the all-flows specification. Coefficient ~0.0004, p=0.19 (classical SE). With clustered SE, p=0.94.",
-      "expected_sign": "ambiguous",
-      "baseline_spec_run_ids": ["113517-V1_run0035"],
-      "baseline_spec_ids": ["baseline"],
-      "notes": "Baseline coefficient 0.0004, effectively zero. Sign and significance vary across control progressions: positive and significant with fewer controls, near-zero with all flows. Paper's point is precisely this contrast with earnings."
-    },
-    {
-      "baseline_group_id": "G4",
-      "claim_summary": "EE reallocation rate negatively predicts real hourly wage growth in the all-flows specification. Coefficient ~-0.0037. Sign flips relative to earnings measures and relative to sparser specifications.",
-      "expected_sign": "negative",
-      "baseline_spec_run_ids": ["113517-V1_run0052"],
-      "baseline_spec_ids": ["baseline"],
-      "notes": "Baseline coefficient -0.0037. With cluster(mkt) SE, p=0.56 -- not significant. The negative sign in all-flows spec contrasts with positive sign in EE-only spec (0.0025). This group shows the most sensitivity to control set."
+      "baseline_spec_run_ids": [
+        "113517-V1_R001",
+        "113517-V1_R038",
+        "113517-V1_R039",
+        "113517-V1_R040"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__logern_spec6",
+        "baseline__loghwr_nom_spec6",
+        "baseline__loghwr_spec6"
+      ],
+      "notes": "Paper has one main claim with 4 outcome variants (nominal/real x earnings/hourly wages). The primary baseline is logern_nom (spec_id=baseline). Three additional baselines for alternative outcomes."
     }
   ],
-  "global_notes": "All baseline groups match the surface definition. No changes to baseline-group assignments. All 68 specs executed successfully. The key finding pattern is confirmed: EE rate strongly predicts earnings growth (G1, G2) but has ambiguous/opposite sign for hourly wages (G3, G4) once other flows are controlled for."
+  "global_notes": "All baseline groups and RC assignments match the pre-run surface. No adjustments needed."
 }

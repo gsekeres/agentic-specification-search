@@ -1,0 +1,32 @@
+{
+  "paper_id": "113109-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of hp_growth_real_00_06 on d_emp_18_25_le",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113109-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table1_iv_employment"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of housing_demand_shock on d_any_18_25_a1",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113109-V1_run_053",
+        "113109-V1_run_054"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table3_iv_any_college_18_25",
+        "baseline__table3_bachelor_18_25"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

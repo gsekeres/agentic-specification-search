@@ -3,20 +3,16 @@
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Elasticity of climate damages wrt temperature (damage exponent d2 in power-law damage function). OLS of log(damages) on log(temperature) using Howard & Sterner (2017) meta-analysis data.",
+      "claim_summary": "Damage exponent d2 in power-law climate damage function D(T) = d1 * T^d2, estimated via OLS regression of log(damages) on log(temperature) using Howard & Sterner (2017) meta-analysis data.",
       "expected_sign": "positive",
-      "baseline_spec_run_ids": [
-        "111185-V1_spec_001"
-      ],
-      "baseline_spec_ids": [
-        "baseline"
-      ],
+      "baseline_spec_run_ids": ["111185-V1_spec_001"],
+      "baseline_spec_ids": ["baseline"],
       "baseline_coefficient": 1.8820378009906156,
       "baseline_std_error": 0.4505271818190953,
       "baseline_p_value": 0.0001503239979378,
       "baseline_n_obs": 43,
-      "notes": "Single regression from Table 1. Paper is primarily structural/calibration; this OLS is used to estimate damage function parameters."
+      "notes": "Single OLS regression from Table 1. The paper is primarily a structural/computational model; this is the only regression-type content. The coefficient represents the power-law exponent of the temperature-damage relationship."
     }
   ],
-  "global_notes": "No changes to baseline group assignments relative to the surface. G1 is the sole baseline group."
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified one baseline group covering the single OLS regression in this structural/computational paper."
 }

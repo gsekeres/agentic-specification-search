@@ -3,60 +3,18 @@
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "Effect of showing Black victims on actual giving among white respondents",
-      "outcome_concept": "Actual charitable giving ($0-100)",
-      "treatment_concept": "Randomly assigned photo of Black hurricane victims",
-      "estimand_concept": "ITT (intention-to-treat) effect under random assignment",
-      "target_population": "White respondents who passed soundcheck",
-      "expected_sign": "negative (in-group bias prediction)",
-      "baseline_spec_run_ids": ["113561-V1__run_0001"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": -4.198,
-      "baseline_p_value": 0.370,
-      "notes": "Not statistically significant at conventional levels. The paper notes this result is insignificant."
-    },
-    {
-      "baseline_group_id": "G2",
-      "claim_summary": "Effect of showing Black victims on hypothetical giving among white respondents",
-      "outcome_concept": "Hypothetical giving (topcoded at $500)",
-      "treatment_concept": "Randomly assigned photo of Black hurricane victims",
-      "estimand_concept": "ITT effect under random assignment",
-      "target_population": "White respondents who passed soundcheck",
-      "expected_sign": "negative (in-group bias prediction)",
-      "baseline_spec_run_ids": ["113561-V1__run_0024"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": -2.181,
-      "baseline_p_value": 0.591,
-      "notes": "Not statistically significant. Consistent null across all specifications."
-    },
-    {
-      "baseline_group_id": "G3",
-      "claim_summary": "Effect of showing Black victims on charity support among white respondents",
-      "outcome_concept": "Subjective support for charitable aid (1-7 scale)",
-      "treatment_concept": "Randomly assigned photo of Black hurricane victims",
-      "estimand_concept": "ITT effect under random assignment",
-      "target_population": "White respondents who passed soundcheck",
-      "expected_sign": "negative (in-group bias prediction)",
-      "baseline_spec_run_ids": ["113561-V1__run_0047"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": -0.221,
-      "baseline_p_value": 0.168,
-      "notes": "Not statistically significant at 5% level. Marginally significant in some extended control specifications."
-    },
-    {
-      "baseline_group_id": "G4",
-      "claim_summary": "Effect of showing Black victims on government support among white respondents",
-      "outcome_concept": "Subjective support for government aid (1-7 scale)",
-      "treatment_concept": "Randomly assigned photo of Black hurricane victims",
-      "estimand_concept": "ITT effect under random assignment",
-      "target_population": "White respondents who passed soundcheck",
-      "expected_sign": "negative (in-group bias prediction)",
-      "baseline_spec_run_ids": ["113561-V1__run_0069"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": -0.435,
-      "baseline_p_value": 0.026,
-      "notes": "Statistically significant at 5%. Most robust of the four outcomes. Significant across most control and sample variations."
+      "claim_summary": "ITT effect of showing pictures of black Hurricane Katrina victims (picshowblack) on dictator game giving ($0-$100), for all respondents",
+      "outcome_concept": "Charitable giving to Katrina victims (dictator game, $0-$100)",
+      "treatment_concept": "Racial priming via pictures showing black victims (picshowblack)",
+      "estimand_concept": "ITT effect on giving",
+      "target_population": "US adult internet panel respondents (all races)",
+      "expected_sign": "negative (showing black victims reduces giving; paper finds insignificant for full sample)",
+      "baseline_spec_run_ids": ["S001", "S002"],
+      "baseline_spec_ids": ["baseline", "baseline__table4_panel1_all"],
+      "baseline_coefficient": -2.3005,
+      "baseline_p_value": 0.5503,
+      "notes": "Baseline coefficient is -2.30 (SE=3.85, p=0.55, N=1343). Effect is negative but not statistically significant for the full sample. The paper's main contribution is showing that this effect is moderated by racial identification (Table 6), which is outside the core specification search."
     }
   ],
-  "global_notes": "All four baseline groups match the surface definition. No changes to baseline-group assignments. The paper's key finding is primarily about G4 (government support), which is the only statistically significant result. G1-G3 show negative but insignificant effects. The specification search confirms this pattern: G4 is robust to most variations while G1-G3 remain consistently insignificant."
+  "global_notes": "One baseline group, matching the pre-run surface. No adjustments needed. All 52 specifications preserve the baseline claim object (same outcome concept, treatment concept, estimand, and target population). Functional form variants (log1p, asinh, binary) change the outcome scale but preserve the concept."
 }

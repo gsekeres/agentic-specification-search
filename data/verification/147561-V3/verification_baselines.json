@@ -1,0 +1,21 @@
+{
+  "paper_id": "147561-V3",
+  "verification_date": "2026-02-25",
+  "global_notes": "Single baseline group G1. Surface matches results exactly. Two baseline outcomes: taxes_paid (binary compliance) and taxes_paid_amt (revenue amount). Many specs are cross-products of a single robustness dimension with both outcomes, which is appropriate. run_009 (rc/fe/sets/stratum_month_house) and run_010 (revenues variant) are exact duplicates of baselines run_001 and run_002 since stratum_month_house IS the baseline FE set. run_050 (rc/fe/sets/stratum_only__revenues__diff_means) equals run_004 (diff_in_means__revenues) since stratum-only FE with diff-in-means on revenues produces identical results.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT: Effect of local (chief-led) vs central (state-led) property tax collection on tax compliance probability and revenue amount. RCT at neighborhood level in Kananga, DRC. Stratum + house type + time FE, clustered at polygon (a7).",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "147561-V3_run_001",
+        "147561-V3_run_002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__revenues"
+      ],
+      "notes": "run_001: taxes_paid ~ t_l | stratum+house+time FE, cluster(a7). coef=0.034, p<0.001, N=27643. run_002: taxes_paid_amt. coef=72.11, p<0.001, N=27643. Local collection increases compliance by 3.4 pp and revenues by ~72 FC."
+    }
+  ]
+}

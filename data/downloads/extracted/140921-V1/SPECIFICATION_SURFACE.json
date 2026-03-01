@@ -1,0 +1,204 @@
+{
+  "paper_id": "140921-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "probit_marginal_effects",
+        "model_formula": "cOut ~ syntheticT + controls, cluster(byear)",
+        "selection_story": "Quasi-experimental variation from 3-year interruption of London Season (1861-63 mourning period) using synthetic probability of marrying during interruption as treatment intensity",
+        "fe_structure": [],
+        "cluster_vars": ["byear"],
+        "n_clusters": 22,
+        "notes": "Panel A: N=644; Panel B adds distlondon -> N drops to 484 due to missing values. 22 birth-year clusters."
+      },
+      "claim_object": {
+        "outcome_concept": "Married a commoner (peer's daughter marrying outside peerage)",
+        "treatment_concept": "Synthetic probability of marrying during Season's interruption (1861-63)",
+        "estimand_concept": "Effect of reduced access to exclusive marriage market on probability of out-marriage",
+        "target_population": "Peers' daughters aged 15-35 in 1861, first marriage, baseline sample (N=644)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-PanelA-Col1-cOut",
+          "outcome_var": "cOut",
+          "treatment_var": "syntheticT",
+          "controls": ["pr4", "biorder", "hengpee"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster_byear",
+          "estimator": "probit_marginal_effects",
+          "notes": "Probit marginal effects, clustered by birth year"
+        },
+        {
+          "label": "Table2-PanelB-Col1-cOut",
+          "outcome_var": "cOut",
+          "treatment_var": "syntheticT",
+          "controls": ["pr4", "biorder", "hengpee", "distlondon"],
+          "n_controls": 4,
+          "fixed_effects": [],
+          "vcov": "cluster_byear",
+          "estimator": "probit_marginal_effects",
+          "notes": "Probit with distance to London control"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 3,
+        "controls_count_max": 4,
+        "linked_adjustment": false,
+        "notes": "Paper uses a small, fixed control set (3-4 controls). Controls are rank indicators (pr4=duke/earl/marquis daughter), birth order (biorder), and peerage of England indicator (hengpee), with distlondon added in Panel B. Very limited control pool so full enumeration is feasible."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_panelb_col1"
+        ],
+        "design_spec_ids": [
+          "design/cross_sectional_ols/estimator/ols",
+          "design/cross_sectional_ols/estimator/ols__panela"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_pr4",
+          "rc/controls/loo/drop_biorder",
+          "rc/controls/loo/drop_hengpee",
+          "rc/controls/loo/drop_distlondon",
+          "rc/controls/sets/none",
+          "rc/controls/sets/minimal_no_distlondon",
+          "rc/controls/sets/full_with_distlondon",
+          "rc/sample/outliers/trim_syntheticT_5_95",
+          "rc/sample/outliers/trim_syntheticT_10_90",
+          "rc/sample/restriction/drop_mourn_cohort",
+          "rc/sample/restriction/age_18_30",
+          "rc/sample/restriction/age_18_33",
+          "rc/sample/restriction/age_16_32",
+          "rc/form/treatment/treatment_binary_top_quintile",
+          "rc/form/treatment/treatment_binary_median",
+          "rc/form/treatment/quadratic_syntheticT",
+          "rc/form/outcome/mheir",
+          "rc/form/outcome/fdown",
+          "rc/sample/outliers/trim_syntheticT_1_99",
+          "rc/sample/restriction/age_20_35",
+          "rc/fe/add/byear"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/byear",
+          "params": {"cluster_var": "byear"},
+          "notes": "Clustered at birth year, matching paper baseline. Small number of clusters (birth-year cohorts spanning ~20 years), so bootstrap-t correction is also reported in the paper."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust-only (no clustering) as a stress test."},
+          {"spec_id": "infer/se/cluster/byear_bootstrap_t", "params": {"cluster_var": "byear", "method": "bootstrap_t"}, "notes": "Bootstrap-t procedure (Cameron, Gelbach, Miller 2008) for small-cluster correction, as done in paper Table 2."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 140921,
+        "controls_subset_sampler": "none",
+        "notes": "Full enumeration feasible given only 3-4 controls."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "fmissmatch ~ syntheticT + controls, cluster(byear)",
+        "selection_story": "Same quasi-experimental variation as G1; continuous mismatch measure instead of binary outcome",
+        "fe_structure": [],
+        "cluster_vars": ["byear"],
+        "n_clusters": 22,
+        "notes": "Panel A: N=324; Panel B adds distlondon -> N drops to 260 due to missing values. 22 birth-year clusters."
+      },
+      "claim_object": {
+        "outcome_concept": "Absolute mismatch in landholding percentile ranks between spouses",
+        "treatment_concept": "Synthetic probability of marrying during Season's interruption (1861-63)",
+        "estimand_concept": "Effect of reduced access to exclusive marriage market on sorting by wealth",
+        "target_population": "Peers' daughters in baseline sample with non-missing landholding data for both spouses (N~324)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-PanelA-Col3-fmissmatch",
+          "outcome_var": "fmissmatch",
+          "treatment_var": "syntheticT",
+          "controls": ["pr4", "biorder", "hengpee"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster_byear",
+          "estimator": "ols"
+        },
+        {
+          "label": "Table2-PanelB-Col3-fmissmatch",
+          "outcome_var": "fmissmatch",
+          "treatment_var": "syntheticT",
+          "controls": ["pr4", "biorder", "hengpee", "distlondon"],
+          "n_controls": 4,
+          "fixed_effects": [],
+          "vcov": "cluster_byear",
+          "estimator": "ols"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 3,
+        "controls_count_max": 4,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_panelb_col3"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_pr4",
+          "rc/controls/loo/drop_biorder",
+          "rc/controls/loo/drop_hengpee",
+          "rc/controls/loo/drop_distlondon",
+          "rc/controls/sets/none",
+          "rc/controls/sets/full_with_distlondon",
+          "rc/controls/sets/minimal_no_distlondon",
+          "rc/sample/outliers/trim_fmissmatch_1_99",
+          "rc/sample/outliers/trim_fmissmatch_5_95",
+          "rc/sample/outliers/trim_syntheticT_5_95",
+          "rc/sample/restriction/drop_mourn_cohort",
+          "rc/sample/restriction/age_18_30",
+          "rc/sample/restriction/age_18_33",
+          "rc/sample/restriction/age_16_32",
+          "rc/form/outcome/fmissmatch2_signed",
+          "rc/form/outcome/log_fmissmatch",
+          "rc/form/outcome/asinh_fmissmatch",
+          "rc/form/treatment/treatment_binary_top_quintile",
+          "rc/form/treatment/quadratic_syntheticT",
+          "rc/form/outcome/fmissmatch_sq",
+          "rc/sample/outliers/trim_syntheticT_10_90",
+          "rc/sample/restriction/age_20_35",
+          "rc/fe/add/byear"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/byear",
+          "params": {"cluster_var": "byear"},
+          "notes": "Clustered at birth year, matching paper baseline."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust-only, no clustering."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 140922,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

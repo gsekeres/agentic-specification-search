@@ -1,0 +1,114 @@
+{
+  "paper_id": "112840-V1",
+  "created_at": "2026-02-25",
+  "notes": "Kumhof, Ranciere, & Winant (2015). Panel FE regressions of public debt accumulation on financial liberalization across 22 OECD countries (1975-2005). Two financial liberalization indexes: Index 1 (Abiad, Detragiache, Tressel 2008) and Index 2 (Chinn-Ito 2008). Main tables: Table O1 (Index 1, 6 columns progressive controls), Table O2 (Index 2, 5 columns). Also Table O3 (interest rate elasticity with interactions). Country FE, robust SE throughout. Paper also includes a Fortran structural model (excluded from spec surface).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within",
+        "panel_unit": "cn (country numeric ID)",
+        "panel_time": "year",
+        "fe_structure": ["country"],
+        "cluster_vars": [],
+        "se_type": "hc_robust",
+        "notes": "Stata xtreg, fe vce(robust). Panel of 22 OECD countries, 1975-2005 (31 years). All regressions in first differences of logs (changerealdebt = delta log real debt). Country FE absorb level differences."
+      },
+      "claim_object": {
+        "outcome_concept": "Change in log real public debt (changerealdebt = d.log(debtgdp * realgdp))",
+        "treatment_concept": "Financial liberalization, measured by lagged change in GDP-weighted average liberalization index (lag_d_ave_finindex1 for Index 1, d_ave_finindex2 for Index 2)",
+        "estimand_concept": "Within-country association between financial liberalization and public debt growth, controlling for lagged debt level and GDP growth",
+        "target_population": "22 OECD countries, 1975-2005"
+      },
+      "baseline_specs": [
+        {
+          "label": "TableO1-Col1",
+          "outcome_var": "changerealdebt",
+          "treatment_var": "lag_d_ave_finindex1",
+          "controls": ["lag_debtgdp", "lagchangerealgdp"],
+          "n_controls": 2
+        },
+        {
+          "label": "TableO1-Col5",
+          "outcome_var": "changerealdebt",
+          "treatment_var": "lag_d_ave_finindex1",
+          "controls": ["lag_debtgdp", "lagchangerealgdp", "lag_emu_dum", "size_product1", "d_dep_ratio_old", "changetop1incomeshare"],
+          "n_controls": 6
+        },
+        {
+          "label": "TableO1-Col6",
+          "outcome_var": "changerealdebt",
+          "treatment_var": "lag_d_ave_finindex1",
+          "controls": ["lag_debtgdp", "lagchangerealgdp", "lag_emu_dum", "size_product1", "d_dep_ratio_old", "lag_changeave_gini_gross"],
+          "n_controls": 6,
+          "notes": "Uses Gini coefficient instead of top 1% income share; drops Korea (no Gini data)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "mandatory_controls": ["lag_debtgdp", "lagchangerealgdp"],
+        "optional_pool": ["lag_emu_dum", "size_product1", "d_dep_ratio_old", "changetop1incomeshare", "lag_changeave_gini_gross"],
+        "notes": "lag_debtgdp and lagchangerealgdp are mandatory (included in all columns). The paper progressively adds EMU dummy, size-finlib interaction, dependency ratio, and inequality measures. changetop1incomeshare and lag_changeave_gini_gross are mutually exclusive (different inequality measures)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__tableO1_col5",
+          "baseline__tableO1_col6"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/first_difference"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/progression/col1_to_col5",
+          "rc/controls/loo/drop_lag_emu_dum",
+          "rc/controls/loo/drop_size_product1",
+          "rc/controls/loo/drop_d_dep_ratio_old",
+          "rc/controls/loo/drop_changetop1incomeshare",
+          "rc/controls/single/swap_inequality_measure",
+          "rc/controls/subset/random_*",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/cooksd_4_over_n",
+          "rc/sample/subset/drop_korea",
+          "rc/sample/subset/drop_greece",
+          "rc/sample/subset/drop_small_countries",
+          "rc/sample/period/1980_2005",
+          "rc/sample/period/1975_2000",
+          "rc/form/treatment/index2_instead",
+          "rc/form/outcome/level_change_debt",
+          "rc/fe/add_year",
+          "rc/fe/add_region",
+          "rc/preprocess/treatment/unweighted_index",
+          "rc/data/construction/alternative_debt_measure",
+          "rc/joint/index_controls/*",
+          "rc/joint/sample_controls/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Stata vce(robust) in xtreg fe = HC1 robust SE."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/country", "params": {"cluster_var": "cn"}, "notes": "Cluster by country (only 22 clusters, may be unreliable)."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 for small-sample robustness."},
+          {"spec_id": "infer/se/panel/driscoll_kraay", "params": {"lags": 3}, "notes": "Driscoll-Kraay SE for cross-sectional dependence in macro panels."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 25
+      },
+      "sampling": {
+        "seed": 112840,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "5 optional controls (plus one swap), mandatory 2. Progression from 2 to 6 controls matching the paper's table structure. Random subsets stratified by size."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

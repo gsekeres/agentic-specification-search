@@ -1,0 +1,258 @@
+{
+  "paper_id": "114542-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "census_block",
+        "treatment_var": "dpisofirme",
+        "treatment_description": "Piso Firme program (cement floor replacement in Torreon vs Durango control)",
+        "fe_structure": [],
+        "cluster_vars": ["idcluster"],
+        "data_level": "household",
+        "dataset": "PisoFirme_AEJPol-20070024_household.dta"
+      },
+      "claim_object": {
+        "outcome_concept": "Share of rooms with cement floors (housing quality first stage)",
+        "treatment_concept": "Piso Firme cement floor program (Torreon = treatment, Durango = control)",
+        "estimand_concept": "ITT of Piso Firme program on cement floor coverage",
+        "target_population": "Households in poor neighborhoods of Torreon and Durango, Mexico (2005 survey)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-S_shcementfloor-Model1",
+          "outcome_var": "S_shcementfloor",
+          "treatment_var": "dpisofirme",
+          "controls": [],
+          "n_controls": 0,
+          "cluster_var": "idcluster",
+          "vcov": {"CRV1": "idcluster"}
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 38,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__S_shcementfloor_m2",
+          "baseline__S_shcementfloor_m3",
+          "baseline__S_shcementfloor_m4"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/model2",
+          "rc/controls/sets/model3",
+          "rc/controls/sets/model4",
+          "rc/controls/loo/drop_S_HHpeople",
+          "rc/controls/loo/drop_S_headage",
+          "rc/controls/loo/drop_S_spouseage",
+          "rc/controls/loo/drop_S_headeduc",
+          "rc/controls/loo/drop_S_spouseeduc",
+          "rc/controls/loo/drop_S_waterland",
+          "rc/controls/loo/drop_S_waterhouse",
+          "rc/controls/loo/drop_S_electricity",
+          "rc/controls/loo/drop_S_hasanimals",
+          "rc/controls/loo/drop_S_animalsinside",
+          "rc/controls/loo/drop_S_garbage",
+          "rc/controls/loo/drop_S_washhands",
+          "rc/controls/loo/drop_S_incomepc",
+          "rc/controls/loo/drop_S_assetspc",
+          "rc/controls/loo/drop_S_cashtransfers",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/idcluster",
+          "params": {"cluster_var": "idcluster"},
+          "notes": "Cluster-robust SEs at census block level, matching paper's cl(idcluster)"
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust HC1 (no clustering)"},
+          {"spec_id": "infer/se/cluster/idmun", "params": {"cluster_var": "idmun"}, "notes": "Cluster at municipality level (coarser)"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 114542,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "census_block",
+        "treatment_var": "dpisofirme",
+        "treatment_description": "Piso Firme program (cement floor replacement in Torreon vs Durango control)",
+        "fe_structure": [],
+        "cluster_vars": ["idcluster"],
+        "data_level": "household",
+        "dataset": "PisoFirme_AEJPol-20070024_household.dta"
+      },
+      "claim_object": {
+        "outcome_concept": "Maternal mental health and life satisfaction",
+        "treatment_concept": "Piso Firme cement floor program (Torreon = treatment, Durango = control)",
+        "estimand_concept": "ITT of Piso Firme program on satisfaction and mental health",
+        "target_population": "Households in poor neighborhoods of Torreon and Durango, Mexico (2005 survey)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table6-S_satisfloor-Model1",
+          "outcome_var": "S_satisfloor",
+          "treatment_var": "dpisofirme",
+          "controls": [],
+          "n_controls": 0,
+          "cluster_var": "idcluster",
+          "vcov": {"CRV1": "idcluster"}
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 38,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__S_satishouse",
+          "baseline__S_satislife",
+          "baseline__S_cesds",
+          "baseline__S_pss"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/sets/model2",
+          "rc/controls/sets/model3",
+          "rc/controls/sets/model4",
+          "rc/controls/loo/drop_S_HHpeople",
+          "rc/controls/loo/drop_S_headage",
+          "rc/controls/loo/drop_S_waterland",
+          "rc/controls/loo/drop_S_hasanimals",
+          "rc/controls/loo/drop_S_incomepc",
+          "rc/controls/loo/drop_S_cashtransfers",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/idcluster",
+          "params": {"cluster_var": "idcluster"},
+          "notes": "Cluster-robust SEs at census block level, matching paper's cl(idcluster)"
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust HC1 (no clustering)"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114542,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_itt",
+        "randomization_unit": "census_block",
+        "treatment_var": "dpisofirme",
+        "treatment_description": "Piso Firme program (cement floor replacement in Torreon vs Durango control)",
+        "fe_structure": [],
+        "cluster_vars": ["idcluster"],
+        "data_level": "individual",
+        "dataset": "PisoFirme_AEJPol-20070024_individual.dta"
+      },
+      "claim_object": {
+        "outcome_concept": "Child health outcomes (parasites, diarrhea, anemia, cognitive development, growth)",
+        "treatment_concept": "Piso Firme cement floor program (Torreon = treatment, Durango = control)",
+        "estimand_concept": "ITT of Piso Firme program on child health measures",
+        "target_population": "Children 0-5 in poor neighborhoods of Torreon and Durango, Mexico (2005 survey)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-S_parcount-Model1",
+          "outcome_var": "S_parcount",
+          "treatment_var": "dpisofirme",
+          "controls": [],
+          "n_controls": 0,
+          "cluster_var": "idcluster",
+          "vcov": {"CRV1": "idcluster"}
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 35,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__S_diarrhea",
+          "baseline__S_anemia",
+          "baseline__S_haz",
+          "baseline__S_whz"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/sets/model2",
+          "rc/controls/sets/model3",
+          "rc/controls/sets/model4",
+          "rc/controls/loo/drop_S_age",
+          "rc/controls/loo/drop_S_gender",
+          "rc/controls/loo/drop_S_childmaeduc",
+          "rc/controls/loo/drop_S_waterland",
+          "rc/controls/loo/drop_S_hasanimals",
+          "rc/controls/loo/drop_S_incomepc",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/idcluster",
+          "params": {"cluster_var": "idcluster"},
+          "notes": "Cluster-robust SEs at census block level, matching paper's cl(idcluster)"
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust HC1 (no clustering)"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114542,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

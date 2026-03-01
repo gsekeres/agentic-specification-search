@@ -1,0 +1,187 @@
+{
+  "paper_id": "113893-V1",
+  "created_at": "2026-02-25",
+  "notes": "DellaVigna, Enikolopov, Mironova, Petrova, and Zhuravskaya (2014) 'Cross-Border Media and Nationalism: Evidence from Serbian Radio in Croatia'. IV design using signal strength (s1) as instrument for radio availability (radio1). Cross-sectional municipality-level analysis. Main outcome is Nazi_share (vote share for nationalist HSP party). Weighted by population (people_listed). Data included as .dta file.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls_reduced_form",
+        "endogenous_var": "radio1",
+        "instrument": "s1",
+        "instrument_type": "signal_strength_geographic",
+        "cross_section_unit": "municipality",
+        "fe_structure": [],
+        "cluster_vars": ["Opsina2"],
+        "weights": "people_listed",
+        "linked_adjustment": true,
+        "notes": "Cross-sectional IV. Signal strength s1 instruments for binary radio availability radio1. Paper primarily reports OLS reduced-form results (radio1 on outcomes) and reduced-form signal strength results. Municipality-level, population-weighted, clustered at Opsina (municipality) level. Two control sets: controls_short (census/geographic) and controls_long (+ war/manual indicators)."
+      },
+      "claim_object": {
+        "outcome_concept": "Vote share for nationalist HSP party (Nazi_share)",
+        "treatment_concept": "Serbian radio availability in Croatian municipalities",
+        "estimand_concept": "Effect of Serbian radio exposure on nationalist voting, identified via geographic variation in signal strength",
+        "target_population": "Croatian municipalities within reception range of Serbian radio transmitters"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-OLS-radio1-controls_long",
+          "outcome_var": "Nazi_share",
+          "treatment_var": "radio1",
+          "controls": ["log_distance_full", "logpop", "male_share", "z2", "z3", "z6", "Croats", "higher_educ", "ec_active", "disable_share2", "war", "mon", "name_of_the_streets_c", "name_of_the_streets_i", "pivo_S", "r1", "r2", "r3", "r4", "r5", "bliz"],
+          "n_controls": 21,
+          "notes": "OLS with long controls and region dummies (r1-r5), population weighted, clustered at municipality"
+        },
+        {
+          "label": "Table3-RF-s1-controls_long",
+          "outcome_var": "Nazi_share",
+          "treatment_var": "s1_1",
+          "controls": ["log_distance_full", "logpop", "male_share", "z2", "z3", "z6", "Croats", "higher_educ", "ec_active", "disable_share2", "war", "mon", "name_of_the_streets_c", "name_of_the_streets_i", "pivo_S", "r1", "r2", "r3", "r4", "r5", "bliz"],
+          "n_controls": 21,
+          "notes": "Reduced-form: signal strength on Nazi_share with long controls"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 6,
+        "controls_count_max": 21,
+        "linked_adjustment": true,
+        "notes": "Paper uses two main control sets: controls_short (11 vars: geographic + census) and controls_long (21 vars: + war, monuments, street names, brewery, bliz). Region dummies (r1-r5) always included. Linked adjustment because the same controls appear in both first stage and reduced form."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_ols_short_controls",
+          "baseline__table3_rf_short_controls",
+          "baseline__table3_rf_geography_only"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/2sls",
+          "design/instrumental_variables/instrument/signal_strength_continuous",
+          "design/instrumental_variables/instrument/signal_dummies",
+          "design/instrumental_variables/instrument/radio1_and_radio2"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_war",
+          "rc/controls/loo/drop_mon",
+          "rc/controls/loo/drop_name_streets_c",
+          "rc/controls/loo/drop_name_streets_i",
+          "rc/controls/loo/drop_pivo_S",
+          "rc/controls/loo/drop_bliz",
+          "rc/controls/loo/drop_log_distance_full",
+          "rc/controls/loo/drop_higher_educ",
+          "rc/controls/loo/drop_ec_active",
+          "rc/controls/loo/drop_disable_share2",
+          "rc/controls/sets/geography_only",
+          "rc/controls/sets/controls_short",
+          "rc/controls/sets/controls_long",
+          "rc/controls/add/radio_hung",
+          "rc/controls/add/eloss5050powerHKR",
+          "rc/controls/add/floss_1",
+          "rc/controls/subset/random_*",
+          "rc/sample/restriction/distance_lt_75km",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/cluster/municipality",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/municipality",
+          "params": {"cluster_var": "Opsina2"},
+          "notes": "Clustered at municipality (Opsina2) level as in all paper specifications."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."},
+          {"spec_id": "infer/se/spatial/conley", "params": {"distance_km": 50}, "notes": "Conley spatial HAC SE (paper mentions spatial correlation concern in appendix)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 75,
+        "max_specs_controls_subset": 25,
+        "notes": "Moderate-to-large budget. Control pool is substantial (21 variables in long set). Paper itself runs extensive robustness (Tables 3-8)."
+      },
+      "sampling": {
+        "seed": 113893,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Controls organized into blocks: geographic (log_distance_full, bliz), census (logpop, male_share, z2, z3, z6, Croats, higher_educ, ec_active, disable_share2), manual/war (war, mon, name_of_the_streets_c, name_of_the_streets_i, pivo_S), region (r1-r5, always included). Stratified sampling across blocks."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/instrumental_variables/first_stage/f_statistic", "scope": "spec", "notes": "First-stage F-statistic for signal strength predicting radio availability."},
+        {"diag_spec_id": "diag/instrumental_variables/exclusion/alonso_elbers_test", "scope": "baseline_group", "notes": "AET balance test (Table 2 Panel B) checking that instrument is not associated with outcome through controls."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "ols_reduced_form",
+        "endogenous_var": "radio1",
+        "instrument": "s1",
+        "cross_section_unit": "municipality",
+        "fe_structure": [],
+        "cluster_vars": ["Opsina2"],
+        "weights": "people_listed",
+        "linked_adjustment": true,
+        "notes": "Same IV structure as G1 but for graffiti outcome (probit/dprobit model in paper)."
+      },
+      "claim_object": {
+        "outcome_concept": "Presence of anti-Serb graffiti (graffiti)",
+        "treatment_concept": "Serbian radio availability in Croatian municipalities",
+        "estimand_concept": "Effect of Serbian radio exposure on ethnic tensions (graffiti as proxy)",
+        "target_population": "Croatian municipalities within reception range of Serbian radio transmitters"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-dprobit-radio1-controls_long",
+          "outcome_var": "graffiti",
+          "treatment_var": "radio1",
+          "controls": ["log_distance_full", "logpop", "male_share", "z2", "z3", "z6", "Croats", "higher_educ", "ec_active", "disable_share2", "war", "mon", "name_of_the_streets_c", "name_of_the_streets_i", "pivo_S", "r1", "r2", "r3", "r4", "r5", "bliz"],
+          "n_controls": 21,
+          "notes": "Paper uses dprobit for binary outcome. For specification search, can use LPM or logit/probit marginal effects."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 6,
+        "controls_count_max": 21,
+        "linked_adjustment": true
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/lpm",
+          "design/instrumental_variables/estimator/probit",
+          "design/instrumental_variables/instrument/signal_strength_continuous"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/geography_only",
+          "rc/controls/sets/controls_short",
+          "rc/controls/sets/controls_long",
+          "rc/sample/restriction/distance_lt_75km",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/weights/unweighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/municipality",
+          "params": {"cluster_var": "Opsina2"},
+          "notes": "Clustered at municipality level."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 25,
+        "max_specs_controls_subset": 10,
+        "notes": "Smaller budget for secondary outcome."
+      },
+      "sampling": {
+        "seed": 113893,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

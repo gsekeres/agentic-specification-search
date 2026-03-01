@@ -1,0 +1,54 @@
+{
+  "paper_id": "163822-V2",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Screen-time bonus and limit treatments reduce daily phone usage (FITSBY apps) among Android users in an RCT",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "163822-V2_run_001",
+        "163822-V2_run_002",
+        "163822-V2_run_003",
+        "163822-V2_run_004",
+        "163822-V2_run_005",
+        "163822-V2_run_006",
+        "163822-V2_run_007",
+        "163822-V2_run_008"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline",
+        "baseline__usage_p3_fitsby",
+        "baseline__usage_p4_fitsby",
+        "baseline__usage_p5_fitsby",
+        "baseline__usage_p2_total",
+        "baseline__usage_p2to5_fitsby",
+        "baseline__usage_p2to5_total"
+      ],
+      "notes": "RCT with two orthogonal treatments (Bonus B and Limit L). Rows 001-002 are both labeled 'baseline' but report different focal treatments (B and L respectively) for the primary P2 FITSBY usage outcome. Rows 003-008 are additional baseline outcome/period variants. HC1 robust SEs are canonical for G1."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Screen-time limit treatment improves self-reported well-being outcomes in stacked survey panel (S3/S4)",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "163822-V2_run_030",
+        "163822-V2_run_031",
+        "163822-V2_run_032",
+        "163822-V2_run_033",
+        "163822-V2_run_034",
+        "163822-V2_run_035"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__addiction_index",
+        "baseline__sms_index",
+        "baseline__phone_use_change",
+        "baseline__life_better",
+        "baseline__swb_index"
+      ],
+      "notes": "Stacked panel (survey waves S3, S4) with individual clustering. Focal treatment is L (limit). Multiple well-being outcome measures. Cluster(UserID) SEs are canonical for G2."
+    }
+  ],
+  "global_notes": "Surface-driven run with two baseline groups. Both groups match the pre-run surface plan. G1 has 38 rows (8 baselines + 21 RC for B treatment + 9 additional RC for L treatment). G2 has 16 rows (6 baselines + 10 RC for L treatment). Duplicate spec_ids (e.g., 'baseline') across groups and within G1 (B vs L focal treatment) are differentiated by spec_run_id and treatment_var. This is acceptable for an RCT with two orthogonal treatments."
+}

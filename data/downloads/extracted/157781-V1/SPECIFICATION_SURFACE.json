@@ -1,0 +1,190 @@
+{
+  "paper_id": "157781-V1",
+  "created_at": "2026-02-24",
+  "verified_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "OBJECTID",
+        "panel_time": "year",
+        "fe_structure_baseline": ["OBJECTID", "year", "c.ashprerebels#i.year", "i.provid#i.year", "i.prefid#c.year"],
+        "fe_structure_minimal": ["OBJECTID", "year"],
+        "cluster_vars": ["OBJECTID"],
+        "treatment_timing": "sharp_single_date",
+        "treatment_var_type": "interaction_binary_x_post",
+        "post_variable": "reform",
+        "group_variable": "alongcanal",
+        "sample_period": "1650-1911",
+        "notes": "Sharp single-date treatment: all counties treated simultaneously at canal closure. Preferred spec is Col 4 (full FE, no controls). TWFE is uncontroversial because treatment is not staggered."
+      },
+      "claim_object": {
+        "outcome_concept": "Rebellion incidence (asinh of rebellion onset per capita in 1600)",
+        "treatment_concept": "Proximity to Grand Canal interacted with post-canal-closure period (reform)",
+        "estimand_concept": "DiD effect of canal closure on social conflict in canal-adjacent vs non-adjacent counties",
+        "target_population": "575 counties in six provinces around the Grand Canal, 1650-1911"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col1",
+          "outcome_var": "ashonset_cntypop1600",
+          "treatment_var": "interaction1",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["OBJECTID", "year"],
+          "vcov": "cluster_OBJECTID",
+          "notes": "Minimal FE: county + year only"
+        },
+        {
+          "label": "Table3-Col2",
+          "outcome_var": "ashonset_cntypop1600",
+          "treatment_var": "interaction1",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["OBJECTID", "year", "c.ashprerebels#i.year"],
+          "vcov": "cluster_OBJECTID",
+          "notes": "Adds pre-reform rebellion x year FE"
+        },
+        {
+          "label": "Table3-Col3",
+          "outcome_var": "ashonset_cntypop1600",
+          "treatment_var": "interaction1",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["OBJECTID", "year", "c.ashprerebels#i.year", "i.provid#i.year"],
+          "vcov": "cluster_OBJECTID",
+          "notes": "Adds province x year FE"
+        },
+        {
+          "label": "Table3-Col4",
+          "outcome_var": "ashonset_cntypop1600",
+          "treatment_var": "interaction1",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["OBJECTID", "year", "c.ashprerebels#i.year", "i.provid#i.year", "i.prefid#c.year"],
+          "vcov": "cluster_OBJECTID",
+          "notes": "Full FE: adds prefecture linear trend. This is the paper's preferred specification."
+        },
+        {
+          "label": "Table3-Col5",
+          "outcome_var": "ashonset_cntypop1600",
+          "treatment_var": "interaction1",
+          "controls": ["larea_after", "rug_after", "disaster", "disaster_after", "flooding", "drought", "flooding_after", "drought_after", "lpopdencnty1600_after", "maize", "maize_after", "sweetpotato", "sweetpotato_after", "wheat_after", "rice_after"],
+          "n_controls": 15,
+          "fixed_effects": ["OBJECTID", "year", "c.ashprerebels#i.year", "i.provid#i.year", "i.prefid#c.year"],
+          "vcov": "cluster_OBJECTID",
+          "notes": "Full FE plus time-varying controls interacted with post"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 15,
+        "linked_adjustment": false,
+        "mandatory_controls": [],
+        "optional_pool": ["larea_after", "rug_after", "disaster", "disaster_after", "flooding", "drought", "flooding_after", "drought_after", "lpopdencnty1600_after", "maize", "maize_after", "sweetpotato", "sweetpotato_after", "wheat_after", "rice_after"],
+        "notes": "Paper reveals a clear progression from no controls (Cols 1-4) to full controls (Col 5). All 15 controls are post-reform interactions of geographic/agricultural/climatic characteristics. FE structure is the main dimension varied across columns. No controls are mandatory; the preferred spec (Col 4) has zero controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col4"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_larea_after",
+          "rc/controls/loo/drop_rug_after",
+          "rc/controls/loo/drop_disaster",
+          "rc/controls/loo/drop_disaster_after",
+          "rc/controls/loo/drop_flooding",
+          "rc/controls/loo/drop_drought",
+          "rc/controls/loo/drop_flooding_after",
+          "rc/controls/loo/drop_drought_after",
+          "rc/controls/loo/drop_lpopdencnty1600_after",
+          "rc/controls/loo/drop_maize",
+          "rc/controls/loo/drop_maize_after",
+          "rc/controls/loo/drop_sweetpotato",
+          "rc/controls/loo/drop_sweetpotato_after",
+          "rc/controls/loo/drop_wheat_after",
+          "rc/controls/loo/drop_rice_after",
+          "rc/controls/sets/none",
+          "rc/controls/sets/climate_only",
+          "rc/controls/sets/geography_only",
+          "rc/controls/sets/agriculture_only",
+          "rc/controls/sets/full_controls",
+          "rc/fe/drop/ashprerebels_year",
+          "rc/fe/drop/provid_year",
+          "rc/fe/drop/prefid_trend",
+          "rc/fe/add/prefid_year",
+          "rc/sample/restriction/drop_opium_battlefield",
+          "rc/sample/restriction/drop_taiping_region",
+          "rc/sample/restriction/within_100km_canal",
+          "rc/sample/restriction/within_150km_canal",
+          "rc/sample/restriction/within_200km_canal",
+          "rc/sample/restriction/within_prefecture",
+          "rc/sample/restriction/period_1800_1850",
+          "rc/sample/restriction/period_1775_1875",
+          "rc/sample/restriction/period_1750_1900",
+          "rc/sample/restriction/period_1711_1911",
+          "rc/form/outcome/ashonset_cntypop1820",
+          "rc/form/outcome/ashonset_cntypop",
+          "rc/form/outcome/ashonset_km2",
+          "rc/form/outcome/ashonset_num",
+          "rc/form/outcome/onset_cntypop1600_raw",
+          "rc/form/outcome/onset_any_binary",
+          "rc/sample/outliers/trim_y_1_99"
+        ]
+      },
+      "explore_universe": {
+        "explore_spec_ids": [
+          "explore/treatment/canal_density_post",
+          "explore/treatment/canal_town_share_post",
+          "explore/treatment/distance_canal_post",
+          "explore/heterogeneity/north_vs_south_triple",
+          "explore/heterogeneity/opium_battlefield_interaction",
+          "explore/heterogeneity/taiping_interaction",
+          "explore/mechanism/state_capacity_soldiers",
+          "explore/mechanism/state_capacity_capital",
+          "explore/outcome/attacking_per_capita",
+          "explore/outcome/retreating_per_capita"
+        ],
+        "notes": "Treatment alternatives (Table 4) change the treatment concept from binary canal proximity to continuous intensity measures, so they are exploration. Table 5 north/south triple-diff, Table 7 Panel B interactions, and Table A4 mechanism channels are heterogeneity/mechanism analyses."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/OBJECTID",
+          "params": {"cluster_var": "OBJECTID"},
+          "notes": "Clustered at county level, matching paper baseline. 575 counties provides adequate cluster count."
+        },
+        "variants": [
+          {"spec_id": "infer/se/spatial_hac/conley_500km_262lag", "params": {"distance_cutoff_km": 500, "lag_cutoff": 262}, "notes": "Conley (1999) spatial HAC SEs with 500km distance cutoff and 262-year lag, as reported in paper brackets for all main tables."},
+          {"spec_id": "infer/se/cluster/prefid", "params": {"cluster_var": "prefid"}, "notes": "Cluster at prefecture level as a coarser alternative."},
+          {"spec_id": "infer/se/cluster/provid", "params": {"cluster_var": "provid"}, "notes": "Cluster at province level (very few clusters ~6 provinces, stress test)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 157781,
+        "controls_subset_sampler": "none",
+        "notes": "Full enumeration feasible. 5 baselines + 15 LOO + 4 control subsets + 4 FE variations + 6 sample restrictions + 6 outcome forms + 1 outlier trim = ~41 core RC specs, well under 100 budget."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/linear_trend_test",
+          "scope": "baseline_group",
+          "notes": "Table 2 in paper: pretrend = alongcanal*year for 1776-1825 sample (536 counties, not 575 because some drop out in this restricted period). Tests coefficient on Along Canal x Year across all 4 FE progressions."
+        },
+        {
+          "diag_spec_id": "diag/difference_in_differences/placebo/alternative_routes",
+          "scope": "baseline_group",
+          "notes": "Table 6: placebo treatments using Along Yangtze, Along old Yellow River, Along Coast, Along Courier routes instead of Along Canal. All use preferred FE specification."
+        }
+      ]
+    }
+  ]
+}

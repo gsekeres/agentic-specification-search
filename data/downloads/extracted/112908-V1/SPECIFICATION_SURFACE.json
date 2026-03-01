@@ -1,0 +1,85 @@
+{
+  "paper_id": "112908-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "structural_calibration",
+      "design_audit": {
+        "estimator": "gmm_bargaining",
+        "model_formula": "price ~ hospwtp + system_size + lbeds + fp + year_FE + payor_FE, cluster(hosp)",
+        "selection_story": "Reduced-form pricing equation from Nash bargaining model: hospital price is determined by willingness-to-pay (WTP), hospital and system characteristics, and insurer bargaining power. Instruments include diversion-based WTP measures. Data is synthetic, calibrated to Table 5 and Table 6 estimates from Gowrisankaran, Nevo, and Town (2015 AER).",
+        "fe_structure": ["year", "payor"],
+        "cluster_vars": ["hosp"]
+      },
+      "claim_object": {
+        "outcome_concept": "Negotiated hospital-insurer price per admission",
+        "treatment_concept": "Hospital willingness-to-pay (WTP) as proxy for bargaining leverage",
+        "estimand_concept": "Effect of hospital bargaining leverage (WTP) on negotiated prices, capturing the Nash bargaining mechanism between hospitals and managed care organizations",
+        "target_population": "Hospital-insurer-year pairs in Northern Virginia hospital market (2003-2006), 6 hospital systems and multiple MCOs"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-Bargaining-Reduced-Form",
+          "outcome_var": "price",
+          "treatment_var": "log_hospwtp",
+          "controls": [
+            "lbeds", "fp", "nicu", "cath", "system_size",
+            "log_hospadjquan", "hhi_system"
+          ],
+          "n_controls": 7,
+          "fixed_effects": ["year", "payor"],
+          "vcov": "cluster_hosp"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 7,
+        "linked_adjustment": false,
+        "notes": "Reduced-form pricing equation from structural bargaining model. Controls are hospital characteristics and market structure variables. The paper estimates a structural Nash bargaining model via GMM in C; this reduced-form specification captures the key relationship between WTP and prices. Data is synthetic (calibrated to paper tables) since original microdata is confidential."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_lbeds",
+          "rc/controls/loo/drop_fp",
+          "rc/controls/loo/drop_nicu",
+          "rc/controls/loo/drop_cath",
+          "rc/controls/loo/drop_system_size",
+          "rc/controls/loo/drop_log_hospadjquan",
+          "rc/controls/loo/drop_hhi_system",
+          "rc/controls/sets/none",
+          "rc/controls/sets/hospital_chars_only",
+          "rc/controls/sets/market_structure_only",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/hospital_chars",
+          "rc/controls/progression/full",
+          "rc/fe/drop/year",
+          "rc/fe/drop/payor",
+          "rc/fe/drop/both",
+          "rc/fe/add/hosp",
+          "rc/sample/year/2006_only",
+          "rc/sample/year/drop_2003",
+          "rc/form/outcome/log_price",
+          "rc/form/outcome/price_minus_mc",
+          "rc/form/treatment/hospwtp_level",
+          "rc/form/treatment/syswtp"
+        ],
+        "inference_spec_ids": [
+          "infer/se/hc/hc1",
+          "infer/se/cluster/payor",
+          "infer/se/cluster/hosp_year"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/hosp",
+          "method": "cluster",
+          "cluster_vars": ["hosp"]
+        }
+      }
+    }
+  ]
+}

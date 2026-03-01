@@ -1,0 +1,30 @@
+{
+  "paper_id": "151841-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Community ranking of marginal returns predicts heterogeneous ITT effects of randomly assigned capital grants on household income and profits among microenterprise owners in Kolkata, India",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "151841-V1_run_001",
+        "151841-V1_run_002",
+        "151841-V1_run_003",
+        "151841-V1_run_004"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline",
+        "baseline",
+        "baseline"
+      ],
+      "baseline_labels": [
+        "Table2-PanelA-Col1 (Trim_Income, no controls)",
+        "Table2-PanelA-Col2 (Trim_Income, 26 controls)",
+        "Table2-PanelA-Col5 (Trim_Profits_30Days, no controls)",
+        "Table2-PanelA-Col6 (Trim_Profits_30Days, 26 controls)"
+      ],
+      "notes": "Panel FE interaction model (household, surveyor, survey version, month FE). Treatment is Winner*Quint_Rank_NS interaction in weighted (IPW) regressions clustered at group level. The claim is heterogeneous ITT: higher community-ranked entrepreneurs benefit more from grants. The 4 baselines correspond to Table 2, Panel A, columns 1-2 (income) and 5-6 (profits). Income baselines show significant positive coefficients (p<0.05); profits baselines are positive but not significant (p>0.7 without controls, p>0.9 with controls)."
+    }
+  ],
+  "global_notes": "Surface-driven run. All 4 baseline specs from the surface are present in results (named 'baseline' rather than the surface's baseline__xxx IDs). 5 of 54 planned surface spec_ids were not executed: rc/data/outcome_construction/adjusted_income, rc/data/outcome_construction/adjusted_profits, rc/joint/adjusted_profits_with_controls, rc/sample/unit/client_level, rc/joint/client_level_with_controls. Several rc/joint/*_no_controls specs produce identical regressions to the corresponding single-axis specs (e.g., rc/joint/ancova_no_controls == design/randomized_experiment/estimator/ancova). These are flagged as duplicates in the report but kept as valid. One controls duplicate: rc/controls/loo/paneld1_business_chars on profits == rc/controls/subset/panela1_panelb1_panelc1 on profits (both produce identical results because dropping panel D from all 4 panels is equivalent to keeping panels A+B+C)."
+}

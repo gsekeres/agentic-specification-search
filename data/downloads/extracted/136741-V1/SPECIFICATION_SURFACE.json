@@ -1,0 +1,152 @@
+{
+  "paper_id": "136741-V1",
+  "created_at": "2026-02-25",
+  "verified_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "Blackrate_regvoters ~ lynchcapitamob + historical_controls | State_FIPS",
+        "selection_story": "Cross-sectional county-level regression exploiting spatial variation in historical black lynching rates (1882-1930) to estimate persistent effects on contemporary (2000-2012) black voter registration, conditional on historical and state controls",
+        "fe_structure": ["State_FIPS"],
+        "cluster_vars": [],
+        "data_note": "Panel data (multiple elections per county) is collapsed to county-level cross-section via Stata collapse before main analysis (Createmain.do line 200). Sample restricted to counties with complete data on all controls including contemporary vars (N=267)."
+      },
+      "claim_object": {
+        "outcome_concept": "Black voter registration rate (registered black voters / black voting-age population * 100)",
+        "treatment_concept": "Historical black lynching rate per capita (black lynchings 1882-1930 / black population 1900 * 10000)",
+        "estimand_concept": "Conditional association between historical black lynching intensity and contemporary black voter registration, interpreted as persistent causal effect under selection-on-observables",
+        "target_population": "Counties in six Southern US states (AL, FL, GA, LA, NC, SC) with complete data"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "outcome_var": "Blackrate_regvoters",
+          "treatment_var": "lynchcapitamob",
+          "controls": [
+            "Black_share_illiterate",
+            "initial",
+            "newscapita",
+            "farmvalue",
+            "sfarmprop1860",
+            "landineq1860",
+            "fbprop1860"
+          ],
+          "n_controls": 7,
+          "fixed_effects": ["State_FIPS"],
+          "vcov": "default_ols"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 14,
+        "linked_adjustment": false,
+        "functional_form_policy": "outcome transforms (asinh, log1p) treated as estimand-preserving for direction/significance but note that coefficient interpretation changes from level to semi-elasticity; treatment variable redefinition (alternative denominators, alternative data source) treated as estimand-preserving since the concept is 'historical lynching rate'",
+        "sample_restriction_note": "Table B3 cap/drop: the code first replaces Blackrate_regvoters>100 with 100 (cap), then runs one regression on capped data and one regression dropping obs<100 on the ALREADY CAPPED data. The runner must apply these in order, not independently."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_Black_share_illiterate",
+          "rc/controls/loo/drop_initial",
+          "rc/controls/loo/drop_newscapita",
+          "rc/controls/loo/drop_farmvalue",
+          "rc/controls/loo/drop_sfarmprop1860",
+          "rc/controls/loo/drop_landineq1860",
+          "rc/controls/loo/drop_fbprop1860",
+          "rc/controls/sets/none",
+          "rc/controls/sets/historical_plus_slaves",
+          "rc/controls/sets/historical_plus_contemporary",
+          "rc/controls/sets/full_kitchen_sink",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/add_illiterate",
+          "rc/controls/progression/add_economic",
+          "rc/controls/progression/add_all_historical",
+          "rc/controls/progression/add_contemporary_education",
+          "rc/controls/progression/add_contemporary_earnings",
+          "rc/controls/progression/add_incarceration",
+          "rc/controls/progression/add_polls",
+          "rc/controls/progression/add_all_contemporary",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/controls/subset/random_011",
+          "rc/controls/subset/random_012",
+          "rc/controls/subset/random_013",
+          "rc/controls/subset/random_014",
+          "rc/controls/subset/random_015",
+          "rc/controls/subset/random_016",
+          "rc/controls/subset/random_017",
+          "rc/controls/subset/random_018",
+          "rc/controls/subset/random_019",
+          "rc/controls/subset/random_020",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/drop_regvoters_above_100",
+          "rc/sample/restriction/cap_regvoters_at_100",
+          "rc/fe/drop/State_FIPS",
+          "rc/data/treatment/lynchcapitamob1910",
+          "rc/data/treatment/lynchcapitamob1920",
+          "rc/data/treatment/lynchcapitamob1930",
+          "rc/data/treatment/lynchcapitasteve",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/iid/default",
+          "params": {},
+          "notes": "Homoskedastic OLS SEs (the paper uses plain regress with no robust or cluster option in Maindo.do). This matches the published standard errors."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust HC1 SEs as a robustness check"
+          },
+          {
+            "spec_id": "infer/se/cluster/State_FIPS",
+            "params": {"cluster_var": "State_FIPS"},
+            "notes": "Cluster SEs at state level (6 states -- very small number of clusters, interpret with caution)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 20
+      },
+      "sampling": {
+        "seed": 136741,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/falsification/white_lynching_on_black_reg",
+          "scope": "baseline_group",
+          "notes": "Table 2 Col 2: regress Blackrate_regvoters lynchcapitawhite + historical controls + state FE. Should show null effect."
+        },
+        {
+          "diag_spec_id": "diag/falsification/black_lynching_on_white_reg",
+          "scope": "baseline_group",
+          "notes": "Table 2 Col 3: regress Whiterate_regvoters lynchcapitamob + historical controls + state FE. Should show null effect."
+        },
+        {
+          "diag_spec_id": "diag/falsification/white_lynching_on_white_reg",
+          "scope": "baseline_group",
+          "notes": "Table 2 Col 4: regress Whiterate_regvoters lynchcapitawhite + historical controls + state FE. Should show null effect."
+        }
+      ]
+    }
+  ]
+}

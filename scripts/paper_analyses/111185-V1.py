@@ -20,6 +20,7 @@ import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import json
 import os
+import sys
 import itertools
 import warnings
 warnings.filterwarnings('ignore')
@@ -31,7 +32,44 @@ PAPER_ID = "111185-V1"
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 PACKAGE_DIR = os.path.join(REPO_ROOT, "data", "downloads", "extracted", PAPER_ID)
 DATA_FILE = os.path.join(PACKAGE_DIR, "estimate_damage_parameters", "10640_2017_166_MOESM10_ESM.dta")
+SURFACE_FILE = os.path.join(PACKAGE_DIR, "SPECIFICATION_SURFACE.json")
 SEED = 111185
+
+# Import helper utilities
+sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
+from agent_output_utils import (
+    make_success_payload, make_failure_payload,
+    error_details_from_exception, surface_hash as compute_surface_hash,
+    software_block
+)
+
+# =============================================================================
+# Load surface and compute hash
+# =============================================================================
+with open(SURFACE_FILE, 'r') as f:
+    surface = json.load(f)
+SURFACE_HASH = compute_surface_hash(surface)
+SOFTWARE = software_block()
+
+# Canonical inference for G1
+CANONICAL_INFERENCE = {
+    "spec_id": "infer/se/classical/ols",
+    "params": {},
+    "notes": "Classical (non-robust) OLS standard errors, matching paper's Stata `reg` command."
+}
+
+# Design audit for G1
+DESIGN_AUDIT = {
+    "cross_sectional_ols": {
+        "estimator": "ols",
+        "outcome_var": "log_correct",
+        "treatment_var": "logt",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "classical",
+        "notes": "Bivariate OLS from Stata `reg log_correct logt`. No FE, no clustering, no controls. Estimates power-law damage function parameters."
+    }
+}
 
 # =============================================================================
 # Load and prepare data
@@ -82,8 +120,8 @@ def next_inference_run_id():
 
 def run_ols(df, formula, outcome_var, treatment_var, spec_id, spec_tree_path,
             baseline_group_id, controls_desc, sample_desc, fixed_effects="",
-            cluster_var="", coef_vector_extra=None):
-    """Run an OLS regression and record results."""
+            cluster_var="", axis_blocks=None):
+    """Run an OLS regression and record results with contract-compliant payload."""
     run_id = next_spec_run_id()
     try:
         model = smf.ols(formula, data=df).fit()
@@ -96,9 +134,17 @@ def run_ols(df, formula, outcome_var, treatment_var, spec_id, spec_tree_path,
         n_obs = int(model.nobs)
         r_sq = model.rsquared
 
-        coef_vector = {k: float(v) for k, v in model.params.items()}
-        if coef_vector_extra:
-            coef_vector.update(coef_vector_extra)
+        coefficients = {k: float(v) for k, v in model.params.items()}
+
+        # Build contract-compliant payload
+        payload = make_success_payload(
+            coefficients=coefficients,
+            inference=CANONICAL_INFERENCE,
+            software=SOFTWARE,
+            surface_hash=SURFACE_HASH,
+            design=DESIGN_AUDIT,
+            blocks=axis_blocks or {},
+        )
 
         row = {
             'paper_id': PAPER_ID,
@@ -115,7 +161,7 @@ def run_ols(df, formula, outcome_var, treatment_var, spec_id, spec_tree_path,
             'ci_upper': ci_upper,
             'n_obs': n_obs,
             'r_squared': r_sq,
-            'coefficient_vector_json': json.dumps(coef_vector),
+            'coefficient_vector_json': json.dumps(payload),
             'sample_desc': sample_desc,
             'fixed_effects': fixed_effects,
             'controls_desc': controls_desc,
@@ -126,6 +172,13 @@ def run_ols(df, formula, outcome_var, treatment_var, spec_id, spec_tree_path,
         spec_results.append(row)
         return run_id, model
     except Exception as e:
+        payload = make_failure_payload(
+            error=str(e),
+            error_details=error_details_from_exception(e, stage="estimation"),
+            inference=CANONICAL_INFERENCE,
+            software=SOFTWARE,
+            surface_hash=SURFACE_HASH,
+        )
         row = {
             'paper_id': PAPER_ID,
             'spec_run_id': run_id,
@@ -141,7 +194,7 @@ def run_ols(df, formula, outcome_var, treatment_var, spec_id, spec_tree_path,
             'ci_upper': np.nan,
             'n_obs': np.nan,
             'r_squared': np.nan,
-            'coefficient_vector_json': json.dumps({'error': str(e)}),
+            'coefficient_vector_json': json.dumps(payload),
             'sample_desc': sample_desc,
             'fixed_effects': fixed_effects,
             'controls_desc': controls_desc,
@@ -162,7 +215,6 @@ def run_inference_variant(model, treatment_var, spec_run_id, spec_id, spec_tree_
         else:
             refit = model.get_robustcov_results(cov_type=cov_type)
 
-        # get_robustcov_results returns arrays, not Series -- use model param names to index
         param_names = list(model.params.index)
         tv_idx = param_names.index(treatment_var)
         coef = float(refit.params[tv_idx])
@@ -172,13 +224,16 @@ def run_inference_variant(model, treatment_var, spec_run_id, spec_id, spec_tree_
         ci_lower = float(ci[tv_idx, 0])
         ci_upper = float(ci[tv_idx, 1])
 
-        coef_vector = {
+        payload = {
+            'coefficients': {k: float(v) for k, v in model.params.items()},
             'inference': {
                 'spec_id': spec_id,
                 'method': cov_type,
-                'se': float(se),
-                'p_value': float(pval),
-            }
+                'params': cov_kwds or {},
+            },
+            'software': SOFTWARE,
+            'surface_hash': SURFACE_HASH,
+            'design': DESIGN_AUDIT,
         }
 
         row = {
@@ -197,13 +252,17 @@ def run_inference_variant(model, treatment_var, spec_run_id, spec_id, spec_tree_
             'ci_upper': ci_upper,
             'n_obs': int(model.nobs),
             'r_squared': model.rsquared,
-            'coefficient_vector_json': json.dumps(coef_vector),
+            'coefficient_vector_json': json.dumps(payload),
             'cluster_var': '',
             'run_success': 1,
             'run_error': '',
         }
         inference_results.append(row)
     except Exception as e:
+        payload = make_failure_payload(
+            error=str(e),
+            error_details=error_details_from_exception(e, stage="inference"),
+        )
         row = {
             'paper_id': PAPER_ID,
             'inference_run_id': infer_id,
@@ -220,7 +279,7 @@ def run_inference_variant(model, treatment_var, spec_run_id, spec_id, spec_tree_
             'ci_upper': np.nan,
             'n_obs': np.nan,
             'r_squared': np.nan,
-            'coefficient_vector_json': json.dumps({'error': str(e)}),
+            'coefficient_vector_json': json.dumps(payload),
             'cluster_var': '',
             'run_success': 0,
             'run_error': str(e)[:200],
@@ -231,7 +290,6 @@ def build_formula(outcome, treatment, controls):
     """Build OLS formula string."""
     rhs = [treatment] + controls
     return f"{outcome} ~ {' + '.join(rhs)}"
-
 
 def winsorize(s, lower_q=0.01, upper_q=0.99):
     lo = s.quantile(lower_q)
@@ -289,7 +347,7 @@ for ctrl in CONTROLS_ALL:
         baseline_group_id="G1",
         controls_desc=desc,
         sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-        coef_vector_extra={"controls": {"family": "single", "added": [ctrl], "n_controls": 1}},
+        axis_blocks={"controls": {"spec_id": f"rc/controls/single/add_{ctrl}", "family": "single", "added": [ctrl], "n_controls": 1}},
     )
 
 # =============================================================================
@@ -297,7 +355,7 @@ for ctrl in CONTROLS_ALL:
 # =============================================================================
 print("\n=== Running Control Sets ===")
 
-# Minimal set: just study_quality indicators (most directly relevant)
+# Minimal set
 minimal_controls = ['Grey', 'Based_On_Other']
 formula = build_formula("log_correct", "logt", minimal_controls)
 run_ols(
@@ -308,10 +366,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(minimal_controls)}",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "sets", "set_name": "minimal", "included": minimal_controls, "n_controls": len(minimal_controls)}},
+    axis_blocks={"controls": {"spec_id": "rc/controls/sets/minimal", "family": "sets", "set_name": "minimal", "included": minimal_controls, "n_controls": len(minimal_controls)}},
 )
 
-# Extended set: study_quality + damage_type
+# Extended set
 extended_controls = CONTROL_BLOCKS['study_quality'] + CONTROL_BLOCKS['damage_type']
 formula = build_formula("log_correct", "logt", extended_controls)
 run_ols(
@@ -322,10 +380,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(extended_controls)}",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "sets", "set_name": "extended", "included": extended_controls, "n_controls": len(extended_controls)}},
+    axis_blocks={"controls": {"spec_id": "rc/controls/sets/extended", "family": "sets", "set_name": "extended", "included": extended_controls, "n_controls": len(extended_controls)}},
 )
 
-# Full set: all controls
+# Full set
 full_controls = CONTROLS_ALL
 formula = build_formula("log_correct", "logt", full_controls)
 run_ols(
@@ -336,25 +394,13 @@ run_ols(
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(full_controls)}",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "sets", "set_name": "full", "included": full_controls, "n_controls": len(full_controls)}},
+    axis_blocks={"controls": {"spec_id": "rc/controls/sets/full", "family": "sets", "set_name": "full", "included": full_controls, "n_controls": len(full_controls)}},
 )
 
 # =============================================================================
 # STEP 2C: Controls -- Progression
 # =============================================================================
 print("\n=== Running Control Progressions ===")
-
-# Bivariate (= baseline, but recorded as progression for consistency)
-run_ols(
-    df=df_base, formula="log_correct ~ logt",
-    outcome_var="log_correct", treatment_var="logt",
-    spec_id="rc/controls/progression/bivariate",
-    spec_tree_path="modules/robustness/controls.md#d-control-progression-build-up",
-    baseline_group_id="G1",
-    controls_desc="None (bivariate)",
-    sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "progression", "step": "bivariate", "n_controls": 0}},
-)
 
 # + study_quality
 prog_sq = CONTROL_BLOCKS['study_quality']
@@ -367,7 +413,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(prog_sq)}",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "progression", "step": "study_quality", "included": prog_sq, "n_controls": len(prog_sq)}},
+    axis_blocks={"controls": {"spec_id": "rc/controls/progression/study_quality", "family": "progression", "step": "study_quality", "included": prog_sq, "n_controls": len(prog_sq)}},
 )
 
 # + damage_type
@@ -381,7 +427,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(prog_dt)}",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "progression", "step": "damage_type", "included": prog_dt, "n_controls": len(prog_dt)}},
+    axis_blocks={"controls": {"spec_id": "rc/controls/progression/damage_type", "family": "progression", "step": "damage_type", "included": prog_dt, "n_controls": len(prog_dt)}},
 )
 
 # + study_design (= full)
@@ -395,23 +441,23 @@ run_ols(
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(prog_full)}",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-    coef_vector_extra={"controls": {"family": "progression", "step": "full", "included": prog_full, "n_controls": len(prog_full)}},
+    axis_blocks={"controls": {"spec_id": "rc/controls/progression/full", "family": "progression", "step": "full", "included": prog_full, "n_controls": len(prog_full)}},
 )
 
 # =============================================================================
-# STEP 2D: Controls -- Exhaustive block combinations (2^3 = 8)
+# STEP 2D: Controls -- Exhaustive block combinations (2^3 - 1 = 7)
 # =============================================================================
 print("\n=== Running Exhaustive Block Combinations ===")
 block_combo_counter = 0
 for r in range(len(BLOCK_NAMES) + 1):
     for combo in itertools.combinations(BLOCK_NAMES, r):
         if len(combo) == 0:
-            continue  # bivariate already covered
+            continue
         controls = []
         for block in combo:
             controls.extend(CONTROL_BLOCKS[block])
-        if len(controls) > 6:
-            continue  # respect max controls constraint
+        if len(controls) > 7:
+            continue
         block_combo_counter += 1
         combo_label = "_".join(combo)
         formula = build_formula("log_correct", "logt", controls)
@@ -423,7 +469,7 @@ for r in range(len(BLOCK_NAMES) + 1):
             baseline_group_id="G1",
             controls_desc=f"logt + {' + '.join(controls)}",
             sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-            coef_vector_extra={"controls": {"family": "subset", "method": "exhaustive_blocks", "blocks_included": list(combo), "included": controls, "n_controls": len(controls)}},
+            axis_blocks={"controls": {"spec_id": f"rc/controls/subset/block_{combo_label}", "family": "subset", "method": "exhaustive_blocks", "blocks_included": list(combo), "included": controls, "n_controls": len(controls)}},
         )
 print(f"  Ran {block_combo_counter} block combinations")
 
@@ -433,7 +479,7 @@ print(f"  Ran {block_combo_counter} block combinations")
 print("\n=== Running Random Control Subsets ===")
 rng = np.random.default_rng(SEED)
 subset_count = 0
-target_subsets = 15  # additional variable-level random subsets
+target_subsets = 15
 for draw_idx in range(target_subsets):
     size = rng.integers(2, min(6, len(CONTROLS_ALL)) + 1)
     chosen = list(rng.choice(CONTROLS_ALL, size=size, replace=False))
@@ -447,7 +493,7 @@ for draw_idx in range(target_subsets):
         baseline_group_id="G1",
         controls_desc=f"logt + {' + '.join(chosen)}",
         sample_desc=f"Howard & Sterner (2017), N={len(df_base)}",
-        coef_vector_extra={"controls": {"family": "subset", "method": "random", "seed": SEED, "draw_index": draw_idx + 1, "included": chosen, "n_controls": len(chosen)}},
+        axis_blocks={"controls": {"spec_id": f"rc/controls/subset/random_{subset_count:03d}", "family": "subset", "method": "random", "seed": SEED, "draw_index": draw_idx + 1, "included": chosen, "n_controls": len(chosen)}},
     )
 print(f"  Ran {subset_count} random subsets")
 
@@ -469,7 +515,7 @@ for pct_label, lo_q, hi_q in [("1_99", 0.01, 0.99), ("5_95", 0.05, 0.95)]:
         baseline_group_id="G1",
         controls_desc="None (bivariate)",
         sample_desc=f"Trimmed outcome [{pct_label}], N={len(df_trim)}",
-        coef_vector_extra={"sample": {"axis": "outliers", "rule": "trim", "var": "log_correct", "lower_q": lo_q, "upper_q": hi_q, "n_obs_before": len(df_base), "n_obs_after": len(df_trim)}},
+        axis_blocks={"sample": {"spec_id": f"rc/sample/outliers/trim_y_{pct_label}", "axis": "outliers", "rule": "trim", "var": "log_correct", "lower_q": lo_q, "upper_q": hi_q, "n_obs_before": len(df_base), "n_obs_after": len(df_trim)}},
     )
 
 # 3B: Outlier trimming -- treatment
@@ -484,7 +530,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Trimmed treatment [1,99], N={len(df_trim)}",
-    coef_vector_extra={"sample": {"axis": "outliers", "rule": "trim", "var": "logt", "lower_q": 0.01, "upper_q": 0.99, "n_obs_before": len(df_base), "n_obs_after": len(df_trim)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/outliers/trim_x_1_99", "axis": "outliers", "rule": "trim", "var": "logt", "lower_q": 0.01, "upper_q": 0.99, "n_obs_before": len(df_base), "n_obs_after": len(df_trim)}},
 )
 
 # 3C: Cook's D
@@ -503,7 +549,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Dropped {n_dropped_cooks} obs with Cook's D > 4/N, N={len(df_cooks)}",
-    coef_vector_extra={"sample": {"axis": "outliers", "rule": "cooksd", "threshold": threshold, "n_dropped": int(n_dropped_cooks), "n_obs_before": len(df_base), "n_obs_after": len(df_cooks)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/outliers/cooksd_4_over_n", "axis": "outliers", "rule": "cooksd", "threshold": threshold, "n_dropped": int(n_dropped_cooks), "n_obs_before": len(df_base), "n_obs_after": len(df_cooks)}},
 )
 
 # 3D: Drop repeat observations
@@ -516,7 +562,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Dropped repeat observations, N={len(df_no_repeat)}",
-    coef_vector_extra={"sample": {"axis": "quality", "rule": "drop_repeat_obs", "n_obs_before": len(df_base), "n_obs_after": len(df_no_repeat)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/quality/drop_repeat_obs", "axis": "quality", "rule": "drop_repeat_obs", "n_obs_before": len(df_base), "n_obs_after": len(df_no_repeat)}},
 )
 
 # 3E: Drop based-on-other
@@ -529,7 +575,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Dropped based-on-other studies, N={len(df_no_based)}",
-    coef_vector_extra={"sample": {"axis": "quality", "rule": "drop_based_on_other", "n_obs_before": len(df_base), "n_obs_after": len(df_no_based)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/quality/drop_based_on_other", "axis": "quality", "rule": "drop_based_on_other", "n_obs_before": len(df_base), "n_obs_after": len(df_no_based)}},
 )
 
 # 3F: Drop grey literature
@@ -542,10 +588,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Dropped grey literature, N={len(df_no_grey)}",
-    coef_vector_extra={"sample": {"axis": "quality", "rule": "drop_grey_lit", "n_obs_before": len(df_base), "n_obs_after": len(df_no_grey)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/quality/drop_grey_lit", "axis": "quality", "rule": "drop_grey_lit", "n_obs_before": len(df_base), "n_obs_after": len(df_no_grey)}},
 )
 
-# 3G: Drop catastrophic damages (cat == 1)
+# 3G: Drop catastrophic damages
 df_no_cat = df_base[df_base['cat'] == 0].copy()
 run_ols(
     df=df_no_cat, formula="log_correct ~ logt",
@@ -555,10 +601,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Dropped catastrophic damage estimates, N={len(df_no_cat)}",
-    coef_vector_extra={"sample": {"axis": "quality", "rule": "drop_catastrophic", "n_obs_before": len(df_base), "n_obs_after": len(df_no_cat)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/quality/drop_catastrophic", "axis": "quality", "rule": "drop_catastrophic", "n_obs_before": len(df_base), "n_obs_after": len(df_no_cat)}},
 )
 
-# 3H: Temporal split -- early studies (Year <= median)
+# 3H: Temporal splits
 median_year = df_base['Year'].median()
 df_early = df_base[df_base['Year'] <= median_year].copy()
 run_ols(
@@ -569,10 +615,9 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Early studies (Year <= {median_year:.0f}), N={len(df_early)}",
-    coef_vector_extra={"sample": {"axis": "time", "rule": "early_half", "cutoff": float(median_year), "n_obs_before": len(df_base), "n_obs_after": len(df_early)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/time/early_studies", "axis": "time", "rule": "early_half", "cutoff": float(median_year), "n_obs_before": len(df_base), "n_obs_after": len(df_early)}},
 )
 
-# 3I: Late studies
 df_late = df_base[df_base['Year'] > median_year].copy()
 run_ols(
     df=df_late, formula="log_correct ~ logt",
@@ -582,10 +627,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Late studies (Year > {median_year:.0f}), N={len(df_late)}",
-    coef_vector_extra={"sample": {"axis": "time", "rule": "late_half", "cutoff": float(median_year), "n_obs_before": len(df_base), "n_obs_after": len(df_late)}},
+    axis_blocks={"sample": {"spec_id": "rc/sample/time/late_studies", "axis": "time", "rule": "late_half", "cutoff": float(median_year), "n_obs_before": len(df_base), "n_obs_after": len(df_late)}},
 )
 
-# 3J: Independent estimates only (drop repeat + based_on_other)
+# 3J: Independent estimates only
 df_independent = df_base[(df_base['Based_On_Other'] == 0) & (df_base['Repeat_Obs'] == 0)].copy()
 run_ols(
     df=df_independent, formula="log_correct ~ logt",
@@ -594,8 +639,8 @@ run_ols(
     spec_tree_path="modules/robustness/sample.md#d-data-quality-and-eligibility-filters",
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
-    sample_desc=f"Independent estimates only (no repeat, no based-on-other), N={len(df_independent)}",
-    coef_vector_extra={"sample": {"axis": "quality", "rule": "independent_only", "n_obs_before": len(df_base), "n_obs_after": len(df_independent)}},
+    sample_desc=f"Independent estimates only, N={len(df_independent)}",
+    axis_blocks={"sample": {"spec_id": "rc/sample/quality/independent_only", "axis": "quality", "rule": "independent_only", "n_obs_before": len(df_base), "n_obs_after": len(df_independent)}},
 )
 
 # =============================================================================
@@ -603,7 +648,7 @@ run_ols(
 # =============================================================================
 print("\n=== Running Functional Form Variations ===")
 
-# 4A: Levels outcome: correct_d ~ logt
+# 4A: Levels outcome
 run_ols(
     df=df_base, formula="correct_d ~ logt",
     outcome_var="correct_d", treatment_var="logt",
@@ -612,10 +657,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, outcome in levels",
-    coef_vector_extra={"functional_form": {"outcome_transform": "level", "treatment_transform": "log", "interpretation": "Semi-elasticity: level damages per unit log-temperature."}},
+    axis_blocks={"functional_form": {"spec_id": "rc/form/outcome/level", "outcome_transform": "level", "treatment_transform": "log", "interpretation": "Semi-elasticity: level damages per unit log-temperature."}},
 )
 
-# 4B: Asinh outcome: asinh(correct_d) ~ logt
+# 4B: Asinh outcome
 run_ols(
     df=df_base, formula="asinh_correct ~ logt",
     outcome_var="asinh_correct", treatment_var="logt",
@@ -624,10 +669,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, outcome = asinh(damages)",
-    coef_vector_extra={"functional_form": {"outcome_transform": "asinh", "treatment_transform": "log", "interpretation": "Approx log for large y; handles zeros. Preserves damage concept."}},
+    axis_blocks={"functional_form": {"spec_id": "rc/form/outcome/asinh", "outcome_transform": "asinh", "treatment_transform": "log", "interpretation": "Approx log for large y; handles zeros. Preserves damage concept."}},
 )
 
-# 4C: Levels treatment: log_correct ~ t (semi-elasticity: damages per degree C)
+# 4C: Levels treatment
 run_ols(
     df=df_base, formula="log_correct ~ t",
     outcome_var="log_correct", treatment_var="t",
@@ -635,11 +680,11 @@ run_ols(
     spec_tree_path="modules/robustness/functional_form.md#b-treatment-transformations",
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
-    sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, treatment in levels (degrees C)",
-    coef_vector_extra={"functional_form": {"outcome_transform": "log", "treatment_transform": "level", "interpretation": "Semi-elasticity: pct change in damages per degree C."}},
+    sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, treatment in levels",
+    axis_blocks={"functional_form": {"spec_id": "rc/form/treatment/level", "outcome_transform": "log", "treatment_transform": "level", "interpretation": "Semi-elasticity: pct change in damages per degree C."}},
 )
 
-# 4D: Quadratic in log temperature: log_correct ~ logt + logt^2
+# 4D: Quadratic in log temperature
 run_ols(
     df=df_base, formula="log_correct ~ logt + logt2",
     outcome_var="log_correct", treatment_var="logt",
@@ -648,10 +693,10 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="logt + logt^2",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, quadratic in log-temp",
-    coef_vector_extra={"functional_form": {"outcome_transform": "log", "treatment_transform": "log + log^2", "interpretation": "Test for nonlinearity in log-log relationship. Focal coef is linear term."}},
+    axis_blocks={"functional_form": {"spec_id": "rc/form/model/quadratic_treatment", "outcome_transform": "log", "treatment_transform": "log + log^2", "interpretation": "Test for nonlinearity in log-log relationship. Focal coef is linear term."}},
 )
 
-# 4E: Levels-quadratic: correct_d ~ t + t^2 (polynomial damage function)
+# 4E: Levels-quadratic
 run_ols(
     df=df_base, formula="correct_d ~ t + t2",
     outcome_var="correct_d", treatment_var="t",
@@ -660,7 +705,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="t + t^2",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, polynomial damage function in levels",
-    coef_vector_extra={"functional_form": {"outcome_transform": "level", "treatment_transform": "level + level^2", "interpretation": "Quadratic polynomial damage function D = a + b*T + c*T^2. Alternative to power-law specification. Focal coef is linear term."}},
+    axis_blocks={"functional_form": {"spec_id": "rc/form/model/levels_quadratic", "outcome_transform": "level", "treatment_transform": "level + level^2", "interpretation": "Quadratic polynomial damage function D = a + b*T + c*T^2. Focal coef is linear term."}},
 )
 
 # =============================================================================
@@ -679,7 +724,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Winsorized outcome [1,99], N={len(df_winsor_y)}",
-    coef_vector_extra={"preprocess": {"target": "outcome", "operation": "winsorize", "params": {"lower_q": 0.01, "upper_q": 0.99}}},
+    axis_blocks={"preprocess": {"spec_id": "rc/preprocess/outcome/winsor_1_99", "target": "outcome", "operation": "winsorize", "params": {"lower_q": 0.01, "upper_q": 0.99}}},
 )
 
 # 5B: Winsorize treatment
@@ -693,7 +738,7 @@ run_ols(
     baseline_group_id="G1",
     controls_desc="None (bivariate)",
     sample_desc=f"Winsorized treatment [1,99], N={len(df_winsor_x)}",
-    coef_vector_extra={"preprocess": {"target": "treatment", "operation": "winsorize", "params": {"lower_q": 0.01, "upper_q": 0.99}}},
+    axis_blocks={"preprocess": {"spec_id": "rc/preprocess/treatment/winsor_1_99", "target": "treatment", "operation": "winsorize", "params": {"lower_q": 0.01, "upper_q": 0.99}}},
 )
 
 # =============================================================================
@@ -709,11 +754,11 @@ run_ols(
     df=df_no_cat_ctrl, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/drop_cat_study_quality",
-    spec_tree_path="modules/robustness/sample.md#d-data-quality-and-eligibility-filters",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(ctrl_safe)}",
     sample_desc=f"Dropped catastrophic + study quality controls, N={len(df_no_cat_ctrl)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"], "details": {"sample_rule": "drop_cat", "controls": ctrl_safe}}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/drop_cat_study_quality", "axes_changed": ["sample", "controls"], "details": {"sample_rule": "drop_cat", "controls": ctrl_safe}}},
 )
 
 # 6B: Drop grey + Preindustrial control
@@ -723,11 +768,11 @@ run_ols(
     df=df_no_grey2, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/drop_grey_preindustrial",
-    spec_tree_path="modules/robustness/sample.md#d-data-quality-and-eligibility-filters",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc="logt + Preindustrial",
     sample_desc=f"Dropped grey lit + Preindustrial control, N={len(df_no_grey2)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"], "details": {"sample_rule": "drop_grey", "controls": ["Preindustrial"]}}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/drop_grey_preindustrial", "axes_changed": ["sample", "controls"], "details": {"sample_rule": "drop_grey", "controls": ["Preindustrial"]}}},
 )
 
 # 6C: Cook's D + minimal controls
@@ -736,11 +781,11 @@ run_ols(
     df=df_cooks, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/cooksd_minimal",
-    spec_tree_path="modules/robustness/sample.md#b-outliers-and-influential-observations",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(minimal_controls)}",
     sample_desc=f"Cook's D filtered + minimal controls, N={len(df_cooks)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"], "details": {"sample_rule": "cooksd_4_over_n", "controls": minimal_controls}}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/cooksd_minimal", "axes_changed": ["sample", "controls"], "details": {"sample_rule": "cooksd_4_over_n", "controls": minimal_controls}}},
 )
 
 # 6D: Drop repeat obs + Market control
@@ -750,11 +795,11 @@ run_ols(
     df=df_no_rep2, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/drop_repeat_market",
-    spec_tree_path="modules/robustness/sample.md#d-data-quality-and-eligibility-filters",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc="logt + Market",
     sample_desc=f"Dropped repeat obs + Market control, N={len(df_no_rep2)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"], "details": {"sample_rule": "drop_repeat_obs", "controls": ["Market"]}}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/drop_repeat_market", "axes_changed": ["sample", "controls"], "details": {"sample_rule": "drop_repeat_obs", "controls": ["Market"]}}},
 )
 
 # 6E: Levels treatment + study quality controls
@@ -763,11 +808,11 @@ run_ols(
     df=df_base, formula=formula,
     outcome_var="log_correct", treatment_var="t",
     spec_id="rc/joint/form_controls/level_t_study_quality",
-    spec_tree_path="modules/robustness/functional_form.md#b-treatment-transformations",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc="t + Grey + Repeat_Obs + Based_On_Other",
     sample_desc=f"Howard & Sterner (2017), N={len(df_base)}, treatment in levels + study quality controls",
-    coef_vector_extra={"joint": {"axes_changed": ["form", "controls"], "details": {"treatment_transform": "level", "controls": ctrl_safe}}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/form_controls/level_t_study_quality", "axes_changed": ["form", "controls"], "details": {"treatment_transform": "level", "controls": ctrl_safe}}, "functional_form": {"outcome_transform": "log", "treatment_transform": "level", "interpretation": "Semi-elasticity with study quality controls."}},
 )
 
 # 6F: Trim y 5/95 + study quality controls
@@ -779,11 +824,11 @@ run_ols(
     df=df_trim_5_95, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/trim_y_5_95_study_quality",
-    spec_tree_path="modules/robustness/sample.md#b-outliers-and-influential-observations",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc=f"logt + {' + '.join(ctrl_safe)}",
     sample_desc=f"Trimmed outcome [5,95] + study quality controls, N={len(df_trim_5_95)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"]}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/trim_y_5_95_study_quality", "axes_changed": ["sample", "controls"]}},
 )
 
 # 6G: Early studies + Market control
@@ -792,11 +837,11 @@ run_ols(
     df=df_early, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/early_market",
-    spec_tree_path="modules/robustness/sample.md#a-time--period-restrictions",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc="logt + Market",
     sample_desc=f"Early studies + Market control, N={len(df_early)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"]}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/early_market", "axes_changed": ["sample", "controls"]}},
 )
 
 # 6H: Late studies + Preindustrial control
@@ -805,11 +850,11 @@ run_ols(
     df=df_late, formula=formula,
     outcome_var="log_correct", treatment_var="logt",
     spec_id="rc/joint/sample_controls/late_preindustrial",
-    spec_tree_path="modules/robustness/sample.md#a-time--period-restrictions",
+    spec_tree_path="modules/robustness/joint.md",
     baseline_group_id="G1",
     controls_desc="logt + Preindustrial",
     sample_desc=f"Late studies + Preindustrial control, N={len(df_late)}",
-    coef_vector_extra={"joint": {"axes_changed": ["sample", "controls"]}},
+    axis_blocks={"joint": {"spec_id": "rc/joint/sample_controls/late_preindustrial", "axes_changed": ["sample", "controls"]}},
 )
 
 # =============================================================================

@@ -1,0 +1,44 @@
+{
+  "paper_id": "138922-V1",
+  "verified_at": "2026-02-24",
+  "global_notes": "Surface defined one baseline group (G1). All 53 executed rows belong to G1. No adjustment to baseline-group assignments was needed. The surface listed 'design/difference_in_differences/estimator/twfe' in core_universe.design_spec_ids but it was not executed as a standalone row; the TWFE design is captured inside the 'baseline' row's coefficient_vector_json design block. The 5 alt-outcome baseline rows (baseline__sport_hrs, baseline__oweight, baseline__kommheard, baseline__kommgotten, baseline__kommused) are explicitly listed in the surface's core_universe.baseline_spec_ids but measure different outcome concepts from the G1 focal claim (sportsclub membership). Per instructions, outcome-concept drift overrides to noncore_alt_outcome (is_core_test=0). The 3 sportsclub baseline rows (baseline, baseline__sportsclub_col1, baseline__sportsclub_col2) are core_method with is_core_test=1.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ATT of C2SC sports club voucher program (Saxony, post-2008/09) on sports club membership (binary) for primary school children in Saxony vs Brandenburg/Thuringia, cohorts 2006-2010, estimated via TWFE with year, state, and city FEs, SEs clustered at city level.",
+      "outcome_concept": "Sports club membership (binary indicator: sportsclub)",
+      "treatment_concept": "C2SC sports club voucher program (treat: Saxony x post-2008 cohort)",
+      "estimand_concept": "ATT of voucher availability on sports club participation",
+      "target_population": "Primary school children in 3 German states (Saxony=treatment, Brandenburg and Thuringia=control), cohorts 2006-2010",
+      "expected_sign": "positive (voucher intended to increase club membership)",
+      "baseline_spec_run_ids": [
+        "138922-V1__baseline",
+        "138922-V1__baseline__sportsclub_col1",
+        "138922-V1__baseline__sportsclub_col2",
+        "138922-V1__baseline__sport_hrs",
+        "138922-V1__baseline__oweight",
+        "138922-V1__baseline__kommheard",
+        "138922-V1__baseline__kommgotten",
+        "138922-V1__baseline__kommused"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__sportsclub_col1",
+        "baseline__sportsclub_col2",
+        "baseline__sport_hrs",
+        "baseline__oweight",
+        "baseline__kommheard",
+        "baseline__kommgotten",
+        "baseline__kommused"
+      ],
+      "primary_baseline_spec_run_id": "138922-V1__baseline",
+      "primary_baseline_coefficient": 0.008924903120607923,
+      "primary_baseline_std_error": 0.018717501440493133,
+      "primary_baseline_p_value": 0.6346324357124109,
+      "primary_baseline_n_obs": 13333,
+      "notes": "Table 2 Column 3 is the preferred specification (year + state + city FEs, no individual controls, clustered SE at city). Columns 1-2 are alternative FE structures for the same sportsclub outcome. Five additional baseline specs test alternative outcomes (sport_hrs, oweight, kommheard, kommgotten, kommused) from the paper's Table 2 and Table 3; these are classified noncore_alt_outcome. The baseline coefficient 0.0089 is small and statistically insignificant (p=0.635), consistent with the paper's null finding for the main outcome.",
+      "surface_match": "exact",
+      "surface_notes": "All surface G1 baseline_spec_ids were executed (7 listed + 1 primary baseline row added by runner). The design/difference_in_differences/estimator/twfe spec_id in core_universe.design_spec_ids was not executed as a standalone row; no action required since it is redundant with the baseline row."
+    }
+  ]
+}

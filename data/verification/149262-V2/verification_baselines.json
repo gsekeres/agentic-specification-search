@@ -1,0 +1,185 @@
+{
+  "paper_id": "149262-V2",
+  "verified_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of mixed-ability seating (treat1=MS) vs. same-ability seating (control) on lower-track students' endline academic performance (standardized average score ave3), in elementary schools in Longhui county, China.",
+      "outcome_concept": "Endline academic performance (standardized composite of Chinese and math scores, ave3)",
+      "treatment_concept": "Mixed-ability seating (treat1=MS) vs. traditional same-ability seating (control)",
+      "estimand_concept": "ITT effect via ANCOVA-OLS with grade FE, clustered SE at classroom level",
+      "target_population": "Lower-track elementary school students (hsco==0), grades 3-5, Longhui county",
+      "expected_sign": "ambiguous (paper finds near-zero effect, p~0.88 for treat1 on ave3)",
+      "baseline_specs": [
+        {
+          "spec_run_id": "149262-V2_spec_0001",
+          "spec_id": "baseline",
+          "outcome_var": "ave3",
+          "treatment_var": "treat1",
+          "coefficient": 0.0128,
+          "p_value": 0.8812,
+          "n_obs": 901,
+          "notes": "Primary baseline: full controls + grade1 FE + cluster(class1), lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0002",
+          "spec_id": "baseline__table3_pA_col1",
+          "outcome_var": "ave3",
+          "treatment_var": "treat1",
+          "coefficient": 0.0060,
+          "p_value": 0.9608,
+          "n_obs": 901,
+          "notes": "Table 3 Panel A Col1: no controls beyond baseline score, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0003",
+          "spec_id": "baseline__table3_pA_col4_chn",
+          "outcome_var": "tchn3",
+          "treatment_var": "treat1",
+          "coefficient": -0.0205,
+          "p_value": 0.7728,
+          "n_obs": 901,
+          "notes": "Table 3 Panel A Col4: Chinese score sub-outcome, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0004",
+          "spec_id": "baseline__table3_pA_col6_math",
+          "outcome_var": "tmath3",
+          "treatment_var": "treat1",
+          "coefficient": -0.0040,
+          "p_value": 0.9705,
+          "n_obs": 901,
+          "notes": "Table 3 Panel A Col6: math score sub-outcome, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0005",
+          "spec_id": "baseline__table3_pB_col2_upper",
+          "outcome_var": "ave3",
+          "treatment_var": "treat1",
+          "coefficient": -0.0626,
+          "p_value": 0.2788,
+          "n_obs": 901,
+          "notes": "Table 3 Panel B Col2: upper-track sample (hsco==1), different population from G1 baseline. Included in surface core_universe as a planned paper-table replication. Note: design block in coefficient_vector_json still shows sample_restriction=hsco==0 (stale metadata), but sample_desc and N correctly reflect upper track."
+        }
+      ],
+      "n_baseline_specs": 5,
+      "surface_match": "exact",
+      "notes": "All 40 G1 specs executed as planned in surface core_universe. No missing or extra specs. spec_0037 (rc/treatment/treat2_focal) correctly reports treat2 coefficient (0.1388) but treatment_var column metadata says 'treat1' — minor labeling issue, coefficient value itself is correct."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of mixed-ability seating (treat1=MS) vs. same-ability seating (control) on lower-track students' Big Five personality traits (extraversion, agreeableness, openness, neuroticism, conscientiousness) at endline.",
+      "outcome_concept": "Endline Big Five personality traits (extra2, agree2, open2, neur2, cons2)",
+      "treatment_concept": "Mixed-ability seating (treat1=MS) vs. traditional same-ability seating (control)",
+      "estimand_concept": "ITT effect via ANCOVA-OLS with grade FE, clustered SE at classroom level",
+      "target_population": "Lower-track elementary school students (hsco==0), grades 3-5, Longhui county",
+      "expected_sign": "ambiguous (paper finds near-zero effects on personality at p~0.2-0.98)",
+      "baseline_specs": [
+        {
+          "spec_run_id": "149262-V2_spec_0041",
+          "spec_id": "baseline",
+          "outcome_var": "extra2",
+          "treatment_var": "treat1",
+          "coefficient": 0.5526,
+          "p_value": 0.5111,
+          "n_obs": 901,
+          "notes": "Primary baseline: extraversion (extra2), full controls + grade1 FE + cluster(class1)"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0042",
+          "spec_id": "baseline__table4_pA_agree",
+          "outcome_var": "agree2",
+          "treatment_var": "treat1",
+          "coefficient": 1.5246,
+          "p_value": 0.2808,
+          "n_obs": 901,
+          "notes": "Table 4 Panel A: agreeableness, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0043",
+          "spec_id": "baseline__table4_pA_open",
+          "outcome_var": "open2",
+          "treatment_var": "treat1",
+          "coefficient": 0.0192,
+          "p_value": 0.9757,
+          "n_obs": 901,
+          "notes": "Table 4 Panel A: openness, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0044",
+          "spec_id": "baseline__table4_pA_neur",
+          "outcome_var": "neur2",
+          "treatment_var": "treat1",
+          "coefficient": 0.9846,
+          "p_value": 0.2010,
+          "n_obs": 901,
+          "notes": "Table 4 Panel A: neuroticism, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0045",
+          "spec_id": "baseline__table4_pA_cons",
+          "outcome_var": "cons2",
+          "treatment_var": "treat1",
+          "coefficient": 0.8468,
+          "p_value": 0.3607,
+          "n_obs": 901,
+          "notes": "Table 4 Panel A: conscientiousness, lower track"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0046",
+          "spec_id": "baseline__table4_pB_extra_upper",
+          "outcome_var": "extra2",
+          "treatment_var": "treat1",
+          "coefficient": -0.9184,
+          "p_value": 0.2429,
+          "n_obs": 901,
+          "notes": "Table 4 Panel B: extraversion, upper-track sample (hsco==1)"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0047",
+          "spec_id": "baseline__table4_pB_agree_upper",
+          "outcome_var": "agree2",
+          "treatment_var": "treat1",
+          "coefficient": -0.6760,
+          "p_value": 0.5665,
+          "n_obs": 901,
+          "notes": "Table 4 Panel B: agreeableness, upper-track sample (hsco==1)"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0048",
+          "spec_id": "baseline__table4_pB_open_upper",
+          "outcome_var": "open2",
+          "treatment_var": "treat1",
+          "coefficient": -0.2030,
+          "p_value": 0.5839,
+          "n_obs": 901,
+          "notes": "Table 4 Panel B: openness, upper-track sample (hsco==1)"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0049",
+          "spec_id": "baseline__table4_pB_neur_upper",
+          "outcome_var": "neur2",
+          "treatment_var": "treat1",
+          "coefficient": 0.5068,
+          "p_value": 0.4409,
+          "n_obs": 901,
+          "notes": "Table 4 Panel B: neuroticism, upper-track sample (hsco==1)"
+        },
+        {
+          "spec_run_id": "149262-V2_spec_0050",
+          "spec_id": "baseline__table4_pB_cons_upper",
+          "outcome_var": "cons2",
+          "treatment_var": "treat1",
+          "coefficient": -0.0672,
+          "p_value": 0.9351,
+          "n_obs": 901,
+          "notes": "Table 4 Panel B: conscientiousness, upper-track sample (hsco==1)"
+        }
+      ],
+      "n_baseline_specs": 10,
+      "surface_match": "exact",
+      "notes": "All 31 G2 specs executed as planned in surface core_universe. No missing or extra specs. G2 does not include rc/sample/pre_attrition or rc/fe/add/school (budget-constrained; consistent with surface plan). spec_0069 (rc/treatment/treat2_focal) correctly reports treat2 coefficient (2.3248) but treatment_var metadata says 'treat1' — minor labeling issue, coefficient value is correct."
+    }
+  ],
+  "global_notes": "No edits to baseline-group assignments relative to the surface. All 71 rows match the surface plan exactly (40 G1 + 31 G2). All rows ran successfully. Two minor metadata issues noted: (1) spec_0037 and spec_0069 (rc/treatment/treat2_focal) have treatment_var='treat1' in the CSV but the focal coefficient is treat2's — the coefficient value is correctly extracted; (2) spec_0005 and spec_0046 (upper-track baselines) have a stale sample_restriction='hsco==0' in the design block of coefficient_vector_json, though sample_desc correctly shows hsco==1 and N=901. Neither issue affects validity of the extracted estimates."
+}

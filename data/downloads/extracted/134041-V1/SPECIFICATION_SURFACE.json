@@ -1,0 +1,229 @@
+{
+  "paper_id": "134041-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_covariates",
+        "randomization_unit": "individual",
+        "strata_or_blocks": "wave (A/B)",
+        "estimand": "ITT",
+        "model_formula": "z_mani_index ~ T1 + controls [pweight=pweight], vce(r)"
+      },
+      "claim_object": {
+        "outcome_concept": "Perception of gender wage gap as a problem (perception index: z_mani_index, summary of 'large', 'problem', 'govmore')",
+        "treatment_concept": "Information treatment about true gender wage gap (T1 = assigned to receive information that women earn 74 cents per male dollar)",
+        "estimand_concept": "Intent-to-treat (ITT) effect of information provision on gender wage gap perceptions",
+        "target_population": "US adults recruited via online survey platform (Waves A and B, excluding pure control group)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-PanelA-Col6",
+          "outcome_var": "z_mani_index",
+          "treatment_var": "T1",
+          "controls": ["wave", "gender", "prior", "democrat", "indep", "otherpol", "midwest", "south", "west", "age1", "age2", "age3", "age4", "anychildren", "loghhinc", "associatemore", "fulltime", "parttime", "selfemp", "unemp", "student"],
+          "n_controls": 21,
+          "fixed_effects": [],
+          "vcov": "hc1",
+          "weights": "pweight"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 21,
+        "linked_adjustment": false,
+        "functional_form_note": "Treatment T1 is binary; controls are pre-treatment covariates for precision, not identification",
+        "linkage_notes": [
+          "When restricting to a single wave (wave_a_only or wave_b_only), the wave dummy should be dropped from controls",
+          "Region dummies (midwest, south, west) form a block -- LOO drops all three together",
+          "Age dummies (age1-age4) form a block -- LOO drops all four together",
+          "Employment dummies (fulltime, parttime, selfemp, unemp, student) form a block -- LOO drops all five together"
+        ]
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__posterior",
+          "baseline__zposterior",
+          "baseline__large",
+          "baseline__problem",
+          "baseline__govmore"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_wave",
+          "rc/controls/loo/drop_gender",
+          "rc/controls/loo/drop_prior",
+          "rc/controls/loo/drop_democrat",
+          "rc/controls/loo/drop_indep",
+          "rc/controls/loo/drop_otherpol",
+          "rc/controls/loo/drop_anychildren",
+          "rc/controls/loo/drop_loghhinc",
+          "rc/controls/loo/drop_associatemore",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/demographics_plus_politics",
+          "rc/controls/sets/demographics_plus_economics",
+          "rc/controls/sets/full_baseline",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/wave_only",
+          "rc/controls/progression/wave_demographics",
+          "rc/controls/progression/wave_demographics_politics",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/restriction/wave_a_only",
+          "rc/sample/restriction/wave_b_only",
+          "rc/sample/restriction/incentivized_prior_only",
+          "rc/weights/unweighted",
+          "rc/controls/loo/drop_region_block",
+          "rc/controls/loo/drop_age_block",
+          "rc/controls/loo/drop_employment_block"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "HC1 robust SEs, matching Stata vce(r) in the paper"
+        },
+        "variants": [
+          {"spec_id": "infer/se/iid", "params": {}, "notes": "Conventional OLS SEs (no heteroskedasticity correction)"},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 robust SEs as finite-sample alternative"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 134041,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group"}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_covariates",
+        "randomization_unit": "individual",
+        "strata_or_blocks": "wave (A/B)",
+        "estimand": "ITT",
+        "model_formula": "z_lmpolicy_index ~ T1 + controls [pweight=pweight], vce(r)"
+      },
+      "claim_object": {
+        "outcome_concept": "Demand for labor market policies to address gender wage gap (policy demand index: z_lmpolicy_index, summary of quota, affirmative action, legislation, transparency, reporting website, childcare)",
+        "treatment_concept": "Information treatment about true gender wage gap (T1)",
+        "estimand_concept": "Intent-to-treat (ITT) effect of information provision on demand for gender-equity policies",
+        "target_population": "US adults recruited via online survey platform (Waves A and B, excluding pure control group)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-PanelB-Col7",
+          "outcome_var": "z_lmpolicy_index",
+          "treatment_var": "T1",
+          "controls": ["wave", "gender", "prior", "democrat", "indep", "otherpol", "midwest", "south", "west", "age1", "age2", "age3", "age4", "anychildren", "loghhinc", "associatemore", "fulltime", "parttime", "selfemp", "unemp", "student"],
+          "n_controls": 21,
+          "fixed_effects": [],
+          "vcov": "hc1",
+          "weights": "pweight"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 21,
+        "linked_adjustment": false,
+        "linkage_notes": [
+          "When restricting to a single wave, the wave dummy should be dropped from controls",
+          "Region dummies (midwest, south, west) form a block",
+          "Age dummies (age1-age4) form a block",
+          "Employment dummies (fulltime, parttime, selfemp, unemp, student) form a block"
+        ]
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__quotaanchor",
+          "baseline__AAanchor",
+          "baseline__legislationanchor",
+          "baseline__transparencyanchor",
+          "baseline__UKtool",
+          "baseline__childcare"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_wave",
+          "rc/controls/loo/drop_gender",
+          "rc/controls/loo/drop_prior",
+          "rc/controls/loo/drop_democrat",
+          "rc/controls/loo/drop_indep",
+          "rc/controls/loo/drop_otherpol",
+          "rc/controls/loo/drop_anychildren",
+          "rc/controls/loo/drop_loghhinc",
+          "rc/controls/loo/drop_associatemore",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/demographics_plus_politics",
+          "rc/controls/sets/demographics_plus_economics",
+          "rc/controls/sets/full_baseline",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/wave_only",
+          "rc/controls/progression/wave_demographics",
+          "rc/controls/progression/wave_demographics_politics",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/sample/restriction/wave_a_only",
+          "rc/sample/restriction/wave_b_only",
+          "rc/sample/restriction/incentivized_prior_only",
+          "rc/weights/unweighted",
+          "rc/controls/loo/drop_region_block",
+          "rc/controls/loo/drop_age_block",
+          "rc/controls/loo/drop_employment_block"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "HC1 robust SEs, matching Stata vce(r) in the paper"
+        },
+        "variants": [
+          {"spec_id": "infer/se/iid", "params": {}, "notes": "Conventional OLS SEs"},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 robust SEs"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 5
+      },
+      "sampling": {
+        "seed": 134042,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "paper_id": "139262-V1",
+  "verification_date": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Asymmetric belief updating (motivated reasoning): subjects in No-Resolution treatment underreact to bad news relative to Bayesian benchmark, indicating motivated beliefs when future uncertainty will not be resolved. The focal coefficient is the slope of belief_adjustment on bayes_belief_adjustment for bad news in the No-Resolution treatment.",
+      "outcome_concept": "belief_adjustment (posterior - prior expected rank)",
+      "treatment_concept": "bayes_belief_adjustment (Bayesian benchmark belief adjustment)",
+      "estimand_concept": "OLS slope coefficient measuring responsiveness to Bayesian updating benchmark",
+      "target_population": "200 laboratory subjects (university students) in between-subject IQ-test experiment",
+      "expected_sign": "near_zero_for_bad_news_nores",
+      "expected_sign_notes": "The main claim is that the coefficient is near zero (insignificant) for No-Resolution Bad news, demonstrating underreaction. For Good news and Resolution conditions, the coefficient should be positive and significant.",
+      "baseline_spec_run_ids": [
+        "139262-V1_run_001",
+        "139262-V1_run_002",
+        "139262-V1_run_003",
+        "139262-V1_run_004",
+        "139262-V1_run_005",
+        "139262-V1_run_006"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__nores_did",
+        "baseline__nores_good",
+        "baseline__res_bad",
+        "baseline__res_did",
+        "baseline__res_good"
+      ],
+      "notes": "Six baseline cells from Table 2: 3 columns (Good/Bad/DiD) x 2 treatments (NoRes/Res). The focal cell is baseline (NoRes-Bad): coef=0.076, p=0.674 (insignificant as claimed). All other cells show significant positive slopes except NoRes-Bad, confirming the asymmetric updating pattern."
+    }
+  ],
+  "global_notes": "Surface-driven run with 78 estimate rows and 18 inference variants. All rows succeeded. No baseline-group reassignment needed; the surface's G1 is coherent and well-defined."
+}

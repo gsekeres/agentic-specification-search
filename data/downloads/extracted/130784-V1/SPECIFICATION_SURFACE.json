@@ -1,0 +1,130 @@
+{
+  "paper_id": "130784-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "panel_unit": "individual (repeated cross-section by country-region-urban cohort)",
+        "panel_time": "cohort (age-based, bancohort_pc indicator)",
+        "fe_structure": ["countryage", "countryregionurban"],
+        "cluster_vars": ["countryregionurban"],
+        "treatment_type": "generalized_did_continuous_intensity",
+        "treatment_var": "bancohort_pcdist (ban_cohort x pre_ban_child_marriage_intensity)",
+        "identification": "Differential exposure of birth cohorts to child marriage ban legislation, interacted with region-level pre-ban child marriage intensity",
+        "n_countries": 17
+      },
+      "claim_object": {
+        "outcome_concept": "Child marriage (married before age 18)",
+        "treatment_concept": "Exposure to child marriage ban legislation interacted with regional pre-ban child marriage intensity",
+        "estimand_concept": "Intent-to-treat effect of child marriage ban on child marriage rates, scaled by regional intensity",
+        "target_population": "Women age 15-49 in 17 low- and middle-income countries with child marriage bans (DHS surveys)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-PanelA-Col1",
+          "outcome_var": "childmarriage",
+          "treatment_var": "bancohort_pcdist",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["countryage", "countryregionurban"],
+          "vcov": "CRV1:countryregionurban",
+          "sample_filter": "regsample_pc==1"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "Baseline has no controls beyond FE. Robustness adds interviewyear, interviewyear_sqd, cslcohortdist, countryrelig, countryethnicity, countryvisitor, regtrend."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__marriage_age",
+          "baseline__educ",
+          "baseline__employed"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/add/interviewyear",
+          "rc/controls/add/interviewyear_quad",
+          "rc/controls/add/cslcohortdist",
+          "rc/controls/add/interviewyear_banyear_fe",
+          "rc/controls/add/regtrend",
+          "rc/controls/add/demographics",
+          "rc/sample/subgroup/urban_only",
+          "rc/sample/subgroup/rural_only",
+          "rc/sample/subgroup/baseline_16_countries",
+          "rc/sample/subgroup/baseline_14_countries",
+          "rc/sample/subgroup/no_minimum_countries",
+          "rc/sample/restriction/age_lt_40_at_ban",
+          "rc/sample/restriction/age_lt_30_at_ban",
+          "rc/sample/jackknife/drop_Albania",
+          "rc/sample/jackknife/drop_Benin",
+          "rc/sample/jackknife/drop_DRC",
+          "rc/sample/jackknife/drop_Egypt",
+          "rc/sample/jackknife/drop_Ethiopia",
+          "rc/sample/jackknife/drop_Guinea",
+          "rc/sample/jackknife/drop_Jordan",
+          "rc/sample/jackknife/drop_Kazakhstan",
+          "rc/sample/jackknife/drop_Liberia",
+          "rc/sample/jackknife/drop_Madagascar",
+          "rc/sample/jackknife/drop_Maldives",
+          "rc/sample/jackknife/drop_Namibia",
+          "rc/sample/jackknife/drop_Nepal",
+          "rc/sample/jackknife/drop_Nigeria",
+          "rc/sample/jackknife/drop_Peru",
+          "rc/sample/jackknife/drop_SierraLeone",
+          "rc/sample/jackknife/drop_Togo",
+          "rc/data/treatment/alt_intensity_distance2",
+          "rc/data/treatment/alt_intensity_distance40",
+          "rc/data/treatment/alt_intensity_distance50",
+          "rc/data/treatment/alt_intensity_distance25",
+          "rc/data/treatment/alt_intensity_dist_reg",
+          "rc/data/treatment/binary_mean_above",
+          "rc/data/treatment/binary_75th_above",
+          "rc/form/outcome/childmarriage16",
+          "rc/form/outcome/childmarriage15",
+          "rc/form/outcome/childmarriage14",
+          "rc/form/outcome/childmarriage13",
+          "rc/form/outcome/childmarriage12",
+          "rc/data/treatment/bancohort_age17",
+          "rc/data/treatment/bancohort_age16",
+          "rc/data/treatment/bancohort_age15",
+          "rc/fe/add/interviewyear_fe",
+          "rc/fe/add/banyear_pc_fe"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/countryregionurban",
+          "params": {"cluster_var": "countryregionurban"},
+          "notes": "CRV1 clustered at country-region-urban level, matching paper baseline"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/countrynum",
+            "params": {"cluster_var": "countrynum2"},
+            "notes": "Cluster at country level (17 clusters - very few clusters stress test)"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust HC1 (no clustering)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 130784,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

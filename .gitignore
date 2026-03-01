@@ -29,6 +29,9 @@ data/metadata/*.json
 # Large cache files
 data/cache/datacite_responses.db
 
+# Session cookies (secrets)
+data/cache/session_cookies.json
+
 # Python
 __pycache__/
 *.py[cod]

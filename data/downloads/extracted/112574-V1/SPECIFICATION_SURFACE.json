@@ -1,0 +1,172 @@
+{
+  "paper_id": "112574-V1",
+  "created_at": "2026-02-25",
+  "notes": "Kuziemko & Werker (2006, JDE) study how US foreign aid responds to recipient-country elections and UN General Assembly voting alignment. The unit of observation is donor-recipient-year (Big 5 UNSC donors x recipients, 1975-2003). The paper uses panel OLS with donor-recipient pair FE, de-meaned by pair, with year or donor-year dummies. Variance is adjusted using 3-way clustering (donor, recipient, year). The key parameter is the interaction of UN voting agreement with election timing (p_unvotes_elecex), which captures whether the US rewards politically aligned countries with more aid around election time.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within",
+        "panel_unit": "donor_recipient_pair",
+        "panel_time": "year",
+        "fe_structure": ["pair", "year"],
+        "cluster_vars": ["donor", "recipient", "year"],
+        "se_type": "multiway_cluster_3way",
+        "differencing": "none",
+        "notes": "Data de-meaned by donor-recipient pair (within transformation), plus year dummies. Variance adjusted via Cameron-Gelbach-Miller 3-way clustering on donor, recipient, and year. Main table columns I/IV/VII use pair FE + year dummies; columns II/V/VIII use pair FE + donor-year dummies; columns III/VI/IX add macro controls instead of donor-year dummies."
+      },
+      "claim_object": {
+        "outcome_concept": "Official Development Assistance (ODA) commitments from Big 5 UNSC members to recipient countries (USD thousands, 2000 constant)",
+        "treatment_concept": "Interaction of UN General Assembly voting alignment (unvotes) with executive election year (i_elecex); the focal coefficient is on p_unvotes_elecex = unvotes * i_elecex",
+        "estimand_concept": "Differential effect of UN voting alignment on ODA during recipient-country election years vs. non-election years, conditional on pair and time FE -- captures whether politically aligned countries receive more aid around elections",
+        "target_population": "All donor-recipient-year observations for Big 5 UNSC permanent members (US, UK, France, Russia/USSR, China) and their recipient countries, 1975-2003"
+      },
+      "baseline_specs": [
+        {
+          "label": "MainTable-ColIV",
+          "outcome_var": "oda",
+          "treatment_var": "p_unvotes_elecex",
+          "additional_regressors": ["unvotes", "i_elecex"],
+          "controls": [],
+          "fe_structure": ["pair", "year"],
+          "n_controls": 0,
+          "notes": "Column IV of the main table: pair FE + year dummies, no macro controls. Focal coefficient on p_unvotes_elecex."
+        },
+        {
+          "label": "MainTable-ColV",
+          "outcome_var": "oda",
+          "treatment_var": "p_unvotes_elecex",
+          "additional_regressors": ["unvotes", "i_elecex"],
+          "controls": [],
+          "fe_structure": ["pair", "donor_year"],
+          "n_controls": 0,
+          "notes": "Column V: pair FE + donor-year FE (absorbs all donor-year-level variation). Stricter FE structure."
+        },
+        {
+          "label": "MainTable-ColVI",
+          "outcome_var": "oda",
+          "treatment_var": "p_unvotes_elecex",
+          "additional_regressors": ["unvotes", "i_elecex"],
+          "controls": ["pop", "gdp2000", "pop_donor", "gdp2000_donor"],
+          "fe_structure": ["pair"],
+          "n_controls": 4,
+          "notes": "Column VI: pair FE + macro controls (no year/donor-year dummies, relies on controls to capture time trends)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 4,
+        "linked_adjustment": false,
+        "functional_form_policy": {
+          "log_oda": "preserves claim object (elasticity interpretation)",
+          "notes": "The sensitivity file tests log(ODA) as an alternative outcome. When using log ODA, macro controls (pop, gdp2000, etc.) are also logged."
+        },
+        "notes": "Macro controls are: pop, gdp2000, pop_donor, gdp2000_donor. These are used as a block (all or none) in the paper. The paper does not use subsets of controls. FE structure varies between {pair+year}, {pair+donor_year}, and {pair+controls}."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__main_colV",
+          "baseline__main_colVI",
+          "baseline__main_colVII",
+          "baseline__main_colVIII",
+          "baseline__main_colIX"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/add_macro_block",
+          "rc/controls/loo/drop_pop",
+          "rc/controls/loo/drop_gdp2000",
+          "rc/controls/loo/drop_pop_donor",
+          "rc/controls/loo/drop_gdp2000_donor",
+          "rc/fe/pair_plus_year",
+          "rc/fe/pair_plus_donor_year",
+          "rc/fe/pair_only_with_controls",
+          "rc/fe/pair_plus_recipient_year",
+          "rc/sample/subset/drop_big3_recipients",
+          "rc/sample/subset/drop_big5_recipients",
+          "rc/sample/subset/us_only",
+          "rc/sample/subset/balanced_panel",
+          "rc/form/outcome/log_oda",
+          "rc/form/outcome/log_oda_with_log_controls",
+          "explore/treatment/decompose_unvotes_rt_resid",
+          "explore/treatment/competitive_election_split_eiec",
+          "explore/treatment/competitive_election_split_pct",
+          "explore/treatment/early_vs_late_election",
+          "rc/joint/log_oda_pair_year",
+          "rc/joint/log_oda_pair_controls",
+          "rc/joint/log_oda_donor_year",
+          "rc/joint/drop_big3_pair_year",
+          "rc/joint/drop_big5_pair_year",
+          "explore/joint/decompose_unvotes_pair_year",
+          "explore/joint/decompose_unvotes_donor_year",
+          "explore/joint/competitive_eiec_pair_year",
+          "explore/joint/competitive_eiec_donor_year",
+          "explore/joint/competitive_eiec_controls",
+          "explore/joint/competitive_pct_pair_year",
+          "explore/joint/competitive_pct_donor_year",
+          "explore/joint/competitive_pct_controls",
+          "explore/joint/early_late_pair_year",
+          "explore/joint/decompose_unvotes_controls",
+          "rc/joint/log_oda_drop_big3",
+          "rc/joint/log_oda_drop_big5",
+          "explore/joint/log_oda_competitive_eiec",
+          "explore/joint/log_oda_competitive_pct",
+          "explore/joint/log_oda_decompose_unvotes",
+          "rc/joint/drop_big3_donor_year",
+          "rc/joint/drop_big5_controls",
+          "rc/joint/balanced_panel_pair_year",
+          "rc/joint/us_only_pair_year"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/multiway_3",
+          "params": {"cluster_vars": ["donor", "recipient", "year"]},
+          "notes": "Cameron-Gelbach-Miller 3-way clustering on donor, recipient, and year. This is the paper's baseline inference method (mwc_3way function)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/pair",
+            "params": {"cluster_var": "pair"},
+            "notes": "Cluster at the donor-recipient pair level (single-way)."
+          },
+          {
+            "spec_id": "infer/se/cluster/recipient",
+            "params": {"cluster_var": "recipient"},
+            "notes": "Cluster at the recipient level only."
+          },
+          {
+            "spec_id": "infer/se/cluster/twoway_donor_recipient",
+            "params": {"cluster_vars": ["donor", "recipient"]},
+            "notes": "Two-way clustering on donor and recipient (dropping year dimension)."
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) standard errors without clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 15,
+        "notes": "Larger budget reflecting the rich specification space. The paper explores many FE structures, treatment decompositions, sample restrictions, and functional forms across the main and sensitivity analyses."
+      },
+      "sampling": {
+        "seed": 112574,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Only 4 macro controls used as a block, so exhaustive enumeration of LOO and block variations is trivial. Main combinatorial axis is the cross of {FE structure} x {treatment decomposition} x {sample} x {outcome form}."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/election_timing",
+          "scope": "baseline_group",
+          "notes": "Check whether elections are trending over time (the paper notes a weak positive trend in election frequency)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "paper_id": "181581-V1",
+  "created_at": "2026-02-25",
+  "reviewed_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "reghdfe_ols",
+        "randomization_unit": "health facility (fid)",
+        "stratification": "strata",
+        "estimand": "ITT",
+        "treatment_arms": ["control", "MLP arm (mlp)", "Doctor arm (doctor)"],
+        "fe_structure": ["strata"],
+        "cluster_vars": ["fid"],
+        "n_clusters": "~124 facilities (exact count determined at runtime)"
+      },
+      "claim_object": {
+        "outcome_concept": "7-day neonatal mortality (binary: infant died within 7 days of birth)",
+        "treatment_concept": "Deployment of a doctor to the health facility (Doctor Arm) vs control (no deployment)",
+        "estimand_concept": "ITT effect of deploying a doctor to a primary health center on 7-day infant mortality",
+        "target_population": "Live births to women enrolled in the study at participating primary health centers in Kaduna State, Nigeria"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1",
+          "outcome_var": "mort7",
+          "treatment_var": "doctor",
+          "additional_treatment_vars": ["mlp"],
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["strata"],
+          "vcov": "cluster_fid",
+          "notes": "reghdfe mort7 mlp doctor, abs(strata) cl(fid). Both treatment arms included simultaneously."
+        },
+        {
+          "label": "Table4-Col2",
+          "outcome_var": "mort7",
+          "treatment_var": "doctor",
+          "additional_treatment_vars": ["mlp"],
+          "controls": ["cct", "i.magedum", "first", "hausa", "i.mschool", "auton", "car", "last", "gest", "male"],
+          "n_controls": 10,
+          "fixed_effects": ["strata", "qtr"],
+          "vcov": "cluster_fid",
+          "notes": "Table 4 Col 2: basic controls (cont_base = cont_ind + male) + quarter FE. Note: magedum and mschool are factor (categorical) variables."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 25,
+        "linked_adjustment": false,
+        "mandatory_treatment_vars": "Both mlp and doctor must be included together in the baseline and all RC specs (the paper always includes both arms). Exception: rc/data/treatment/doctor_only explicitly drops mlp.",
+        "control_variable_notes": "cont_ind = cct i.magedum first hausa i.mschool auton car last gest; cont_base = cont_ind + male; cont_hc = hc_deliveries hc_cesarean hc_transfusion i.hc_clean; cont_all = cont_base + cont_hc + pastdeath hc_workers hc_open24hrs hc_equipment hc_beds hc_lab hc_drug hc_nopow hc_vent i.hc_cond",
+        "notes": "RCT design. Table 4 shows 4 columns: no controls, basic controls, extended controls, and double-lasso. The control sets revealed are: none, cont_base (10 vars), cont_base+cont_hc (14+ vars), and double-lasso selected controls (from cont_all, ~25 vars)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/basic",
+          "rc/controls/sets/extended",
+          "rc/controls/progression/strata_only",
+          "rc/controls/progression/strata_qtr",
+          "rc/controls/progression/strata_qtr_individual",
+          "rc/controls/progression/strata_qtr_individual_hc",
+          "rc/controls/loo/drop_male",
+          "rc/controls/loo/drop_first",
+          "rc/controls/loo/drop_hausa",
+          "rc/controls/loo/drop_gest",
+          "rc/controls/loo/drop_car",
+          "rc/controls/loo/drop_last",
+          "rc/controls/loo/drop_auton",
+          "rc/controls/loo/drop_cct",
+          "rc/controls/loo/drop_hc_deliveries",
+          "rc/controls/loo/drop_hc_cesarean",
+          "rc/controls/loo/drop_hc_transfusion",
+          "rc/controls/loo/drop_hc_clean",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/fe/add/qtr",
+          "rc/fe/drop/qtr",
+          "rc/sample/restriction/exclude_multiple_births",
+          "rc/data/outcome/mort30",
+          "rc/data/treatment/doctor_only"
+        ]
+      },
+      "exploration_universe": {
+        "explore_spec_ids": [
+          "explore/population/high_dose",
+          "explore/population/low_dose",
+          "explore/population/doctor_arm_only"
+        ],
+        "notes": "high_dose and low_dose (Table 5) restrict to pregnancies with above/below-median exposure to the deployed provider. These change the target population and are heterogeneity analyses, not estimand-preserving RCs. doctor_arm_only drops the MLP arm entirely, restricting to Doctor vs Control facilities only (changes the comparison set and implicitly the population)."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/fid",
+          "params": {"cluster_var": "fid"},
+          "notes": "Cluster SEs at the health facility level (randomization unit). Used throughout Table 4."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust SEs without clustering"
+          },
+          {
+            "spec_id": "infer/se/cluster/strata",
+            "params": {"cluster_var": "strata"},
+            "notes": "Cluster at strata level (coarser clustering). Note: small number of strata may make this unreliable."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 181581,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check",
+          "notes": "Table 1 balance across treatment arms (facility, mother, and child variables)"
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check",
+          "notes": "Tables A.2 and A.3: attrition characteristics and differential attrition by arm"
+        }
+      ]
+    }
+  ]
+}

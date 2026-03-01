@@ -1,0 +1,414 @@
+{
+  "paper_id": "149481-V1",
+  "created_at": "2026-02-24",
+  "notes": "Three field experiments testing whether thank-you calls increase charitable giving. The paper's main analysis (Table 2) uses nonparametric tests (Wilcoxon rank-sum, chi-square) for difference-in-means. Table A1 provides OLS/FE regressions with controls. We focus on Experiment 1 (public TV stations) as the primary baseline group since it is the largest, best-powered experiment with the richest covariate set. Experiment 2 (national non-profit) is a separate baseline group with a distinct population and no demographic controls available. Experiment 3 is treated as exploration (it tests a modified script variant, not a simple thank-you call effect).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "label": "Thank-you call -> Donation behavior, Experiment 1 (Public TV Stations)",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "difference_in_means",
+        "estimand": "ITT",
+        "randomization_unit": "individual (account_id)",
+        "stratification": "station x exec_date (variable: ii)",
+        "n_strata": "multiple station-by-quarter groups",
+        "fe_structure": ["ii"],
+        "cluster_vars": [],
+        "se_type": "nonparametric (ranksum/chi2 for Table 2), classical OLS SE for Table A1 (xtreg, fe without robust/cluster option)",
+        "sample_filter": "exp1_analysis_data (exec_date != 1610, 1701; stations 24, 55, 64, 61 dropped; payment_amount2==0 dropped; sustaining donors dropped; big donors >=10k dropped)",
+        "notes": "Individual-level randomization within station x quarter strata. Table 2 reports treatment vs control means with Wilcoxon rank-sum p-values (continuous) and chi-square p-values (binary). Table A1 reports OLS with strata FE (xtreg, fe) and demographic controls. Note: xtreg, fe without robust option uses classical (non-robust) SE."
+      },
+      "claim_object": {
+        "outcome_concept": "Charitable donation behavior in the year following the thank-you call: whether the donor renewed (binary), and the amount donated (continuous)",
+        "treatment_concept": "Thank-you phone call to existing donors (treat=1 vs control=0)",
+        "estimand_concept": "Intent-to-Treat (ITT) average effect of being assigned to receive a thank-you call on donation outcomes",
+        "target_population": "Existing donors at public television stations who donated in the year before the experiment (excluding sustaining donors and big donors >=10k)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Exp1-PercentDonating",
+          "outcome_var": "renewing",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "chi2",
+          "notes": "Binary outcome: whether donor renewed. Chi-square test of independence."
+        },
+        {
+          "label": "Table2-Exp1-AmountDonated",
+          "outcome_var": "payment_amount3",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Continuous outcome: total gift amount (includes 0 for non-donors). Wilcoxon rank-sum test."
+        },
+        {
+          "label": "Table2-Exp1-NumberOfGifts",
+          "outcome_var": "var13",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Count outcome: number of gifts in year after. Wilcoxon rank-sum test."
+        },
+        {
+          "label": "Table2-Exp1-AmountCondDonating",
+          "outcome_var": "gift_cond",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Continuous outcome: gift amount conditional on donating (renewing==1). Wilcoxon rank-sum test. Conditional sample."
+        },
+        {
+          "label": "Table2-Exp1-RetentionRate",
+          "outcome_var": "retention",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Continuous outcome: retention rate = payment_amount3/payment_amount2. Wilcoxon rank-sum test."
+        },
+        {
+          "label": "TableA1-Exp1-Donated-OLS",
+          "outcome_var": "donated",
+          "treatment_var": "treat",
+          "controls": ["payment_amount2", "var12", "female", "age_display2", "age_display3", "inc_display3", "inc_display1", "inc_display2", "lor_display2"],
+          "fe": ["ii"],
+          "n_controls": 9,
+          "notes": "OLS (xtreg, fe) with strata FE and demographic controls. Table A1 Col 1."
+        },
+        {
+          "label": "TableA1-Exp1-GiftCondDonated-OLS",
+          "outcome_var": "gift_cond",
+          "treatment_var": "treat",
+          "controls": ["payment_amount2", "var12", "female", "age_display2", "age_display3", "inc_display3", "inc_display1", "inc_display2", "lor_display2"],
+          "fe": ["ii"],
+          "n_controls": 9,
+          "notes": "OLS (xtreg, fe) with strata FE and demographic controls. Table A1 Col 4. Conditional on donating."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "notes": "Baseline Table 2 uses 0 controls (pure difference-in-means). Table A1 uses 9 controls (2 baseline giving + 7 demographic). Range spans both. Controls: payment_amount2 (baseline gift), var12 (baseline num gifts), female, age_display2, age_display3, inc_display3, inc_display1, inc_display2, lor_display2."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__t2_exp1_renewing",
+          "baseline__t2_exp1_payment_amount3",
+          "baseline__t2_exp1_var13",
+          "baseline__t2_exp1_gift_cond",
+          "baseline__t2_exp1_retention",
+          "baseline__tA1_exp1_donated_ols",
+          "baseline__tA1_exp1_gift_cond_ols"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/strata_fe",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_female",
+          "rc/controls/loo/drop_age_display2",
+          "rc/controls/loo/drop_age_display3",
+          "rc/controls/loo/drop_inc_display1",
+          "rc/controls/loo/drop_inc_display2",
+          "rc/controls/loo/drop_inc_display3",
+          "rc/controls/loo/drop_lor_display2",
+          "rc/controls/loo/drop_payment_amount2",
+          "rc/controls/loo/drop_var12",
+          "rc/controls/sets/none",
+          "rc/controls/sets/baseline_giving_only",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/full_with_fe",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/quality/drop_big_donors_5k",
+          "rc/sample/quality/include_sustaining_donors",
+          "rc/sample/quality/drop_stations_with_few_obs",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p",
+          "rc/fe/strata/station_only",
+          "rc/fe/strata/none"
+        ],
+        "rc_notes": {
+          "rc/controls/loo/*": "Leave-one-out from the Table A1 full control set (9 controls). Run only for the OLS baseline specs (donated and gift_cond with controls).",
+          "rc/controls/sets/none": "No controls, no FE. Pure difference-in-means as in Table 2.",
+          "rc/controls/sets/baseline_giving_only": "Only baseline giving controls (payment_amount2, var12) plus strata FE. Midpoint between Table 2 and Table A1.",
+          "rc/controls/sets/demographics_only": "Only demographic controls (female, age, income, residence length dummies) plus strata FE.",
+          "rc/controls/sets/full_with_fe": "All 9 controls plus strata FE, replicating Table A1.",
+          "rc/sample/outliers/trim_y_1_99": "Trim top 1% of outcome distribution. Apply only to continuous monetary outcomes (payment_amount3, gift_cond, retention), not binary (renewing, donated).",
+          "rc/sample/outliers/trim_y_5_95": "Trim top 5% of outcome distribution. Same restriction as trim_1_99.",
+          "rc/sample/quality/drop_big_donors_5k": "Drop donors with any single gift >= $5,000 (paper already drops >= $10,000). Stricter threshold as robustness.",
+          "rc/sample/quality/include_sustaining_donors": "Include sustaining donors that were dropped in data preparation (step1, line 369). Tests sensitivity to this exclusion. Requires re-running data construction pipeline from step1 without the sustaining_donors drop.",
+          "rc/sample/quality/drop_stations_with_few_obs": "Drop station x quarter strata with fewer than 10 observations in either treatment or control arm.",
+          "rc/form/outcome/asinh": "Apply inverse hyperbolic sine transform to continuous monetary outcomes (payment_amount3, gift_cond). NOT to binary outcomes (renewing, donated). Interpretation: coefficient gives approximate semi-elasticity for large y; preserves outcome concept as level effect up to monotone transform. Binary treatment makes the coefficient still directly interpretable as transformed-unit treatment effect.",
+          "rc/form/outcome/log1p": "Apply log(1+y) transform to continuous monetary outcomes. Same restriction as asinh. Interpretation: coefficient gives approximate percent change for small effects; handles zeros via +1 offset.",
+          "rc/fe/strata/station_only": "Use station FE only (instead of station x exec_date strata FE). For OLS specs only.",
+          "rc/fe/strata/none": "Drop strata FE entirely. For OLS specs only."
+        }
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/nonparametric/ranksum_chi2",
+          "params": {},
+          "notes": "For difference-in-means specs, use Wilcoxon rank-sum (continuous) or chi-square (binary) matching the paper's Table 2 approach. For OLS specs, use classical (non-robust) standard errors matching Stata xtreg, fe default (no robust/cluster option specified in paper code)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) standard errors for OLS regression specs."
+          },
+          {
+            "spec_id": "infer/se/cluster/station",
+            "params": {"cluster_var": "station_id"},
+            "notes": "Cluster at station level (higher than strata) as a stress test. Relevant because randomization was within station x quarter, but outcomes may be correlated within station."
+          },
+          {
+            "spec_id": "infer/test/ttest",
+            "params": {},
+            "notes": "Simple two-sample t-test as alternative to rank-sum for difference-in-means specs."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "notes": "7 baseline specs. For focal outcomes (renewing, payment_amount3, donated), run 3 design + 13 rc (controls) + 5 rc (sample) + 2 rc (form) + 2 rc (FE) = 25 RC per focal, but many are conditional on OLS vs diff-in-means. Budget set at 80 to allow headroom."
+      },
+      "sampling": {
+        "seed": 149481,
+        "notes": "Full enumeration is feasible; no sampling needed. Control pool is small (9 controls total)."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance test for pre-treatment covariates between treatment and control. Replicates Table 1 Experiment 1."
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "notes": "Test whether attrition/missing data differs by treatment status."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "label": "Thank-you call -> Donation behavior, Experiment 2 (National Non-Profit)",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "difference_in_means",
+        "estimand": "ITT",
+        "randomization_unit": "individual (account_id)",
+        "stratification": "none",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "nonparametric (ranksum/chi2)",
+        "sample_filter": "exp2_analysis_data (gift.dta source; existing donors dropped via payment_amount1!=.; baseline non-donors with payment_amount2==0 kept since replaced to 0 if missing)",
+        "notes": "Individual-level randomization with no strata. Table 2 reports treatment vs control means with Wilcoxon rank-sum p-values (continuous) and chi-square p-values (binary). Table A1 reports OLS without FE and without demographic controls (only baseline giving vars)."
+      },
+      "claim_object": {
+        "outcome_concept": "Charitable donation behavior in the year following the thank-you call at a national non-profit",
+        "treatment_concept": "Thank-you phone call to existing donors (treat=1 vs control=0)",
+        "estimand_concept": "Intent-to-Treat (ITT) average effect of being assigned to receive a thank-you call on donation outcomes",
+        "target_population": "Existing donors at a national non-profit organization"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Exp2-PercentDonating",
+          "outcome_var": "renewing",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "chi2",
+          "notes": "Binary outcome: whether donor renewed. Chi-square test."
+        },
+        {
+          "label": "Table2-Exp2-AmountDonated",
+          "outcome_var": "payment_amount3",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Continuous outcome: total gift amount. Wilcoxon rank-sum test."
+        },
+        {
+          "label": "Table2-Exp2-NumberOfGifts",
+          "outcome_var": "var13",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Count outcome: number of gifts. Wilcoxon rank-sum test."
+        },
+        {
+          "label": "Table2-Exp2-AmountCondDonating",
+          "outcome_var": "gift_cond",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Continuous outcome: gift amount conditional on donating. Wilcoxon rank-sum."
+        },
+        {
+          "label": "Table2-Exp2-RetentionRate",
+          "outcome_var": "retention",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": [],
+          "n_controls": 0,
+          "test": "ranksum",
+          "notes": "Continuous outcome: retention rate. Wilcoxon rank-sum."
+        },
+        {
+          "label": "TableA1-Exp2-Donated-OLS",
+          "outcome_var": "donated",
+          "treatment_var": "treat",
+          "controls": ["payment_amount2", "var12"],
+          "fe": [],
+          "n_controls": 2,
+          "notes": "OLS regression with only baseline giving controls. No demographic controls available for Exp 2. No FE (no strata). Table A1 Col 2."
+        },
+        {
+          "label": "TableA1-Exp2-GiftCondDonated-OLS",
+          "outcome_var": "gift_cond",
+          "treatment_var": "treat",
+          "controls": ["payment_amount2", "var12"],
+          "fe": [],
+          "n_controls": 2,
+          "notes": "OLS regression with baseline giving controls. Table A1 Col 5. Conditional on donating."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "Experiment 2 has no demographic covariates. Only baseline giving controls available: payment_amount2, var12. Range: 0 (Table 2 diff-in-means) to 2 (Table A1 OLS)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__t2_exp2_renewing",
+          "baseline__t2_exp2_payment_amount3",
+          "baseline__t2_exp2_var13",
+          "baseline__t2_exp2_gift_cond",
+          "baseline__t2_exp2_retention",
+          "baseline__tA1_exp2_donated_ols",
+          "baseline__tA1_exp2_gift_cond_ols"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/with_covariates"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_payment_amount2",
+          "rc/controls/loo/drop_var12",
+          "rc/controls/sets/none",
+          "rc/controls/sets/baseline_giving_only",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p"
+        ],
+        "rc_notes": {
+          "rc/controls/loo/*": "Leave-one-out from the 2 baseline giving controls. Run for OLS specs only.",
+          "rc/controls/sets/none": "No controls. Pure difference-in-means as in Table 2.",
+          "rc/controls/sets/baseline_giving_only": "Both baseline giving controls (payment_amount2, var12). Replicates Table A1.",
+          "rc/sample/outliers/trim_y_1_99": "Trim top 1% of continuous outcomes only.",
+          "rc/sample/outliers/trim_y_5_95": "Trim top 5% of continuous outcomes only.",
+          "rc/form/outcome/asinh": "Inverse hyperbolic sine for continuous monetary outcomes only. Interpretation: approximate semi-elasticity for large y.",
+          "rc/form/outcome/log1p": "Log(1+y) for continuous monetary outcomes only. Interpretation: approximate percent change for small effects."
+        }
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/nonparametric/ranksum_chi2",
+          "params": {},
+          "notes": "Wilcoxon rank-sum (continuous) or chi-square (binary) for diff-in-means specs. Classical OLS SE for regression specs (Stata reg without robust option). Matches paper."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "HC1 robust SE for OLS specs."
+          },
+          {
+            "spec_id": "infer/test/ttest",
+            "params": {},
+            "notes": "Two-sample t-test alternative to rank-sum."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "notes": "7 baseline specs. Smaller RC space than G1 due to fewer available controls and no FE variation. Budget at 40."
+      },
+      "sampling": {
+        "seed": 149482,
+        "notes": "Full enumeration is feasible."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance test on pre-treatment giving variables. Replicates Table 1 Experiment 2."
+        }
+      ]
+    }
+  ],
+  "focal_outcomes": {
+    "G1_primary": "renewing",
+    "G1_notes": "Whether the donor renewed (percent donating) is the paper's primary outcome of interest across all three experiments. It appears first in Table 2 and is the focus of Figures 1-3.",
+    "G1_secondary": "payment_amount3",
+    "G1_secondary_notes": "Total gift amount (unconditional) is the secondary continuous outcome.",
+    "G2_primary": "renewing",
+    "G2_notes": "Same primary outcome for Experiment 2."
+  },
+  "available_covariates": {
+    "exp1_baseline_giving": ["payment_amount2", "var12"],
+    "exp1_demographics": ["female", "age_display2", "age_display3", "inc_display3", "inc_display1", "inc_display2", "lor_display2"],
+    "exp1_missing_indicators": ["female_missing", "age_income_missing"],
+    "exp2_baseline_giving": ["payment_amount2", "var12"],
+    "exp2_demographics": [],
+    "notes": "Experiment 1 has 9 controls (2 baseline giving + 7 demographics). Missing indicators (female_missing, age_income_missing) are available but not used in the paper's main regressions. Experiment 2 has only 2 baseline giving controls. Experiment 3 adds new_script dummy but is treated as exploration."
+  },
+  "excluded_from_core": {
+    "experiment_3": {
+      "reason": "Experiment 3 tests a modified thank-you call script (new_script) in addition to the original script. This is a different treatment concept (new vs original script) compared to G1/G2 (any call vs no call). Treated as exploration.",
+      "tables": "Table 2 Panel C, Table A1 Cols 3 and 6"
+    },
+    "LATE_estimates": {
+      "reason": "Table A2 presents IV/LATE estimates instrumenting 'reached' with 'treat'. This changes the estimand from ITT to LATE (effect of actually being reached). Treated as exploration.",
+      "tables": "Table A2"
+    },
+    "future_years": {
+      "reason": "Table A3 examines treatment effects 2-5 years after randomization. This changes the outcome timing concept. Treated as exploration.",
+      "tables": "Table A3"
+    },
+    "unconditional_gift_amount": {
+      "reason": "Table A4 runs OLS on unconditional gift amount (payment_amount3) for Exp 1. This is already represented in G1 baseline specs as a diff-in-means and could be run as an RC variant (OLS with controls). Included implicitly via rc/controls/sets/full_with_fe on payment_amount3.",
+      "tables": "Table A4"
+    },
+    "interaction_effects": {
+      "reason": "Table A6 tests treatment interactions with pledge drive, gender, age, income, etc. These are heterogeneity analyses, not baseline estimand-preserving. Treated as exploration.",
+      "tables": "Table A6"
+    },
+    "expert_forecasts": {
+      "reason": "Figures 2-3 and Table A5 concern expert forecast accuracy, not the experimental treatment effect itself.",
+      "tables": "Figure 2, Figure 3, Table A5"
+    }
+  }
+}

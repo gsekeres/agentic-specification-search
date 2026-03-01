@@ -1,0 +1,182 @@
+{
+  "paper_id": "112444-V1",
+  "created_at": "2026-02-25",
+  "notes": "Reinhart & Rogoff (2011), 'From Financial Crash to Debt Crisis'. Panel of 70 countries over up to 200 years. TSP code estimates pooled cross-country panel regressions (OLS with robust SE and logit) predicting banking/external debt crises from lagged crisis-contagion variables, development status dummies, and public debt. Data is stacked country-year panels. No country FE in the regressions (development dummies used instead). Three estimation periods (1824-2009, 1900-2009, 1946-2009). Two systems: with and without public debt ratio.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "pooled_ols_robust",
+        "panel_unit": "country (1-71)",
+        "panel_time": "year",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "hc_robust",
+        "notes": "Pooled OLS with heteroskedasticity-robust SE (TSP HCTYPE=2). No country or time FE. Development-status dummies (develop1, develop2) serve as group indicators. Data is stacked country-year panel (71 countries x T years)."
+      },
+      "claim_object": {
+        "outcome_concept": "Banking crisis occurrence (binary indicator)",
+        "treatment_concept": "Crisis contagion from other countries, measured by 3-year moving average of banking crises in other countries (bank_move), external debt crises (debt_move), and financial center crisis indicator (center)",
+        "estimand_concept": "Partial correlation between banking crisis incidence and cross-country crisis contagion, controlling for development status",
+        "target_population": "70 countries over 1824-2009 (main sample period)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Eq1-1824-bank",
+          "outcome_var": "bank",
+          "treatment_var": "center",
+          "controls": ["develop1", "develop2", "bank_move", "debt_move"],
+          "n_controls": 4
+        },
+        {
+          "label": "Eq5-1824-bank-public",
+          "outcome_var": "bank",
+          "treatment_var": "center",
+          "controls": ["develop1", "develop2", "bank_move", "debt_move", "public"],
+          "n_controls": 5
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 4,
+        "controls_count_max": 5,
+        "linked_adjustment": false,
+        "notes": "Baseline uses 4 controls (develop1, develop2, bank_move, debt_move). Extended spec adds public debt ratio (5 controls). All are mandatory in the paper's framework; develop1+develop2 always included."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__eq5_bank_public"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_public",
+          "rc/controls/loo/drop_bank_move",
+          "rc/controls/loo/drop_debt_move",
+          "rc/controls/loo/drop_center",
+          "rc/controls/loo/drop_develop1",
+          "rc/controls/loo/drop_develop2",
+          "rc/sample/period/1900_2009",
+          "rc/sample/period/1946_2009",
+          "rc/sample/subset/advanced_only",
+          "rc/sample/subset/emerging_only",
+          "rc/sample/subset/drop_financial_centers",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/form/model/logit",
+          "rc/form/model/probit",
+          "rc/fe/add_country",
+          "rc/fe/add_year",
+          "rc/fe/add_country_year",
+          "rc/fe/add_region",
+          "rc/joint/period_public/*",
+          "rc/joint/fe_period/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc2",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SE matching TSP HCTYPE=2."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "HC1 robust SE."},
+          {"spec_id": "infer/se/cluster/country", "params": {"cluster_var": "country"}, "notes": "Cluster by country to account for within-country serial correlation."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 112444,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Small control pool (5-6 variables), so full enumeration of LOO and add-one is feasible."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "pooled_ols_robust",
+        "panel_unit": "country (1-71)",
+        "panel_time": "year",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "hc_robust",
+        "notes": "Same pooled OLS structure as G1 but for external debt crises."
+      },
+      "claim_object": {
+        "outcome_concept": "External debt crisis occurrence (binary indicator)",
+        "treatment_concept": "Crisis contagion from other countries (bank_move, debt_move, center)",
+        "estimand_concept": "Partial correlation between external debt crisis incidence and cross-country crisis contagion",
+        "target_population": "70 countries over 1824-2009"
+      },
+      "baseline_specs": [
+        {
+          "label": "Eq2-1824-debt",
+          "outcome_var": "debt",
+          "treatment_var": "debt_move",
+          "controls": ["bank_move", "center"],
+          "n_controls": 2
+        },
+        {
+          "label": "Eq6-1824-debt-public",
+          "outcome_var": "debt",
+          "treatment_var": "debt_move",
+          "controls": ["bank_move", "center", "develop1", "develop2", "public"],
+          "n_controls": 5
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 5,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__eq6_debt_public"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_public",
+          "rc/controls/single/add_develop1",
+          "rc/controls/single/add_develop2",
+          "rc/controls/loo/drop_bank_move",
+          "rc/controls/loo/drop_center",
+          "rc/sample/period/1900_2009",
+          "rc/sample/period/1946_2009",
+          "rc/sample/subset/advanced_only",
+          "rc/sample/subset/emerging_only",
+          "rc/form/model/logit",
+          "rc/form/model/probit",
+          "rc/fe/add_country",
+          "rc/fe/add_year",
+          "rc/joint/period_controls/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc2",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SE matching TSP HCTYPE=2."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/country", "params": {"cluster_var": "country"}, "notes": "Cluster by country."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 112444,
+        "controls_subset_sampler": "full_enumeration"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

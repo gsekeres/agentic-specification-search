@@ -1,0 +1,30 @@
+{
+  "paper_id": "112338-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of Medicare Part D market share (mcar0203mepsrx) on log change in brand-name drug price-per-day from 2003 to 2006 (lppd0603), weighted OLS with robust SEs, trimmed sample excluding cancer drugs.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": ["112338-V1_spec_001", "112338-V1_spec_002", "112338-V1_spec_003", "112338-V1_spec_004"],
+      "baseline_spec_ids": ["baseline", "baseline__table2_col1", "baseline__table2_col2", "baseline__table2_col3"],
+      "baseline_coefficient": -0.1363694,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.015,
+      "baseline_n_obs": 517,
+      "notes": "Table 2 Column 4 is the preferred specification (spec_001 = baseline). Columns 1-3 are progressive build-up: Col1 = no trim/cancer restriction, Col2 = add controls, Col3 = drop cancer drugs. All successful. High failure rate (22/35 G1 specs fail) due to proprietary IMS Health data not available in the replication package."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of Medicare Part D market share (mcar0203mepsrx) on log change in brand-name drug total doses from 2003 to 2006 (ldoses0603), weighted OLS with robust SEs, trimmed sample excluding cancer drugs.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["112338-V1_spec_036", "112338-V1_spec_037", "112338-V1_spec_038", "112338-V1_spec_039"],
+      "baseline_spec_ids": ["baseline", "baseline__table3_col1", "baseline__table3_col2", "baseline__table3_col3"],
+      "baseline_coefficient": 0.3891537,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.218,
+      "baseline_n_obs": 517,
+      "notes": "Table 3 Column 4 is the preferred specification (spec_036 = baseline). The baseline quantity effect is not statistically significant (p=0.218). All G2 baselines are insignificant. High failure rate (12/20 G2 specs fail) due to proprietary data."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified two baseline groups: G1 for price effects (Table 2) and G2 for quantity effects (Table 3). The dominant issue is the extremely high failure rate (34 of 56 total specs = 60.7%) because many specifications require proprietary IMS Health variables (e.g., imsgrouprank03, meps0203scripts weights) that are not included in the replication package. Only MEPS-derived variables are available. Treatment variable alternatives (mcar0203mepspd, mcself0203mepsrx) are core form variations, not concept drift."
+}

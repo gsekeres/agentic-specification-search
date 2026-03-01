@@ -1,0 +1,112 @@
+{
+  "paper_id": "130141-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "structural_var",
+      "design_audit": {
+        "estimator": "bayesian_var_minnesota_prior",
+        "model_formula": "VAR(5) on [TFP, GDP, Consumption, Hours, GZ_spread, SP500, Inflation] with medium-run (MFEVD) identification of TFP news shock",
+        "selection_story": "Bayesian VAR with Minnesota prior (hyper-parameters chosen by BIC). TFP news shock identified via medium-run MFEVD: the shock that maximizes the forecast error variance of TFP at the VAR horizon (h=40), subject to zero contemporaneous impact on TFP. IRFs and FEVDs computed from posterior draws.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Impulse response of real GDP to a TFP news shock",
+        "treatment_concept": "Structural TFP news shock (1 std dev) identified via medium-run MFEVD",
+        "estimand_concept": "Cumulative impulse response of GDP to a 1 std dev TFP news shock at horizon h=8 quarters",
+        "target_population": "US macroeconomic aggregates, quarterly 1984Q1-2017Q1"
+      },
+      "baseline_specs": [
+        {
+          "label": "Baseline-MFEVD-news-shock",
+          "outcome_var": "GDP_irf_h8",
+          "treatment_var": "TFP_news_shock",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "bayesian_posterior",
+          "var_lags": 5,
+          "var_variables": ["TFP", "GDP", "Consumption", "Hours", "gzspr", "SP500", "Inflation"],
+          "identification": "MFEVD_news",
+          "irf_horizon": 40,
+          "n_draws": 500,
+          "sample": "1984Q1-2017Q1"
+        }
+      ],
+      "constraints": {
+        "var_lags_range": [2, 8],
+        "var_variables_pool": ["TFP", "GDP", "Investment", "Consumption", "Hours", "SP500", "Inflation", "ebp", "gzspr", "defaultrisk", "RMV_banks", "BAA"],
+        "linked_adjustment": false,
+        "notes": "Paper uses 5 VAR lags and 7 variables as baseline (Figure 1). Key spec choices: number of lags, which financial variable (GZ spread vs EBP vs default risk vs bank equity), sample period (full vs excluding Great Recession), identification scheme (MFEVD news vs max-FEV financial shock), variable ordering, IRF horizon for measurement."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/lags/p2",
+          "rc/lags/p3",
+          "rc/lags/p4",
+          "rc/lags/p6",
+          "rc/lags/p8",
+          "rc/financial_var/ebp",
+          "rc/financial_var/defaultrisk",
+          "rc/financial_var/RMV_banks",
+          "rc/financial_var/BAA",
+          "rc/financial_var/none",
+          "rc/add_investment",
+          "rc/sample/pre_GR",
+          "rc/sample/post1990",
+          "rc/ident/MFEVD_financial",
+          "rc/horizon/h1",
+          "rc/horizon/h4",
+          "rc/horizon/h8",
+          "rc/horizon/h12",
+          "rc/horizon/h16",
+          "rc/horizon/h20",
+          "rc/outcome/TFP",
+          "rc/outcome/Consumption",
+          "rc/outcome/Hours",
+          "rc/outcome/SP500",
+          "rc/outcome/Inflation",
+          "rc/outcome/Investment",
+          "rc/ordering/fin_first",
+          "rc/ndraws/1000",
+          "rc/grid/lags_financial",
+          "rc/grid/lags_sample"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/bayesian/posterior_16_84",
+          "params": {"quantiles": [0.16, 0.50, 0.84]},
+          "notes": "Bayesian posterior credible intervals from Normal-Inverse-Wishart posterior draws (16th/84th percentiles as in paper)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/bayesian/posterior_5_95",
+            "params": {"quantiles": [0.05, 0.50, 0.95]},
+            "notes": "Wider 90% credible intervals"
+          },
+          {
+            "spec_id": "infer/frequentist/bootstrap",
+            "params": {},
+            "notes": "Frequentist OLS VAR with residual bootstrap confidence intervals"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 130141,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

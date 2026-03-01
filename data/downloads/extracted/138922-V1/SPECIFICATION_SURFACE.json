@@ -1,0 +1,130 @@
+{
+  "paper_id": "138922-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "treatment_timing": "2008/09 cohort onward (C2SC voucher introduced in Saxony school year 2008/09)",
+        "estimand": "ATT",
+        "comparison_groups": "Brandenburg and Thuringia serve as control states for treatment state Saxony",
+        "panel_unit": "repeated_cross_section",
+        "panel_time": "year_3rd (school examination cohort year, 2006-2010)",
+        "fe_structure": ["year_3rd", "bula_3rd", "cityno"],
+        "cluster_vars": ["cityno"]
+      },
+      "claim_object": {
+        "outcome_concept": "Sports club membership (binary indicator)",
+        "treatment_concept": "C2SC sports club voucher program (Saxony, post-2008)",
+        "estimand_concept": "ATT of C2SC voucher availability on sports club membership",
+        "target_population": "Primary school children in Saxony (treatment) vs Brandenburg/Thuringia (control), cohorts 2006-2010"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col3-sportsclub",
+          "outcome_var": "sportsclub",
+          "treatment_var": "treat",
+          "controls": [],
+          "fe": ["year_3rd", "bula_3rd", "cityno"],
+          "n_controls": 0,
+          "notes": "Main Table 2 Column 3: reg sportsclub treat i.year_3rd i.bula_3rd i.cityno, cluster(cityno)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "notes": "Baseline has 0 controls (Table 2 Col 3). Table 5 (s12) adds 9 individual controls. Max = 9."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__sportsclub_col1",
+          "baseline__sportsclub_col2",
+          "baseline__sport_hrs",
+          "baseline__oweight",
+          "baseline__kommheard",
+          "baseline__kommgotten",
+          "baseline__kommused"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/full",
+          "rc/controls/loo/drop_female",
+          "rc/controls/loo/drop_siblings",
+          "rc/controls/loo/drop_born_germany",
+          "rc/controls/loo/drop_parent_nongermany",
+          "rc/controls/loo/drop_newspaper",
+          "rc/controls/loo/drop_art_at_home",
+          "rc/controls/loo/drop_academictrack",
+          "rc/controls/loo/drop_sportsclub_4_7",
+          "rc/controls/loo/drop_music_4_7",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/demographics",
+          "rc/controls/progression/socioeconomic",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_*",
+          "rc/sample/time/drop_2006",
+          "rc/sample/time/drop_2007",
+          "rc/sample/time/extend_2000_2010",
+          "rc/sample/time/extend_2006_2011",
+          "rc/sample/time/shorten_2006_2009",
+          "rc/sample/states/only_thuringia",
+          "rc/sample/states/only_brandenburg",
+          "rc/sample/quality/no_missing_filter",
+          "rc/sample/quality/high_duration_quality",
+          "rc/sample/quality/no_older_siblings_treatment",
+          "rc/sample/quality/no_older_siblings_any",
+          "rc/sample/quality/balanced_movers_excluded",
+          "rc/fe/drop/cityno",
+          "rc/fe/drop/bula_3rd",
+          "rc/fe/add/bula_3rd_x_year_3rd",
+          "rc/data/treatment/1st_grade_timing",
+          "rc/data/treatment/current_state",
+          "rc/data/treatment/treat_v2",
+          "rc/weights/main/ebalance_weighted",
+          "rc/weights/main/survey_weighted",
+          "rc/joint/ebalance_plus_controls"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/cityno",
+          "params": {"cluster_var": "cityno"},
+          "notes": "Matches the paper's baseline inference: vce(cluster cityno)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust SE only (no clustering). Table B5 se1."
+          },
+          {
+            "spec_id": "infer/se/cluster/bula_3rd",
+            "params": {"cluster_var": "bula_3rd"},
+            "notes": "Clustering at the state level (only 3 clusters, aggressive). Table B5 se4."
+          },
+          {
+            "spec_id": "infer/se/cluster/cohort",
+            "params": {"cluster_var": "cohort"},
+            "notes": "Clustering at the cohort level. Table B5 se5."
+          }
+        ]
+      },
+      "diagnostics_plan": [],
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 10,
+        "notes": "Control pool is small (9 controls). Full enumeration of LOO. 10 random subset draws."
+      },
+      "sampling": {
+        "seed": 138922,
+        "controls_subset_sampler": "random_uniform",
+        "notes": "10 random control subset draws with seed 138922."
+      }
+    }
+  ]
+}

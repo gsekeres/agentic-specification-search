@@ -1,0 +1,20 @@
+{
+  "paper_id": "163241-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of 1.female#1.treated on ln_salary_annual_rate",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "163241-V1_spec_0001",
+        "163241-V1_spec_0002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__inst_dept_rank"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

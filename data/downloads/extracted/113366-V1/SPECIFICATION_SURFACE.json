@@ -1,0 +1,128 @@
+{
+  "paper_id": "113366-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "other",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "logunits ~ logprice + pr + f + d + brand + vol_eq + producttype + package + flavorscent + fatcontent + cookingmethod + saltsodiumcontent + typeofcut + iri_key_FE + week_FE",
+        "selection_story": "Bajari, Nekipelov, Ryan and Yang (2015) estimate demand for salty snacks using IRI scanner data. The baseline Model 1 is OLS regression of log(units) on log(price) and product/store/week characteristics. This is a demand estimation (prediction) exercise, not a causal identification design. The price elasticity coefficient on logprice is the focal parameter.",
+        "fe_structure": ["iri_key", "week"],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Log units sold of salty snack products at store-week level",
+        "treatment_concept": "Log price (demand elasticity)",
+        "estimand_concept": "Own-price elasticity of demand for salty snacks, estimated via OLS with store and time fixed effects and product characteristics",
+        "target_population": "Salty snack (potato chip) products at grocery stores in IRI scanner data, 2001-2006"
+      },
+      "baseline_specs": [
+        {
+          "label": "Model1-OLS-full",
+          "outcome_var": "logunits",
+          "treatment_var": "logprice",
+          "controls": ["pr", "f", "d", "brand", "vol_eq", "producttype", "package", "flavorscent", "fatcontent", "cookingmethod", "saltsodiumcontent", "typeofcut"],
+          "n_controls": 12,
+          "fixed_effects": ["iri_key", "week"],
+          "vcov": "iid",
+          "notes": "Model 1 in paper: standard OLS with all product characteristics plus store and week FE. No clustering in original paper."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 12,
+        "linked_adjustment": false,
+        "notes": "Controls are categorical product characteristics. Paper compares 9 ML models; our specification search varies the OLS specification across controls, FE, sample, and functional form. Data is proprietary IRI scanner data (not included); we construct synthetic data calibrated to paper description."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_pr",
+          "rc/controls/loo/drop_f",
+          "rc/controls/loo/drop_d",
+          "rc/controls/loo/drop_brand",
+          "rc/controls/loo/drop_vol_eq",
+          "rc/controls/loo/drop_producttype",
+          "rc/controls/loo/drop_package",
+          "rc/controls/loo/drop_flavorscent",
+          "rc/controls/loo/drop_fatcontent",
+          "rc/controls/loo/drop_cookingmethod",
+          "rc/controls/loo/drop_saltsodiumcontent",
+          "rc/controls/loo/drop_typeofcut",
+          "rc/controls/sets/none",
+          "rc/controls/sets/marketing_only",
+          "rc/controls/sets/product_chars_only",
+          "rc/controls/sets/marketing_plus_brand",
+          "rc/controls/progression/none",
+          "rc/controls/progression/marketing",
+          "rc/controls/progression/marketing_brand",
+          "rc/controls/progression/marketing_brand_product",
+          "rc/controls/progression/full",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/fe/store_only",
+          "rc/fe/week_only",
+          "rc/fe/no_fe",
+          "rc/fe/year_only",
+          "rc/fe/month_only",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/trim_price_1_99",
+          "rc/sample/outliers/trim_price_5_95",
+          "rc/sample/subset/high_volume_stores",
+          "rc/sample/subset/low_volume_stores",
+          "rc/outcome/units_level",
+          "rc/outcome/logunits_per_store",
+          "rc/form/log_log_quadratic",
+          "rc/form/price_level"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/iid",
+          "params": {},
+          "notes": "Paper uses standard OLS (iid) SEs for Model 1. Large sample (hundreds of thousands of obs) justifies this choice."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/robust",
+            "params": {},
+            "notes": "Heteroskedasticity-robust (HC1) standard errors"
+          },
+          {
+            "spec_id": "infer/se/cluster/store",
+            "params": {"cluster_var": "iri_key"},
+            "notes": "Cluster at store level to account for within-store correlation"
+          },
+          {
+            "spec_id": "infer/se/cluster/product",
+            "params": {"cluster_var": "p_id"},
+            "notes": "Cluster at product level to account for within-product correlation"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 113366,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

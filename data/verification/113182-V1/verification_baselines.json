@@ -1,0 +1,44 @@
+{
+  "paper_id": "113182-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of df_5to11 on total_v2_agcho10",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113182-V1_run_001",
+        "113182-V1_run_002",
+        "113182-V1_run_003",
+        "113182-V1_run_004",
+        "113182-V1_run_005"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table2_col2_linear_weather",
+        "baseline__table2_col3_quadratic_weather",
+        "baseline__table2_col5_ghani_turnout",
+        "baseline__table2_col6_abdullah_turnout"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of post_event_indicator on total_votes_wins",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113182-V1_run_030",
+        "113182-V1_run_031",
+        "113182-V1_run_032",
+        "113182-V1_run_033"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table3_col2_no_rain",
+        "baseline__table3_col4_ghani_wins",
+        "baseline__table3_col5_abdullah_wins"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

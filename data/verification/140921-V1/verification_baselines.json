@@ -1,0 +1,34 @@
+{
+  "paper_id": "140921-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Interruption of London Season (1861-63) increased probability that peers' daughters married commoners (out-marriage)",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "140921-V1_run_001",
+        "140921-V1_run_002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table2_panelb_col1"
+      ],
+      "notes": "Probit marginal effects with birth-year clustered SEs. Panel A (run_001, N=644) is the primary baseline; Panel B (run_002, N=484) adds distlondon control. Both preserve the same claim object (cOut ~ syntheticT). Matches surface exactly."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Interruption of London Season increased wealth mismatch between spouses (reduced assortative matching)",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "140921-V1_run_023",
+        "140921-V1_run_024"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table2_panelb_col3"
+      ],
+      "notes": "OLS with birth-year clustered SEs. Panel A (run_023, N=324); Panel B (run_024, N=260) adds distlondon. Outcome is fmissmatch (absolute mismatch in landholding percentile ranks). Note: fmissmatch2_signed (run_034) uses the signed version, where negative coefficient indicates same directional effect. Matches surface exactly."
+    }
+  ],
+  "global_notes": "Surface-driven run. Both baseline groups match the pre-run surface. No adjustments needed. All 50 rows succeed (run_success=1). No infer/* rows in specification_results.csv; inference variants are properly in inference_results.csv. One non-core row: run_022 (mheir outcome for G1) changes the outcome concept from 'married commoner' to 'married heir', which is a distinct claim object. The quadratic treatment form (run_021 for G1, run_047 for G2) produces negative coefficients reflecting the quadratic's linear term, not a sign reversal."
+}

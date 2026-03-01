@@ -1,0 +1,284 @@
+{
+  "paper_id": "150323-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "pX (incumbent party vote margin)",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": "optimal (rdbwselect, uniform kernel)",
+        "kernel": "uniform",
+        "poly_order": 1,
+        "bias_correction": "none (conventional)",
+        "election_cycles": "2008 and 2012 stacked",
+        "cluster_vars": ["COD_MUNICIPIO"]
+      },
+      "claim_object": {
+        "outcome_concept": "Test scores (4th grade, combined math and Portuguese, standardized) in municipal schools one year after election",
+        "treatment_concept": "Political party turnover (pX_dummy = 1 if incumbent party loses)",
+        "estimand_concept": "Local average treatment effect of political turnover on test scores at the cutoff",
+        "target_population": "Brazilian municipal schools in municipalities with close elections (2008 and 2012 cycles), excluding supplementary elections and large municipalities with runoff"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-PanelA-Col1",
+          "outcome_var": "both_score_indiv_4_stdComb",
+          "treatment_var": "pX_dummy",
+          "controls": ["pX", "pX_pD", "both_score_4_baseline"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster(COD_MUNICIPIO)",
+          "bandwidth_rule": "rdbwselect optimal with uniform kernel",
+          "notes": "Sharp RD: reg outcome pX_dummy pX pX_pD baseline_score if abs(pX)<=bw, cluster(COD_MUNICIPIO). No additional controls. Table 3, Panel A, Column 1."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 3,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "max_poly_order": 3,
+        "notes": "Minimum controls are the RD polynomial terms (pX, pX_pD) and baseline score. Maximum adds year_dummy + school controls (6 vars) + student controls (6 vars). Bandwidth always determined by rdbwselect or fixed alternatives (.07, .11)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__4th_grade_with_controls",
+          "baseline__8th_grade_no_controls",
+          "baseline__8th_grade_with_controls"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/half_baseline",
+          "design/regression_discontinuity/bandwidth/double_baseline",
+          "design/regression_discontinuity/bandwidth/fixed_small",
+          "design/regression_discontinuity/bandwidth/fixed_large",
+          "design/regression_discontinuity/poly/local_quadratic",
+          "design/regression_discontinuity/kernel/triangular"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/no_controls",
+          "rc/controls/sets/with_school_controls",
+          "rc/controls/sets/with_student_controls",
+          "rc/controls/sets/with_all_controls",
+          "rc/controls/add/year_dummy",
+          "rc/controls/loo/drop_baseline_score",
+          "rc/sample/subgroup/2008_cycle_only",
+          "rc/sample/subgroup/2012_cycle_only",
+          "rc/sample/subgroup/urban_schools_only",
+          "rc/sample/subgroup/rural_schools_only",
+          "rc/sample/subgroup/nonmunic_schools",
+          "rc/sample/restriction/donut_1pct",
+          "rc/sample/restriction/donut_2pct",
+          "rc/sample/outliers/trim_pX_narrow",
+          "rc/form/outcome/math_score_only",
+          "rc/form/outcome/port_score_only",
+          "rc/form/outcome/unstandardized_score",
+          "rc/bandwidth/optimal_mserd"
+        ],
+        "notes_bandwidth_overlap": "Bandwidth and polynomial variants are listed in design_spec_ids. rc/bandwidth/optimal_mserd is kept because it uses a different bandwidth selector (mserd) than the baseline (rdbwselect with uniform kernel). The other bandwidth and polynomial variants are in design_spec_ids only to avoid double-counting."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/municipality",
+          "params": {"cluster_var": "COD_MUNICIPIO"},
+          "notes": "Clustered at municipality level, matching the paper's baseline inference."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering) for comparison."
+          },
+          {
+            "spec_id": "infer/se/cluster/state",
+            "params": {"cluster_var": "state"},
+            "notes": "Coarser clustering at state level."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 150323,
+        "controls_subset_sampler": "none",
+        "notes": "No random control-subset sampling. The control space is small and structured (school controls, student controls, year dummy). Full enumeration of meaningful combinations is feasible."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "notes": "McCrary density test on the running variable pX."
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "notes": "Table 1 reports balance tests for baseline covariates at the cutoff."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "pX (incumbent party vote margin)",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": "optimal (rdbwselect, uniform kernel)",
+        "kernel": "uniform",
+        "poly_order": 1,
+        "bias_correction": "none (conventional)",
+        "election_cycles": "2008 and 2012 stacked",
+        "cluster_vars": ["COD_MUNICIPIO"]
+      },
+      "claim_object": {
+        "outcome_concept": "Municipal personnel turnover -- share of new hires (SHhired_Mun_lead) in the year following the election",
+        "treatment_concept": "Political party turnover (pX_dummy = 1 if incumbent party loses)",
+        "estimand_concept": "Local average treatment effect of political turnover on bureaucratic personnel replacement at the cutoff",
+        "target_population": "Brazilian municipalities with close elections (2008 and 2012 cycles), RAIS administrative data"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "outcome_var": "SHhired_Mun_lead",
+          "treatment_var": "pX_dummy",
+          "controls": ["pX", "pX_pD", "year_dummy"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster(COD_MUNICIPIO)",
+          "bandwidth_rule": "rdbwselect optimal with uniform kernel",
+          "notes": "RD regression of new personnel share on political turnover dummy. Table 2 Col 1."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 3,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "notes": "Municipality-level outcome. Only RD polynomial terms and year dummy as controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__personnel_fired",
+          "baseline__personnel_hired_after",
+          "baseline__personnel_fired_after"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/half_baseline",
+          "design/regression_discontinuity/bandwidth/double_baseline",
+          "design/regression_discontinuity/bandwidth/fixed_small",
+          "design/regression_discontinuity/bandwidth/fixed_large"
+        ],
+        "rc_spec_ids": [
+          "rc/bandwidth/fixed_07",
+          "rc/bandwidth/fixed_11",
+          "rc/bandwidth/half_optimal",
+          "rc/bandwidth/double_optimal",
+          "rc/sample/subgroup/2008_cycle_only",
+          "rc/sample/subgroup/2012_cycle_only",
+          "rc/sample/restriction/donut_1pct",
+          "rc/sample/restriction/donut_2pct",
+          "rc/poly/quadratic",
+          "rc/form/outcome/net_personnel_change",
+          "rc/form/outcome/log_new_hires"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/municipality",
+          "params": {"cluster_var": "COD_MUNICIPIO"},
+          "notes": "Clustered at municipality level."
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 150324,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "pX (incumbent party vote margin)",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": "optimal (rdbwselect, uniform kernel)",
+        "kernel": "uniform",
+        "poly_order": 1,
+        "bias_correction": "none (conventional)",
+        "election_cycles": "2008 and 2012 stacked",
+        "cluster_vars": ["COD_MUNICIPIO"]
+      },
+      "claim_object": {
+        "outcome_concept": "School headmaster replacement (expthisschl_lessthan2_DPB -- headmaster in school less than 2 years) in municipal schools",
+        "treatment_concept": "Political party turnover (pX_dummy = 1 if incumbent party loses)",
+        "estimand_concept": "Local average treatment effect of political turnover on headmaster replacement at the cutoff",
+        "target_population": "Brazilian municipal schools in municipalities with close elections (2008 and 2012 cycles)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1",
+          "outcome_var": "expthisschl_lessthan2_DPB",
+          "treatment_var": "pX_dummy",
+          "controls": ["pX", "pX_pD"],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "cluster(COD_MUNICIPIO)",
+          "bandwidth_rule": "rdbwselect optimal with uniform kernel",
+          "notes": "RD regression of headmaster replacement on political turnover. No controls version. Table 4 Col 1."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 8,
+        "linked_adjustment": false,
+        "notes": "Table 4 shows no-controls and with-controls (year_dummy + school controls) variants at each bandwidth."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__headmaster_with_controls",
+          "baseline__headmaster_nonmunic"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/sets/with_school_controls_year",
+          "rc/bandwidth/fixed_07",
+          "rc/bandwidth/fixed_11",
+          "rc/bandwidth/half_optimal",
+          "rc/bandwidth/double_optimal",
+          "rc/sample/subgroup/2008_cycle_only",
+          "rc/sample/subgroup/2012_cycle_only",
+          "rc/sample/subgroup/nonmunic_schools",
+          "rc/sample/restriction/donut_1pct",
+          "rc/poly/quadratic",
+          "rc/form/outcome/new_teacher_share",
+          "rc/form/outcome/left_teacher_share"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/municipality",
+          "params": {"cluster_var": "COD_MUNICIPIO"},
+          "notes": "Clustered at municipality level."
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 25,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 150325,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

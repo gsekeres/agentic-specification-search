@@ -1,0 +1,42 @@
+{
+  "paper_id": "184041-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Average treatment effect of Common Value (CV) vs Common Probability (CP) auction format on bid factors (naive/break-even/Nash benchmarks) in Experiment I lab auction with 4 bidders. OLS and median regression, clustered at subject level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["184041-V1_run_001", "184041-V1_run_002", "184041-V1_run_003", "184041-V1_run_004", "184041-V1_run_005", "184041-V1_run_006"],
+      "baseline_spec_ids": ["baseline", "baseline__tablea1_expi_bf_medianreg", "baseline__tablea1_expi_bebf_ols", "baseline__tablea1_expi_bebf_medianreg", "baseline__tablea1_expi_nebf_ols", "baseline__tablea1_expi_nebf_medianreg"],
+      "baseline_coefficient": 15.1288,
+      "baseline_std_error": null,
+      "baseline_p_value": 5.48e-09,
+      "baseline_n_obs": 5817,
+      "notes": "Six baseline specs covering 3 outcome measures (BF, BEBF, NEBF) x 2 estimators (OLS, median regression). Reduced sample: exp==1, rrange==1, domnBid<=8. All baselines highly significant. Primary baseline is BF-OLS (run_001)."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Average treatment effect of CV vs CP lottery type on price factors in individual decision-making (no strategic interaction), Experiment II stage 22. OLS and median regression, clustered at subject level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["184041-V1_run_033", "184041-V1_run_034"],
+      "baseline_spec_ids": ["baseline", "baseline__tablea3_expii_bf_medianreg_stage22"],
+      "baseline_coefficient": 6.1561,
+      "baseline_std_error": null,
+      "baseline_p_value": 0.00204,
+      "baseline_n_obs": 8256,
+      "notes": "Two baseline specs: OLS (run_033, p=0.002) and median regression (run_034, p<0.001). Experiment II stage 22 (compound lottery with signal). Primary baseline is OLS."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Decision weights in bidding: coefficient on log-fixed component (lnfix) in log-bid structural regressions, testing how subjects weight probability vs value uncertainty. Median regression with subject-clustered SEs, Experiment I.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["184041-V1_run_044", "184041-V1_run_045", "184041-V1_run_046"],
+      "baseline_spec_ids": ["baseline", "baseline__tablea4_expi_cp_decisionweights", "baseline__tablea4_expi_interaction"],
+      "baseline_coefficient": 0.2442,
+      "baseline_std_error": null,
+      "baseline_p_value": 4.13e-15,
+      "baseline_n_obs": 3253,
+      "notes": "Three baseline specs from Table A4: CV decision weights (run_044), CP decision weights (run_045), and interaction model (run_046). The key claim is that lnfix coefficient is positive (subjects respond to the fixed/value component). Different sample restrictions yield different N (CV-only: 3253, CP-only: 2564, pooled: 5817)."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. Notable issues: (1) spec_ids are not unique within the paper -- the same spec_id (e.g., rc/sample/full_sample) is applied across multiple outcomes and estimators, differentiated only by spec_run_id. This is flagged but not invalid given the lab experiment structure where each sample variant is crossed with multiple outcomes/estimators. (2) Some design/diff_in_means rows (runs 025-030, 040-041) are applied to non-baseline samples (full_sample, winners_only, stage21, stage1) but retain the design spec_id rather than a compound id. (3) G2 stage1 subsample (runs 038-039) produces negative coefficients, opposite to the baseline sign."
+}

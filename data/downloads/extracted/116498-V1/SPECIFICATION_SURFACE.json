@@ -1,0 +1,118 @@
+{
+  "paper_id": "116498-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within",
+        "panel_unit": "nzip",
+        "panel_time": "t",
+        "fe_structure": ["nzip"],
+        "differencing": "none",
+        "additional_controls": "pseudo-zip trends (ziptrend*), county-by-time FE (i.county#i.t)",
+        "cluster_vars": ["county"],
+        "weights": "aweight by population (gtot or age-group population)"
+      },
+      "claim_object": {
+        "outcome_concept": "Non-elective hospital admission rate per 100,000",
+        "treatment_concept": "Lagged foreclosure rate (rate_fore_1 through rate_fore_4)",
+        "estimand_concept": "Sum of 4 quarterly lag coefficients (cumulative effect of foreclosures on hospital visits)",
+        "target_population": "Zip codes in AZ, CA, FL, NJ (2005-2009), excluding top 10% seasonal/vacation zips"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3b-nonelective",
+          "outcome_var": "nnonelective_rate",
+          "treatment_var": "rate_fore_1 rate_fore_2 rate_fore_3 rate_fore_4",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["nzip", "county#t", "ziptrend*"],
+          "vcov": "cluster(county)",
+          "weights": "aweight=gtot"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "No time-varying controls in the baseline specification; identification comes from FE structure and trends. The paper does not add time-varying covariates as controls across columns."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__npqi",
+          "baseline__nheart",
+          "baseline__nmentalhealth",
+          "baseline__nrespiratory"
+        ],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/restriction/include_vacation_zips",
+          "rc/sample/restriction/early_period_only",
+          "rc/sample/restriction/judicial_states",
+          "rc/sample/restriction/nonjudicial_states",
+          "rc/sample/subgroup/age_0_19",
+          "rc/sample/subgroup/age_20_49",
+          "rc/sample/subgroup/age_50_64",
+          "rc/sample/subgroup/age_65plus",
+          "rc/sample/subgroup/minority_zips",
+          "rc/sample/subgroup/majority_zips",
+          "rc/sample/subgroup/low_income_zips",
+          "rc/sample/subgroup/high_income_zips",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/drop/county_time",
+          "rc/fe/drop/ziptrend",
+          "rc/fe/add/state_time",
+          "rc/data/treatment_alt/foreclosure_starts",
+          "rc/data/treatment_alt/lag1_only",
+          "rc/data/treatment_alt/lag1_lag2",
+          "rc/controls/add/zhpi_lags",
+          "rc/controls/add/unemployment_rate",
+          "rc/form/outcome/log1p",
+          "rc/form/outcome/asinh",
+          "rc/weights/unweighted",
+          "rc/joint/insurance/private",
+          "rc/joint/insurance/public",
+          "rc/joint/insurance/uninsured"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/county",
+          "params": {"cluster_var": "county"},
+          "notes": "Cluster SEs at county level, matching Stata vce(cluster county)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/nzip",
+            "params": {"cluster_var": "nzip"},
+            "notes": "Cluster at zip code level (finer clustering)"
+          },
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 116498,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/panel_fixed_effects/serial_corr/wooldridge",
+          "scope": "baseline_group"
+        }
+      ]
+    }
+  ]
+}

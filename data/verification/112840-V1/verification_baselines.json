@@ -1,0 +1,22 @@
+{
+  "paper_id": "112840-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of lag_d_ave_finindex1 on changerealdebt",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "112840-V1_spec_001",
+        "112840-V1_spec_002",
+        "112840-V1_spec_003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__tableO1_col5",
+        "baseline__tableO1_col6"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

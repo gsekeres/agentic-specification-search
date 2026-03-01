@@ -1,0 +1,24 @@
+{
+  "paper_id": "114747-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of v3 on any_fda_reaction",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "114747-V1_run_001",
+        "114747-V1_run_002",
+        "114747-V1_run_003",
+        "114747-V1_run_004"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table2_logit_contemporaneous",
+        "baseline__table2_logit_3month",
+        "baseline__table2_logit_12month",
+        "baseline__table2_duration_contemporaneous"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

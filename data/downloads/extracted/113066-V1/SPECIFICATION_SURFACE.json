@@ -1,0 +1,191 @@
+{
+  "paper_id": "113066-V1",
+  "created_at": "2026-02-25",
+  "notes": "Steinwender (2018), 'Real Effects of Information Frictions: When the States and the Kingdom became United'. Exploits the transatlantic telegraph (1866) as a natural experiment. Daily time-series data on cotton prices in New York and Liverpool. Main analysis uses before/after comparison with Newey-West SE. Key tables: Table 2 (effect on price differences and variance), Table 8 (effect on trade levels), Table 9 (effect on trade variance). Also includes IV specifications (Table 3, information lag instrumented by telegraph), ARIMA price transmission (Tables 4-5), and structural demand/supply estimation (Tables 11-12). The design is primarily a before-after comparison (DiD in the simplest sense: pre vs post telegraph).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "ols_newey_west",
+        "panel_unit": "none (single time series)",
+        "panel_time": "day (trading day)",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "newey_west",
+        "se_params": {"lag": 2},
+        "notes": "Daily time-series regressions. Newey-West SE with 2 lags. Treatment: tele = 1 after telegraph introduction (1866). Outcome: cotton price difference between Liverpool and NY. tsset day (or ct_t, ct_notrade for different sample constructions). Before-after comparison, not a panel DiD."
+      },
+      "claim_object": {
+        "outcome_concept": "Cotton price difference between Liverpool and New York (pence/pound), adjusted for freight cost",
+        "treatment_concept": "Introduction of the transatlantic telegraph (1866), tele = 1 for post-telegraph period",
+        "estimand_concept": "Effect of telegraph on the average level and variance of the transatlantic cotton price gap, capturing reduced information frictions",
+        "target_population": "Daily cotton trade between Liverpool and New York, ~1860-1868"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "outcome_var": "diff",
+          "treatment_var": "tele",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "newey diff tele, lag(2). Price difference regressed on telegraph dummy. Simplest specification."
+        },
+        {
+          "label": "Table2-Col2",
+          "outcome_var": "difffrctotal",
+          "treatment_var": "tele",
+          "controls": ["l1nyrec"],
+          "n_controls": 1,
+          "notes": "newey difffrctotal tele l1nyrec, lag(2). Price diff net of freight cost, controlling for lagged NY receipts. Sample excludes no-trade days (ct_notrade)."
+        },
+        {
+          "label": "Table2-Col3",
+          "outcome_var": "diff_forwardfrctotal",
+          "treatment_var": "tele",
+          "controls": ["l1nyrec"],
+          "n_controls": 1,
+          "notes": "Forward-looking price difference (using future Liverpool price known at time of NY sale) net of freight."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "mandatory_controls": [],
+        "notes": "Very limited control pool. The paper uses l1nyrec (lagged NY cotton receipts) as the main control. Freight cost adjustment is done by redefining the outcome, not as a control. The time-series structure means few cross-sectional controls are available."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2",
+          "baseline__table2_col3"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/single/add_l1nyrec",
+          "rc/controls/loo/drop_l1nyrec",
+          "rc/controls/single/add_freightcost",
+          "rc/controls/single/add_frctotal",
+          "rc/sample/subset/exclude_notrade_days",
+          "rc/sample/subset/include_notrade_days",
+          "rc/sample/period/symmetric_window",
+          "rc/sample/period/narrow_window",
+          "rc/sample/period/wide_window",
+          "rc/sample/outliers/trim_diff_1_99",
+          "rc/sample/outliers/trim_diff_5_95",
+          "rc/form/outcome/diff_raw",
+          "rc/form/outcome/diff_net_freight",
+          "rc/form/outcome/diff_forward_net_freight",
+          "rc/form/outcome/log_diff_abs",
+          "rc/form/outcome/variance_proxy",
+          "rc/preprocess/outcome/detrend_linear",
+          "rc/joint/outcome_control/*",
+          "rc/joint/sample_outcome/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hac/newey_west",
+          "params": {"lags": 2},
+          "notes": "Newey-West HAC SE with 2 lags, matching the paper."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hac/newey_west_4", "params": {"lags": 4}, "notes": "Newey-West with 4 lags (sensitivity to bandwidth)."},
+          {"spec_id": "infer/se/hac/newey_west_8", "params": {"lags": 8}, "notes": "Newey-West with 8 lags (wider bandwidth)."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust only (no autocorrelation correction)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 113066,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Very small control pool (l1nyrec, freightcost, frctotal). Full enumeration trivial."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "ols_newey_west",
+        "panel_unit": "none",
+        "panel_time": "day",
+        "fe_structure": [],
+        "cluster_vars": [],
+        "se_type": "newey_west",
+        "se_params": {"lag": 2},
+        "notes": "Same time-series framework as G1 but outcome is variance of price difference (constructed squared deviation from group mean). Newey-West with 2 lags."
+      },
+      "claim_object": {
+        "outcome_concept": "Variance of cotton price difference (constructed as sample-corrected squared deviation from pre/post period mean)",
+        "treatment_concept": "Introduction of the transatlantic telegraph (tele=1)",
+        "estimand_concept": "Effect of telegraph on the variance (dispersion) of the cotton price gap, capturing improved information quality",
+        "target_population": "Daily cotton trade between Liverpool and New York, ~1860-1868"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col4-variance",
+          "outcome_var": "dev2",
+          "treatment_var": "tele",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "Variance of raw price difference. dev2 = N/(N-1)*(diff - mean(diff|tele))^2."
+        },
+        {
+          "label": "Table2-Col5-variance-freight",
+          "outcome_var": "dev2",
+          "treatment_var": "tele",
+          "controls": ["l1nyrec"],
+          "n_controls": 1,
+          "notes": "Variance of price difference net of freight, controlling for lagged NY receipts."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 1,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col5_variance"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/single/add_l1nyrec",
+          "rc/sample/subset/exclude_notrade_days",
+          "rc/sample/period/symmetric_window",
+          "rc/sample/outliers/trim_dev2_1_99",
+          "rc/form/outcome/raw_diff_variance",
+          "rc/form/outcome/freight_adjusted_variance",
+          "rc/form/outcome/forward_freight_variance",
+          "rc/form/outcome/log_variance",
+          "rc/form/outcome/absolute_deviation",
+          "rc/joint/outcome_sample/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hac/newey_west",
+          "params": {"lags": 2},
+          "notes": "Newey-West HAC SE with 2 lags."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hac/newey_west_4", "params": {"lags": 4}, "notes": "Sensitivity to bandwidth."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust without autocorrelation correction."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 5
+      },
+      "sampling": {
+        "seed": 113066,
+        "controls_subset_sampler": "full_enumeration"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "paper_id": "128143-V1",
+  "verification_date": "2026-02-25",
+  "global_notes": "Surface baseline groups G1 and G2 match results exactly. No reassignment needed. G1: self-interest belief effect on targeted tax acceptance (IV). G2: environmental effectiveness belief effect on initial tax approval (IV). Both groups use manual 2SLS with survey weights. G2 has two baselines with different outcome codings (Yes vs NotNo).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "LATE/IV: Effect of self-interest belief (not losing from carbon tax+dividend) on targeted carbon tax acceptance, instrumented by random dividend eligibility. French survey RCT.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "128143-V1_run_001",
+        "128143-V1_run_002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table52_col2_iv_fullsample"
+      ],
+      "notes": "run_001 = Table 5.2 Col 1 (subsample p10-p60), run_002 = Table 5.2 Col 2 (full sample). Both measure acceptance of targeted tax+dividend (not opposed). Treatment: endogenous_non_perdant instrumented by traite_cible assignment."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "LATE/IV: Effect of environmental effectiveness belief on initial carbon tax approval, instrumented by random information treatment. French survey RCT.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "128143-V1_run_014",
+        "128143-V1_run_015"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table54_col3_iv_notnoyes"
+      ],
+      "notes": "run_014 = Table 5.4 Col 1 (Yes/Yes coding), run_015 = Table 5.4 Col 3 (NotNo/Yes coding). Treatment: endogenous_eff_yes instrumented by info treatments. Two baselines with different outcome binary codings."
+    }
+  ]
+}

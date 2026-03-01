@@ -1,0 +1,200 @@
+{
+  "paper_id": "113182-V1",
+  "created_at": "2026-02-25",
+  "notes": "Condra, Long, Shaver, Wright (2018) 'The Logic of Insurgent Electoral Violence', AER. Two distinct IV strategies: (1) Table 2 uses wind speed at 4:30 AM (plus_wind_00Z_10) as instrument for morning insurgent attacks (df_5to11) on voter turnout, at the district-election level with election FE, clustered by district; (2) Table 3 uses nighttime cloud cover (cloudz_perc_election) as instrument for IED deployment near roads (post_event_indicator) on vote totals at polling-station-road-segment level with district FE, robust and clustered SEs. Tables 6-7 are cross-sectional survey regressions (secondary, not IV).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endog_vars": ["df_5to11"],
+        "instrument_vars": ["plus_wind_00Z_10"],
+        "n_instruments": 1,
+        "overid_df": 0,
+        "fe_structure": ["election (first)"],
+        "cluster_vars": ["DISTID"],
+        "sample_condition": "no_voting_either==0 & disrupt==1",
+        "bundle": {
+          "linked_adjustment": true,
+          "notes": "Controls and FE are shared across first stage and second stage. Weather controls at other times of day are exogenous regressors in both stages."
+        }
+      },
+      "claim_object": {
+        "outcome_concept": "Voter turnout (total_v2_agcho10: total votes as share of age-cohort population, v2 measure)",
+        "treatment_concept": "Morning insurgent attacks (df_5to11: attacks between 5-11 AM on election day)",
+        "estimand_concept": "LATE of election-day insurgent attacks on voter turnout, using wind speed as instrument for attack timing",
+        "target_population": "Afghan districts that held elections and experienced some disruption (no_voting_either==0 & disrupt==1)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col4-2SLS",
+          "outcome_var": "total_v2_agcho10",
+          "treatment_var": "df_5to11",
+          "instrument_var": "plus_wind_00Z_10",
+          "controls": ["windspeed_06Z", "windspeed_12Z", "windspeed_06Z2", "windspeed_12Z2", "temp_00Z", "temp_06Z", "temp_12Z", "rain_00Z", "rain_06Z", "rain_12Z", "temp_00Z2", "temp_06Z2", "temp_12Z2", "rain_00Z2", "rain_06Z2", "rain_12Z2", "plus_wind_00Z_10_pre14D", "population_2010_adj"],
+          "fe": ["first (election)"],
+          "n_controls": 18,
+          "notes": "Preferred specification: full quadratic weather controls + pre-14-day wind + population + election FE. Clustered by DISTID."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 10,
+        "controls_count_max": 18,
+        "linked_adjustment": true,
+        "notes": "Minimum is linear weather controls + population (Col 2 of Table 2: 10 controls). Maximum is full quadratic weather + pre-14-day wind + population (Col 4: 18 controls). Weather controls are critical for the exclusion restriction (wind must affect turnout only through attacks). Linkage: controls appear in both first and second stage."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2_linear_weather",
+          "baseline__table2_col3_quadratic_weather",
+          "baseline__table2_col5_ghani_turnout",
+          "baseline__table2_col6_abdullah_turnout"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/2sls",
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/progression/linear_weather_only",
+          "rc/controls/progression/quadratic_weather",
+          "rc/controls/progression/quadratic_weather_plus_pre14d",
+          "rc/controls/loo/drop_population",
+          "rc/controls/loo/drop_pre14d_wind",
+          "rc/controls/loo/drop_quadratic_weather",
+          "rc/sample/drop_condition/include_all_districts",
+          "rc/sample/drop_condition/include_no_disrupt",
+          "rc/outcome/alternative/total_nc_TO",
+          "rc/outcome/alternative/susp_turnout_v2",
+          "rc/outcome/alternative/corruption",
+          "rc/treatment/alternative/df_5to11_per60k",
+          "rc/treatment/alternative/df_5to7",
+          "rc/treatment/alternative/df_5to8",
+          "rc/treatment/alternative/df_5to9",
+          "rc/treatment/alternative/df_5to10",
+          "rc/treatment/alternative/df_5to12",
+          "rc/controls/add/pashto",
+          "rc/controls/add/terrain",
+          "rc/controls/add/pretrend_28d",
+          "rc/controls/add/intimidation",
+          "rc/controls/add/nighttime_obs"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/district",
+          "params": {"cluster_var": "DISTID"},
+          "notes": "Cluster at the district level. Matches the paper's main Table 2 specification."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust without clustering."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 20,
+        "notes": "Control pool is structured by the exclusion-restriction logic (weather controls). Variations come from control progressions, alternative outcomes/treatments, sample definitions, and estimator choice."
+      },
+      "sampling": {
+        "seed": 113182,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Control progressions follow the paper's revealed table structure (linear -> quadratic -> +pre14D). Drop-one checks on individual controls. Full enumeration feasible."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/instrumental_variables/strength/first_stage_f", "scope": "spec", "notes": "Kleibergen-Paap F-stat. Reported in paper for each specification."},
+        {"diag_spec_id": "diag/instrumental_variables/validity/falsification_rf", "scope": "baseline_group", "notes": "Reduced-form effect of wind on non-disrupted district outcomes (SI Table 6). Placebo/falsification test."},
+        {"diag_spec_id": "diag/instrumental_variables/validity/balance_instrument", "scope": "baseline_group", "notes": "Wind speed does not predict disruption indicator itself (SI Table 4)."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "instrumental_variables",
+      "design_audit": {
+        "estimator": "2sls",
+        "endog_vars": ["post_event_indicator"],
+        "instrument_vars": ["cloudz_perc_election"],
+        "n_instruments": 1,
+        "overid_df": 0,
+        "fe_structure": ["district (distid)"],
+        "cluster_vars": ["pc_clust_thiessen"],
+        "sample_condition": "closure_indicator==0 & stations!=0",
+        "bundle": {
+          "linked_adjustment": true,
+          "notes": "Controls and district FE shared across both stages. Baseline reports both robust and clustered SEs."
+        }
+      },
+      "claim_object": {
+        "outcome_concept": "Vote totals at polling stations near roads (total_votes_wins: total votes for winning candidates)",
+        "treatment_concept": "IED deployment near road segments (post_event_indicator: whether an IED was found/detonated near the road segment around the election)",
+        "estimand_concept": "LATE of IED deployment on voting at nearby polling stations, using nighttime cloud cover as instrument for IED placement",
+        "target_population": "Polling-station-road-segment pairs in Afghanistan (excluding closed stations and those without weather stations)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col3-2SLS-WithRain",
+          "outcome_var": "total_votes_wins",
+          "treatment_var": "post_event_indicator",
+          "instrument_var": "cloudz_perc_election",
+          "controls": ["ht_route_indicator", "rcv2", "population_v2", "shape_leng", "pre_event_indicator_6m_V2", "march_rain", "march_rain2"],
+          "fe": ["distid"],
+          "n_controls": 7,
+          "notes": "Preferred 2SLS specification with rainfall controls, district FE. Reports both robust and clustered (pc_clust_thiessen) SEs."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 5,
+        "controls_count_max": 7,
+        "linked_adjustment": true,
+        "notes": "Minimum: geographic controls without rain (ht_route_indicator, rcv2, population_v2, shape_leng, pre_event_indicator_6m_V2). Maximum: + march_rain + march_rain2. Linkage across stages."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col2_no_rain",
+          "baseline__table3_col4_ghani_wins",
+          "baseline__table3_col5_abdullah_wins"
+        ],
+        "design_spec_ids": [
+          "design/instrumental_variables/estimator/2sls",
+          "design/instrumental_variables/estimator/liml"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_rain_controls",
+          "rc/controls/loo/drop_pre_event_6m",
+          "rc/controls/loo/drop_shape_leng",
+          "rc/controls/loo/drop_population",
+          "rc/sample/drop_condition/include_no_disrupt",
+          "rc/outcome/alternative/total_nc_wins",
+          "rc/outcome/alternative/ghani_nc_wins",
+          "rc/outcome/alternative/abdullah_nc_wins",
+          "rc/outcome/alternative/corrupt_perc"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs. This is the primary inference in Table 3 (with clustered SEs reported separately as a robustness check)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/thiessen", "params": {"cluster_var": "pc_clust_thiessen"}, "notes": "Cluster at Thiessen polygon level. Reported alongside robust SEs in Table 3."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 15,
+        "notes": "Smaller control set than G1. Variations come from control LOO, alternative outcomes (clean vote counts, corruption), sample conditions, and estimator choice."
+      },
+      "sampling": {
+        "seed": 113182,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Small control pool (5-7 controls). Full enumeration of leave-one-out and progressions."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/instrumental_variables/strength/first_stage_f", "scope": "spec", "notes": "K-P F-stat reported for each IV specification."},
+        {"diag_spec_id": "diag/instrumental_variables/strength/weak_iv_robust", "scope": "spec", "notes": "Weak-IV robust p-value via Anderson-Rubin test (weakiv command). Reported in paper."},
+        {"diag_spec_id": "diag/instrumental_variables/validity/falsification_rf", "scope": "baseline_group", "notes": "Cloud cover reduced form on non-disrupted areas (SI Table 24). Placebo."},
+        {"diag_spec_id": "diag/instrumental_variables/validity/exclusion_corruption", "scope": "baseline_group", "notes": "Cloud cover on corruption perception (SI Table 25). Tests exclusion restriction."}
+      ]
+    }
+  ]
+}

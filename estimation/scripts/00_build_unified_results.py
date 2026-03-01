@@ -216,7 +216,9 @@ def _read_spec_results(path: Path) -> pd.DataFrame:
     df["paper_id"] = df["paper_id"].astype(str)
     df["spec_run_id"] = df["spec_run_id"].astype(str)
     df["spec_id"] = df["spec_id"].astype(str)
-    df["coefficient_vector_json"] = df.get("coefficient_vector_json", "{}").apply(_coerce_json_str)
+    if "coefficient_vector_json" not in df.columns:
+        df["coefficient_vector_json"] = "{}"
+    df["coefficient_vector_json"] = df["coefficient_vector_json"].apply(_coerce_json_str)
     df = _compute_run_success_and_error(df)
     df = _ensure_cols(df, STANDARD_SPEC_COLS)
     return df
@@ -233,7 +235,9 @@ def _read_inference_results(path: Path) -> pd.DataFrame:
     df["inference_run_id"] = df["inference_run_id"].astype(str)
     df["spec_run_id"] = df.get("spec_run_id", "").astype(str)
     df["spec_id"] = df["spec_id"].astype(str)
-    df["coefficient_vector_json"] = df.get("coefficient_vector_json", "{}").apply(_coerce_json_str)
+    if "coefficient_vector_json" not in df.columns:
+        df["coefficient_vector_json"] = "{}"
+    df["coefficient_vector_json"] = df["coefficient_vector_json"].apply(_coerce_json_str)
     df = _compute_run_success_and_error(df)
     df = _ensure_cols(df, STANDARD_INFER_COLS)
     return df

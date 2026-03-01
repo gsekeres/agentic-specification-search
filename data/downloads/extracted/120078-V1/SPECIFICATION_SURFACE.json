@@ -1,0 +1,191 @@
+{
+  "paper_id": "120078-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "estimator": "within",
+        "model_formula": "log_price ~ c.minodummy#ib10.wave + (c.lastrat7 c.lastrat8 c.lastrat9 c.lastrat10 c.minodummy)#c.rev100 + lesX + i.citywaveID | newid",
+        "panel_unit": "newid",
+        "panel_time": "wave",
+        "fe_structure": ["newid", "citywaveID"],
+        "cluster_vars": ["newid"],
+        "selection_story": "Within-listing variation in reviews (K) identifies how the ethnic price gap evolves as information accumulates; listing FE absorb unobserved time-invariant quality"
+      },
+      "claim_object": {
+        "outcome_concept": "Daily log-price of Airbnb listing",
+        "treatment_concept": "Minority host indicator interacted with number of reviews (information accumulation)",
+        "estimand_concept": "Effect of minority status on listing price conditional on review count, with listing FE",
+        "target_population": "Airbnb listings in major cities (US, Canada, Europe) with at least one review, observed across multiple scraping waves"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-Col1",
+          "outcome_var": "log_price",
+          "treatment_var": "c.minodummy#c.rev100",
+          "controls": [
+            "sharedflat",
+            "person_capacity345",
+            "bedrooms",
+            "bathrooms",
+            "appart",
+            "house_loft",
+            "couch",
+            "airbed",
+            "sofa",
+            "futon",
+            "cabletv",
+            "wireless",
+            "heating",
+            "ac",
+            "elevator",
+            "handiaccess",
+            "doorman",
+            "fireplace",
+            "washer",
+            "dryer",
+            "parking",
+            "gym",
+            "pool",
+            "buzzer",
+            "hottub",
+            "breakfast",
+            "family",
+            "events",
+            "people",
+            "extrapeople",
+            "cancel_policy",
+            "smoking_allowed",
+            "pets_allowed",
+            "more_1_flat",
+            "year2009",
+            "year2010",
+            "year2011",
+            "year2012",
+            "year2013",
+            "year2014",
+            "year2015",
+            "superhost",
+            "verified_email",
+            "verified_offline",
+            "verified_phone",
+            "facebook",
+            "count_descrip",
+            "count_about",
+            "count_languages",
+            "count_rules",
+            "picture_count",
+            "noccur_pro_true",
+            "change_pics"
+          ],
+          "additional_terms": [
+            "c.minodummy#ib10.wave",
+            "c.lastrat7#c.rev100",
+            "c.lastrat8#c.rev100",
+            "c.lastrat9#c.rev100",
+            "c.lastrat10#c.rev100"
+          ],
+          "n_controls": 52,
+          "fixed_effects": ["newid", "citywaveID"],
+          "vcov": "cluster(newid)",
+          "sample_restriction": "Drev100 > 0 & review > 0 & review < 40",
+          "notes": "Linear interaction model: minority x K/100 with listing FE. Focal parameter is coefficient on minodummy x rev100. The $lesX global includes ~20 missing-value indicator dummies ($missing) beyond the listed property/host characteristics; these are always included when controls are included. The 52-control count includes the listed variables only (not the missing dummies, which are bundled with the property controls)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 52,
+        "linked_adjustment": false,
+        "functional_form_policy": "The structural learning terms (lastrat*_KKrho, minodummy_KKrho) from Table 4 involve a nonlinear rho parameter estimated via iterated NLS; the linear approximation in Table 5 (minodummy x rev100) is the tractable reduced-form version. Specification search should use the Table 5 linear form as baseline.",
+        "sample_cap_note": "Table 5 columns vary the review upper bound (40, 60, 80). The baseline uses review < 40.",
+        "missing_dummies_note": "The $lesX global in global_vars.do includes $missing (about 20 missing-value indicator dummies). These are always included alongside the property/host controls and should not be varied independently. The n_controls count of 52 refers to the substantive controls only."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table5_col2",
+          "baseline__table5_col3"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_sharedflat",
+          "rc/controls/loo/drop_person_capacity345",
+          "rc/controls/loo/drop_bedrooms",
+          "rc/controls/loo/drop_bathrooms",
+          "rc/controls/loo/drop_superhost",
+          "rc/controls/loo/drop_verified_email",
+          "rc/controls/loo/drop_facebook",
+          "rc/controls/loo/drop_count_descrip",
+          "rc/controls/loo/drop_picture_count",
+          "rc/controls/loo/drop_noccur_pro_true",
+          "rc/controls/loo/drop_change_pics",
+          "rc/controls/loo/drop_more_1_flat",
+          "rc/controls/loo/drop_cancel_policy",
+          "rc/controls/sets/none",
+          "rc/controls/sets/minimal_size",
+          "rc/controls/sets/property_chars",
+          "rc/controls/sets/host_chars",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/size_only",
+          "rc/controls/progression/size_amenities",
+          "rc/controls/progression/size_amenities_host",
+          "rc/controls/progression/full_with_counts",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/controls/subset/random_011",
+          "rc/controls/subset/random_012",
+          "rc/controls/subset/random_013",
+          "rc/controls/subset/random_014",
+          "rc/controls/subset/random_015",
+          "rc/sample/restriction/review_lt_60",
+          "rc/sample/restriction/review_lt_80",
+          "rc/sample/restriction/review_lt_100",
+          "rc/sample/restriction/review_gt_0",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/drop/citywaveID",
+          "rc/fe/swap/hoodcityID_for_citywaveID",
+          "rc/form/treatment/quadratic_rev100"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/newid",
+          "params": {"cluster_var": "newid"},
+          "notes": "Cluster at listing level, matching paper's robust cl(newid)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering)"
+          },
+          {
+            "spec_id": "infer/se/cluster/hoodcityID",
+            "params": {"cluster_var": "hoodcityID"},
+            "notes": "Cluster at neighborhood-city level (coarser)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 120078,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

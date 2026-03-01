@@ -1,0 +1,117 @@
+{
+  "paper_id": "116248-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "abs_dev_eq ~ comply_best_type + game_controls | subject_FE + game_FE, cluster(subject)",
+        "selection_story": "Laboratory experiment with two-person guessing games; 88 subjects each play 16 games. The paper classifies subjects into behavioral types (Eq, L1, L2, L3, D1, D2) using MLE. The key finding is that subjects who comply with higher-level strategic thinking types (L1, L2) have systematically lower deviations from equilibrium predictions. The specification search tests robustness of the association between type compliance and guess accuracy.",
+        "fe_structure": ["subject", "game"],
+        "cluster_vars": ["subject"]
+      },
+      "claim_object": {
+        "outcome_concept": "Absolute deviation of subject's guess from equilibrium prediction",
+        "treatment_concept": "Compliance with best-fit behavioral type predictions (L1 type, the modal type)",
+        "estimand_concept": "Association between L1-type compliance and accuracy of guesses relative to equilibrium, controlling for subject and game heterogeneity",
+        "target_population": "88 laboratory subjects (71 Baseline + 17 Open Boxes) across 16 two-person guessing games"
+      },
+      "baseline_specs": [
+        {
+          "label": "Panel-OLS-abs-dev-eq-on-l1-comply",
+          "outcome_var": "abs_dev_eq",
+          "treatment_var": "comply_l1",
+          "controls": [
+            "game_range_width",
+            "own_target"
+          ],
+          "n_controls": 2,
+          "fixed_effects": ["subject_id", "game_id"],
+          "vcov": "cluster_subject"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Panel of subject x game observations. Controls include game characteristics (range width, targets, dominance round bounds). FE absorb subject and game heterogeneity. 6 possible types can serve as the treatment compliance indicator."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/treatment/type/eq_comply",
+          "rc/treatment/type/l2_comply",
+          "rc/treatment/type/l3_comply",
+          "rc/treatment/type/d1_comply",
+          "rc/treatment/type/d2_comply",
+          "rc/outcome/dev_l1",
+          "rc/outcome/dev_l2",
+          "rc/outcome/dev_d1",
+          "rc/outcome/squared_dev_eq",
+          "rc/outcome/comply_eq",
+          "rc/controls/sets/none",
+          "rc/controls/sets/game_chars_only",
+          "rc/controls/sets/full",
+          "rc/controls/progression/no_controls",
+          "rc/controls/progression/target_only",
+          "rc/controls/progression/target_plus_range",
+          "rc/controls/progression/full",
+          "rc/controls/loo/drop_range_width",
+          "rc/controls/loo/drop_own_target",
+          "rc/sample/baseline_only",
+          "rc/sample/openboxes_only",
+          "rc/sample/exclude_outliers",
+          "rc/sample/exclude_flagged",
+          "rc/sample/first_8_games",
+          "rc/sample/last_8_games",
+          "rc/sample/dominance_solvable",
+          "rc/fe/subject_only",
+          "rc/fe/game_only",
+          "rc/fe/session_only",
+          "rc/fe/no_fe",
+          "rc/fe/session_plus_game",
+          "rc/form/log_abs_dev",
+          "rc/form/median_regression",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005"
+        ],
+        "inference_spec_ids": [
+          "infer/se/hc/hc1",
+          "infer/se/cluster/session",
+          "infer/se/cluster/game"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/subject",
+          "method": "CRV1",
+          "cluster_vars": ["subject"]
+        },
+        "alternatives": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "method": "HC1"
+          },
+          {
+            "spec_id": "infer/se/cluster/session",
+            "method": "CRV1",
+            "cluster_vars": ["session"]
+          },
+          {
+            "spec_id": "infer/se/cluster/game",
+            "method": "CRV1",
+            "cluster_vars": ["game"]
+          }
+        ]
+      }
+    }
+  ]
+}

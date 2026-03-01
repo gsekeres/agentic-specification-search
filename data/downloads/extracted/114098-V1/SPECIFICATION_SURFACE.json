@@ -1,0 +1,123 @@
+{
+  "paper_id": "114098-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "structural_calibration",
+      "design_audit": {
+        "estimator": "calibration_grid_search",
+        "model_formula": "Representative agent OLG with intermediation costs; grid search for optimal tau",
+        "selection_story": "Model calibrates a representative agent economy with financing frictions (unit intermediation cost theta). Households save through intermediated assets; firms borrow to finance capital, land, and (optionally) labor. The optimal intermediation tax tau* maximizes steady-state welfare. Key claim: the welfare-maximizing tau* is positive and the welfare gain from implementing it is economically significant.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Welfare gain from implementing optimal intermediation tax",
+        "treatment_concept": "Optimal intermediation tax rate (tau*) relative to laissez-faire (tau=0)",
+        "estimand_concept": "Steady-state welfare gain (in utils) from moving from tau=0 to tau*, expressed as a fraction of baseline welfare",
+        "target_population": "Calibrated representative agent economy matching US macro aggregates"
+      },
+      "baseline_specs": [
+        {
+          "label": "Baseline-inelastic-labor",
+          "outcome_var": "welfare_gain",
+          "treatment_var": "tau_star",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "none",
+          "parameters": {
+            "theta": 0.015,
+            "alpha": 0.18,
+            "alphatil": 0.08,
+            "beta_a": 0.9709,
+            "delta_a": 0.10,
+            "eta": 0,
+            "L_inelastic": 1,
+            "eps": 1,
+            "corporate_debt_to_gdp": 0.75,
+            "mortgage_debt_to_gdp": 0.525,
+            "grid_n": 100
+          }
+        }
+      ],
+      "constraints": {
+        "theta_range": [0.005, 0.030],
+        "alpha_range": [0.10, 0.30],
+        "alphatil_range": [0.04, 0.16],
+        "beta_a_range": [0.95, 0.99],
+        "delta_a_range": [0.05, 0.15],
+        "linked_adjustment": false,
+        "notes": "Paper uses theta=0.015, alpha=0.18, alphatil=0.08, beta=1/1.03, delta=0.10 as baseline. Comparative statics vary theta and alpha/alphatil. Appendix uses elastic labor (eta=1, L_inelastic=0) with different eps values."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [
+          "design/elastic_labor/eps1",
+          "design/elastic_labor/eps5",
+          "design/elastic_labor/eps10"
+        ],
+        "rc_spec_ids": [
+          "rc/theta/half",
+          "rc/theta/0.75x",
+          "rc/theta/1.25x",
+          "rc/theta/1.5x",
+          "rc/theta/2x",
+          "rc/alpha/low",
+          "rc/alpha/mid_low",
+          "rc/alpha/mid_high",
+          "rc/alpha/high",
+          "rc/alphatil/low",
+          "rc/alphatil/mid_low",
+          "rc/alphatil/mid_high",
+          "rc/alphatil/high",
+          "rc/beta/low",
+          "rc/beta/mid_low",
+          "rc/beta/mid_high",
+          "rc/beta/high",
+          "rc/delta/low",
+          "rc/delta/mid_low",
+          "rc/delta/mid_high",
+          "rc/delta/high",
+          "rc/int_assets/low",
+          "rc/int_assets/high",
+          "rc/alpha_share/grid",
+          "rc/grid_resolution/n50",
+          "rc/grid_resolution/n200",
+          "rc/grid_resolution/n500",
+          "rc/grid_range/wide",
+          "rc/grid_range/narrow",
+          "rc/combined/theta_alpha",
+          "rc/combined/theta_beta",
+          "rc/combined/alpha_delta",
+          "rc/outcome/tau_star",
+          "rc/outcome/fin_share_change",
+          "rc/outcome/output_change",
+          "rc/outcome/consumption_change",
+          "rc/outcome/capital_change",
+          "rc/outcome/intermediation_cost_change"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/calibration/baseline",
+          "params": {},
+          "notes": "Calibration model -- no statistical inference. Results are deterministic given parameters."
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114098,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

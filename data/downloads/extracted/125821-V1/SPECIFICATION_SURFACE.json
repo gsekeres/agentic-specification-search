@@ -1,0 +1,121 @@
+{
+  "paper_id": "125821-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "estimator": "cellini_onestep",
+        "rd_type": "sharp",
+        "running_variable": "perc",
+        "running_variable_definition": "Re-centered vote share (percent in favor minus 50)",
+        "cutoff": 0,
+        "bandwidth_rule": "not_applicable_parametric",
+        "kernel": "not_applicable_parametric",
+        "poly_order": 3,
+        "panel_unit": "district_code",
+        "panel_time": "school_year",
+        "fe_structure": ["district_code", "year_dummies"],
+        "cluster_vars": ["district_code"],
+        "estimator_note": "Cellini et al. (2010) QJE one-step dynamic RD estimator: areg outcome op_win_prev1-10 bond_win_prev1-10 + polynomial controls in vote share + year dummies | district FE, cluster(district_code). Focal parameter is average of op_win_prev1-10 coefficients (10-year average post-election effect)."
+      },
+      "claim_object": {
+        "outcome_concept": "Student academic outcomes (test score proficiency rates, dropout rate, postsecondary enrollment)",
+        "treatment_concept": "Passage of operational revenue limit referendum (school spending election)",
+        "estimand_concept": "ITT effect of referendum passage on student outcomes, averaged over 10 post-election years (dynamic RD local effect at 50% vote share cutoff)",
+        "target_population": "Wisconsin public school districts holding revenue limit referenda, 1996-97 through 2014-15"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-PanelA-Col2",
+          "outcome_var": "advprof_math10",
+          "treatment_var": "op_win_prev1_through_10",
+          "controls": ["op_win_prev1-10", "bond_win_prev1-10", "yrdums", "op_ismeas_prev", "bond_ismeas_prev", "op_month_prev", "bond_month_prev", "op_percent_prev1-3", "bond_percent_prev1-3", "recurring_prev", "op_numelec_prev", "bond_numelec_prev"],
+          "n_controls_note": "Many polynomial/lag controls; effective model has ~100+ regressors via wildcard expansion",
+          "fixed_effects": ["district_code"],
+          "vcov": "cluster_district_code",
+          "weights": "aw=num_takers_math10",
+          "dataset": "onestep_panel_tables.dta",
+          "focal_parameter": "lincom .10*(op_win_prev1 + ... + op_win_prev10)",
+          "notes": "Cubic polynomial in vote share; 10-year average operational referendum effect. Table 5 Panel A Col 2 (math proficiency grade 10) is the headline student outcome."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": "not_applicable",
+        "controls_count_max": "not_applicable",
+        "controls_note": "The Cellini one-step estimator has a fixed structure of polynomial controls in vote share + year dummies + election characteristics. Control variation operates through polynomial order (linear/quadratic/cubic), not through add/drop of individual covariates.",
+        "linked_adjustment": true,
+        "linked_adjustment_note": "Operational and bond referendum controls must vary together (both polynomial orders change jointly)",
+        "outcome_specific_weights": {
+          "dropout_rate": "aw=student_count",
+          "advprof_math10": "aw=num_takers_math10",
+          "wkce_math10": "aw=num_takers_math10",
+          "log_instate_enr": "unweighted, but includes grade9lagged as additional control",
+          "rev_lim_mem": "unweighted",
+          "tot_exp_mem": "unweighted"
+        },
+        "outcome_specific_controls_note": "log_instate_enr adds grade9lagged (lagged grade 9 enrollment) as an additional control beyond the standard Cellini polynomial set. All other outcomes use only the standard polynomial controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__dropout_rate",
+          "baseline__wkce_math10",
+          "baseline__log_instate_enr",
+          "baseline__rev_lim_mem",
+          "baseline__tot_exp_mem"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/poly/local_linear",
+          "design/regression_discontinuity/poly/local_quadratic"
+        ],
+        "design_spec_ids_note": "Polynomial order variation is the primary within-design axis. Cubic is the baseline (Table 5 Panel A); linear and quadratic are Table 5 Panels C and B respectively. local_cubic omitted since it is the baseline.",
+        "rc_spec_ids": [
+          "rc/sample/restrict/tried_both",
+          "rc/sample/restrict/passed_both",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/weights/unweighted",
+          "rc/data/focal_parameter/five_year_avg",
+          "rc/joint/cross_section_rd/rdrobust_post",
+          "rc/joint/cross_section_rd/rdrobust_pre_placebo"
+        ],
+        "rc_spec_ids_note": "Removed redundant specs: rc/controls/sets/{linear,quadratic,cubic}_polynomial duplicated the design/* polynomial variation; rc/weights/aw_num_takers is the baseline weight for test score outcomes; rc/data/focal_parameter/ten_year_avg is the baseline focal parameter; rc/sample/restrict/cross_section_{post,pre} duplicated rc/joint/cross_section_rd/*; rc/form/outcome/log_outcome removed because log_instate_enr is already logged and log-transforming proficiency rates (0-100%) is problematic."
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/district",
+          "params": {"cluster_var": "district_code"},
+          "notes": "Clustered at district level, matching paper's cluster(district_code)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Heteroskedasticity-robust only (no clustering)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 65,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 125821,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "notes": "McCrary density test at 50% vote share cutoff (DCdensity.ado is included in package)"
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "notes": "Table 3 in paper: tests for local balance between winning and losing districts on pre-election observables"
+        }
+      ]
+    }
+  ]
+}

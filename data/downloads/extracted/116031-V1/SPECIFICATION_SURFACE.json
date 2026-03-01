@@ -1,0 +1,123 @@
+{
+  "paper_id": "116031-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "log_GAIA_QUAIDS ~ log_Geary + log_population | none, HC1",
+        "selection_story": "Cross-country comparison of theoretically-grounded GAIA real income index against traditional Geary method. The paper constructs GAIA indexes from estimated QUAIDS demand system parameters and shows they differ systematically from Geary indexes, especially for poorer countries. The regression tests the strength and stability of the Geary-GAIA relationship across specifications.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "GAIA real income index (utility-based, from QUAIDS demand system estimation)",
+        "treatment_concept": "Geary real income index (traditional method underlying Penn World Table)",
+        "estimand_concept": "Elasticity of GAIA index with respect to Geary index across countries; deviation from unity indicates systematic bias in Geary method",
+        "target_population": "60 countries in 1980 ICP benchmark data, 11 commodity groups"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-GAIA-QUAIDS-vs-Geary",
+          "outcome_var": "log_GAIA_QUAIDS",
+          "treatment_var": "log_Geary",
+          "controls": ["log_population"],
+          "n_controls": 1,
+          "fixed_effects": [],
+          "vcov": "HC1"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 5,
+        "linked_adjustment": false,
+        "notes": "Cross-country data with 60 observations, 11 commodity groups. Controls include log population, expenditure level, regional dummies. The paper computes correlations and Gini coefficients rather than formal regressions, but OLS provides a natural specification search framework for testing the robustness of index relationships."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__GAIA_AIDS",
+          "baseline__GAIA_HAIDS",
+          "baseline__EKS_vs_Geary"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/outcome/log_EKS",
+          "rc/outcome/log_CCD",
+          "rc/outcome/log_Laspeyres_max",
+          "rc/outcome/log_Laspeyres_min",
+          "rc/outcome/log_expenditure",
+          "rc/treatment/log_EKS",
+          "rc/treatment/log_CCD",
+          "rc/treatment/log_GAIA_QUAIDS",
+          "rc/treatment/log_GAIA_AIDS",
+          "rc/treatment/log_GAIA_HAIDS",
+          "rc/controls/loo/drop_log_population",
+          "rc/controls/sets/none",
+          "rc/controls/sets/log_pop_only",
+          "rc/controls/sets/log_pop_plus_region",
+          "rc/controls/sets/region_only",
+          "rc/controls/sets/log_expenditure_control",
+          "rc/controls/progression/raw_bivariate",
+          "rc/controls/progression/plus_log_pop",
+          "rc/controls/progression/plus_region",
+          "rc/controls/progression/plus_expenditure",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/subset/oecd_only",
+          "rc/sample/subset/non_oecd_only",
+          "rc/sample/subset/drop_richest_5",
+          "rc/sample/subset/drop_poorest_5",
+          "rc/sample/subset/drop_richest_10",
+          "rc/sample/subset/drop_poorest_10",
+          "rc/sample/subset/middle_40",
+          "rc/form/levels_vs_logs",
+          "rc/form/rank_regression",
+          "rc/form/quadratic_geary",
+          "rc/form/ratio_outcome",
+          "rc/fe/region_dummies",
+          "rc/scale/per_capita_normalization"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "HC1 robust standard errors for cross-country OLS"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 small-sample correction"
+          },
+          {
+            "spec_id": "infer/se/ols",
+            "params": {},
+            "notes": "Homoskedastic OLS standard errors"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 116031,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

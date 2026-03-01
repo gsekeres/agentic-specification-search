@@ -1,0 +1,38 @@
+{
+  "paper_id": "113066-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of tele on diff",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113066-V1_run_001",
+        "113066-V1_run_002",
+        "113066-V1_run_003"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table2_col1",
+        "baseline__table2_col2",
+        "baseline__table2_col3"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of tele on dev2_diff",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "113066-V1_run_036",
+        "113066-V1_run_037",
+        "113066-V1_run_038"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table2_col4_variance",
+        "baseline__table2_col5_variance",
+        "baseline__table2_col6_variance"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

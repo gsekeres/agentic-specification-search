@@ -1,0 +1,367 @@
+{
+  "paper_id": "145141-V1",
+  "created_at": "2026-02-24",
+  "reviewed_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "individual",
+        "randomization_design": "individual_random_assignment",
+        "treatment_arms": ["no_PR", "PR", "BDM_elicitation"],
+        "analysis_sample": "coherent_sample (excludes BDM arm and incoherent WTP respondents)",
+        "cluster_vars": [],
+        "estimand": "ITT",
+        "notes": "YMCA field experiment: members randomly assigned to public recognition (PR) of attendance vs no PR. BDM arm excluded from reduced-form analysis. Experiment period: June 15 - July 15, 2017."
+      },
+      "claim_object": {
+        "outcome_concept": "YMCA attendance during experiment period (gym visits in 30-day window, June 15 - July 15, 2017)",
+        "treatment_concept": "Random assignment to public recognition (posting of attendance on public board)",
+        "estimand_concept": "ITT effect of public recognition on gym attendance",
+        "target_population": "YMCA members who completed the experiment survey (coherent sample)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col2-Coh",
+          "outcome_var": "attendance",
+          "treatment_var": "image",
+          "controls": ["past"],
+          "n_controls": 1,
+          "fixed_effects": [],
+          "vcov": "hc1",
+          "sample_restriction": "coherent_sample == 1",
+          "notes": "Table 2, Column 2 (coherent sample): reg attendance image past, r"
+        },
+        {
+          "label": "Table2-Col3-Coh",
+          "outcome_var": "attendance",
+          "treatment_var": "image",
+          "controls": ["past", "beliefs_w_image"],
+          "n_controls": 2,
+          "fixed_effects": [],
+          "vcov": "hc1",
+          "sample_restriction": "coherent_sample == 1",
+          "notes": "Table 2, Column 3 (coherent sample): reg attendance image past beliefs_w_image, r"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "mandatory_controls": [],
+        "optional_pool": ["past", "beliefs_w_image"],
+        "notes": "Paper uses 0-2 controls across Table 2 columns. Available pre-treatment covariates are very limited (past attendance, beliefs). This is an RCT so controls are for precision, not identification."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table2_col2_coh",
+          "baseline__table2_col3_coh"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/none",
+          "rc/controls/sets/past_only",
+          "rc/controls/sets/past_and_beliefs",
+          "rc/sample/definition/monotonic_sample",
+          "rc/sample/definition/robust_sample",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/winsorize_y_1_99",
+          "rc/form/outcome/log1p",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/standardized",
+          "rc/preprocess/coding/attendance_topcode_22",
+          "rc/preprocess/coding/attendance_topcode_15"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "HC1 robust SEs matching Stata 'robust'. Paper uses robust SEs for YMCA regressions (reg ... , r)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 SEs as small-sample robustness check."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 145141,
+        "controls_subset_sampler": "none",
+        "notes": "Control pool is very small (2 covariates), so full enumeration is feasible. No random subset sampling needed."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance check across treatment arms on past attendance, beliefs, demographics (Table 1 of paper). Code: ymca_piped_values.do ttest block."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "individual",
+        "randomization_design": "within_subject_random_order",
+        "treatment_arms": ["anonymous", "public_recognition", "financial_incentives"],
+        "round_order_controls": ["o1", "o2"],
+        "analysis_sample": "flag_attention_check==0 & consistent_b==1 & high_pts==0",
+        "cluster_vars": ["id"],
+        "estimand": "within-subject ITT",
+        "data_cleaning_note": "Observations with pts > 3000 in ANY round are dropped before analysis (high_pts flag). This is a baseline data-cleaning step, not an optional sample restriction.",
+        "notes": "Within-subject design: each participant completes three real-effort rounds (anonymous, public recognition, financial incentives) in randomized order. Points scored in each round are the outcome. Treatment is round condition (SR vs anonymous). Data reshaped long: 3 obs per person."
+      },
+      "claim_object": {
+        "outcome_concept": "Points scored in real-effort task (charitable giving task)",
+        "treatment_concept": "Public recognition round vs anonymous round (within-subject)",
+        "estimand_concept": "Effect of public recognition on effort/charitable giving (within-subject difference)",
+        "target_population": "Online experiment participants (Prolific, Berkeley, BU samples) passing attention and consistency checks, excluding those with disqualifying high points"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-Col1-Prolific",
+          "outcome_var": "pts",
+          "treatment_var": "SR",
+          "controls": ["ownpay", "o1", "o2"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "sample=='Prolific' & flag_attention_check==0 & consistent_b==1 & high_pts==0",
+          "notes": "Table 5 Col 1: reg pts SR ownpay o1 o2, cluster(id). Prolific sample. ownpay is the financial incentives round indicator (2nd experimental condition, not a removable control)."
+        },
+        {
+          "label": "Table5-Col2-Berkeley",
+          "outcome_var": "pts",
+          "treatment_var": "SR",
+          "controls": ["ownpay", "o1", "o2"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "sample=='Berkeley' & flag_attention_check==0 & consistent_b==1 & high_pts==0",
+          "notes": "Table 5 Col 2: reg pts SR ownpay o1 o2, cluster(id). Berkeley sample."
+        },
+        {
+          "label": "Table5-Col3-BU",
+          "outcome_var": "pts",
+          "treatment_var": "SR",
+          "controls": ["ownpay", "o1", "o2"],
+          "n_controls": 3,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "sample=='BU' & flag_attention_check==0 & consistent_b==1 & high_pts==0",
+          "notes": "Table 5 Col 3: reg pts SR ownpay o1 o2, cluster(id). BU sample (QM222)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 3,
+        "linked_adjustment": false,
+        "mandatory_controls": ["ownpay"],
+        "optional_pool": ["o1", "o2"],
+        "notes": "ownpay MUST always be included: it is the financial incentives round indicator (a second experimental condition), not a removable covariate. o1 and o2 are order dummies -- the paper tests their joint significance. Minimum includes ownpay only; maximum includes ownpay + order dummies. Dropping ownpay would confound the SR coefficient with financial incentive effects."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table5_col1_prolific",
+          "baseline__table5_col2_berkeley",
+          "baseline__table5_col3_bu"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/ownpay_only",
+          "rc/controls/sets/ownpay_and_order",
+          "rc/sample/definition/first_round_only",
+          "rc/sample/definition/no_attention_check_filter",
+          "rc/sample/definition/strict_consistency",
+          "rc/sample/definition/approx_monotonic",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/pooled/all_three_samples",
+          "rc/form/outcome/log1p_pts",
+          "rc/form/outcome/standardized_pts",
+          "rc/preprocess/coding/pts_in_hundreds",
+          "rc/fe/add/individual_fe"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/id",
+          "params": {
+            "cluster_var": "id"
+          },
+          "notes": "Cluster at individual level (within-subject design, 3 observations per person). Matches paper: cluster(id)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 145141,
+        "controls_subset_sampler": "none",
+        "notes": "Control pool is small (ownpay + order dummies). Full enumeration is feasible. Main variation is across samples and sample restriction definitions."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols",
+        "randomization_unit": "individual",
+        "randomization_design": "within_subject_stated_preference",
+        "elicitation_method": "BDM_slider_WTP_by_interval",
+        "intervals_ymca": "11 attendance intervals: 0, 1, 2, 3, 4, 5-6, 7-8, 9-12, 13-17, 18-22, 23-28",
+        "intervals_charity": "18 points intervals: 0-99, 100-199, ..., 1600-1699, 1700+",
+        "ymca_visits_coding": "midpoints: 0, 1, 2, 3, 4, 5.5, 7.5, 10.5, 15, 20, 26.5",
+        "charity_interval_coding": "interval + 0.5 in hundreds of points: 0.5, 1.5, ..., 17.5",
+        "data_structure": "individual-by-interval panel (reshaped long)",
+        "cluster_vars": ["id"],
+        "tobit_censoring": "YMCA: wtp slider bounded by amount; Charity: Prolific bounded at +/-$10, BU/Berkeley bounded at +/-$25",
+        "notes": "WTP for public recognition elicited via BDM mechanism at each hypothetical attendance/performance interval. Reduced-form regressions of WTP on visits (or interval number) with quadratic specification. Key parameter is the curvature ratio -R''/R'(a_bar) measuring concavity of the reputational return function. Charity excludes top interval (interval >= 17) in baseline quadratic regressions."
+      },
+      "claim_object": {
+        "outcome_concept": "WTP for public recognition ($) at hypothetical attendance/performance levels",
+        "treatment_concept": "Number of gym visits or points scored (hypothetical performance level within BDM elicitation)",
+        "estimand_concept": "Shape of the reputational return function R(a): WTP = R(a) - R(a_bar) measures how reputational payoff varies with performance; curvature ratio -R''/R'(a_bar) is the key structural parameter",
+        "target_population": "YMCA experiment participants (coherent sample) and charity experiment participants (Prolific, Berkeley, BU)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col2-Coh-YMCA",
+          "outcome_var": "wtp",
+          "treatment_var": "visits",
+          "controls": ["visits2"],
+          "n_controls": 1,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "coherent_sample==1 (YMCA)",
+          "notes": "Table 3 Col 2 (Coherent): reg wtp visits visits2, cluster(id). Quadratic OLS. visits is midpoint-coded (0, 1, 2, 3, 4, 5.5, 7.5, 10.5, 15, 20, 26.5). Key result is curvature ratio from nlcom: -2*b[visits2]/(b[visits]+2*b[visits2]*avg_att_mainpop)."
+        },
+        {
+          "label": "Table6-Col2-Prolific",
+          "outcome_var": "wtp",
+          "treatment_var": "interval",
+          "controls": ["c.interval#c.interval"],
+          "n_controls": 1,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "sample=='Prolific' & flag_attention_check==0 & consistent_b==1 & interval<17 & high_pts==0",
+          "notes": "Table 6 Col 2 (Prolific): reg wtp c.interval##c.interval, cluster(id). interval is (original_interval + 0.5) in hundreds of points. Excludes top interval (1700+)."
+        },
+        {
+          "label": "Table6-Col4-Berkeley",
+          "outcome_var": "wtp",
+          "treatment_var": "interval",
+          "controls": ["c.interval#c.interval"],
+          "n_controls": 1,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "sample=='Berkeley' & flag_attention_check==0 & consistent_b==1 & interval<17 & high_pts==0",
+          "notes": "Table 6 Col 4 (Berkeley): reg wtp c.interval##c.interval, cluster(id)."
+        },
+        {
+          "label": "Table6-Col6-BU",
+          "outcome_var": "wtp",
+          "treatment_var": "interval",
+          "controls": ["c.interval#c.interval"],
+          "n_controls": 1,
+          "fixed_effects": [],
+          "vcov": "cluster_id",
+          "sample_restriction": "sample=='BU' & flag_attention_check==0 & consistent_b==1 & interval<17 & high_pts==0",
+          "notes": "Table 6 Col 6 (BU): reg wtp c.interval##c.interval, cluster(id)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 1,
+        "linked_adjustment": false,
+        "functional_form_policy": {
+          "baseline_form": "quadratic: wtp = b0 + b1*visits + b2*visits^2 (YMCA) or wtp = b0 + b1*interval + b2*interval^2 (charity)",
+          "alternative_forms_allowed": ["linear", "tobit_quadratic", "tobit_linear", "log_visits_quadratic", "interval_index_quadratic", "interval_index_linear"],
+          "coefficient_interpretation": "Focal parameter is curvature ratio -2*b2/(b1 + 2*b2*a_bar) computed via nlcom. For linear specs, focal is slope b1.",
+          "tobit_note": "Tobit uses ll ul (data-driven censoring bounds from slider limits). Prolific: +/-$10; BU/Berkeley: +/-$25; YMCA: amount-bounded.",
+          "notes": "Paper systematically reports both linear and quadratic, both OLS and Tobit. The quadratic term is essential to recover the curvature parameter that enters the structural model. YMCA and charity use different x-axis variables (visits vs interval in hundreds of points)."
+        },
+        "scope_note": "YMCA and charity specs use different x-axis variables and sample restrictions. rc_spec_ids are labeled with _ymca or _charity suffixes to indicate scope. Tobit specs are YMCA-specific (charity code does not run Tobit)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_col2_coh_ymca",
+          "baseline__table6_col2_prolific",
+          "baseline__table6_col4_berkeley",
+          "baseline__table6_col6_bu"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/form/estimator/ols_linear",
+          "rc/form/estimator/tobit_quadratic_ymca",
+          "rc/form/estimator/tobit_linear_ymca",
+          "rc/form/outcome/ln_visits_quadratic_ymca",
+          "rc/form/outcome/interval_idx_quadratic_ymca",
+          "rc/form/outcome/interval_idx_linear_ymca",
+          "rc/sample/definition/monotonic_sample_ymca",
+          "rc/sample/definition/close_to_beliefs_4_ymca",
+          "rc/sample/definition/close_to_beliefs_exact_ymca",
+          "rc/sample/definition/close_to_past_4_ymca",
+          "rc/sample/definition/excl_top_interval_ymca",
+          "rc/sample/definition/excl_top_two_intervals_ymca",
+          "rc/sample/definition/include_top_interval_charity",
+          "rc/sample/definition/close_to_score_charity",
+          "rc/sample/definition/no_consistency_filter_charity",
+          "rc/sample/outliers/trim_wtp_1_99",
+          "rc/sample/outliers/trim_wtp_5_95",
+          "rc/sample/pooled/all_charity_samples"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/id",
+          "params": {
+            "cluster_var": "id"
+          },
+          "notes": "Cluster at individual level (panel: individual x interval). Matches paper: cluster(id)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 145141,
+        "controls_subset_sampler": "none",
+        "notes": "No control-subset sampling needed. Main variation is across functional forms, estimators, sample restrictions, and experiment samples."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

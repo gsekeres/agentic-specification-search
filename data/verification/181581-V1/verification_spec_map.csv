@@ -1,0 +1,46 @@
+paper_id,spec_run_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_run_id,is_baseline,is_valid,is_core_test,category,why,confidence
+181581-V1,181581-V1_run_001,baseline,designs/randomized_experiment.md#baseline,mort7,doctor,G1,181581-V1_run_001,1,1,1,core_method,Baseline specification from Table 4,0.95
+181581-V1,181581-V1_run_002,baseline__basic_controls,designs/randomized_experiment.md#baseline,mort7,doctor,G1,181581-V1_run_001,1,1,1,core_method,Baseline specification from Table 4,0.95
+181581-V1,181581-V1_run_003,design/randomized_experiment/estimator/diff_in_means,designs/randomized_experiment.md#diff-in-means,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_method,Design estimator variant (diff in means),0.95
+181581-V1,181581-V1_run_004,rc/controls/sets/none,modules/robustness/controls.md#sets,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control set variation,0.95
+181581-V1,181581-V1_run_005,rc/controls/sets/basic,modules/robustness/controls.md#sets,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control set variation,0.95
+181581-V1,181581-V1_run_006,rc/controls/sets/extended,modules/robustness/controls.md#sets,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control set variation,0.95
+181581-V1,181581-V1_run_007,rc/controls/progression/strata_only,modules/robustness/controls.md#progression,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control progression variation,0.95
+181581-V1,181581-V1_run_008,rc/controls/progression/strata_qtr,modules/robustness/controls.md#progression,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control progression variation,0.95
+181581-V1,181581-V1_run_009,rc/controls/progression/strata_qtr_individual,modules/robustness/controls.md#progression,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control progression variation,0.95
+181581-V1,181581-V1_run_010,rc/controls/progression/strata_qtr_individual_hc,modules/robustness/controls.md#progression,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Control progression variation,0.95
+181581-V1,181581-V1_run_011,rc/controls/loo/drop_male,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_012,rc/controls/loo/drop_first,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_013,rc/controls/loo/drop_hausa,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_014,rc/controls/loo/drop_gest,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_015,rc/controls/loo/drop_car,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_016,rc/controls/loo/drop_last,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_017,rc/controls/loo/drop_auton,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_018,rc/controls/loo/drop_cct,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_019,rc/controls/loo/drop_hc_deliveries,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_020,rc/controls/loo/drop_hc_cesarean,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_021,rc/controls/loo/drop_hc_transfusion,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_022,rc/controls/loo/drop_hc_clean,modules/robustness/controls.md#loo,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Leave-one-out control variation,0.95
+181581-V1,181581-V1_run_023,rc/controls/subset/random_001,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_024,rc/controls/subset/random_002,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_025,rc/controls/subset/random_003,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_026,rc/controls/subset/random_004,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_027,rc/controls/subset/random_005,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_028,rc/controls/subset/random_006,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_029,rc/controls/subset/random_007,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_030,rc/controls/subset/random_008,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_031,rc/controls/subset/random_009,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_032,rc/controls/subset/random_010,modules/robustness/controls.md#subset,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_controls,Random control subset variation,0.95
+181581-V1,181581-V1_run_033,rc/fe/add/qtr,modules/robustness/fixed_effects.md#add,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_fe,Fixed effects variation (quarter FE),0.95
+181581-V1,181581-V1_run_034,rc/fe/drop/qtr,modules/robustness/fixed_effects.md#drop,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_fe,Fixed effects variation (quarter FE),0.95
+181581-V1,181581-V1_run_035,rc/sample/restriction/exclude_multiple_births,modules/robustness/sample.md#restriction,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_sample,Sample restriction (exclude multiples),0.95
+181581-V1,181581-V1_run_036,rc/data/outcome/mort30,modules/robustness/data_construction.md#outcome,mort30,doctor,G1,181581-V1_run_001,0,1,1,core_data,Outcome variant (30-day vs 7-day mortality),0.95
+181581-V1,181581-V1_run_037,rc/data/outcome/mort30__basic,modules/robustness/data_construction.md#outcome,mort30,doctor,G1,181581-V1_run_001,0,1,1,core_data,Outcome variant (30-day vs 7-day mortality),0.95
+181581-V1,181581-V1_run_038,rc/data/treatment/doctor_only,modules/robustness/data_construction.md#treatment,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_data,"Treatment variant (doctor only, drop mlp)",0.95
+181581-V1,181581-V1_run_039,rc/data/treatment/doctor_only__basic,modules/robustness/data_construction.md#treatment,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_data,"Treatment variant (doctor only, drop mlp)",0.95
+181581-V1,181581-V1_run_040,rc/sample/restriction/exclude_multiple__extended,modules/robustness/sample.md#restriction,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_sample,Sample restriction (exclude multiples),0.95
+181581-V1,181581-V1_run_041,rc/data/outcome/mort30__singleton,modules/robustness/data_construction.md#outcome,mort30,doctor,G1,181581-V1_run_001,0,1,1,core_data,Outcome variant (30-day vs 7-day mortality),0.95
+181581-V1,181581-V1_run_042,rc/data/treatment/doctor_only__singleton,modules/robustness/data_construction.md#treatment,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_data,"Treatment variant (doctor only, drop mlp)",0.95
+181581-V1,181581-V1_run_043,rc/data/outcome/mort30__extended,modules/robustness/data_construction.md#outcome,mort30,doctor,G1,181581-V1_run_001,0,1,1,core_data,Outcome variant (30-day vs 7-day mortality),0.95
+181581-V1,181581-V1_run_044,rc/data/treatment/doctor_only__basic_singleton,modules/robustness/data_construction.md#treatment,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_data,"Treatment variant (doctor only, drop mlp)",0.95
+181581-V1,181581-V1_run_045,rc/sample/restriction/exclude_multiple__basic,modules/robustness/sample.md#restriction,mort7,doctor,G1,181581-V1_run_001,0,1,1,core_sample,Sample restriction (exclude multiples),0.95

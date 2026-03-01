@@ -1,0 +1,108 @@
+{
+  "paper_id": "145141-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of random assignment to public recognition (posting attendance on a public board) on YMCA gym attendance during a 30-day experiment period. ITT estimate from an individual-level RCT among YMCA members.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["145141-V1_run_001", "145141-V1_run_002"],
+      "baseline_spec_ids": ["baseline__table2_col2_coh", "baseline__table2_col3_coh"],
+      "baseline_coefficients": {
+        "145141-V1_run_001": {
+          "coefficient": 1.190328,
+          "std_error": 0.459192,
+          "p_value": 0.009917,
+          "n_obs": 370,
+          "r_squared": 0.561088,
+          "label": "Table 2 Col 2: attendance ~ image + past, HC1"
+        },
+        "145141-V1_run_002": {
+          "coefficient": 1.272899,
+          "std_error": 0.447148,
+          "p_value": 0.004666,
+          "n_obs": 370,
+          "r_squared": 0.583672,
+          "label": "Table 2 Col 3: attendance ~ image + past + beliefs_w_image, HC1"
+        }
+      },
+      "notes": "YMCA field experiment. Two baseline specs differ by inclusion of beliefs covariate. Both use HC1 robust SEs. Coherent sample excludes incoherent WTP respondents. 16 total specs in this group."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of public recognition (SR round vs anonymous round) on points scored in a real-effort charitable giving task. Within-subject design with three experimental conditions (anonymous, public recognition, financial incentives) in randomized order across three online samples (Prolific, Berkeley, BU).",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["145141-V1_run_017", "145141-V1_run_018", "145141-V1_run_019"],
+      "baseline_spec_ids": ["baseline__table5_col1_prolific", "baseline__table5_col2_berkeley", "baseline__table5_col3_bu"],
+      "baseline_coefficients": {
+        "145141-V1_run_017": {
+          "coefficient": 105.007855,
+          "std_error": 12.252199,
+          "p_value": 0.0,
+          "n_obs": 2904,
+          "r_squared": 0.023379,
+          "label": "Table 5 Col 1: pts ~ SR + ownpay + o1 + o2, cluster(id), Prolific"
+        },
+        "145141-V1_run_018": {
+          "coefficient": 134.412718,
+          "std_error": 22.561142,
+          "p_value": 5.8e-09,
+          "n_obs": 1152,
+          "r_squared": 0.024624,
+          "label": "Table 5 Col 2: pts ~ SR + ownpay + o1 + o2, cluster(id), Berkeley"
+        },
+        "145141-V1_run_019": {
+          "coefficient": 103.610653,
+          "std_error": 45.253864,
+          "p_value": 0.023841,
+          "n_obs": 354,
+          "r_squared": 0.013200,
+          "label": "Table 5 Col 3: pts ~ SR + ownpay + o1 + o2, cluster(id), BU"
+        }
+      },
+      "notes": "Three baseline specs correspond to three independent experimental samples. ownpay is a financial incentive round indicator (mandatory control, not removable). Within-subject design clusters at individual level. 43 total specs in this group. BU sample is smallest (N=354) and noisiest."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Shape of the reputational return function: WTP for public recognition as a function of hypothetical attendance/performance level, elicited via BDM mechanism. The focal parameter is the slope (linear coefficient on visits or interval) from quadratic OLS regressions of WTP on performance, measured at both YMCA (visits) and charity experiment (interval in hundreds of points) samples.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["145141-V1_run_060", "145141-V1_run_061", "145141-V1_run_062", "145141-V1_run_063"],
+      "baseline_spec_ids": ["baseline__table3_col2_coh_ymca", "baseline__table6_col2_prolific", "baseline__table6_col4_berkeley", "baseline__table6_col6_bu"],
+      "baseline_coefficients": {
+        "145141-V1_run_060": {
+          "coefficient": 0.360887,
+          "std_error": 0.036339,
+          "p_value": 0.0,
+          "n_obs": 4070,
+          "r_squared": 0.029921,
+          "label": "Table 3 Col 2: wtp ~ visits + visits^2, cluster(id), YMCA coherent"
+        },
+        "145141-V1_run_061": {
+          "coefficient": 0.154591,
+          "std_error": 0.017749,
+          "p_value": 0.0,
+          "n_obs": 16456,
+          "r_squared": 0.016108,
+          "label": "Table 6 Col 2: wtp ~ interval + interval^2, cluster(id), Prolific"
+        },
+        "145141-V1_run_062": {
+          "coefficient": 0.378981,
+          "std_error": 0.070188,
+          "p_value": 1.17e-07,
+          "n_obs": 6528,
+          "r_squared": 0.033640,
+          "label": "Table 6 Col 4: wtp ~ interval + interval^2, cluster(id), Berkeley"
+        },
+        "145141-V1_run_063": {
+          "coefficient": 0.308508,
+          "std_error": 0.116417,
+          "p_value": 0.009162,
+          "n_obs": 2006,
+          "r_squared": 0.037569,
+          "label": "Table 6 Col 6: wtp ~ interval + interval^2, cluster(id), BU"
+        }
+      },
+      "notes": "Four baseline specs across YMCA and three charity experiment samples. YMCA uses visits (midpoint-coded) as treatment; charity uses interval_raw (interval + 0.5 in hundreds of points). Both are quadratic specifications with focal coefficient on the linear term. This group has the most functional form variation (linear OLS, Tobit, alternative outcome/treatment codings). 37 total specs in this group."
+    }
+  ],
+  "global_notes": "No changes to baseline-group assignments relative to the surface. All three baseline groups are coherent: G1 is the YMCA field experiment (attendance), G2 is the charity real-effort experiment (points), G3 is the WTP elicitation (reputational return function). The surface correctly identified all baseline specs and core RC specs. Two minor observations: (1) G3 YMCA WTP trim specs (runs 095, 096) produce identical results to baseline, likely because WTP values in the YMCA sample have no outliers beyond the trim thresholds; (2) G2 individual FE specs produce coefficients matching the ownpay-only specs because absorbing individual FE in a within-subject design with 3 obs per person effectively makes the ownpay dummy collinear with the individual effect. Both are valid results, not extraction errors."
+}

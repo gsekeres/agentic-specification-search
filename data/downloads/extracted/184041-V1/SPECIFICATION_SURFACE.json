@@ -1,0 +1,339 @@
+{
+  "paper_id": "184041-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_and_median_regression",
+        "randomization_unit": "session",
+        "randomization_scheme": "Lab experiment at NYU. Subjects randomly assigned to CV (common value) or CP (common probability) auction sessions. Within each session, subjects play multiple rounds with randomly drawn signals and lottery parameters.",
+        "experiment_type": "lab_experiment",
+        "platform": "oTree",
+        "se_type": "cluster_robust",
+        "cluster_var": "subject",
+        "sample_restriction": "Reduced sample: exp==1, rrange==1 (relevant range), domnBid<=8 (exclude subjects with >10% dominated bids). Full sample also analyzed.",
+        "n_subjects_full": 107,
+        "n_subjects_reduced": 91
+      },
+      "claim_object": {
+        "outcome_concept": "Bid factor (BF = bid minus naive bid), measuring deviation of bidding behavior from naive/risk-neutral benchmarks in auctions",
+        "treatment_concept": "Auction type: Common Value (CV=1) vs Common Probability (CP=0)",
+        "estimand_concept": "Average treatment effect of CV vs CP auction format on bid factors (naive, break-even, Nash equilibrium benchmarks)",
+        "target_population": "NYU lab experiment participants in Experiment I (auction setting with 4 bidders)"
+      },
+      "baseline_specs": [
+        {
+          "label": "TableA1-ExpI-BF-OLS",
+          "description": "OLS regression of naive bid factor (BF) on CV indicator, Experiment I reduced sample",
+          "outcome_var": "BF",
+          "treatment_var": "CV",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)"
+        },
+        {
+          "label": "TableA1-ExpI-BF-MedianReg",
+          "description": "Median regression of BF on CV indicator, Experiment I reduced sample",
+          "outcome_var": "BF",
+          "treatment_var": "CV",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)",
+          "estimator": "qreg2"
+        },
+        {
+          "label": "TableA1-ExpI-BEBF-OLS",
+          "description": "OLS regression of break-even bid factor (BEBF) on CV indicator",
+          "outcome_var": "BEBF",
+          "treatment_var": "CV",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)"
+        },
+        {
+          "label": "TableA1-ExpI-NEBF-OLS",
+          "description": "OLS regression of Nash equilibrium bid factor (NEBF) on CV indicator",
+          "outcome_var": "NEBF",
+          "treatment_var": "CV",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "The main bid factor regressions in Table A1 include NO controls -- they are simple mean comparisons (OLS) or median comparisons (qreg2) of CV vs CP, with clustering at the subject level. The paper does not reveal control-augmented versions of these regressions."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__tablea1_expi_bf_medianreg",
+          "baseline__tablea1_expi_bebf_ols",
+          "baseline__tablea1_expi_bebf_medianreg",
+          "baseline__tablea1_expi_nebf_ols",
+          "baseline__tablea1_expi_nebf_medianreg"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/full_sample",
+          "rc/sample/winners_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/subject",
+          "params": {"cluster_var": "subject"},
+          "notes": "Paper clusters at subject level throughout since observations are repeated rounds within subjects."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering (treating rounds as independent)."
+          },
+          {
+            "spec_id": "infer/se/cluster/session",
+            "params": {"cluster_var": "numSession"},
+            "notes": "Cluster at session level (treatment assignment level)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 184041,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "No control variations since the paper does not use controls in the main bid factor regressions. Specs come from outcome measure variants (BF/BEBF/NEBF), estimator variants (OLS/median), and sample variants (full/reduced/winners)."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Table A7: Balance tests of male, age, correctAns, RP, CRP, AP across CV/CP sessions in Experiment I."
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/within_arm_mean_test",
+          "scope": "baseline_group",
+          "notes": "CV-only and CP-only intercept regressions (e.g., reg BF if CV==1). These test whether mean BF differs from zero within each treatment arm, not the CV-CP treatment effect. Moved from rc_spec_ids."
+        }
+      ],
+      "exploration_notes": [
+        "rc/form/outcome_bebf and rc/form/outcome_nebf removed: redundant with baseline_spec_ids that already list BEBF-OLS, BEBF-MedianReg, NEBF-OLS, NEBF-MedianReg.",
+        "rc/form/median_regression removed: redundant with baseline_spec_ids that already list median regression variants.",
+        "rc/sample/cv_only_intercept and rc/sample/cp_only_intercept moved to diagnostics: these are within-arm intercept tests (mean differs from zero), not treatment effect estimates."
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_and_median_regression",
+        "randomization_unit": "session",
+        "randomization_scheme": "Lab experiment at NYU. Subjects randomly assigned to CV or CP lottery pricing sessions. Individual decision-making (no strategic interaction).",
+        "experiment_type": "lab_experiment",
+        "platform": "oTree",
+        "se_type": "cluster_robust",
+        "cluster_var": "subject",
+        "sample_restriction": "exp==2, stage==22 (compound lottery with signal). Full sample used (no reduced sample exclusion for Exp II).",
+        "n_subjects_full": 104
+      },
+      "claim_object": {
+        "outcome_concept": "Price factor (BF = price minus naive price) in individual lottery pricing, measuring deviation from risk-neutral pricing benchmarks",
+        "treatment_concept": "Lottery type: Common Value (CV=1) vs Common Probability (CP=0)",
+        "estimand_concept": "Average treatment effect of CV vs CP lottery type on price factors in individual decision making (no strategic interaction)",
+        "target_population": "NYU lab experiment participants in Experiment II (individual pricing setting)"
+      },
+      "baseline_specs": [
+        {
+          "label": "TableA3-ExpII-BF-OLS-stage22",
+          "description": "OLS regression of price factor (BF) on CV indicator, Experiment II stage 22 (compound lottery with signal)",
+          "outcome_var": "BF",
+          "treatment_var": "CV",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "exp==2 & stage==22",
+          "vcov": "cluster(subject)"
+        },
+        {
+          "label": "TableA3-ExpII-BF-MedianReg-stage22",
+          "description": "Median regression of BF on CV indicator, Experiment II stage 22",
+          "outcome_var": "BF",
+          "treatment_var": "CV",
+          "controls": [],
+          "n_controls": 0,
+          "sample_filter": "exp==2 & stage==22",
+          "vcov": "cluster(subject)",
+          "estimator": "qreg2"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "No controls in main price factor regressions. Simple CV vs CP comparison."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__tablea3_expii_bf_medianreg_stage22"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/stage21",
+          "rc/sample/stage1"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/subject",
+          "params": {"cluster_var": "subject"},
+          "notes": "Paper clusters at subject level."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          },
+          {
+            "spec_id": "infer/se/cluster/session",
+            "params": {"cluster_var": "numSession"},
+            "notes": "Cluster at session level."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 184041,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "No control variations. Specs from stage variants (stage 22/21/1), estimator variants (OLS/median), and CV/CP intercept tests."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Table A7: Balance tests for Experiment II."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G3",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "median_regression",
+        "randomization_unit": "session",
+        "randomization_scheme": "Lab experiment at NYU. Subjects in Experiments III/IIIb randomly assigned to CV or CP sessions. Exp III: elicit estimates after experiencing auction. Exp IIIb: elicit estimates without auction context (reversed order).",
+        "experiment_type": "lab_experiment",
+        "platform": "oTree",
+        "se_type": "cluster_robust",
+        "cluster_var": "subject",
+        "sample_restriction": "Reduced sample: goodsample==1 (exclude subjects with excessive dominated bids). Exp III: AB==0 & goodsample==1. Exp IIIb: AB==1 & goodsample==1.",
+        "n_subjects_reduced_expiii": 38,
+        "n_subjects_reduced_expiiib": 49
+      },
+      "claim_object": {
+        "outcome_concept": "Decision weights in bidding/valuation: coefficients on log-signal (lnsignal) and log-fixed component (lnfix) in log-bid regressions, revealing how subjects weight different sources of uncertainty",
+        "treatment_concept": "Auction type: Common Value (CV) vs Common Probability (CP)",
+        "estimand_concept": "Difference in decision weights (marginal rate of substitution alpha/beta) between CV and CP, testing whether subjects misweight probability vs value uncertainty",
+        "target_population": "NYU lab experiment participants in Experiment I (auction bidding, reduced sample)"
+      },
+      "baseline_specs": [
+        {
+          "label": "TableA4-ExpI-CV-DecisionWeights",
+          "description": "Median regression of lnbid on lnfix and lnsignal for CV auctions in Experiment I",
+          "outcome_var": "lnbid",
+          "treatment_var": "lnfix",
+          "controls": ["lnsignal"],
+          "n_controls": 1,
+          "sample_filter": "CV==1 & exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)",
+          "estimator": "qreg2",
+          "notes": "Treatment is not a simple binary here. The regression decomposes bid into response to fixed component (lnfix) and signal component (lnsignal). The key test is whether lnfix weight equals lnsignal weight."
+        },
+        {
+          "label": "TableA4-ExpI-CP-DecisionWeights",
+          "description": "Median regression of lnbid on lnfix and lnsignal for CP auctions in Experiment I",
+          "outcome_var": "lnbid",
+          "treatment_var": "lnfix",
+          "controls": ["lnsignal"],
+          "n_controls": 1,
+          "sample_filter": "CV==0 & exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)",
+          "estimator": "qreg2"
+        },
+        {
+          "label": "TableA4-ExpI-Interaction",
+          "description": "Median regression with CV interactions to test equality of decision weights across CV/CP",
+          "outcome_var": "lnbid",
+          "treatment_var": "lnfix",
+          "controls": ["CVlnfix", "lnsignal", "CVlnsignal", "CV"],
+          "n_controls": 4,
+          "sample_filter": "exp==1 & rrange==1 & domnBid<=8",
+          "vcov": "cluster(subject)",
+          "estimator": "qreg2"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 1,
+        "controls_count_max": 4,
+        "linked_adjustment": true,
+        "notes": "The decision weights regressions have a structural form: lnbid = a*lnfix + b*lnsignal. In the interaction model, CVlnfix and CVlnsignal are structural interactions and cannot be dropped independently. The key parameter is the ratio of coefficients (alpha/beta = lnfix/lnsignal)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__tablea4_expi_cp_decisionweights",
+          "baseline__tablea4_expi_interaction"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/sample/full_sample_no_exclusion",
+          "rc/form/ols_instead_of_median"
+        ]
+      },
+      "exploration_notes": [
+        "rc/form/expii_pricing_weights and rc/form/expii_pricing_weights_interaction moved to explore/*: these change the population (Experiment II individual pricing) and outcome (lottery price vs auction bid), thus altering the claim object.",
+        "rc/form/structural_decomposition_expv_nmexpv moved to explore/*: Table A6 uses a different functional form (bid ~ expV + nmexpV + sigstage) for Experiment II pricing, changing both population and outcome concept.",
+        "design/randomized_experiment/estimator/diff_in_means removed: G3 baseline specs are structural regressions (lnbid ~ lnfix + lnsignal), not treatment-control mean comparisons. A diff-in-means estimator is incoherent for this claim object."
+      ],
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/subject",
+          "params": {"cluster_var": "subject"},
+          "notes": "Paper clusters at subject level."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 30,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 184041,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Structural regressions with fixed functional form. Variation comes from experiment (I vs II), estimator (OLS vs median), sample (full vs reduced), and CV/CP subsample."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

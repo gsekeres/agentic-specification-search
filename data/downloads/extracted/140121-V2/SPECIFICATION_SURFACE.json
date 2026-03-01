@@ -1,0 +1,121 @@
+{
+  "paper_id": "140121-V2",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_did",
+      "design_audit": {
+        "estimator": "twfe_ols",
+        "model_formula": "employed ~ alaska_x_post + covariates | statefip + year",
+        "selection_story": "Alaska introduced the Permanent Fund Dividend (PFD) in 1982, providing universal cash transfers to all state residents. The synthetic control method compares Alaska to a weighted combination of donor states. The DiD analog compares Alaska to control states before and after 1982, with state and year fixed effects.",
+        "fe_structure": ["statefip", "year"],
+        "cluster_vars": ["statefip"]
+      },
+      "claim_object": {
+        "outcome_concept": "Employment rate (fraction of population employed)",
+        "treatment_concept": "Alaska Permanent Fund Dividend (universal cash transfer beginning 1982)",
+        "estimand_concept": "Average effect of PFD on employment rate in Alaska relative to synthetic/control states, 1982-2014",
+        "target_population": "Working-age population across US states, 1977-2014"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1-Employment-DiD",
+          "outcome_var": "employed",
+          "treatment_var": "alaska_post",
+          "controls": [
+            "age1", "age2", "age3",
+            "ind1", "ind2", "ind3", "ind4", "ind5",
+            "educ1", "educ2", "female"
+          ],
+          "n_controls": 11,
+          "fixed_effects": ["statefip", "year"],
+          "vcov": "cluster_statefip"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 13,
+        "linked_adjustment": false,
+        "notes": "Panel data at state-year level. Controls are state-year averages of demographic/industry composition. Covariates come from the synthetic control matching variables. Treatment is Alaska x Post-1982 interaction. Multiple outcomes: employed, parttime, activelf, hourslw. Subgroup samples: male, female, married, unmarried, age splits, trade/nontrade sectors."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__parttime",
+          "baseline__activelf",
+          "baseline__hourslw"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_age1",
+          "rc/controls/loo/drop_age2",
+          "rc/controls/loo/drop_age3",
+          "rc/controls/loo/drop_ind1",
+          "rc/controls/loo/drop_ind2",
+          "rc/controls/loo/drop_ind3",
+          "rc/controls/loo/drop_ind4",
+          "rc/controls/loo/drop_ind5",
+          "rc/controls/loo/drop_educ1",
+          "rc/controls/loo/drop_educ2",
+          "rc/controls/loo/drop_female",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/industry_only",
+          "rc/controls/progression/no_controls",
+          "rc/controls/progression/demographics",
+          "rc/controls/progression/demographics_industry",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/sample/subgroup/male",
+          "rc/sample/subgroup/female",
+          "rc/sample/subgroup/trade",
+          "rc/sample/subgroup/nontrade",
+          "rc/sample/subgroup/under55",
+          "rc/sample/subgroup/over55",
+          "rc/sample/subgroup/married_male",
+          "rc/sample/subgroup/married_female",
+          "rc/sample/subgroup/unmarried_male",
+          "rc/sample/subgroup/unmarried_female",
+          "rc/sample/time_window/end_2000",
+          "rc/sample/time_window/end_1990",
+          "rc/sample/time_window/end_2010",
+          "rc/sample/time_window/start_1979",
+          "rc/fe/add/state_trend",
+          "rc/fe/drop/year",
+          "rc/controls/add/oil_gdp",
+          "rc/controls/add/net_mig",
+          "rc/controls/add/oil_gdp_net_mig",
+          "rc/form/outcome/parttime_male",
+          "rc/form/outcome/parttime_female",
+          "rc/form/outcome/employed_male",
+          "rc/form/outcome/employed_female"
+        ],
+        "inference_spec_ids": [
+          "infer/se/hc/hc1",
+          "infer/se/cluster/state_year",
+          "infer/se/hc/hc3"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/statefip",
+          "method": "cluster",
+          "cluster_vars": ["statefip"]
+        },
+        "robustness": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "method": "HC1"
+          },
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "method": "HC3"
+          }
+        ]
+      }
+    }
+  ]
+}

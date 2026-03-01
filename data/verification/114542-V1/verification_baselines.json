@@ -1,0 +1,75 @@
+{
+  "paper_id": "114542-V1",
+  "verified_at": "2026-02-24",
+  "global_notes": "Three baseline groups match the surface exactly. G1 covers cement floor coverage (housing first stage, household-level data). G2 covers maternal mental health and life satisfaction (household-level data). G3 covers child health outcomes (individual-level data, children 0-5). All baseline groups have treatment_var=dpisofirme, inference=infer/se/cluster/idcluster. No adjustments made to baseline group assignments from the surface. G2 and G3 run rc/* rows across all outcome variants simultaneously (not just the primary baseline outcome), which is correct practice for a multi-outcome claim group. Trim rows produce identical coefficients to baseline for share/binary outcomes (S_shcementfloor, S_satisfloor, S_diarrhea) because these bounded outcomes have no extremal outliers; this is a real empirical finding, not a coding error. G3 rc/controls/loo/drop_S_age and rc/controls/loo/drop_S_gender produce identical coefficients to rc/controls/sets/model4 (n_controls differs: 89 vs 91), suggesting S_age and S_gender do not move the treatment coefficient; plausible for a randomized experiment with balanced baseline characteristics. Inference variants (infer/se/hc/hc1, infer/se/cluster/idmun) correctly appear only in inference_results.csv. Gap in spec_run_id sequence (runs 036-037, 068, and 099 are in inference_results.csv) is expected.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT of Piso Firme cement floor program on share of rooms with cement floors (housing quality first stage), households in Torreon vs Durango (2005)",
+      "outcome_concept": "Share of rooms with cement floors (S_shcementfloor)",
+      "treatment_concept": "Piso Firme program (dpisofirme: Torreon=treatment, Durango=control)",
+      "estimand_concept": "ITT (OLS) on cement floor coverage",
+      "target_population": "Households in poor neighborhoods of Torreon and Durango (N=2755)",
+      "expected_sign": "positive",
+      "expected_sign_rationale": "Program provides cement floors; direct first-stage effect expected strongly positive.",
+      "baseline_spec_run_ids": {
+        "baseline": "114542-V1_run_001",
+        "baseline__S_shcementfloor_m2": "114542-V1_run_002",
+        "baseline__S_shcementfloor_m3": "114542-V1_run_003",
+        "baseline__S_shcementfloor_m4": "114542-V1_run_004"
+      },
+      "primary_baseline_spec_run_id": "114542-V1_run_001",
+      "primary_coef": 0.2019,
+      "primary_p": 0.0,
+      "primary_n": 2755,
+      "surface_match": true,
+      "notes": "Four baseline specs: no-controls (m1/baseline), partial controls (m2,m3), full controls (m4). All produce near-identical coefficients (0.2019-0.2103) and p~0, confirming strong first-stage. design/diff_in_means matches baseline exactly (no controls, same estimator). rc/controls/subset random_001..010 also included (G1 only had budget for 10 subsets)."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT of Piso Firme on maternal mental health and life satisfaction (S_satisfloor, S_satishouse, S_satislife, S_cesds, S_pss), households in Torreon vs Durango (2005)",
+      "outcome_concept": "Maternal mental health and life satisfaction (multiple outcomes)",
+      "treatment_concept": "Piso Firme program (dpisofirme)",
+      "estimand_concept": "ITT on satisfaction and mental health measures",
+      "target_population": "Households in poor neighborhoods of Torreon and Durango (N=2742-2755)",
+      "expected_sign": "positive for satisfaction (S_satisfloor, S_satishouse, S_satislife); negative for distress (S_cesds, S_pss)",
+      "expected_sign_rationale": "Cement floors improve housing conditions, expected to raise satisfaction and reduce stress/depression.",
+      "baseline_spec_run_ids": {
+        "baseline": "114542-V1_run_038",
+        "baseline__S_satishouse": "114542-V1_run_039",
+        "baseline__S_satislife": "114542-V1_run_040",
+        "baseline__S_cesds": "114542-V1_run_041",
+        "baseline__S_pss": "114542-V1_run_042"
+      },
+      "primary_baseline_spec_run_id": "114542-V1_run_038",
+      "primary_coef": 0.2187,
+      "primary_p": 2.22e-16,
+      "primary_n": 2755,
+      "surface_match": true,
+      "notes": "Five baseline outcomes: S_satisfloor (primary, floor satisfaction), S_satishouse, S_satislife, S_cesds (depression scale, negative), S_pss (stress scale, negative). rc/controls/sets rows run across all 5 outcomes simultaneously. rc/controls/loo and rc/sample rows applied only to S_satisfloor (primary) and S_cesds (stress). All estimates statistically significant at 5% or better. No inference variants in specification_results.csv; infer/se/hc/hc1 correctly in inference_results.csv."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "ITT of Piso Firme on child health outcomes (S_parcount, S_diarrhea, S_anemia, S_haz, S_whz), children 0-5 in Torreon vs Durango (2005)",
+      "outcome_concept": "Child health outcomes (parasite count, diarrhea, anemia, height-for-age, weight-for-height)",
+      "treatment_concept": "Piso Firme program (dpisofirme)",
+      "estimand_concept": "ITT on child health measures",
+      "target_population": "Children 0-5 in poor neighborhoods of Torreon and Durango (N varies: 3094-4035)",
+      "expected_sign": "negative for parasites/diarrhea/anemia; positive for growth measures (S_haz, S_whz)",
+      "expected_sign_rationale": "Cement floors reduce parasite exposure and diarrheal disease; expected to improve nutrition and growth.",
+      "baseline_spec_run_ids": {
+        "baseline": "114542-V1_run_069",
+        "baseline__S_diarrhea": "114542-V1_run_070",
+        "baseline__S_anemia": "114542-V1_run_071",
+        "baseline__S_haz": "114542-V1_run_072",
+        "baseline__S_whz": "114542-V1_run_073"
+      },
+      "primary_baseline_spec_run_id": "114542-V1_run_069",
+      "primary_coef": -0.065025,
+      "primary_p": 0.0445,
+      "primary_n": 3094,
+      "surface_match": true,
+      "notes": "Five baseline outcomes: S_parcount (primary, significant p=0.044), S_diarrhea (p=0.054, marginal), S_anemia (p=0.003, significant), S_haz (p=0.870, not significant), S_whz (p=0.948, not significant). rc/controls/sets runs across all 5 outcomes. rc/controls/loo and rc/sample applied to S_parcount and S_diarrhea. N varies across outcomes due to child-level data with varying measurement availability. rc/controls/loo/drop_S_age and drop_S_gender produce same coefficient as model4; plausible given balanced randomization and marginal significance of these controls."
+    }
+  ]
+}

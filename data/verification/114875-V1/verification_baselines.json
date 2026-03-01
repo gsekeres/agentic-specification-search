@@ -1,0 +1,24 @@
+{
+  "paper_id": "114875-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of treat on INVSALES",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "114875-V1_run_001",
+        "114875-V1_run_002",
+        "114875-V1_run_003",
+        "114875-V1_run_004"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__poly0",
+        "baseline__poly2",
+        "baseline__poly3"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

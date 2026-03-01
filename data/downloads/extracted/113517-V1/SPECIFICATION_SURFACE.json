@@ -1,368 +1,139 @@
 {
   "paper_id": "113517-V1",
-  "created_at": "2026-02-16",
-  "surface_reviewed": true,
-  "review_date": "2026-02-16",
+  "created_at": "2026-02-22",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
       "design_code": "cross_sectional_ols",
       "design_audit": {
-        "estimator": "ols",
-        "unit_of_observation": "market*time",
-        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
-        "fixed_effects": [
-          "mkt"
-        ],
-        "cluster_vars": [],
-        "weights": "wgt",
-        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
-        "selection_story": "descriptive partial correlation across markets/time"
+        "estimator": "two_stage_areg",
+        "first_stage": "areg transition_rate ~ covariates [w=wgt], a(mkt_t)",
+        "second_stage": "areg xdw ~ predicted_flows + year_month [w=wgt], a(mkt)",
+        "panel_unit": "mkt (sex x race x agegroup x education)",
+        "panel_time": "year_month",
+        "fe_structure": ["mkt (second stage)", "mkt_t (first stage)"],
+        "weights": "wgt (analytic weights from SIPP)"
       },
       "claim_object": {
-        "outcome_concept": "Predicted market-level wage growth (log nominal earnings change, xdlogern_nom)",
-        "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
-        "estimand_concept": "Partial correlation of EE reallocation with wage growth across markets/time, net of other labor flows and market FE",
-        "target_population": "CPS matched panels, employed individuals (EZeligible/DWeligible), all markets"
+        "outcome_concept": "Predicted wage growth (market-time FE from first-stage wage regression)",
+        "treatment_concept": "Predicted EE transition rate (market-time FE from first-stage EE regression)",
+        "estimand_concept": "Predictive association between EE reallocation rate and wage growth, controlling for other labor market flows, within-market time variation",
+        "target_population": "SIPP respondents (1996-2008 panels), employed at time t with positive earnings/wages"
       },
       "baseline_specs": [
         {
-          "label": "Table1-PanelA-Col6",
-          "spec_id": "baseline",
+          "label": "Table1-Spec6-logern_nom",
           "outcome_var": "xdlogern_nom",
           "treatment_var": "xee",
           "controls": ["xue", "xur", "xne", "xen", "xeu", "ym_num"],
-          "n_controls": 6,
           "fixed_effects": "mkt",
-          "weights": "wgt",
-          "vcov": "iid",
-          "notes": "Second-stage regression: xdlogern_nom ~ xee + xue + xur + xne + xen + xeu + ym_num | mkt, weighted by wgt. All flows specification. Two-stage procedure with market*time FE in first stage."
+          "n_controls": 6,
+          "notes": "All flows specification with nominal log earnings, the most complete within-model specification"
         }
       ],
       "constraints": {
         "controls_count_min": 1,
-        "controls_count_max": 7,
+        "controls_count_max": 6,
         "linked_adjustment": true,
-        "notes": "The two-stage procedure links first-stage and second-stage: first stage produces market*time FE from individual-level regressions, second stage regresses predicted wage growth on predicted flow rates. First-stage controls (e_controls, u_controls) and second-stage controls (other flows + time trend) are separate axes. Second-stage flow controls range from 1 (EE only, spec 1) to 6 (all flows, spec 6) plus time trend. First-stage controls are fixed across all second-stage specs for a given depvar. The linked_adjustment=true reflects that first-stage and second-stage are not independently varied."
+        "notes": "The first-stage and second-stage are linked: the first-stage controls determine the predicted flow variables. RC variations operate on the second stage only, varying which predicted flows enter and other second-stage choices."
       },
       "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__logern_nom_spec6",
+          "baseline__logern_spec6",
+          "baseline__loghwr_nom_spec6",
+          "baseline__loghwr_spec6"
+        ],
         "design_spec_ids": [
           "design/cross_sectional_ols/estimator/ols"
         ],
         "rc_spec_ids": [
+          "rc/controls/sets/none",
           "rc/controls/sets/minimal",
-          "rc/controls/progression/ee_only",
-          "rc/controls/progression/ee_ue",
-          "rc/controls/progression/ee_ue_ur",
-          "rc/controls/progression/ee_ur",
-          "rc/controls/progression/grouped_flows",
+          "rc/controls/sets/baseline",
           "rc/controls/loo/drop_xue",
           "rc/controls/loo/drop_xur",
           "rc/controls/loo/drop_xne",
           "rc/controls/loo/drop_xen",
           "rc/controls/loo/drop_xeu",
-          "rc/controls/loo/drop_ym_num",
-          "rc/sample/subpop/job_stayers",
-          "rc/form/model/ee_interaction",
-          "rc/weights/main/unweighted",
-          "rc/fe/drop/mkt"
-        ]
-      },
-      "inference_plan": {
-        "canonical": {
-          "spec_id": "infer/se/hc/classical",
-          "params": {},
-          "notes": "Paper uses Stata areg default (no robust/cluster option specified in second-stage regressions). areg without robust uses classical (homoskedastic) SE. This matches the replication."
-        },
-        "variants": [
-          {
-            "spec_id": "infer/se/hc/hc1",
-            "params": {},
-            "notes": "Heteroskedasticity-robust SE (HC1) as a stress test."
-          },
-          {
-            "spec_id": "infer/se/cluster/mkt",
-            "params": {"cluster_var": "mkt"},
-            "notes": "Cluster at market level since variation is at market*time level."
-          }
-        ]
-      },
-      "budgets": {
-        "max_specs_core_total": 25
-      },
-      "sampling": {
-        "seed": 113517
-      }
-    },
-    {
-      "baseline_group_id": "G2",
-      "design_code": "cross_sectional_ols",
-      "design_audit": {
-        "estimator": "ols",
-        "unit_of_observation": "market*time",
-        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
-        "fixed_effects": [
-          "mkt"
-        ],
-        "cluster_vars": [],
-        "weights": "wgt",
-        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
-        "selection_story": "descriptive partial correlation across markets/time"
-      },
-      "claim_object": {
-        "outcome_concept": "Predicted market-level wage growth (log real earnings change, xdlogern)",
-        "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
-        "estimand_concept": "Partial correlation of EE reallocation with wage growth across markets/time, net of other labor flows and market FE",
-        "target_population": "CPS matched panels, employed individuals (EZeligible/DWeligible), all markets"
-      },
-      "baseline_specs": [
-        {
-          "label": "Table1-PanelB-Col6",
-          "spec_id": "baseline",
-          "outcome_var": "xdlogern",
-          "treatment_var": "xee",
-          "controls": ["xue", "xur", "xne", "xen", "xeu", "ym_num"],
-          "n_controls": 6,
-          "fixed_effects": "mkt",
-          "weights": "wgt",
-          "vcov": "iid",
-          "notes": "Second-stage: xdlogern ~ xee + xue + xur + xne + xen + xeu + ym_num | mkt, weighted. All flows specification."
-        }
-      ],
-      "constraints": {
-        "controls_count_min": 1,
-        "controls_count_max": 7,
-        "linked_adjustment": true,
-        "notes": "Same structure as G1 but with real earnings. First-stage controls fixed."
-      },
-      "core_universe": {
-        "design_spec_ids": [
-          "design/cross_sectional_ols/estimator/ols"
-        ],
-        "rc_spec_ids": [
-          "rc/controls/sets/minimal",
           "rc/controls/progression/ee_only",
           "rc/controls/progression/ee_ue",
           "rc/controls/progression/ee_ue_ur",
-          "rc/controls/progression/ee_ur",
+          "rc/controls/progression/all_flows",
           "rc/controls/progression/grouped_flows",
-          "rc/controls/loo/drop_xue",
-          "rc/controls/loo/drop_xur",
-          "rc/controls/loo/drop_xne",
-          "rc/controls/loo/drop_xen",
-          "rc/controls/loo/drop_xeu",
-          "rc/controls/loo/drop_ym_num",
+          "rc/controls/progression/ue_only",
+          "rc/controls/progression/ur_only",
+          "rc/controls/progression/all_flows_focal_xue",
+          "rc/controls/progression/all_flows_focal_xur",
+          "rc/controls/subset/ee_ur",
+          "rc/controls/subset/inflows",
+          "rc/controls/subset/outflows",
+          "rc/controls/subset/no_ne_en",
+          "rc/controls/subset/no_ur_eu",
+          "rc/controls/subset/ee_ue_eu",
+          "rc/controls/subset/ee_ur_ne",
+          "rc/controls/subset/ee_ue_ur_en",
+          "rc/controls/subset/all_minus_xeu",
           "rc/sample/subpop/job_stayers",
-          "rc/form/model/ee_interaction",
+          "rc/sample/time/early_half",
+          "rc/sample/time/late_half",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/form/outcome/logern_nom",
+          "rc/form/outcome/logern",
+          "rc/form/outcome/loghwr_nom",
+          "rc/form/outcome/loghwr",
+          "rc/form/model/xee_interaction",
           "rc/weights/main/unweighted",
-          "rc/fe/drop/mkt"
+          "rc/fe/drop/year_month_trend",
+          "rc/fe/add/year_month_fe",
+          "rc/joint/stayers_unweighted",
+          "rc/joint/ee_only_early",
+          "rc/joint/ee_only_late",
+          "rc/joint/all_flows_early",
+          "rc/joint/all_flows_late",
+          "rc/joint/ee_ue_ur_unweighted",
+          "rc/joint/all_flows_trim_ym_fe",
+          "rc/joint/stayers_ym_fe",
+          "rc/joint/ee_only_unweighted",
+          "rc/joint/all_flows_trim_5_95",
+          "rc/joint/ee_ue_stayers",
+          "rc/joint/grouped_unweighted",
+          "rc/joint/all_flows_unweighted_trim_1_99",
+          "rc/joint/ee_ue_ur_early",
+          "rc/joint/ee_ue_ur_late",
+          "rc/joint/stayers_trim_1_99"
         ]
       },
       "inference_plan": {
         "canonical": {
-          "spec_id": "infer/se/hc/classical",
-          "params": {},
-          "notes": "Paper uses Stata areg default (classical SE) in second stage."
+          "spec_id": "infer/se/default/iid",
+          "params": {"vcov": "iid"},
+          "notes": "Paper uses default areg standard errors (no clustering). This is the canonical inference for all estimate rows."
         },
         "variants": [
           {
             "spec_id": "infer/se/hc/hc1",
-            "params": {},
-            "notes": "Heteroskedasticity-robust SE."
+            "params": {"vcov": "hetero"},
+            "notes": "Heteroskedasticity-robust SEs (HC1)."
           },
           {
             "spec_id": "infer/se/cluster/mkt",
             "params": {"cluster_var": "mkt"},
-            "notes": "Cluster at market level."
+            "notes": "Cluster at the market level (the FE group)."
           }
         ]
       },
       "budgets": {
-        "max_specs_core_total": 25
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0,
+        "notes": "Full enumeration feasible; only 6 second-stage control variables (predicted flows). No combinatorial sampling needed."
       },
       "sampling": {
-        "seed": 113517
-      }
-    },
-    {
-      "baseline_group_id": "G3",
-      "design_code": "cross_sectional_ols",
-      "design_audit": {
-        "estimator": "ols",
-        "unit_of_observation": "market*time",
-        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
-        "fixed_effects": [
-          "mkt"
-        ],
-        "cluster_vars": [],
-        "weights": "wgt",
-        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
-        "selection_story": "descriptive partial correlation across markets/time"
+        "seed": 113517,
+        "notes": "Full enumeration, no sampling required."
       },
-      "claim_object": {
-        "outcome_concept": "Predicted market-level wage growth (log nominal hourly wage change, xdloghwr_nom)",
-        "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
-        "estimand_concept": "Partial correlation of EE reallocation with hourly wage growth across markets/time, net of other labor flows and market FE",
-        "target_population": "CPS matched panels, employed individuals paid hourly (EZeligible_hw/DWeligible_hw), all markets"
-      },
-      "baseline_specs": [
-        {
-          "label": "Table1-PanelC-Col6",
-          "spec_id": "baseline",
-          "outcome_var": "xdloghwr_nom",
-          "treatment_var": "xee",
-          "controls": ["xue", "xur", "xne", "xen", "xeu", "ym_num"],
-          "n_controls": 6,
-          "fixed_effects": "mkt",
-          "weights": "wgt",
-          "vcov": "iid",
-          "notes": "Second-stage: xdloghwr_nom ~ xee + xue + xur + xne + xen + xeu + ym_num | mkt, weighted. Hourly wage sample requires lagphr==1."
-        }
-      ],
-      "constraints": {
-        "controls_count_min": 1,
-        "controls_count_max": 7,
-        "linked_adjustment": true,
-        "notes": "Same structure as G1 but with nominal hourly wages. Different eligible sample (requires lagphr==1)."
-      },
-      "core_universe": {
-        "design_spec_ids": [
-          "design/cross_sectional_ols/estimator/ols"
-        ],
-        "rc_spec_ids": [
-          "rc/controls/sets/minimal",
-          "rc/controls/progression/ee_only",
-          "rc/controls/progression/ee_ue",
-          "rc/controls/progression/ee_ue_ur",
-          "rc/controls/progression/ee_ur",
-          "rc/controls/progression/grouped_flows",
-          "rc/controls/loo/drop_xue",
-          "rc/controls/loo/drop_xur",
-          "rc/controls/loo/drop_xne",
-          "rc/controls/loo/drop_xen",
-          "rc/controls/loo/drop_xeu",
-          "rc/controls/loo/drop_ym_num",
-          "rc/sample/subpop/job_stayers",
-          "rc/form/model/ee_interaction",
-          "rc/weights/main/unweighted",
-          "rc/fe/drop/mkt"
-        ]
-      },
-      "inference_plan": {
-        "canonical": {
-          "spec_id": "infer/se/hc/classical",
-          "params": {},
-          "notes": "Paper uses Stata areg default (classical SE) in second stage."
-        },
-        "variants": [
-          {
-            "spec_id": "infer/se/hc/hc1",
-            "params": {},
-            "notes": "Heteroskedasticity-robust SE."
-          },
-          {
-            "spec_id": "infer/se/cluster/mkt",
-            "params": {"cluster_var": "mkt"},
-            "notes": "Cluster at market level."
-          }
-        ]
-      },
-      "budgets": {
-        "max_specs_core_total": 25
-      },
-      "sampling": {
-        "seed": 113517
-      }
-    },
-    {
-      "baseline_group_id": "G4",
-      "design_code": "cross_sectional_ols",
-      "design_audit": {
-        "estimator": "ols",
-        "unit_of_observation": "market*time",
-        "model_formula": "outcome ~ xee + xue + xur + xne + xen + xeu + ym_num + FE(mkt)",
-        "fixed_effects": [
-          "mkt"
-        ],
-        "cluster_vars": [],
-        "weights": "wgt",
-        "two_stage_procedure": "first stage extracts market*time FE (flows, wages); second stage regresses predicted wage growth on predicted flows",
-        "selection_story": "descriptive partial correlation across markets/time"
-      },
-      "claim_object": {
-        "outcome_concept": "Predicted market-level wage growth (log real hourly wage change, xdloghwr)",
-        "treatment_concept": "Predicted market-level EE transition rate (xee), controlling for other labor flows",
-        "estimand_concept": "Partial correlation of EE reallocation with hourly wage growth across markets/time, net of other labor flows and market FE",
-        "target_population": "CPS matched panels, employed individuals paid hourly (EZeligible_hw/DWeligible_hw), all markets"
-      },
-      "baseline_specs": [
-        {
-          "label": "Table1-PanelD-Col6",
-          "spec_id": "baseline",
-          "outcome_var": "xdloghwr",
-          "treatment_var": "xee",
-          "controls": ["xue", "xur", "xne", "xen", "xeu", "ym_num"],
-          "n_controls": 6,
-          "fixed_effects": "mkt",
-          "weights": "wgt",
-          "vcov": "iid",
-          "notes": "Second-stage: xdloghwr ~ xee + xue + xur + xne + xen + xeu + ym_num | mkt, weighted. Hourly wage sample requires lagphr==1."
-        }
-      ],
-      "constraints": {
-        "controls_count_min": 1,
-        "controls_count_max": 7,
-        "linked_adjustment": true,
-        "notes": "Same structure as G3 but with real hourly wages."
-      },
-      "core_universe": {
-        "design_spec_ids": [
-          "design/cross_sectional_ols/estimator/ols"
-        ],
-        "rc_spec_ids": [
-          "rc/controls/sets/minimal",
-          "rc/controls/progression/ee_only",
-          "rc/controls/progression/ee_ue",
-          "rc/controls/progression/ee_ue_ur",
-          "rc/controls/progression/ee_ur",
-          "rc/controls/progression/grouped_flows",
-          "rc/controls/loo/drop_xue",
-          "rc/controls/loo/drop_xur",
-          "rc/controls/loo/drop_xne",
-          "rc/controls/loo/drop_xen",
-          "rc/controls/loo/drop_xeu",
-          "rc/controls/loo/drop_ym_num",
-          "rc/sample/subpop/job_stayers",
-          "rc/form/model/ee_interaction",
-          "rc/weights/main/unweighted",
-          "rc/fe/drop/mkt"
-        ]
-      },
-      "inference_plan": {
-        "canonical": {
-          "spec_id": "infer/se/hc/classical",
-          "params": {},
-          "notes": "Paper uses Stata areg default (classical SE) in second stage."
-        },
-        "variants": [
-          {
-            "spec_id": "infer/se/hc/hc1",
-            "params": {},
-            "notes": "Heteroskedasticity-robust SE."
-          },
-          {
-            "spec_id": "infer/se/cluster/mkt",
-            "params": {"cluster_var": "mkt"},
-            "notes": "Cluster at market level."
-          }
-        ]
-      },
-      "budgets": {
-        "max_specs_core_total": 25
-      },
-      "sampling": {
-        "seed": 113517
-      }
+      "diagnostics_plan": []
     }
   ]
 }

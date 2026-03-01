@@ -1,0 +1,120 @@
+{
+  "paper_id": "113812-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "pvlifeincd05 ~ male + m_s13 + m_s14 + m_s15 + m_s16 + m_parented + m_black + m_latino + m_regionnc + m_regionso + m_regionwe + m_urban14 + m_gpahs + m_afqt89 + m_gpahs_afqt89 + m_gpahs_parented + m_afqt89_parented + female + f_s13 + f_s14 + f_s15 + f_s16 + f_parented + f_black + f_latino + f_regionnc + f_regionso + f_regionwe + f_urban14 + f_gpahs + f_afqt89 + f_gpahs_afqt89 + f_gpahs_parented + f_afqt89_parented, robust, noconstant",
+        "selection_story": "Reduced-form Mincer-style lifetime income regression using NLSY79 cohort. Present value of lifetime income (5% discount rate) is regressed on years of continuous schooling dummies, demographics, and ability measures. Coefficients for schooling dummies capture returns to education conditional on ability and demographics. Gender-fully-interacted model estimated on HS graduates in NLSY79 longitudinal sample.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Present value of lifetime income at 5% discount rate (thousands of 1992 dollars)",
+        "treatment_concept": "Years of continuous post-secondary education (s13=1yr, s14=2yr, s15=3yr, s16=4+yr vs s12=HS only)",
+        "estimand_concept": "Returns to continuous post-secondary enrollment on lifetime income, conditional on ability, demographics, and parental background. Key parameter: coefficient on m_s16 (male 4-year college premium)",
+        "target_population": "NLSY79 respondents who are high school graduates, with complete income records from age 19-62 (with interpolation)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Spec-A-baseline-5pct-discount",
+          "outcome_var": "pvlifeincd05",
+          "treatment_var": "m_s16",
+          "controls": [
+            "male", "m_s13", "m_s14", "m_s15",
+            "m_parented", "m_black", "m_latino",
+            "m_regionnc", "m_regionso", "m_regionwe",
+            "m_urban14", "m_gpahs", "m_afqt89",
+            "m_gpahs_afqt89", "m_gpahs_parented", "m_afqt89_parented",
+            "female", "f_s13", "f_s14", "f_s15", "f_s16",
+            "f_parented", "f_black", "f_latino",
+            "f_regionnc", "f_regionso", "f_regionwe",
+            "f_urban14", "f_gpahs", "f_afqt89",
+            "f_gpahs_afqt89", "f_gpahs_parented", "f_afqt89_parented"
+          ],
+          "n_controls": 33,
+          "fixed_effects": [],
+          "vcov": "HC1"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 33,
+        "linked_adjustment": false,
+        "notes": "The paper uses this regression to project lifetime income onto NELS sample for structural estimation. Gender-fully-interacted no-constant specification. Alternative specs vary: discount rate (5% vs 10%), sample restrictions, heterogeneous returns by ability/GPA/parent education, wage-based vs income-based DV."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__specA_5pct"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_m_parented",
+          "rc/controls/loo/drop_m_black",
+          "rc/controls/loo/drop_m_latino",
+          "rc/controls/loo/drop_m_region",
+          "rc/controls/loo/drop_m_urban14",
+          "rc/controls/loo/drop_m_gpahs",
+          "rc/controls/loo/drop_m_afqt89",
+          "rc/controls/loo/drop_m_interactions",
+          "rc/controls/progression/schooling_only",
+          "rc/controls/progression/schooling_demographics",
+          "rc/controls/progression/schooling_demo_ability",
+          "rc/controls/progression/full",
+          "rc/controls/sets/men_only",
+          "rc/controls/sets/women_only",
+          "rc/outcome/alt_dv/pvlifeincd10",
+          "rc/outcome/alt_dv/pvwageincd05",
+          "rc/outcome/alt_dv/pvwageincd10",
+          "rc/outcome/alt_dv/lpvlifeincd05",
+          "rc/outcome/alt_dv/lpvlifeincd10",
+          "rc/controls/heterog/add_s1315_afqt89_interactions",
+          "rc/controls/heterog/add_s1315_gpahs_interactions",
+          "rc/controls/heterog/add_s1315_parented_interactions",
+          "rc/sample/restrict/cross_section_only",
+          "rc/sample/restrict/cross_section_weighted",
+          "rc/sample/trim/drop_top1pct_income",
+          "rc/sample/trim/drop_bottom1pct_income",
+          "rc/sample/trim/trim_1_99",
+          "rc/sample/subgroup/age79_young",
+          "rc/sample/subgroup/age79_old",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "baseline__specA_5pct",
+          "se_type": "HC1",
+          "cluster_vars": [],
+          "notes": "Robust (HC1) standard errors as in original paper (Stata robust option)"
+        },
+        "alternatives": [
+          {
+            "spec_id": "infer/homoskedastic",
+            "se_type": "iid",
+            "cluster_vars": [],
+            "notes": "Homoskedastic SEs for comparison"
+          },
+          {
+            "spec_id": "infer/HC3",
+            "se_type": "HC3",
+            "cluster_vars": [],
+            "notes": "HC3 robust SEs"
+          }
+        ]
+      }
+    }
+  ]
+}

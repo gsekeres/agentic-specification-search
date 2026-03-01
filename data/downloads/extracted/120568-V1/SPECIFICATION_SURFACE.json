@@ -1,0 +1,102 @@
+{
+  "paper_id": "120568-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "panel_time_series_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "oneqsepsrate ~ time_trend | state_FE, cluster(state)",
+        "selection_story": "State-level panel of quarterly labor market flow rates constructed from QWI data for 30 US states (1999Q1-2017Q4). The linear time trend captures secular decline in short-duration employment spells. State FE absorb cross-state level differences; clustering at state level accounts for serial correlation within states.",
+        "fe_structure": ["state"],
+        "cluster_vars": ["state"]
+      },
+      "claim_object": {
+        "outcome_concept": "One-quarter separation rate (fraction of hires that separate within one quarter)",
+        "treatment_concept": "Linear time trend (quarters since 1999Q1)",
+        "estimand_concept": "Average quarterly rate of decline in short-duration employment spell incidence across US states, 1999-2017",
+        "target_population": "Private-sector employment across 30 US states with available QWI data, all industries, all worker demographics"
+      },
+      "baseline_specs": [
+        {
+          "label": "National-trend-oneqsepsrate",
+          "outcome_var": "oneqsepsrate",
+          "treatment_var": "time_trend",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["state"],
+          "vcov": "cluster_state"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 2,
+        "linked_adjustment": false,
+        "notes": "This is primarily a descriptive time-series paper. The do-files compute rate time series and seasonally adjust them. The key empirical claim is the secular decline in short-duration employment. Control options: quarter dummies (seasonal adjustment), quadratic time trend."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/outcome/oneqhazrate",
+          "rc/outcome/hirerate",
+          "rc/outcome/sepsrate",
+          "rc/outcome/twoqsepsrate",
+          "rc/outcome/threeplussepsrate",
+          "rc/outcome/twoplussepsrate",
+          "rc/controls/add_quarter_fe",
+          "rc/controls/quadratic_trend",
+          "rc/controls/quadratic_trend_plus_quarter_fe",
+          "rc/fe/drop_state",
+          "rc/fe/add_quarter",
+          "rc/sample/exclude_great_recession",
+          "rc/sample/pre_2008",
+          "rc/sample/post_2008",
+          "rc/sample/trim_rate_1_99",
+          "rc/sample/trim_rate_5_95",
+          "rc/panel/by_sex_age",
+          "rc/panel/by_industry",
+          "rc/panel/by_firmsize",
+          "rc/form/log_outcome",
+          "rc/form/first_difference",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/state",
+          "params": {"cluster_var": "state"},
+          "notes": "State-level clustering accounting for serial correlation within states"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering"
+          },
+          {
+            "spec_id": "infer/se/cluster/state_quarter",
+            "params": {"cluster_var": ["state", "quarter"]},
+            "notes": "Two-way clustering by state and quarter"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 100,
+        "max_specs_controls_subset": 5
+      },
+      "sampling": {
+        "seed": 120568,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

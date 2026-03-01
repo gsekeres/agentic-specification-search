@@ -1,0 +1,30 @@
+{
+  "paper_id": "112791-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of Medicaid lottery selection on employment and earnings. Oregon Health Insurance Experiment lottery as random assignment, with lottery-draw FE and lagged outcome controls, probability weights, clustered at household (reservation_id).",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": ["112791-V1_run_001", "112791-V1_run_002", "112791-V1_run_003"],
+      "baseline_spec_ids": ["baseline", "baseline__table1_earn", "baseline__table1_earn_above_fpl"],
+      "baseline_coefficient": -0.0301976650099513,
+      "baseline_std_error": 0.006881,
+      "baseline_p_value": 1.148650e-05,
+      "baseline_n_obs": 24615,
+      "notes": "Three baseline outcomes from Table 1: any_earn2009 (primary), earn2009, earn_ab_fpl_adj_2009. All use same specification: treatment + nnn* + lagged_outcome, pw=weight_ssa_admin, cluster(reservation_id). Data is synthetic (SSA admin data not publicly available). Baseline coefficient reported is for the primary outcome any_earn2009."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of Medicaid lottery selection on government benefit receipt (SNAP, TANF, SSI, SSDI). Same design as G1: lottery-draw FE, lagged outcome controls, probability weights, clustered at household.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": ["112791-V1_run_004", "112791-V1_run_005", "112791-V1_run_006", "112791-V1_run_007", "112791-V1_run_008", "112791-V1_run_009", "112791-V1_run_010", "112791-V1_run_011"],
+      "baseline_spec_ids": ["baseline", "baseline__table2_any_tanf", "baseline__table2_any_ssi", "baseline__table2_any_di", "baseline__table2_snap_amt", "baseline__table2_tanf_amt", "baseline__table2_ssi_amt", "baseline__table2_di_amt"],
+      "baseline_coefficient": 0.430239,
+      "baseline_std_error": 0.005571,
+      "baseline_p_value": 0.0,
+      "baseline_n_obs": 24615,
+      "notes": "Eight baseline outcomes from Table 2: four binary indicators (any SNAP, TANF, SSI, DI) and four amounts. All use same specification as G1. Baseline coefficient reported is for the primary outcome any_snapamt2009."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified two baseline groups: G1 (earnings/employment, Table 1) and G2 (government benefits, Table 2). Data is synthetic since the SSA administrative records are restricted-access. Two alternative outcome specs (any_wage2009, any_se2009) produce identical estimates to the baseline any_earn2009, likely because synthetic data used the same variable -- these are flagged as potentially invalid."
+}

@@ -1,56 +1,58 @@
 # Specification Surface Review: 111185-V1
 
-## Summary of Baseline Groups
+## Summary
 
-**G1 (sole group)**: Damage exponent estimation from Table 1. This is correct -- there is only one regression in the entire replication package (the rest is structural/computational). The claim object is well-defined: the elasticity of damages with respect to temperature (d2 parameter) estimated by OLS on the Howard & Sterner (2017) meta-analysis data.
+The surface was reviewed against the paper's code, data, and README. This paper is primarily a structural/computational model; the specification surface covers only the single OLS regression (Table 1).
 
-No changes to baseline group structure needed. No additional baseline groups are missing.
+## Baseline Groups
 
-## Checklist Assessment
+### G1: Damage Function Parameter Estimation
+- **Status**: Correctly defined. Single claim object (damage exponent d2).
+- **Design code**: `cross_sectional_ols` is correct for this bivariate OLS regression.
+- **Design audit**: Present and appropriate. Notes the lack of FE, clustering, or controls.
+- **No additional baseline groups needed**: The structural model outputs (Tables 2-3, etc.) are not regression-type results.
 
-### A) Baseline Groups
-- Single baseline group G1 is appropriate -- only one regression exists.
-- Claim object (outcome/treatment/estimand/population) is correctly specified.
-- No missing baseline groups.
+## Checklist Results
 
-### B) Design Selection
-- `cross_sectional_ols` is correct. The regression is a simple bivariate OLS.
-- Design variant `design/cross_sectional_ols/estimator/ols` is the only applicable implementation.
-- IPW/AIPW/matching are correctly excluded (continuous treatment, not binary).
+### A) Baseline groups
+- Single baseline group for the single OLS regression -- correct.
+- No missing baseline groups (structural model results are out of scope for specification search).
 
-### C) RC Axes
-- **Controls**: Well-chosen. The 7 available binary controls + Year are all meta-analytic study characteristics. The single-addition pattern is appropriate for a bivariate baseline.
-- **Sample**: Outlier trimming, Cook's D, and study quality filters are high-value for a meta-analysis with potential influential observations (e.g., the catastrophic damage estimate at 99% GDP loss).
-- **Functional form**: The log-log baseline is the natural form for a power-law damage function. Level and asinh alternatives are appropriate RC since the claim is about the damage function shape. The quadratic-in-logs tests nonlinearity. The levels-quadratic (D ~ T + T^2) tests the most common alternative damage function specification in the climate economics literature.
-- **Preprocessing**: Winsorization variants are reasonable.
+### B) Design selection
+- `cross_sectional_ols` is appropriate for `reg log_correct logt`.
+- No `design/*` variants listed, which is correct -- there are no within-design alternatives for this simple bivariate OLS (no instruments, no FE, no panel).
 
-**Minor note**: `Nonmarket` has only 3 observations equal to 1 in the regression sample, making it a very low-power control. I have added a note to the surface JSON but kept it in the pool since it is still a valid meta-analytic characteristic.
+### C) RC axes
+- **Controls**: Appropriate. 7 optional variables from the Howard & Sterner (2017) dataset, organized into meaningful blocks.
+- **Sample**: Good coverage of outlier handling, quality filters, and temporal splits.
+- **Functional form**: Appropriate alternatives that preserve the damage-temperature relationship concept.
+- **Preprocessing**: Winsorization is a reasonable complement to trimming.
+- **Joint**: Combined variations add useful cross-axis robustness.
+- No high-leverage axes appear to be missing given the simple bivariate setup.
 
-### D) Controls Multiverse Policy
-- `controls_count_min=0, controls_count_max=6` is appropriate given N=43.
-- No mandatory controls is correct (baseline is bivariate).
-- `linked_adjustment=false` is correct (single-equation OLS, no bundled components).
+### D) Controls multiverse policy
+- `controls_count_min=0` (bivariate baseline) and `controls_count_max=7` (all available) -- correct.
+- No mandatory controls (baseline has none) -- correct.
+- `linked_adjustment=false` (no bundled estimator) -- correct.
 
-### E) Inference Plan
-- Canonical inference is classical (non-robust) OLS SE, matching the paper.
-- HC1, HC2, HC3 variants are listed, which is important for N=43 where heteroskedasticity could matter.
-- No clustering needed (cross-sectional meta-analysis, no natural clusters).
+### E) Inference plan
+- Canonical inference (`infer/se/classical/ols`) matches the paper's Stata `reg` command.
+- HC1/HC2/HC3 variants are appropriate for a small cross-sectional sample.
 
-### F) Budgets and Sampling
-- Budget of 80 core specs is sufficient and feasible.
-- Seed = 111185 is explicit and reproducible.
-- With 3 blocks and 2^3=8 block combinations, the exhaustive approach is correct.
+### F) Budgets + sampling
+- Budget of 60 specs is appropriate for a single OLS with small data.
+- Seed is specified (111185).
+- Block-exhaustive + random variable-level sampling is reproducible.
 
-### G) Diagnostics Plan
-- Empty diagnostics plan is appropriate. No design-specific diagnostics are standard for cross-sectional OLS. General regression diagnostics (if run) would be exploratory.
+### G) Diagnostics plan
+- Empty, which is appropriate -- no endogeneity concerns, no panel structure.
 
-## Changes Made to Surface
-1. Added a note to the Nonmarket control variable entry about its very low count (3 obs = 1).
+## Key Constraints and Linkage Rules
+- No bundled estimators, no linked adjustment.
+- Control pool is small (7 variables), so exhaustive-block + random-variable sampling is feasible.
 
-## What's Missing (minor)
-- No weighted least squares variants (could weight by study precision or sample size). However, no such weights exist in the dataset, so this is correctly excluded.
-- No meta-regression random effects (beyond OLS scope). This would be `explore/*` territory.
+## What's Missing
+- Nothing material. The surface is appropriately scoped for this paper.
 
 ## Final Assessment
-
-**APPROVED TO RUN.** The surface is conceptually coherent, statistically principled, faithful to the revealed manuscript surface, and auditable. The budget is realistic and the sampling plan is reproducible.
+**Approved to run.** The surface correctly identifies the single feasible baseline claim object, defines appropriate RC axes, and sets reasonable budgets. No blocking issues.

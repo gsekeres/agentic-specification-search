@@ -1,0 +1,187 @@
+{
+  "paper_id": "114701-V1",
+  "created_at": "2026-02-25",
+  "notes": "Machin, McNally, and Viarengo (2018) 'Changing How Literacy is Taught: Evidence on Synthetic Phonics'. DiD with school FE studying EDRp and CLLD literacy programs in England. Outcomes are standardized test scores (FSP, KS1 reading, KS2 reading) across cohorts. Treatment*year indicators with school FE, clustered at school (urn). Data is confidential (National Pupil Database) -- only do-files provided.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "areg_did",
+        "panel_unit": "urn",
+        "panel_time": "year",
+        "treatment_var": "bc_99 bc_00 bc_01",
+        "fe_structure": ["school_urn"],
+        "cluster_vars": ["urn"],
+        "notes": "DiD with school FE (areg with a(urn)). Treatment indicators are treatment*year interactions (bc_99, bc_00, bc_01 for EDRp pilot cohorts). Year dummies (yy2-yy4) included. Rich individual-level and school-average controls for demographics, ethnicity, SEN, and language status."
+      },
+      "claim_object": {
+        "outcome_concept": "Standardized literacy test scores (FSP communication/language/literacy, KS1 reading, KS2 reading)",
+        "treatment_concept": "EDRp (Early Reading Development Pilot) phonics-based literacy program",
+        "estimand_concept": "ATT of EDRp on student test scores, estimated via treatment-by-cohort DiD with school FE",
+        "target_population": "Primary school students in EDRp pilot schools vs comparison schools in England"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-PanelA-Col1-FSP",
+          "outcome_var": "stdcll",
+          "treatment_var": "bc_99 bc_00 bc_01",
+          "controls": ["fsm", "male", "white_brit_iri", "white_origin", "black_carribean", "black_other", "bangladeshi", "pakistani", "indian", "chinese", "other", "absent", "emt_r", "sen_statement", "emt_miss", "cmale", "cfsm", "cemt_r", "cemt_miss", "csens", "cwhite_brit", "cwhite_oth", "cblack_c", "cblack_o", "cbang", "cpak", "cind", "cchin", "cother", "cabsent"],
+          "n_controls": 30,
+          "notes": "Individual controls (15) + school-average controls (15). Year dummies also included."
+        },
+        {
+          "label": "Table3-PanelA-Col2-KS1",
+          "outcome_var": "ks1_readps",
+          "treatment_var": "bc_99 bc_00 bc_01",
+          "controls": ["fsm", "male", "white_brit_iri", "white_origin", "black_carribean", "black_other", "bangladeshi", "pakistani", "indian", "chinese", "other", "absent", "emt_r", "sen_statement", "emt_miss", "cmale", "cfsm", "cemt_r", "cemt_miss", "csens", "cwhite_brit", "cwhite_oth", "cblack_c", "cblack_o", "cbang", "cpak", "cind", "cchin", "cother", "cabsent"],
+          "n_controls": 30
+        },
+        {
+          "label": "Table3-PanelA-Col3-KS2",
+          "outcome_var": "stdread",
+          "treatment_var": "bc_99 bc_00 bc_01",
+          "controls": ["fsm", "male", "white_brit_iri", "white_origin", "black_carribean", "black_other", "bangladeshi", "pakistani", "indian", "chinese", "other", "absent", "emt_r", "sen_statement", "emt_miss", "cmale", "cfsm", "cemt_r", "cemt_miss", "csens", "cwhite_brit", "cwhite_oth", "cblack_c", "cblack_o", "cbang", "cpak", "cind", "cchin", "cother", "cabsent"],
+          "n_controls": 30
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 15,
+        "controls_count_max": 30,
+        "linked_adjustment": false,
+        "notes": "Paper uses a fixed set of 30 controls (15 individual + 15 school means) across all specifications. Control set does not vary in the paper. LOO and block removal are the main RC axes for controls. Minimum set to 15 (individual-level only, dropping school means)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_panelA_col2_ks1",
+          "baseline__table3_panelA_col3_ks2"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/cohort/pilot_only",
+          "design/difference_in_differences/cohort/phase1_only",
+          "design/difference_in_differences/sample/pooled_pilot_and_phase1"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_fsm",
+          "rc/controls/loo/drop_male",
+          "rc/controls/loo/drop_sen_statement",
+          "rc/controls/loo/drop_emt_r",
+          "rc/controls/loo/drop_absent",
+          "rc/controls/block/drop_ethnicity_individual",
+          "rc/controls/block/drop_ethnicity_school",
+          "rc/controls/block/drop_school_means_all",
+          "rc/controls/block/drop_language_controls",
+          "rc/controls/sets/individual_only",
+          "rc/controls/sets/school_means_only",
+          "rc/controls/sets/minimal_fsm_male_emt",
+          "rc/controls/subset/random_*",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/emt_only",
+          "rc/sample/restriction/eal_only",
+          "rc/sample/restriction/fsm_only",
+          "rc/sample/restriction/non_fsm_only",
+          "rc/fe/alt/school_plus_year_dummies",
+          "rc/fe/cluster/school_x_year"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/school",
+          "params": {"cluster_var": "urn"},
+          "notes": "Clustered at school (URN) level as in all paper specifications."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."},
+          {"spec_id": "infer/se/cluster/school_x_year", "params": {"cluster_var": "urn_year"}, "notes": "Two-way clustering at school-year."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 20,
+        "notes": "Large control set (30 variables) but organized into clear blocks (individual demographics, ethnicity, language, school means). Budget reflects block-based LOO and subset sampling."
+      },
+      "sampling": {
+        "seed": 114701,
+        "controls_subset_sampler": "stratified_block",
+        "notes": "Controls organized into 4 blocks: core demographics (fsm, male, sen_statement = 3), individual ethnicity (9 vars), language (emt_r, emt_miss = 2), school means (15 vars mirroring individual). Block-level and random within-block sampling."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/difference_in_differences/pretrends/placebo_cohort", "scope": "baseline_group", "notes": "Pre-treatment cohort comparison to check parallel trends."}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "areg_did",
+        "panel_unit": "urn",
+        "panel_time": "year",
+        "treatment_var": "bc_99 bc_00 bc_01 bc_02",
+        "fe_structure": ["school_urn"],
+        "cluster_vars": ["urn"],
+        "notes": "Same design as G1 but for CLLD program with 4 treatment-year indicators (bc_99-bc_02 for 4 cohorts vs 3). Longer time window."
+      },
+      "claim_object": {
+        "outcome_concept": "Standardized literacy test scores (FSP, KS1 reading, KS2 reading)",
+        "treatment_concept": "CLLD (Communication, Language, and Literacy Development) program",
+        "estimand_concept": "ATT of CLLD on student test scores, estimated via treatment-by-cohort DiD with school FE",
+        "target_population": "Primary school students in CLLD schools vs comparison schools in England"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-PanelB-Col1-FSP",
+          "outcome_var": "stdcll",
+          "treatment_var": "bc_99 bc_00 bc_01 bc_02",
+          "controls": ["fsm", "male", "white_brit_iri", "white_origin", "black_carribean", "black_other", "bangladeshi", "pakistani", "indian", "chinese", "other", "absent", "emt_r", "sen_statement", "emt_miss", "cmale", "cfsm", "cemt_r", "cemt_miss", "csens", "cwhite_brit", "cwhite_oth", "cblack_c", "cblack_o", "cbang", "cpak", "cind", "cchin", "cother", "cabsent"],
+          "n_controls": 30
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 15,
+        "controls_count_max": 30,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_panelB_col2_ks1",
+          "baseline__table3_panelB_col3_ks2"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/cohort/phase1_only"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/block/drop_school_means_all",
+          "rc/controls/block/drop_ethnicity_individual",
+          "rc/controls/sets/individual_only",
+          "rc/controls/sets/minimal_fsm_male_emt",
+          "rc/controls/subset/random_*",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/restriction/emt_only",
+          "rc/sample/restriction/fsm_only",
+          "rc/fe/cluster/school_x_year"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/school",
+          "params": {"cluster_var": "urn"},
+          "notes": "Clustered at school (URN) level."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 35,
+        "max_specs_controls_subset": 10,
+        "notes": "Smaller budget for CLLD (parallel program to EDRp, similar structure)."
+      },
+      "sampling": {
+        "seed": 114701,
+        "controls_subset_sampler": "stratified_block"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

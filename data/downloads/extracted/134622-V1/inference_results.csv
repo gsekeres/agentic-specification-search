@@ -1,0 +1,5 @@
+paper_id,spec_run_id,spec_id,baseline_run_id,baseline_group_id,outcome_var,treatment_var,std_error,p_value,ci_lower,ci_upper,vcov_type,notes,run_success,run_error
+134622-V1,134622-V1_run_019,infer/se/nonrobust,134622-V1_run_001,G1,log_freq_norm,immigrant,0.22376943699803895,0.03845221886217964,0.034526699488466706,1.031705452403769,iid (classical OLS SEs),"Classical OLS SEs; small N, HC1 may over-reject",1,
+134622-V1,134622-V1_run_031,infer/se/nonrobust,134622-V1_run_020,G2,ln_nb_employees,immi,0.13999424697535842,0.3588123057030079,-0.4037241077596825,0.14653314499481063,iid (classical OLS SEs),Classical OLS SEs for Fortune 500,1,
+134622-V1,134622-V1_run_052,infer/se/hc/hc1_decade_fe,134622-V1_run_020,G2,ln_nb_employees,immi,0.1430207283058909,0.7603846756587536,-0.3247619304755056,0.23747013226889582,HC1 with decade FE,HC1 with decade FE added,1,
+134622-V1,134622-V1_run_053,infer/se/nonrobust_decade_fe,134622-V1_run_020,G2,ln_nb_employees,immi,0.1460545286317051,0.7652136053191918,-0.3307250514697192,0.2434332532631094,iid with decade FE,Classical OLS SEs with decade FE,1,

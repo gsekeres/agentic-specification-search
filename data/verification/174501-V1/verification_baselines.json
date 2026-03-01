@@ -1,0 +1,67 @@
+{
+  "paper_id": "174501-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "ITT effect of mixed-race roommate assignment on Black students' racial stereotypes (Race IAT D-score) at UCT. Randomized roommate allocation within residence halls. ANCOVA with lagged IAT, own + roommate controls, residence FE, clustered at room level.",
+      "expected_sign": "negative",
+      "baseline_spec_run_ids": [
+        "174501-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table3_col2_black_raceiat"
+      ],
+      "baseline_coefficient": -0.0944,
+      "baseline_std_error": 0.0696,
+      "baseline_p_value": 0.1743,
+      "baseline_n_obs": 332,
+      "notes": "Single baseline from Table 3 Col 2 (Black students). The baseline is NOT statistically significant (p=0.174). The paper presents this alongside the White student result (Table 3 Col 1) which is also insignificant. The surface chose the Black subsample as the focal baseline. Treatment reduces IAT bias (negative = less prejudice), but the effect is imprecise."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "ITT effect of mixed-race roommate assignment on Black students' academic performance (GPA, exams passed, continuation, PCA performance index) at UCT. With own + roommate controls, residence FE + program FE, clustered at room level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "174501-V1_run_020",
+        "174501-V1_run_021",
+        "174501-V1_run_022"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table4_black_examspassed",
+        "baseline__table4_black_continue",
+        "baseline__table4_black_pcaperf"
+      ],
+      "baseline_coefficient_examspassed": 0.6445,
+      "baseline_p_value_examspassed": 0.0083,
+      "baseline_coefficient_continue": 0.1515,
+      "baseline_p_value_continue": 0.0001,
+      "baseline_coefficient_pcaperf": 0.4433,
+      "baseline_p_value_pcaperf": 0.0016,
+      "baseline_n_obs": 324,
+      "notes": "Three baseline specs from Table 4 (Black students). All three are significant at 1%. Mixed-race room assignment substantially improves Black students' academic outcomes. GPA is also reported but was not listed as a separate baseline spec_id in the surface; the runner included it in design/rc specs. Effect is consistently positive across all operationalizations."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "ITT effect of mixed-race roommate assignment on White students' social outcomes (racial attitudes, cross-racial communication, pro-social behavior, cross-racial friendships) at UCT. With own + roommate controls, residence FE, clustered at room level.",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "174501-V1_run_067",
+        "174501-V1_run_068",
+        "174501-V1_run_069"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table5_white_pcaattitude",
+        "baseline__table5_white_pcacomm",
+        "baseline__table5_white_pcasocial"
+      ],
+      "baseline_coefficient_pcaattitude": 0.6703,
+      "baseline_p_value_pcaattitude": 0.0118,
+      "baseline_coefficient_pcacomm": 0.4377,
+      "baseline_p_value_pcacomm": 0.0842,
+      "baseline_coefficient_pcasocial": 0.7603,
+      "baseline_p_value_pcasocial": 0.0119,
+      "notes": "Three baseline specs from Table 5 (White students). PCAattitude and PCAsocial significant at 5%; PCAcomm marginally significant (p=0.084). PCAfriend is also part of the claim concept but was not listed as a separate baseline spec. Very small samples (N=79-106). Consistently positive effects across all social outcomes."
+    }
+  ],
+  "global_notes": "No changes to baseline group assignments relative to the surface. The surface correctly identified three baseline groups: G1 (racial stereotypes/IAT), G2 (academic performance), G3 (social outcomes). Sample restriction specs (full_sample_with_race_fe, restrict_white_black_only, restrict_black_only) are classified as noncore_population_change because they change the target population from the baseline race subsample. LOO control specs were run only for one focal outcome per group (DscoreraceIAT for G1, GPA for G2, PCAfriend for G3) rather than multiplicatively across all outcomes, which is a reasonable choice given budget constraints."
+}

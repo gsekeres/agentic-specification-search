@@ -1,0 +1,122 @@
+{
+  "paper_id": "112587-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "structural_discrete_choice",
+      "design_audit": {
+        "estimator": "bayesian_mcmc_gibbs",
+        "model_formula": "Structural discrete choice model: U_ij = -psi * E[OOP_ij(omega, lambda)] - premium_j; latent types (omega, psi, lambda) ~ MVN(X*beta, Sigma); spending = lambda + omega; estimated via Gibbs sampler on MCMC chain",
+        "selection_story": "Structural insurance choice model estimated on proprietary Alcoa employee panel 2003-2004. Workers choose among health plans differing in premiums, deductibles, coinsurance, and OOP max. Model jointly estimates distribution of health risk (lambda), moral hazard (omega), and risk aversion (psi) as functions of demographics. Key identification: plan menu variation + within-person spending data. Bayesian MCMC (Gibbs sampler) with 250+ saved iterations.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Total annual medical spending (dollars)",
+        "treatment_concept": "Plan generosity (OOP share = out-of-pocket share of total spending under plan)",
+        "estimand_concept": "Reduced-form relationship between plan generosity and spending, reflecting both moral hazard (causal effect of insurance on spending) and selection (correlation between preferences and risk). Structural model decomposes these channels.",
+        "target_population": "Alcoa unionized employees, 2003-2004, N~3995 employees per year"
+      },
+      "baseline_specs": [
+        {
+          "label": "RF-spending-on-oop-share",
+          "outcome_var": "log_spending",
+          "treatment_var": "oop_share",
+          "controls": ["age", "age2", "female", "tenure", "income", "income2", "family_size", "d_covg_tier_2", "d_covg_tier_3", "d_covg_tier_4", "d_year_2004"],
+          "n_controls": 11,
+          "fixed_effects": [],
+          "vcov": "HC1",
+          "notes": "Reduced-form OLS of log spending on average out-of-pocket share, controlling for demographics. Calibrated from Table 1 summary stats and Table 7 implied quantities."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 11,
+        "linked_adjustment": false,
+        "notes": "Paper is structural (Bayesian MCMC). Specification search explores reduced-form regressions implied by the structural model. Data is proprietary (Alcoa); synthetic data calibrated to Table 1 summary statistics (N=3995 per year, mean spending=$5283, age=41.3, income=$31292, male share=0.84, single share=0.23). Key axes: controls progression, sample restrictions by coverage tier, functional form (log vs level spending), plan characteristic measures, demographics subsets."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/age",
+          "rc/controls/loo/age2",
+          "rc/controls/loo/female",
+          "rc/controls/loo/tenure",
+          "rc/controls/loo/income",
+          "rc/controls/loo/income2",
+          "rc/controls/loo/family_size",
+          "rc/controls/loo/d_covg_tier_2",
+          "rc/controls/loo/d_covg_tier_3",
+          "rc/controls/loo/d_covg_tier_4",
+          "rc/controls/loo/d_year_2004",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/covg_tier_only",
+          "rc/controls/sets/full",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/age_only",
+          "rc/controls/progression/age_sex",
+          "rc/controls/progression/age_sex_income",
+          "rc/controls/progression/age_sex_income_tenure",
+          "rc/controls/progression/demos_plus_tier",
+          "rc/treatment/deductible",
+          "rc/treatment/premium",
+          "rc/treatment/plan_rank",
+          "rc/outcome/level_spending",
+          "rc/outcome/log1p_spending",
+          "rc/outcome/positive_spending_only",
+          "rc/outcome/high_spender_indicator",
+          "rc/sample/single_only",
+          "rc/sample/nonsingle_only",
+          "rc/sample/year_2003_only",
+          "rc/sample/year_2004_only",
+          "rc/sample/male_only",
+          "rc/sample/female_only",
+          "rc/sample/age_above_median",
+          "rc/sample/age_below_median",
+          "rc/sample/income_above_median",
+          "rc/sample/income_below_median",
+          "rc/sample/trim_spending_99",
+          "rc/sample/trim_spending_95",
+          "rc/sample/drop_zero_spending",
+          "rc/form/estimator/poisson",
+          "rc/form/estimator/tobit",
+          "rc/form/estimator/logit_high_spend",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc1",
+          "params": {},
+          "notes": "HC1 robust standard errors for reduced-form cross-sectional regressions. Structural paper uses Bayesian posterior SDs, but reduced-form specifications use frequentist inference."
+        },
+        "alternates": [
+          {
+            "spec_id": "infer/se/hc3",
+            "params": {},
+            "notes": "HC3 bias-corrected heteroskedasticity-robust standard errors."
+          },
+          {
+            "spec_id": "infer/se/cluster/covg_tier",
+            "params": {"cluster_var": "covg_tier"},
+            "notes": "Cluster by coverage tier (4 tiers)."
+          }
+        ]
+      }
+    }
+  ]
+}

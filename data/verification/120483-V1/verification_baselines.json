@@ -1,0 +1,18 @@
+{
+  "paper_id": "120483-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Higher malaria ecology (MAL) is associated with a higher share of slaves in US county populations, conditional on geography and crop suitability controls with state FE",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "120483-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline__table1_col5"
+      ],
+      "notes": "Cross-sectional OLS with state FE. Table 1 Col 5 (1860 data, full controls). Surface also lists Table1-Col3 (1790 data) as a baseline spec, but the runner used only Col 5 as the primary baseline. State-clustered SEs used as canonical fallback since Conley spatial SEs are unavailable in pyfixest."
+    }
+  ],
+  "global_notes": "Surface-driven run. One baseline group (G1) matches the pre-run surface. The surface listed two baseline specs (Table1-Col3 for 1790 and Table1-Col5 for 1860), but only Col5 was coded as the single baseline row. The 1790 data appears as rc/sample/restrict/1790_data instead. This is a minor deviation from the surface plan but is coherent: the 1860 specification is the paper's main result and the 1790 variant is treated as a sample restriction robustness check. Inference uses state-clustered SEs (infer/se/cluster/state) as canonical fallback since the surface's canonical Conley 100km SEs are not available in pyfixest."
+}

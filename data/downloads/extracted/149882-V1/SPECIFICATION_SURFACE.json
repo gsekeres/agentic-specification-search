@@ -1,0 +1,201 @@
+{
+  "paper_id": "149882-V1",
+  "created_at": "2026-02-24",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_covariates",
+        "randomization_unit": "school",
+        "strata_or_blocks": "district x gender x grade (district_gender_*, gender_grade_*)",
+        "estimand": "ITT",
+        "treatment_arms": ["B_treat (Breakthrough gender-equality curriculum)"],
+        "n_treatment_arms_focal": 1,
+        "cluster_var": "Sschool_id",
+        "weights": "none",
+        "control_selection": "LASSO-selected extended controls (double LASSO, seed=5212021)",
+        "n_clusters_approx": 314,
+        "notes": "~314 schools (half treatment, half control). 4 districts."
+      },
+      "claim_object": {
+        "outcome_concept": "Gender attitude index (standardized, endline 1; E_Sgender_index2), an inverse-covariance-weighted index of survey items on gender norms",
+        "treatment_concept": "School-level Breakthrough gender-equality curriculum (3-year intervention, grades 6-9)",
+        "estimand_concept": "ITT effect of the Breakthrough curriculum on gender attitudes (combined across boys and girls)",
+        "target_population": "Students in government schools in Haryana, India (grades 6-7 at baseline, both genders)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1.2-Combined-GenderAttitudes",
+          "outcome_var": "E_Sgender_index2",
+          "treatment_var": "B_treat",
+          "controls": ["B_Sgender_index2", "district_gender_1", "district_gender_2", "district_gender_3", "district_gender_4", "district_gender_5", "district_gender_6", "district_gender_7", "district_gender_8", "gender_grade_1", "gender_grade_2", "gender_grade_3", "gender_grade_4"],
+          "controls_description": "Baseline gender attitude index + district-by-gender strata FE (8 dummies) + gender-by-grade strata FE (4 dummies) + endline component missing flags (~17 flags from ${el_gender_flag})",
+          "n_controls": 30,
+          "n_controls_note": "13 listed controls + ~17 endline component missing flags (${el_gender_flag}). The code includes these flags in the regression even though they are not listed in the controls vector. Actual n_controls depends on how many flag variables resolve to non-collinear in sample.",
+          "sample_filter": "!mi(E_Steam_id) & attrition_el==0",
+          "estimator": "OLS",
+          "vcov": "cluster(Sschool_id)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 50,
+        "linked_adjustment": false,
+        "notes": "Minimum: difference-in-means (no controls). Maximum: LASSO-selected extended controls (cntrls_all_8 set, ~50 vars including demographics, school characteristics, census variables, strata FE, missing flags). The paper reveals a large control range: from simple strata FE (Table 1.2) to LASSO-selected extended controls (Appendix Table 1.10)."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/strata_plus_lasso",
+          "rc/controls/loo/drop_baseline_index",
+          "rc/controls/loo/drop_district_gender_fe",
+          "rc/controls/loo/drop_gender_grade_fe",
+          "rc/controls/loo/drop_missing_flags",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/strata_fe_only",
+          "rc/controls/progression/strata_fe_plus_bl_index",
+          "rc/controls/progression/strata_fe_plus_bl_index_plus_demographics",
+          "rc/controls/progression/strata_fe_plus_lasso_extended",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/data/index_construction/equal_weight_index",
+          "rc/controls/sets/no_missing_flags"
+        ],
+        "explore_spec_ids": [
+          "explore/population/girls_only",
+          "explore/population/boys_only",
+          "explore/population/grade6_only",
+          "explore/population/grade7_only",
+          "explore/population/coed_schools_only",
+          "explore/outcome/gender_subindex_education",
+          "explore/outcome/gender_subindex_employment",
+          "explore/outcome/gender_subindex_subjugation"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/school",
+          "params": {"cluster_var": "Sschool_id"},
+          "notes": "Matches the paper's baseline: cluster at the school level (unit of randomization)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust (individual-level) SE, ignoring clustering."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 small-sample correction."},
+          {"spec_id": "infer/se/cluster/district", "params": {"cluster_var": "district"}, "notes": "Coarser clustering at district level (only 4 districts -- will produce unreliable inference, included as extreme stress test)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 149882,
+        "notes": "Full enumeration of planned specs (under 50 total). No random sampling needed."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/randomized_experiment/balance/covariates", "scope": "baseline_group"},
+        {"diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff", "scope": "baseline_group"}
+      ]
+    },
+    {
+      "baseline_group_id": "G2",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_covariates",
+        "randomization_unit": "school",
+        "strata_or_blocks": "district x gender x grade (district_gender_*, gender_grade_*)",
+        "estimand": "ITT",
+        "treatment_arms": ["B_treat (Breakthrough gender-equality curriculum)"],
+        "n_treatment_arms_focal": 1,
+        "cluster_var": "Sschool_id",
+        "weights": "none",
+        "control_selection": "LASSO-selected extended controls (double LASSO, seed=5212021)",
+        "n_clusters_approx": 314,
+        "notes": "Same design as G1."
+      },
+      "claim_object": {
+        "outcome_concept": "Self-reported behavior index (standardized, endline 1; E_Sbehavior_index2), an inverse-covariance-weighted index of gender-related behaviors",
+        "treatment_concept": "School-level Breakthrough gender-equality curriculum (3-year intervention, grades 6-9)",
+        "estimand_concept": "ITT effect of the Breakthrough curriculum on gender-related behaviors (combined across boys and girls)",
+        "target_population": "Students in government schools in Haryana, India (grades 6-7 at baseline, both genders)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1.2-Combined-Behavior",
+          "outcome_var": "E_Sbehavior_index2",
+          "treatment_var": "B_treat",
+          "controls": ["B_Sbehavior_index2", "district_gender_1", "district_gender_2", "district_gender_3", "district_gender_4", "district_gender_5", "district_gender_6", "district_gender_7", "district_gender_8", "gender_grade_1", "gender_grade_2", "gender_grade_3", "gender_grade_4"],
+          "controls_description": "Baseline behavior index + district-by-gender strata FE (8 dummies) + gender-by-grade strata FE (4 dummies) + endline component missing flags (~6 flags from ${el_behavior_common_flag})",
+          "n_controls": 19,
+          "n_controls_note": "13 listed controls + ~6 endline behavior component missing flags (${el_behavior_common_flag}). Actual n_controls depends on non-collinear flags in sample.",
+          "sample_filter": "!mi(E_Steam_id) & attrition_el==0",
+          "estimator": "OLS",
+          "vcov": "cluster(Sschool_id)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 50,
+        "linked_adjustment": false,
+        "notes": "Same control set structure as G1. Baseline behavior index replaces baseline gender index."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/strata_fe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/strata_plus_lasso",
+          "rc/controls/loo/drop_baseline_index",
+          "rc/controls/loo/drop_district_gender_fe",
+          "rc/controls/loo/drop_gender_grade_fe",
+          "rc/controls/loo/drop_missing_flags",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/strata_fe_only",
+          "rc/controls/progression/strata_fe_plus_bl_index",
+          "rc/controls/progression/strata_fe_plus_bl_index_plus_demographics",
+          "rc/controls/progression/strata_fe_plus_lasso_extended",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/data/index_construction/equal_weight_index",
+          "rc/controls/sets/no_missing_flags"
+        ],
+        "explore_spec_ids": [
+          "explore/population/girls_only",
+          "explore/population/boys_only",
+          "explore/population/grade6_only",
+          "explore/population/grade7_only",
+          "explore/population/coed_schools_only",
+          "explore/outcome/behavior_subindex_oppsex",
+          "explore/outcome/behavior_subindex_hhchores",
+          "explore/outcome/behavior_subindex_relatives"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/school",
+          "params": {"cluster_var": "Sschool_id"},
+          "notes": "Matches the paper's baseline: cluster at the school level (unit of randomization)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust (individual-level) SE, ignoring clustering."},
+          {"spec_id": "infer/se/hc/hc3", "params": {}, "notes": "HC3 small-sample correction."},
+          {"spec_id": "infer/se/cluster/district", "params": {"cluster_var": "district"}, "notes": "Coarser clustering at district level."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 50,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 149882,
+        "notes": "Full enumeration. No random sampling needed."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

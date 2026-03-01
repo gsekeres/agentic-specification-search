@@ -1,19 +1,22 @@
 {
   "paper_id": "112431-V1",
-  "verified_at": "2026-02-15",
   "baseline_groups": [
     {
       "baseline_group_id": "G1",
-      "claim_summary": "First-term mayors (who can seek reelection) have lower corruption (pcorrupt) than term-limited second-term mayors, consistent with electoral accountability disciplining incumbents.",
+      "claim_summary": "First-term mayors (eligible for reelection) have lower corruption than term-limited second-term mayors",
       "expected_sign": "negative",
-      "baseline_spec_run_ids": ["112431-V1_run0001"],
-      "baseline_spec_ids": ["baseline"],
-      "baseline_coefficient": -0.02748235,
-      "baseline_std_error": 0.0112644,
-      "baseline_p_value": 0.01512122,
-      "baseline_n_obs": 476,
-      "notes": "Table 4 Column 6. Cross-sectional OLS with 41 controls and state FE, HC1 robust SE. Sample: all 476 municipalities with esample2==1."
+      "baseline_spec_run_ids": [
+        "112431-V1_run_001",
+        "112431-V1_run_002",
+        "112431-V1_run_003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__ncorrupt",
+        "baseline__ncorrupt_os"
+      ],
+      "notes": "Cross-sectional OLS with state FE. Three outcome measures: pcorrupt (share), ncorrupt (count), ncorrupt_os (share of items)."
     }
   ],
-  "global_notes": "Surface defined one baseline group (G1: pcorrupt ~ first). No changes from the pre-run surface. All 53 specifications executed successfully. All coefficients are negative, consistent with the paper's claim. The effect is robustly significant across all control progressions, LOO variants, random subsets, FE variants, sample trimming, and functional form transformations."
+  "global_notes": "Surface-driven run. All baseline groups match the pre-run surface. No adjustments needed."
 }

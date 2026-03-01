@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
-from scipy.special import logsumexp
+from scipy.special import expit, logsumexp
 from scipy.stats import foldnorm, norm
 
 # Paths
@@ -75,6 +75,22 @@ def _inv_softplus(y: np.ndarray) -> np.ndarray:
     y = np.asarray(y, dtype=float)
     y = np.clip(y, 1e-12, None)
     return np.log(np.expm1(y))
+
+
+def _bounded_pos(x: np.ndarray, mu_max: float | None) -> np.ndarray:
+    """Map R -> (0, mu_max) via scaled sigmoid, or R -> (0, +inf) via softplus."""
+    if mu_max is None:
+        return _softplus(x)
+    return mu_max * expit(np.asarray(x, dtype=float))
+
+
+def _inv_bounded_pos(y: np.ndarray, mu_max: float | None) -> np.ndarray:
+    """Inverse of _bounded_pos."""
+    if mu_max is None:
+        return _inv_softplus(y)
+    y = np.asarray(y, dtype=float)
+    r = np.clip(y / mu_max, 1e-12, 1 - 1e-12)
+    return np.log(r / (1 - r))  # logit
 
 
 def _softmax(w: np.ndarray) -> np.ndarray:
@@ -130,6 +146,7 @@ def fit_truncnorm_mixture(
     max_iter: int = 800,
     lo: float = 0.0,
     sigma_constraint: str | None = None,
+    mu_max: float | None = 10.0,
 ) -> dict:
     """
     Fit a truncated-normal mixture by direct maximum likelihood with multiple restarts.
@@ -142,6 +159,10 @@ def fit_truncnorm_mixture(
         None       — default, sigma free (sigma >= 1e-6 via softplus)
         "fixed_1"  — fix sigma_k = 1.0 for all k; only optimize pi and mu
         "geq_1"    — sigma >= 1.0 via softplus(raw) + 1.0
+
+    mu_max:
+        If not None, cap component means at this value via scaled sigmoid.
+        Default 10.0 (sensible upper bound for |t|-statistics).
     """
     x = np.asarray(data, dtype=float)
     x = x[np.isfinite(x)]
@@ -151,6 +172,8 @@ def fit_truncnorm_mixture(
 
     qs = np.linspace(0.15, 0.85, n_components)
     mu0 = np.quantile(x, qs)
+    if mu_max is not None:
+        mu0 = np.minimum(mu0, mu_max * 0.95)  # keep init away from boundary
     sd = float(np.std(x, ddof=1)) if x.size > 1 else 1.0
     sig0 = np.clip(sd * np.ones(n_components), 0.25, None)
 
@@ -161,11 +184,11 @@ def fit_truncnorm_mixture(
             w = theta[:K]
             mu_raw = theta[K : 2 * K]
             pi = _softmax(w)
-            mu = _softplus(mu_raw)
+            mu = _bounded_pos(mu_raw, mu_max)
             sigma = np.ones(K)
             return pi, mu, sigma
 
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0)])
+        theta0 = np.concatenate([np.zeros(n_components), _inv_bounded_pos(mu0, mu_max)])
     elif sigma_constraint == "geq_1":
         # sigma = softplus(raw) + 1.0, so sigma >= 1.0
         def unpack(theta: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -174,11 +197,11 @@ def fit_truncnorm_mixture(
             mu_raw = theta[K : 2 * K]
             sig_raw = theta[2 * K : 3 * K]
             pi = _softmax(w)
-            mu = _softplus(mu_raw)
+            mu = _bounded_pos(mu_raw, mu_max)
             sigma = _softplus(sig_raw) + 1.0
             return pi, mu, sigma
 
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0), _inv_softplus(sig0)])
+        theta0 = np.concatenate([np.zeros(n_components), _inv_bounded_pos(mu0, mu_max), _inv_softplus(sig0)])
     else:
         # Default: sigma free
         def unpack(theta: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -187,11 +210,11 @@ def fit_truncnorm_mixture(
             mu_raw = theta[K : 2 * K]
             sig_raw = theta[2 * K : 3 * K]
             pi = _softmax(w)
-            mu = _softplus(mu_raw)
+            mu = _bounded_pos(mu_raw, mu_max)
             sigma = _softplus(sig_raw) + 1e-6
             return pi, mu, sigma
 
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0), _inv_softplus(sig0)])
+        theta0 = np.concatenate([np.zeros(n_components), _inv_bounded_pos(mu0, mu_max), _inv_softplus(sig0)])
 
     def nll(theta: np.ndarray) -> float:
         pi, mu, sigma = unpack(theta)
@@ -244,6 +267,7 @@ def fit_truncnorm_mixture(
         "distribution": "truncnorm",
         "truncation_lo": float(lo),
         "sigma_constraint": sigma_constraint,
+        "mu_max": float(mu_max) if mu_max is not None else None,
         "pi": {labels[i]: float(pi_hat[i]) for i in range(n_components)},
         "mu": {labels[i]: float(mu_hat[i]) for i in range(n_components)},
         "sigma": {labels[i]: float(sig_hat[i]) for i in range(n_components)},
@@ -266,6 +290,7 @@ def fit_foldnorm_mixture(
     max_iter: int = 800,
     sigma_constraint: str | None = None,
     fix_null_mean_zero: bool = False,
+    mu_max: float | None = 10.0,
 ) -> dict:
     """
     Fit folded-normal mixture by direct maximum likelihood with multiple restarts.
@@ -277,6 +302,9 @@ def fit_foldnorm_mixture(
 
     fix_null_mean_zero:
         If True, fix the first (lowest) component mean to 0 and optimize K-1 free means.
+
+    mu_max:
+        If not None, cap component means at this value via scaled sigmoid.
     """
     x = np.asarray(data, dtype=float)
     x = x[np.isfinite(x)]
@@ -289,6 +317,8 @@ def fit_foldnorm_mixture(
 
     qs = np.linspace(0.15, 0.85, n_components)
     mu0 = np.quantile(x, qs)
+    if mu_max is not None:
+        mu0 = np.minimum(mu0, mu_max * 0.95)
     sd = float(np.std(x, ddof=1)) if x.size > 1 else 1.0
     sig0 = np.clip(sd * np.ones(n_components), 0.25, None)
 
@@ -300,10 +330,10 @@ def fit_foldnorm_mixture(
         pi = _softmax(w)
         if fix_null_mean_zero:
             mu_raw = theta[K : K + n_free_mu]
-            mu = np.concatenate([[0.0], _softplus(mu_raw)])
+            mu = np.concatenate([[0.0], _bounded_pos(mu_raw, mu_max)])
         else:
             mu_raw = theta[K : K + n_free_mu]
-            mu = _softplus(mu_raw)
+            mu = _bounded_pos(mu_raw, mu_max)
         if fix_sigma:
             sigma = np.ones(K)
         else:
@@ -325,9 +355,9 @@ def fit_foldnorm_mixture(
 
     rng = np.random.default_rng(int(random_state))
     if fix_sigma:
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0_free)])
+        theta0 = np.concatenate([np.zeros(n_components), _inv_bounded_pos(mu0_free, mu_max)])
     else:
-        theta0 = np.concatenate([np.zeros(n_components), _inv_softplus(mu0_free), _inv_softplus(sig0)])
+        theta0 = np.concatenate([np.zeros(n_components), _inv_bounded_pos(mu0_free, mu_max), _inv_softplus(sig0)])
 
     best_res = None
     best_val = None
@@ -365,6 +395,7 @@ def fit_foldnorm_mixture(
         "distribution": "foldnorm",
         "sigma_constraint": sigma_constraint,
         "fix_null_mean_zero": fix_null_mean_zero,
+        "mu_max": float(mu_max) if mu_max is not None else None,
         "pi": {labels[i]: float(pi_hat[i]) for i in range(n_components)},
         "mu": {labels[i]: float(mu_hat[i]) for i in range(n_components)},
         "sigma": {labels[i]: float(sig_hat[i]) for i in range(n_components)},
@@ -531,10 +562,11 @@ def main() -> None:
         t_col_fn = "Z_abs" if "Z_abs" in vdf_fn.columns else ("Z" if "Z" in vdf_fn.columns else "t_stat")
         t_fn = pd.to_numeric(vdf_fn[t_col_fn], errors="coerce").to_numpy(dtype=float)
         t_fn = _winsorize_pos(np.abs(t_fn), WINSORIZE_T_THRESHOLD)
+        t_fn = t_fn[np.isfinite(t_fn) & (t_fn <= 10.0)]  # trim to |t|<=10 per paper
 
         for K in [2, 3, 4]:
             if len(t_fn) >= max(10, K * 3):
-                print(f"  Fitting foldnorm K={K} (sigma=1, mu_N=0) on verified-core |t| (n={len(t_fn)})...")
+                print(f"  Fitting foldnorm K={K} (sigma=1, mu_N=0) on verified-core |t|<=10 (n={len(t_fn)})...")
                 folded_robustness[f"K={K}"] = fit_foldnorm_mixture(
                     t_fn, n_components=K, n_init=50, random_state=42,
                     sigma_constraint="fixed_1", fix_null_mean_zero=True,
@@ -555,7 +587,8 @@ def main() -> None:
         t_col_mf = "Z_abs" if "Z_abs" in vdf_mf.columns else ("Z" if "Z" in vdf_mf.columns else "t_stat")
         t_mf_raw = pd.to_numeric(vdf_mf[t_col_mf], errors="coerce").to_numpy(dtype=float)
         t_mf_full = _winsorize_pos(np.abs(t_mf_raw), WINSORIZE_T_THRESHOLD)
-        samples = [("full", t_mf_full)]
+        t_mf_trim10 = t_mf_full[np.isfinite(t_mf_full) & (t_mf_full <= 10.0)]
+        samples = [("full", t_mf_trim10)]
 
         for K in [2, 3, 4]:
             for sample_name, sample_data in samples:

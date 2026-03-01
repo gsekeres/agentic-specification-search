@@ -1,0 +1,38 @@
+{
+  "paper_id": "112466-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of Turnover on Price",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "112466-V1_run_001",
+        "112466-V1_run_054",
+        "112466-V1_run_055"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__nw10",
+        "baseline__hc1"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of Turnover on Warrant_price",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "112466-V1_run_029",
+        "112466-V1_run_056",
+        "112466-V1_run_057"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__nw10",
+        "baseline__nw20"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

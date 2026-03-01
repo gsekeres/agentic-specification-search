@@ -1,0 +1,214 @@
+{
+  "paper_id": "113630-V1",
+  "created_at": "2026-02-25",
+  "notes": "Two cluster-randomized controlled trials evaluating community-based monitoring interventions on health outcomes in Uganda. Experiment 1: Information & Participation (I&P, sample1==1, 2004-2009). Experiment 2: Participation only (P, sample1==0, 2006-2009). Randomization at health facility (hfcode) level within district (dcode) strata. Main outcomes: child mortality, weight-for-age z-scores, immunization, utilization. Table 3 (child mortality) is the flagship result.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1_mortality",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "randomization_unit": "health facility (hfcode)",
+        "strata_or_blocks": "district (dcode)",
+        "estimand": "ITT",
+        "outcome_var": "death_year",
+        "treatment_var": "treatment",
+        "fe_structure": ["dcode (strata FE)"],
+        "cluster_vars": [],
+        "se_type": "hc1",
+        "notes": "Cluster-RCT at health facility level within district strata. Outcomes collapsed to health facility level (cluster-level means). Strata FE via areg, a(dcode). Robust SEs (not clustered since data is already at cluster level). Two experiments: I&P (sample1==1) and P-only (sample1==0)."
+      },
+      "claim_object": {
+        "outcome_concept": "Under-5 child mortality rate (crude deaths per year, annualized)",
+        "treatment_concept": "Community-based monitoring intervention (Information & Participation treatment)",
+        "estimand_concept": "ITT effect of community monitoring on child death rate at health facility level",
+        "target_population": "Communities served by health facilities in treated districts, Uganda, 2006-2009"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-PanelA-ColI-IP",
+          "outcome_var": "death_year",
+          "treatment_var": "treatment",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "areg death_year treatment if sample1==1, a(dcode) robust. Crude under-5 death rate, I&P experiment, strata FE."
+        },
+        {
+          "label": "Table3-PanelA-ColII-IP-Infant",
+          "outcome_var": "death_inf_year",
+          "treatment_var": "treatment",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "areg death_inf_year treatment if sample1==1, a(dcode) robust. Infant (under-12-month) death rate."
+        },
+        {
+          "label": "Table3-PanelA-ColIV-IP-ExposureCorrected",
+          "outcome_var": "death_exp",
+          "treatment_var": "treatment",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "areg death_exp treatment if sample1==1, a(dcode) robust. Exposure-corrected death rate (deaths per 1000 person-years)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Baseline regressions have no controls beyond strata FE. Panel C adds baseline controls (avg_charge_gentreat, avgOP_baseline, hhs, and their squares) for cross-experiment comparison -- max 6 controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_panelA_colII_infant",
+          "baseline__table3_panelA_colIV_exposure",
+          "baseline__table3_panelB_colI_P",
+          "baseline__table3_panelB_colII_P_infant"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means",
+          "design/randomized_experiment/estimator/poisson_exposure"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_avg_charge_gentreat",
+          "rc/controls/single/add_avgOP_baseline",
+          "rc/controls/single/add_hhs",
+          "rc/controls/sets/baseline_controls",
+          "rc/controls/sets/baseline_controls_with_squares",
+          "rc/sample/restriction/ip_experiment_only",
+          "rc/sample/restriction/p_experiment_only",
+          "rc/sample/restriction/neonatal_deaths_only",
+          "rc/sample/time/post_2007",
+          "rc/sample/outliers/trim_death_rate_1_99",
+          "rc/form/outcome/crude_death_rate",
+          "rc/form/outcome/infant_death_rate",
+          "rc/form/outcome/neonatal_mortality_ratio",
+          "rc/form/outcome/exposure_corrected_death_rate",
+          "rc/weights/exposure_weighted"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs. Data is already at the cluster (health facility) level so no additional clustering needed. Matches paper's 'robust' option."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/hfcode", "params": {"cluster_var": "hfcode"}, "notes": "Cluster at health facility (redundant if data is at HF level, but a check)."},
+          {"spec_id": "infer/se/cluster/dcode", "params": {"cluster_var": "dcode"}, "notes": "Cluster at district (randomization stratification) level."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 10,
+        "notes": "Budget covers: 5 baselines + 2 design variants + ~15 RC specs (controls, sample, form, weights). Controls pool is small (3 baseline controls + 3 squared terms)."
+      },
+      "sampling": {
+        "seed": 113630,
+        "controls_subset_sampler": "exhaustive",
+        "notes": "Only 3 baseline controls (+ 3 squares). Full enumeration of control subsets is feasible (2^3 - 1 = 7 main subsets + 2^6 - 1 = 63 with squares, but capped at budget)."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Table 1-2 in paper test pre-treatment balance across treatment and control."
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "notes": "Check differential attrition in mortality data collection."
+        }
+      ]
+    },
+    {
+      "baseline_group_id": "G2_weight",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "randomization_unit": "health facility (hfcode)",
+        "strata_or_blocks": "district (dcode)",
+        "estimand": "ITT",
+        "outcome_var": "zw1",
+        "treatment_var": "treatment",
+        "fe_structure": ["dcode (strata FE)"],
+        "cluster_vars": ["hfcode"],
+        "se_type": "clustered",
+        "notes": "Same RCT as G1 but individual-level data (children). Clustered at health facility level. Outcome is weight-for-age z-score. Sample restricted by age and z-score range (-4.5 to 4.5) and growth chart cutoff (Cortinovis et al. 1997)."
+      },
+      "claim_object": {
+        "outcome_concept": "Weight-for-age z-score of children under 5",
+        "treatment_concept": "Community-based monitoring intervention",
+        "estimand_concept": "ITT effect on child nutritional status (weight-for-age z-score)",
+        "target_population": "Children under 5 in communities served by treated health facilities, Uganda"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table5-ColI-IP-Infants",
+          "outcome_var": "zw1",
+          "treatment_var": "treatment",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "areg zw1 treatment if s821a<13 & zw1>-4.5 & zw1<4.5 & s821b<cort97 & sample1==1, a(dcode) cluster(hfcode). Infants 0-12 months, I&P experiment."
+        },
+        {
+          "label": "Table5-ColII-IP-Children",
+          "outcome_var": "zw1",
+          "treatment_var": "treatment",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "areg zw1 treatment if s821a>12 & zw1>-4.5 & zw1<4.5 & sample1==1, a(dcode) cluster(hfcode). Children 13-59 months."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 6,
+        "linked_adjustment": false,
+        "notes": "Baseline regressions have no controls beyond strata FE. Panel C adds baseline facility controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table5_colII_children",
+          "baseline__table5_colI_P_infants",
+          "baseline__table5_colII_P_children"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/sets/baseline_facility_controls",
+          "rc/sample/restriction/ip_experiment_only",
+          "rc/sample/restriction/p_experiment_only",
+          "rc/sample/restriction/infants_only",
+          "rc/sample/restriction/older_children_only",
+          "rc/sample/outliers/trim_zscore_3",
+          "rc/sample/outliers/drop_cort97_outliers",
+          "rc/form/outcome/height_for_age_zscore"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/hfcode",
+          "params": {"cluster_var": "hfcode"},
+          "notes": "Clustered at health facility level (randomization unit). Matches paper's cluster(hfcode)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust (no clustering)."},
+          {"spec_id": "infer/se/cluster/dcode", "params": {"cluster_var": "dcode"}, "notes": "Cluster at district level (coarser)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 40,
+        "max_specs_controls_subset": 5,
+        "notes": "Smaller budget since the weight outcome has fewer design variants. Main axes: experiment type, age group, outlier trimming, outcome transform."
+      },
+      "sampling": {
+        "seed": 113631,
+        "controls_subset_sampler": "exhaustive"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "notes": "Balance check for weight/height data subsample."
+        }
+      ]
+    }
+  ]
+}

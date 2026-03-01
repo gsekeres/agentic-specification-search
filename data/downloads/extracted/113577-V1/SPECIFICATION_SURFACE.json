@@ -1,0 +1,170 @@
+{
+  "paper_id": "113577-V1",
+  "created_at": "2026-02-25",
+  "notes": "Panel data study of peer effects among teachers on student test score growth. Uses North Carolina administrative education data. Main analysis regresses student test score growth on peer teacher quality measures (peer value-added or peer observable characteristics) with progressively richer fixed effects (school-year FE, student FE, teacher FE via felsdvreg two-way FE decomposition). Identification comes from within-teacher variation in peer composition across years. Two outcome subjects: math and reading.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1_math",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "panel_unit": "student (mastid) or teacher (t_s)",
+        "panel_time": "year",
+        "fe_structure": ["teacher (t_s)", "school_year (sch_year)"],
+        "differencing": "none",
+        "estimator": "felsdvreg (two-way FE decomposition)",
+        "cluster_vars": ["t_s"],
+        "notes": "The preferred specification uses felsdvreg to decompose teacher and school-year fixed effects (two-way FE). Clustered at the teacher level. The focal coefficient is on peer_tfx_m (peer teacher value-added in math). Lagged math score (l_math) is included to measure growth. Student demographics, class size, teacher experience, and own teacher quality controls are included."
+      },
+      "claim_object": {
+        "outcome_concept": "Student math test score growth (m_growth)",
+        "treatment_concept": "Peer teacher value-added in math (peer_tfx_m) -- average quality of other teachers in the same school-year",
+        "estimand_concept": "Effect of peer teacher quality on student achievement, conditional on own teacher and school-year FE",
+        "target_population": "Elementary/middle school students in North Carolina public schools (post-2000)"
+      },
+      "baseline_specs": [
+        {
+          "label": "MathTFX-Col5-TeacherSchoolYearFE",
+          "outcome_var": "m_growth",
+          "treatment_var": "peer_tfx_m",
+          "controls": ["l_math", "year*grade", "sex", "ethnic", "pared", "r_same", "s_same", "clsize", "exp_0", "exp_3", "exp_4", "exp_10", "exp_25", "peer_tfx_miss_m"],
+          "n_controls": 14,
+          "notes": "felsdvreg m_growth l_math [demographics/class controls] peer_tfx_m peer_tfx_miss_m, i(t_s) j(sch_year). Two-way FE (teacher + school-year). This is the preferred specification."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 5,
+        "controls_count_max": 14,
+        "linked_adjustment": false,
+        "notes": "The paper progressively adds controls across columns. Minimum is year*grade + classroom controls (col 3 with student FE absorbing demographics). Maximum is 14 explicit time-varying controls plus demographic FE interactions. Lagged score is always included."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within_school_year_fe",
+          "design/panel_fixed_effects/estimator/within_student_fe",
+          "design/panel_fixed_effects/estimator/within_teacher_fe_only"
+        ],
+        "rc_spec_ids": [
+          "rc/fe/add/school_year_fe",
+          "rc/fe/add/teacher_fe",
+          "rc/fe/add/student_fe",
+          "rc/fe/drop/teacher_fe",
+          "rc/fe/drop/school_year_fe",
+          "rc/controls/loo/lagged_score",
+          "rc/controls/loo/class_size",
+          "rc/controls/loo/teacher_experience",
+          "rc/controls/loo/demographics",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/extended",
+          "rc/controls/sets/full_with_own_teacher",
+          "rc/sample/restriction/post_2002",
+          "rc/sample/restriction/elementary_only",
+          "rc/sample/restriction/middle_only",
+          "rc/form/treatment/peer_observables_va",
+          "rc/form/treatment/peer_characteristics"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/teacher",
+          "params": {"cluster_var": "t_s"},
+          "notes": "Clustered at the teacher level, matching the paper's cl(t_s)."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/school", "params": {"cluster_var": "sch_year"}, "notes": "Cluster at school-year level."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust (no clustering)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 10,
+        "notes": "The main variation is in FE structure (5 progressive columns) and control leave-one-out. Controls are standard and limited in number."
+      },
+      "sampling": {
+        "seed": 113577,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Controls organized in blocks: lagged score, demographics (sex/ethnic/pared), classroom (r_same/s_same/clsize), teacher experience (exp_0-exp_25), own teacher quality (lic_score/adv_deg/reg_lic/certified)."
+      },
+      "diagnostics_plan": []
+    },
+    {
+      "baseline_group_id": "G1_reading",
+      "design_code": "panel_fixed_effects",
+      "design_audit": {
+        "panel_unit": "student (mastid) or teacher (t_s)",
+        "panel_time": "year",
+        "fe_structure": ["teacher (t_s)", "school_year (sch_year)"],
+        "differencing": "none",
+        "estimator": "felsdvreg (two-way FE decomposition)",
+        "cluster_vars": ["t_s"],
+        "notes": "Same structure as math but for reading. Peer value-added measure is peer_tfx_r."
+      },
+      "claim_object": {
+        "outcome_concept": "Student reading test score growth (r_growth)",
+        "treatment_concept": "Peer teacher value-added in reading (peer_tfx_r)",
+        "estimand_concept": "Effect of peer teacher quality on student reading achievement",
+        "target_population": "Elementary/middle school students in North Carolina public schools (post-2000)"
+      },
+      "baseline_specs": [
+        {
+          "label": "ReadTFX-Col5-TeacherSchoolYearFE",
+          "outcome_var": "r_growth",
+          "treatment_var": "peer_tfx_r",
+          "controls": ["l_read", "year*grade", "sex", "ethnic", "pared", "r_same", "s_same", "clsize", "exp_0", "exp_3", "exp_4", "exp_10", "exp_25", "peer_tfx_miss_r"],
+          "n_controls": 14,
+          "notes": "felsdvreg r_growth l_read [demographics/class controls] peer_tfx_r peer_tfx_miss_r, i(t_s) j(sch_year). Same two-way FE structure as math."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 5,
+        "controls_count_max": 14,
+        "linked_adjustment": false
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [
+          "design/panel_fixed_effects/estimator/within_school_year_fe",
+          "design/panel_fixed_effects/estimator/within_student_fe",
+          "design/panel_fixed_effects/estimator/within_teacher_fe_only"
+        ],
+        "rc_spec_ids": [
+          "rc/fe/add/school_year_fe",
+          "rc/fe/add/teacher_fe",
+          "rc/fe/add/student_fe",
+          "rc/fe/drop/teacher_fe",
+          "rc/fe/drop/school_year_fe",
+          "rc/controls/loo/lagged_score",
+          "rc/controls/loo/class_size",
+          "rc/controls/loo/teacher_experience",
+          "rc/controls/loo/demographics",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/extended",
+          "rc/controls/sets/full_with_own_teacher",
+          "rc/sample/restriction/post_2002",
+          "rc/sample/restriction/elementary_only",
+          "rc/sample/restriction/middle_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/teacher",
+          "params": {"cluster_var": "t_s"},
+          "notes": "Clustered at the teacher level."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/school", "params": {"cluster_var": "sch_year"}, "notes": "Cluster at school-year."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust (no clustering)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 55,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 113578,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

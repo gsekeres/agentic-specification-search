@@ -1,0 +1,147 @@
+{
+  "paper_id": "120483-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "slaveratio ~ MAL + controls | state_g",
+        "selection_story": "Cross-sectional county-level regression; malaria ecology is pre-determined geographic variation, conditioning on state FE and geography/crop controls",
+        "fe_structure": ["state_g"],
+        "cluster_vars": [],
+        "spatial_se": "conley",
+        "conley_distances_km": [100, 250, 500],
+        "inference_note": "Primary inference uses Conley spatial SEs via acreg; state-clustered SEs reported as alternative via reghdfe. Canonical inference is Conley 100km; pyfixest may fall back to state-clustered as canonical if spatial SEs are unavailable."
+      },
+      "claim_object": {
+        "outcome_concept": "Share of slaves in county population",
+        "treatment_concept": "Malaria Stability Index (ecological suitability for malaria transmission)",
+        "estimand_concept": "Conditional association of malaria ecology with slavery intensity, controlling for geography and crop suitability",
+        "target_population": "US counties in 1790 and 1860"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-Col3",
+          "outcome_var": "slaveratio",
+          "treatment_var": "MAL",
+          "controls": ["cotton", "rice", "sugar", "tea", "tobacco", "indigo", "DISTSEA", "DISTRIV", "prec", "temp", "ELEV", "lat_deg", "long_deg", "lat_long"],
+          "n_controls": 14,
+          "fixed_effects": ["state_g"],
+          "vcov": "conley_100km",
+          "dataset": "county_1790.dta",
+          "coefficient": 0.065,
+          "notes": "Full controls specification for 1790, all states"
+        },
+        {
+          "label": "Table1-Col5",
+          "outcome_var": "slaveratio",
+          "treatment_var": "MAL",
+          "controls": ["cotton", "coffee", "rice", "sugar", "tea", "tobacco", "indigo", "ELEV", "prec", "temp", "DISTRIV", "DISTSEA", "lat_deg", "long_deg", "lat_long"],
+          "n_controls": 15,
+          "fixed_effects": ["state_g"],
+          "vcov": "conley_100km",
+          "dataset": "county_1860.dta",
+          "coefficient": 0.192,
+          "notes": "Full controls specification for 1860, all states"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 15,
+        "linked_adjustment": false,
+        "functional_form_policy": "Outcome is a share (0-1); log/asinh transforms are feasible but change interpretation",
+        "control_set_note": "1790 and 1860 datasets have slightly different crop controls: 1790 has 6 crops (no coffee), 1860 has 7 crops (adds coffee). LOO specs are defined relative to the 1860 full control set. When running on 1790 data, drop_coffee is inapplicable.",
+        "mandatory_controls": "none; all controls are in the optional pool"
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table1_col5"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_cotton",
+          "rc/controls/loo/drop_coffee",
+          "rc/controls/loo/drop_rice",
+          "rc/controls/loo/drop_sugar",
+          "rc/controls/loo/drop_tea",
+          "rc/controls/loo/drop_tobacco",
+          "rc/controls/loo/drop_indigo",
+          "rc/controls/loo/drop_ELEV",
+          "rc/controls/loo/drop_prec",
+          "rc/controls/loo/drop_temp",
+          "rc/controls/loo/drop_DISTRIV",
+          "rc/controls/loo/drop_DISTSEA",
+          "rc/controls/loo/drop_lat_deg",
+          "rc/controls/loo/drop_long_deg",
+          "rc/controls/loo/drop_lat_long",
+          "rc/controls/sets/none",
+          "rc/controls/sets/crop_only",
+          "rc/controls/sets/geo_only",
+          "rc/controls/progression/crop_suitability",
+          "rc/controls/progression/crop_and_geo",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/controls/subset/random_011",
+          "rc/controls/subset/random_012",
+          "rc/controls/subset/random_013",
+          "rc/controls/subset/random_014",
+          "rc/controls/subset/random_015",
+          "rc/sample/restrict/slave_states_only",
+          "rc/sample/restrict/1790_data",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/fe/drop/state_g",
+          "rc/form/outcome/asinh",
+          "rc/form/outcome/log1p"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/spatial/conley_100km",
+          "params": {
+            "distance_km": 100,
+            "lat_var": "lat_deg",
+            "lon_var": "long_deg"
+          },
+          "notes": "Conley spatial SEs at 100km cutoff, matching the paper's primary inference"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/spatial/conley_250km",
+            "params": {"distance_km": 250},
+            "notes": "Conley SEs at 250km cutoff (paper reports this as alternative)"
+          },
+          {
+            "spec_id": "infer/se/spatial/conley_500km",
+            "params": {"distance_km": 500},
+            "notes": "Conley SEs at 500km cutoff (paper reports this as alternative)"
+          },
+          {
+            "spec_id": "infer/se/cluster/state",
+            "params": {"cluster_var": "state_g"},
+            "notes": "State-clustered SEs (paper reports these in curly braces)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 75,
+        "max_specs_controls_subset": 15
+      },
+      "sampling": {
+        "seed": 120483,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

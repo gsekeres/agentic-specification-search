@@ -1,0 +1,103 @@
+{
+  "paper_id": "112451-V1",
+  "created_at": "2026-02-25",
+  "notes": "Furman & Stern (2011), study of Biological Resource Center (BRC) deposits on article citations. Article-year panel with negative binomial FE, comparing BRC-linked articles to matched controls before vs after deposit. Treatment variable post_brc indicates post-deposit period. Key tables: Table 4 (age profile robustness), Table 5 (substitution test). Core sample: sample3==1 (BRC-linked articles + matched controls, window period). Uses bootstrap SE throughout.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "negative_binomial_fe",
+        "panel_unit": "rart_num (article)",
+        "panel_time": "year (implicit in age/year dummies)",
+        "fe_structure": ["article"],
+        "cluster_vars": [],
+        "se_type": "bootstrap",
+        "treatment_timing": "BRC deposit date (varies by article)",
+        "notes": "Conditional fixed-effects negative binomial regression (xtnbreg, fe). Treatment is post_brc (post-deposit indicator). Age and year dummies (30 age dummies + ~22 year dummies) absorb flexible time/lifecycle trends. Bootstrap SE (Stata default). IRR (incidence rate ratio) reported."
+      },
+      "claim_object": {
+        "outcome_concept": "Annual citation count to a scientific article",
+        "treatment_concept": "BRC deposit of biological materials linked to the article (post_brc = 1 after deposit)",
+        "estimand_concept": "ATT of BRC deposit on citation flow, estimated via conditional FE negative binomial DiD comparing BRC-linked articles to matched controls",
+        "target_population": "BRC-linked articles and matched control articles in biological sciences (sample3==1)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Col1",
+          "outcome_var": "cites",
+          "treatment_var": "post_brc",
+          "controls": ["window", "age_brc1", "age1-age30", "year_dummies"],
+          "n_controls": 53,
+          "notes": "xtnbreg cites window post_brc age_brc1 $age1 $year1, irr fe i(rart_num) vce(bootstrap). 'window' is the time-window indicator, age_brc1 is BRC-specific age interaction, $age1 has 30 age dummies, $year1 has ~22 year dummies."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 50,
+        "controls_count_max": 55,
+        "linked_adjustment": false,
+        "functional_form_policy": "The paper uses negative binomial throughout. Poisson FE and OLS on log(cites+1) are meaningful alternatives. Coefficients from nbreg/Poisson are IRRs; OLS on logs gives semi-elasticity.",
+        "notes": "Age and year dummies are mandatory (the paper always includes full sets). The only variable controls are window, age_brc1, and post_brc_yrs. These are identity-defining rather than optional, so LOO is limited to these few substantive regressors."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table4_col2"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/single/add_post_brc_yrs",
+          "rc/controls/loo/drop_window",
+          "rc/controls/loo/drop_age_brc1",
+          "rc/controls/sets/grouped_age_year",
+          "rc/sample/subset/sample0_brc_only",
+          "rc/sample/subset/drop_short_panel",
+          "rc/sample/outliers/trim_cites_99",
+          "rc/sample/outliers/winsor_cites_99",
+          "rc/form/model/poisson_fe",
+          "rc/form/model/ols_log_cites",
+          "rc/form/model/ols_asinh_cites",
+          "rc/form/outcome/log_cites_plus1",
+          "rc/form/outcome/asinh_cites",
+          "rc/form/model/nbreg_grouped_age",
+          "rc/fe/add_pair_fe",
+          "rc/preprocess/outcome/winsor_cites_99",
+          "rc/data/matching/drop_unmatched",
+          "rc/data/matching/caliper_variation",
+          "rc/joint/sample_form/*",
+          "rc/joint/fe_form/*"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/bootstrap/nonparametric",
+          "params": {"reps": 200},
+          "notes": "Bootstrap SE matching the paper's vce(bootstrap). Default Stata bootstrap reps."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/article", "params": {"cluster_var": "rart_num"}, "notes": "Cluster-robust SE at the article level."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Heteroskedasticity-robust SE (for OLS variants)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 10,
+        "notes": "Limited control variation (age/year dummies are mandatory). Most variation comes from functional form, sample, and FE axes."
+      },
+      "sampling": {
+        "seed": 112451,
+        "controls_subset_sampler": "full_enumeration",
+        "notes": "Only 3-4 substantive control variations beyond mandatory age/year dummies. Full enumeration is trivial."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/difference_in_differences/pretrends/event_study",
+          "scope": "baseline_group",
+          "linkage": "Figure 2 in paper: pre_dep2-pre_dep17 post_dep2-post_dep20 event study coefficients",
+          "notes": "The paper's Figure 2 provides a pre-trends check using year-by-year pre-deposit and post-deposit coefficients."
+        }
+      ]
+    }
+  ]
+}

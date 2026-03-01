@@ -1,0 +1,54 @@
+paper_id,spec_run_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_run_id,is_baseline,is_valid,is_core_test,category,why,confidence
+114833-V1,114833-V1_run_001,baseline,designs/cross_sectional_ols.md#baseline,phi,AvMPG,G1,114833-V1_run_001,1,1,1,core_method,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_002,baseline__with_Q3_interaction,designs/cross_sectional_ols.md#baseline,phi,AvMPG,G1,114833-V1_run_001,1,1,1,core_method,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_003,rc/controls/sets/none,modules/robustness/controls.md#standard-control-sets,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_004,rc/controls/sets/treatment_groups,modules/robustness/controls.md#standard-control-sets,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_005,rc/controls/sets/tg_plus_Q3,modules/robustness/controls.md#standard-control-sets,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_006,rc/controls/sets/demographics,modules/robustness/controls.md#standard-control-sets,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_007,rc/controls/sets/tg_demographics,modules/robustness/controls.md#standard-control-sets,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_008,rc/controls/sets/full_robustness,modules/robustness/controls.md#standard-control-sets,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_009,rc/controls/loo/drop_lIncome,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_010,rc/controls/loo/drop_Educ,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_011,rc/controls/loo/drop_Age,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_012,rc/controls/loo/drop_Male,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_013,rc/controls/loo/drop_HHSize,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_014,rc/controls/loo/drop_Liberal,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_015,rc/controls/loo/drop_Rural,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_016,rc/controls/loo/drop_Q1YearsOwned,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_017,rc/controls/loo/drop_absMPGDiff,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_018,rc/controls/loo/drop_lnQ1VehPrice,modules/robustness/controls.md#leave-one-out-controls-loo,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_019,rc/controls/progression/bivariate,modules/robustness/controls.md#control-progression-build-up,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_020,rc/controls/progression/tg_only,modules/robustness/controls.md#control-progression-build-up,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_021,rc/controls/progression/tg_Q3,modules/robustness/controls.md#control-progression-build-up,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_022,rc/controls/progression/tg_Q3_demo,modules/robustness/controls.md#control-progression-build-up,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_023,rc/controls/progression/full,modules/robustness/controls.md#control-progression-build-up,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_024,rc/controls/subset/random_001,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_025,rc/controls/subset/random_002,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_026,rc/controls/subset/random_003,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_027,rc/controls/subset/random_004,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_028,rc/controls/subset/random_005,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_029,rc/controls/subset/random_006,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_030,rc/controls/subset/random_007,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_031,rc/controls/subset/random_008,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_032,rc/controls/subset/random_009,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_033,rc/controls/subset/random_010,modules/robustness/controls.md#subset-generation-specids,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_controls,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_034,rc/sample/Q3_only,modules/robustness/sample.md#subgroup-analysis,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_035,rc/sample/Q4_only,modules/robustness/sample.md#subgroup-analysis,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_036,rc/sample/large_GPMDiff,modules/robustness/sample.md#subgroup-analysis,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_037,rc/sample/small_GPMDiff,modules/robustness/sample.md#subgroup-analysis,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_038,rc/sample/outliers/trim_phi_1_99,modules/robustness/sample.md#outliers-and-influential-observations,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_039,rc/sample/outliers/trim_phi_5_95,modules/robustness/sample.md#outliers-and-influential-observations,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_040,rc/sample/outliers/winsor_phi_1_99,modules/robustness/sample.md#outliers-and-influential-observations,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_041,rc/sample/unweighted,modules/robustness/sample.md#weighting,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_sample,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_042,rc/form/outcome/phi_R,modules/robustness/functional_form.md#outcome-transformations,phi_R,AvMPG,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_043,rc/form/outcome/phi_1,modules/robustness/functional_form.md#outcome-transformations,phi_1,AvMPG,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_044,rc/form/outcome/absPctError,modules/robustness/functional_form.md#outcome-transformations,absPctError,AvMPG,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_045,rc/form/outcome/Error,modules/robustness/functional_form.md#outcome-transformations,Error,AvMPG,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_046,rc/form/treatment/GPMDiff,modules/robustness/functional_form.md#treatment-definition,phi,GPMDiff,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_047,rc/form/treatment/absMPGDiff,modules/robustness/functional_form.md#treatment-definition,phi,absMPGDiff,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_048,rc/form/estimator/quantile_median,modules/robustness/functional_form.md#estimator-alternatives,phi,AvMPG,G1,114833-V1_run_001,0,1,1,core_funcform,Mechanical namespace classification,0.9
+114833-V1,114833-V1_run_049,appendix/heterogeneity/mean_phi,designs/cross_sectional_ols.md#appendix,phi,AvMPG,G1,114833-V1_run_001,0,1,0,core_method,Non-core namespace,0.9
+114833-V1,114833-V1_run_050,appendix/recall_error/phi_with_recall,designs/cross_sectional_ols.md#appendix,phi,AvMPG,G1,114833-V1_run_001,0,1,0,core_method,Non-core namespace,0.9
+114833-V1,114833-V1_run_051,appendix/recall_error/Q3_with_recall,designs/cross_sectional_ols.md#appendix,phi,AvMPG,G1,114833-V1_run_001,0,1,0,core_method,Non-core namespace,0.9
+114833-V1,114833-V1_run_052,appendix/recall_error/Q4_with_recall,designs/cross_sectional_ols.md#appendix,phi,AvMPG,G1,114833-V1_run_001,0,1,0,core_method,Non-core namespace,0.9
+114833-V1,114833-V1_run_053,appendix/large_gpm_controls,designs/cross_sectional_ols.md#appendix,phi,AvMPG,G1,114833-V1_run_001,0,1,0,core_method,Non-core namespace,0.9

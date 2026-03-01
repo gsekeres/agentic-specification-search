@@ -1,0 +1,136 @@
+{
+  "paper_id": "138401-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "twfe",
+        "treatment_timing": "Continuous DiD: pre-vaccine measles incidence rate interacted with cohort-level vaccine exposure (0-16 years of exposure)",
+        "estimand": "ATT (effect of measles vaccine exposure on adult labor market outcomes, scaled by pre-vaccine measles rate)",
+        "comparison_groups": "Cohorts born before 1949 (no vaccine exposure) vs cohorts born 1949-1963+ (partial to full exposure), cross-state variation in pre-vaccine measles incidence",
+        "panel_unit": "individual (repeated cross-sections by birth-state x birth-year)",
+        "panel_time": "birthyr (cohort)",
+        "fe_structure": ["bpl", "birthyr", "year", "ageblackfemale", "bpl_black", "bpl_female", "bpl_black_female"],
+        "cluster_vars": ["bplcohort"]
+      },
+      "claim_object": {
+        "outcome_concept": "Adult labor market outcomes: wage income (CPI-adjusted), log income, poverty status, employment, hours worked",
+        "treatment_concept": "Measles vaccine exposure: M12_exp_rate = (avg 12-year pre-vaccine measles incidence rate for birth state) x (years of childhood vaccine exposure based on birth year), scaled by 100,000",
+        "estimand_concept": "Effect of measles vaccine exposure on adult labor market outcomes, identified from cross-state variation in pre-vaccine measles incidence interacted with cohort-level vaccine timing",
+        "target_population": "Native-born black and white US adults aged 25-59, observed in ACS 2000-2017, born 1941-1980"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Col3-lnIncome",
+          "outcome_var": "ln_cpi_income",
+          "treatment_var": "M12_exp_rate",
+          "controls": ["black", "female"],
+          "n_controls": 2,
+          "fixed_effects": ["bpl", "birthyr", "year", "ageblackfemale", "bpl_black", "bpl_female", "bpl_black_female"],
+          "vcov": "cluster(bplcohort)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 4,
+        "linked_adjustment": false,
+        "functional_form_note": "The treatment variable M12_exp_rate is continuous, constructed from avg_12yr_measles_rate * exposure / 100000. Alternative treatment constructions use different pre-vaccine averaging windows (M2 through M11).",
+        "linkage_notes": [
+          "Core DiD FE (bpl, birthyr, year) are design-critical and must not be dropped",
+          "When restricting to men_only or women_only, drop bpl_female and bpl_black_female FE interactions",
+          "When restricting to white_only or black_only, drop bpl_black and bpl_black_female FE interactions",
+          "Joint specs (rc/joint/) handle these sample+FE linkages explicitly",
+          "black and female appear as both level controls and FE-interaction components -- LOO drops them as level controls only"
+        ]
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__cpi_incwage",
+          "baseline__cpi_incwage_no0",
+          "baseline__poverty100",
+          "baseline__employed",
+          "baseline__hrs_worked"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/estimator/twfe"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_black",
+          "rc/controls/loo/drop_female",
+          "rc/controls/sets/no_level_controls",
+          "rc/sample/restriction/exclude_partial_exposure",
+          "rc/sample/restriction/narrow_cohort_window_1941_1971",
+          "rc/sample/restriction/men_only",
+          "rc/sample/restriction/women_only",
+          "rc/sample/restriction/white_only",
+          "rc/sample/restriction/black_only",
+          "rc/sample/restriction/age_30_55",
+          "rc/sample/restriction/exclude_dc",
+          "rc/sample/restriction/post_2005_acs_only",
+          "rc/sample/restriction/pre_2010_acs_only",
+          "rc/fe/add/breg4_byear",
+          "rc/fe/add/breg9_byear",
+          "rc/fe/add/bpl_cohort_trend",
+          "rc/fe/add/mean_reversion_control",
+          "rc/fe/drop/bpl_black",
+          "rc/fe/drop/bpl_female",
+          "rc/fe/drop/bpl_black_female",
+          "rc/fe/drop/ageblackfemale",
+          "rc/fe/simplify/no_demographic_interactions",
+          "rc/data/treatment_construction/M2_exp_rate",
+          "rc/data/treatment_construction/M3_exp_rate",
+          "rc/data/treatment_construction/M4_exp_rate",
+          "rc/data/treatment_construction/M5_exp_rate",
+          "rc/data/treatment_construction/M6_exp_rate",
+          "rc/data/treatment_construction/M7_exp_rate",
+          "rc/data/treatment_construction/M8_exp_rate",
+          "rc/data/treatment_construction/M9_exp_rate",
+          "rc/data/treatment_construction/M10_exp_rate",
+          "rc/data/treatment_construction/M11_exp_rate",
+          "rc/form/outcome/level_income",
+          "rc/form/outcome/level_income_no_zeros",
+          "rc/joint/sample_and_fe/narrow_window_breg9",
+          "rc/joint/sample_and_fe/exclude_partial_breg9",
+          "rc/joint/sample_and_fe/white_men_only",
+          "rc/joint/sample_and_fe/black_men_only",
+          "rc/joint/sample_and_fe/white_women_only",
+          "rc/joint/sample_and_fe/narrow_window_breg4",
+          "rc/sample/restriction/narrow_cohort_window_1945_1975",
+          "rc/sample/restriction/employed_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/bplcohort",
+          "params": {"cluster_var": "bplcohort"},
+          "notes": "Cluster-robust SEs at birth-state x birth-year cohort level, matching the paper's baseline"
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/bpl", "params": {"cluster_var": "bpl"}, "notes": "Cluster at birth state level (coarser, fewer clusters)"},
+          {"spec_id": "infer/se/cluster/bplexposure", "params": {"cluster_var": "bplexposure"}, "notes": "Cluster at birth-state x exposure level"},
+          {"spec_id": "infer/se/cluster/bpl_region4", "params": {"cluster_var": "bpl_region4"}, "notes": "Cluster at census region level (4 regions -- very few clusters)"},
+          {"spec_id": "infer/se/cluster/bpl_region9", "params": {"cluster_var": "bpl_region9"}, "notes": "Cluster at census division level (9 divisions)"},
+          {"spec_id": "infer/se/cluster/stateexposure", "params": {"cluster_var": "stateexposure"}, "notes": "Cluster at state-of-residence x exposure level (from AppendixTable3)"},
+          {"spec_id": "infer/se/cluster/statecohort", "params": {"cluster_var": "statecohort"}, "notes": "Cluster at state-of-residence x birth-year (from AppendixTable3)"},
+          {"spec_id": "infer/se/cluster/statefip", "params": {"cluster_var": "statefip"}, "notes": "Cluster at state of residence"},
+          {"spec_id": "infer/se/cluster/birthyr", "params": {"cluster_var": "birthyr"}, "notes": "Cluster at birth year"},
+          {"spec_id": "infer/se/cluster/exposure", "params": {"cluster_var": "exposure"}, "notes": "Cluster at exposure level"},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "HC1 robust (no clustering)"}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 138401,
+        "controls_subset_sampler": "not_applicable"
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/difference_in_differences/pretrends/event_study", "scope": "baseline_group"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+paper_id,spec_run_id,spec_id,parent_spec_id,baseline_group_id,outcome_var,treatment_var,coefficient,std_error,p_value,ci_lower,ci_upper,n_obs,r_squared,se_type,cluster_var,run_success,run_error
+113812-V1,113812-V1_run_052,infer/homoskedastic,baseline__specA_5pct,G1,pvlifeincd05,m_s16,330.35898429314767,23.737138901821577,0.0,283.8176175971061,376.90035098918923,3266,0.3500149173107827,iid,,1,
+113812-V1,113812-V1_run_053,infer/HC1,baseline__specA_5pct,G1,pvlifeincd05,m_s16,330.35898429314767,31.793790936472618,0.0,268.02095405488245,392.6970145314129,3266,0.3500149173107827,HC1,,1,

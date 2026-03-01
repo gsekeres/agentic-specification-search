@@ -1,0 +1,151 @@
+{
+  "paper_id": "116167-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "berl ~ signal + signalfree + controls + i.sll2001 | district [w=pop81]",
+        "selection_story": "Quasi-random variation in Mediaset TV signal availability driven by geographic/topographic factors (terrain, transmitter locations)",
+        "fe_structure": ["district"],
+        "cluster_vars": ["district"],
+        "weights": "pop81 (analytic/population weights)"
+      },
+      "claim_object": {
+        "outcome_concept": "Vote share for Forza Italia (berl) in 1994",
+        "treatment_concept": "Early exposure to Mediaset commercial TV signal (signal, continuous)",
+        "estimand_concept": "Causal effect of Mediaset TV exposure on voting for Berlusconi's Forza Italia",
+        "target_population": "Italian municipalities (trimmed top/bottom 2.5% of signal distribution)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-Col5",
+          "outcome_var": "berl",
+          "treatment_var": "signal",
+          "controls": ["signalfree", "area", "area2", "altitude", "altitude2", "ruggedness", "electorate", "lnincome", "highschool_college81"],
+          "n_controls": 9,
+          "fixed_effects": ["district", "sll2001"],
+          "vcov": "cluster(district)"
+        },
+        {
+          "label": "Table3-Col4",
+          "outcome_var": "berl",
+          "treatment_var": "signal",
+          "controls": ["signalfree", "area", "area2", "altitude", "altitude2", "ruggedness"],
+          "n_controls": 6,
+          "fixed_effects": ["district", "sll2001"],
+          "vcov": "cluster(district)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 9,
+        "linked_adjustment": false,
+        "notes": "signalfree is always included when signal is included (geographic confound control). Land controls and socioeconomic controls are the two main control blocks."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__no_controls",
+          "baseline__land_only",
+          "baseline__unweighted"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_signalfree",
+          "rc/controls/loo/drop_area",
+          "rc/controls/loo/drop_altitude",
+          "rc/controls/loo/drop_ruggedness",
+          "rc/controls/loo/drop_electorate",
+          "rc/controls/loo/drop_lnincome",
+          "rc/controls/loo/drop_highschool_college81",
+          "rc/controls/sets/none",
+          "rc/controls/sets/signal_only",
+          "rc/controls/sets/land_controls",
+          "rc/controls/sets/full_controls",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/land",
+          "rc/controls/progression/land_sll",
+          "rc/controls/progression/full",
+          "rc/controls/add/civic81",
+          "rc/fe/drop/sll2001",
+          "rc/fe/drop/district",
+          "rc/fe/add/province",
+          "rc/sample/restrict/no_provincial_capitals",
+          "rc/sample/restrict/pop_le_100k",
+          "rc/sample/restrict/pop_le_50k",
+          "rc/sample/restrict/pop_le_10k",
+          "rc/sample/outliers/trim_signal_5_95",
+          "rc/sample/outliers/trim_signal_10_90",
+          "rc/weights/unweighted",
+          "rc/weights/pop81",
+          "rc/form/treatment/capsignal",
+          "rc/data/matching/matched_neighbors_distsignal1",
+          "rc/data/matching/matched_neighbors_distsignal05",
+          "rc/data/matching/matched_neighbors_distsignal025",
+          "rc/sample/restrict/year_1994",
+          "rc/sample/restrict/year_1996",
+          "rc/sample/restrict/year_2001",
+          "rc/sample/restrict/year_2006",
+          "rc/sample/restrict/year_2008",
+          "rc/sample/restrict/year_2013",
+          "rc/controls/progression/signal_signalfree",
+          "rc/controls/progression/signal_signalfree_land_sll",
+          "rc/controls/add/dpop7181",
+          "rc/controls/add/actrate",
+          "rc/controls/add/emplrate",
+          "rc/controls/add/firmspop81",
+          "rc/controls/add/workers81",
+          "rc/sample/restrict/pop_le_5k",
+          "rc/sample/restrict/north_only",
+          "rc/sample/restrict/south_only",
+          "rc/sample/restrict/center_only"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/district",
+          "params": {"cluster_var": "district"},
+          "notes": "Cluster at district level, matching baseline Stata code"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/cluster/sll2001",
+            "params": {"cluster_var": "sll2001"},
+            "notes": "Cluster at local labor system level"
+          },
+          {
+            "spec_id": "infer/se/cluster/two_way_district_sll",
+            "params": {"cluster_var": ["district", "sll2001"]},
+            "notes": "Two-way clustering (district x sll)"
+          },
+          {
+            "spec_id": "infer/se/spatial/conley_10km",
+            "params": {"distance": 10},
+            "notes": "Conley spatial SEs at 10km (paper's Table A3 uses acreg)"
+          },
+          {
+            "spec_id": "infer/se/spatial/conley_30km",
+            "params": {"distance": 30},
+            "notes": "Conley spatial SEs at 30km"
+          },
+          {
+            "spec_id": "infer/se/spatial/conley_50km",
+            "params": {"distance": 50},
+            "notes": "Conley spatial SEs at 50km"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 116167,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

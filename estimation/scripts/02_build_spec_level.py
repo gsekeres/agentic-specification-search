@@ -403,14 +403,41 @@ def main():
     df['journal'] = df['journal'].fillna('').astype(str)
 
     # Fill missing journals from bib file (authoritative source) and normalize
-    bib_file_local = BASE_DIR / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
-    bib_file_external = BASE_DIR.parent / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
-    bib_file = bib_file_local if bib_file_local.exists() else bib_file_external
+    bib_file = BASE_DIR.parent / "overleaf" / "tex" / "v8_sections" / "replicated_papers.bib"
     bib_journal_map = _build_bib_journal_map(bib_file)
     journal_from_bib = df['paper_id'].map(bib_journal_map)
     # Use bib journal when available, fall back to existing
     mask = journal_from_bib.notna() & (journal_from_bib != '')
     df.loc[mask, 'journal'] = journal_from_bib[mask]
+    # For any remaining blanks, try AEA universe
+    aea_universe_path = BASE_DIR / "data" / "tracking" / "AEA_universe.jsonl"
+    if aea_universe_path.exists():
+        aea_journal_map = {}
+        with open(aea_universe_path) as f:
+            for line in f:
+                d = json.loads(line.strip())
+                pid = f"{d.get('icpsr_project_id', '')}-{d.get('icpsr_version', 'V1')}"
+                j = d.get('journal', '')
+                if j:
+                    aea_journal_map[pid] = j
+        still_missing = df['journal'].isna() | (df['journal'] == '')
+        journal_from_aea = df['paper_id'].map(aea_journal_map)
+        aea_mask = still_missing & journal_from_aea.notna() & (journal_from_aea != '')
+        df.loc[aea_mask, 'journal'] = journal_from_aea[aea_mask]
+        print(f"  Filled {aea_mask.sum()} journal entries from AEA universe")
+
+    # For any remaining blanks, try paper catalog (built by script 17)
+    catalog_path = BASE_DIR / "estimation" / "results" / "paper_catalog.json"
+    if catalog_path.exists():
+        with open(catalog_path) as f:
+            catalog = json.load(f)
+        cat_journal_map = {pid: info.get("journal", "") for pid, info in catalog.items() if info.get("journal")}
+        still_missing = df['journal'].isna() | (df['journal'] == '')
+        journal_from_cat = df['paper_id'].map(cat_journal_map)
+        cat_mask = still_missing & journal_from_cat.notna() & (journal_from_cat != '')
+        df.loc[cat_mask, 'journal'] = journal_from_cat[cat_mask]
+        print(f"  Filled {cat_mask.sum()} journal entries from paper catalog")
+
     # For any remaining blanks, try metadata
     still_missing = df['journal'].isna() | (df['journal'] == '')
     journal_from_meta = df['paper_id'].map(lambda x: metadata.get(x, {}).get('journal', ''))
@@ -418,10 +445,15 @@ def main():
     # Normalize all journal names to canonical short forms
     JOURNAL_NORMALIZE = {
         "American Economic Review": "AER",
+        "The American Economic Review": "AER",
         "American Economic Journal: Applied Economics": "AEJ: Applied",
+        "AEJ: Applied Economics": "AEJ: Applied",
         "American Economic Journal: Economic Policy": "AEJ: Policy",
+        "AEJ: Economic Policy": "AEJ: Policy",
         "American Economic Journal: Macroeconomics": "AEJ: Macro",
+        "AEJ: Macroeconomics": "AEJ: Macro",
         "American Economic Journal: Microeconomics": "AEJ: Micro",
+        "AEJ: Microeconomics": "AEJ: Micro",
         "American Economic Review: Insights": "AER: Insights",
         "AERI": "AER: Insights",
         "AEA Papers and Proceedings": "AER: P&P",

@@ -1,0 +1,20 @@
+{
+  "paper_id": "112451-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of post_brc on cites",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "112451-V1_run_001",
+        "112451-V1_run_002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table4_col2"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

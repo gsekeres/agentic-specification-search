@@ -1,0 +1,18 @@
+{
+  "paper_id": "130141-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of TFP_news_shock on GDP_irf_h8",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "130141-V1_run_001"
+      ],
+      "baseline_spec_ids": [
+        "baseline"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

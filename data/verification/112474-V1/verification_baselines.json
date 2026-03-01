@@ -1,0 +1,38 @@
+{
+  "paper_id": "112474-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Electrification (instrumented by land gradient) increases female employment rate in rural KwaZulu-Natal communities",
+      "expected_sign": "positive",
+      "baseline_spec_run_ids": [
+        "112474-V1_run001",
+        "112474-V1_run002",
+        "112474-V1_run003"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table4_col8_female",
+        "baseline__table4_col7_female"
+      ],
+      "notes": "IV (2SLS) with mean_grad_new as instrument for T. Three baseline variants: Table 4 Col 9 (full controls + services + district FE), Col 8 (full controls, no services, with FE), Col 7 (full controls, no services, no FE). All on largeareas==1 sample (N=1816). Clustered at placecode0."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Electrification (instrumented by land gradient) has no significant effect on male employment rate in rural KwaZulu-Natal communities",
+      "expected_sign": "null",
+      "baseline_spec_run_ids": [
+        "112474-V1_run043",
+        "112474-V1_run044",
+        "112474-V1_run045"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table4_col8_male",
+        "baseline__table4_col7_male"
+      ],
+      "notes": "Same IV design as G1 but with d_prop_emp_m as outcome. Mirrors G1 structure exactly. Paper reports a null result for male employment."
+    }
+  ],
+  "global_notes": "Surface-driven run. Both baseline groups match the pre-run surface exactly. No adjustments needed. Run numbers 41-42 are skipped (likely reserved for inference variants or diagnostics computed separately). The rc/estimation/ols_reduced_form specs use a nonstandard namespace and report treatment_var=T while the focal coefficient is actually on mean_grad_new (the instrument); this is a metadata labeling issue, not a validity problem. The CVJ for reduced-form rows contains an 'estimation' top-level key instead of the standard 'extra' key, a minor schema deviation."
+}

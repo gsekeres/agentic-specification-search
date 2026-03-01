@@ -1,0 +1,38 @@
+{
+  "paper_id": "116531-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of offered on borrowed",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "116531-V1__spec_001",
+        "116531-V1__spec_002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__accepted_amount"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of package on crdattm_total",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "116531-V1__spec_064",
+        "116531-V1__spec_065",
+        "116531-V1__spec_066",
+        "116531-V1__spec_067"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__credits_total",
+        "baseline__gpa_total",
+        "baseline__anydeg"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

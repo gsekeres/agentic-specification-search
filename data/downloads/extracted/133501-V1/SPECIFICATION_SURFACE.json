@@ -1,0 +1,112 @@
+{
+  "paper_id": "133501-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "agemo_mda",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": "MSE-optimal (CCT)",
+        "kernel": "triangular",
+        "poly_order": 1,
+        "bias_correction": "rbc",
+        "covariates": ["firstmonth"],
+        "estimator_primary": "rdrobust",
+        "estimator_secondary": "ols_parametric",
+        "notes": "Running variable is age in months relative to minimum driving age. Unit of observation is age-in-months cell. Death rates per 100,000 person-years."
+      },
+      "claim_object": {
+        "outcome_concept": "Motor vehicle accident (MVA) mortality rate per 100,000",
+        "treatment_concept": "Reaching minimum legal driving age (MDA)",
+        "estimand_concept": "Discontinuous change in MVA mortality at MDA cutoff (sharp RD, LATE at cutoff)",
+        "target_population": "US teenagers near minimum legal driving age, 1983-2014"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table1-MVA-pooled",
+          "outcome_var": "cod_MVA",
+          "treatment_var": "post (agemo_mda >= 0)",
+          "controls": ["firstmonth"],
+          "n_controls": 1,
+          "bandwidth": "MSE-optimal (rdbwselect)",
+          "kernel": "triangular",
+          "poly_order": 1,
+          "vcov": "robust (HC)"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 1,
+        "linked_adjustment": false,
+        "notes": "RD with aggregated data (age-month cells). Only control is firstmonth indicator. Main variation is in bandwidth, polynomial order, and kernel -- not in controls."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__cod_any",
+          "baseline__cod_sa_poisoning"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/ccft",
+          "design/regression_discontinuity/bandwidth/half_baseline",
+          "design/regression_discontinuity/bandwidth/double_baseline",
+          "design/regression_discontinuity/bandwidth/msetwo",
+          "design/regression_discontinuity/bandwidth/cerrd",
+          "design/regression_discontinuity/bandwidth/certwo",
+          "design/regression_discontinuity/poly/local_linear",
+          "design/regression_discontinuity/poly/local_quadratic",
+          "design/regression_discontinuity/poly/local_cubic",
+          "design/regression_discontinuity/kernel/triangular",
+          "design/regression_discontinuity/kernel/uniform",
+          "design/regression_discontinuity/kernel/epanechnikov",
+          "design/regression_discontinuity/procedure/conventional",
+          "design/regression_discontinuity/procedure/robust_bias_corrected"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_firstmonth",
+          "rc/sample/subgroup/male",
+          "rc/sample/subgroup/female",
+          "rc/sample/restriction/mda_192_months",
+          "rc/sample/restriction/mda_not_192_months",
+          "rc/sample/restriction/early_period",
+          "rc/sample/restriction/late_period",
+          "rc/form/outcome/log1p",
+          "rc/data/outcome_alt/cod_any",
+          "rc/data/outcome_alt/cod_external",
+          "rc/data/outcome_alt/cod_sa_poisoning",
+          "rc/data/outcome_alt/cod_sa_drowning",
+          "rc/data/outcome_alt/cod_extother"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Robust SEs from rdrobust (bias-corrected robust inference). No clustering since units are age-month cells."
+        },
+        "variants": []
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 133501,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "notes": "Not applicable here -- running variable is age, which cannot be manipulated. But standard check."
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/functional_form/bin_sensitivity_plot",
+          "scope": "baseline_group"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "paper_id": "180741-V1",
+  "verified_at": "2026-02-24",
+  "verifier_notes": "All three baseline groups from SPECIFICATION_SURFACE.json are present in specification_results.csv. No baseline group reassignments were made. All 69 rows executed successfully (run_success=1). Two near-duplicate pairs flagged in G2: rc/sample/restrict_conflict_only == baseline__tablec1_col1 and rc/sample/restrict_noconflict_only == baseline__tablec1_col2 (identical estimates) -- these are structurally expected since the baselines are defined on those exact subsamples. All rows use canonical inference infer/se/hc/hc3.",
+  "global_notes": "No baseline group reassignments relative to the surface. G3 p-values appear as machine epsilon (e.g., 5.77e-15) rather than exact zero due to floating-point precision in statsmodels/pyfixest HC3 computation -- these are valid and indicate highly significant effects. Design-level specs (G1 diff_in_means, with_covariates) use N=5915 vs baseline col3 N=5908, reflecting a slightly different sample filter (design specs appear to use the unfiltered Choice sample while baselines use Highx10==0 & Highx100==0 restriction); this is a minor scope difference within the same claim object and does not invalidate core status. Inference variants (infer/se/hc/hc1, infer/se/hc/hc2) correctly appear only in inference_results.csv (15 rows: G1x2 variants x 3 baselines = 6, G2x2 variants x 3 baselines = 6, G3x1 variant x 3 baselines = 3).",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of advisor preference to see incentive first (choicebefore) on probability of recommending incentivized product (recommendincentive), in Choice experiment (ITT), baseline stakes only (Highx10==0 & Highx100==0)",
+      "outcome_concept": "Advisor recommends incentivized product (binary)",
+      "treatment_concept": "Preference for seeing incentive information first (choicebefore)",
+      "estimand_concept": "Average treatment effect (ITT), OLS-LPM",
+      "target_population": "Choice experiment participants, baseline stakes, CloudResearch/Prolific/MTurk",
+      "expected_sign": "positive",
+      "expected_sign_rationale": "Authors find choicebefore positive and significant in Table 3 Col 1 (getyourchoice==1 subsample), indicating advisors who prefer to see incentive first are more likely to recommend the incentivized product",
+      "baseline_specs": [
+        {
+          "label": "Table3-Col1",
+          "spec_run_id": "G1__baseline__table3_col1",
+          "spec_id": "baseline",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "choicebefore",
+          "n_obs": 4448,
+          "coefficient": 0.1955,
+          "p_value": "< 1e-30",
+          "sample_filter": "getyourchoice==1 (Highx10==0 & Highx100==0 implied)"
+        },
+        {
+          "label": "Table3-Col2",
+          "spec_run_id": "G1__baseline__table3_col2",
+          "spec_id": "baseline",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "choicebefore",
+          "n_obs": 1460,
+          "coefficient": 0.0030,
+          "p_value": 0.917,
+          "sample_filter": "getyourchoice==0 (Highx10==0 & Highx100==0 implied)"
+        },
+        {
+          "label": "Table3-Col3",
+          "spec_run_id": "G1__baseline__table3_col3",
+          "spec_id": "baseline",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "choicebefore",
+          "n_obs": 5908,
+          "coefficient": 0.1815,
+          "p_value": "< 1e-30",
+          "sample_filter": "Highx10==0 & Highx100==0 (pooled)"
+        }
+      ],
+      "n_rows_in_group": 29,
+      "surface_match": "exact",
+      "notes": "All 3 surface baseline specs executed and match expected outcome/treatment variables. RC specs fully cover the surface plan (all 24 rc_spec_ids executed). Two design alternatives (diff_in_means, with_covariates) use N=5915 vs baseline col3 N=5908 -- minor scope difference consistent with slightly different sample filter in design specs."
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of random assignment to see incentive first (seeincentivefirst) on probability of recommending incentivized product (recommendincentive), in NoChoice experiment (ITT), attentive participants only",
+      "outcome_concept": "Advisor recommends incentivized product (binary)",
+      "treatment_concept": "Randomly assigned to see incentive information first (seeincentivefirst)",
+      "estimand_concept": "Average treatment effect (ITT), OLS-LPM",
+      "target_population": "NoChoice experiment participants, missingalpha==0, MTurk/CloudResearch",
+      "expected_sign": "positive",
+      "expected_sign_rationale": "Authors find seeincentivefirst positive and significant in conflict subsample (Table C.1 Col 1), consistent with anchoring hypothesis",
+      "baseline_specs": [
+        {
+          "label": "TableC1-Col1",
+          "spec_run_id": "G2__baseline__tablec1_col1",
+          "spec_id": "baseline",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "seeincentivefirst",
+          "n_obs": 213,
+          "coefficient": 0.1416,
+          "p_value": 0.024,
+          "sample_filter": "missingalpha==0 & conflict==1"
+        },
+        {
+          "label": "TableC1-Col2",
+          "spec_run_id": "G2__baseline__tablec1_col2",
+          "spec_id": "baseline",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "seeincentivefirst",
+          "n_obs": 86,
+          "coefficient": 0.0303,
+          "p_value": 0.709,
+          "sample_filter": "missingalpha==0 & conflict==0"
+        },
+        {
+          "label": "TableC1-Col3",
+          "spec_run_id": "G2__baseline__tablec1_col3",
+          "spec_id": "baseline",
+          "outcome_var": "recommendincentive",
+          "treatment_var": "seeincentivefirst",
+          "n_obs": 299,
+          "coefficient": 0.1485,
+          "p_value": 0.017,
+          "sample_filter": "missingalpha==0 (full NoChoice sample)"
+        }
+      ],
+      "n_rows_in_group": 17,
+      "surface_match": "exact",
+      "notes": "All 3 surface baseline specs executed. Two near-duplicate pairs: G2__rc__sample__restrict_conflict_only produces identical estimates to G2__baseline__tablec1_col1 (both use conflict==1 filter); G2__rc__sample__restrict_noconflict_only produces identical estimates to G2__baseline__tablec1_col2 (both use conflict==0 filter). This is structurally expected -- the baselines are defined on those exact subsamples, and the RC sample restrictions replicate them. Not flagged as invalid since the surface explicitly planned both. All 12 rc_spec_ids executed."
+    },
+    {
+      "baseline_group_id": "G3",
+      "claim_summary": "Effect of costly-choice treatment conditions (seeincentivecostly) on advisor preference to see incentive first (choicebefore), in Choice experiment, baseline stakes only",
+      "outcome_concept": "Advisor prefers to see incentive information first (binary)",
+      "treatment_concept": "Assigned to costly-choice condition (seeincentivecostly)",
+      "estimand_concept": "Average treatment effect of costly-choice on preference for information order, OLS-LPM",
+      "target_population": "Choice experiment participants, Highx10==0 & Highx100==0, CloudResearch/Prolific/MTurk",
+      "expected_sign": "negative",
+      "expected_sign_rationale": "Authors find seeincentivecostly negative and significant (Table 2), indicating costly-choice conditions reduce preference for seeing incentive first",
+      "baseline_specs": [
+        {
+          "label": "Table2-Col1",
+          "spec_run_id": "G3__baseline__table2_col1",
+          "spec_id": "baseline",
+          "outcome_var": "choicebefore",
+          "treatment_var": "seeincentivecostly",
+          "n_obs": 5908,
+          "coefficient": -0.1393,
+          "p_value": "5.77e-15",
+          "sample_filter": "Highx10==0 & Highx100==0 (full choice sample)"
+        },
+        {
+          "label": "Table2-Col2",
+          "spec_run_id": "G3__baseline__table2_col2",
+          "spec_id": "baseline",
+          "outcome_var": "choicebefore",
+          "treatment_var": "seeincentivecostly",
+          "n_obs": 5196,
+          "coefficient": -0.1395,
+          "p_value": "4.88e-15",
+          "sample_filter": "Highx10==0 & Highx100==0 & professionals==0"
+        },
+        {
+          "label": "Table2-Col3",
+          "spec_run_id": "G3__baseline__table2_col3",
+          "spec_id": "baseline",
+          "outcome_var": "choicebefore",
+          "treatment_var": "seeincentivecostly",
+          "n_obs": 5196,
+          "coefficient": -0.1397,
+          "p_value": "4.44e-15",
+          "sample_filter": "Highx10==0 & Highx100==0 (with selfishness interactions)"
+        }
+      ],
+      "n_rows_in_group": 23,
+      "surface_match": "exact",
+      "notes": "All 3 surface baseline specs executed. G3 p-values are machine epsilon (4-9e-15) rather than exact zero -- valid floating-point behavior for highly significant effects with HC3 SEs. Consistent sign and magnitude across all RC variants confirms robustness. All 18 rc_spec_ids executed. Design alternatives use N=5915 (slightly larger than baseline col1 N=5908) consistent with G1 design spec pattern."
+    }
+  ]
+}

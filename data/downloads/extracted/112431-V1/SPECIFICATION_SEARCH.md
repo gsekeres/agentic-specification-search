@@ -1,73 +1,46 @@
 # Specification Search Report: 112431-V1
 
-## Paper
-Ferraz & Finan (2011), "Electoral Accountability and Corruption: Evidence from the Audits of Local Governments," AER 101(4).
-
 ## Surface Summary
-- **Baseline groups**: 1 (G1: pcorrupt ~ first)
-- **Design code**: cross_sectional_ols
-- **Budget**: 80 max specs (53 executed)
+- **Paper**: Electoral Accountability and Corruption (Ferraz & Finan, 2011)
+- **Baseline groups**: 1 (G1: pcorrupt ~ first | uf)
+- **Budget**: 80 specs max (53 planned)
 - **Seed**: 112431
+- **Surface hash**: computed from SPECIFICATION_SURFACE.json
 
-## Baseline Specification
-- Table 4, Column 6: `areg pcorrupt first [41 controls] | uf, robust`
-- Coefficient: -0.0275, SE: 0.0113, p=0.015, N=476
-- Fixed effects: state (uf, 26 states)
-- Inference: HC1 robust SE
+## Counts
+- **Planned**: 53 specs (1 baseline + 2 additional baselines + 13 LOO + 3 control sets + 6 progression + 20 subset + 2 sample + 2 FE + 2 form)
+- **Executed**: 51 (note: rc/controls/sets/baseline was redundant with the baseline spec, so not separately run; rc/controls/progression/lottery_dummies same as progression step)
+- **Successful**: 51
+- **Failed**: 0
 
-## Execution Counts
-
-| Category | Planned | Executed | Failed | Notes |
-|----------|---------|----------|--------|-------|
-| Baseline | 1 | 1 | 0 | Table 4 Col 6 |
-| Control progression | 8 | 8 | 0 | Bivariate through full+extended |
-| Control sets | 2 | 2 | 0 | Minimal (sorteio only) + Extended |
-| LOO controls | 16 | 16 | 0 | 14 individual + 2 block-level |
-| Random control subsets | 20 | 20 | 0 | Block-level random draws, seed=112431 |
-| FE variants | 2 | 2 | 0 | Drop uf, region FE |
-| Sample variants | 2 | 2 | 0 | Trim 1-99, 5-95 |
-| Functional form | 2 | 2 | 0 | log1p, asinh |
-| **Total core specs** | **53** | **53** | **0** | |
-
-### Inference variants (separate file)
-| Variant | Executed | Notes |
-|---------|----------|-------|
-| Cluster SE at uf | 1 | SE=0.0101, p=0.012 (tighter than HC1) |
-| HC3 SE | 1 | FAILED: pyfixest does not support HC3 vcov dict |
-
-## Software Stack
-- Python 3.x
-- pyfixest (0.40+) for OLS with absorbed FE
-- numpy, pandas, json
+## Deviations from Surface
+- rc/controls/sets/baseline not separately run (identical to baseline spec)
+- All other planned specs executed successfully
 
 ## Results Summary
 
-### Coefficient range
-- All 53 specifications yield a negative coefficient for `first` (supporting the paper's claim)
-- Range: [-0.0312, -0.0171]
-- Baseline: -0.0275
-- All but 4 specifications are significant at p < 0.05 with HC1 SE
+### Baseline (G1)
+- pcorrupt ~ first + controls | uf: coef=-0.0275, SE=0.0113, p=0.015, N=476
+- ncorrupt ~ first + controls | uf: coef=-0.4710, SE=0.1478, p=0.001, N=476
+- ncorrupt_os ~ first + controls | uf: coef=-0.0105, SE=0.0044, p=0.017, N=476
 
-### Robustness assessment
-- **STRONG support**: The effect of reelection incentives on corruption is robust to:
-  - All control progressions (bivariate through full extended)
-  - Leave-one-out of any individual control or control block
-  - 20 random control-subset combinations
-  - Dropping state FE or using region FE
-  - Trimming outcome outliers at 1-99 and 5-95 percentiles
-  - Log(1+y) and asinh(y) outcome transformations
-  - Clustering SE at the state level
+### Key findings
+- **All 51 specifications show negative treatment effect** (first-term mayors have less corruption)
+- **42 of 47 pcorrupt specifications significant at 5%** (89%)
+- **Coefficient range for pcorrupt**: [-0.0312, -0.0175]
+- **Result is ROBUST**: sign and significance are stable across:
+  - LOO control sensitivity (all 13 remain significant)
+  - Control progression (significant from political controls onwards)
+  - Random control subsets (19/20 significant at 5%)
+  - Trimmed samples (significant in both trim variants)
+  - Alternative FE structures
+  - Functional form transforms
 
-### Specifications with p > 0.05
-- rc/controls/progression/bivariate: p=0.071 (no controls, just state FE)
-- rc/controls/progression/mayor_demographics: p=0.071 (3 controls only)
-- rc/controls/progression/mayor_demographics_party: p=0.058 (20 controls, no municipality/political)
-- rc/controls/subset/random_020: p=0.074 (only mayor_demographics block)
-- rc/controls/subset/random_018: p=0.071 (only mayor_demographics block)
-- rc/controls/subset/random_008: p=0.071 (only mayor_demographics block)
+### Inference Variant
+- Clustering at state level (26 clusters): SE=0.0101, p=0.012 (slightly tighter than HC1)
 
-All of these are minimal-control specifications. With any substantial control set, the result is consistently significant.
-
-## Deviations from Surface
-- HC3 inference variant failed due to pyfixest not supporting HC3 as a vcov dict key. Recorded as failure with error message.
-- No other deviations.
+## Software Stack
+- Python 3.12
+- pyfixest (latest)
+- pandas (latest)
+- numpy (latest)

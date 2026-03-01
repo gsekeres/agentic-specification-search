@@ -1,0 +1,54 @@
+paper_id,spec_run_id,spec_id,spec_tree_path,outcome_var,treatment_var,baseline_group_id,closest_baseline_spec_run_id,is_baseline,is_valid,is_core_test,category,why,confidence
+112517-V1,112517-V1_run_001,baseline,designs/difference_in_differences.md#baseline,DIFFNOX,dumreclaim,G1,112517-V1_run_001,1,1,1,core_method,Baseline spec from paper table,0.95
+112517-V1,112517-V1_run_002,baseline__table4_log,designs/difference_in_differences.md#baseline,lnDIFFNOX,dumreclaim,G1,112517-V1_run_002,1,1,1,core_method,Baseline spec from paper table,0.95
+112517-V1,112517-V1_run_003,baseline__table4_demog,designs/difference_in_differences.md#baseline,DIFFNOX,dumreclaim,G1,112517-V1_run_003,1,1,1,core_method,Baseline spec from paper table,0.95
+112517-V1,112517-V1_run_004,baseline__table4_log_demog,designs/difference_in_differences.md#baseline,lnDIFFNOX,dumreclaim,G1,112517-V1_run_004,1,1,1,core_method,Baseline spec from paper table,0.95
+112517-V1,112517-V1_run_005,design/difference_in_differences/estimator/twfe,designs/difference_in_differences.md#estimators,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Design estimator variation (TWFE vs nnmatch),0.9
+112517-V1,112517-V1_run_006,rc/controls/add_demographics,modules/robustness/controls.md#add-control,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_controls,Demographics matching variable variation,0.9
+112517-V1,112517-V1_run_007,rc/controls/add_demographics_plus_quartile,modules/robustness/controls.md#add-control,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_controls,Demographics matching variable variation,0.9
+112517-V1,112517-V1_run_008,rc/sample/subset/drop_electric_utilities,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_009,rc/sample/subset/nonattainment_only,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_010,rc/sample/subset/nosc_controls,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_011,rc/sample/subset/southern_cal_only,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_012,rc/sample/subset/northern_cal_controls,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_013,rc/sample/subset/severe_nonattainment,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_014,rc/sample/subset/single_facility_firms,modules/robustness/sample.md#drop-subset,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Sample restriction variation,0.9
+112517-V1,112517-V1_run_015,rc/sample/period/pre_pd2_post_pd3,modules/robustness/sample.md#time-window,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Pre/post period definition variation,0.9
+112517-V1,112517-V1_run_016,rc/sample/period/pre_pd1_post_pd3,modules/robustness/sample.md#time-window,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Pre/post period definition variation,0.9
+112517-V1,112517-V1_run_017,rc/form/outcome/log_emissions,modules/robustness/functional_form.md#log-transform,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Log vs levels outcome transformation,0.9
+112517-V1,112517-V1_run_018,rc/form/matching/n_matches_1,modules/robustness/functional_form.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Number of matches variation,0.9
+112517-V1,112517-V1_run_019,rc/form/matching/n_matches_2,modules/robustness/functional_form.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Number of matches variation,0.9
+112517-V1,112517-V1_run_020,rc/form/matching/n_matches_4,modules/robustness/functional_form.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Number of matches variation,0.9
+112517-V1,112517-V1_run_021,rc/form/matching/n_matches_5,modules/robustness/functional_form.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Number of matches variation,0.9
+112517-V1,112517-V1_run_022,rc/joint/log_drop_elec,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_023,rc/joint/log_pd2_pd3,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_024,rc/joint/levels_drop_elec,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_025,rc/joint/levels_pd2_pd3,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_026,rc/joint/log_southern_cal,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_027,rc/joint/log_severe,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_028,rc/joint/log_single_fac,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_029,rc/joint/log_nosc,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_030,rc/joint/areg_levels_nonatt,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_031,rc/joint/areg_log_nonatt,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_032,rc/joint/levels_southern_cal,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_033,rc/joint/levels_severe,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_034,rc/joint/levels_single_fac,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_035,rc/joint/levels_nosc,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_036,rc/joint/log_demog_drop_elec,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_controls,Joint: demographics matching + sample/form,0.85
+112517-V1,112517-V1_run_037,rc/joint/log_demog_pd2_pd3,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_controls,Joint: demographics matching + sample/form,0.85
+112517-V1,112517-V1_run_038,rc/joint/levels_demog_drop_elec,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_controls,Joint: demographics matching + sample/form,0.85
+112517-V1,112517-V1_run_039,rc/joint/levels_demog_pd2_pd3,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_controls,Joint: demographics matching + sample/form,0.85
+112517-V1,112517-V1_run_040,rc/joint/log_m1_nonatt,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Joint: n_matches variation + sample/form,0.85
+112517-V1,112517-V1_run_041,rc/joint/log_m5_nonatt,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Joint: n_matches variation + sample/form,0.85
+112517-V1,112517-V1_run_042,rc/joint/levels_m1_nonatt,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Joint: n_matches variation + sample/form,0.85
+112517-V1,112517-V1_run_043,rc/joint/levels_m5_nonatt,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_funcform,Joint: n_matches variation + sample/form,0.85
+112517-V1,112517-V1_run_044,rc/joint/areg_levels_drop_elec,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_045,rc/joint/areg_log_drop_elec,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_046,rc/joint/log_pd1_pd3,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_047,rc/joint/levels_pd1_pd3,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_sample,Joint: sample/form/period combination,0.85
+112517-V1,112517-V1_run_048,rc/joint/small_firms_levels,modules/robustness/joint.md,DIFFNOX,dumreclaim_small,G1,112517-V1_run_001,0,1,0,noncore_alt_treatment,Treatment changed to dumreclaim_small (small firms),0.9
+112517-V1,112517-V1_run_049,rc/joint/small_firms_log,modules/robustness/joint.md,lnDIFFNOX,dumreclaim_small,G1,112517-V1_run_001,0,1,0,noncore_alt_treatment,Treatment changed to dumreclaim_small (small firms),0.9
+112517-V1,112517-V1_run_050,rc/joint/areg_log_pd2_pd3,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_051,rc/joint/areg_levels_pd2_pd3,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_052,rc/joint/areg_log_southern_cal,modules/robustness/joint.md,lnDIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85
+112517-V1,112517-V1_run_053,rc/joint/areg_levels_southern_cal,modules/robustness/joint.md,DIFFNOX,dumreclaim,G1,112517-V1_run_001,0,1,1,core_method,Joint: OLS+FE (areg) estimator with sample/form,0.85

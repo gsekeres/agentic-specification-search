@@ -1,0 +1,111 @@
+{
+  "paper_id": "113779-V1",
+  "created_at": "2026-02-25",
+  "notes": "Currie and Walker (2011) 'Traffic Congestion and Infant Health: Evidence from E-ZPass'. DiD comparing birth outcomes near vs far from toll plazas, before vs after E-ZPass adoption. Birth certificate data from NJ and PA. First stage shows E-ZPass reduced local air pollution (NO2, SO2). Data is compressed .dta.gz files.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "difference_in_differences",
+      "design_audit": {
+        "estimator": "ols_did",
+        "panel_unit": "mother_or_area",
+        "panel_time": "birth_date",
+        "treatment_var": "postXnearEZpass",
+        "post_var": "postEZpass",
+        "near_var": "nearEZpass",
+        "fe_structure": ["mother_fe_or_zip", "year", "month"],
+        "cluster_vars": ["date"],
+        "near_distance_km": 2.0,
+        "trim_window_years": 3,
+        "control_distance_km": 10,
+        "notes": "Classic 2x2 DiD: near (within 2km of toll plaza) x post (after E-ZPass adoption) interaction. Multiple specifications with different near_distance thresholds (1.5km, 2km), control distances (5km, 10km), and FE structures. Mother FE used in preferred specification. Clustering at date level."
+      },
+      "claim_object": {
+        "outcome_concept": "Infant health outcomes (birth weight, prematurity, low birth weight, gestation)",
+        "treatment_concept": "E-ZPass adoption reducing traffic congestion near toll plazas",
+        "estimand_concept": "ATT of E-ZPass-induced pollution reduction on birth outcomes for mothers near toll plazas",
+        "target_population": "Births to mothers living near toll plazas in NJ and PA"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-BirthWeight-MomFE",
+          "outcome_var": "birth_weight",
+          "treatment_var": "postXnearEZpass",
+          "controls": ["postEZpass", "nearEZpass", "maternal_demographics"],
+          "n_controls": 8,
+          "notes": "Baseline DiD with mother FE, near_distance=2km, trimWindow=3yr, controlDist=10km"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 2,
+        "controls_count_max": 15,
+        "linked_adjustment": false,
+        "notes": "Paper varies control sets across specifications: minimal (post, near, interaction only), with maternal demographics, with additional smoking/race indicators. Mother FE absorbs time-invariant maternal characteristics."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_prematurity",
+          "baseline__table3_lbw",
+          "baseline__table3_gestation"
+        ],
+        "design_spec_ids": [
+          "design/difference_in_differences/near_distance/1_5km",
+          "design/difference_in_differences/near_distance/2km",
+          "design/difference_in_differences/control_distance/5km",
+          "design/difference_in_differences/control_distance/10km",
+          "design/difference_in_differences/fe/no_mother_fe",
+          "design/difference_in_differences/fe/mother_fe",
+          "design/difference_in_differences/fe/zip_fe",
+          "design/difference_in_differences/trim_window/3yr",
+          "design/difference_in_differences/trim_window/5yr"
+        ],
+        "rc_spec_ids": [
+          "rc/controls/loo/*",
+          "rc/controls/sets/minimal",
+          "rc/controls/sets/demographics",
+          "rc/controls/sets/full_with_smoking",
+          "rc/controls/add/blacks_indicator",
+          "rc/controls/add/smoking_indicator",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/restriction/blacks_only",
+          "rc/sample/restriction/smokers_excluded",
+          "rc/sample/geo/zip_level",
+          "rc/sample/geo/county_level",
+          "rc/fe/alt/zip_plus_yearmonth",
+          "rc/fe/alt/mother_plus_yearmonth",
+          "rc/fe/cluster/zip",
+          "rc/fe/cluster/toll_plaza",
+          "rc/form/outcome/log_birth_weight",
+          "rc/preprocess/outcome/winsor_1_99"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/date",
+          "params": {"cluster_var": "dateNum"},
+          "notes": "Clustered at date level as in the paper's baseline specifications."
+        },
+        "variants": [
+          {"spec_id": "infer/se/cluster/zip", "params": {"cluster_var": "zip"}, "notes": "Cluster at zip code level."},
+          {"spec_id": "infer/se/cluster/toll_plaza", "params": {"cluster_var": "toll_plaza"}, "notes": "Cluster at toll plaza level (treatment group)."},
+          {"spec_id": "infer/se/hc/hc1", "params": {}, "notes": "Robust SE without clustering."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 20,
+        "notes": "Moderate budget reflecting the paper's own extensive robustness analysis across distance thresholds, FE structures, control sets, and subsamples."
+      },
+      "sampling": {
+        "seed": 113779,
+        "controls_subset_sampler": "stratified_size",
+        "notes": "Control pool includes maternal demographics, smoking, race indicators. Stratified sampling for subset combinations."
+      },
+      "diagnostics_plan": [
+        {"diag_spec_id": "diag/difference_in_differences/pretrends/event_study", "scope": "baseline_group", "notes": "Event study version checking for pre-trends in birth outcomes."},
+        {"diag_spec_id": "diag/difference_in_differences/placebo/no_ezpass_plazas", "scope": "baseline_group", "notes": "Placebo test using toll plazas that did not adopt E-ZPass (Table 2)."}
+      ]
+    }
+  ]
+}

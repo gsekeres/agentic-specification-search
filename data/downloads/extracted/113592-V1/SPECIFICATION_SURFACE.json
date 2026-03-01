@@ -1,0 +1,125 @@
+{
+  "paper_id": "113592-V1",
+  "created_at": "2026-02-25",
+  "notes": "Sharp regression discontinuity design studying the effect of need-based grants (BCS - bourses sur criteres sociaux) on college enrollment in France. Uses income-based eligibility cutoffs with local linear regression (LLR) and optimal bandwidth selection (Imbens-Kalyanaraman style via rdob). Multiple cutoffs for different grant levels: L0/No grant (0_X), L1/L0 (1_0), and L6-to-L1 (6_1). Running variable is inc_distance (negative of income distance from cutoff, so higher = poorer = more likely eligible). The main results are in Tables 3-5.",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "regression_discontinuity",
+      "design_audit": {
+        "running_var": "inc_distance",
+        "cutoff": 0,
+        "rd_type": "sharp",
+        "bandwidth": "optimal (IK-style, via rdob_m.ado)",
+        "kernel": "triangular (rdob default)",
+        "poly_order": 1,
+        "bias_correction": "none (conventional LLR)",
+        "estimator": "local_linear_regression",
+        "cluster_vars": [],
+        "se_type": "conventional",
+        "notes": "The running variable is -inc_distance (income distance negated so that crossing 0 from below means becoming eligible). rd_llr calls rdob_m which implements local linear regression with optimal bandwidth. Three cutoff samples: 0_X (no grant vs any grant, bw=0.20), 1_0 (L1 vs L0, bw=0.16), 6_1 (higher levels, bw=0.06). Each uses pooled 2008-2010 data."
+      },
+      "claim_object": {
+        "outcome_concept": "College enrollment (col_enrol)",
+        "treatment_concept": "Eligibility for a need-based grant (BCS) at the income cutoff",
+        "estimand_concept": "Sharp RD estimate: discontinuity in college enrollment probability at the grant eligibility income threshold",
+        "target_population": "French higher education applicants near the BCS income eligibility cutoff, 2008-2010"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table3-LLR-0_X",
+          "outcome_var": "col_enrol",
+          "treatment_var": "grant_eligible_0X",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "rd_llr col_enrol with sample_0_X (no grant vs any grant cutoff). Optimal bandwidth ~0.20. Local linear regression."
+        },
+        {
+          "label": "Table3-LLR-1_0",
+          "outcome_var": "col_enrol",
+          "treatment_var": "grant_eligible_10",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "rd_llr col_enrol with sample_1_0 (L1 vs L0 cutoff). Optimal bandwidth ~0.16."
+        },
+        {
+          "label": "Table3-LLR-6_1",
+          "outcome_var": "col_enrol",
+          "treatment_var": "grant_eligible_61",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "rd_llr col_enrol with sample_6_1 (higher grant levels). Optimal bandwidth ~0.06."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "The baseline RD specifications use no covariates (pure local linear regression). The RD is non-parametric (no control variables). Covariates could be added as precision controls but the paper does not do this."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__table3_1_0",
+          "baseline__table3_6_1"
+        ],
+        "design_spec_ids": [
+          "design/regression_discontinuity/bandwidth/half_baseline",
+          "design/regression_discontinuity/bandwidth/double_baseline",
+          "design/regression_discontinuity/bandwidth/fixed_full_bw",
+          "design/regression_discontinuity/poly/local_quadratic",
+          "design/regression_discontinuity/kernel/uniform",
+          "design/regression_discontinuity/kernel/epanechnikov",
+          "design/regression_discontinuity/procedure/robust_bias_corrected"
+        ],
+        "rc_spec_ids": [
+          "rc/sample/restriction/year_2008",
+          "rc/sample/restriction/year_2009",
+          "rc/sample/restriction/year_2010",
+          "rc/sample/restriction/females_only",
+          "rc/sample/restriction/males_only",
+          "rc/sample/restriction/level_1_students",
+          "rc/sample/restriction/level_2_students",
+          "rc/sample/restriction/level_3_students",
+          "rc/sample/restriction/bac_quartile_1",
+          "rc/sample/restriction/bac_quartile_2",
+          "rc/sample/restriction/bac_quartile_3",
+          "rc/sample/restriction/bac_quartile_4",
+          "rc/sample/donut/exclude_near_cutoff"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/conventional/llr",
+          "params": {},
+          "notes": "Conventional LLR standard errors from rdob (Imbens-Kalyanaraman). No clustering."
+        },
+        "variants": [
+          {"spec_id": "infer/se/robust_bias_corrected/ccft", "params": {}, "notes": "Robust bias-corrected inference (Calonico-Cattaneo-Farrell-Titiunik)."},
+          {"spec_id": "infer/se/cluster/nearest_integer_income", "params": {}, "notes": "Cluster at discrete income levels (if income has mass points)."}
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 70,
+        "max_specs_controls_subset": 0,
+        "notes": "No controls to vary. Main axes: 3 cutoffs x (bandwidth, polynomial, kernel, procedure variants) + 13 sample restrictions + donut. Budget covers: 3 baselines + ~7 design variants x 3 cutoffs + ~13 sample restrictions."
+      },
+      "sampling": {
+        "seed": 113592,
+        "controls_subset_sampler": "none",
+        "notes": "Full enumeration feasible. The specification space is naturally defined by cutoff x design choices x sample restrictions."
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/regression_discontinuity/manipulation/mccrary_density",
+          "scope": "baseline_group",
+          "notes": "Test for manipulation of income at the grant eligibility cutoff (Table 2 in the paper tests balance)."
+        },
+        {
+          "diag_spec_id": "diag/regression_discontinuity/balance/covariate_continuity",
+          "scope": "baseline_group",
+          "notes": "Test whether observable characteristics are continuous at the cutoff."
+        }
+      ]
+    }
+  ]
+}

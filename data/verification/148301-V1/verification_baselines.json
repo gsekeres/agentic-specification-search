@@ -1,0 +1,44 @@
+{
+  "paper_id": "148301-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of lfma on ep",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "148301-V1__run_001",
+        "148301-V1__run_002",
+        "148301-V1__run_003",
+        "148301-V1__run_004",
+        "148301-V1__run_005",
+        "148301-V1__run_006"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__table2_col3",
+        "baseline__table2_col5_nohaven",
+        "baseline__table2_col6_haven",
+        "baseline__table2_col7_ols_nohaven",
+        "baseline__table2_col8_ols_haven"
+      ],
+      "notes": "Mechanical verification"
+    },
+    {
+      "baseline_group_id": "G2",
+      "claim_summary": "Effect of ep_haven on lprofit",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "148301-V1__run_052",
+        "148301-V1__run_053",
+        "148301-V1__run_054"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__gpml_profit",
+        "baseline__cube_root_profit"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

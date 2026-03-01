@@ -1,0 +1,112 @@
+{
+  "paper_id": "114295-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "structural_var",
+      "design_audit": {
+        "estimator": "bayesian_favar",
+        "model_formula": "VAR(2) on [F_activity, F_commodity, F_inflation, F_canada(1:8)] with Cholesky identification",
+        "selection_story": "Factor-augmented structural VAR identifies global demand, commodity supply, and global inflation shocks using block-diagonal factor structure; Canadian macro responses estimated via factor loadings. Recursive (Cholesky) ordering places global activity first, commodity prices second, global inflation third.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Canadian real GDP impulse response to global commodity price shock",
+        "treatment_concept": "Structural global commodity price shock (1 std dev increase in commodity factor)",
+        "estimand_concept": "Cumulative impulse response of Canadian real GDP to a 1 std dev positive commodity price shock at horizon h=4 quarters",
+        "target_population": "Canadian macroeconomic variables, quarterly 1975Q1-2010Q4"
+      },
+      "baseline_specs": [
+        {
+          "label": "Recursive-FAVAR-baseline",
+          "outcome_var": "GDP-CAN_irf_h4",
+          "treatment_var": "commodity_shock",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": [],
+          "vcov": "bayesian_posterior",
+          "var_lags": 2,
+          "n_canadian_factors": 8,
+          "identification": "recursive_cholesky",
+          "factor_ordering": ["F_activity", "F_commodity", "F_inflation"],
+          "irf_horizon": 4
+        }
+      ],
+      "constraints": {
+        "var_lags_range": [1, 4],
+        "canadian_factors_range": [4, 12],
+        "linked_adjustment": false,
+        "notes": "Paper uses 2 VAR lags and 8 Canadian factors as baseline. Key specification choices: number of lags, number of factors, identification scheme (recursive vs sign restrictions), global factor ordering, sample period, IRF horizon for measurement."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/lags/p1",
+          "rc/lags/p3",
+          "rc/lags/p4",
+          "rc/factors/K4",
+          "rc/factors/K6",
+          "rc/factors/K10",
+          "rc/factors/K12",
+          "rc/ordering/act_inf_com",
+          "rc/ordering/com_act_inf",
+          "rc/ordering/com_inf_act",
+          "rc/ordering/inf_act_com",
+          "rc/ordering/inf_com_act",
+          "rc/sample/drop_pre1980",
+          "rc/sample/drop_post2007",
+          "rc/sample/drop_pre1980_post2007",
+          "rc/horizon/h1",
+          "rc/horizon/h2",
+          "rc/horizon/h4",
+          "rc/horizon/h8",
+          "rc/horizon/h12",
+          "rc/horizon/h16",
+          "rc/horizon/h20",
+          "rc/outcome/PC-CAN",
+          "rc/outcome/BINV-CAN",
+          "rc/outcome/EXP-CAN",
+          "rc/outcome/IMP-CAN",
+          "rc/outcome/NEER-CAN",
+          "rc/outcome/REER-CAN",
+          "rc/outcome/CPI-CAN",
+          "rc/outcome/TB-CAN",
+          "rc/combined/lags_factors_grid"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/bayesian/posterior_16_84",
+          "params": {"quantiles": [0.16, 0.50, 0.84]},
+          "notes": "Bayesian posterior credible intervals from Gibbs sampler (16th/84th percentiles as in paper)"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/bayesian/posterior_5_95",
+            "params": {"quantiles": [0.05, 0.50, 0.95]},
+            "notes": "Wider 90% credible intervals"
+          },
+          {
+            "spec_id": "infer/frequentist/bootstrap",
+            "params": {},
+            "notes": "Frequentist OLS VAR with bootstrap confidence intervals"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 120,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 114295,
+        "controls_subset_sampler": "none"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

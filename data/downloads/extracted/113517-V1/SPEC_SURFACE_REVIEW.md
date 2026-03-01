@@ -2,46 +2,67 @@
 
 ## Summary
 
-The surface defines 4 baseline groups (G1-G4), one per dependent variable (log nominal earnings, log real earnings, log nominal hourly wage, log real hourly wage). Each group's baseline is the "all flows" specification (column 6 of the corresponding Table 1 panel).
+The surface defines a single baseline group (G1) for the predictive association between EE reallocation rates and wage growth. This is appropriate: the paper has one main claim object (Table 1) varied across 4 outcome measures and 9 second-stage specifications.
 
-## Review Checklist
+## Baseline Group Assessment
 
-### A) Baseline Groups
-- **4 groups are appropriate**: The paper explicitly presents all 4 depvar panels as separate results, and the patterns differ materially (xee is large positive for nominal earnings, small positive for nominal hourly wages, and negative for real hourly wages). Each depvar is a distinct outcome concept.
-- **No missing groups**: The paper has only Table 1 as its main results table. No other main claims.
-- **No spurious groups**: All 4 are headline results.
+**G1: Predictive power of EE for wage growth** -- APPROVED
 
-### B) Design Selection
-- **cross_sectional_ols is correct**: The second-stage regressions are OLS with absorbed market FE. The two-stage procedure is a data-construction step (generating predicted values), not a distinct design family.
-- **No design variants needed**: The only implementation is OLS with absorbed FE.
+- The claim object is well-defined: predictive association (not causal) between market-level EE rates and wage growth.
+- Four baseline spec IDs (one per outcome variable) is correct since the paper treats all four outcomes as equally important headline results.
+- The `design_code` of `cross_sectional_ols` is appropriate despite the two-stage structure, because the second stage is OLS with absorbed FE and the identification is cross-sectional association (not IV or panel identification).
 
-### C) RC Axes
-- **Control progressions**: Correctly capture the paper's revealed surface (Table 1 columns 1-7 vary which flow controls are included).
-- **Leave-one-out**: Appropriate for the 5 flow controls + time trend in the baseline.
-- **Job stayers subsample**: Correctly identified as a sample RC (spec 8), not a population change, since the paper frames it as a robustness check within the same Table 1.
-- **EE interaction**: Correctly identified as a functional-form RC (spec 9 adds xee*eetrans_i).
-- **Unweighted**: High-value RC since the paper uses survey weights throughout.
-- **Drop market FE**: Useful to test whether within-market vs pooled results differ.
+## Design Audit
 
-### D) Controls Multiverse Policy
-- **Linked adjustment is correct**: First-stage controls are invariant; only second-stage flow controls vary.
-- **Control count envelope (1-7)**: Correct -- ranges from EE only (1 RHS var + time trend) to all flows (6 flow vars + time trend).
-- **No control-subset sampling needed**: The flow control space is small enough for full enumeration (only ~15 combinations of 6 flow variables).
+The `design_audit` block adequately captures the two-stage structure, FE specifications, and weighting scheme. No changes needed.
 
-### E) Inference Plan
-- **Canonical = classical SE**: The paper's second-stage areg commands do not specify robust or cluster. This is correct for replication. However, since variation is at market*time level but observations are individual-level, classical SE likely understate uncertainty.
-- **HC1 and cluster(mkt) variants are well-chosen**: These address the likely standard-error understatement.
+## RC Axes Review
 
-### F) Budgets + Sampling
-- **~17 specs per group x 4 = ~68 total**: Feasible and exceeds the 50-spec target.
-- **Full enumeration is feasible**: No combinatorial explosion.
+### Controls (flow inclusion patterns)
+- The progression and LOO specs correctly map to the paper's revealed Table 1 specifications.
+- LOO drops are well-chosen: each of the 5 non-EE flow variables can be individually dropped from the full specification.
+- `rc/controls/sets/none` maps to a bivariate (xee + ym_num only) specification, which is Spec 1 in the paper.
+- `rc/controls/sets/minimal` maps to the minimal EE + UE specification (Spec 4).
 
-### G) Missing High-Leverage Axes
-- **First-stage control variation**: Not included, correctly -- the paper does not vary first-stage controls and doing so would be very expensive with ~6M observations. This is documented in the constraints.
-- **Time period splits**: Could add early/late half splits as RC, but the paper does not reveal these. Not critical.
+### Sample restrictions
+- Job stayers (paper-revealed Spec 8) is correctly included.
+- Time splits (early/late half) and outlier trims are standard stress tests.
+
+### Functional form
+- The 4 outcome variable variants are correctly typed as `rc/form/outcome/*` since the paper treats them as alternative measurement of the same concept (wage/earnings growth).
+- The EE interaction term (Spec 9) is correctly included as `rc/form/model/xee_interaction`.
+
+### Weights
+- Unweighted alternative is a standard stress test.
+
+### Fixed effects
+- Dropping year_month trend and replacing with year_month FE are both reasonable.
+
+## Constraints and Linkage
+
+- `linked_adjustment: true` is correct. The first-stage regressions produce the predicted flow variables; they should not be independently varied when changing second-stage controls.
+- `controls_count_min: 1, controls_count_max: 6` correctly reflects the range from the paper's simplest (EE only + ym_num) to most complete (all 6 flows + ym_num) specifications.
+
+## Inference Plan
+
+- The canonical inference (iid) matches the paper's reported areg default standard errors.
+- HC1 and market-level clustering are sensible variants for the inference_results.csv output.
+
+## Budget Assessment
+
+- Target of 80 specs is generous but feasible given the data size (~10M rows) and model simplicity (OLS with absorbed FE).
+- Full enumeration is indeed feasible: the control dimension has at most 2^5 = 32 subsets of the 5 non-EE flow variables, and there are 4 outcome variables.
+- Actual expected count: ~55-65 specs (4 baselines + ~12-15 control variations x 1 outcome + 4 outcome variations + 5 sample variations + a few FE/weight/interaction specs).
+
+## What's Missing (minor)
+
+1. No exploration of alternative market definitions (e.g., dropping education from the group variables). This is appropriate as it would change the first-stage estimation and is not revealed by the paper.
+2. No alternative first-stage control sets. This is appropriate per the linkage constraint.
 
 ## Changes Made
-- No changes to the surface JSON. The surface is well-specified.
 
-## Assessment
-**Approved to run.** The surface faithfully captures the paper's revealed specification search space. The 4 baseline groups correctly correspond to the 4 panels of Table 1. The core universe covers all 9 columns of Table 1 plus additional RC axes (LOO, unweighted, drop FE). The inference plan appropriately flags that classical SE are the canonical choice but adds robust alternatives.
+No changes to the surface JSON. The surface is well-constructed.
+
+## Verdict
+
+**APPROVED TO RUN.** The surface is conceptually coherent, statistically principled, faithful to the revealed search space, and auditable. The budget is adequate for the target of 50+ specifications.

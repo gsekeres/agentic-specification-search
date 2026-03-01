@@ -1,0 +1,7 @@
+paper_id,spec_run_id,diagnostic_run_id,relationship
+125321-V1,125321-V1_run_001,125321-V1_diag_001,shared_invariant_check
+125321-V1,125321-V1_run_001,125321-V1_diag_002,shared_invariant_check
+125321-V1,125321-V1_run_001,125321-V1_diag_003,shared_invariant_check
+125321-V1,125321-V1_run_001,125321-V1_diag_004,shared_invariant_check
+125321-V1,125321-V1_run_001,125321-V1_diag_005,shared_invariant_check
+125321-V1,125321-V1_run_001,125321-V1_diag_006,shared_invariant_check

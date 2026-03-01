@@ -1,0 +1,118 @@
+{
+  "paper_id": "147561-V3",
+  "created_at": "2026-02-25",
+  "reviewed_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "randomized_experiment",
+      "design_audit": {
+        "estimator": "ols_with_fe",
+        "randomization_unit": "neighborhood (polygon, a7)",
+        "stratification": "stratum",
+        "estimand": "ITT",
+        "treatment_arms": ["central (tmt==1)", "local (tmt==2)", "central_with_info (tmt==3)", "central_x_local (tmt==4)", "control (tmt==5)"],
+        "focal_comparison": "local (tmt==2) vs central (tmt==1)",
+        "fe_structure": ["stratum", "house", "time_FE_tdm_2mo_CvL"],
+        "cluster_vars": ["a7"],
+        "n_clusters": "~356 polygons in tmt 1+2 (exact count determined at runtime)"
+      },
+      "claim_object": {
+        "outcome_concept": "Property tax compliance (binary: whether property tax was paid)",
+        "treatment_concept": "Local chief-led tax collection vs central/state-led collection",
+        "estimand_concept": "ITT effect of assigning neighborhood to local (chief) collection on individual property tax compliance probability",
+        "target_population": "Property owners in Kananga, Kasai Central, D.R. Congo (excluding villas, pilot polygons, and properties with missing rate information)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table4-Compliance-Col4",
+          "outcome_var": "taxes_paid",
+          "treatment_var": "t_l",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["stratum", "house", "time_FE_tdm_2mo_CvL"],
+          "sample_restriction": "inlist(tmt,1,2)",
+          "vcov": "cluster_a7"
+        },
+        {
+          "label": "Table4-Revenues-Col4",
+          "outcome_var": "taxes_paid_amt",
+          "treatment_var": "t_l",
+          "controls": [],
+          "n_controls": 0,
+          "fixed_effects": ["stratum", "house", "time_FE_tdm_2mo_CvL"],
+          "sample_restriction": "inlist(tmt,1,2)",
+          "vcov": "cluster_a7",
+          "notes": "Continuous revenue amount; intensive margin complement to compliance binary"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "functional_form_scope": "rc/form/outcome/log1p_amt and rc/form/outcome/asinh_amt apply ONLY to baseline__revenues (taxes_paid_amt). They are not applicable to the binary taxes_paid outcome.",
+        "treatment_definition_scope": "rc/data/treatment/include_cli_arm, include_cxl_arm, and pooled_local_vs_central change the sample restriction (broadening beyond inlist(tmt,1,2)) and/or redefine the treatment indicator. These are estimand-preserving only if the ITT interpretation is extended to the broader comparison set.",
+        "notes": "RCT design: no covariates in the baseline specification. The paper progressively adds FE (stratum, month, house type) but no individual-level controls in Table 4. The only individual controls appear in Table 5 mechanism regressions. Control-count envelope is [0,0] for this group."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__revenues"
+        ],
+        "design_spec_ids": [
+          "design/randomized_experiment/estimator/diff_in_means"
+        ],
+        "rc_spec_ids": [
+          "rc/fe/sets/stratum_only",
+          "rc/fe/sets/stratum_month",
+          "rc/fe/sets/stratum_month_house",
+          "rc/fe/drop/house",
+          "rc/fe/drop/time_FE_tdm_2mo_CvL",
+          "rc/sample/restriction/exclude_exempt",
+          "rc/sample/restriction/polygon_means",
+          "rc/sample/outliers/trim_y_amt_1_99",
+          "rc/form/outcome/log1p_amt",
+          "rc/form/outcome/asinh_amt",
+          "rc/data/treatment/include_cli_arm",
+          "rc/data/treatment/include_cxl_arm",
+          "rc/data/treatment/pooled_local_vs_central"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/cluster/a7",
+          "params": {"cluster_var": "a7"},
+          "notes": "Cluster SEs at neighborhood (polygon) level, matching the randomization unit. Used throughout Table 4 except Col 3 (polygon means)."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc1",
+            "params": {},
+            "notes": "Robust SEs without clustering. Used only for polygon-mean specification (Table 4 Col 3) where N = number of polygons."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 60,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 147561,
+        "controls_subset_sampler": "not_applicable"
+      },
+      "diagnostics_plan": [
+        {
+          "diag_spec_id": "diag/randomized_experiment/balance/covariates",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check",
+          "notes": "Table 3 balance test across treatment arms (regression of baseline/midline covariates on treatment dummies with stratum FE and clustering at a7)"
+        },
+        {
+          "diag_spec_id": "diag/randomized_experiment/attrition/attrition_diff",
+          "scope": "baseline_group",
+          "linkage": "shared_invariant_check",
+          "notes": "Table 3 attrition analysis (baseline-to-endline attrition and midline attrition differential by arm)"
+        }
+      ]
+    }
+  ]
+}

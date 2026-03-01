@@ -1,0 +1,20 @@
+{
+  "paper_id": "114833-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of AvMPG on phi",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "114833-V1_run_001",
+        "114833-V1_run_002"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__with_Q3_interaction"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

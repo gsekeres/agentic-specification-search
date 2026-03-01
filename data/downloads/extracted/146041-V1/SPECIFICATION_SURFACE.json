@@ -1,0 +1,121 @@
+{
+  "paper_id": "146041-V1",
+  "created_at": "2026-02-25",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_ols",
+      "design_audit": {
+        "estimator": "ols",
+        "model_formula": "log(skill_quality_measure) ~ log(income_per_worker)",
+        "selection_story": "Cross-country development accounting; no causal identification. Correlation between skill quality and income across countries.",
+        "weights": "none",
+        "unit_of_observation": "country"
+      },
+      "claim_object": {
+        "outcome_concept": "Log relative skill quality (AQ) — ratio of quality-adjusted to quantity-only human capital measures, relative to US",
+        "treatment_concept": "Log income per worker (l_y)",
+        "estimand_concept": "Cross-country elasticity of aggregate skill quality with respect to income per worker",
+        "target_population": "Countries with micro-data on wage premia and labor supply (~11 countries in baseline, ~90 in broad Barro-Lee sample)"
+      },
+      "baseline_specs": [
+        {
+          "label": "Table2-Row1-Col3",
+          "outcome_var": "l_irAQ53_dum_skti_hrs_secall",
+          "treatment_var": "l_y",
+          "controls": [],
+          "n_controls": 0,
+          "notes": "Bivariate cross-country regression of log quality-adjusted skill ratio (baseline AQ, sigma=1.5) on log income per worker. Table 2 Row 1 Column 3 (AQ baseline)."
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 0,
+        "linked_adjustment": false,
+        "notes": "All Table 2 and Table 3 regressions are bivariate (no controls). Variation comes from different measures of the outcome (AQ construction) and sample."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [
+          "baseline__aq_sigma_high",
+          "baseline__aq_sigma_low",
+          "baseline__wage_ratio",
+          "baseline__quantity_ratio",
+          "baseline__pooled_countries",
+          "baseline__pooled_bilateral"
+        ],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/sample/subgroup/us_immigrants_only",
+          "rc/sample/subgroup/pooled_countries",
+          "rc/sample/subgroup/pooled_bilateral_controls",
+          "rc/sample/subgroup/micro_sample_only",
+          "rc/sample/subgroup/self_employment",
+          "rc/sample/subgroup/agriculture",
+          "rc/sample/subgroup/manufacturing",
+          "rc/sample/subgroup/lowskill_services",
+          "rc/sample/subgroup/highskill_services",
+          "rc/sample/restriction/10plus_years",
+          "rc/sample/restriction/good_english",
+          "rc/sample/restriction/no_downgrading",
+          "rc/sample/restriction/no_mismatch",
+          "rc/sample/restriction/sorting_sectors",
+          "rc/sample/restriction/sorting_regions",
+          "rc/sample/outliers/trim_y_5_95",
+          "rc/sample/outliers/trim_y_1_99",
+          "rc/form/outcome/aq_sigma_1p3",
+          "rc/form/outcome/aq_sigma_2p0",
+          "rc/form/outcome/aq_sigma_4p0",
+          "rc/form/outcome/aq_no_hours",
+          "rc/form/outcome/aq_bodies_not_hours",
+          "rc/form/outcome/aq_all_working_age",
+          "rc/form/outcome/aq_mincerian_common",
+          "rc/form/outcome/aq_exp_gender_controls",
+          "rc/form/outcome/aq_self_employed",
+          "rc/form/outcome/wage_ratio_5_3",
+          "rc/form/outcome/quantity_ratio_H5L3",
+          "rc/form/outcome/aq_threshold_sc",
+          "rc/form/outcome/aq_threshold_tc",
+          "rc/form/outcome/aq_barro_lee",
+          "rc/data_construction/skill_threshold/upper_secondary",
+          "rc/data_construction/skill_threshold/some_college",
+          "rc/data_construction/skill_threshold/tertiary_only",
+          "rc/data_construction/wage_measure/baseline_dummies",
+          "rc/data_construction/wage_measure/exp_gender_adjusted",
+          "rc/data_construction/labor_supply/hours",
+          "rc/data_construction/labor_supply/bodies",
+          "rc/data_construction/labor_supply/population",
+          "rc/form/treatment/log_gdp_ppp",
+          "rc/form/treatment/log_gdp_pwt",
+          "rc/controls/add/continent_dummies",
+          "rc/sample/subgroup/selection_adjusted",
+          "rc/sample/subgroup/excl_outlier_countries",
+          "rc/sample/subgroup/broad_barrolee_sample"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs (HC1). Note: Table 2 do-file runs plain 'reg' without 'robust' option, so default OLS SEs are used there. HC1 is the appropriate standard for our pipeline."
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 SEs as a small-sample correction (N is small, ~11-90 countries)."
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 0
+      },
+      "sampling": {
+        "seed": 146041,
+        "controls_subset_sampler": "none",
+        "notes": "No control-subset sampling needed. The universe is defined by combinatorial choices over outcome construction (AQ variants), sample restrictions, and sigma values. Full enumeration is feasible."
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}

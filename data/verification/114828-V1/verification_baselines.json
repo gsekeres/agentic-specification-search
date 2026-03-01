@@ -1,0 +1,26 @@
+{
+  "paper_id": "114828-V1",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "claim_summary": "Effect of in_pale (RD at distance=0) on prefer_market",
+      "expected_sign": null,
+      "baseline_spec_run_ids": [
+        "114828-V1_run_001",
+        "114828-V1_run_002",
+        "114828-V1_run_003",
+        "114828-V1_run_004",
+        "114828-V1_run_009"
+      ],
+      "baseline_spec_ids": [
+        "baseline",
+        "baseline__prefer_democracy",
+        "baseline__selfemp",
+        "baseline__trust_d",
+        "baseline__parametric"
+      ],
+      "notes": "Mechanical verification"
+    }
+  ],
+  "global_notes": "Mechanical verification (batch_verify.py). Classification based on spec_id namespace rules."
+}

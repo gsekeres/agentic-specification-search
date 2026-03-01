@@ -1,0 +1,126 @@
+{
+  "paper_id": "116164-V1",
+  "created_at": "2026-02-26",
+  "baseline_groups": [
+    {
+      "baseline_group_id": "G1",
+      "design_code": "cross_sectional_probit",
+      "design_audit": {
+        "estimator": "probit",
+        "model_formula": "ltci ~ female + single4 + no_kids + age4 + age_sq + i.wealth4_quartile, probit marginal effects",
+        "selection_story": "Cross-sectional probit of long-term care insurance (LTCI) ownership on demographic and economic controls for single elderly individuals aged 65+; Appendix Table 1 column 3 of the paper. Identification relies on cross-sectional variation in demographics and wealth. The paper uses these reduced-form regressions to validate the structural model's predictions about LTCI demand patterns.",
+        "fe_structure": [],
+        "cluster_vars": []
+      },
+      "claim_object": {
+        "outcome_concept": "Long-term care insurance ownership (binary: 1 if individual owns private LTCI policy covering nursing home and home care)",
+        "treatment_concept": "Female indicator (primary covariate of interest in cross-sectional probit; gender differences in LTCI ownership are a key empirical pattern)",
+        "estimand_concept": "Marginal effect of female gender on probability of owning LTCI, controlling for marital status, children, age, and wealth",
+        "target_population": "Single individuals aged 65+ from the Health and Retirement Study (HRS), waves 4-9 (1998-2008), with non-missing LTCI status"
+      },
+      "baseline_specs": [
+        {
+          "label": "AppTable1-LTCI-probit",
+          "outcome_var": "ltci",
+          "treatment_var": "female",
+          "controls": [
+            "single4",
+            "no_kids",
+            "age4",
+            "age_sq",
+            "wealth4_quartile_2",
+            "wealth4_quartile_3",
+            "wealth4_quartile_4"
+          ],
+          "n_controls": 7,
+          "fixed_effects": [],
+          "vcov": "HC1"
+        }
+      ],
+      "constraints": {
+        "controls_count_min": 0,
+        "controls_count_max": 12,
+        "linked_adjustment": false,
+        "notes": "Appendix Table 1 reports probit marginal effects for LTCI ownership, home care, and nursing home stay. Controls include demographics (female, single, no kids), age polynomial (age, age-squared), and economic status (wealth quartile dummies, income quartile dummies). The paper also reports LTC utilization regressions (home care, nursing home) with additional ADL controls for a subsample with 2+ ADLs."
+      },
+      "core_universe": {
+        "baseline_spec_ids": [],
+        "design_spec_ids": [],
+        "rc_spec_ids": [
+          "rc/controls/loo/drop_single4",
+          "rc/controls/loo/drop_no_kids",
+          "rc/controls/loo/drop_age4",
+          "rc/controls/loo/drop_age_sq",
+          "rc/controls/loo/drop_wealth4_quartile_2",
+          "rc/controls/loo/drop_wealth4_quartile_3",
+          "rc/controls/loo/drop_wealth4_quartile_4",
+          "rc/controls/sets/none",
+          "rc/controls/sets/demographics_only",
+          "rc/controls/sets/age_only",
+          "rc/controls/sets/wealth_only",
+          "rc/controls/sets/full_with_income",
+          "rc/controls/progression/bivariate",
+          "rc/controls/progression/plus_age",
+          "rc/controls/progression/plus_age_single",
+          "rc/controls/progression/plus_age_single_kids",
+          "rc/controls/progression/plus_age_single_kids_wealth",
+          "rc/controls/progression/full_with_income",
+          "rc/controls/subset/random_001",
+          "rc/controls/subset/random_002",
+          "rc/controls/subset/random_003",
+          "rc/controls/subset/random_004",
+          "rc/controls/subset/random_005",
+          "rc/controls/subset/random_006",
+          "rc/controls/subset/random_007",
+          "rc/controls/subset/random_008",
+          "rc/controls/subset/random_009",
+          "rc/controls/subset/random_010",
+          "rc/sample/subgroup/age_65_74",
+          "rc/sample/subgroup/age_75_84",
+          "rc/sample/subgroup/age_85_plus",
+          "rc/sample/subgroup/male_only",
+          "rc/sample/subgroup/female_only",
+          "rc/sample/subgroup/with_kids",
+          "rc/sample/subgroup/no_kids",
+          "rc/sample/subgroup/wealth_above_median",
+          "rc/sample/subgroup/wealth_below_median",
+          "rc/form/estimator/lpm",
+          "rc/form/estimator/logit",
+          "rc/form/outcome/r4homcar",
+          "rc/form/outcome/nh_since_last_iw4",
+          "rc/form/treatment/single4",
+          "rc/form/treatment/no_kids",
+          "rc/form/treatment/age4"
+        ]
+      },
+      "inference_plan": {
+        "canonical": {
+          "spec_id": "infer/se/hc/hc1",
+          "params": {},
+          "notes": "Heteroskedasticity-robust SEs (HC1); cross-sectional HRS data"
+        },
+        "variants": [
+          {
+            "spec_id": "infer/se/hc/hc3",
+            "params": {},
+            "notes": "HC3 robust SEs (small-sample corrected)"
+          },
+          {
+            "spec_id": "infer/se/ols",
+            "params": {},
+            "notes": "Classical SEs (homoskedasticity assumed)"
+          }
+        ]
+      },
+      "budgets": {
+        "max_specs_core_total": 80,
+        "max_specs_controls_subset": 10
+      },
+      "sampling": {
+        "seed": 116164,
+        "controls_subset_sampler": "stratified_size"
+      },
+      "diagnostics_plan": []
+    }
+  ]
+}
