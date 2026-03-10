@@ -1,294 +1,206 @@
 # Agentic Specification Search
 
-Replication package for "Editorial Screening when Science is Cheap" (Fishman & Sekeres, 2026). This repository implements an automated specification search framework that applies AI agents to run large-scale robustness analyses on empirical economics papers, then estimates mixture, dependence, and counterfactual screening models from the resulting specification-level data.
+Replication package for **"Editorial Screening when Science is Cheap"** (Fishman & Sekeres, 2026).
 
-## Overview
+**Abstract:** We build a constrained, auditable agentic workflow that constructs an ex ante specification surface for each paper and then executes the robustness universe it admits, and we apply it to 103 empirical studies published in AEA journals. Comparing our automated runtime to a conservative human benchmark, we estimate a roughly 170-fold decline in the marginal cost of running observational specifications. We study the resulting shift in behavior as a commitment equilibrium of a screening game, where journals commit *ex ante* to acceptance rules and researchers sequentially search over dependent specifications, stop strategically, and selectively disclose evidence. The induced true- and false-positive acceptance rates trace out a purity--throughput frontier. We prove a universal information-theoretic bound on this frontier, governed by the total likelihood-ratio information a researcher can accumulate before optimally stopping. We verify that the current *de facto* practice in observational research, requiring a set of robustness checks, is an optimal mechanism; but we prove that screening collapses as testing becomes cheap unless the required number of robustness checks scales at least linearly in the inverse cost of each test. We then document, using audited ex ante specification surfaces and the robustness universes they induce, that observational social science has indeed entered a cheap-testing regime. The theory implies that to maintain conventional purity at fixed throughput, the number of qualifying robustness checks must grow at least proportionally with the cost decline; under our empirical calibration the implied disclosure requirement is on the order of 7,000 checks. This raises a serious issue for observational work going forward, and we argue for the need to develop methods to interpret sets of many specifications simultaneously, as opposed to current interpretative practice, which focuses on a handful of main specifications and a small set of robustness checks.
 
-1. **Typed specification tree** defines designs + orthogonal modules (RC, inference, diagnostics, sensitivity, exploration)
-2. **Specification surface (per paper)** defines the executable universe (constraints, budgets, sampling) *before* any models run
-3. **Runner agents** execute the approved surface and write structured outputs
-4. **Verification agents** audit baseline groups + core eligibility and flag invalid/drifted rows
-5. **Estimation pipeline** fits mixture models, estimates within-paper dependence, and computes counterfactual disclosure requirements
+## How the pipeline works
 
-The current sample covers **99 papers** from AEA journals (AER, AEJ-Applied, AEJ-Policy, AEJ-Macro, AEJ-Micro, AER: Insights, AEA P&P), yielding ~7,500 specifications (~4,900 verified-core).
+```
+ Download         Classify        Build surface       Verify           Execute            Audit
+ replication  -->  design     -->  (pre-run         -->  surface    -->  approved       -->  outputs
+ package           family          commitment)          (pre-run)       surface              (post-run)
+                                                                         |
+                                                                         v
+                                                               specification_results.csv
+                                                               inference_results.csv
+                                                                         |
+                                                                         v
+                                                               Estimation pipeline
+                                                               (mixture, dependence,
+                                                                counterfactual screening)
+```
 
-## Project Structure
+The key empirical object is the **specification surface**: a per-paper, ex ante commitment that fixes the admissible universe of estimand-preserving variants before any models run. It reconstructs only the analytical forks a paper reveals (controls varied, samples restricted, functional forms changed) and constrains execution to that universe. This is the empirical counterpart of the commitment object in the screening theory.
+
+### Agent pipeline (per paper)
+
+Each paper passes through a six-stage agentic workflow (see `prompts/`):
+
+| Stage | Agent prompt | Input | Output |
+|-------|-------------|-------|--------|
+| 1. Replicate (optional) | `01_replicator.md` | Replication package | Baseline reproduction |
+| 2. Classify | `02_paper_classifier.md` | Paper + code | Design family |
+| 3. Build surface | `03_spec_surface_builder.md` | Design + data | `SPECIFICATION_SURFACE.json` |
+| 4. Verify surface | `04_spec_surface_verifier.md` | Surface | Edited surface + review |
+| 5. Execute | `05_spec_searcher.md` | Approved surface | `specification_results.csv` |
+| 6. Audit | `06_post_run_verifier.md` | Results | Verified core |
+
+### Estimation pipeline
+
+The estimation pipeline (`estimation/run_all.py`) aggregates per-paper outputs into structural estimates:
+
+| Stage | Scripts | What it does |
+|-------|---------|-------------|
+| Data construction | 00--03, 07--08 | Build `unified_results.csv`, claim-level and spec-level datasets, I4R comparisons |
+| Estimation | 04--06, 09 | Fit three-type folded-Gaussian mixture, estimate AR(1) dependence, compute counterfactual disclosure |
+| Figures | `make_figures.jl` | Generate all PDF figures |
+| Extensions | 10--19 | Bootstrap CIs, journal subgroups, Monte Carlo validation, variance decomposition, sensitivity |
+
+## Project structure
 
 ```
 agentic_specification_search/
-├── README.md
-├── unified_results.csv
-├── unified_inference_results.csv        # Inference-only rows (infer/*), if present
+├── specification_tree/           # Typed specification tree (the replication ontology)
+│   ├── designs/                  #   17 design families (DID, IV, RD, RCT, panel FE, ...)
+│   └── modules/                  #   Universal modules (robustness, inference, diagnostics, ...)
 │
-├── specification_tree/                 # Specification tree definitions
-│   ├── INDEX.md
-│   ├── designs/                        # Design/identification families (within-design implementations)
-│   └── modules/                        # Orthogonal modules (rc/*, infer/*, diag/*, sens/*, explore/*, post/*)
+├── prompts/                      # Agent prompts (stages 01-07)
 │
-├── prompts/                            # Agent prompts
-│   ├── 01_replicator.md                # (Optional) replicate author results + translate code
-│   ├── 02_paper_classifier.md          # Design-family classification (pre-surface)
-│   ├── 03_spec_surface_builder.md      # Build SPECIFICATION_SURFACE.json (pre-run)
-│   ├── 04_spec_surface_verifier.md     # Critique/edit surface (pre-run)
-│   ├── 05_spec_searcher.md             # Runner: execute approved surface (run stage)
-│   ├── 06_post_run_verifier.md         # Post-run audit and core classification
-│   └── 07_CLEANUP.md                   # Optional disk cleanup guidance
+├── scripts/                      # Infrastructure
+│   ├── download_packages.py      #   Authenticated openICPSR downloader
+│   ├── extract_packages.py       #   ZIP extraction
+│   ├── validate_agent_outputs.py #   Output validation
+│   ├── paper_replications/       #   Per-paper replication scripts
+│   └── paper_analyses/           #   Per-paper surface-driven runner scripts
 │
-├── scripts/                            # Infrastructure scripts
-│   ├── download_utils.py               # Shared constants/helpers for download pipeline
-│   ├── download_packages.py            # Authenticated openICPSR downloader (curl_cffi)
-│   ├── extract_packages.py             # ZIP extraction with cleanup
-│   ├── validate_agent_outputs.py       # Mechanical validation of agent outputs
-│   ├── normalize_agent_outputs.py      # Normalize outputs to current spec-tree schema
-│   ├── agent_output_utils.py           # Shared output helpers
-│   ├── paper_replications/             # Per-paper replication scripts (optional)
-│   │   └── {PAPER_ID}.py
-│   └── paper_analyses/                 # Per-paper surface-driven runner scripts
-│       └── {PAPER_ID}.py
-│
-├── estimation/                         # Estimation pipeline
-│   ├── run_all.py
-│   ├── scripts/
-│   │   ├── 00_build_unified_results.py
-│   │   ├── 00_summarize_verification.py
-│   │   ├── 01a_build_i4r_claim_map.py
-│   │   ├── 01b_build_i4r_oracle_claim_map.py
-│   │   ├── 01_build_claim_level.py
-│   │   ├── 02_build_spec_level.py
-│   │   ├── 03_extract_i4r_baseline.py
-│   │   ├── 04_fit_mixture.py
-│   │   ├── 05_estimate_dependence.py
-│   │   ├── 06_counterfactual.py
-│   │   ├── 07_i4r_discrepancies.py
-│   │   ├── 08_inference_audit.py
-│   │   ├── 09_write_overleaf_tables.py
-│   │   ├── 10_bootstrap_mixture_ci.py
-│   │   ├── 11_journal_subgroup.py
-│   │   ├── 12_posterior_assignment.py
-│   │   ├── 13_counterfactual_montecarlo.py
-│   │   ├── 14_effective_sample_size.py
-│   │   ├── 15_summary_statistics.py
-│   │   ├── 16_variance_decomposition.py
-│   │   ├── 17_build_paper_catalog.py
-│   │   ├── 18_mixture_comparison_table.py
-│   │   ├── 19_sensitivity_tables.py
-│   │   └── make_figures.jl
-│   ├── data/                           # Intermediate datasets
-│   └── figures/                        # Generated figures (PDF)
+├── estimation/                   # Estimation pipeline
+│   ├── run_all.py                #   Master runner (--data, --est, --figs, --extensions)
+│   ├── scripts/                  #   20 numbered scripts + Julia figure generator
+│   ├── data/                     #   Intermediate datasets
+│   └── figures/                  #   Generated figures (PDF)
 │
 ├── data/
-│   ├── cache/                          # HTTP response cache (datacite_responses.db)
-│   ├── metadata/
-│   ├── downloads/
-│   │   ├── raw_packages/               # Downloaded ZIP files (gitignored)
-│   │   └── extracted/                  # Unzipped replication packages
-│   │       └── {PAPER_ID}/             # Per-paper directory with data + agent outputs
-│   ├── tracking/
-│   │   ├── AEA_universe.jsonl          # Full AEA package universe (4,284 packages)
-│   │   ├── build_aea_universe.py       # Universe builder (DataCite + Crossref)
-│   │   ├── download_tracking.jsonl     # Per-download attempt log
-│   │   └── replication_tracking.jsonl  # Per-paper replication status
-│   └── verification/
-│       └── {PAPER_ID}/                 # Verification reports + baselines
+│   ├── downloads/extracted/      #   Per-paper directories with data + agent outputs
+│   ├── tracking/                 #   AEA universe (4,284 packages), download logs
+│   └── verification/             #   Post-run verification reports
 │
-├── i4r/                                # I4R replication data (104 papers, 41 on openICPSR)
-│   ├── paper_list.csv                  # Full I4R paper list
-│   ├── papers_with_replication_urls.csv # Papers with resolved openICPSR/Dataverse URLs
-│   └── Meta Database Public.xlsx       # Full I4R metadata
+├── i4r/                          # I4R validation sample (104 papers, 41 on openICPSR)
+├── non-empirical-figures/        # Theory figures
 │
-└── non-empirical-figures/              # Standalone theory figures
+├── unified_results.csv           # All specifications, all papers
+├── unified_inference_results.csv # Inference-only recomputations
+├── requirements.txt              # Python dependencies (unpinned)
+└── requirements-py310.lock       # Fully pinned Python 3.10 environment
 ```
 
-## Running the Pipeline
+## Specification tree
 
-### Python environment
+The specification tree is a typed, orthogonal decomposition of empirical variation. Every specification row has a typed `spec_id` that makes its statistical role mechanically recoverable:
 
-This repo requires **Python >= 3.10** (needed by `pyfixest`).
+| Namespace | Object type | Core-eligible | Stored in |
+|-----------|------------|---------------|-----------|
+| `baseline` | Paper's canonical estimate | Yes | `specification_results.csv` |
+| `design/*` | Within-design estimator variant | Yes | `specification_results.csv` |
+| `rc/*` | Robustness check (estimand-preserving) | Yes | `specification_results.csv` |
+| `infer/*` | Inference recomputation | No | `inference_results.csv` |
+| `diag/*` | Diagnostic / falsification | No | `diagnostics_results.csv` |
+| `sens/*` | Sensitivity / partial identification | No | `sensitivity_results.csv` |
+| `post/*` | Set-level transform (MHT, spec curve) | No | `postprocess_results.csv` |
+| `explore/*` | Concept / estimand change | No | `exploration_results.csv` |
 
-For a fully pinned environment (recommended for reproducing the included results):
+Design files (`specification_tree/designs/`) cover 17 identification families: difference-in-differences, event study, IV, RD, RCT, shift-share, synthetic control, panel FE, cross-sectional OLS, dynamic panel, discrete choice, local projection, structural VAR, structural calibration, bunching, duration/survival, and DSGE Bayesian estimation.
+
+See `specification_tree/INDEX.md` for the full index and `specification_tree/ARCHITECTURE.md` for the conceptual contract.
+
+## Reproducing the results
+
+### Requirements
+
+- **Python >= 3.10** (needed by `pyfixest`)
+- **Julia** with `PyPlot`, `DataFrames`, `CSV`, `JSON3`, `Distributions`, `KernelDensity` (for figures)
+
+### Setup
 
 ```bash
 python3.10 -m venv .venv
 source .venv/bin/activate
-python -m pip install -U pip
-python -m pip install -r requirements-py310.lock
+pip install -U pip
+
+# Fully pinned (recommended):
+pip install -r requirements-py310.lock
+
+# Or minimal:
+pip install -r requirements.txt
+pip install curl_cffi  # for openICPSR downloads
 ```
 
-For a minimal (unpinned) environment:
+### Run the full pipeline
 
 ```bash
-python -m pip install -r requirements.txt
-pip install curl_cffi   # needed for openICPSR downloads
+python estimation/run_all.py --all
+```
+
+Individual stages:
+
+```bash
+python estimation/run_all.py --data         # Data construction
+python estimation/run_all.py --est          # Mixture, dependence, counterfactual
+python estimation/run_all.py --figs         # Figures (requires Julia)
+python estimation/run_all.py --extensions   # Bootstrap CIs, subgroups, sensitivity
 ```
 
 ### Downloading replication packages
 
-Replication packages are hosted on openICPSR behind Cloudflare. The downloader uses `curl_cffi` to impersonate Chrome's TLS fingerprint, then authenticates via Keycloak SSO.
+Packages are hosted on openICPSR behind Cloudflare. The downloader uses `curl_cffi` with Chrome TLS impersonation and Keycloak SSO authentication.
 
 ```bash
-# Set credentials (or omit to be prompted interactively)
 export ICPSR_EMAIL="your@email.com"
 export ICPSR_PASS="your_password"
 
-# Test login
-python scripts/download_packages.py --login-only
-
-# Dry run — see what would download
-python scripts/download_packages.py --sample 10 --seed 42 --dry-run
-
-# Download specific packages
-python scripts/download_packages.py --project-ids 112431 113517
-
-# Download a random sample
-python scripts/download_packages.py --sample 10 --seed 42
-
-# Filter by journal/year
-python scripts/download_packages.py --journal "American Economic Review" --year-min 2015
-
-# Skip auto-extraction
-python scripts/download_packages.py --sample 5 --seed 42 --skip-extract
-
-# Extract manually
-python scripts/extract_packages.py
-python scripts/extract_packages.py --paper-id 112431-V1
+python scripts/download_packages.py --login-only              # test login
+python scripts/download_packages.py --project-ids 112431      # specific packages
+python scripts/download_packages.py --sample 10 --seed 42     # random sample
+python scripts/download_packages.py --journal "AER" --sample 20  # filtered sample
+python scripts/extract_packages.py                             # extract all
 ```
 
-Key options: `--delay` (seconds between downloads, default 5), `--batch-size` (stop after N successes), `--force` (re-download existing), `--max-retries` (default 3).
+### Adding a new paper
 
-Downloads are tracked in `data/tracking/download_tracking.jsonl`. Packages that already exist (by paper ID in tracking + on disk) are skipped automatically.
+1. `python scripts/download_packages.py --project-ids {PID}`
+2. Run agent stages 02 through 06 (see `prompts/`)
+3. `python scripts/validate_agent_outputs.py --paper-id {PAPER_ID}`
+4. `python estimation/run_all.py --all`
 
-### Universe management
-
-The AEA universe (4,284 packages linking openICPSR project IDs to AEA paper DOIs) is built from DataCite + Crossref:
-
-```bash
-python data/tracking/build_aea_universe.py              # use cached data
-python data/tracking/build_aea_universe.py --force-refresh  # re-fetch DataCite
-python data/tracking/build_aea_universe.py --stats-only     # print summary
-python data/tracking/build_aea_universe.py --incremental    # only new Crossref
-```
-
-### Full estimation pipeline
-
-```bash
-cd agentic_specification_search
-python estimation/run_all.py --all
-```
-
-This runs four stages in order:
-
-1. **Data construction** (`--data`): Scripts 00-03, 07-08 build `unified_results.csv`, `claim_level.csv`, `spec_level.csv`, and I4R comparison datasets from per-paper outputs in each paper's extracted directory.
-
-2. **Estimation** (`--est`): Scripts 04-06 (+ 09 when available).
-   - `04_fit_mixture.py` — fits folded/truncated normal mixture models (K=2,3,4) to the |t|-statistic distribution
-   - `05_estimate_dependence.py` — estimates AR(1) within-paper dependence parameter phi
-   - `06_counterfactual.py` — computes counterfactual disclosure requirements (m_new)
-   - `09_write_overleaf_tables.py` — generates LaTeX tables for the paper (requires data-stage outputs)
-
-3. **Figures** (`--figs`): `make_figures.jl` generates all PDF figures (requires Julia with PyPlot).
-
-4. **Extensions** (`--extensions`): Scripts 10-19 run bootstrap CIs, journal subgroup analysis, Monte Carlo validation, sensitivity tables, paper catalog, etc.
-
-### Individual stages
-
-```bash
-python estimation/run_all.py --data         # Data construction only
-python estimation/run_all.py --est          # Estimation only
-python estimation/run_all.py --figs         # Figures only
-python estimation/run_all.py --extensions   # Extension analyses only
-```
-
-### Adding new papers
-
-1. Download replication packages: `python scripts/download_packages.py --project-ids {PID}`
-2. (Optional) Replicate baseline results / translate code (see `prompts/01_replicator.md`)
-3. Classify designs (see `prompts/02_paper_classifier.md`)
-4. Build a surface (see `prompts/03_spec_surface_builder.md`)
-5. Pre-run audit/edit surface (see `prompts/04_spec_surface_verifier.md`)
-6. Run the approved surface (see `prompts/05_spec_searcher.md`)
-7. Post-run audit + core classification (see `prompts/06_post_run_verifier.md`)
-8. Validate outputs: `python scripts/validate_agent_outputs.py --paper-id {PAPER_ID}`
-9. Re-run the pipeline: `python estimation/run_all.py --all`
-
-## Specification Tree
-
-Design files live in `specification_tree/designs/` and enumerate **within-design** estimator implementations (`design/*`).
-
-Universal (cross-design) modules live in `specification_tree/modules/` and enumerate:
-
-- robustness checks (`rc/*`)
-- inference variants (`infer/*`) (recorded as inference outputs, not new estimates)
-- diagnostics (`diag/*`)
-- sensitivity analysis (`sens/*`)
-- post-processing (`post/*`)
-- exploration (`explore/*`)
-
-The paper-specific executable object is `SPECIFICATION_SURFACE.json` (see `specification_tree/SPECIFICATION_SURFACE.md`). The runner executes only `baseline`, `design/*`, and `rc/*` into `specification_results.csv` using a **canonical inference choice** per baseline group. Additional inference variants (`infer/*`) are recorded separately in `inference_results.csv` (keyed by `spec_run_id`). Diagnostics (if planned) are written to `diagnostics_results.csv` and linked via `spec_diagnostics_map.csv`.
-
-See `specification_tree/INDEX.md` for the canonical file/module index and typed namespace rules.
-
-## Output Format
+## Output format
 
 ### unified_results.csv
 
-Each row is one specification from one paper:
+Each row is one specification from one paper. Key columns:
 
 | Column | Description |
 |--------|-------------|
-| `paper_id` | Package identifier (e.g., `223561-V1`) |
-| `journal` | Journal (if available from package metadata) |
-| `paper_title` | Paper title (if available from package metadata) |
-| `spec_run_id` | Unique executed-row identifier (within paper) |
-| `baseline_group_id` | Baseline claim object identifier (from the pre-run surface) |
-| `spec_id` | Typed estimate identifier (`baseline`, `design/*`, `rc/*`). Inference variants live in `inference_results.csv`. |
-| `spec_tree_path` | Defining node path under `specification_tree/` (file + optional section anchor) |
-| `outcome_var` | Dependent variable name |
-| `treatment_var` | Treatment/exposure variable name |
+| `paper_id` | Package identifier (e.g., `112431-V1`) |
+| `spec_id` | Typed identifier (`baseline`, `design/*`, `rc/*`) |
+| `baseline_group_id` | Claim object identifier |
 | `coefficient` | Point estimate |
 | `std_error` | Standard error |
 | `p_value` | p-value |
-| `ci_lower` | CI lower bound (optional; can be empty) |
-| `ci_upper` | CI upper bound (optional; can be empty) |
 | `n_obs` | Number of observations |
-| `r_squared` | \(R^2\) (optional; can be empty) |
-| `coefficient_vector_json` | Full output payload (JSON object; required). Must include `coefficients`, `inference`, `software`, `surface_hash` (+ axis blocks like `controls` / `sample` / `functional_form` when applicable). Failures include `error` + `error_details`. Keep top-level schema stable (use `design`/`extra` for extensions). |
-| `sample_desc` | Sample description (optional) |
-| `fixed_effects` | Fixed effects description (optional) |
-| `controls_desc` | Controls description (optional) |
-| `cluster_var` | Clustering variable(s) used (optional) |
-| `run_success` | 0/1 success flag for the executed row |
-| `run_error` | Short error string when `run_success=0` |
-| `spec_fingerprint` | Deterministic hash of the spec signature (duplicate tracking) |
-| `dup_group_size` | Number of rows sharing the same fingerprint (within paper) |
-| `dup_rank` | Deterministic rank within the fingerprint group |
-| `dup_canonical_spec_run_id` | The canonical `spec_run_id` for the fingerprint group |
-| `dup_is_duplicate` | 0/1 flag for non-canonical duplicates (`dup_rank>1`) |
+| `coefficient_vector_json` | Full model output (JSON with `coefficients`, `inference`, `software`, `surface_hash`) |
+| `run_success` | 0/1 success flag |
+| `spec_fingerprint` | Deterministic hash for duplicate tracking |
 
-### inference_results.csv
+Additional columns: `journal`, `paper_title`, `outcome_var`, `treatment_var`, `ci_lower`, `ci_upper`, `r_squared`, `sample_desc`, `fixed_effects`, `controls_desc`, `cluster_var`, `run_error`, `dup_*` fields.
 
-Each row is one inference-only recomputation (`infer/*`) for a reference estimate row:
+### unified_inference_results.csv
 
-The data construction stage also concatenates these per-paper files into `unified_inference_results.csv` (same schema).
-
-| Column | Description |
-|--------|-------------|
-| `paper_id` | Package identifier |
-| `inference_run_id` | Unique inference-row identifier (within paper) |
-| `spec_run_id` | Reference estimate-row identifier being recomputed |
-| `baseline_group_id` | Baseline claim object identifier |
-| `spec_id` | Typed inference identifier (`infer/*`) |
-| `spec_tree_path` | Defining inference node path under `specification_tree/` |
-| `coefficient` | Point estimate (typically matches the reference row) |
-| `std_error` | Standard error under this inference choice |
-| `p_value` | p-value under this inference choice |
-| `coefficient_vector_json` | Full output payload (JSON object; required). Must include `coefficients`, `inference`, `software`, `surface_hash` (+ inference metadata/warnings). Failures include `error` + `error_details`. Keep top-level schema stable (use `design`/`extra` for extensions). |
-| `run_success` | 0/1 success flag for the inference recomputation |
-| `run_error` | Short error string when `run_success=0` |
+Each row is one inference-only recomputation (`infer/*`) linked to an estimate row via `spec_run_id`. Same scalar columns plus `inference_run_id`.
 
 ## Software
 
 All analyses use open-source tools (no Stata):
 
-- **Python**: `pandas`, `numpy`, `statsmodels`, `linearmodels`, `pyfixest`, `scipy`, `curl_cffi`
+- **Python**: `pandas`, `numpy`, `statsmodels`, `linearmodels`, `pyfixest`, `scipy`, `rdrobust`, `curl_cffi`
 - **R**: `fixest`, `plm`, `lfe`, `did`, `synthdid`
 - **Julia**: `PyPlot`, `DataFrames`, `CSV`, `JSON3`, `Distributions`, `KernelDensity`
+
+## Citation
+
+```bibtex
+@article{fishmanSekeres2026,
+  title={Editorial Screening when Science is Cheap},
+  author={Nic Fishman and Gabriel Sekeres},
+  year={2026}
+}
+```
